@@ -1,0 +1,318 @@
+// -=-=-=-=-=-=-=-=- FONT SIZE -=-=-=-=-=-=-=-=-
+$text-xs        : 0.75rem;
+$text-xs-lh     : 1rem;
+$m-text-xs      : 0.75rem;
+$m-text-xs-lh   : 1rem;
+// ---------------------------------------------
+$text-sm        : 0.875rem;
+$text-sm-lh     : 1.25rem;
+$m-text-sm      : 0.875rem;
+$m-text-sm-lh   : 1.25rem;
+// ---------------------------------------------
+$text-base      : 1rem;
+$text-base-lh   : 1.5rem;
+$m-text-base    : 1rem;
+$m-text-base-lh : 1.5rem;
+// ---------------------------------------------
+$text-lg        : 1.125rem;
+$text-lg-lh     : 1.75rem;
+$m-text-lg      : 1.125rem;
+$m-text-lg-lh   : 1.75rem;
+// ---------------------------------------------
+$text-xl        : 1.25rem;
+$text-xl-lh     : 1.75rem;
+$m-text-xl      : 1.25rem;
+$m-text-xl-lh   : 1.75rem;
+// ---------------------------------------------
+$text-2xl       : 1.5rem;
+$text-2xl-lh    : 2rem;
+$m-text-2xl     : 1.5rem;
+$m-text-2xl-lh  : 2rem;
+// ---------------------------------------------
+$text-3xl       : 1.875rem;
+$text-3xl-lh    : 2.25rem;
+$m-text-3xl     : 1.85rem;
+$m-text-3xl-lh  : 2.15rem;
+// ---------------------------------------------
+$text-4xl       : 2.25rem;
+$text-4xl-lh    : 2.5rem;
+$m-text-4xl     : 2rem;
+$m-text-4xl-lh  : 2.25rem;
+// ---------------------------------------------
+$text-5xl       : 3rem;
+$text-5xl-lh    : 1;
+$m-text-5xl     : 2.5rem;
+$m-text-5xl-lh  : 1;
+// ---------------------------------------------
+$text-6xl       : 3.75rem;
+$text-6xl-lh    : 1;
+$m-text-6xl     : 2.75rem;
+$m-text-6xl-lh  : 1;
+// ---------------------------------------------
+$text-7xl       : 4.5rem;
+$text-7xl-lh    : 1;
+$m-text-7xl     : 3.25rem;;
+$m-text-7xl-lh  : 1;
+// ---------------------------------------------
+$text-8xl       : 6rem;
+$text-8xl-lh    : 1;
+$m-text-8xl     : 4.15rem;
+$m-text-8xl-lh  : 1;
+// ---------------------------------------------
+$text-9xl       : 8rem;
+$text-9xl-lh    : 1;
+$m-text-9xl     : 5rem;
+$m-text-9xl-lh  : 1;
+// ---------------------------------------------
+
+
+// -=-=-=-=-=-=-=-=- FONT FAMILY -=-=-=-=-=-=-=-=-
+$ff-1 				: "Cera-Regular";
+$ff-1-bd 		  : "Cera-Bold";
+$ff-1-lg 		  : "Cera-Light";
+$flow 				: "Flow";
+$menlo 				: "Menlo";
+$opensans 		: "Open Sans";
+
+
+// -=-=-=-=-=-=-=-=- COLORS -=-=-=-=-=-=-=-=-
+
+// primary
+$d-color-primary-6: #c8aa00;
+$d-color-primary-5: #fad400;
+$d-color-primary-4: #fbdd33;
+$d-color-primary-3: #fce14d;
+$d-color-primary-2: #fdea80;
+$d-color-primary-1: #fdee99;
+$d-color-primary-contrast: #121014;
+
+// secondary
+$d-color-secondary-6: #3c867a;
+$d-color-secondary-5: #4ba899;
+$d-color-secondary-4: #6fb9ad;
+$d-color-secondary-3: #93cbc2;
+$d-color-secondary-2: #a5d4cc;
+$d-color-secondary-1: #b7dcd6;
+$d-color-secondary-contrast: $d-color-primary-contrast;
+
+// success
+$d-color-success-6: #089365;
+$d-color-success-5: #10B981;
+$d-color-success-4: #34D399;
+$d-color-success-3: #6EE7B7;
+$d-color-success-2: #A7F3D0;
+$d-color-success-1: #D1FAE5;
+$d-color-success-contrast: #ffffff;
+
+// warning
+$d-color-warning-6: $d-color-primary-6;
+$d-color-warning-5: $d-color-primary-5;
+$d-color-warning-4: $d-color-primary-4;
+$d-color-warning-3: $d-color-primary-3;
+$d-color-warning-2: $d-color-primary-2;
+$d-color-warning-1: $d-color-primary-1;
+$d-color-warning-contrast: $d-color-primary-contrast;
+
+// danger
+$d-color-danger-6: #bc3648;
+$d-color-danger-5: #eb445a;
+$d-color-danger-4: #ef697b;
+$d-color-danger-3: #f38f9c;
+$d-color-danger-2: #f7b4bd;
+$d-color-danger-1: #f9c7ce;
+$d-color-danger-contrast: #ffffff;
+
+// link
+$d-color-link-6: #2f68c5;
+$d-color-link-5: #3b82f6;
+$d-color-link-4: #629bf8;
+$d-color-link-3: #89b4fa;
+$d-color-link-2: #b1cdfb;
+$d-color-link-1: #d8e6fd;
+$d-color-link-contrast: #ffffff;
+
+// info
+$d-color-info-6: #4f52c1;
+$d-color-info-5: #6366f1;
+$d-color-info-4: #8285f4;
+$d-color-info-3: #a1a3f7;
+$d-color-info-2: #c1c2f9;
+$d-color-info-1: #d0d1fb;
+$d-color-info-contrast: #ffffff;
+
+// dark
+$d-color-dark: $d-color-primary-contrast;
+$d-color-dark-contrast: #ffffff;
+$d-color-dark-shade: #0e0d10;
+$d-color-dark-tint: #414043;
+
+// medium
+$d-color-medium: #92949c;
+$d-color-medium-contrast: #ffffff;
+$d-color-medium-shade: #75767d;
+$d-color-medium-tint: #a8a9b0;
+
+// light
+$d-color-light: #EAEDF1;
+$d-color-light-contrast: #000000;
+$d-color-light-shade: #d7d8da;
+$d-color-light-tint: #f5f6f9;
+
+$bg-color : #F7F7F7;
+
+// -=-=-=-=-=-=-=-=- SIZE CONTROL -=-=-=-=-=-=-=-=-
+$rem-sizes:
+	(
+		0		  : 0,
+		1     : 0.25rem,
+		2	    : 0.5rem,
+		3     : 0.75rem,
+		4	    : 1rem,
+		5	    : 1.25rem,
+		6     : 1.5rem,
+		7     : 1.75rem,
+		8     : 2rem,
+		9     : 2.25rem,
+		10    : 2.5rem,
+		11	  : 2.75rem,
+		12	  : 3rem,
+		14	  : 3.5rem,
+		16	  : 4rem,
+		20	  : 5rem,
+		24		: 6rem,
+		28		: 7rem,
+		32		: 8rem,
+		36		: 9rem,
+		40		: 10rem,
+		44		: 11rem,
+		48		: 12rem,
+		52		: 13rem,
+		56		: 14rem,
+		60		: 15rem,
+		64		: 16rem,
+		72		: 18rem,
+		80		: 20rem,
+		96		: 24rem,
+	);
+$max-rem-sizes:
+	(
+		xs		: 20rem,
+		sm		: 24rem,
+		md		: 28rem,
+		lg		: 32rem,
+		xl		: 36rem,
+		2xl		: 42rem,
+		3xl		: 48rem,
+		4xl		: 56rem,
+		5xl		: 64rem,
+		6xl		: 72rem,
+		7xl		: 80rem,
+		8xl		: 90rem,
+	);
+
+$percentage-sizes:
+	(
+		0 		: 0%,
+		5			: 5%,
+		10    : 10%,
+		15    : 15%,
+		20    : 20%,
+		25    : 25%,
+		30    : 30%,
+		35    : 35%,
+		40    : 40%,
+		45    : 45%,
+		50    : 50%,
+		55    : 55%,
+		60    : 60%,
+		65    : 65%,
+		70    : 70%,
+		75    : 75%,
+		80    : 80%,
+		85    : 85%,
+		90    : 90%,
+		95    : 95%,
+		100   : 100%,
+	);
+
+$col-sizes: (
+  '2'			      : 16.666%,
+  '2-4'					: 20%,
+  '3'						: 25%,
+  '3-5'         : 29.16665%,
+  '4'						: 33.33333%,
+  '5'						: 41.66667%,
+  '6'						: 50%,
+  '7'						: 58.33333%,
+  '8'						: 66.66667%,
+  '9'						: 75%,
+  '10'					: 83.333%,
+  '12'					: 100%,
+);
+
+$color-range: (
+	primary-6						: primary-6,
+  primary-5						: primary-5,
+  primary-4						: primary-4,
+  primary-3						: primary-3,
+  primary-2						: primary-2,
+  primary-1						: primary-1,
+  primary-contrast		: primary-contrast,
+	secondary-6					: secondary-6,
+  secondary-5					: secondary-5,
+  secondary-4					: secondary-4,
+  secondary-3					: secondary-3,
+  secondary-2					: secondary-2,
+  secondary-1					: secondary-1,
+  secondary-contrast	: secondary-contrast,
+  success-6						: success-6,
+  success-5						: success-5,
+  success-4						: success-4,
+  success-3						: success-3,
+  success-2						: success-2,
+  success-1						: success-1,
+  success-contrast		: success-contrast,
+  warning-6						: warning-6,
+  warning-5						: warning-5,
+  warning-4						: warning-4,
+  warning-3						: warning-3,
+  warning-2						: warning-2,
+  warning-1						: warning-1,
+  warning-contrast		: warning-contrast,
+  danger-6						: danger-6,
+  danger-5						: danger-5,
+  danger-4						: danger-4,
+  danger-3						: danger-3,
+  danger-2						: danger-2,
+  danger-1						: danger-1,
+  danger-contrast			: danger-contrast,
+  link-6							: link-6,
+  link-5							: link-5,
+  link-4							: link-4,
+  link-3							: link-3,
+  link-2							: link-2,
+  link-1							: link-1,
+  link-contrast				: link-contrast,
+  info-6							: info-6,
+  info-5							: info-5,
+  info-4							: info-4,
+  info-3							: info-3,
+  info-2							: info-2,
+  info-1							: info-1,
+  info-contrast				: info-contrast,
+  dark              	: dark,
+  dark-shade        	: dark-shade,
+  dark-tint         	: dark-tint,
+  dark-contrast     	: dark-contrast,
+  medium            	: medium,
+  medium-shade      	: medium-shade,
+  medium-tint       	: medium-tint,
+  medium-contrast   	: medium-contrast,
+  light             	: light,
+  light-shade       	: light-shade,
+  light-tint        	: light-tint,
+  light-contrast    	: light-contrast,
+);
+
+$padding-l-r: var(--padding-l-r);
+

@@ -1,0 +1,260 @@
+// -=-=-=-=-=-=-=-=- MIXIN -=-=-=-=-=-=-=-=-
+
+// PLACEHOLDER CONTROL
+@mixin placeholder {
+  &::-webkit-input-placeholder {
+    @content;
+  }
+
+  &:-moz-placeholder {
+    @content;
+  }
+
+  &::-moz-placeholder {
+    @content;
+  }
+
+  &:-ms-input-placeholder {
+    @content;
+  }
+}
+// HOW TO USE
+// @include placeholder {
+//   color: $d-color-medium;
+// }
+
+
+// USER SELECT CONTROL
+@mixin user-select-none() {
+  user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+// HOW TO USE
+// @include user-select-none();
+
+
+// LINE CLAMP CONTROL
+@mixin line-clamp($n) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $n;
+}
+// HOW TO USE
+// @include line-clamp(2);
+
+
+// BACKGROUND IMAGE CONTROL
+@mixin bg-image($url, $size, $repeat, $position) {
+  background-image: url($url);
+  background-size: $size;
+  background-repeat: $repeat;
+  background-position: $position;
+}
+// HOW TO USE
+// @include bg-image('../assets/images/index-header.jpg', cover, no-repeat, center);
+
+
+// GRADIENT CONTROL
+@mixin gradient($c1, $d1, $c2, $d2, $c3, $d3, $direction) {
+
+  $color-accent: $c1;
+  $color-accent-bg: rgba($color-accent, .2);
+  $ie-hex: ie_hex_str($color-accent-bg); //#33039B15
+  $back-to-color-accent: unquote('#'+ str_slice($ie-hex, 4));
+
+  @if $direction==top {
+
+    background: $c1;
+    background: -moz-linear-gradient(180deg, $c1 $d1, $c2 $d2, $c3 $d3);
+    background: -webkit-linear-gradient(180deg, $c1 $d1, $c2 $d2, $c3 $d3);
+    background: linear-gradient(180deg, $c1 $d1, $c2 $d2, $c3 $d3);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#{$back-to-color-accent}", endColorstr="#{$back-to-color-accent}", GradientType=1);
+
+  }
+
+  @else if $direction==right {
+
+    background: $c1;
+    background: -moz-linear-gradient(270deg, $c1 $d1, $c2 $d2, $c3 $d3);
+    background: -webkit-linear-gradient(270deg, $c1 $d1, $c2 $d2, $c3 $d3);
+    background: linear-gradient(270deg, $c1 $d1, $c2 $d2, $c3 $d3);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#{$back-to-color-accent}", endColorstr="#{$back-to-color-accent}", GradientType=1);
+
+  }
+
+  @else if $direction==left {
+
+    background: $c1;
+    background: -moz-linear-gradient(90deg, $c1 $d1, $c2 $d2, $c3 $d3);
+    background: -webkit-linear-gradient(90deg, $c1 $d1, $c2 $d2, $c3 $d3);
+    background: linear-gradient(90deg, $c1 $d1, $c2 $d2, $c3 $d3);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#{$back-to-color-accent}", endColorstr="#{$back-to-color-accent}", GradientType=1);
+
+  }
+
+  @else if $direction==bottom {
+
+    background: $c1;
+    background: -moz-linear-gradient(0deg, $c1 $d1, $c2 $d2, $c3 $d3);
+    background: -webkit-linear-gradient(0deg, $c1 $d1, $c2 $d2, $c3 $d3);
+    background: linear-gradient(0deg, $c1 $d1, $c2 $d2, $c3 $d3);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#{$back-to-color-accent}", endColorstr="#{$back-to-color-accent}", GradientType=1);
+
+  }
+
+  @else {
+    @error "Unknown direction #{$direction}.";
+  }
+}
+// HOW TO USE
+// @include gradient(rgba($black, 1), 0%, rgba($black, .75), 35%, rgba($black, 0), 100%, bottom);
+
+
+// BLUR CONTROL
+@mixin blur($color, $blur) {
+  background: $color;
+  -webkit-backdrop-filter: blur($blur);
+  backdrop-filter: blur($blur);
+}
+// HOW TO USE
+// @include blur(rgba($white, .3), 20px);
+
+
+// STRING UNIT REMOVER VALUE (ex: removing 'px' or 'rem' from 3px/3rem)
+@function str-remover($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+// HOW TO USE
+// z-index : str-remover(1rem);
+// RESULT
+// z-index : 1,
+
+
+// STRING UNIT REPLACER VALUE (ex: replace 'px' on '5px' to 5rem)
+@function str-replacer($string, $search, $replace: '') {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replacer(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+// @author Hugo Giraudel
+// HOW TO USE
+// .selector {
+//   $string: 'The answer to life the universe and everything is 42.';
+//   content: str-replacer($string, 'e', 'i');
+// }
+// RESULT
+// .selector {
+//   content: 'Thi answir to lifi thi univirsi and ivirything is 42.';
+// }
+
+
+// HEX TO RGB CONVERTER
+@function hexToRGB($hex) {
+  @return red($hex), green($hex), blue($hex);
+}
+// @author https://medium.com/@ali_obaji
+// HOW TO USE
+// --color-primary--rgb: #{hexToRGB($color-primary)};
+
+
+// RESPONSIVE CONTROL
+@mixin responsive($type) {
+
+  @if ($type == 'ultrawide') {
+    
+    @media #{$ultrawide} {
+      @content;
+    }
+  } @else if ($type == 'dekstop') {
+
+    @media #{$dekstop} {
+      @content;
+    }
+  } @else if ($type == 'laptop') {
+    
+    @media #{$laptop} {
+      @content;
+    }
+  } @else if ($type == 'mobile') {
+
+    @media #{$phone} {
+      @content;
+    }
+  
+    @media #{$phone-l} {
+      @content;
+    }
+  } @else if ($type == 'tablet') {
+
+    @media #{$tablet} {
+      @content;
+    }
+  }
+}
+
+// -=-=-=-=-=-=-=-=- DUMP -=-=-=-=-=-=-=-=-
+
+// IMAGE ZOOM EFFECT ON HOVER
+// @mixin img-zoom() {
+  
+//   .img {
+//     transform: translate(-50%, -50%) scale(1);
+//   }
+// }
+
+// SLIDER ARROW CONTROL
+// @mixin slick-arrow() {
+
+//   .slick-arrow {
+//     position: absolute;
+//     right: 0;
+//     top: calc(-35px/2 - 25px);
+
+//     &.btn-prev {
+//       right: 35px;
+//     }
+//   }
+// }
+
+// @mixin this-dekstop() {
+
+//   @media #{$dekstop} {
+// 		@content;
+// 	}
+	
+// 	@media #{$laptop} {
+// 		@content;
+// 	}
+// }
+
+// @mixin this-mobile() {
+
+//   @media #{$phone} {
+// 		@content;
+// 	}
+
+//   @media #{$phone-l} {
+// 		@content;
+// 	}
+// }
+
+// @mixin this-tablet() {
+
+//   @media #{$tablet} {
+// 		@content;
+// 	}
+// }
