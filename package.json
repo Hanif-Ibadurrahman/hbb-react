@@ -22,21 +22,19 @@
     "bootstrap": "5.1.0",
     "chalk": "4.1.1",
     "cross-env": "7.0.3",
-    "eslint-config-prettier": "8.3.0",
     "eslint-plugin-prettier": "3.4.0",
     "eslint-plugin-react-hooks": "4.2.0",
     "fontfaceobserver": "2.1.0",
-    "husky": "7.0.0",
+    "husky": ">=6",
     "i18next": "20.3.2",
     "i18next-browser-languagedetector": "6.1.2",
     "i18next-scanner": "3.0.0",
     "inquirer": "7.3.3",
     "inquirer-directory": "2.2.0",
     "jest-styled-components": "7.0.4",
-    "lint-staged": "10.3.0",
+    "lint-staged": ">=10",
     "node-plop": "0.26.2",
     "plop": "2.7.4",
-    "prettier": "2.3.2",
     "react": "17.0.2",
     "react-app-polyfill": "2.0.0",
     "react-bootstrap": "2.0.0-beta.6",
@@ -67,7 +65,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "cross-env CI=true react-scripts test",
     "eject": "react-scripts eject",
     "test:generators": "ts-node --project=./internals/ts-node.tsconfig.json ./internals/testing/generators/test-generators.ts",
     "start:prod": "yarn run build && serve -s build",
@@ -79,7 +77,8 @@
     "generate": "cross-env TS_NODE_PROJECT='./internals/ts-node.tsconfig.json' plop --plopfile internals/generators/plopfile.ts",
     "cleanAndSetup": "ts-node --project=./internals/ts-node.tsconfig.json ./internals/scripts/clean.ts",
     "prettify": "prettier --write",
-    "extract-messages": "i18next-scanner --config=internals/extractMessages/i18next-scanner.config.js"
+    "extract-messages": "i18next-scanner --config=internals/extractMessages/i18next-scanner.config.js",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -106,7 +105,8 @@
     ],
     "*.{md,json}": [
       "prettier --write"
-    ]
+    ],
+    "*.{js,css,md}": "prettier --write"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -125,5 +125,9 @@
         "statements": 90
       }
     }
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "^2.3.2"
   }
 }
