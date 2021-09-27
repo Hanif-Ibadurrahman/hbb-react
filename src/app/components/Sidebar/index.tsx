@@ -36,6 +36,11 @@ export function Sidebar() {
             icon={<img src={IconHome} className="h-5" alt="awSnap" />} onClick={() => { window.location.pathname = "/" }}>
             {""} Dashboard
           </MenuItem>
+          <MenuItem id={window.location.pathname == "/Form" ? "active" : ""}
+            className=" pos-r"
+            icon={<img src={IconForm} className="h-5" alt="awSnap" />} onClick={() => { window.location.pathname = "/Form" }}>
+            {""} Form
+          </MenuItem>
           <SubMenu className="pos-r" icon={<img src={IconUI} className="h-5" alt="awSnap" />} title="Basic UI Element">
             {BasicUIData.map((val, key) => {
               return (
@@ -50,18 +55,6 @@ export function Sidebar() {
           </SubMenu>
           <SubMenu className="" icon={<img src={IconAdvanced} className="h-5" alt="awSnap" />} title="Advanced UI Element">
             {AdvancedUIData.map((val, key) => {
-              return (
-                <MenuItem id={window.location.pathname.split(val.link).pop() ? "" : "active"}
-                  className="pos-r"
-                  icon={<img src={val.icon} className="h-5" alt="awSnap" />}
-                  key={key} onClick={() => { window.location.pathname = val.link }}>
-                  {""}{val.title}
-                </MenuItem>
-              )
-            })}
-          </SubMenu>
-          <SubMenu className="" icon={<img src={IconForm} className="h-5" alt="awSnap" />} title="Form Elements">
-            {FormData.map((val, key) => {
               return (
                 <MenuItem id={window.location.pathname.split(val.link).pop() ? "" : "active"}
                   className="pos-r"

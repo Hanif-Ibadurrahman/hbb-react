@@ -9,10 +9,6 @@ $phone-l        : "only screen and (min-width: 481px) and (max-width: 767px)";
 @import "variables";
 @import "mixins";
 
-#root {
-	overflow: hidden;
-}
-
 .all-wrapper {
 	min-height: 100vh;
 }
@@ -64,6 +60,8 @@ $phone-l        : "only screen and (min-width: 481px) and (max-width: 767px)";
 .sidebar {
 	box-shadow: 8px 0 8px rgba(0,0,0,.05);
 	height: 100vh;
+	position: sticky;
+	top: 0;
 
 	&.icon {
 		background-color: #000;
