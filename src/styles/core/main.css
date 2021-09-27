@@ -73,4 +73,9 @@
       .sidebar .pro-sidebar .pro-sidebar-inner .pro-sidebar-layout .pro-menu .pro-menu-item::before {
         display: none; }
 
+.controlRow__root .col-sm-6 .btn-group .btn:disabled {
+  background-color: #121014;
+  opacity: 0.9;
+  border-color: #121014; }
+
 /*# sourceMappingURL=main.css.map */

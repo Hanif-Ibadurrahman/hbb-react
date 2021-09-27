@@ -18,6 +18,7 @@ import { Accordions } from './pages/UIElements/Accordions/Loadable';
 import { useTranslation } from 'react-i18next';
 import { Sidebar } from './components/Sidebar';
 import { NavBar } from 'app/components/NavBar';
+import { DataTables } from './pages/Tables/DataTable/Loadable';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -37,6 +38,7 @@ export function App() {
           <Switch>
             <Route exact path={process.env.PUBLIC_URL + '/'} component={HomePage} />
             <Route path={process.env.PUBLIC_URL + '/BasicUI/Accordions'} component={Accordions} />
+            <Route path={process.env.PUBLIC_URL + '/Table/DataTables'} component={DataTables} />
             <Route component={NotFoundPage} />
           </Switch>
         </div>
