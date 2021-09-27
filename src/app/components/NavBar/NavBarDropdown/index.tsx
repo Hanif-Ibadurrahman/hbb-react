@@ -1,4 +1,5 @@
 import React, { memo, useEffect } from 'react';
+import Profile from 'assets/images/profile.png';
 import Dropdown from 'react-bootstrap/Dropdown';
 // import styled from 'styled-components/macro';
 
@@ -8,10 +9,6 @@ const Username = props => {
       {props.username}
     </span>
   );
-};
-
-const Profile = props => {
-  return <img src={props.profile} alt="Logo" className="h-100%" />;
 };
 
 export function NavBarDropdown(props) {
@@ -24,7 +21,7 @@ export function NavBarDropdown(props) {
         <div className="d-flex ai-center">
           <div className="w-2px h-20 bg-dark-contrast op-25%"></div>
           <div className="d-flex ai-center jc-center h-16 w-16 bd-rs-16 of-h mh-4">
-            <Profile src={props.profile} />
+            <img src={Profile} alt="Logo" className="h-100%" />
           </div>
           <Username username={props.username} />
           <i className="dropdown-toggle-indicator fas fa-chevron-down tc-primary-contrast"></i>

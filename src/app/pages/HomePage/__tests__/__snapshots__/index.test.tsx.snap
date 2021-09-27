@@ -7,17 +7,15 @@ exports[`<HomePage /> should render and match the snapshot 1`] = `
     encodeSpecialCharacters={true}
   >
     <title>
-      Home Page
+      Dox - Dashboard
     </title>
     <meta
       content="A React Boilerplate application homepage"
       name="description"
     />
   </Helmet>
-  <NavBar />
   <PageWrapper>
     <Masthead />
-    <Features />
   </PageWrapper>
 </React.Fragment>
 `;
