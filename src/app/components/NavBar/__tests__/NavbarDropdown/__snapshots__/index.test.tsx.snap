@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NavBarDropdown /> should match snapshot 1`] = `
+<Dropdown
+  align="start"
+  autoClose={true}
+  navbar={false}
+>
+  <DropdownToggle
+    className="dropdown-toggle p-0 bg-n bd-n bd-rs-0 h-20"
+  >
+    <div
+      className="d-flex ai-center"
+    >
+      <div
+        className="w-2px h-20 bg-dark-contrast op-25%"
+      />
+      <div
+        className="d-flex ai-center jc-center h-16 w-16 bd-rs-16 of-h mh-4"
+      >
+        <img
+          alt="Logo"
+          className="h-100%"
+          src="profile.png"
+        />
+      </div>
+      <Username />
+      <i
+        className="dropdown-toggle-indicator fas fa-chevron-down tc-primary-contrast"
+      />
+    </div>
+  </DropdownToggle>
+  <DropdownMenu
+    className="pos-r"
+    flip={true}
+  >
+    <DropdownItem
+      className="ph-6"
+      href="#/action-1"
+    >
+      <div
+        className="d-flex ai-center p-lg"
+      >
+        <span
+          className="icon mr-4 d-flex ai-center"
+        >
+          <i
+            className="far fa-cog"
+          />
+        </span>
+        <span
+          className="text"
+        >
+          Setting
+        </span>
+      </div>
+    </DropdownItem>
+    <span
+      className="d-block h-1px w-100% bg-medium-tint op-50% mv-2"
+    />
+    <DropdownItem
+      className="ph-6"
+      href="#/action-1"
+    >
+      <div
+        className="d-flex ai-center p-lg tc-danger-5"
+      >
+        <span
+          className="icon mr-4 d-flex ai-center"
+        >
+          <i
+            className="far fa-sign-out"
+          />
+        </span>
+        <span
+          className="text"
+        >
+          Logout
+        </span>
+      </div>
+    </DropdownItem>
+  </DropdownMenu>
+</Dropdown>
+`;

@@ -18,16 +18,30 @@ exports[`<App /> should render and match the snapshot 1`] = `
       name="description"
     />
   </Helmet>
-  <Switch>
-    <Route
-      component={[Function]}
-      exact={true}
-      path="/"
-    />
-    <Route
-      component={[Function]}
-    />
-  </Switch>
+  <div
+    className="d-flex all-wrapper"
+  >
+    <Sidebar />
+    <div
+      className="content-wrapper w-80%"
+    >
+      <NavBar />
+      <Switch>
+        <Route
+          component={[Function]}
+          exact={true}
+          path="/"
+        />
+        <Route
+          component={[Function]}
+          path="/BasicUI/Accordions"
+        />
+        <Route
+          component={[Function]}
+        />
+      </Switch>
+    </div>
+  </div>
   <Memo(l) />
 </BrowserRouter>
 `;
