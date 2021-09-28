@@ -1,6 +1,25 @@
+/**
+ * @constructor
+ * @this handleChange
+ */
+import React, { useState } from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 
 export function form() {
+  function handleChange(event) {
+    var textChange = event.target.value,
+      eventId = event.target.id,
+      typingTimeout: 0;
+
+    const self = event;
+
+    setTimeout(function () {
+      self.sendToParent(self.state.name);
+    }, 5000);
+
+    console.log(eventId + ' : ' + textChange);
+  }
+
   return (
     <div className="pos-r p-8 d-flex fd-col-r">
       <Form>
@@ -15,7 +34,12 @@ export function form() {
                 Email
               </Form.Label>
               <Col sm={10}>
-                <Form.Control type="email" placeholder="Email" />
+                <Form.Control
+                  type="email"
+                  placeholder="Email"
+                  id="email"
+                  onChange={handleChange}
+                />
               </Col>
             </Form.Group>
           </div>
@@ -34,7 +58,11 @@ export function form() {
             Password
           </Form.Label>
           <Col sm={10}>
-            <Form.Control type="password" placeholder="Password" />
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              onChange={handleChange}
+            />
           </Col>
         </Form.Group>
 
@@ -75,20 +103,20 @@ export function form() {
               <Form.Check
                 type="checkbox"
                 label="first checkbox"
-                name="formHorizontalRadios"
-                id="formHorizontalRadios1"
+                name="formHorizontalCheks"
+                id="formHorizontalCheck1"
               />
               <Form.Check
                 type="checkbox"
                 label="second checkbox"
-                name="formHorizontalRadios"
-                id="formHorizontalRadios2"
+                name="formHorizontalCheks"
+                id="formHorizontalCheck2"
               />
               <Form.Check
                 type="checkbox"
                 label="third checkbox"
-                name="formHorizontalRadios"
-                id="formHorizontalRadios3"
+                name="formHorizontalCheks"
+                id="formHorizontalCheck3"
               />
             </Col>
           </Form.Group>
@@ -120,4 +148,8 @@ export function form() {
       </Form>
     </div>
   );
+}
+
+function logParameter(this: any, target: Object, propertyName: string) {
+  console.log(this);
 }
