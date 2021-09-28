@@ -6,8 +6,8 @@ import { BasicUIData } from './SidebarDataTemplate';
 import { AdvancedUIData } from './SidebarDataTemplate';
 import { FormData } from './SidebarDataTemplate';
 import { TableData } from './SidebarDataTemplate';
-import { Link, NavLink } from 'react-router-dom';
-import React, { useState } from "react";
+// import { Link, NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
 import IconHome from 'assets/images/icon/icon-1.png';
 import IconUI from 'assets/images/icon/icon-2.png';
 import IconAdvanced from 'assets/images/icon/icon-3.png';
@@ -15,14 +15,14 @@ import IconForm from 'assets/images/icon/icon-4.png';
 import IconTable from 'assets/images/icon/icon-5.png';
 
 export function Sidebar() {
-  const [isActive, setActive] = useState<boolean>(true);
+  const [isActive] = useState<boolean>(true);
 
-  const handleToggle = () => {
-    setActive(!isActive);
-  };
+  // const handleToggle = () => {
+  //   setActive(!isActive);
+  // };
 
   return (
-    <div className={`sidebar bg-medium-tint w-20% ${isActive ? "" : "icon"}`}>
+    <div className={`sidebar bg-medium-tint w-20% ${isActive ? '' : 'icon'}`}>
       <div className="sidebar-header">
         <div className="ph-4 h-20 bg-dark-contrast d-flex ai-center">
           <img src={Logo} alt="Logo" className="h-16" />
@@ -31,50 +31,118 @@ export function Sidebar() {
 
       <ProSidebar>
         <Menu iconShape="square">
-          <MenuItem id={window.location.pathname == "/" ? "active" : ""}
+          <MenuItem
+            id={window.location.pathname === '/' ? 'active' : ''}
             className=" pos-r"
-            icon={<img src={IconHome} className="h-5" alt="awSnap" />} onClick={() => { window.location.pathname = "/" }}>
-            {""} Dashboard
+            icon={<img src={IconHome} className="h-5" alt="awSnap" />}
+            onClick={() => {
+              window.location.pathname = '/';
+            }}
+          >
+            {''} Dashboard
           </MenuItem>
-          <MenuItem id={window.location.pathname == "/Form" ? "active" : ""}
-            className=" pos-r"
-            icon={<img src={IconForm} className="h-5" alt="awSnap" />} onClick={() => { window.location.pathname = "/Form" }}>
-            {""} Form
-          </MenuItem>
-          <SubMenu className="pos-r" icon={<img src={IconUI} className="h-5" alt="awSnap" />} title="Basic UI Element">
+          <SubMenu
+            className="pos-r"
+            icon={<img src={IconUI} className="h-5" alt="awSnap" />}
+            title="Basic UI Element"
+          >
             {BasicUIData.map((val, key) => {
               return (
-                <MenuItem id={window.location.pathname.split(val.link).pop() ? "" : "active"}
+                <MenuItem
+                  id={
+                    window.location.pathname.split(val.link).pop()
+                      ? ''
+                      : 'active'
+                  }
                   className="pos-r"
                   icon={<img src={val.icon} className="h-5" alt="awSnap" />}
-                  key={key} onClick={() => { window.location.pathname = val.link }}>
-                  {""}{val.title}
+                  key={key}
+                  onClick={() => {
+                    window.location.pathname = val.link;
+                  }}
+                >
+                  {''}
+                  {val.title}
                 </MenuItem>
-              )
+              );
             })}
           </SubMenu>
-          <SubMenu className="" icon={<img src={IconAdvanced} className="h-5" alt="awSnap" />} title="Advanced UI Element">
+          <SubMenu
+            className=""
+            icon={<img src={IconAdvanced} className="h-5" alt="awSnap" />}
+            title="Advanced UI Element"
+          >
             {AdvancedUIData.map((val, key) => {
               return (
-                <MenuItem id={window.location.pathname.split(val.link).pop() ? "" : "active"}
+                <MenuItem
+                  id={
+                    window.location.pathname.split(val.link).pop()
+                      ? ''
+                      : 'active'
+                  }
                   className="pos-r"
                   icon={<img src={val.icon} className="h-5" alt="awSnap" />}
-                  key={key} onClick={() => { window.location.pathname = val.link }}>
-                  {""}{val.title}
+                  key={key}
+                  onClick={() => {
+                    window.location.pathname = val.link;
+                  }}
+                >
+                  {''}
+                  {val.title}
                 </MenuItem>
-              )
+              );
             })}
           </SubMenu>
-          <SubMenu className="" icon={<img src={IconTable} className="h-5" alt="awSnap" />} title="Tables">
-            {TableData.map((val, key) => {
+          <SubMenu
+            className=""
+            icon={<img src={IconForm} className="h-5" alt="awSnap" />}
+            title="Form Elements"
+          >
+            {FormData.map((val, key) => {
               return (
-                <MenuItem id={window.location.pathname.split(val.link).pop() ? "" : "active"}
+                <MenuItem
+                  id={
+                    window.location.pathname.split(val.link).pop()
+                      ? ''
+                      : 'active'
+                  }
                   className="pos-r"
                   icon={<img src={val.icon} className="h-5" alt="awSnap" />}
-                  key={key} onClick={() => { window.location.pathname = val.link }}>
-                  {""}{val.title}
+                  key={key}
+                  onClick={() => {
+                    window.location.pathname = val.link;
+                  }}
+                >
+                  {''}
+                  {val.title}
                 </MenuItem>
-              )
+              );
+            })}
+          </SubMenu>
+          <SubMenu
+            className=""
+            icon={<img src={IconTable} className="h-5" alt="awSnap" />}
+            title="Tables"
+          >
+            {TableData.map((val, key) => {
+              return (
+                <MenuItem
+                  id={
+                    window.location.pathname.split(val.link).pop()
+                      ? ''
+                      : 'active'
+                  }
+                  className="pos-r"
+                  icon={<img src={val.icon} className="h-5" alt="awSnap" />}
+                  key={key}
+                  onClick={() => {
+                    window.location.pathname = val.link;
+                  }}
+                >
+                  {''}
+                  {val.title}
+                </MenuItem>
+              );
             })}
           </SubMenu>
         </Menu>

@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Profile from 'assets/images/profile.png';
 import Dropdown from 'react-bootstrap/Dropdown';
 // import styled from 'styled-components/macro';
