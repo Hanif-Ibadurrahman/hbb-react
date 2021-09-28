@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { Sidebar } from './components/Sidebar';
 import { NavBar } from 'app/components/NavBar';
 import { DataTables } from './pages/Tables/DataTable/Loadable';
+// import { form } from 'app/components/Form/Index';
 
 export function App() {
   const { i18n } = useTranslation();
