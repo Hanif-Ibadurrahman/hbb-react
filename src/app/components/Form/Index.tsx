@@ -17,7 +17,7 @@ export function form() {
     <div className="pos-r p-8 d-flex fd-col-r">
       <Form>
         <p className="p-xl mb-1 ff-1-bd">Default Form</p>
-        <div>
+        <div className="mb-4">
           <div
             className="p-4 bd-tl-rs-2 bd-tr-rs-2 bg-light"
             style={{ border: '1px solid rgba(0,0,0,.1)' }}
@@ -74,7 +74,7 @@ export function form() {
           </div>
         </div>
 
-        <div>
+        <div className="mb-4">
           <div
             className="p-4 bd-tl-rs-2 bd-tr-rs-2 bg-light"
             style={{ border: '1px solid rgba(0,0,0,.1)' }}
@@ -128,7 +128,7 @@ export function form() {
           </div>
         </div>
 
-        <div>
+        <div className="mb-4">
           <div
             className="p-4 bd-tl-rs-2 bd-tr-rs-2 bg-light"
             style={{ border: '1px solid rgba(0,0,0,.1)' }}
@@ -260,7 +260,7 @@ export function form() {
           </div>
         </div>
 
-        <div>
+        <div className="mb-4">
           <div
             className="p-4 bd-tl-rs-2 bd-tr-rs-2 bg-light"
             style={{ border: '1px solid rgba(0,0,0,.1)' }}
@@ -395,7 +395,7 @@ export function form() {
           </div>
         </div>
 
-        <div>
+        <div className="mb-4">
           <div
             className="p-4 bd-tl-rs-2 bd-tr-rs-2 bg-light"
             style={{ border: '1px solid rgba(0,0,0,.1)' }}
@@ -448,7 +448,7 @@ export function form() {
           </div>
         </div>
 
-        <div>
+        <div className="mb-4">
           <div
             className="p-4 bd-tl-rs-2 bd-tr-rs-2 bg-light"
             style={{ border: '1px solid rgba(0,0,0,.1)' }}
@@ -483,7 +483,7 @@ export function form() {
           </div>
         </div>
 
-        <div>
+        <div className="mb-4">
           <div
             className="p-4 bd-tl-rs-2 bd-tr-rs-2 bg-light"
             style={{ border: '1px solid rgba(0,0,0,.1)' }}
@@ -520,7 +520,7 @@ export function form() {
             </span>
           </div>
         </div>
-        <div>
+        <div className="mb-4">
           <div
             className="p-4 bd-tl-rs-2 bd-tr-rs-2 bg-light"
             style={{ border: '1px solid rgba(0,0,0,.1)' }}
