@@ -20,6 +20,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'styles/core/core.min.css';
 import 'styles/core/main.css';
 
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
+
 import { App } from 'app';
 
 import { HelmetProvider } from 'react-helmet-async';
