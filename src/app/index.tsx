@@ -36,9 +36,19 @@ export function App() {
         <div className="content-wrapper w-80%">
           <NavBar />
           <Switch>
-            <Route exact path={process.env.PUBLIC_URL + '/'} component={HomePage} />
-            <Route path={process.env.PUBLIC_URL + '/BasicUI/Accordions'} component={Accordions} />
-            <Route path={process.env.PUBLIC_URL + '/Table/DataTables'} component={DataTables} />
+            <Route
+              exact
+              path={process.env.PUBLIC_URL + '/'}
+              component={HomePage}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/BasicUI/Accordions'}
+              component={Accordions}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/Table/DataTables'}
+              component={DataTables}
+            />
             <Route component={NotFoundPage} />
           </Switch>
         </div>

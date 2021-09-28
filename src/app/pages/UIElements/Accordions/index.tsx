@@ -1,7 +1,7 @@
 import * as React from 'react';
-import styled from 'styled-components/macro';
+// import styled from 'styled-components/macro';
 import { Helmet } from 'react-helmet-async';
-import { StyleConstants } from 'styles/StyleConstants';
+// import { StyleConstants } from 'styles/StyleConstants';
 
 export function Accordions() {
   return (
@@ -17,11 +17,11 @@ export function Accordions() {
   );
 }
 
-const Wrapper = styled.div`
-  height: calc(100vh - ${StyleConstants.NAV_BAR_HEIGHT});
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  min-height: 320px;
-`;
+// const Wrapper = styled.div`
+//   height: calc(100vh - ${StyleConstants.NAV_BAR_HEIGHT});
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   flex-direction: column;
+//   min-height: 320px;
+// `;

@@ -13,4 +13,3 @@ export const Accordions = lazyLoad(
     fallback: <LoadingIndicator />,
   },
 );
- 
