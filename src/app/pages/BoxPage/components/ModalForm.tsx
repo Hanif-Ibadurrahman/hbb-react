@@ -1,14 +1,11 @@
-import { Form, Modal } from 'react-bootstrap';
-import { Container } from 'react-bootstrap';
-import { Row } from 'react-bootstrap';
-import { Col } from 'react-bootstrap';
-import Button from 'react-bootstrap/Button';
+import { Form, Modal, Container, Row, Col, Button } from 'react-bootstrap';
+
 import React, { useState } from 'react';
 
 export function ModalForm(props) {
   return (
     <Modal {...props} aria-labelledby="contained-modal-title-vcenter">
-      <Modal.Header closeButton>
+      <Modal.Header closeButton className="bg-primary-5">
         <Modal.Title id="contained-modal-title-vcenter">
           Code Box : A091321
         </Modal.Title>
@@ -40,7 +37,10 @@ export function ModalForm(props) {
         </Container>
       </Modal.Body>
       <Modal.Footer>
-        <Button className="d-flex ai-center bg-success-6" variant="success">
+        <Button variant="danger" onClick={props.onHide}>
+          Close
+        </Button>
+        <Button className="bg-success-6" variant="success">
           Request
         </Button>{' '}
       </Modal.Footer>

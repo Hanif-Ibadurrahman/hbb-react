@@ -3,6 +3,7 @@ import { Breadcrumb } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { ModalForm } from './components/ModalForm';
+import { Filter } from 'app/components/Filter';
 
 export function Header() {
   const [modalShow, setModalShow] = useState(false);
@@ -27,8 +28,10 @@ export function Header() {
             Request Box
           </Breadcrumb.Item>
         </Breadcrumb>
+        {/* <Breadcrumb page={[ {'Home', '/'}, {'Request Box', '/BoxPage', 1} ]} /> */}
       </div>
       <div className="d-flex">
+        <Filter />
         <Button
           className="d-flex ai-center mr-2 bg-warning-5"
           variant="warning"

@@ -5,6 +5,8 @@ import { Helmet } from 'react-helmet-async';
 import Datatable from 'react-bs-datatable';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import { DropdownButton } from 'react-bootstrap';
+import { Dropdown } from 'react-bootstrap';
 
 // Create table headers consisting of 4 columns.
 export const header = [
@@ -45,7 +47,7 @@ export const header = [
     title: 'Notes',
     prop: 'Notes',
     cellProps: {
-      style: { width: '15%' },
+      style: { width: '25%' },
     },
   },
   {
@@ -106,12 +108,28 @@ export const body = Array.from(new Array(30), () => {
         </span>
       ),
       Action: (
-        <ButtonGroup>
-          <Button variant="dark">Detail</Button>
-          <Button variant="success" disabled>
-            Success
-          </Button>
-        </ButtonGroup>
+        <DropdownButton variant="success" title="...">
+          <Dropdown.Item href="/DetailBox">
+            <Button variant="dark" className="w-100%">
+              Detail
+            </Button>
+          </Dropdown.Item>
+          <Dropdown.Item href="#/action-2">
+            <Button variant="primary" className="w-100%">
+              Duplicate
+            </Button>
+          </Dropdown.Item>
+          <Dropdown.Item href="#/action-3">
+            <Button variant="warning" className="w-100%">
+              Edit
+            </Button>
+          </Dropdown.Item>
+          <Dropdown.Item href="#/action-3">
+            <Button variant="danger" className="w-100%">
+              Hapus
+            </Button>
+          </Dropdown.Item>
+        </DropdownButton>
       ),
     };
   }
@@ -127,10 +145,28 @@ export const body = Array.from(new Array(30), () => {
       </span>
     ),
     Action: (
-      <ButtonGroup>
-        <Button variant="dark">Detail</Button>
-        <Button variant="warning">Pending</Button>
-      </ButtonGroup>
+      <DropdownButton variant="success" title="...">
+        <Dropdown.Item href="/DetailBox">
+          <Button variant="dark" className="w-100%">
+            Detail
+          </Button>
+        </Dropdown.Item>
+        <Dropdown.Item href="#/action-2">
+          <Button variant="primary" className="w-100%">
+            Duplicate
+          </Button>
+        </Dropdown.Item>
+        <Dropdown.Item href="#/action-3">
+          <Button variant="warning" className="w-100%">
+            Edit
+          </Button>
+        </Dropdown.Item>
+        <Dropdown.Item href="#/action-3">
+          <Button variant="danger" className="w-100%">
+            Hapus
+          </Button>
+        </Dropdown.Item>
+      </DropdownButton>
     ),
   };
 });

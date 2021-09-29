@@ -17,6 +17,7 @@ import { Sidebar } from './components/Sidebar';
 import { NavBar } from 'app/components/NavBar';
 import { DataTables } from './pages/Tables/DataTable/Loadable';
 import { BoxPage } from './pages/BoxPage';
+import { DetailBox } from './pages/BoxPage/Detail';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -39,6 +40,10 @@ export function App() {
             <Route
               path={process.env.PUBLIC_URL + '/BoxPage'}
               component={BoxPage}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/DetailBox'}
+              component={DetailBox}
             />
             <Route component={NotFoundPage} />
           </Switch>
