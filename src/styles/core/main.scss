@@ -146,15 +146,12 @@ $phone-l        : "only screen and (min-width: 481px) and (max-width: 767px)";
 
 			.btn {
 
-
 				&:disabled {
 					background-color: $d-color-dark;
 					opacity: 0.9;
 					border-color: $d-color-dark;
 				}
-		
 			}
-
 		}
 	}
 }
@@ -169,4 +166,8 @@ $phone-l        : "only screen and (min-width: 481px) and (max-width: 767px)";
 
 .breadcrumb {
 	margin-bottom: 0;
+}
+
+.notesdisable {
+	height: 194px;
 }
