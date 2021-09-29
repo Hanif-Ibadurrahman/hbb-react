@@ -13,9 +13,8 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { GlobalStyle } from '../styles/global-styles';
 
 import { useTranslation } from 'react-i18next';
-
-import { Routes } from './pages/Routes';
 import { LoginPage } from './pages/LoginPage/LoginPage';
+import { Routes } from './pages/Routes';
 
 export function App() {
   const { i18n } = useTranslation();

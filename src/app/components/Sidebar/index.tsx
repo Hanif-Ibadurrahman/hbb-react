@@ -29,21 +29,21 @@ export function Sidebar() {
       <ProSidebar>
         <Menu iconShape="square">
           <MenuItem
-            id={window.location.pathname === '/' ? 'active' : ''}
+            id={window.location.pathname === '/Dashboard' ? 'active' : ''}
             className=" pos-r"
             icon={<img src={IconHome} className="h-5" alt="awSnap" />}
             onClick={() => {
-              window.location.pathname = '/';
+              window.location.pathname = '/Dashboard';
             }}
           >
             {''} Dashboard
           </MenuItem>
           <MenuItem
-            id={window.location.pathname === '/' ? 'active' : ''}
+            id={window.location.pathname === '/Library' ? 'active' : ''}
             className=" pos-r"
             icon={<img src={IconForm} className="h-5" alt="awSnap" />}
             onClick={() => {
-              window.location.pathname = '/';
+              window.location.pathname = '/Library';
             }}
           >
             {''} Library
