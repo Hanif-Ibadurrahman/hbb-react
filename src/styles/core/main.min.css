@@ -165,3 +165,6 @@
   backdrop-filter: blur(20px);
   border: none;
 }
+.login-wrapper .form-control:focus {
+  color: #fff;
+}

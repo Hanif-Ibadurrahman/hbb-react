@@ -163,5 +163,8 @@ $phone-l: 'only screen and (min-width: 481px) and (max-width: 767px)';
   .form-control {
     @include blur(rgba(28, 29, 33, 0.75), 20px);
     border: none;
+    &:focus {
+      color: $d-color-dark-contrast;
+    }
   }
 }
