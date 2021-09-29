@@ -12,14 +12,10 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
 import { GlobalStyle } from '../styles/global-styles';
 
-import { HomePage } from './pages/HomePage/Loadable';
-import { NotFoundPage } from './pages/NotFoundPage/Loadable';
-import { Accordions } from './pages/UIElements/Accordions/Loadable';
 import { useTranslation } from 'react-i18next';
-import { Sidebar } from './components/Sidebar';
-import { NavBar } from 'app/components/NavBar';
-import { DataTables } from './pages/Tables/DataTable/Loadable';
-import { form } from 'app/components/Form/Index';
+
+import { Routes } from './pages/Routes';
+import { LoginPage } from './pages/LoginPage/LoginPage';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -33,28 +29,13 @@ export function App() {
         <meta name="description" content="A React Boilerplate application" />
       </Helmet>
       <div className="d-flex all-wrapper">
-        <Sidebar />
-        <div className="content-wrapper w-80%">
-          <NavBar />
+        <div className="content-wrapper w-100%">
           <Switch>
             <Route
-              exact
-              path={process.env.PUBLIC_URL + '/'}
-              component={HomePage}
+              path={process.env.PUBLIC_URL + '/Login'}
+              component={LoginPage}
             />
-            <Route
-              path={process.env.PUBLIC_URL + '/BasicUI/Accordions'}
-              component={Accordions}
-            />
-            <Route
-              path={process.env.PUBLIC_URL + '/Table/DataTables'}
-              component={DataTables}
-            />
-            <Route
-              path={process.env.PUBLIC_URL + '/Form/FormElements'}
-              component={form}
-            />
-            <Route component={NotFoundPage} />
+            <Route path={process.env.PUBLIC_URL + '/'} component={Routes} />
           </Switch>
         </div>
       </div>
