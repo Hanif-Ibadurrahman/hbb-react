@@ -184,3 +184,19 @@
 .notesdisable {
   height: 194px;
 }
+.notes {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+.fontLoaded {
+  padding-right: 0 !important;
+}
+.breadcrumb {
+  margin-bottom: 0;
+}
+.notesdisable {
+  height: 194px;
+}
