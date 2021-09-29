@@ -12,17 +12,10 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
 import { GlobalStyle } from '../styles/global-styles';
 
-// import { HomePage } from './pages/HomePage/Loadable';
-// import { NotFoundPage } from './pages/NotFoundPage/Loadable';
-// import { Accordions } from './pages/UIElements/Accordions/Loadable';
 import { useTranslation } from 'react-i18next';
-// import { Sidebar } from './components/Sidebar';
-// import { NavBar } from 'app/components/NavBar';
-// import { DataTables } from './pages/Tables/DataTable/Loadable';
-// import { form } from 'app/components/Form/Index';
 
 import { Routes } from './pages/Routes';
-import { LoginPage } from './pages/LoginPage';
+import { LoginPage } from './pages/LoginPage/LoginPage';
 
 export function App() {
   const { i18n } = useTranslation();

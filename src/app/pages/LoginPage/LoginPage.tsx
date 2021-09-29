@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import LoginBg from 'assets/images/login.jpg';
 
 export function LoginPage() {
+  let history = useHistory();
+  const onSubmit = e => {
+    e.preventDefault();
+    history.push('/Dashboard');
+  };
+
   return (
     <>
       <Helmet>
@@ -45,7 +51,11 @@ export function LoginPage() {
               </div>
             </div>
             <div className="d-grid gap-2 mt-8 mb-6">
-              <Button variant="primary" className="pv-3 ph-4">
+              <Button
+                variant="primary"
+                className="pv-3 ph-4"
+                onClick={onSubmit}
+              >
                 Log In
               </Button>
             </div>
