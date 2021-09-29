@@ -145,33 +145,44 @@
   border-color: #121014;
 }
 
-.login-bg {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  background-image: url('');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+.notes {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
 }
 
-.login-wrapper {
-  background: rgba(28, 29, 33, 0.5);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  min-width: 450px;
+.fontLoaded {
+  padding-right: 0 !important;
 }
-.login-wrapper .form-control {
-  background: rgba(28, 29, 33, 0.75);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  border: none;
+
+.breadcrumb {
+  margin-bottom: 0;
 }
-.login-wrapper .form-control:focus {
-  color: #ffffff;
+
+.notesdisable {
+  height: 194px;
+}
+
+.notes {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.fontLoaded {
+  padding-right: 0 !important;
+}
+
+.breadcrumb {
+  margin-bottom: 0;
+}
+
+.notesdisable {
+  height: 194px;
 }
 
 /*# sourceMappingURL=main.css.map */

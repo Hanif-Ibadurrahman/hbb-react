@@ -147,24 +147,34 @@ $phone-l: 'only screen and (min-width: 481px) and (max-width: 767px)';
   }
 }
 
-.login-bg {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  @include bg-image('', cover, no-repeat, center);
+.notes {
+	@include line-clamp(1);
 }
-.login-wrapper {
-  @include blur(rgba(28, 29, 33, 0.5), 20px);
-  min-width: 450px;
 
-  .form-control {
-    @include blur(rgba(28, 29, 33, 0.75), 20px);
-    border: none;
-    &:focus {
-      color: $d-color-dark-contrast;
-    }
-  }
+.fontLoaded {
+	padding-right: 0 !important;
+}
+
+.breadcrumb {
+	margin-bottom: 0;
+}
+
+.notesdisable {
+	height: 194px;
+}
+
+.notes {
+	@include line-clamp(1);
+}
+
+.fontLoaded {
+	padding-right: 0 !important;
+}
+
+.breadcrumb {
+	margin-bottom: 0;
+}
+
+.notesdisable {
+	height: 194px;
 }

@@ -19,6 +19,8 @@ import { useTranslation } from 'react-i18next';
 import { Sidebar } from '../components/Sidebar';
 import { NavBar } from '../components/NavBar';
 import { DataTables } from './Tables/DataTable/Loadable';
+import { BoxPage } from './BoxPage/Loadable';
+import { DetailBox } from './BoxPage/Detail';
 // import { form } from 'app/components/Form/Index';
 
 export function Routes() {
@@ -49,6 +51,14 @@ export function Routes() {
             <Route
               path={process.env.PUBLIC_URL + '/Table/DataTables'}
               component={DataTables}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/BoxPage'}
+              component={BoxPage}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/DetailBox'}
+              component={DetailBox}
             />
             <Route component={NotFoundPage} />
           </Switch>

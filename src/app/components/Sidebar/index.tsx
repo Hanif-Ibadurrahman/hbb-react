@@ -2,10 +2,8 @@
 import Logo from 'assets/images/logo.png';
 import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import 'react-pro-sidebar/dist/css/styles.css';
-import { BasicUIData } from './SidebarDataTemplate';
-import { AdvancedUIData } from './SidebarDataTemplate';
-import { FormData } from './SidebarDataTemplate';
-import { TableData } from './SidebarDataTemplate';
+import { PermintaanData } from './SidebarData';
+import { MasterData } from './SidebarData';
 // import { Link, NavLink } from 'react-router-dom';
 import React, { useState } from 'react';
 import IconHome from 'assets/images/icon/icon-1.png';
@@ -28,25 +26,34 @@ export function Sidebar() {
           <img src={Logo} alt="Logo" className="h-16" />
         </div>
       </div>
-
       <ProSidebar>
         <Menu iconShape="square">
           <MenuItem
-            id={window.location.pathname === '/' ? 'active' : ''}
+            id={window.location.pathname === '/Dashboard' ? 'active' : ''}
             className=" pos-r"
             icon={<img src={IconHome} className="h-5" alt="awSnap" />}
             onClick={() => {
-              window.location.pathname = '/';
+              window.location.pathname = '/Dashboard';
             }}
           >
             {''} Dashboard
           </MenuItem>
+          <MenuItem
+            id={window.location.pathname === '/Library' ? 'active' : ''}
+            className=" pos-r"
+            icon={<img src={IconForm} className="h-5" alt="awSnap" />}
+            onClick={() => {
+              window.location.pathname = '/Library';
+            }}
+          >
+            {''} Library
+          </MenuItem>
           <SubMenu
             className="pos-r"
             icon={<img src={IconUI} className="h-5" alt="awSnap" />}
-            title="Basic UI Element"
+            title="Permintaan"
           >
-            {BasicUIData.map((val, key) => {
+            {PermintaanData.map((val, key) => {
               return (
                 <MenuItem
                   id={
@@ -70,61 +77,9 @@ export function Sidebar() {
           <SubMenu
             className=""
             icon={<img src={IconAdvanced} className="h-5" alt="awSnap" />}
-            title="Advanced UI Element"
+            title="Master"
           >
-            {AdvancedUIData.map((val, key) => {
-              return (
-                <MenuItem
-                  id={
-                    window.location.pathname.split(val.link).pop()
-                      ? ''
-                      : 'active'
-                  }
-                  className="pos-r"
-                  icon={<img src={val.icon} className="h-5" alt="awSnap" />}
-                  key={key}
-                  onClick={() => {
-                    window.location.pathname = val.link;
-                  }}
-                >
-                  {''}
-                  {val.title}
-                </MenuItem>
-              );
-            })}
-          </SubMenu>
-          <SubMenu
-            className=""
-            icon={<img src={IconForm} className="h-5" alt="awSnap" />}
-            title="Form Elements"
-          >
-            {FormData.map((val, key) => {
-              return (
-                <MenuItem
-                  id={
-                    window.location.pathname.split(val.link).pop()
-                      ? ''
-                      : 'active'
-                  }
-                  className="pos-r"
-                  icon={<img src={val.icon} className="h-5" alt="awSnap" />}
-                  key={key}
-                  onClick={() => {
-                    window.location.pathname = val.link;
-                  }}
-                >
-                  {''}
-                  {val.title}
-                </MenuItem>
-              );
-            })}
-          </SubMenu>
-          <SubMenu
-            className=""
-            icon={<img src={IconTable} className="h-5" alt="awSnap" />}
-            title="Tables"
-          >
-            {TableData.map((val, key) => {
+            {MasterData.map((val, key) => {
               return (
                 <MenuItem
                   id={
