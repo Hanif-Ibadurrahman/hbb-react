@@ -1,6 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import { ModalFilter } from './ModalFilter';
 import React, { useState } from 'react';
+import './filter.scoped.scss';
 
 export function Filter() {
   const [modalShow, setModalShow] = useState(false);
