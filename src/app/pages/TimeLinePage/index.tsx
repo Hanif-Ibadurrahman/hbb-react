@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './timeline.css';
+import './timeline.scoped.scss';
 
 export function TimeLine() {
   const DataTimeLine = [
@@ -35,7 +35,7 @@ export function TimeLine() {
       <div className="mt-10">
         {DataTimeLine.map((val, key) => {
           return (
-            <div className="d-flex ai-center timeline mb-16">
+            <div className="d-flex ai-center timeline mb-12">
               <div className="w-14 h-14 pos-r bg-success-6 bd-rs-2 fz-h6 d-flex jc-center ai-center mr-5 icon">
                 <i className={val.icon}></i>
               </div>
