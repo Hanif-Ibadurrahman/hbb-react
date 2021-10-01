@@ -21,7 +21,7 @@ import { NavBar } from '../components/NavBar';
 import { DataTables } from './Tables/DataTable/Loadable';
 import { BoxPage } from './BoxPage/Loadable';
 import { DetailBox } from './BoxPage/Detail';
-
+import { TimeLine } from './TimeLinePage/Loadable';
 //ADMIN CSR
 import { ApprovalBoxPage } from './AdminCSR/BoxPage/Loadable';
 import { DetailBoxCSR } from './AdminCSR/BoxPage/Detail';
@@ -63,6 +63,10 @@ export function Routes() {
             <Route
               path={process.env.PUBLIC_URL + '/DetailBox'}
               component={DetailBox}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/Timeline'}
+              component={TimeLine}
             />
 
             {/*--------- ADMIN CSR ---------*/}
