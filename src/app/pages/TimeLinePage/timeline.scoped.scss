@@ -15,3 +15,24 @@
     border-radius: 4px;
   }
 }
+
+.timeline-success {
+
+  .icon {
+    background-color: #089365;
+  }
+}
+
+.timeline-pending {
+
+  .icon {
+    background-color: #fad400;
+  }
+}
+
+.timeline-cancel {
+
+  .icon {
+    background-color: #bc3648;
+  }
+}

@@ -4,10 +4,10 @@ import './timeline.scoped.scss';
 export function TimeLine() {
   const DataTimeLine = [
     {
-      title1: 'Ahmad Sofian',
-      title2: 'Create Request Box',
+      title1: 'Create Request Box',
+      title2: '(Ahmad Sofian)',
       time: '23 September 2021, 10: 30 WIB',
-      icon: 'fas fa-user-check',
+      icon: 'fas fa-user-plus',
     },
     {
       title1: 'Pending Approval',
@@ -16,17 +16,44 @@ export function TimeLine() {
       icon: 'fas fa-user-clock',
     },
     {
-      title1: 'Kirani Septiani',
-      title2: 'Admin CSR (Approve Request Box)',
+      title1: 'Approve Request Box',
+      title2: 'Kirani Septiani (Admin CSR ) ',
       time: '23 September 2021, 10: 30 WIB',
       icon: 'fas fa-user-check',
     },
     {
-      title1: 'Ananda April',
-      title2: 'Admin RC (Asign To)',
+      title1: 'Asign To Sukma Wijaya',
+      title2: 'Ananda April (Admin RC)',
       date: '23 September 2021',
       time: '10:30 WIB',
-      icon: 'fas fa-user-check',
+      icon: 'fas fa-user-friends',
+    },
+    {
+      title1: 'Administrasi Box',
+      title2: 'Sukma Wijaya (Arsiparis)',
+      time: '23 September 2021, 10: 30 WIB',
+      icon: 'fas fa-people-carry',
+    },
+    {
+      title1: 'Tiba di Staging Area',
+      title2: 'Sukma Wijaya (Arsiparis)',
+      date: '23 September 2021',
+      time: '10:30 WIB',
+      icon: 'fas fa-warehouse-alt',
+    },
+    {
+      title1: 'Tiba di Lokasi',
+      title2: '',
+      date: '23 September 2021',
+      time: '10:30 WIB',
+      icon: 'fas fa-check-circle',
+    },
+    {
+      title1: 'Sukma Wijaya',
+      title2: 'Arsiparis (Tiba di Staging Area)',
+      date: '23 September 2021',
+      time: '10:30 WIB',
+      icon: 'fas fa-times-circle',
     },
   ];
   return (
@@ -35,8 +62,8 @@ export function TimeLine() {
       <div className="mt-10">
         {DataTimeLine.map((val, key) => {
           return (
-            <div className="d-flex ai-center timeline mb-12">
-              <div className="w-14 h-14 pos-r bg-success-6 bd-rs-2 fz-h6 d-flex jc-center ai-center mr-5 icon">
+            <div className="d-flex ai-center timeline mb-12 timeline-cancel">
+              <div className="w-14 h-14 pos-r bd-rs-2 fz-h6 d-flex jc-center ai-center mr-5 icon">
                 <i className={val.icon}></i>
               </div>
               <div>
