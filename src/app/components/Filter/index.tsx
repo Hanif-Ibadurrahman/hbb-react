@@ -1,5 +1,6 @@
 import Button from 'react-bootstrap/Button';
-import { ModalFilter } from './ModalFilter';
+// import { ModalFilter } from './TagValueModalFilter';
+import { ModalFilter } from './SingleValueModalFilter';
 import React, { useState } from 'react';
 import './filter.scoped.scss';
 
