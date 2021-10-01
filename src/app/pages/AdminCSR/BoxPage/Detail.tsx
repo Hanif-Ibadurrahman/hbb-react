@@ -1,39 +1,14 @@
 import React, { useState } from 'react';
 import { Breadcrumb, Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { ModalEdit } from './components/ModalEdit';
 
-export function DetailBox() {
+export function DetailBoxCSR() {
+  const [modalShow, setModalShow] = useState(false);
+
   return (
     <div className="pos-r p-8">
-      <div className="d-flex jc-between ai-center mb-4">
-        <div>
-          <Breadcrumb>
-            <Breadcrumb.Item
-              className="p-lg"
-              linkAs={Link}
-              linkProps={{ to: '/' }}
-            >
-              Home
-            </Breadcrumb.Item>
-            <Breadcrumb.Item
-              className="p-lg"
-              linkAs={Link}
-              linkProps={{ to: '/BoxPage' }}
-            >
-              Request Box
-            </Breadcrumb.Item>
-            <Breadcrumb.Item
-              className="p-lg"
-              active
-              linkAs={Link}
-              linkProps={{ to: '/Detail' }}
-            >
-              Detail
-            </Breadcrumb.Item>
-          </Breadcrumb>
-        </div>
-        <div></div>
-      </div>
+      <div className="d-flex jc-between ai-center mb-4"></div>
       <div className="row mt-14">
         <div className="col-6">
           <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -42,7 +17,7 @@ export function DetailBox() {
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Date</Form.Label>
-            <Form.Control type="date" disabled defaultValue="04/09/21" />
+            <Form.Control type="date" disabled defaultValue="2021-05-14" />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Time</Form.Label>
@@ -74,9 +49,14 @@ export function DetailBox() {
         </div>
       </div>
       <div>
-        <Button className="mt-4" variant="warning">
+        <Button
+          className="mt-4"
+          variant="warning"
+          onClick={() => setModalShow(true)}
+        >
           Edit Data
         </Button>{' '}
+        <ModalEdit show={modalShow} onHide={() => setModalShow(false)} />
       </div>
     </div>
   );
