@@ -17,7 +17,7 @@ export function DetailBoxCSR() {
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Date</Form.Label>
-            <Form.Control type="date" disabled defaultValue="04/09/21" />
+            <Form.Control type="date" disabled defaultValue="2021-05-14" />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Time</Form.Label>

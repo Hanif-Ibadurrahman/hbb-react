@@ -122,7 +122,7 @@ export function DataTables() {
         ),
         Action: (
           <div className="d-flex jc-between">
-            <Button variant="dark" className="">
+            <Button variant="dark" className="" href="/DetailBoxCSR">
               Detail
             </Button>
             <Button
@@ -148,7 +148,7 @@ export function DataTables() {
         ),
         Action: (
           <div className="d-flex jc-between">
-            <Button variant="dark" className="">
+            <Button variant="dark" className="" href="/DetailBoxCSR">
               Detail
             </Button>
             <Button variant="transparant" className="tc-danger-6 w-24" disabled>

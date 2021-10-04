@@ -1,11 +1,5 @@
 import * as React from 'react';
-// import styled from 'styled-components/macro';
-import { Helmet } from 'react-helmet-async';
-// import { StyleConstants } from 'styles/StyleConstants';
 import Datatable from 'react-bs-datatable';
-import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import { DropdownButton } from 'react-bootstrap';
 import { Dropdown } from 'react-bootstrap';
 
 // Create table headers consisting of 4 columns.
@@ -15,7 +9,7 @@ export const header = [
     prop: 'CodeBox',
     sortable: true,
     cellProps: {
-      style: { width: '15%' },
+      style: { width: '25%' },
     },
   },
   {
@@ -24,37 +18,39 @@ export const header = [
     sortable: true,
     // Add classes and styles by objects and strings.
     cellProps: {
-      style: { background: '#fafafa', width: '15%' },
+      style: { background: '#fafafa', width: '20%' },
       className: 'realname-class',
     },
   },
   {
     title: 'Waktu',
     prop: 'Waktu',
+    sortable: true,
     cellProps: {
-      style: { width: '15%' },
+      style: { width: '20%' },
     },
   },
   {
     title: 'Quantity',
     prop: 'Quantity',
+    sortable: true,
     cellProps: {
-      style: { background: '#fafafa', width: '10%' },
+      style: { background: '#fafafa', width: '20%' },
       className: 'realname-class',
     },
   },
-  {
-    title: 'Notes',
-    prop: 'Notes',
-    cellProps: {
-      style: { width: '25%' },
-    },
-  },
+  // {
+  //   title: 'Notes',
+  //   prop: 'Notes',
+  //   cellProps: {
+  //     style: { width: '25%' },
+  //   },
+  // },
   {
     title: 'Action',
     prop: 'Action',
     cellProps: {
-      style: { background: '#fafafa' },
+      style: { flex: 1 },
       className: 'realname-class',
     },
   },
@@ -96,77 +92,59 @@ const onSortFunction = {
 export const body = Array.from(new Array(30), () => {
   const rd = (Math.random() * 10).toFixed(2);
 
-  if (rd > '5') {
-    return {
-      CodeBox: `A1232${rd}`,
-      Tanggal: '05 - 09 - 21',
-      Waktu: '09:52 WIB',
-      Quantity: '10',
-      Notes: (
-        <span className="notes">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit
-        </span>
-      ),
-      Action: (
-        <DropdownButton variant="success" title="...">
-          <Dropdown.Item href="/DetailBox">
-            <Button variant="dark" className="w-100%">
-              Detail
-            </Button>
-          </Dropdown.Item>
-          <Dropdown.Item href="#/action-2">
-            <Button variant="primary" className="w-100%">
-              Duplicate
-            </Button>
-          </Dropdown.Item>
-          <Dropdown.Item href="#/action-3">
-            <Button variant="warning" className="w-100%">
-              Edit
-            </Button>
-          </Dropdown.Item>
-          <Dropdown.Item href="#/action-3">
-            <Button variant="danger" className="w-100%">
-              Hapus
-            </Button>
-          </Dropdown.Item>
-        </DropdownButton>
-      ),
-    };
-  }
-
   return {
-    CodeBox: `B2114${rd}`,
-    Tanggal: '06 - 09 - 21',
+    CodeBox: `A1232${rd}`,
+    Tanggal: '05 - 09 - 21',
     Waktu: '09:52 WIB',
-    Quantity: '15',
-    Notes: (
-      <span className="notes">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit
-      </span>
-    ),
+    Quantity: '10',
+    // Notes: (
+    //   <span className="notes">
+    //     Lorem ipsum dolor sit amet, consectetur adipisicing elit
+    //   </span>
+    // ),
     Action: (
-      <DropdownButton variant="success" title="...">
-        <Dropdown.Item href="/DetailBox">
-          <Button variant="dark" className="w-100%">
-            Detail
-          </Button>
-        </Dropdown.Item>
-        <Dropdown.Item href="#/action-2">
-          <Button variant="primary" className="w-100%">
-            Duplicate
-          </Button>
-        </Dropdown.Item>
-        <Dropdown.Item href="#/action-3">
-          <Button variant="warning" className="w-100%">
-            Edit
-          </Button>
-        </Dropdown.Item>
-        <Dropdown.Item href="#/action-3">
-          <Button variant="danger" className="w-100%">
-            Hapus
-          </Button>
-        </Dropdown.Item>
-      </DropdownButton>
+      <Dropdown>
+        <Dropdown.Toggle variant="success" id="dropdown-basic">
+          Action
+        </Dropdown.Toggle>
+        <Dropdown.Menu style={{ minWidth: 200 }}>
+          <Dropdown.Item href="/DetailBox">
+            <div className="d-flex ai-center pv-2">
+              <span className="icon">
+                <i className="far fa-search p-sm mr-3"></i>
+              </span>
+              <span className="text">Detail</span>
+            </div>
+          </Dropdown.Item>
+          <div className="d-flex w-100% h-1px bg-medium op-25%"></div>
+          <Dropdown.Item href="#/action-2">
+            <div className="d-flex ai-center pv-2">
+              <span className="icon">
+                <i className="far fa-copy p-sm mr-3"></i>
+              </span>
+              <span className="text">Duplicate</span>
+            </div>
+          </Dropdown.Item>
+          <div className="d-flex w-100% h-1px bg-medium op-25%"></div>
+          <Dropdown.Item href="#/action-3">
+            <div className="d-flex ai-center pv-2">
+              <span className="icon">
+                <i className="far fa-edit p-sm mr-3"></i>
+              </span>
+              <span className="text">Edit</span>
+            </div>
+          </Dropdown.Item>
+          <div className="d-flex w-100% h-1px bg-medium op-25%"></div>
+          <Dropdown.Item href="#/action-3">
+            <div className="d-flex ai-center pv-2 tc-danger-5">
+              <span className="icon">
+                <i className="far fa-trash-alt p-sm mr-3"></i>
+              </span>
+              <span className="text">Delete</span>
+            </div>
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
     ),
   };
 });
