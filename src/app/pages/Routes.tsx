@@ -21,7 +21,11 @@ import { NavBar } from '../components/NavBar';
 import { DataTables } from './Tables/DataTable/Loadable';
 import { BoxPage } from './BoxPage/Loadable';
 import { DetailBox } from './BoxPage/Detail';
+import { EditBox } from './BoxPage/Edit';
 import { TimeLine } from './TimeLinePage/Loadable';
+import { AreaPage } from './AreaPage/Loadable';
+import { DivisiPage } from './DivisiPage/Loadable';
+import { LemariPage } from './LemariPage/Loadable';
 //ADMIN CSR
 import { ApprovalBoxPage } from './AdminCSR/BoxPage/Loadable';
 import { DetailBoxCSR } from './AdminCSR/BoxPage/Detail';
@@ -65,8 +69,24 @@ export function Routes() {
               component={DetailBox}
             />
             <Route
+              path={process.env.PUBLIC_URL + '/EditBox'}
+              component={EditBox}
+            />
+            <Route
               path={process.env.PUBLIC_URL + '/Timeline'}
               component={TimeLine}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/AreaPage'}
+              component={AreaPage}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/DivisiPage'}
+              component={DivisiPage}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/LemariPage'}
+              component={LemariPage}
             />
 
             {/*--------- ADMIN CSR ---------*/}
