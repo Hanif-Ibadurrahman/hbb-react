@@ -35,11 +35,29 @@ export function TimeLine() {
       icon: 'fas fa-people-carry',
     },
     {
+      title1: 'Pick Up Box',
+      title2: 'Sukma Wijaya (Arsiparis)',
+      time: '23 September 2021, 10: 30 WIB',
+      icon: 'fas fa-person-dolly',
+    },
+    {
+      title1: 'On Going to Staging Area',
+      title2: 'Sukma Wijaya (Arsiparis)',
+      time: '23 September 2021, 10: 30 WIB',
+      icon: 'fas fa-user-clock',
+    },
+    {
       title1: 'Tiba di Staging Area',
       title2: 'Sukma Wijaya (Arsiparis)',
       date: '23 September 2021',
       time: '10:30 WIB',
       icon: 'fas fa-warehouse-alt',
+    },
+    {
+      title1: 'On Going to Location',
+      title2: 'Sukma Wijaya (Arsiparis)',
+      time: '23 September 2021, 10: 30 WIB',
+      icon: 'fas fa-user-clock',
     },
     {
       title1: 'Tiba di Lokasi',
@@ -49,8 +67,8 @@ export function TimeLine() {
       icon: 'fas fa-check-circle',
     },
     {
-      title1: 'Sukma Wijaya',
-      title2: 'Arsiparis (Tiba di Staging Area)',
+      title1: 'Cancel',
+      title2: '',
       date: '23 September 2021',
       time: '10:30 WIB',
       icon: 'fas fa-times-circle',
