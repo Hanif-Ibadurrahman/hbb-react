@@ -8354,38 +8354,74 @@ table th {
 .hover\:bd-b-c-light-contrast:hover {
   border-bottom-color: var(--d-color-light-contrast);
 }
+.col-2 {
+  max-width: 16.666%;
+}
 .fw-w .col-2 {
   min-width: 16.666%;
+}
+.col-2-4 {
+  max-width: 20%;
 }
 .fw-w .col-2-4 {
   min-width: 20%;
 }
+.col-3 {
+  max-width: 25%;
+}
 .fw-w .col-3 {
   min-width: 25%;
+}
+.col-3-5 {
+  max-width: 29.16665%;
 }
 .fw-w .col-3-5 {
   min-width: 29.16665%;
 }
+.col-4 {
+  max-width: 33.33333%;
+}
 .fw-w .col-4 {
   min-width: 33.33333%;
+}
+.col-5 {
+  max-width: 41.66667%;
 }
 .fw-w .col-5 {
   min-width: 41.66667%;
 }
+.col-6 {
+  max-width: 50%;
+}
 .fw-w .col-6 {
   min-width: 50%;
+}
+.col-7 {
+  max-width: 58.33333%;
 }
 .fw-w .col-7 {
   min-width: 58.33333%;
 }
+.col-8 {
+  max-width: 66.66667%;
+}
 .fw-w .col-8 {
   min-width: 66.66667%;
+}
+.col-9 {
+  max-width: 75%;
 }
 .fw-w .col-9 {
   min-width: 75%;
 }
+.col-10 {
+  max-width: 83.333%;
+}
 .fw-w .col-10 {
   min-width: 83.333%;
+}
+.col-12 {
+  max-width: 100%;
 }
 .fw-w .col-12 {
   min-width: 100%;
@@ -16159,38 +16195,74 @@ table th {
   .hover\:sm\:bd-b-c-light-contrast:hover {
     border-bottom-color: var(--d-color-light-contrast);
   }
+  .sm\:col-2 {
+    max-width: 16.666%;
+  }
   .fw-w .sm\:col-2 {
     min-width: 16.666%;
+  }
+  .sm\:col-2-4 {
+    max-width: 20%;
   }
   .fw-w .sm\:col-2-4 {
     min-width: 20%;
   }
+  .sm\:col-3 {
+    max-width: 25%;
+  }
   .fw-w .sm\:col-3 {
     min-width: 25%;
+  }
+  .sm\:col-3-5 {
+    max-width: 29.16665%;
   }
   .fw-w .sm\:col-3-5 {
     min-width: 29.16665%;
   }
+  .sm\:col-4 {
+    max-width: 33.33333%;
+  }
   .fw-w .sm\:col-4 {
     min-width: 33.33333%;
+  }
+  .sm\:col-5 {
+    max-width: 41.66667%;
   }
   .fw-w .sm\:col-5 {
     min-width: 41.66667%;
   }
+  .sm\:col-6 {
+    max-width: 50%;
+  }
   .fw-w .sm\:col-6 {
     min-width: 50%;
+  }
+  .sm\:col-7 {
+    max-width: 58.33333%;
   }
   .fw-w .sm\:col-7 {
     min-width: 58.33333%;
   }
+  .sm\:col-8 {
+    max-width: 66.66667%;
+  }
   .fw-w .sm\:col-8 {
     min-width: 66.66667%;
+  }
+  .sm\:col-9 {
+    max-width: 75%;
   }
   .fw-w .sm\:col-9 {
     min-width: 75%;
   }
+  .sm\:col-10 {
+    max-width: 83.333%;
+  }
   .fw-w .sm\:col-10 {
     min-width: 83.333%;
+  }
+  .sm\:col-12 {
+    max-width: 100%;
   }
   .fw-w .sm\:col-12 {
     min-width: 100%;
@@ -23965,38 +24037,74 @@ table th {
   .hover\:sm\:bd-b-c-light-contrast:hover {
     border-bottom-color: var(--d-color-light-contrast);
   }
+  .sm\:col-2 {
+    max-width: 16.666%;
+  }
   .fw-w .sm\:col-2 {
     min-width: 16.666%;
+  }
+  .sm\:col-2-4 {
+    max-width: 20%;
   }
   .fw-w .sm\:col-2-4 {
     min-width: 20%;
   }
+  .sm\:col-3 {
+    max-width: 25%;
+  }
   .fw-w .sm\:col-3 {
     min-width: 25%;
+  }
+  .sm\:col-3-5 {
+    max-width: 29.16665%;
   }
   .fw-w .sm\:col-3-5 {
     min-width: 29.16665%;
   }
+  .sm\:col-4 {
+    max-width: 33.33333%;
+  }
   .fw-w .sm\:col-4 {
     min-width: 33.33333%;
+  }
+  .sm\:col-5 {
+    max-width: 41.66667%;
   }
   .fw-w .sm\:col-5 {
     min-width: 41.66667%;
   }
+  .sm\:col-6 {
+    max-width: 50%;
+  }
   .fw-w .sm\:col-6 {
     min-width: 50%;
+  }
+  .sm\:col-7 {
+    max-width: 58.33333%;
   }
   .fw-w .sm\:col-7 {
     min-width: 58.33333%;
   }
+  .sm\:col-8 {
+    max-width: 66.66667%;
+  }
   .fw-w .sm\:col-8 {
     min-width: 66.66667%;
+  }
+  .sm\:col-9 {
+    max-width: 75%;
   }
   .fw-w .sm\:col-9 {
     min-width: 75%;
   }
+  .sm\:col-10 {
+    max-width: 83.333%;
+  }
   .fw-w .sm\:col-10 {
     min-width: 83.333%;
+  }
+  .sm\:col-12 {
+    max-width: 100%;
   }
   .fw-w .sm\:col-12 {
     min-width: 100%;
@@ -31771,38 +31879,74 @@ table th {
   .hover\:md\:bd-b-c-light-contrast:hover {
     border-bottom-color: var(--d-color-light-contrast);
   }
+  .md\:col-2 {
+    max-width: 16.666%;
+  }
   .fw-w .md\:col-2 {
     min-width: 16.666%;
+  }
+  .md\:col-2-4 {
+    max-width: 20%;
   }
   .fw-w .md\:col-2-4 {
     min-width: 20%;
   }
+  .md\:col-3 {
+    max-width: 25%;
+  }
   .fw-w .md\:col-3 {
     min-width: 25%;
+  }
+  .md\:col-3-5 {
+    max-width: 29.16665%;
   }
   .fw-w .md\:col-3-5 {
     min-width: 29.16665%;
   }
+  .md\:col-4 {
+    max-width: 33.33333%;
+  }
   .fw-w .md\:col-4 {
     min-width: 33.33333%;
+  }
+  .md\:col-5 {
+    max-width: 41.66667%;
   }
   .fw-w .md\:col-5 {
     min-width: 41.66667%;
   }
+  .md\:col-6 {
+    max-width: 50%;
+  }
   .fw-w .md\:col-6 {
     min-width: 50%;
+  }
+  .md\:col-7 {
+    max-width: 58.33333%;
   }
   .fw-w .md\:col-7 {
     min-width: 58.33333%;
   }
+  .md\:col-8 {
+    max-width: 66.66667%;
+  }
   .fw-w .md\:col-8 {
     min-width: 66.66667%;
+  }
+  .md\:col-9 {
+    max-width: 75%;
   }
   .fw-w .md\:col-9 {
     min-width: 75%;
   }
+  .md\:col-10 {
+    max-width: 83.333%;
+  }
   .fw-w .md\:col-10 {
     min-width: 83.333%;
+  }
+  .md\:col-12 {
+    max-width: 100%;
   }
   .fw-w .md\:col-12 {
     min-width: 100%;
@@ -39577,38 +39721,74 @@ table th {
   .hover\:lg\:bd-b-c-light-contrast:hover {
     border-bottom-color: var(--d-color-light-contrast);
   }
+  .lg\:col-2 {
+    max-width: 16.666%;
+  }
   .fw-w .lg\:col-2 {
     min-width: 16.666%;
+  }
+  .lg\:col-2-4 {
+    max-width: 20%;
   }
   .fw-w .lg\:col-2-4 {
     min-width: 20%;
   }
+  .lg\:col-3 {
+    max-width: 25%;
+  }
   .fw-w .lg\:col-3 {
     min-width: 25%;
+  }
+  .lg\:col-3-5 {
+    max-width: 29.16665%;
   }
   .fw-w .lg\:col-3-5 {
     min-width: 29.16665%;
   }
+  .lg\:col-4 {
+    max-width: 33.33333%;
+  }
   .fw-w .lg\:col-4 {
     min-width: 33.33333%;
+  }
+  .lg\:col-5 {
+    max-width: 41.66667%;
   }
   .fw-w .lg\:col-5 {
     min-width: 41.66667%;
   }
+  .lg\:col-6 {
+    max-width: 50%;
+  }
   .fw-w .lg\:col-6 {
     min-width: 50%;
+  }
+  .lg\:col-7 {
+    max-width: 58.33333%;
   }
   .fw-w .lg\:col-7 {
     min-width: 58.33333%;
   }
+  .lg\:col-8 {
+    max-width: 66.66667%;
+  }
   .fw-w .lg\:col-8 {
     min-width: 66.66667%;
+  }
+  .lg\:col-9 {
+    max-width: 75%;
   }
   .fw-w .lg\:col-9 {
     min-width: 75%;
   }
+  .lg\:col-10 {
+    max-width: 83.333%;
+  }
   .fw-w .lg\:col-10 {
     min-width: 83.333%;
+  }
+  .lg\:col-12 {
+    max-width: 100%;
   }
   .fw-w .lg\:col-12 {
     min-width: 100%;
@@ -47383,38 +47563,74 @@ table th {
   .hover\:xl\:bd-b-c-light-contrast:hover {
     border-bottom-color: var(--d-color-light-contrast);
   }
+  .xl\:col-2 {
+    max-width: 16.666%;
+  }
   .fw-w .xl\:col-2 {
     min-width: 16.666%;
+  }
+  .xl\:col-2-4 {
+    max-width: 20%;
   }
   .fw-w .xl\:col-2-4 {
     min-width: 20%;
   }
+  .xl\:col-3 {
+    max-width: 25%;
+  }
   .fw-w .xl\:col-3 {
     min-width: 25%;
+  }
+  .xl\:col-3-5 {
+    max-width: 29.16665%;
   }
   .fw-w .xl\:col-3-5 {
     min-width: 29.16665%;
   }
+  .xl\:col-4 {
+    max-width: 33.33333%;
+  }
   .fw-w .xl\:col-4 {
     min-width: 33.33333%;
+  }
+  .xl\:col-5 {
+    max-width: 41.66667%;
   }
   .fw-w .xl\:col-5 {
     min-width: 41.66667%;
   }
+  .xl\:col-6 {
+    max-width: 50%;
+  }
   .fw-w .xl\:col-6 {
     min-width: 50%;
+  }
+  .xl\:col-7 {
+    max-width: 58.33333%;
   }
   .fw-w .xl\:col-7 {
     min-width: 58.33333%;
   }
+  .xl\:col-8 {
+    max-width: 66.66667%;
+  }
   .fw-w .xl\:col-8 {
     min-width: 66.66667%;
+  }
+  .xl\:col-9 {
+    max-width: 75%;
   }
   .fw-w .xl\:col-9 {
     min-width: 75%;
   }
+  .xl\:col-10 {
+    max-width: 83.333%;
+  }
   .fw-w .xl\:col-10 {
     min-width: 83.333%;
+  }
+  .xl\:col-12 {
+    max-width: 100%;
   }
   .fw-w .xl\:col-12 {
     min-width: 100%;
@@ -55189,38 +55405,74 @@ table th {
   .hover\:uw\:bd-b-c-light-contrast:hover {
     border-bottom-color: var(--d-color-light-contrast);
   }
+  .uw\:col-2 {
+    max-width: 16.666%;
+  }
   .fw-w .uw\:col-2 {
     min-width: 16.666%;
+  }
+  .uw\:col-2-4 {
+    max-width: 20%;
   }
   .fw-w .uw\:col-2-4 {
     min-width: 20%;
   }
+  .uw\:col-3 {
+    max-width: 25%;
+  }
   .fw-w .uw\:col-3 {
     min-width: 25%;
+  }
+  .uw\:col-3-5 {
+    max-width: 29.16665%;
   }
   .fw-w .uw\:col-3-5 {
     min-width: 29.16665%;
   }
+  .uw\:col-4 {
+    max-width: 33.33333%;
+  }
   .fw-w .uw\:col-4 {
     min-width: 33.33333%;
+  }
+  .uw\:col-5 {
+    max-width: 41.66667%;
   }
   .fw-w .uw\:col-5 {
     min-width: 41.66667%;
   }
+  .uw\:col-6 {
+    max-width: 50%;
+  }
   .fw-w .uw\:col-6 {
     min-width: 50%;
+  }
+  .uw\:col-7 {
+    max-width: 58.33333%;
   }
   .fw-w .uw\:col-7 {
     min-width: 58.33333%;
   }
+  .uw\:col-8 {
+    max-width: 66.66667%;
+  }
   .fw-w .uw\:col-8 {
     min-width: 66.66667%;
+  }
+  .uw\:col-9 {
+    max-width: 75%;
   }
   .fw-w .uw\:col-9 {
     min-width: 75%;
   }
+  .uw\:col-10 {
+    max-width: 83.333%;
+  }
   .fw-w .uw\:col-10 {
     min-width: 83.333%;
+  }
+  .uw\:col-12 {
+    max-width: 100%;
   }
   .fw-w .uw\:col-12 {
     min-width: 100%;

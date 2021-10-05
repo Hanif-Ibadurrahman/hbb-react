@@ -235,7 +235,7 @@ table,
 @mixin size-class-builder($v, $w, $x, $u, $y, $z) {
   @if ($x == col) {
     .#{$v}#{$x}-#{$u} {
-      #{$w}: #{$y};
+      max-width: #{$y};
     }
 
     .fw-w {

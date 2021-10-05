@@ -12,12 +12,13 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
 import { GlobalStyle } from '../../styles/global-styles';
 
+import { Sidebar } from '../components/Sidebar';
+import { NavBar } from '../components/NavBar';
+
 import { HomePage } from './HomePage/Loadable';
 import { NotFoundPage } from './NotFoundPage/Loadable';
 import { Accordions } from './UIElements/Accordions/Loadable';
 import { useTranslation } from 'react-i18next';
-import { Sidebar } from '../components/Sidebar';
-import { NavBar } from '../components/NavBar';
 import { DataTables } from './Tables/DataTable/Loadable';
 import { BoxPage } from './BoxPage/Loadable';
 import { DetailBox } from './BoxPage/Detail';
@@ -26,10 +27,12 @@ import { TimeLine } from './TimeLinePage/Loadable';
 import { AreaPage } from './AreaPage/Loadable';
 import { DivisiPage } from './DivisiPage/Loadable';
 import { LemariPage } from './LemariPage/Loadable';
-//ADMIN CSR
+// ADMIN CSR
 import { ApprovalBoxPage } from './AdminCSR/BoxPage/Loadable';
 import { DetailBoxCSR } from './AdminCSR/BoxPage/Detail';
 import { EditBoxCSR } from './AdminCSR/BoxPage/Edit';
+// ALL USER
+import { UserProfile } from './ProfilePage/Loadable';
 // import { form } from 'app/components/Form/Index';
 
 export function Routes() {
@@ -104,6 +107,11 @@ export function Routes() {
               component={EditBoxCSR}
             />
 
+            {/*--------- ALL USER ---------*/}
+            <Route
+              path={process.env.PUBLIC_URL + '/Profile/'}
+              component={UserProfile}
+            />
             <Route component={NotFoundPage} />
           </Switch>
         </div>

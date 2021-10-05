@@ -11696,7 +11696,7 @@ table .th,
 }
 
 .col-2 {
-  :16.666% ;
+  max-width: 16.666%;
 }
 
 .fw-w .col-2 {
@@ -11704,7 +11704,7 @@ table .th,
 }
 
 .col-2-4 {
-  :20% ;
+  max-width: 20%;
 }
 
 .fw-w .col-2-4 {
@@ -11712,7 +11712,7 @@ table .th,
 }
 
 .col-3 {
-  :25% ;
+  max-width: 25%;
 }
 
 .fw-w .col-3 {
@@ -11720,7 +11720,7 @@ table .th,
 }
 
 .col-3-5 {
-  :29.16665% ;
+  max-width: 29.16665%;
 }
 
 .fw-w .col-3-5 {
@@ -11728,7 +11728,7 @@ table .th,
 }
 
 .col-4 {
-  :33.33333% ;
+  max-width: 33.33333%;
 }
 
 .fw-w .col-4 {
@@ -11736,7 +11736,7 @@ table .th,
 }
 
 .col-5 {
-  :41.66667% ;
+  max-width: 41.66667%;
 }
 
 .fw-w .col-5 {
@@ -11744,7 +11744,7 @@ table .th,
 }
 
 .col-6 {
-  :50% ;
+  max-width: 50%;
 }
 
 .fw-w .col-6 {
@@ -11752,7 +11752,7 @@ table .th,
 }
 
 .col-7 {
-  :58.33333% ;
+  max-width: 58.33333%;
 }
 
 .fw-w .col-7 {
@@ -11760,7 +11760,7 @@ table .th,
 }
 
 .col-8 {
-  :66.66667% ;
+  max-width: 66.66667%;
 }
 
 .fw-w .col-8 {
@@ -11768,7 +11768,7 @@ table .th,
 }
 
 .col-9 {
-  :75% ;
+  max-width: 75%;
 }
 
 .fw-w .col-9 {
@@ -11776,7 +11776,7 @@ table .th,
 }
 
 .col-10 {
-  :83.333% ;
+  max-width: 83.333%;
 }
 
 .fw-w .col-10 {
@@ -11784,7 +11784,7 @@ table .th,
 }
 
 .col-12 {
-  :100% ;
+  max-width: 100%;
 }
 
 .fw-w .col-12 {
@@ -22830,7 +22830,7 @@ table .th,
   }
 
   .sm\:col-2 {
-    :16.666% ;
+    max-width: 16.666%;
   }
 
   .fw-w .sm\:col-2 {
@@ -22838,7 +22838,7 @@ table .th,
   }
 
   .sm\:col-2-4 {
-    :20% ;
+    max-width: 20%;
   }
 
   .fw-w .sm\:col-2-4 {
@@ -22846,7 +22846,7 @@ table .th,
   }
 
   .sm\:col-3 {
-    :25% ;
+    max-width: 25%;
   }
 
   .fw-w .sm\:col-3 {
@@ -22854,7 +22854,7 @@ table .th,
   }
 
   .sm\:col-3-5 {
-    :29.16665% ;
+    max-width: 29.16665%;
   }
 
   .fw-w .sm\:col-3-5 {
@@ -22862,7 +22862,7 @@ table .th,
   }
 
   .sm\:col-4 {
-    :33.33333% ;
+    max-width: 33.33333%;
   }
 
   .fw-w .sm\:col-4 {
@@ -22870,7 +22870,7 @@ table .th,
   }
 
   .sm\:col-5 {
-    :41.66667% ;
+    max-width: 41.66667%;
   }
 
   .fw-w .sm\:col-5 {
@@ -22878,7 +22878,7 @@ table .th,
   }
 
   .sm\:col-6 {
-    :50% ;
+    max-width: 50%;
   }
 
   .fw-w .sm\:col-6 {
@@ -22886,7 +22886,7 @@ table .th,
   }
 
   .sm\:col-7 {
-    :58.33333% ;
+    max-width: 58.33333%;
   }
 
   .fw-w .sm\:col-7 {
@@ -22894,7 +22894,7 @@ table .th,
   }
 
   .sm\:col-8 {
-    :66.66667% ;
+    max-width: 66.66667%;
   }
 
   .fw-w .sm\:col-8 {
@@ -22902,7 +22902,7 @@ table .th,
   }
 
   .sm\:col-9 {
-    :75% ;
+    max-width: 75%;
   }
 
   .fw-w .sm\:col-9 {
@@ -22910,7 +22910,7 @@ table .th,
   }
 
   .sm\:col-10 {
-    :83.333% ;
+    max-width: 83.333%;
   }
 
   .fw-w .sm\:col-10 {
@@ -22918,7 +22918,7 @@ table .th,
   }
 
   .sm\:col-12 {
-    :100% ;
+    max-width: 100%;
   }
 
   .fw-w .sm\:col-12 {
@@ -33964,7 +33964,7 @@ table .th,
   }
 
   .sm\:col-2 {
-    :16.666% ;
+    max-width: 16.666%;
   }
 
   .fw-w .sm\:col-2 {
@@ -33972,7 +33972,7 @@ table .th,
   }
 
   .sm\:col-2-4 {
-    :20% ;
+    max-width: 20%;
   }
 
   .fw-w .sm\:col-2-4 {
@@ -33980,7 +33980,7 @@ table .th,
   }
 
   .sm\:col-3 {
-    :25% ;
+    max-width: 25%;
   }
 
   .fw-w .sm\:col-3 {
@@ -33988,7 +33988,7 @@ table .th,
   }
 
   .sm\:col-3-5 {
-    :29.16665% ;
+    max-width: 29.16665%;
   }
 
   .fw-w .sm\:col-3-5 {
@@ -33996,7 +33996,7 @@ table .th,
   }
 
   .sm\:col-4 {
-    :33.33333% ;
+    max-width: 33.33333%;
   }
 
   .fw-w .sm\:col-4 {
@@ -34004,7 +34004,7 @@ table .th,
   }
 
   .sm\:col-5 {
-    :41.66667% ;
+    max-width: 41.66667%;
   }
 
   .fw-w .sm\:col-5 {
@@ -34012,7 +34012,7 @@ table .th,
   }
 
   .sm\:col-6 {
-    :50% ;
+    max-width: 50%;
   }
 
   .fw-w .sm\:col-6 {
@@ -34020,7 +34020,7 @@ table .th,
   }
 
   .sm\:col-7 {
-    :58.33333% ;
+    max-width: 58.33333%;
   }
 
   .fw-w .sm\:col-7 {
@@ -34028,7 +34028,7 @@ table .th,
   }
 
   .sm\:col-8 {
-    :66.66667% ;
+    max-width: 66.66667%;
   }
 
   .fw-w .sm\:col-8 {
@@ -34036,7 +34036,7 @@ table .th,
   }
 
   .sm\:col-9 {
-    :75% ;
+    max-width: 75%;
   }
 
   .fw-w .sm\:col-9 {
@@ -34044,7 +34044,7 @@ table .th,
   }
 
   .sm\:col-10 {
-    :83.333% ;
+    max-width: 83.333%;
   }
 
   .fw-w .sm\:col-10 {
@@ -34052,7 +34052,7 @@ table .th,
   }
 
   .sm\:col-12 {
-    :100% ;
+    max-width: 100%;
   }
 
   .fw-w .sm\:col-12 {
@@ -45098,7 +45098,7 @@ table .th,
   }
 
   .md\:col-2 {
-    :16.666% ;
+    max-width: 16.666%;
   }
 
   .fw-w .md\:col-2 {
@@ -45106,7 +45106,7 @@ table .th,
   }
 
   .md\:col-2-4 {
-    :20% ;
+    max-width: 20%;
   }
 
   .fw-w .md\:col-2-4 {
@@ -45114,7 +45114,7 @@ table .th,
   }
 
   .md\:col-3 {
-    :25% ;
+    max-width: 25%;
   }
 
   .fw-w .md\:col-3 {
@@ -45122,7 +45122,7 @@ table .th,
   }
 
   .md\:col-3-5 {
-    :29.16665% ;
+    max-width: 29.16665%;
   }
 
   .fw-w .md\:col-3-5 {
@@ -45130,7 +45130,7 @@ table .th,
   }
 
   .md\:col-4 {
-    :33.33333% ;
+    max-width: 33.33333%;
   }
 
   .fw-w .md\:col-4 {
@@ -45138,7 +45138,7 @@ table .th,
   }
 
   .md\:col-5 {
-    :41.66667% ;
+    max-width: 41.66667%;
   }
 
   .fw-w .md\:col-5 {
@@ -45146,7 +45146,7 @@ table .th,
   }
 
   .md\:col-6 {
-    :50% ;
+    max-width: 50%;
   }
 
   .fw-w .md\:col-6 {
@@ -45154,7 +45154,7 @@ table .th,
   }
 
   .md\:col-7 {
-    :58.33333% ;
+    max-width: 58.33333%;
   }
 
   .fw-w .md\:col-7 {
@@ -45162,7 +45162,7 @@ table .th,
   }
 
   .md\:col-8 {
-    :66.66667% ;
+    max-width: 66.66667%;
   }
 
   .fw-w .md\:col-8 {
@@ -45170,7 +45170,7 @@ table .th,
   }
 
   .md\:col-9 {
-    :75% ;
+    max-width: 75%;
   }
 
   .fw-w .md\:col-9 {
@@ -45178,7 +45178,7 @@ table .th,
   }
 
   .md\:col-10 {
-    :83.333% ;
+    max-width: 83.333%;
   }
 
   .fw-w .md\:col-10 {
@@ -45186,7 +45186,7 @@ table .th,
   }
 
   .md\:col-12 {
-    :100% ;
+    max-width: 100%;
   }
 
   .fw-w .md\:col-12 {
@@ -56232,7 +56232,7 @@ table .th,
   }
 
   .lg\:col-2 {
-    :16.666% ;
+    max-width: 16.666%;
   }
 
   .fw-w .lg\:col-2 {
@@ -56240,7 +56240,7 @@ table .th,
   }
 
   .lg\:col-2-4 {
-    :20% ;
+    max-width: 20%;
   }
 
   .fw-w .lg\:col-2-4 {
@@ -56248,7 +56248,7 @@ table .th,
   }
 
   .lg\:col-3 {
-    :25% ;
+    max-width: 25%;
   }
 
   .fw-w .lg\:col-3 {
@@ -56256,7 +56256,7 @@ table .th,
   }
 
   .lg\:col-3-5 {
-    :29.16665% ;
+    max-width: 29.16665%;
   }
 
   .fw-w .lg\:col-3-5 {
@@ -56264,7 +56264,7 @@ table .th,
   }
 
   .lg\:col-4 {
-    :33.33333% ;
+    max-width: 33.33333%;
   }
 
   .fw-w .lg\:col-4 {
@@ -56272,7 +56272,7 @@ table .th,
   }
 
   .lg\:col-5 {
-    :41.66667% ;
+    max-width: 41.66667%;
   }
 
   .fw-w .lg\:col-5 {
@@ -56280,7 +56280,7 @@ table .th,
   }
 
   .lg\:col-6 {
-    :50% ;
+    max-width: 50%;
   }
 
   .fw-w .lg\:col-6 {
@@ -56288,7 +56288,7 @@ table .th,
   }
 
   .lg\:col-7 {
-    :58.33333% ;
+    max-width: 58.33333%;
   }
 
   .fw-w .lg\:col-7 {
@@ -56296,7 +56296,7 @@ table .th,
   }
 
   .lg\:col-8 {
-    :66.66667% ;
+    max-width: 66.66667%;
   }
 
   .fw-w .lg\:col-8 {
@@ -56304,7 +56304,7 @@ table .th,
   }
 
   .lg\:col-9 {
-    :75% ;
+    max-width: 75%;
   }
 
   .fw-w .lg\:col-9 {
@@ -56312,7 +56312,7 @@ table .th,
   }
 
   .lg\:col-10 {
-    :83.333% ;
+    max-width: 83.333%;
   }
 
   .fw-w .lg\:col-10 {
@@ -56320,7 +56320,7 @@ table .th,
   }
 
   .lg\:col-12 {
-    :100% ;
+    max-width: 100%;
   }
 
   .fw-w .lg\:col-12 {
@@ -67366,7 +67366,7 @@ table .th,
   }
 
   .xl\:col-2 {
-    :16.666% ;
+    max-width: 16.666%;
   }
 
   .fw-w .xl\:col-2 {
@@ -67374,7 +67374,7 @@ table .th,
   }
 
   .xl\:col-2-4 {
-    :20% ;
+    max-width: 20%;
   }
 
   .fw-w .xl\:col-2-4 {
@@ -67382,7 +67382,7 @@ table .th,
   }
 
   .xl\:col-3 {
-    :25% ;
+    max-width: 25%;
   }
 
   .fw-w .xl\:col-3 {
@@ -67390,7 +67390,7 @@ table .th,
   }
 
   .xl\:col-3-5 {
-    :29.16665% ;
+    max-width: 29.16665%;
   }
 
   .fw-w .xl\:col-3-5 {
@@ -67398,7 +67398,7 @@ table .th,
   }
 
   .xl\:col-4 {
-    :33.33333% ;
+    max-width: 33.33333%;
   }
 
   .fw-w .xl\:col-4 {
@@ -67406,7 +67406,7 @@ table .th,
   }
 
   .xl\:col-5 {
-    :41.66667% ;
+    max-width: 41.66667%;
   }
 
   .fw-w .xl\:col-5 {
@@ -67414,7 +67414,7 @@ table .th,
   }
 
   .xl\:col-6 {
-    :50% ;
+    max-width: 50%;
   }
 
   .fw-w .xl\:col-6 {
@@ -67422,7 +67422,7 @@ table .th,
   }
 
   .xl\:col-7 {
-    :58.33333% ;
+    max-width: 58.33333%;
   }
 
   .fw-w .xl\:col-7 {
@@ -67430,7 +67430,7 @@ table .th,
   }
 
   .xl\:col-8 {
-    :66.66667% ;
+    max-width: 66.66667%;
   }
 
   .fw-w .xl\:col-8 {
@@ -67438,7 +67438,7 @@ table .th,
   }
 
   .xl\:col-9 {
-    :75% ;
+    max-width: 75%;
   }
 
   .fw-w .xl\:col-9 {
@@ -67446,7 +67446,7 @@ table .th,
   }
 
   .xl\:col-10 {
-    :83.333% ;
+    max-width: 83.333%;
   }
 
   .fw-w .xl\:col-10 {
@@ -67454,7 +67454,7 @@ table .th,
   }
 
   .xl\:col-12 {
-    :100% ;
+    max-width: 100%;
   }
 
   .fw-w .xl\:col-12 {
@@ -78500,7 +78500,7 @@ table .th,
   }
 
   .uw\:col-2 {
-    :16.666% ;
+    max-width: 16.666%;
   }
 
   .fw-w .uw\:col-2 {
@@ -78508,7 +78508,7 @@ table .th,
   }
 
   .uw\:col-2-4 {
-    :20% ;
+    max-width: 20%;
   }
 
   .fw-w .uw\:col-2-4 {
@@ -78516,7 +78516,7 @@ table .th,
   }
 
   .uw\:col-3 {
-    :25% ;
+    max-width: 25%;
   }
 
   .fw-w .uw\:col-3 {
@@ -78524,7 +78524,7 @@ table .th,
   }
 
   .uw\:col-3-5 {
-    :29.16665% ;
+    max-width: 29.16665%;
   }
 
   .fw-w .uw\:col-3-5 {
@@ -78532,7 +78532,7 @@ table .th,
   }
 
   .uw\:col-4 {
-    :33.33333% ;
+    max-width: 33.33333%;
   }
 
   .fw-w .uw\:col-4 {
@@ -78540,7 +78540,7 @@ table .th,
   }
 
   .uw\:col-5 {
-    :41.66667% ;
+    max-width: 41.66667%;
   }
 
   .fw-w .uw\:col-5 {
@@ -78548,7 +78548,7 @@ table .th,
   }
 
   .uw\:col-6 {
-    :50% ;
+    max-width: 50%;
   }
 
   .fw-w .uw\:col-6 {
@@ -78556,7 +78556,7 @@ table .th,
   }
 
   .uw\:col-7 {
-    :58.33333% ;
+    max-width: 58.33333%;
   }
 
   .fw-w .uw\:col-7 {
@@ -78564,7 +78564,7 @@ table .th,
   }
 
   .uw\:col-8 {
-    :66.66667% ;
+    max-width: 66.66667%;
   }
 
   .fw-w .uw\:col-8 {
@@ -78572,7 +78572,7 @@ table .th,
   }
 
   .uw\:col-9 {
-    :75% ;
+    max-width: 75%;
   }
 
   .fw-w .uw\:col-9 {
@@ -78580,7 +78580,7 @@ table .th,
   }
 
   .uw\:col-10 {
-    :83.333% ;
+    max-width: 83.333%;
   }
 
   .fw-w .uw\:col-10 {
@@ -78588,7 +78588,7 @@ table .th,
   }
 
   .uw\:col-12 {
-    :100% ;
+    max-width: 100%;
   }
 
   .fw-w .uw\:col-12 {
