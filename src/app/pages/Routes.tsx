@@ -26,6 +26,8 @@ import { TimeLine } from './TimeLinePage/Loadable';
 import { AreaPage } from './AreaPage/Loadable';
 import { DivisiPage } from './DivisiPage/Loadable';
 import { LemariPage } from './LemariPage/Loadable';
+import { VehiclePage } from './VehiclePage/Loadable';
+import { EditVehicle } from './VehiclePage/Edit';
 //ADMIN CSR
 import { ApprovalBoxPage } from './AdminCSR/BoxPage/Loadable';
 import { DetailBoxCSR } from './AdminCSR/BoxPage/Detail';
@@ -89,7 +91,14 @@ export function Routes() {
               path={process.env.PUBLIC_URL + '/LemariPage'}
               component={LemariPage}
             />
-
+            <Route
+              path={process.env.PUBLIC_URL + '/VehiclePage'}
+              component={VehiclePage}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/EditVehicle'}
+              component={EditVehicle}
+            />
             {/*--------- ADMIN CSR ---------*/}
             <Route
               path={process.env.PUBLIC_URL + '/ApprovalBoxPage'}
