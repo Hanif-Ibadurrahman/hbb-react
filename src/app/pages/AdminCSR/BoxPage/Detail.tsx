@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { Breadcrumb, Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { ModalEdit } from './components/ModalEdit';
 
 export function DetailBoxCSR() {
-  const [modalShow, setModalShow] = useState(false);
-
   return (
     <div className="pos-r p-8">
       <div className="d-flex jc-between ai-center mb-4"></div>
@@ -49,14 +46,9 @@ export function DetailBoxCSR() {
         </div>
       </div>
       <div>
-        <Button
-          className="mt-4"
-          variant="warning"
-          onClick={() => setModalShow(true)}
-        >
+        <Button className="mt-4" variant="warning" href="/EditBox">
           Edit Data
         </Button>{' '}
-        <ModalEdit show={modalShow} onHide={() => setModalShow(false)} />
       </div>
     </div>
   );
