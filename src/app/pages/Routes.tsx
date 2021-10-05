@@ -29,6 +29,7 @@ import { LemariPage } from './LemariPage/Loadable';
 //ADMIN CSR
 import { ApprovalBoxPage } from './AdminCSR/BoxPage/Loadable';
 import { DetailBoxCSR } from './AdminCSR/BoxPage/Detail';
+import { EditBoxCSR } from './AdminCSR/BoxPage/Edit';
 // import { form } from 'app/components/Form/Index';
 
 export function Routes() {
@@ -97,6 +98,10 @@ export function Routes() {
             <Route
               path={process.env.PUBLIC_URL + '/DetailBoxCSR'}
               component={DetailBoxCSR}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/EditBoxCSR'}
+              component={EditBoxCSR}
             />
 
             <Route component={NotFoundPage} />

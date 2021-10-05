@@ -45,7 +45,7 @@ export function DetailBox() {
         </div>
       </div>
       <div>
-        <Button className="mt-4" variant="warning">
+        <Button className="mt-4" variant="warning" href="/EditBox">
           Edit Data
         </Button>{' '}
       </div>

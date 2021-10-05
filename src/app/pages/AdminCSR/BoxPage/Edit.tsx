@@ -3,7 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
-export function EditBox() {
+export function EditBoxCSR() {
   const validationSchema = Yup.object().shape({
     date: Yup.date().required('*Date is required'),
     time: Yup.string().required('*Time is required'),
