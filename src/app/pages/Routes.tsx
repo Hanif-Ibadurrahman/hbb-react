@@ -68,11 +68,11 @@ export function Routes() {
               component={BoxPage}
             />
             <Route
-              path={process.env.PUBLIC_URL + '/DetailBox'}
+              path={process.env.PUBLIC_URL + '/Box/DetailBox'}
               component={DetailBox}
             />
             <Route
-              path={process.env.PUBLIC_URL + '/EditBox'}
+              path={process.env.PUBLIC_URL + '/Box/EditBox'}
               component={EditBox}
             />
             <Route
@@ -96,7 +96,7 @@ export function Routes() {
               component={VehiclePage}
             />
             <Route
-              path={process.env.PUBLIC_URL + '/EditVehicle'}
+              path={process.env.PUBLIC_URL + '/Vehicle/EditVehicle'}
               component={EditVehicle}
             />
             {/*--------- ADMIN CSR ---------*/}

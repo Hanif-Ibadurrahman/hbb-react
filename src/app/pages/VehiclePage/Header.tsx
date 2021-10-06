@@ -1,34 +1,17 @@
 import React, { useState } from 'react';
-import { Breadcrumb } from 'react-bootstrap';
+import { Breadcrumb as B_Breadcrumb, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
 import { ModalForm } from './components/ModalForm';
 import { Filter } from 'app/components/Filter';
+import Breadcrumb from 'app/components/BreadCrumb';
 
 export function Header() {
+  const [crumbs, setCrumbs] = useState(['Dashboard', 'VehiclePage']);
+
   return (
     <>
       <div className="d-flex jc-between ai-center mb-4">
-        <div>
-          <Breadcrumb>
-            <Breadcrumb.Item
-              className="p-lg"
-              linkAs={Link}
-              linkProps={{ to: '/' }}
-            >
-              Home
-            </Breadcrumb.Item>
-            <Breadcrumb.Item
-              className="p-lg"
-              active
-              linkAs={Link}
-              linkProps={{ to: '/BoxPage' }}
-            >
-              Request Box
-            </Breadcrumb.Item>
-          </Breadcrumb>
-          {/* <Breadcrumb page={[ {'Home', '/'}, {'Request Box', '/BoxPage', 1} ]} /> */}
-        </div>
+        <Breadcrumb crumbs={crumbs} selected />
         <div className="d-flex">
           <Filter />
           <Button

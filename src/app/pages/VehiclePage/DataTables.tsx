@@ -89,34 +89,35 @@ const onSortFunction = {
 
 // Randomize data of the table columns.
 // Note that the fields are all using the `prop` field of the headers.
-export const body = Array.from(new Array(30), () => {
-  const rd = Math.random()
-    .toString(36)
-    .replace(/[^a-z]+/g, '')
-    .substr(0, 5);
-
-  return {
-    NoPolisi: `F1232${rd}`,
-    JenisKendaraan: 'SUV',
-    MerkKendaraan: 'Suzuki',
-    WarnaKendaraan: 'Putih',
-    MaksMuatan: '10KG',
-
-    Action: (
-      <Button
-        variant="dark"
-        className="w-24"
-        onClick={() => {
-          window.location.pathname = '/EditVehicle';
-        }}
-      >
-        Edit
-      </Button>
-    ),
-  };
-});
 
 export function DataTables() {
+  const body = Array.from(new Array(30), () => {
+    const rd = Math.random()
+      .toString(36)
+      .replace(/[^a-z]+/g, '')
+      .substr(0, 5);
+
+    return {
+      NoPolisi: `F1232${rd}`,
+      JenisKendaraan: 'SUV',
+      MerkKendaraan: 'Suzuki',
+      WarnaKendaraan: 'Putih',
+      MaksMuatan: '10KG',
+
+      Action: (
+        <Button
+          variant="dark"
+          className="w-24"
+          onClick={() => {
+            window.location.pathname = 'Vehicle/EditVehicle';
+          }}
+        >
+          Edit
+        </Button>
+      ),
+    };
+  });
+
   return (
     <>
       <div className="d-flex fd-col-r">
