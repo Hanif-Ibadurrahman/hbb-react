@@ -39,22 +39,22 @@ export function UserProfile() {
             style={{ minHeight: 'calc(100% - 80px' }}
           >
             <NavLink href="/Profile/Edit">
-              <div className="ph-10 pv-4 tc-medium">
+              <div className="ph-8 pv-4 tc-medium cur-p">
                 <span className="icon mr-4">
                   <i className="far fa-user-circle p-xl"></i>
                 </span>
-                <span className="text p-lg ff-1-bd tc-medium-shade">
+                <span className="text p-md ff-1-bd tc-medium-shade">
                   Profile
                 </span>
               </div>
             </NavLink>
             <div className="d-block w-100% h-2px bg-medium op-10%"></div>
             <NavLink href="/Profile/Password">
-              <div className="ph-10 pv-4 tc-medium">
+              <div className="ph-8 pv-4 tc-medium cur-p">
                 <span className="icon mr-4">
                   <i className="far fa-lock p-xl"></i>
                 </span>
-                <span className="text p-lg ff-1-bd tc-medium-shade">
+                <span className="text p-md ff-1-bd tc-medium-shade">
                   Privacy & Password
                 </span>
               </div>
