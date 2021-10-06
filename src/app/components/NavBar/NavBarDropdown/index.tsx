@@ -19,7 +19,7 @@ export function NavBarDropdown(props) {
 
   const gotoProfile = e => {
     e.preventDefault();
-    history.push('/Profile');
+    history.push('/Profile/Edit');
   };
 
   const logout = e => {
