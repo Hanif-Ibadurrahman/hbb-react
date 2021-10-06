@@ -1,17 +1,17 @@
 import styled from 'styled-components/macro';
 import { Helmet } from 'react-helmet-async';
 import { StyleConstants } from 'styles/StyleConstants';
-import { LemariTables } from './LemariTables';
+import { CabinetTables } from './CabinetTables';
 import Button from 'react-bootstrap/Button';
-import { LemariForm } from './components/Lemariform';
+import { CabinetForm } from './components/Cabinetform';
 import React, { useState } from 'react';
 
-export function LemariPage() {
+export function CabinetPage() {
   const [modalShow, setModalShow] = useState(false);
   return (
     <>
       <Helmet>
-        <title>Lemari Page</title>
+        <title>Cabinets Page</title>
         <meta name="description" content="Accordions" />
       </Helmet>
       <div className="pos-r p-8">
@@ -20,9 +20,9 @@ export function LemariPage() {
             <i className="fas fa-plus"></i>Tambah
           </Button>
           <Button variant="info">Print</Button>
-          <LemariForm show={modalShow} onHide={() => setModalShow(false)} />
+          <CabinetForm show={modalShow} onHide={() => setModalShow(false)} />
         </div>
-        <LemariTables />
+        <CabinetTables />
       </div>
     </>
   );

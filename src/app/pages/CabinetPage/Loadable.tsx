@@ -6,9 +6,9 @@ import * as React from 'react';
 import { lazyLoad } from 'utils/loadable';
 import { LoadingIndicator } from 'app/components/LoadingIndicator';
 
-export const LemariPage = lazyLoad(
+export const CabinetPage = lazyLoad(
   () => import('./index'),
-  module => module.LemariPage,
+  module => module.CabinetPage,
   {
     fallback: <LoadingIndicator />,
   },

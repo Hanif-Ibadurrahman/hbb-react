@@ -1,15 +1,17 @@
-import * as React from 'react';
 // import styled from 'styled-components/macro';
 import { Helmet } from 'react-helmet-async';
 // import { StyleConstants } from 'styles/StyleConstants';
 import Datatable from 'react-bs-datatable';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import { DeleteCabinet } from './components/DeleteCabinet';
+import React, { useState } from 'react';
 
 // Create table headers consisting of 4 columns.
+
 export const header = [
   {
-    title: 'Nama Record Center',
+    title: 'Record Center Name',
     prop: 'RecordCenter',
     sortable: true,
     cellProps: {
@@ -17,16 +19,16 @@ export const header = [
     },
   },
   {
-    title: 'Nama Ruang',
-    prop: 'Ruang',
+    title: 'Room Name',
+    prop: 'Room',
     sortable: true,
     cellProps: {
       style: { width: '25%' },
     },
   },
   {
-    title: 'Kode Lemari',
-    prop: 'KodeLemari',
+    title: 'Cabinet Code',
+    prop: 'CabinetCode',
     sortable: true,
     cellProps: {
       style: { width: '25%' },
@@ -67,25 +69,31 @@ export const classes = {
 
 // Randomize data of the table columns.
 // Note that the fields are all using the `prop` field of the headers.
-export const body = Array.from(new Array(30), () => {
-  return {
-    RecordCenter: `RC Bogor`,
-    Ruang: `Bogor 1`,
-    KodeLemari: `320`,
-    Action: (
-      <ButtonGroup>
-        <Button variant="light">
-          Edit<i className="fas fa-edit ml-2"></i>
-        </Button>
-        <Button variant="danger">
-          Hapus<i className="fas fa-trash-alt ml-2"></i>
-        </Button>
-      </ButtonGroup>
-    ),
-  };
-});
+export function CabinetTables() {
+  const [modalShow, setModalShow] = useState(false);
 
-export function LemariTables() {
+  const body = Array.from(new Array(30), () => {
+    return {
+      RecordCenter: `RC Bogor`,
+      Room: `Bogor 1`,
+      CabinetCode: `3  20`,
+      Action: (
+        <ButtonGroup>
+          <Button variant="light">
+            Edit<i className="fas fa-edit ml-2"></i>
+          </Button>
+          <Button variant="danger" onClick={() => setModalShow(true)}>
+            Delete<i className="fas fa-trash-alt ml-2"></i>
+            <DeleteCabinet
+              show={modalShow}
+              onHide={() => setModalShow(false)}
+            />
+          </Button>
+        </ButtonGroup>
+      ),
+    };
+  });
+
   return (
     <>
       <div className="d-flex fd-col-r">

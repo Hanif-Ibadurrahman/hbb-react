@@ -67,7 +67,6 @@ export function DataTables() {
           <Button variant="danger" onClick={() => setModalShow(true)}>
             Hapus<i className="fas fa-trash-alt ml-2"></i>
           </Button>
-          <ModalHapus show={modalShow} onHide={() => setModalShow(false)} />
         </ButtonGroup>
       ),
     };
@@ -75,6 +74,7 @@ export function DataTables() {
 
   return (
     <>
+      <ModalHapus show={modalShow} onHide={() => setModalShow(false)} />
       <div className="d-flex fd-col-r">
         <Datatable
           tableHeaders={header}

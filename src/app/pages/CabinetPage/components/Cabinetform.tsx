@@ -7,7 +7,7 @@ import {
   Button,
   Dropdown,
 } from 'react-bootstrap';
-export function LemariForm(props) {
+export function CabinetForm(props) {
   return (
     <Modal {...props} aria-labelledby="contained-modal-title-vcenter">
       <Modal.Header closeButton>
@@ -34,14 +34,14 @@ export function LemariForm(props) {
         </Dropdown>
       </Modal.Body>
       <Modal.Body className="show-grid">
-        <Modal.Body>Ruangan</Modal.Body>
+        <Modal.Body>Room</Modal.Body>
         <Dropdown>
           <Dropdown.Toggle
             variant="light"
             id="dropdown-basic"
             className="col-12"
           >
-            Nama Ruangan
+            Room Name
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
@@ -54,7 +54,7 @@ export function LemariForm(props) {
       <Modal.Body className="show-grid">
         <Form>
           <Form.Group className="mb-3">
-            <Form.Label>Kode Lemari</Form.Label>
+            <Form.Label>Cabinet Code</Form.Label>
             <Form.Control type="text" />
           </Form.Group>
         </Form>

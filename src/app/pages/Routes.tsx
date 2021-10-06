@@ -25,7 +25,11 @@ import { EditBox } from './BoxPage/Edit';
 import { TimeLine } from './TimeLinePage/Loadable';
 import { AreaPage } from './AreaPage/Loadable';
 import { DivisiPage } from './DivisiPage/Loadable';
-import { LemariPage } from './LemariPage/Loadable';
+import { CabinetPage } from './CabinetPage';
+import { DocumentPage } from './DocumentPage/Loadable';
+import { DetailDocument } from './DocumentPage/DetailDocument';
+import { EditDocument } from './DocumentPage/Edit';
+
 //ADMIN CSR
 import { ApprovalBoxPage } from './AdminCSR/BoxPage/Loadable';
 import { DetailBoxCSR } from './AdminCSR/BoxPage/Detail';
@@ -86,8 +90,22 @@ export function Routes() {
               component={DivisiPage}
             />
             <Route
-              path={process.env.PUBLIC_URL + '/LemariPage'}
-              component={LemariPage}
+              path={process.env.PUBLIC_URL + '/CabinetPage'}
+              component={CabinetPage}
+            />
+
+            {/*--------- DOCUMENT ---------*/}
+            <Route
+              path={process.env.PUBLIC_URL + '/Document'}
+              component={DocumentPage}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/Document-Detail'}
+              component={DetailDocument}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/Document-Edit'}
+              component={EditDocument}
             />
 
             {/*--------- ADMIN CSR ---------*/}
