@@ -14,11 +14,16 @@ import { GlobalStyle } from '../../styles/global-styles';
 
 import { Sidebar } from '../components/Sidebar';
 import { NavBar } from '../components/NavBar';
-
+// --=-=-=-=-=-=- BIOLERPLATE EXAMPLE -=-=-=-=-=-=-=-
 import { HomePage } from './HomePage/Loadable';
 import { NotFoundPage } from './NotFoundPage/Loadable';
 import { Accordions } from './UIElements/Accordions/Loadable';
 import { useTranslation } from 'react-i18next';
+// --=-=-=-=-=-=- BIOLERPLATE EXAMPLE -=-=-=-=-=-=-=-
+
+// DASHBOARD
+import { DashboardSuperadmin } from './Dashboard/Superadmin';
+// -=-=-=-=-=-
 import { DataTables } from './Tables/DataTable/Loadable';
 import { BoxPage } from './BoxPage/Loadable';
 import { DetailBox } from './BoxPage/Detail';
@@ -51,7 +56,7 @@ export function Routes() {
         <div className="content-wrapper w-80%">
           <NavBar />
           <Switch>
-            <Route
+            {/* <Route
               exact
               path={process.env.PUBLIC_URL + '/Dashboard'}
               component={HomePage}
@@ -59,7 +64,14 @@ export function Routes() {
             <Route
               path={process.env.PUBLIC_URL + '/BasicUI/Accordions'}
               component={Accordions}
+            /> */}
+
+            {/*---------- DASHBOARD ---------*/}
+            <Route
+              path={process.env.PUBLIC_URL + '/Dashboard/Superadmin'}
+              component={DashboardSuperadmin}
             />
+
             <Route
               path={process.env.PUBLIC_URL + '/Table/DataTables'}
               component={DataTables}

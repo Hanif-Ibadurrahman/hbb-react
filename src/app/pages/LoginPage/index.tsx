@@ -11,7 +11,7 @@ export function LoginPage() {
 
   const onSubmit = e => {
     e.preventDefault();
-    history.push('/Dashboard');
+    history.push('/Dashboard/Superadmin');
   };
 
   const LoginForm = () => {
