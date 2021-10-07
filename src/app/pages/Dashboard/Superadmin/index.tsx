@@ -2,6 +2,65 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import '../dashboard.scoped.scss';
 import { DataTable } from '../Components/Datatables';
+import { Button } from 'react-bootstrap';
+
+const body = Array.from(new Array(1), () => {
+  const rd = (Math.random() * 10).toFixed(10);
+
+  return {
+    id: `A000000${rd}`,
+    NamaPerusahaan: '05 - 09 - 21',
+    NamaPeminjaman: '09:52 WIB',
+    JumlahBox: '10',
+    Action: <Button>Lihat</Button>,
+  };
+});
+
+const header = [
+  {
+    title: 'Id',
+    prop: 'id',
+    sortable: true,
+    cellProps: {
+      style: { width: '25%' },
+    },
+  },
+  {
+    title: 'Nama Perusahaan',
+    prop: 'NamaPerusahaan',
+    sortable: true,
+    // Add classes and styles by objects and strings.
+    cellProps: {
+      style: { background: '#fafafa', width: '20%' },
+      className: 'realname-class',
+    },
+  },
+  {
+    title: 'Nama Pemijaman',
+    prop: 'NamaPeminjaman',
+    sortable: true,
+    cellProps: {
+      style: { background: '#fafafa', width: '20%' },
+      className: 'realname-class',
+    },
+  },
+  {
+    title: 'Jumlah Box',
+    prop: 'JumlahBox',
+    sortable: true,
+    cellProps: {
+      style: { width: '20%' },
+    },
+  },
+  {
+    title: 'Action',
+    prop: 'Action',
+    cellProps: {
+      style: { flex: 1 },
+      className: 'realname-class',
+    },
+  },
+];
 
 export function DashboardSuperadmin() {
   const Card = props => {
@@ -77,7 +136,7 @@ export function DashboardSuperadmin() {
         <div className="row w-100% mh-0">
           <div className="col col-12 ph-0 mr-2">
             <Card style={{ border: '1px solid rgba(0,0,0,.05)' }}>
-              <DataTable />
+              <DataTable tableHeader={header} tableBody={body} />
             </Card>
           </div>
           {/* <div className="col col-4 ph-0 ml-2">
