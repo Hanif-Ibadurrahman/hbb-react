@@ -37,11 +37,11 @@ const header = [
     },
   },
   {
-    title: 'Nama Pemijaman',
+    title: 'Nama Peminjaman',
     prop: 'NamaPeminjaman',
     sortable: true,
     cellProps: {
-      style: { background: '#fafafa', width: '20%' },
+      style: { width: '20%' },
       className: 'realname-class',
     },
   },
@@ -50,7 +50,7 @@ const header = [
     prop: 'JumlahBox',
     sortable: true,
     cellProps: {
-      style: { width: '20%' },
+      style: { background: '#fafafa', width: '20%' },
     },
   },
   {
@@ -63,11 +63,11 @@ const header = [
   },
 ];
 
-export function DashboardSuperadmin() {
+export function DashboardAdminCSR() {
   return (
     <>
       <Helmet>
-        <title>Dox - Dashboard Superadmin</title>
+        <title>Dox - Dashboard CSR</title>
         <meta
           name="description"
           content="A React Boilerplate application homepage"
@@ -76,7 +76,7 @@ export function DashboardSuperadmin() {
 
       <div className="pos-r p-8 bg-primary-5">
         <h3 className="tc-dark-contrast mb-12 ff-1-bd">
-          <span className="ff-1">Selamat Datang,</span> Superadmin
+          <span className="ff-1">Selamat Datang,</span> Admin CSR
         </h3>
         <h6 className="mb-3 tc-dark-contrast">Today Summary</h6>
         <div className="row w-100% mh-0 row-summary">
@@ -91,14 +91,7 @@ export function DashboardSuperadmin() {
             <CardHeader
               icon="boxes"
               total="44"
-              text={['Box', <br />, 'Requested.']}
-            />
-          </div>
-          <div className="col col-4 ph-0">
-            <CardHeader
-              icon="truck-loading"
-              total="10"
-              text={['On-Going', <br />, 'Delivery.']}
+              text={['Semua', <br />, 'Entry.']}
             />
           </div>
         </div>

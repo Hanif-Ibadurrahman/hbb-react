@@ -37,11 +37,11 @@ const header = [
     },
   },
   {
-    title: 'Nama Pemijaman',
+    title: 'Nama Peminjaman',
     prop: 'NamaPeminjaman',
     sortable: true,
     cellProps: {
-      style: { background: '#fafafa', width: '20%' },
+      style: { width: '20%' },
       className: 'realname-class',
     },
   },
@@ -50,7 +50,7 @@ const header = [
     prop: 'JumlahBox',
     sortable: true,
     cellProps: {
-      style: { width: '20%' },
+      style: { width: '20%', background: '#fafafa' },
     },
   },
   {
@@ -63,11 +63,11 @@ const header = [
   },
 ];
 
-export function DashboardSuperadmin() {
+export function DashboardAdminRC() {
   return (
     <>
       <Helmet>
-        <title>Dox - Dashboard Superadmin</title>
+        <title>Dox - Dashboard RC</title>
         <meta
           name="description"
           content="A React Boilerplate application homepage"
@@ -76,7 +76,7 @@ export function DashboardSuperadmin() {
 
       <div className="pos-r p-8 bg-primary-5">
         <h3 className="tc-dark-contrast mb-12 ff-1-bd">
-          <span className="ff-1">Selamat Datang,</span> Superadmin
+          <span className="ff-1">Selamat Datang,</span> Admin RC
         </h3>
         <h6 className="mb-3 tc-dark-contrast">Today Summary</h6>
         <div className="row w-100% mh-0 row-summary">
@@ -89,16 +89,16 @@ export function DashboardSuperadmin() {
           </div>
           <div className="col col-4 ph-0 mh-4">
             <CardHeader
-              icon="boxes"
-              total="44"
-              text={['Box', <br />, 'Requested.']}
+              icon="shipping-fast"
+              total="94"
+              text={['Ongoing', <br />, ' package.']}
             />
           </div>
-          <div className="col col-4 ph-0">
+          <div className="col col-4 ph-0 mh-4">
             <CardHeader
-              icon="truck-loading"
-              total="10"
-              text={['On-Going', <br />, 'Delivery.']}
+              icon="vote-nay"
+              total="14"
+              text={['Issued', <br />, ' package.']}
             />
           </div>
         </div>

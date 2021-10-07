@@ -10,8 +10,8 @@ const body = Array.from(new Array(1), () => {
 
   return {
     id: `A000000${rd}`,
-    NamaPerusahaan: '05 - 09 - 21',
-    NamaPeminjaman: '09:52 WIB',
+    Tujuan: 'PT.Sanjaya Tech',
+    TanggalRequest: '05 - 09 - 21',
     JumlahBox: '10',
     Action: <Button>Lihat</Button>,
   };
@@ -27,8 +27,8 @@ const header = [
     },
   },
   {
-    title: 'Nama Perusahaan',
-    prop: 'NamaPerusahaan',
+    title: 'Tujuan',
+    prop: 'Tujuan',
     sortable: true,
     // Add classes and styles by objects and strings.
     cellProps: {
@@ -37,11 +37,11 @@ const header = [
     },
   },
   {
-    title: 'Nama Pemijaman',
-    prop: 'NamaPeminjaman',
+    title: 'Tanggal Request',
+    prop: 'TanggalRequest',
     sortable: true,
     cellProps: {
-      style: { background: '#fafafa', width: '20%' },
+      style: { width: '20%' },
       className: 'realname-class',
     },
   },
@@ -50,7 +50,7 @@ const header = [
     prop: 'JumlahBox',
     sortable: true,
     cellProps: {
-      style: { width: '20%' },
+      style: { background: '#fafafa', width: '20%' },
     },
   },
   {
@@ -63,11 +63,11 @@ const header = [
   },
 ];
 
-export function DashboardSuperadmin() {
+export function DashboardAdminTransport() {
   return (
     <>
       <Helmet>
-        <title>Dox - Dashboard Superadmin</title>
+        <title>Dox - Dashboard Admin Transport</title>
         <meta
           name="description"
           content="A React Boilerplate application homepage"
@@ -76,29 +76,22 @@ export function DashboardSuperadmin() {
 
       <div className="pos-r p-8 bg-primary-5">
         <h3 className="tc-dark-contrast mb-12 ff-1-bd">
-          <span className="ff-1">Selamat Datang,</span> Superadmin
+          <span className="ff-1">Selamat Datang,</span> Admin Transport
         </h3>
         <h6 className="mb-3 tc-dark-contrast">Today Summary</h6>
         <div className="row w-100% mh-0 row-summary">
           <div className="col col-4 ph-0">
             <CardHeader
-              icon="archive"
+              icon="box-check"
               total="28"
-              text={['Entry', <br />, 'Baru.']}
+              text={['Register', <br />, 'Baru.']}
             />
           </div>
           <div className="col col-4 ph-0 mh-4">
             <CardHeader
-              icon="boxes"
-              total="44"
-              text={['Box', <br />, 'Requested.']}
-            />
-          </div>
-          <div className="col col-4 ph-0">
-            <CardHeader
-              icon="truck-loading"
-              total="10"
-              text={['On-Going', <br />, 'Delivery.']}
+              icon="shipping-fast"
+              total="64"
+              text={['Ongoing', <br />, 'Package.']}
             />
           </div>
         </div>
