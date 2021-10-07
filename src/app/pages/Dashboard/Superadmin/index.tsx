@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import '../dashboard.scoped.scss';
 import { DataTable } from '../Components/Datatables';
 import { Button } from 'react-bootstrap';
-import DynamicFont from 'react-dynamic-font';
 import { Card, CardHeader } from '../Components/CardDashboard';
 
 const body = Array.from(new Array(1), () => {
@@ -91,7 +90,7 @@ export function DashboardSuperadmin() {
           <div className="col col-4 ph-0 mh-4">
             <CardHeader
               icon="boxes"
-              total="44"
+              total="449"
               text={['Box', <br />, 'Requested.']}
             />
           </div>
@@ -108,7 +107,7 @@ export function DashboardSuperadmin() {
         <h6 className="mb-3 pt-3">Today's Notifications.</h6>
         <div className="row w-100% mh-0">
           <div className="col col-12 ph-0 mr-2">
-            <Card style={{ border: '1px solid rgba(0,0,0,.05)' }}>
+            <Card style={{ border: '1px solid rgba(0,0,0,.1)' }}>
               <DataTable tableHeader={header} tableBody={body} />
             </Card>
           </div>
