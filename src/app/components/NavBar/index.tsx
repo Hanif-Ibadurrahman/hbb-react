@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { NavBarDropdown } from './NavBarDropdown/index';
 import Profile from 'assets/images/profile.png';
+import './navbar.scoped.scss';
 
 export function NavBar() {
   return (
