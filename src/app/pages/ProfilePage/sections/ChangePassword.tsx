@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 // const profileSize = 130;
 
 const validationSchema = Yup.object().shape({
+  OldPassword: Yup.string().required('Password is required'),
   NewPassword: Yup.string().required('Password is required'),
   Confirmation: Yup.string().oneOf(
     [Yup.ref('NewPassword'), null],
@@ -17,18 +18,6 @@ const validationSchema = Yup.object().shape({
 export default function ChangePassword() {
   return (
     <>
-      {/* <ProfileHero className="d-flex ai-end ph-10">
-        <Profile
-          style={{
-            height: profileSize,
-            width: profileSize,
-            borderRadius: profileSize / 2,
-            marginBottom: profileSize / -2,
-            boxShadow: '0 8px 16px rgba(0, 0, 0, .05)',
-          }}
-          className="d-flex ai-center jc-center bd-rs-20 of-h"
-        />
-      </ProfileHero> */}
       <div className="pl-8 w-80%">
         <h6 className="ff-1-bd pt-8 pb-12 tc-medium">Change Password</h6>
         <div className="pos-r">
@@ -65,7 +54,8 @@ export default function ChangePassword() {
                 <Form.Group className="mb-4" controlId="formBasicEmail">
                   <Form.Label className="tc-medium">Old Password</Form.Label>
                   <Form.Control
-                    type="text"
+                    className="ls-2"
+                    type="password"
                     name="OldPassword"
                     value={values.OldPassword}
                     onChange={handleChange}
@@ -80,7 +70,8 @@ export default function ChangePassword() {
                 <Form.Group className="mb-4" controlId="formBasicEmail">
                   <Form.Label className="tc-medium">New Password</Form.Label>
                   <Form.Control
-                    type="text"
+                    className="ls-2"
+                    type="password"
                     name="NewPassword"
                     value={values.NewPassword}
                     onChange={handleChange}
@@ -97,7 +88,8 @@ export default function ChangePassword() {
                     Confirmation New Password
                   </Form.Label>
                   <Form.Control
-                    type="text"
+                    className="ls-2"
+                    type="password"
                     name="Confirmation"
                     value={values.Confirmation}
                     onChange={handleChange}
@@ -109,14 +101,16 @@ export default function ChangePassword() {
                     </p>
                   ) : null}
                 </Form.Group>
-                <Button
-                  className="mv-4 bg-success-6"
-                  variant="success"
-                  disabled={isSubmitting}
-                  type="submit"
-                >
-                  Edit Data
-                </Button>{' '}
+                <div className="d-flex jc-end">
+                  <Button
+                    className="bg-success-6"
+                    variant="success"
+                    disabled={isSubmitting}
+                    type="submit"
+                  >
+                    Edit Data
+                  </Button>{' '}
+                </div>
               </Form>
             )}
           </Formik>
