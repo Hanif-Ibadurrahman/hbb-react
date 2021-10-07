@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import '../dashboard.scoped.scss';
 import { DataTable } from '../Components/Datatables';
 import { Button } from 'react-bootstrap';
+import DynamicFont from 'react-dynamic-font';
 
 const body = Array.from(new Array(1), () => {
   const rd = (Math.random() * 10).toFixed(10);
@@ -83,8 +84,14 @@ export function DashboardSuperadmin() {
           <div className="icon mr-6">
             <i className={'fas fa-' + props.icon}></i>
           </div>
-          <h3 className="ff-1-bd flex-1 mb-0">{props.total}</h3>
-          <div className="d-flex fd-col">
+          {/* <h3 className="ff-1-bd flex-1 mb-0">{props.total}</h3> */}
+          <div
+            className="ff-1-bd h3 of-h"
+            style={{ height: 48, maxWidth: 'calc(70% - 64px - 1.5rem' }}
+          >
+            <DynamicFont smooth content={props.total} />
+          </div>
+          <div className="d-flex fd-col max-w-30%">
             <p className="p-lg ml-3">{props.text}</p>
           </div>
         </div>
@@ -92,6 +99,7 @@ export function DashboardSuperadmin() {
       </Card>
     );
   };
+
   return (
     <>
       <Helmet>
@@ -111,7 +119,7 @@ export function DashboardSuperadmin() {
           <div className="col col-4 ph-0">
             <CardHeader
               icon="archive"
-              total="28"
+              total="86"
               text={['Entry', <br />, 'Baru.']}
             />
           </div>
