@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Datatable from 'react-bs-datatable';
 import { Dropdown } from 'react-bootstrap';
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
 // Create table headers consisting of 4 columns.
 export const header = [
@@ -89,67 +90,84 @@ const onSortFunction = {
 
 // Randomize data of the table columns.
 // Note that the fields are all using the `prop` field of the headers.
-export const body = Array.from(new Array(30), () => {
-  const rd = (Math.random() * 10).toFixed(2);
 
-  return {
-    CodeBox: `A1232${rd}`,
-    Tanggal: '05 - 09 - 21',
-    Waktu: '09:52 WIB',
-    Quantity: '10',
-    // Notes: (
-    //   <span className="notes">
-    //     Lorem ipsum dolor sit amet, consectetur adipisicing elit
-    //   </span>
-    // ),
-    Action: (
-      <Dropdown>
-        <Dropdown.Toggle variant="success" id="dropdown-basic">
-          Action
-        </Dropdown.Toggle>
-        <Dropdown.Menu style={{ minWidth: 200 }}>
-          <Dropdown.Item href="/DetailBox">
-            <div className="d-flex ai-center pv-2">
-              <span className="icon">
-                <i className="far fa-search p-sm mr-3"></i>
-              </span>
-              <span className="text">Detail</span>
-            </div>
-          </Dropdown.Item>
-          <div className="d-flex w-100% h-1px bg-medium op-25%"></div>
-          <Dropdown.Item href="#/action-2">
-            <div className="d-flex ai-center pv-2">
-              <span className="icon">
-                <i className="far fa-copy p-sm mr-3"></i>
-              </span>
-              <span className="text">Duplicate</span>
-            </div>
-          </Dropdown.Item>
-          <div className="d-flex w-100% h-1px bg-medium op-25%"></div>
-          <Dropdown.Item href="#/action-3">
-            <div className="d-flex ai-center pv-2">
-              <span className="icon">
-                <i className="far fa-edit p-sm mr-3"></i>
-              </span>
-              <span className="text">Edit</span>
-            </div>
-          </Dropdown.Item>
-          <div className="d-flex w-100% h-1px bg-medium op-25%"></div>
-          <Dropdown.Item href="#/action-3">
-            <div className="d-flex ai-center pv-2 tc-danger-5">
-              <span className="icon">
-                <i className="far fa-trash-alt p-sm mr-3"></i>
-              </span>
-              <span className="text">Delete</span>
-            </div>
-          </Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-    ),
+export default function DataTable() {
+  function NavLinkAction(e, href) {
+    e.preventDefault();
+    window.location.pathname = href;
+  }
+
+  const NavLink = props => {
+    return (
+      <div onClick={e => NavLinkAction(e, props.href)}>{props.children}</div>
+    );
   };
-});
 
-export function DataTables() {
+  const body = Array.from(new Array(30), () => {
+    const rd = (Math.random() * 10).toFixed(2);
+
+    return {
+      CodeBox: `A1232${rd}`,
+      Tanggal: '05 - 09 - 21',
+      Waktu: '09:52 WIB',
+      Quantity: '10',
+      // Notes: (
+      //   <span className="notes">
+      //     Lorem ipsum dolor sit amet, consectetur adipisicing elit
+      //   </span>
+      // ),
+      Action: (
+        <BrowserRouter>
+          <Dropdown>
+            <Dropdown.Toggle variant="success" id="dropdown-basic">
+              Action
+            </Dropdown.Toggle>
+            <Dropdown.Menu style={{ minWidth: 200 }}>
+              <NavLink href="/Box/DetailBox">
+                <Dropdown.Item>
+                  <div className="d-flex ai-center pv-2">
+                    <span className="icon">
+                      <i className="far fa-search p-sm mr-3"></i>
+                    </span>
+                    <span className="text">Detail</span>
+                  </div>
+                </Dropdown.Item>
+              </NavLink>
+              <Dropdown.Item>
+                <div className="d-flex ai-center pv-2">
+                  <span className="icon">
+                    <i className="far fa-copy p-sm mr-3"></i>
+                  </span>
+                  <span className="text">Duplicate</span>
+                </div>
+              </Dropdown.Item>
+              <NavLink href="/Box/EditBox">
+                <div className="d-flex w-100% h-1px bg-medium op-25%"></div>
+                <Dropdown.Item>
+                  <div className="d-flex ai-center pv-2">
+                    <span className="icon">
+                      <i className="far fa-edit p-sm mr-3"></i>
+                    </span>
+                    <span className="text">Edit</span>
+                  </div>
+                </Dropdown.Item>
+              </NavLink>
+              <div className="d-flex w-100% h-1px bg-medium op-25%"></div>
+              <Dropdown.Item>
+                <div className="d-flex ai-center pv-2 tc-danger-5">
+                  <span className="icon">
+                    <i className="far fa-trash-alt p-sm mr-3"></i>
+                  </span>
+                  <span className="text">Delete</span>
+                </div>
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </BrowserRouter>
+      ),
+    };
+  });
+
   return (
     <>
       <div className="d-flex fd-col-r">

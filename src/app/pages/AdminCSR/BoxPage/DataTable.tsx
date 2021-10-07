@@ -4,9 +4,7 @@ import React, { useState } from 'react';
 import Datatable from 'react-bs-datatable';
 import Button from 'react-bootstrap/Button';
 import { ModalForm } from './components/ModalForm';
-import { ReactDOM } from 'hoist-non-react-statics/node_modules/@types/react';
-import { render } from '@testing-library/react';
-import { ButtonGroup } from 'react-bootstrap';
+import { BrowserRouter } from 'react-router-dom';
 
 // Create table headers consisting of 4 columns.
 
@@ -58,22 +56,6 @@ export const header = [
       style: { background: '#fafafa' },
       className: 'realname-class',
     },
-    // cell: (onRowClick) => {
-
-    // 	return (
-    // 		<ButtonGroup onClick={(event) => event.stopPropagation()}>
-    // 			<Button onClick={() => setModalShow(true)}>
-    // 				detail
-    // 			</Button>
-    // 			<Button
-    // 				variant="warning"
-    // 				onClick={() => console.warn("Btn clicked", onRowClick)}
-    // 			>
-    // 				Pending
-    // 			</Button>
-    // 		</ButtonGroup>
-    // 	);
-    // }
   },
 ];
 
@@ -103,7 +85,7 @@ export const classes = {
 // Randomize data of the table columns.
 // Note that the fields are all using the `prop` field of the headers.
 
-export function DataTables() {
+export default function DataTable() {
   const [modalShow, setModalShow] = useState(false);
 
   const body = Array.from(new Array(20), () => {
@@ -174,13 +156,7 @@ export function DataTables() {
           <Button variant="dark" className="" href="/DetailBoxCSR">
             Detail
           </Button>
-          <Button
-            variant="warning"
-            className="bg-warning-5 w-24"
-            onClick={() => setModalShow(true)}
-          >
-            Pending
-          </Button>
+          <ModalForm />
         </div>
       ),
     };
@@ -199,7 +175,6 @@ export function DataTables() {
           classes={classes}
         />
       </div>
-      <ModalForm show={modalShow} onHide={() => setModalShow(false)} />
     </>
   );
 }
