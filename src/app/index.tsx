@@ -13,7 +13,7 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import { GlobalStyle } from '../styles/global-styles';
 
 import { useTranslation } from 'react-i18next';
-import { LoginPage } from './pages/LoginPage/LoginPage';
+import { LoginPage } from './pages/LoginPage';
 import { Routes } from './pages/Routes';
 
 export function App() {
