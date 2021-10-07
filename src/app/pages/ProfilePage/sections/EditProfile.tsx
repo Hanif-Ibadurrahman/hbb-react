@@ -66,7 +66,7 @@ export default function UserProfile() {
               handleSubmit,
               isSubmitting,
             }) => (
-              <Form onSubmit={handleSubmit}>
+              <Form onSubmit={handleSubmit} className="mb-10">
                 {console.log(values)}
                 <Form.Group className="mb-4" controlId="formBasicEmail">
                   <Form.Label className="tc-medium">Username</Form.Label>
@@ -180,14 +180,16 @@ export default function UserProfile() {
                     <p className="tc-danger-5 pos-a p-sm">{errors.Company}</p>
                   ) : null}
                 </Form.Group>
-                <Button
-                  className="mv-4 bg-success-6"
-                  variant="success"
-                  disabled={isSubmitting}
-                  type="submit"
-                >
-                  Edit Data
-                </Button>{' '}
+                <div className="d-flex jc-end">
+                  <Button
+                    className="mv-4 bg-success-6"
+                    variant="success"
+                    disabled={isSubmitting}
+                    type="submit"
+                  >
+                    Edit Data
+                  </Button>{' '}
+                </div>
               </Form>
             )}
           </Formik>

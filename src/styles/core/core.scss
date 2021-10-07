@@ -14,106 +14,106 @@
 }
 
 @font-face {
-  font-family: 'Flow';
-  src: url(../../assets/fonts/flow-circular.woff) format('woff');
+	font-family: "Flow";
+	src: url(../../assets/fonts/flow-circular.woff) format("woff");
 }
 
 @font-face {
-  font-family: 'Menlo';
-  src: url(../../assets/fonts/Menlo-Regular.ttf) format('opentype');
+	font-family: "Menlo";
+	src: url(../../assets/fonts/Menlo-Regular.ttf) format("opentype");
 }
 
-@import 'reset';
-@import 'variables';
-@import 'mixins';
+@import "reset";
+@import "variables";
+@import "mixins";
 
 // -=-=-=-=-=-=-=-=- MASTER-BODY -=-=-=-=-=-=-=-=-
 .master-body {
-  background-color: $bg-color;
-  width: 100%;
-  position: relative;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	background-color: $bg-color;
+	width: 100%;
+	position: relative;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
+	&::-webkit-scrollbar {
+		display: none;
+	}
 
-  & {
-    -ms-overflow-style: none;
-  }
+	& {
+		-ms-overflow-style: none;
+	}
 
-  .content-wrapper {
-    width: 100%;
+	.content-wrapper {
+		width: 100%;
 
-    &::-webkit-scrollbar {
-      display: none;
-    }
+		&::-webkit-scrollbar {
+			display: none;
+		}
 
-    & {
-      -ms-overflow-style: none;
-    }
+		& {
+			-ms-overflow-style: none;
+		}
 
-    .content {
-      width: calc(100% - 0px);
-      max-width: 100%;
+		.content {
+			width: calc(100% - 0px);
+			max-width: 100%;
 
-      &::-webkit-scrollbar {
-        display: none;
-      }
+			&::-webkit-scrollbar {
+				display: none;
+			}
 
-      & {
-        -ms-overflow-style: none;
-      }
-    }
-  }
+			& {
+				-ms-overflow-style: none;
+			}
+		}
+	}
 
-  /* Hide scrollbar for overlaying body scrollbar */
-  .fullwidth-master,
-  .frame-master {
-    position: relative;
-    overflow-anchor: none;
+	/* Hide scrollbar for overlaying body scrollbar */
+	.fullwidth-master,
+	.frame-master {
+		position: relative;
+		overflow-anchor: none;
 
-    &::-webkit-scrollbar {
-      display: none;
-    }
+		&::-webkit-scrollbar {
+			display: none;
+		}
 
-    & {
-      -ms-overflow-style: none;
-    }
-  }
-  /* Hide scrollbar for overlaying body scrollbar - - - END */
+		& {
+			-ms-overflow-style: none;
+		}
+	}
+	/* Hide scrollbar for overlaying body scrollbar - - - END */
 
-  .fullwidth-master {
-    width: 100%;
+	.fullwidth-master {
+		width: 100%;
 
-    .inner {
-      position: relative;
-      // margin: 0 auto;
-      // max-width: var(--inner-miw-c);
-      // width: calc(100% - #{$padding-l-r}*2);
+		.inner {
+			position: relative;
+			// margin: 0 auto;
+			// max-width: var(--inner-miw-c);
+			// width: calc(100% - #{$padding-l-r}*2);
 
-      @media #{$tablet} {
-        // max-width: var(--inner-miw-c);
-        // width: calc(100% - #{$padding-l-r}*2);
-      }
-    }
-  }
+			@media #{$tablet} {
+				// max-width: var(--inner-miw-c);
+				// width: calc(100% - #{$padding-l-r}*2);
+			}
+		}
+	}
 
-  .frame-master {
-    // margin: 0 auto;
-    // width: calc(100% - #{$padding-l-r}*2);
-    // max-width: var(--inner-miw-c);
+	.frame-master {
+		// margin: 0 auto;
+		// width: calc(100% - #{$padding-l-r}*2);
+		// max-width: var(--inner-miw-c);
 
-    .inner {
-      position: relative;
-      width: 100%;
-    }
+		.inner {
+			position: relative;
+			width: 100%;
+		}
 
-    @media #{$tablet} {
-      // max-width: var(--inner-miw-c);
-    }
-  }
+		@media #{$tablet} {
+			// max-width: var(--inner-miw-c);
+		}
+	}
 }
 // -=-=-=-=-=-=-=-=- MASTER-BODY - - -  END -=-=-=-=-=-=-=-=-
 
@@ -125,58 +125,40 @@ p {
   letter-spacing: 0.45px;
   text-align: left;
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
   font-family: $ff-1;
   text-align: left;
 }
 .col {
-  // padding-right: 12px;
-  // padding-left: 12px;
-  flex: 1;
-  position: relative;
+	// padding-right: 12px;
+	// padding-left: 12px;
+	flex: 1;
+	position: relative;
 }
 @for $n from 1 through 6 {
-  h#{$n},
-  .h#{$n} {
+  h#{$n}, .h#{$n} {
     font-size: var(--fz-h#{$n});
     line-height: var(--lh-h#{$n});
   }
 }
-table,
-.table {
-  width: 100%;
-  border-style: solid;
-  border-collapse: collapse;
+table, .table {
+	width: 100%;
+	border-style: solid;
+	border-collapse: collapse;
   border-spacing: 0;
 
-  tr,
-  .tr {
-    border-style: solid;
-  }
+	tr, .tr {
+		border-style: solid;
+	}
 
-  th,
-  .th {
-    font-family: $ff-1-bd;
-    text-align: left;
-  }
+	th, .th {
+		font-family: $ff-1-bd;
+		text-align: left;
+	}
 }
 .bg-stripes {
-  background-image: linear-gradient(
-    45deg,
-    $d-color-info-5 12.5%,
-    transparent 12.5%,
-    transparent 50%,
-    $d-color-info-5 50%,
-    $d-color-info-5 62.5%,
-    transparent 62.5%,
-    transparent 100%
-  );
-  background-size: 5.66px 5.66px;
+	background-image: linear-gradient(45deg,$d-color-info-5 12.5%,transparent 12.5%,transparent 50%,$d-color-info-5 50%,$d-color-info-5 62.5%,transparent 62.5%,transparent 100%);
+	background-size: 5.66px 5.66px;
 }
 
 // -=-=-=-=-=-=-=-=- BUILDER -=-=-=-=-=-=-=-=-
@@ -188,7 +170,6 @@ table,
 // $u = class name variant
 // $y = style value
 // $z = builder unit : rem / minus-rem / percentage
-// $s = state variant
 // function($v, $d, $w, $x, $u, $y, $z) {};
 
 @mixin font-size-builder($v, $x) {
@@ -198,25 +179,26 @@ table,
   }
 }
 @mixin number-class-builder($v, $w, $x) {
-  @for $n from 1 through 6 {
-    @if ($x == w or $x == h) {
-      .#{$v}#{$x}-#{$n}px {
-        #{$w}: #{$n}px;
-      }
-    } @else if ($x == bx-sh) {
+	@for $n from 1 through 6 {
+
+		@if ($x == w or $x == h) {
+			.#{$v}#{$x}-#{$n}px {
+				#{$w}: #{$n}px;
+			}
+		} @else if ($x == bx-sh) {
       .#{$v}#{$x}-#{$n} {
-        #{$w}: 0 #{$n * 0.75}px #{$n + 2}px rgba(31, 19, 19, 0.05);
-      }
+				#{$w}: 0 #{$n * 0.75}px #{$n + 2}px rgba(31, 19, 19, 0.05)
+			}
     } @else {
-      .#{$v}#{$x}-#{$n} {
-        @if ($x == zi or $x == order or $x == f) {
-          #{$w}: #{$n};
-        } @else {
-          #{$w}: #{$n}px;
-        }
-      }
-    }
-  }
+			.#{$v}#{$x}-#{$n} {
+				@if ($x == zi or $x == order or $x == f) {
+					#{$w}: #{$n};
+				} @else {
+					#{$w}: #{$n}px;
+				}
+			}
+		}
+	}
 }
 @mixin single-class-builder($v, $w, $x, $y) {
   .#{$v}#{$x} {
@@ -224,18 +206,20 @@ table,
   }
 }
 @mixin color-class-builder($v, $w, $x, $u, $y) {
-  .#{$v}#{$x}-#{$u} {
-    #{$w}: var(--d-color-#{$y});
-  }
 
-  .hover\:#{$v}#{$x}-#{$u}:hover {
-    #{$w}: var(--d-color-#{$y});
-  }
+	.#{$v}#{$x}-#{$u} {
+		#{$w}: var(--d-color-#{$y});
+	}
+
+	.hover\:#{$v}#{$x}-#{$u}:hover {
+		#{$w}: var(--d-color-#{$y});
+	}
 }
 @mixin size-class-builder($v, $w, $x, $u, $y, $z) {
+
   @if ($x == col) {
     .#{$v}#{$x}-#{$u} {
-      max-width: #{$y};
+      #{$w}: #{$y};
     }
 
     .fw-w {
@@ -243,423 +227,368 @@ table,
         min-width: #{$y};
       }
     }
-  } @else if ($z == rem) {
-    .#{$v}#{$x}-#{$u} {
-      #{$w}: #{$y};
-    }
-  } @else if ($z == rem-minus) {
-    .#{$v}-#{$x}-#{$u} {
-      #{$w}: -#{$y};
-    }
-  } @else if ($z == percentage) {
-    .#{$v}#{$x}-#{$u}\% {
-      #{$w}: #{$y};
-    }
-  }
+	} @else if ($z == rem) {
+		.#{$v}#{$x}-#{$u} {
+			#{$w}: #{$y};
+		}
+	} @else if ($z == rem-minus) {
+		.#{$v}-#{$x}-#{$u} {
+			#{$w}: -#{$y};
+		}
+	} @else if ($z == percentage) {
+		.#{$v}#{$x}-#{$u}\% {
+			#{$w}: #{$y};
+		}
+	}
 }
 @mixin horizontal-vertical-rem-class-builder($v, $d, $w, $x, $u, $y) {
-  @if ($w == border-radius) {
-    @if ($x == bd-t-rs) {
-      .#{$v}#{$x}-#{$u} {
-        border-radius: #{$y} #{$y} 0 0;
-      }
-    } @else if ($x == bd-b-rs) {
-      .#{$v}#{$x}-#{$u} {
-        border-radius: 0 0 #{$y} #{$y};
-      }
-    } @else if ($x == bd-l-rs) {
-      .#{$v}#{$x}-#{$u} {
-        border-radius: #{$y} 0 0 #{$y};
-      }
-    } @else {
-      .#{$v}#{$x}-#{$u} {
-        border-radius: 0 #{$y} #{$y} 0;
-      }
-    }
-  } @else {
-    @if ($d == horizontal) {
-      .#{$v}#{$x}-#{$u} {
-        #{$w}-left: #{$y};
-        #{$w}-right: #{$y};
-      }
-    } @else {
-      .#{$v}#{$x}-#{$u} {
-        #{$w}-top: #{$y};
-        #{$w}-bottom: #{$y};
-      }
-    }
-  }
+
+	@if ($w == border-radius) {
+
+		@if ($x == bd-t-rs) {
+			.#{$v}#{$x}-#{$u} {
+				border-radius : #{$y} #{$y} 0 0,
+			}
+		} @else if ($x == bd-b-rs) {
+			.#{$v}#{$x}-#{$u} {
+				border-radius : 0 0 #{$y} #{$y},
+			}
+		} @else if ($x == bd-l-rs) {
+			.#{$v}#{$x}-#{$u} {
+				border-radius : #{$y} 0 0 #{$y},
+			}
+		} @else {
+			.#{$v}#{$x}-#{$u} {
+				border-radius : 0 #{$y} #{$y} 0,
+			}
+		}
+
+	} @else {
+
+		@if ($d == horizontal) {
+			.#{$v}#{$x}-#{$u} {
+				#{$w}-left: #{$y};
+				#{$w}-right: #{$y};
+			}
+		} @else {
+			.#{$v}#{$x}-#{$u} {
+				#{$w}-top: #{$y};
+				#{$w}-bottom: #{$y};
+			}
+		}
+	}
+
+
 }
 
-$master-responsive: (
-  ''
-    (
-      dafault: '',
-    ),
-  'responsive'
-    (
-      mobile: sm\:,
-      tablet: md\:,
-      laptop: lg\:,
-      dekstop: xl\:,
-      ultrawide: uw\:,
-    )
-);
+$master-responsive:
+	(
+		''
+		(
+			dafault : ''
+		),
+		'responsive'
+		(
+			mobile 		: sm\:,
+			tablet 		: md\:,
+			laptop 		: lg\:,
+			dekstop 	: xl\:,
+			ultrawide : uw\:,
+		)
+	);
 
-$master-style: (
-  'font-size'
-    (p-xl, p-lg, p-md, p-sm, p-xs, h6, h5, h4, h3, h2, h1, h1-lg, h1-xl),
-  'single-class-builder'
+$master-style:
+  (
+    'font-size'
     (
-      // FONT CLASS
+      p-xl,
+      p-lg,
+      p-md,
+      p-sm,
+      p-xs,
+      h6,
+      h5,
+      h4,
+      h3,
+      h2,
+      h1,
+      h1-lg,
+      h1-xl,
+    ),
+    'single-class-builder'
+    (
+			// FONT CLASS
       ff-1 font-family $ff-1,
       ff-1-bd font-family $ff-1-bd,
-      ff-1-lg font-family $ff-1-lg,
-      ff-flow font-family $flow,
-      ff-menlo font-family $menlo,
-      ta-left text-align left,
-      ta-center text-align center,
-      ta-right text-align right,
-      txtf-u text-transform uppercase,
-      txtf-c text-transform capitalize,
-      // FONT CLASS - - - END
-      pos-a position absolute,
-      pos-r position relative,
-      pos-f position fixed,
-      pos-s position sticky,
-      of-v overflow visible,
-      of-h overflow hidden,
-      vb-v visibility visible,
-      vb-h visibility hidden,
-      cur-p cursor pointer,
-      ml-a margin-left auto,
-      mr-a margin-right auto,
-      w-a width auto,
-      h-a height auto,
-      cl-b clear both,
-      d-flex display flex,
-      d-block display block,
-      d-none display none,
-      fw-w flex-wrap wrap,
-      ai-start align-items flex-start,
-      ai-center align-items center,
-      ai-end align-items flex-end,
-      jc-start justify-content flex-start,
-      jc-center justify-content center,
-      jc-end justify-content flex-end,
-      jc-between justify-content space-between,
-      jc-around justify-content space-around,
-      fd-col flex-direction column,
-      fd-row flex-direction row,
-      fd-col-r flex-direction column-reverse,
-      fd-row-r flex-direction row-reverse,
-      row display flex,
-      bd-solid border-style solid,
-      h-100vh height 100vh,
+			ff-1-lg font-family $ff-1-lg,
+			ff-flow font-family $flow,
+			ff-menlo font-family $menlo,
+			ta-left text-align left,
+			ta-center text-align center,
+			ta-right text-align right,
+			txtf-u text-transform uppercase,
+			txtf-c text-transform capitalize,
+			// FONT CLASS - - - END
+			pos-a position absolute,
+			pos-r position relative,
+			pos-f position fixed,
+			pos-s position sticky,
+			of-v overflow visible,
+			of-h overflow hidden,
+			vb-v visibility visible,
+			vb-h visibility hidden,
+			cur-p cursor pointer,
+			ml-a margin-left auto,
+			mr-a margin-right auto,
+			w-a width auto,
+			h-a height auto,
+			cl-b clear both,
+			d-flex display flex,
+			d-block display block,
+			d-none display none,
+			fw-w flex-wrap wrap,
+			ai-start align-items flex-start,
+			ai-center align-items center,
+			ai-end align-items flex-end,
+			jc-start justify-content flex-start,
+			jc-center justify-content center,
+			jc-end justify-content flex-end,
+			jc-between justify-content space-between,
+			jc-around justify-content space-around,
+			fd-col flex-direction column,
+			fd-row flex-direction row,
+			fd-col-r flex-direction column-reverse,
+			fd-row-r flex-direction row-reverse,
+			row display flex,
+			bd-solid border-style solid,
+			h-100vh height 100vh,
       bd-n border none,
-      bg-n background none
+			bg-n background none,
     ),
-  'number-class-builder'
-    (
-      // FONT CLASS
-      ls letter-spacing,
-      // FONT CLASS - - - END
-      w width,
-      h height,
-      bd border-width,
-      bd-l border-left-width,
-      bd-t border-top-width,
-      bd-r border-right-width,
-      bd-b border-bottom-width,
-      f flex,
-      zi z-index,
-      order order,
-      bx-sh box-shadow
-    ),
-  'rem-class-builder'
-    (
-      w width,
-      h height,
-      m margin,
-      ml margin-left,
-      mt margin-top,
-      mr margin-right,
-      mb margin-bottom,
-      p padding,
-      pl padding-left,
-      pt padding-top,
-      pr padding-right,
-      pb padding-bottom,
-      bd-rs border-radius,
-      bd-tl-rs border-top-left-radius,
-      bd-tr-rs border-top-right-radius,
-      bd-br-rs border-bottom-right-radius,
-      bd-bl-rs border-bottom-left-radius,
-      l left,
-      t top,
-      r right,
-      b bottom
-    ),
-  'horizontal-vertical-rem-class-builder'
-    (
-      mh margin horizontal,
-      mv margin vertical,
-      ph padding horizontal,
-      pv padding vertical,
-      bd-t-rs border-radius vertical,
-      bd-b-rs border-radius vertical,
-      bd-l-rs border-radius horintal,
-      bd-r-rs border-radius horintal
-    ),
-  'max-rem-class-builder' (max-w max-width),
-  'percentage-class-builder' (w width, h height, max-w max-width, op opacity),
-  'color-class-builder'
-    (
-      // FONT CLASS
-      tc color,
-      // FONT CLASS - - - END
-      bg background-color,
-      bg-stripes --stripes-color,
-      bd-c border-color,
-      bd-l-c border-left-color,
-      bd-t-c border-top-color,
-      bd-r-c border-right-color,
-      bd-b-c border-bottom-color
-    ),
-  'col-class-builder' (col max-width)
-);
+		'number-class-builder'
+		(
+			// FONT CLASS
+			ls letter-spacing,
+			// FONT CLASS - - - END
+			w width,
+			h height,
+			bd border-width,
+			bd-l border-left-width,
+			bd-t border-top-width,
+			bd-r border-right-width,
+			bd-b border-bottom-width,
+			f flex,
+			zi z-index,
+			order order,
+      bx-sh box-shadow,
+		),
+		'rem-class-builder'
+		(
+			w width,
+			h height,
+			m margin,
+			ml margin-left,
+			mt margin-top,
+			mr margin-right,
+			mb margin-bottom,
+			p padding,
+			pl padding-left,
+			pt padding-top,
+			pr padding-right,
+			pb padding-bottom,
+			bd-rs border-radius,
+			bd-tl-rs border-top-left-radius,
+			bd-tr-rs border-top-right-radius,
+			bd-br-rs border-bottom-right-radius,
+			bd-bl-rs border-bottom-left-radius,
+			l left,
+			t top,
+			r right,
+			b bottom,
+		),
+		'horizontal-vertical-rem-class-builder'
+		(
+			mh margin horizontal,
+			mv margin vertical,
+			ph padding horizontal,
+			pv padding vertical,
+			bd-t-rs border-radius vertical,
+			bd-b-rs border-radius vertical,
+			bd-l-rs border-radius horintal,
+			bd-r-rs border-radius horintal,
+		),
+		'max-rem-class-builder'
+		(
+			max-w max-width,
+		),
+		'percentage-class-builder'
+		(
+			w width,
+			h height,
+			max-w max-width,
+			op opacity,
+		),
+		'color-class-builder'
+		(
+			// FONT CLASS
+			tc color,
+			// FONT CLASS - - - END
+			bg background-color,
+			bg-stripes --stripes-color,
+			bd-c border-color,
+			bd-l-c border-left-color,
+			bd-t-c border-top-color,
+			bd-r-c border-right-color,
+			bd-b-c border-bottom-color,
+		),
+		'col-class-builder'
+		(
+			col max-width,
+		)
+  );
 
-@each $responsive in $master-responsive {
-  $responsive_type: nth($responsive, 1);
-  $responsive_class: nth($responsive, 2);
+	@each $responsive in $master-responsive {
+		$responsive_type 		: nth($responsive, 1);
+		$responsive_class 	: nth($responsive, 2);
 
-  @if ($responsive_type == '') {
-    @each $style in $master-style {
-      $style_type: nth($style, 1);
-      $style_class: nth($style, 2);
-      $responsive_variant: map-get($responsive_class, default);
+		@if ($responsive_type == '') {
 
-      @if ($style_type == 'font-size') {
-        @each $value in $style_class {
-          @include font-size-builder($responsive_variant, nth($value, 1));
-        }
-      } @else if ($style_type == 'single-class-builder') {
-        @each $class, $style, $value in $style_class {
-          @include single-class-builder(
-            $responsive_variant,
-            $style,
-            $class,
-            $value
-          );
-        }
-      } @else if ($style_type == 'number-class-builder') {
-        @each $class, $style in $style_class {
-          @include number-class-builder($responsive_variant, $style, $class);
-        }
-      } @else if ($style_type == 'rem-class-builder') {
-        @each $class, $style in $style_class {
-          @each $u, $value in $rem-sizes {
-            @include size-class-builder(
-              $responsive_variant,
-              $style,
-              $class,
-              $u,
-              $value,
-              rem
-            );
-            @include size-class-builder(
-              $responsive_variant,
-              $style,
-              $class,
-              $u,
-              $value,
-              rem-minus
-            );
-          }
-        }
-      } @else if ($style_type == 'horizontal-vertical-rem-class-builder') {
-        @each $class, $style, $direction in $style_class {
-          @each $u, $value in $rem-sizes {
-            @include horizontal-vertical-rem-class-builder(
-              $responsive_variant,
-              $direction,
-              $style,
-              $class,
-              $u,
-              $value
-            );
-          }
-        }
-      } @else if ($style_type == 'max-rem-class-builder') {
-        @each $class, $style in $style_class {
-          @each $u, $value in $max-rem-sizes {
-            @include size-class-builder(
-              $responsive_variant,
-              $style,
-              $class,
-              $u,
-              $value,
-              rem
-            );
-          }
-        }
-      } @else if ($style_type == 'percentage-class-builder') {
-        @each $class, $style in $style_class {
-          @each $u, $value in $percentage-sizes {
-            @include size-class-builder(
-              $responsive_variant,
-              $style,
-              $class,
-              $u,
-              $value,
-              percentage
-            );
-          }
-        }
-      } @else if ($style_type == 'col-class-builder') {
-        @each $class, $style in $style_class {
-          @each $u, $value in $col-sizes {
-            @include size-class-builder(
-              $responsive_variant,
-              $style,
-              $class,
-              $u,
-              $value,
-              rem
-            );
-          }
-        }
-      } @else if ($style_type == 'color-class-builder') {
-        @each $class, $style in $style_class {
-          @each $u, $value in $color-range {
-            @include color-class-builder(
-              $responsive_variant,
-              $style,
-              $class,
-              $u,
-              $value
-            );
-          }
-        }
-      }
-    }
-  } @else {
-    @each $type, $responsive_variant in $responsive_class {
-      @include responsive($type) {
-        @each $style in $master-style {
-          $style_type: nth($style, 1);
-          $style_class: nth($style, 2);
+			@each $style in $master-style {
+				$style_type					: nth($style, 1);
+				$style_class				: nth($style, 2);
+				$responsive_variant : map-get($responsive_class, default);
 
-          @if ($style_type == 'font-size') {
-            @each $value in $style_class {
-              @include font-size-builder($responsive_variant, nth($value, 1));
-            }
-          } @else if ($style_type == 'single-class-builder') {
-            @each $class, $style, $value in $style_class {
-              @include single-class-builder(
-                $responsive_variant,
-                $style,
-                $class,
-                $value
-              );
-            }
-          } @else if ($style_type == 'number-class-builder') {
-            @each $class, $style in $style_class {
-              @include number-class-builder(
-                $responsive_variant,
-                $style,
-                $class
-              );
-            }
-          } @else if ($style_type == 'rem-class-builder') {
-            @each $class, $style in $style_class {
-              @each $u, $value in $rem-sizes {
-                @include size-class-builder(
-                  $responsive_variant,
-                  $style,
-                  $class,
-                  $u,
-                  $value,
-                  rem
-                );
-                @include size-class-builder(
-                  $responsive_variant,
-                  $style,
-                  $class,
-                  $u,
-                  $value,
-                  rem-minus
-                );
-              }
-            }
-          } @else if ($style_type == 'horizontal-vertical-rem-class-builder') {
-            @each $class, $style, $direction in $style_class {
-              @each $u, $value in $rem-sizes {
-                @include horizontal-vertical-rem-class-builder(
-                  $responsive_variant,
-                  $direction,
-                  $style,
-                  $class,
-                  $u,
-                  $value
-                );
-              }
-            }
-          } @else if ($style_type == 'max-rem-class-builder') {
-            @each $class, $style in $style_class {
-              @each $u, $value in $max-rem-sizes {
-                @include size-class-builder(
-                  $responsive_variant,
-                  $style,
-                  $class,
-                  $u,
-                  $value,
-                  rem
-                );
-              }
-            }
-          } @else if ($style_type == 'percentage-class-builder') {
-            @each $class, $style in $style_class {
-              @each $u, $value in $percentage-sizes {
-                @include size-class-builder(
-                  $responsive_variant,
-                  $style,
-                  $class,
-                  $u,
-                  $value,
-                  percentage
-                );
-              }
-            }
-          } @else if ($style_type == 'col-class-builder') {
-            @each $class, $style in $style_class {
-              @each $u, $value in $col-sizes {
-                @include size-class-builder(
-                  $responsive_variant,
-                  $style,
-                  $class,
-                  $u,
-                  $value,
-                  rem
-                );
-              }
-            }
-          } @else if ($style_type == 'color-class-builder') {
-            @each $class, $style in $style_class {
-              @each $u, $value in $color-range {
-                @include color-class-builder(
-                  $responsive_variant,
-                  $style,
-                  $class,
-                  $u,
-                  $value
-                );
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
+				@if ($style_type == 'font-size') {
+					@each $value in $style_class {
+						@include font-size-builder($responsive_variant, nth($value, 1));
+					}
+				}
+				@else if ($style_type == 'single-class-builder') {
+					@each $class, $style, $value in $style_class {
+						@include single-class-builder($responsive_variant, $style, $class, $value)
+					}
+				}
+				@else if ($style_type == 'number-class-builder') {
+					@each $class, $style in $style_class {
+						@include number-class-builder($responsive_variant, $style, $class)
+					}
+				}
+				@else if ($style_type == 'rem-class-builder') {
+					@each $class, $style in $style_class {
+						@each $u, $value in $rem-sizes {
+							@include size-class-builder($responsive_variant, $style, $class, $u, $value, rem);
+							@include size-class-builder($responsive_variant, $style, $class, $u, $value, rem-minus);
+						}
+					}
+				}
+				@else if ($style_type == 'horizontal-vertical-rem-class-builder') {
+					@each $class, $style, $direction in $style_class {
+						@each $u, $value in $rem-sizes {
+							@include horizontal-vertical-rem-class-builder($responsive_variant, $direction, $style, $class, $u, $value);
+						}
+					}
+				}
+				@else if ($style_type == 'max-rem-class-builder') {
+					@each $class, $style in $style_class {
+						@each $u, $value in $max-rem-sizes {
+							@include size-class-builder($responsive_variant, $style, $class, $u, $value, rem);
+						}
+					}
+				}
+				@else if ($style_type == 'percentage-class-builder') {
+					@each $class, $style in $style_class {
+						@each $u, $value in $percentage-sizes {
+							@include size-class-builder($responsive_variant, $style, $class, $u, $value, percentage);
+						}
+					}
+				}
+				@else if ($style_type == 'col-class-builder') {
+					@each $class, $style in $style_class {
+						@each $u, $value in $col-sizes {
+							@include size-class-builder($responsive_variant, $style, $class, $u, $value, rem);
+						}
+					}
+				}
+				@else if ($style_type == 'color-class-builder') {
+					@each $class, $style in $style_class {
+						@each $u, $value in $color-range {
+							@include color-class-builder($responsive_variant, $style, $class, $u, $value);
+						}
+					}
+				}
+			}
+
+		} @else {
+
+			@each $type, $responsive_variant in $responsive_class {
+
+				@include responsive($type) {
+
+					@each $style in $master-style {
+						$style_type			: nth($style, 1);
+						$style_class		: nth($style, 2);
+
+						@if ($style_type == 'font-size') {
+							@each $value in $style_class {
+								@include font-size-builder($responsive_variant, nth($value, 1));
+							}
+						}
+						@else if ($style_type == 'single-class-builder') {
+							@each $class, $style, $value in $style_class {
+								@include single-class-builder($responsive_variant, $style, $class, $value)
+							}
+						}
+						@else if ($style_type == 'number-class-builder') {
+							@each $class, $style in $style_class {
+								@include number-class-builder($responsive_variant, $style, $class)
+							}
+						}
+						@else if ($style_type == 'rem-class-builder') {
+							@each $class, $style in $style_class {
+								@each $u, $value in $rem-sizes {
+									@include size-class-builder($responsive_variant, $style, $class, $u, $value, rem);
+									@include size-class-builder($responsive_variant, $style, $class, $u, $value, rem-minus);
+								}
+							}
+						}
+						@else if ($style_type == 'horizontal-vertical-rem-class-builder') {
+							@each $class, $style, $direction in $style_class {
+								@each $u, $value in $rem-sizes {
+									@include horizontal-vertical-rem-class-builder($responsive_variant, $direction, $style, $class, $u, $value);
+								}
+							}
+						}
+						@else if ($style_type == 'max-rem-class-builder') {
+							@each $class, $style in $style_class {
+								@each $u, $value in $max-rem-sizes {
+									@include size-class-builder($responsive_variant, $style, $class, $u, $value, rem);
+								}
+							}
+						}
+						@else if ($style_type == 'percentage-class-builder') {
+							@each $class, $style in $style_class {
+								@each $u, $value in $percentage-sizes {
+									@include size-class-builder($responsive_variant, $style, $class, $u, $value, percentage);
+								}
+							}
+						}
+						@else if ($style_type == 'col-class-builder') {
+							@each $class, $style in $style_class {
+								@each $u, $value in $col-sizes {
+									@include size-class-builder($responsive_variant, $style, $class, $u, $value, rem);
+								}
+							}
+						}
+						@else if ($style_type == 'color-class-builder') {
+							@each $class, $style in $style_class {
+								@each $u, $value in $color-range {
+									@include color-class-builder($responsive_variant, $style, $class, $u, $value);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	};
 // -=-=-=-=-=-=-=-=- MASTER-STYLE - - -  END -=-=-=-=-=-=-=-=-
