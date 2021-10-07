@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import '../dashboard.scoped.scss';
 import { DataTable } from '../Components/Datatables';
 import { Button } from 'react-bootstrap';
+import DynamicFont from 'react-dynamic-font';
 import { Card, CardHeader } from '../Components/CardDashboard';
 
 const body = Array.from(new Array(1), () => {
@@ -83,7 +84,7 @@ export function DashboardSuperadmin() {
           <div className="col col-4 ph-0">
             <CardHeader
               icon="archive"
-              total="28"
+              total="86"
               text={['Entry', <br />, 'Baru.']}
             />
           </div>
