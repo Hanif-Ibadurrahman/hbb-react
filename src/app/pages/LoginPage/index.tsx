@@ -11,7 +11,7 @@ export function LoginPage() {
 
   const onSubmit = e => {
     e.preventDefault();
-    history.push('/Dashboard');
+    history.push('/Dashboard/Superadmin');
   };
 
   const LoginForm = () => {
@@ -61,7 +61,7 @@ export function LoginPage() {
         <h1 className="h4 mb-3 font-weight-normal tc-dark-contrast">
           Forgot Password
         </h1>
-        <p className="max-w-100% op-50% tc-dark-contrast mb-12">
+        <p className="max-w-100% op-50% tc-dark-contrast mb-10">
           Enter your given company email to receive your password change
           confirmation.
         </p>

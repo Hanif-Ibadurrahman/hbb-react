@@ -10,11 +10,19 @@ module.exports = {
   plugins: ['prettier'],
   rules: {
     'prettier/prettier': ['error', prettierOptions],
+    // 'no-unused-vars': 0,
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
   },
   overrides: [
     {
       files: ['**/*.ts?(x)'],
-      rules: { 'prettier/prettier': ['warn', prettierOptions] },
+      rules: {
+        'prettier/prettier': ['warn', prettierOptions],
+        // 'no-unused-vars': 0,
+        'no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': 'off',
+      },
     },
   ],
 };

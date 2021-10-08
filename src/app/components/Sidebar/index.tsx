@@ -2,8 +2,7 @@
 import Logo from 'assets/images/logo.png';
 import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import 'react-pro-sidebar/dist/css/styles.css';
-import { PermintaanData } from './SidebarData';
-import { MasterData } from './SidebarData';
+import { DashboardData, PermintaanData, MasterData } from './SidebarData';
 // import { Link, NavLink } from 'react-router-dom';
 import React, { useState } from 'react';
 import IconHome from 'assets/images/icon/icon-1.png';
@@ -28,7 +27,33 @@ export function Sidebar() {
       </div>
       <ProSidebar>
         <Menu iconShape="square">
-          <MenuItem
+          <SubMenu
+            className="pos-r"
+            icon={<img src={IconHome} className="h-5" alt="awSnap" />}
+            title="Dashboard"
+          >
+            {DashboardData.map((val, key) => {
+              return (
+                <MenuItem
+                  id={
+                    window.location.pathname.split(val.link).pop()
+                      ? ''
+                      : 'active'
+                  }
+                  className="pos-r"
+                  icon={<img src={val.icon} className="h-5" alt="awSnap" />}
+                  key={key}
+                  onClick={() => {
+                    window.location.pathname = val.link;
+                  }}
+                >
+                  {''}
+                  {val.title}
+                </MenuItem>
+              );
+            })}
+          </SubMenu>
+          {/* <MenuItem
             id={window.location.pathname === '/Dashboard' ? 'active' : ''}
             className=" pos-r"
             icon={<img src={IconHome} className="h-5" alt="awSnap" />}
@@ -37,7 +62,7 @@ export function Sidebar() {
             }}
           >
             {''} Dashboard
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem
             id={window.location.pathname === '/Library' ? 'active' : ''}
             className=" pos-r"

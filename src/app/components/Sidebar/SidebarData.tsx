@@ -1,3 +1,26 @@
+export const DashboardData = [
+  {
+    title: 'Superadmin',
+    icon: '',
+    link: '/Dashboard/Superadmin',
+  },
+  {
+    title: 'Admin CSR',
+    icon: '',
+    link: '/Dashboard/CSR',
+  },
+  {
+    title: 'Admin RC',
+    icon: '',
+    link: '/Dashboard/RC',
+  },
+  {
+    title: 'Admin Transport',
+    icon: '',
+    link: '/Dashboard/Transport',
+  },
+];
+
 export const PermintaanData = [
   {
     title: 'Riwayat Peminjaman',
