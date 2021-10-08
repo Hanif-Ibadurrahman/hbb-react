@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-pascal-case */
 import React, { useEffect, useState } from 'react';
 import { Alert as B_Alert } from 'react-bootstrap';
 

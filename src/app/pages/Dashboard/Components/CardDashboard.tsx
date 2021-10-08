@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import DynamicFont from 'react-dynamic-font';
 
 export const Card = props => {
