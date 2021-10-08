@@ -1,6 +1,39 @@
 .all-wrapper {
   min-height: 100vh;
 }
+.navbar .dropdown .dropdown-item:active,
+.navbar .dropdown .dropdown-item:focus,
+.navbar .dropdown .dropdown-item:hover,
+.navbar .dropdown .dropdown-toggle:active,
+.navbar .dropdown .dropdown-toggle:focus,
+.navbar .dropdown .dropdown-toggle:hover {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: transparent;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
+  color: inherit;
+}
+.navbar .dropdown .dropdown-toggle:after {
+  display: none;
+}
+.navbar .dropdown .dropdown-toggle .dropdown-toggle-indicator {
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.32s;
+}
+.navbar .dropdown .dropdown-menu {
+  max-width: 100%;
+  width: calc(100% - 1rem * 2);
+}
+.navbar .dropdown.show .dropdown-toggle {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: transparent;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
+}
+.navbar .dropdown.show .dropdown-toggle .dropdown-toggle-indicator {
+  transform: translateY(-50%) rotate(180deg);
+}
 .sidebar {
   box-shadow: 8px 0 8px rgba(0, 0, 0, 0.05);
   height: 100vh;
@@ -107,6 +140,33 @@
   background-color: #121014;
   opacity: 0.9;
   border-color: #121014;
+}
+.login-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background-image: url('');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.login-wrapper {
+  background: rgba(28, 29, 33, 0.5);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  min-width: 450px;
+}
+.login-wrapper .form-control {
+  background: rgba(28, 29, 33, 0.75);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: none;
+}
+.login-wrapper .form-control:focus {
+  color: #fff;
 }
 .notes {
   overflow: hidden;
