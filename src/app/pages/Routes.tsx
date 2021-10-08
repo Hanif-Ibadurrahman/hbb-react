@@ -41,6 +41,10 @@ import { EditVehicle } from './VehiclePage/Edit';
 import { ApprovalBoxPage } from './AdminCSR/BoxPage/Loadable';
 import { DetailBoxCSR } from './AdminCSR/BoxPage/Detail';
 import { EditBoxCSR } from './AdminCSR/BoxPage/Edit';
+// -=-=-=-=-=-
+// CUSTOMER
+import { BorrowBoxPage } from './Customer/BorrowBox/Loadable';
+// -=-=-=-=-=-
 // ALL USER
 import { UserProfile } from './ProfilePage/Loadable';
 // import { form } from 'app/components/Form/Index';
@@ -141,6 +145,12 @@ export function Routes() {
             <Route
               path={process.env.PUBLIC_URL + '/EditBoxCSR'}
               component={EditBoxCSR}
+            />
+
+            {/*---------- CUSTOMER ---------*/}
+            <Route
+              path={process.env.PUBLIC_URL + '/Customer/Borrow-Box'}
+              component={BorrowBoxPage}
             />
 
             {/*--------- ALL USER ---------*/}

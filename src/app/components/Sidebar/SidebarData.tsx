@@ -32,6 +32,11 @@ export const PermintaanData = [
     icon: '',
     link: '/tempo',
   },
+  {
+    title: 'Customer Borrow Box',
+    icon: '',
+    link: '/Customer/Borrow-Box',
+  },
 ];
 
 export const MasterData = [
