@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-// import styled from 'styled-components/macro';
-// import { StyleConstants } from 'styles/StyleConstants';
 import Datatable from 'react-bs-datatable';
 import Button from 'react-bootstrap/Button';
 import { ModalForm } from './components/ModalForm';
@@ -86,6 +84,17 @@ export const classes = {
 // Note that the fields are all using the `prop` field of the headers.
 
 export default function DataTable() {
+  function NavLinkAction(e, href) {
+    e.preventDefault();
+    window.location.pathname = href;
+  }
+
+  const NavLink = props => {
+    return (
+      <div onClick={e => NavLinkAction(e, props.href)}>{props.children}</div>
+    );
+  };
+
   const [modalShow, setModalShow] = useState(false);
 
   const body = Array.from(new Array(20), () => {
@@ -104,9 +113,11 @@ export default function DataTable() {
         ),
         Action: (
           <div className="d-flex jc-between">
-            <Button variant="dark" className="" href="/DetailBoxCSR">
-              Detail
-            </Button>
+            <NavLink href="/RC/DetailBox">
+              <Button variant="dark" className="" href="/DetailBoxCSR">
+                Detail
+              </Button>
+            </NavLink>
             <Button
               variant="transparant"
               className="tc-success-5 w-24"
@@ -130,9 +141,11 @@ export default function DataTable() {
         ),
         Action: (
           <div className="d-flex jc-between">
-            <Button variant="dark" className="" href="/DetailBoxCSR">
-              Detail
-            </Button>
+            <NavLink href="/RC/DetailBox">
+              <Button variant="dark" className="">
+                Detail
+              </Button>
+            </NavLink>
             <Button variant="transparant" className="tc-danger-6 w-24" disabled>
               Cancel
             </Button>
@@ -153,9 +166,11 @@ export default function DataTable() {
       ),
       Action: (
         <div className="d-flex jc-between">
-          <Button variant="dark" className="" href="/DetailBoxCSR">
-            Detail
-          </Button>
+          <NavLink href="/RC/DetailBox">
+            <Button variant="dark" className="">
+              Detail
+            </Button>
+          </NavLink>
           <ModalForm />
         </div>
       ),

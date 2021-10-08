@@ -86,6 +86,17 @@ export const classes = {
 // Note that the fields are all using the `prop` field of the headers.
 
 export default function DataTable() {
+  function NavLinkAction(e, href) {
+    e.preventDefault();
+    window.location.pathname = href;
+  }
+
+  const NavLink = props => {
+    return (
+      <div onClick={e => NavLinkAction(e, props.href)}>{props.children}</div>
+    );
+  };
+
   const [modalShow, setModalShow] = useState(false);
 
   const body = Array.from(new Array(20), () => {
@@ -153,9 +164,11 @@ export default function DataTable() {
       ),
       Action: (
         <div className="d-flex jc-between">
-          <Button variant="dark" className="" href="/DetailBoxCSR">
-            Detail
-          </Button>
+          <NavLink href="/CSR/DetailBox">
+            <Button variant="dark" className="">
+              Detail
+            </Button>
+          </NavLink>
           <ModalForm />
         </div>
       ),

@@ -38,6 +38,8 @@ import { UserProfile } from './ProfilePage/Loadable';
 // import { form } from 'app/components/Form/Index';
 //ADMIN RC
 import { AsignBoxPage } from './AdminRC/BoxPage';
+import { DetailBoxRC } from './AdminRC/BoxPage/Detail';
+import { EditBoxRC } from './AdminRC/BoxPage/Edit';
 
 export function Routes() {
   const { i18n } = useTranslation();
@@ -110,11 +112,11 @@ export function Routes() {
               component={ApprovalBoxPage}
             />
             <Route
-              path={process.env.PUBLIC_URL + '/DetailBoxCSR'}
+              path={process.env.PUBLIC_URL + '/CSR/DetailBox'}
               component={DetailBoxCSR}
             />
             <Route
-              path={process.env.PUBLIC_URL + '/EditBoxCSR'}
+              path={process.env.PUBLIC_URL + '/CSR/EditBox'}
               component={EditBoxCSR}
             />
 
@@ -127,6 +129,14 @@ export function Routes() {
             <Route
               path={process.env.PUBLIC_URL + '/AsignBox/'}
               component={AsignBoxPage}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/RC/DetailBox/'}
+              component={DetailBoxRC}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/RC/EditBox/'}
+              component={EditBoxRC}
             />
             <Route component={NotFoundPage} />
           </Switch>
