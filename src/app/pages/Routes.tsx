@@ -36,6 +36,8 @@ import { EditBoxCSR } from './AdminCSR/BoxPage/Edit';
 // ALL USER
 import { UserProfile } from './ProfilePage/Loadable';
 // import { form } from 'app/components/Form/Index';
+//ADMIN RC
+import { AsignBoxPage } from './AdminRC/BoxPage';
 
 export function Routes() {
   const { i18n } = useTranslation();
@@ -120,6 +122,11 @@ export function Routes() {
             <Route
               path={process.env.PUBLIC_URL + '/Profile/'}
               component={UserProfile}
+            />
+            {/*--------- ADMIN RC ---------*/}
+            <Route
+              path={process.env.PUBLIC_URL + '/AsignBox/'}
+              component={AsignBoxPage}
             />
             <Route component={NotFoundPage} />
           </Switch>
