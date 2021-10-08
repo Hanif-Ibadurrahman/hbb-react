@@ -17,7 +17,6 @@ export default function Alert(props) {
       onClose={props.onHide}
       style={props.style}
       dismissible
-      style={{ top: '10px', left: '30%' }}
     >
       <h6 className="pr-8">{props.text}</h6>
     </B_Alert>
