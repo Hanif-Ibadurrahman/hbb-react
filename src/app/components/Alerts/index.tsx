@@ -15,6 +15,7 @@ export default function Alert(props) {
       variant={props.variant}
       show={props.show}
       onClose={props.onHide}
+      style={props.style}
       dismissible
     >
       <h6 className="pr-8">{props.text}</h6>

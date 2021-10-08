@@ -13,6 +13,10 @@ $phone-l: 'only screen and (min-width: 481px) and (max-width: 767px)';
   min-height: 100vh;
 }
 
+.content-wrapper {
+  background: $bg-color;
+}
+
 .sidebar {
   box-shadow: 8px 0 8px rgba(0, 0, 0, 0.05);
   height: 100vh;

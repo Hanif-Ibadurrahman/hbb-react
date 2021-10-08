@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import '../dashboard.scoped.scss';
-import { DataTable } from '../Components/Datatables';
+import { DataTable } from '../../../components/Datatables';
 import { Button } from 'react-bootstrap';
 import { Card, CardHeader } from '../Components/CardDashboard';
 
