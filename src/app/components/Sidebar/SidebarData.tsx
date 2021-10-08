@@ -88,7 +88,7 @@ export const MasterData = [
   {
     title: 'Lemari',
     icon: '',
-    link: '/lemari',
+    link: '/LemariPage',
   },
   {
     title: 'Box',

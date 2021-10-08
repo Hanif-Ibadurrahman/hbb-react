@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import { Breadcrumb, Form, Button } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import Breadcrumb from 'app/components/BreadCrumb';
 
 export function DetailBox() {
+  const [crumbs, setCrumbs] = useState(['Dashboard', 'BoxPage', 'DetailBox']);
+
   return (
-    <div className="pos-r p-8">
-      <div className="row mt-14">
-        <div className="col-6">
+    <>
+      <Breadcrumb crumbs={crumbs} selected />
+      <div className="pos-r p-8 row">
+        <div className="col-6 pr-8">
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Code</Form.Label>
             <Form.Control type="text" disabled defaultValue="A12O2O3" />
@@ -24,7 +28,7 @@ export function DetailBox() {
             <Form.Control type="text" disabled defaultValue="10" />
           </Form.Group>
         </div>
-        <div className="col-6">
+        <div className="col-6 pr-8">
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Notes</Form.Label>
             <Form.Control
@@ -44,11 +48,6 @@ export function DetailBox() {
           </Form.Group>
         </div>
       </div>
-      <div>
-        <Button className="mt-4" variant="warning" href="/EditBox">
-          Edit Data
-        </Button>{' '}
-      </div>
-    </div>
+    </>
   );
 }
