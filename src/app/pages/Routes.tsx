@@ -29,7 +29,6 @@ import { CabinetPage } from './CabinetPage';
 import { DocumentPage } from './DocumentPage/Loadable';
 import { DetailDocument } from './DocumentPage/DetailDocument';
 import { EditDocument } from './DocumentPage/Edit';
-
 //ADMIN CSR
 import { ApprovalBoxPage } from './AdminCSR/BoxPage/Loadable';
 import { DetailBoxCSR } from './AdminCSR/BoxPage/Detail';
