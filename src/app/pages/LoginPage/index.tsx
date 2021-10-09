@@ -77,7 +77,7 @@ export function LoginPage() {
         </div>
         <div className="d-grid gap-2 mt-8 mb-6">
           <Button variant="primary" className="pv-3 ph-4">
-            Log In
+            Send Email
           </Button>
         </div>
         <div className="d-flex jc-center">
@@ -105,7 +105,7 @@ export function LoginPage() {
         className="login-bg"
         style={{ backgroundImage: 'url(' + LoginBg + ')' }}
       />
-      <div className="pos-r d-flex ai-center h-100vh">
+      <div className="pos-r d-flex ai-center h-100vh zi-2">
         <div className="pos-r max-w-40% ml-a mr-a -mt-8 login-wrapper p-14 pb-10">
           <div
             className={
