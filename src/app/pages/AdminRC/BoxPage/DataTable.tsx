@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-// import styled from 'styled-components/macro';
-// import { StyleConstants } from 'styles/StyleConstants';
 import Datatable from 'react-bs-datatable';
 import Button from 'react-bootstrap/Button';
 import { ModalForm } from './components/ModalForm';
@@ -115,9 +113,11 @@ export default function DataTable() {
         ),
         Action: (
           <div className="d-flex jc-between">
-            <Button variant="dark" className="" href="/DetailBoxCSR">
-              Detail
-            </Button>
+            <NavLink href="/RC/DetailBox">
+              <Button variant="dark" className="" href="/DetailBoxCSR">
+                Detail
+              </Button>
+            </NavLink>
             <Button
               variant="transparant"
               className="tc-success-5 w-24"
@@ -141,9 +141,11 @@ export default function DataTable() {
         ),
         Action: (
           <div className="d-flex jc-between">
-            <Button variant="dark" className="" href="/DetailBoxCSR">
-              Detail
-            </Button>
+            <NavLink href="/RC/DetailBox">
+              <Button variant="dark" className="">
+                Detail
+              </Button>
+            </NavLink>
             <Button variant="transparant" className="tc-danger-6 w-24" disabled>
               Cancel
             </Button>
@@ -164,7 +166,7 @@ export default function DataTable() {
       ),
       Action: (
         <div className="d-flex jc-between">
-          <NavLink href="/CSR/DetailBox">
+          <NavLink href="/RC/DetailBox">
             <Button variant="dark" className="">
               Detail
             </Button>

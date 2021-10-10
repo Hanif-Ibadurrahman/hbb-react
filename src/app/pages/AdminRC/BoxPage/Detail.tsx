@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Breadcrumb, Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-export function DetailBoxCSR() {
+export function DetailBoxRC() {
   function NavLinkAction(e, href) {
     e.preventDefault();
     window.location.pathname = href;
@@ -13,7 +13,6 @@ export function DetailBoxCSR() {
       <div onClick={e => NavLinkAction(e, props.href)}>{props.children}</div>
     );
   };
-
   return (
     <div className="pos-r p-8 w-80%">
       <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -50,7 +49,7 @@ export function DetailBoxCSR() {
         ></Form.Control>
       </Form.Group>
       <NavLink href="/CSR/EditBox">
-        <Button className="mt-4" variant="warning">
+        <Button className="mt-4" variant="warning" href="/EditBox">
           Edit Data
         </Button>{' '}
       </NavLink>
