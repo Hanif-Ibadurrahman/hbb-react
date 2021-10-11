@@ -173,6 +173,12 @@ export function ModalForm(props) {
         text="Data Berhasil Di Asign"
         variant="success"
         show={showAlert}
+        style={{
+          top: 50,
+          position: 'fixed',
+          left: '50%',
+          transform: [{ translateX: '-50%' }],
+        }}
         onHide={() => setShowAlert(false)}
       />
       <Modal
@@ -181,9 +187,7 @@ export function ModalForm(props) {
         aria-labelledby="contained-modal-title-vcenter"
       >
         <Modal.Header closeButton className="bg-primary-5">
-          <Modal.Title id="contained-modal-title-vcenter">
-            Code Box : A091321
-          </Modal.Title>
+          <Modal.Title id="contained-modal-title-vcenter">Approval</Modal.Title>
         </Modal.Header>
         <Modal.Body className="show-grid">
           <Container>
@@ -191,7 +195,7 @@ export function ModalForm(props) {
               <Col xs={12}>
                 <Form>
                   <Form.Group className="mb-3" controlId="Code">
-                    <Form.Label>Code</Form.Label>
+                    <Form.Label>Code Request</Form.Label>
                     <Form.Control type="text" disabled placeholder="A12O2O3" />
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="Date">
@@ -213,6 +217,27 @@ export function ModalForm(props) {
                       className="notesdisable"
                       disabled
                       placeholder="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="Date">
+                    <Form.Label>List Box</Form.Label>
+                    <Form.Control
+                      type="text"
+                      className=" mb-2"
+                      disabled
+                      placeholder="1. A091321JAHSJ928KASD0"
+                    />
+                    <Form.Control
+                      type="text"
+                      className=" mb-2"
+                      disabled
+                      placeholder="2. A091321KSJASU39ASD21"
+                    />
+                    <Form.Control
+                      type="text"
+                      className=" mb-2"
+                      disabled
+                      placeholder="3. A091321ASDI938SASDSA"
                     />
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="Notes">
