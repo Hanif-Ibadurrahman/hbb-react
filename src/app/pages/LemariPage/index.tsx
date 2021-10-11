@@ -1,13 +1,16 @@
 import styled from 'styled-components/macro';
 import { Helmet } from 'react-helmet-async';
 import { StyleConstants } from 'styles/StyleConstants';
-import { LemariTables } from './LemariTables';
+import { LemariTables } from './DataTables';
 import Button from 'react-bootstrap/Button';
-import { LemariForm } from './components/Lemariform';
+// import { LemariForm } from './components/Lemariform';
 import React, { useState } from 'react';
+import Breadcrumb from 'app/components/BreadCrumb';
+import { ModalLemari } from './components/ModalLemari';
 
 export function LemariPage() {
-  const [modalShow, setModalShow] = useState(false);
+  const [crumbs, setCrumbs] = useState(['Dashboard', 'LemariPage']);
+
   return (
     <>
       <Helmet>
@@ -15,24 +18,17 @@ export function LemariPage() {
         <meta name="description" content="Accordions" />
       </Helmet>
       <div className="pos-r p-8">
-        <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-          <Button variant="primary" onClick={() => setModalShow(true)}>
-            <i className="fas fa-plus"></i>Tambah
-          </Button>
-          <Button variant="info">Print</Button>
-          <LemariForm show={modalShow} onHide={() => setModalShow(false)} />
+        <div className="d-flex jc-between ai-center mb-4">
+          <Breadcrumb crumbs={crumbs} selected />
+          <div className="d-flex">
+            <ModalLemari />
+            <Button className="ml-2 d-flex ai-center" variant="dark">
+              Print<i className="fas fa-print ml-2"></i>
+            </Button>
+          </div>
         </div>
         <LemariTables />
       </div>
     </>
   );
 }
-
-const Wrapper = styled.div`
-  height: calc(100vh - ${StyleConstants.NAV_BAR_HEIGHT});
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  min-height: 320px;
-`;

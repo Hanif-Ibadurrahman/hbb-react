@@ -173,6 +173,12 @@ export function ModalForm(props) {
         text="Data Berhasil Di Asign"
         variant="success"
         show={showAlert}
+        style={{
+          top: 50,
+          position: 'fixed',
+          left: '50%',
+          transform: [{ translateX: '-50%' }],
+        }}
         onHide={() => setShowAlert(false)}
       />
       <Modal

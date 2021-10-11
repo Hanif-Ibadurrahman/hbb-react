@@ -33,8 +33,11 @@ import { DetailBox } from './BoxPage/Detail';
 import { EditBox } from './BoxPage/Edit';
 import { TimeLine } from './TimeLinePage/Loadable';
 import { AreaPage } from './AreaPage/Loadable';
+import { EditArea } from './AreaPage/Edit';
 import { DivisiPage } from './DivisiPage/Loadable';
+import { EditDevisi } from './DivisiPage/Edit';
 import { LemariPage } from './LemariPage/Loadable';
+import { EditLemari } from './LemariPage/Edit';
 import { VehiclePage } from './VehiclePage/Loadable';
 import { EditVehicle } from './VehiclePage/Edit';
 //ADMIN CSR
@@ -106,11 +109,11 @@ export function Routes() {
               component={BoxPage}
             />
             <Route
-              path={process.env.PUBLIC_URL + '/Box/DetailBox'}
+              path={process.env.PUBLIC_URL + '/Box/Detail'}
               component={DetailBox}
             />
             <Route
-              path={process.env.PUBLIC_URL + '/Box/EditBox'}
+              path={process.env.PUBLIC_URL + '/Box/Edit'}
               component={EditBox}
             />
             <Route
@@ -122,12 +125,24 @@ export function Routes() {
               component={AreaPage}
             />
             <Route
+              path={process.env.PUBLIC_URL + '/Area/Edit'}
+              component={EditArea}
+            />
+            <Route
               path={process.env.PUBLIC_URL + '/DivisiPage'}
               component={DivisiPage}
             />
             <Route
+              path={process.env.PUBLIC_URL + '/Divisi/Edit'}
+              component={EditDevisi}
+            />
+            <Route
               path={process.env.PUBLIC_URL + '/LemariPage'}
               component={LemariPage}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + '/Lemari/Edit'}
+              component={EditLemari}
             />
             <Route
               path={process.env.PUBLIC_URL + '/VehiclePage'}
@@ -139,7 +154,7 @@ export function Routes() {
             />
             {/*--------- ADMIN CSR ---------*/}
             <Route
-              path={process.env.PUBLIC_URL + '/ApprovalBoxPage'}
+              path={process.env.PUBLIC_URL + '/ApprovalBox'}
               component={ApprovalBoxPage}
             />
             <Route

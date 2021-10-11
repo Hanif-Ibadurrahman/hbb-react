@@ -1,4 +1,4 @@
-import { Form, Modal, Container, Row, Col, Button } from 'react-bootstrap';
+import { Form, Modal, Button } from 'react-bootstrap';
 import Alert from 'app/components/Alerts';
 import React, { useState } from 'react';
 
@@ -34,6 +34,12 @@ export function ModalForm(props) {
         text="Data Berhasil Di Input"
         variant="success"
         show={showAlert}
+        style={{
+          top: 50,
+          position: 'fixed',
+          left: '50%',
+          transform: [{ translateX: '-50%' }],
+        }}
         onHide={() => setShowAlert(false)}
       />
       <Modal

@@ -44,12 +44,24 @@ export function ModalForm(props) {
         text="Data Berhasil Di Approve"
         variant="success"
         show={showAlert}
+        style={{
+          top: 50,
+          position: 'fixed',
+          left: '50%',
+          transform: [{ translateX: '-50%' }],
+        }}
         onHide={() => setShowAlert(false)}
       />
       <Alert
         text="Data di Reject"
         variant="danger"
         show={showReject}
+        style={{
+          top: 50,
+          position: 'fixed',
+          left: '50%',
+          transform: [{ translateX: '-50%' }],
+        }}
         onHide={() => setShowReject(false)}
       />
       <Modal
