@@ -24,6 +24,7 @@ export function ModalForm(props) {
   };
 
   const validationSchema = Yup.object().shape({
+    AlternativeCode: Yup.string().required('*Alternative Code required'),
     date: Yup.date().required('*Date is required'),
     time: Yup.string().required('*Time is required'),
     quantity: Yup.string().required('*Quantity required'),
@@ -48,6 +49,7 @@ export function ModalForm(props) {
       <Formik
         validationSchema={validationSchema}
         initialValues={{
+          AlternativeCode: '',
           codeBox: 'A091321',
           date: '',
           time: '',
@@ -91,6 +93,22 @@ export function ModalForm(props) {
                   <Col xs={12}>
                     <Form onSubmit={handleSubmit}>
                       {console.log(values)}
+                      <Form.Group className="mb-4" controlId="formBasicEmail">
+                        <Form.Label>Alternative Code</Form.Label>
+                        <Form.Control
+                          type="text"
+                          name="AlternativeCode"
+                          placeholder="Alternatice Code"
+                          value={values.AlternativeCode}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {touched.AlternativeCode && errors.AlternativeCode ? (
+                          <p className="tc-danger-5 pos-a p-sm">
+                            {errors.AlternativeCode}
+                          </p>
+                        ) : null}
+                      </Form.Group>
                       <Form.Group className="mb-4" controlId="formBasicEmail">
                         <Form.Label>Date</Form.Label>
                         <Form.Control
