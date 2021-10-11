@@ -75,7 +75,7 @@ export function EditDocument() {
                   <FormControl
                     type="number"
                     name="no"
-                    placeholder="no"
+                    placeholder="No"
                     value={values.no}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -85,11 +85,11 @@ export function EditDocument() {
                   ) : null}
                 </Form.Group>
                 <Form.Group className="mb-4" controlId="formBasicEmail">
-                  <Form.Label>serial no</Form.Label>
+                  <Form.Label>Serial No</Form.Label>
                   <Form.Control
                     type="number"
                     name="serialno"
-                    placeholder="serialno"
+                    placeholder="SerialNo"
                     value={values.serialno}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -117,7 +117,7 @@ export function EditDocument() {
                   <Form.Control
                     type="time"
                     name="time"
-                    placeholder="time"
+                    placeholder="Time"
                     value={values.time}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -127,11 +127,11 @@ export function EditDocument() {
                   ) : null}
                 </Form.Group>
                 <Form.Group className="mb-4" controlId="formBasicEmail">
-                  <Form.Label>nominal</Form.Label>
+                  <Form.Label>Nominal</Form.Label>
                   <Form.Control
                     type="number"
                     name="nominal"
-                    placeholder="nominal"
+                    placeholder="Nominal"
                     value={values.nominal}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -155,11 +155,11 @@ export function EditDocument() {
                   ) : null}
                 </Form.Group>
                 <Form.Group className="mb-4" controlId="formBasicEmail">
-                  <Form.Label>nobox</Form.Label>
+                  <Form.Label>No Box</Form.Label>
                   <Form.Control
                     type="number"
                     name="nobox"
-                    placeholder="nobox"
+                    placeholder="NoBox"
                     value={values.nobox}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -169,11 +169,11 @@ export function EditDocument() {
                   ) : null}
                 </Form.Group>
                 <Form.Group className="mb-4" controlId="formBasicEmail">
-                  <Form.Label>nofolder</Form.Label>
+                  <Form.Label>No Folder</Form.Label>
                   <Form.Control
                     type="number"
                     name="nofolder"
-                    placeholder="nofolder"
+                    placeholder="NoFolder"
                     value={values.nofolder}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -201,7 +201,7 @@ export function EditDocument() {
                   <Form.Control
                     type="textarea"
                     name="list"
-                    placeholder="list"
+                    placeholder="List"
                     value={values.list}
                     onChange={handleChange}
                     onBlur={handleBlur}
