@@ -1,6 +1,5 @@
-import styled from 'styled-components/macro';
 import { Helmet } from 'react-helmet-async';
-import { DataTables } from './DataTables';
+import { DataTables } from './DataTable';
 import { ModalForm } from './components/Modalform';
 import React, { useState } from 'react';
 import Breadcrumb from 'app/components/BreadCrumb';

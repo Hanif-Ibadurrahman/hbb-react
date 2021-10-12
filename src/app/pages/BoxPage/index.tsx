@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Helmet } from 'react-helmet-async';
-import DataTable from './DataTables';
+import DataTables from './DataTables';
 import { Header } from './Header';
 
 export function BoxPage() {
@@ -12,7 +12,7 @@ export function BoxPage() {
       </Helmet>
       <div className="pos-r p-8">
         <Header />
-        <DataTable />
+        <DataTables />
       </div>
     </>
   );

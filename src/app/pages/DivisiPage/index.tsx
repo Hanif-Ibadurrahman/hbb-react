@@ -1,13 +1,13 @@
 import styled from 'styled-components/macro';
 import { Helmet } from 'react-helmet-async';
 import { StyleConstants } from 'styles/StyleConstants';
-import { DivisiTables } from './DivisiTables';
-import Button from 'react-bootstrap/Button';
+import { DataTables } from './DataTables';
 import { ModalDivisi } from './components/Modaldivisi';
 import React, { useState } from 'react';
+import Breadcrumb from 'app/components/BreadCrumb';
 
 export function DivisiPage() {
-  const [modalShow, setModalShow] = useState(false);
+  const [crumbs, setCrumbs] = useState(['Dashboard', 'DivisiPage']);
   return (
     <>
       <Helmet>
@@ -15,13 +15,11 @@ export function DivisiPage() {
         <meta name="description" content="Accordions" />
       </Helmet>
       <div className="pos-r p-8">
-        <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-          <Button variant="primary" onClick={() => setModalShow(true)}>
-            <i className="fas fa-plus"></i>Tambah
-          </Button>
-          <ModalDivisi show={modalShow} onHide={() => setModalShow(false)} />
+        <div className="d-flex jc-between ai-center mb-4">
+          <Breadcrumb crumbs={crumbs} selected />
+          <ModalDivisi />
         </div>
-        <DivisiTables />
+        <DataTables />
       </div>
     </>
   );

@@ -1,89 +1,9 @@
 import React, { useState } from 'react';
-import Datatable from 'react-bs-datatable';
+import { DataTable } from '../../../components/Datatables';
 import Button from 'react-bootstrap/Button';
 import { ModalForm } from './components/ModalForm';
-import { BrowserRouter } from 'react-router-dom';
 
-// Create table headers consisting of 4 columns.
-
-export const header = [
-  {
-    title: 'Code Box',
-    prop: 'CodeBox',
-    sortable: true,
-    cellProps: {
-      style: { width: '15%' },
-    },
-  },
-  {
-    title: 'Tanggal',
-    prop: 'Tanggal',
-    sortable: true,
-    // Add classes and styles by objects and strings.
-    cellProps: {
-      style: { background: '#fafafa', width: '15%' },
-      className: 'realname-class',
-    },
-  },
-  {
-    title: 'Waktu',
-    prop: 'Waktu',
-    cellProps: {
-      style: { width: '15%' },
-    },
-  },
-  {
-    title: 'Quantity',
-    prop: 'Quantity',
-    cellProps: {
-      style: { background: '#fafafa', width: '10%' },
-      className: 'realname-class',
-    },
-  },
-  {
-    title: 'Notes',
-    prop: 'Notes',
-    cellProps: {
-      style: { width: '25%' },
-    },
-  },
-  {
-    title: 'Action',
-    prop: 'Action',
-    cellProps: {
-      style: { background: '#fafafa' },
-      className: 'realname-class',
-    },
-  },
-];
-
-export const customLabels = {
-  first: '<<',
-  last: '>>',
-  prev: '<',
-  next: '>',
-  show: 'Display',
-  entries: 'rows',
-  noResults: 'There is no data to be displayed',
-};
-
-export const classes = {
-  table: 'table-striped table-hover mb-5',
-  thead: `bg-primary-5 ta-center`,
-  theadCol: `mt-5 pb-3 pt-3 p-lg`,
-  tbodyRow: `h-10 p-md ta-center`,
-  filterCol: `d-none`,
-  controlRow: `jc-end`,
-  paginationOptsFormControl: `w-auto cur-p`,
-  paginationOptsFormGroup: `d-flex ai-center jc-center`,
-  paginationCol: `w-auto`,
-  paginationButton: `bg-dark bd-c-dark`,
-};
-
-// Randomize data of the table columns.
-// Note that the fields are all using the `prop` field of the headers.
-
-export default function DataTable() {
+export default function DataTables() {
   function NavLinkAction(e, href) {
     e.preventDefault();
     window.location.pathname = href;
@@ -96,6 +16,57 @@ export default function DataTable() {
   };
 
   const [modalShow, setModalShow] = useState(false);
+
+  const header = [
+    {
+      title: 'Code Box',
+      prop: 'CodeBox',
+      sortable: true,
+      cellProps: {
+        style: { width: '15%' },
+      },
+    },
+    {
+      title: 'Tanggal',
+      prop: 'Tanggal',
+      sortable: true,
+      // Add classes and styles by objects and strings.
+      cellProps: {
+        style: { background: '#fafafa', width: '15%' },
+        className: 'realname-class',
+      },
+    },
+    {
+      title: 'Waktu',
+      prop: 'Waktu',
+      cellProps: {
+        style: { width: '15%' },
+      },
+    },
+    {
+      title: 'Quantity',
+      prop: 'Quantity',
+      cellProps: {
+        style: { background: '#fafafa', width: '10%' },
+        className: 'realname-class',
+      },
+    },
+    {
+      title: 'Notes',
+      prop: 'Notes',
+      cellProps: {
+        style: { width: '25%' },
+      },
+    },
+    {
+      title: 'Action',
+      prop: 'Action',
+      cellProps: {
+        style: { background: '#fafafa' },
+        className: 'realname-class',
+      },
+    },
+  ];
 
   const body = Array.from(new Array(20), () => {
     const rd = (Math.random() * 10).toFixed(2);
@@ -114,9 +85,7 @@ export default function DataTable() {
         Action: (
           <div className="d-flex jc-between">
             <NavLink href="/RC/DetailBox">
-              <Button variant="dark" className="" href="/DetailBoxCSR">
-                Detail
-              </Button>
+              <Button variant="dark">Detail</Button>
             </NavLink>
             <Button
               variant="transparant"
@@ -180,25 +149,8 @@ export default function DataTable() {
   return (
     <>
       <div className="d-flex fd-col-r">
-        <Datatable
-          tableHeaders={header}
-          tableBody={body}
-          rowsPerPage={8}
-          rowsPerPageOption={[5, 10, 15, 20]}
-          initialSort={{ prop: 'username', isAscending: true }}
-          labels={customLabels}
-          classes={classes}
-        />
+        <DataTable tableHeader={header} tableBody={body} />
       </div>
     </>
   );
 }
-
-// const Wrapper = styled.div`
-//   height: calc(100vh - ${StyleConstants.NAV_BAR_HEIGHT});
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   flex-direction: column;
-//   min-height: 320px;
-// `;

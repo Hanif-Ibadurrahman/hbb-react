@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import Breadcrumb from 'app/components/BreadCrumb';
 
 export function EditBox() {
-  const [crumbs, setCrumbs] = useState(['Dashboard', 'BoxPage', 'EditBox']);
+  const [crumbs, setCrumbs] = useState(['Dashboard', 'BoxPage', 'Edit']);
 
   const validationSchema = Yup.object().shape({
     date: Yup.date().required('*Date is required'),
