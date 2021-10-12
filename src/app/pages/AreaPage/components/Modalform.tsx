@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 export function ModalForm(props) {
   const [modalShow, setModalShow] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [statusAlert, setStatusAlert] = useState(false);
 
   const _onHide = () => {
     setModalShow(false);
@@ -31,8 +32,8 @@ export function ModalForm(props) {
         Add Data<i className="far fa-plus ml-2"></i>
       </Button>{' '}
       <Alert
-        text="Data Berhasil Di Input"
-        variant="success"
+        text={statusAlert ? 'Data Berhasil Di Input' : 'Data Gagal Di Input'}
+        variant={statusAlert ? 'success' : 'danger'}
         show={showAlert}
         style={{
           top: 50,
