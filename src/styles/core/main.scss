@@ -13,48 +13,8 @@ $phone-l: 'only screen and (min-width: 481px) and (max-width: 767px)';
   min-height: 100vh;
 }
 
-.navbar {
-  .dropdown {
-    .dropdown-item,
-    .dropdown-toggle {
-      &:hover,
-      &:focus,
-      &:active {
-        background: rgba(0, 0, 0, 0.1);
-        border-color: transparent;
-        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
-        color: inherit;
-      }
-    }
-
-    .dropdown-toggle {
-      &:after {
-        display: none;
-      }
-      .dropdown-toggle-indicator {
-        position: absolute;
-        right: 1.25rem;
-        top: 50%;
-        transform: translateY(-50%);
-        transition: all 0.32s;
-      }
-    }
-    .dropdown-menu {
-      max-width: 100%;
-      width: calc(100% - 1rem * 2);
-    }
-    &.show {
-      .dropdown-toggle {
-        background: rgba(0, 0, 0, 0.1);
-        border-color: transparent;
-        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
-
-        .dropdown-toggle-indicator {
-          transform: translateY(-50%) rotate(180deg);
-        }
-      }
-    }
-  }
+.content-wrapper {
+  background: $bg-color;
 }
 
 .sidebar {
@@ -143,28 +103,6 @@ $phone-l: 'only screen and (min-width: 481px) and (max-width: 767px)';
           border-color: $d-color-dark;
         }
       }
-    }
-  }
-}
-
-.login-bg {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  @include bg-image('', cover, no-repeat, center);
-}
-.login-wrapper {
-  @include blur(rgba(28, 29, 33, 0.5), 20px);
-  min-width: 450px;
-
-  .form-control {
-    @include blur(rgba(28, 29, 33, 0.75), 20px);
-    border: none;
-    &:focus {
-      color: $d-color-dark-contrast;
     }
   }
 }
