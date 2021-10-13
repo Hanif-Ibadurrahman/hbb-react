@@ -1,0 +1,18 @@
+.alert {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  padding-right: inherit;
+  &.alert-dismissible > .btn-close {
+    position: relative;
+    height: 38px;
+    width: 38px;
+    border-radius: 38px;
+    background-color: rgba(0, 0, 0, 0.2);
+    top: 0;
+    right: 0;
+    z-index: 2;
+    padding: 0;
+    margin-right: 1rem;
+  }
+}
