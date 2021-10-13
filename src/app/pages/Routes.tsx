@@ -50,7 +50,6 @@ import { BorrowBoxPage } from "./Customer/BorrowBox/Loadable";
 // -=-=-=-=-=-
 // ALL USER
 import { UserProfile } from "./ProfilePage/Loadable";
-// import { form } from 'app/components/Form/Index';
 //ADMIN RC
 import { AssignBoxPage } from "./AdminRC/BoxPage";
 import { DetailBoxRC } from "./AdminRC/BoxPage/Detail";

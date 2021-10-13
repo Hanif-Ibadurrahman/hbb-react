@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import Breadcrumb from 'app/components/BreadCrumb';
-import { Link } from 'react-router-dom';
 import { Filter } from 'app/components/Filter';
 
 export function Header() {
-  const [crumbs, setCrumbs] = useState(['Dashboard', 'Customer', 'Borrow Box']);
+  const [crumbs, setCrumbs] = useState(['Beranda', 'Peminjaman']);
 
   return (
     <>
