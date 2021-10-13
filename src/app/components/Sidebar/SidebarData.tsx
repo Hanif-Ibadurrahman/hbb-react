@@ -26,21 +26,25 @@ export const PeminjamanData = [
     title: 'Request Box',
     icon: '',
     link: '/BoxPage',
+    notifications: '5',
   },
   {
     title: 'Pickup Box',
     icon: '',
     link: '/PickupBox',
+    notifications: '3',
   },
   {
     title: 'Pinjam Item',
     icon: '',
     link: '/PinjamItem',
+    notifications: '2',
   },
   {
     title: 'Pengembalian Item',
     icon: '',
     link: '/PengembalianItem',
+    notifications: '6',
   },
 ];
 

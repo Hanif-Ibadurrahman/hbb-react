@@ -17,7 +17,7 @@ import IconTable from 'assets/images/icon/icon-5.png';
 
 export function Sidebar() {
   const [isActive] = useState<boolean>(true);
-  const [role, setRole] = useState('admin');
+  const [role, setRole] = useState('customer');
 
   const CustomerMenu = props => {
     return (
@@ -148,7 +148,9 @@ export function Sidebar() {
                 {''}
                 {val.title}
                 <span className="h-6 w-6 bd-rs-6 bg-danger-5 d-flex ai-center jc-center ml-a">
-                  <span className="text tc-danger-contrast">5</span>
+                  <span className="text tc-danger-contrast">
+                    {val.notifications}
+                  </span>
                 </span>
               </MenuItem>
             );
