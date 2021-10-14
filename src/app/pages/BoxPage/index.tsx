@@ -1,21 +1,21 @@
-import { Helmet } from 'react-helmet-async';
-import { Header } from './components/Header';
-import { Dropdown } from 'react-bootstrap';
-import { BrowserRouter } from 'react-router-dom';
-import { DataTable } from 'app/components/Datatables';
+import { Helmet } from "react-helmet-async";
+import { Header } from "./components/Header";
+import { Dropdown } from "react-bootstrap";
+import { BrowserRouter } from "react-router-dom";
+import { DataTable } from "app/components/Datatables";
 
-import createSagaMiddleware from 'redux-saga';
-import { render } from 'react-dom';
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import { logger } from 'redux-logger';
-import reducer from './reducers';
-import rootSaga from './sagas';
-import { connect } from 'react-redux';
-import React, { useCallback, useEffect, useState } from 'react';
-import { put, takeLatest, all } from 'redux-saga/effects';
-import axios from 'axios';
-import PaginatedBoxResponse from './Box/interface';
+import createSagaMiddleware from "redux-saga";
+import { render } from "react-dom";
+import { createStore, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
+import { logger } from "redux-logger";
+import reducer from "./reducers";
+import rootSaga from "./sagas";
+import { connect } from "react-redux";
+import React, { useCallback, useEffect, useState } from "react";
+import { put, takeLatest, all } from "redux-saga/effects";
+import axios from "axios";
+import PaginatedBoxResponse from "./Box/interface";
 
 // const header = [
 //   {
@@ -32,75 +32,76 @@ import PaginatedBoxResponse from './Box/interface';
 //     )
 //   }
 // ];
+
 function NavLinkAction(e, href) {
-  e.preventDefault();
-  window.location.pathname = href;
+	e.preventDefault();
+	window.location.pathname = href;
 }
 
 const NavLink = props => {
-  return (
-    <div onClick={e => NavLinkAction(e, props.href)}>{props.children}</div>
-  );
+	return (
+		<div onClick={e => NavLinkAction(e, props.href)}>{props.children}</div>
+	);
 };
 
 const header = [
-  {
-    title: 'Code Box',
-    prop: 'code_box',
-    sortable: true,
-    cellProps: {
-      style: { width: '75%' },
-    },
-  },
-  {
-    title: 'Action',
-    prop: 'Action',
-    cellProps: {
-      style: { background: '#fafafa', flex: 1, width: '25%' },
-      className: 'realname-class',
-    },
-    cell: row => {
-      return (
-        <BrowserRouter>
-          <Dropdown>
-            <Dropdown.Toggle variant="success" id="dropdown-basic">
-              Action
-            </Dropdown.Toggle>
-            <Dropdown.Menu style={{ minWidth: 200 }}>
-              <Dropdown.Item>
-                <div className="d-flex ai-center pv-2">
-                  <span className="icon">
-                    <i className="far fa-copy p-sm mr-3"></i>
-                  </span>
-                  <span className="text">Duplicate</span>
-                </div>
-              </Dropdown.Item>
-              <NavLink href="/Box/Edit">
-                <div className="d-flex w-100% h-1px bg-medium op-25%"></div>
-                <Dropdown.Item>
-                  <div className="d-flex ai-center pv-2">
-                    <span className="icon">
-                      <i className="far fa-edit p-sm mr-3"></i>
-                    </span>
-                    <span className="text">Edit</span>
-                  </div>
-                </Dropdown.Item>
-              </NavLink>
-              <div className="d-flex w-100% h-1px bg-medium op-25%"></div>
-              <Dropdown.Item>
-                <div className="d-flex ai-center pv-2 tc-danger-5">
-                  <span className="icon">
-                    <i className="far fa-trash-alt p-sm mr-3"></i>
-                  </span>
-                  <span className="text">Delete</span>
-                </div>
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </BrowserRouter>
-      );
-    },
-  },
+	{
+		title: "Code Box",
+		prop: "code_box",
+		sortable: true,
+		cellProps: {
+			style: { width: "75%" },
+		},
+	},
+	{
+		title: "Action",
+		prop: "Action",
+		cellProps: {
+			style: { background: "#fafafa", flex: 1, width: "25%" },
+			className: "realname-class",
+		},
+		cell: row => {
+			return (
+				<BrowserRouter>
+					<Dropdown>
+						<Dropdown.Toggle variant="success" id="dropdown-basic">
+							Action
+						</Dropdown.Toggle>
+						<Dropdown.Menu style={{ minWidth: 200 }}>
+							<Dropdown.Item>
+								<div className="d-flex ai-center pv-2">
+									<span className="icon">
+										<i className="far fa-copy p-sm mr-3"></i>
+									</span>
+									<span className="text">Duplicate</span>
+								</div>
+							</Dropdown.Item>
+							<NavLink href="/Box/Edit">
+								<div className="d-flex w-100% h-1px bg-medium op-25%"></div>
+								<Dropdown.Item>
+									<div className="d-flex ai-center pv-2">
+										<span className="icon">
+											<i className="far fa-edit p-sm mr-3"></i>
+										</span>
+										<span className="text">Edit</span>
+									</div>
+								</Dropdown.Item>
+							</NavLink>
+							<div className="d-flex w-100% h-1px bg-medium op-25%"></div>
+							<Dropdown.Item>
+								<div className="d-flex ai-center pv-2 tc-danger-5">
+									<span className="icon">
+										<i className="far fa-trash-alt p-sm mr-3"></i>
+									</span>
+									<span className="text">Delete</span>
+								</div>
+							</Dropdown.Item>
+						</Dropdown.Menu>
+					</Dropdown>
+				</BrowserRouter>
+			);
+		},
+	},
 ];
 
 // export function BoxPage() {
@@ -247,27 +248,27 @@ const header = [
 //   );
 // }
 
-const baseURL = 'http://127.0.0.1:3333';
+const baseURL = "http://127.0.0.1:3333";
 
 export function BoxPage() {
-  const [data, setData] = useState([]);
+	const [data, setData] = useState([]);
 
-  // API hit.
-  async function getBoxes() {
-    const { data } = await axios.get<PaginatedBoxResponse>(baseURL + `/boxes`);
-    console.log(data.data);
-    const newData = data.data as any;
-    setData(newData);
-  }
+	// API hit.
+	async function getBoxes() {
+		const { data } = await axios.get<PaginatedBoxResponse>(baseURL + `/boxes`);
+		console.log(data.data);
+		const newData = data.data as any;
+		setData(newData);
+	}
 
-  useEffect(() => {
-    getBoxes();
-  }, []);
+	useEffect(() => {
+		getBoxes();
+	}, []);
 
-  return (
-    <div className="pos-r p-8">
-      <Header />
-      <DataTable tableHeader={header} tableBody={data} />
-    </div>
-  );
+	return (
+		<div className="pos-r p-8">
+			<Header />
+			<DataTable tableHeader={header} tableBody={data} />
+		</div>
+	);
 }
