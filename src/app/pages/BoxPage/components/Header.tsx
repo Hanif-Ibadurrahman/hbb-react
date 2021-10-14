@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Breadcrumb as B_Breadcrumb } from 'react-bootstrap';
-import { ModalForm } from './components/ModalForm';
+import { ModalForm } from './ModalForm';
 import { Filter } from 'app/components/Filter';
 import Breadcrumb from 'app/components/BreadCrumb';
 

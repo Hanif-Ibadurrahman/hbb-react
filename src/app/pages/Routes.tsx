@@ -28,7 +28,7 @@ import { DashboardAdminRC } from './Dashboard/AdminRC';
 import { DashboardAdminTransport } from './Dashboard/AdminTransport';
 // -=-=-=-=-=-
 import { DataTables } from './Tables/DataTable/Loadable';
-import { BoxPage } from './BoxPage/Loadable';
+import { BoxPage } from './BoxPage/index';
 import { DetailBox } from './BoxPage/Detail';
 import { EditBox } from './BoxPage/Edit';
 import { TimeLine } from './TimeLinePage/Loadable';
@@ -104,10 +104,7 @@ export function Routes() {
               path={process.env.PUBLIC_URL + '/Table/DataTables'}
               component={DataTables}
             />
-            <Route
-              path={process.env.PUBLIC_URL + '/BoxPage'}
-              component={BoxPage}
-            />
+            <Route path={process.env.PUBLIC_URL + '/Box'} component={BoxPage} />
             <Route
               path={process.env.PUBLIC_URL + '/Box/Detail'}
               component={DetailBox}
