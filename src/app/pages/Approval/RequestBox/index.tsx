@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import "../approval.scoped.scss";
-import { DataTable } from "../../../components/Datatables";
-import shuffle from "../../../components/DemoShuffle"; // Delete me when you done apply
+import { PageWrapper } from "app/components/PageWrapper";
+import { DataTable } from "app/components/Datatables";
 import PageHeader from "../Components/PageHeader";
 import StatusApproval from "../Components/StatusApproval";
 import DropdownAction from "../Components/DropdownAction";
@@ -92,11 +92,10 @@ export function ApprovalRequestBox() {
 					content="A React Boilerplate application homepage"
 				/>
 			</Helmet>
-
-			<div className="pos-r p-8 pt-0 mt-8">
+			<PageWrapper>
 				<PageHeader breadcrumb={["Dashboard", "Approval", "Request Box"]} />
 				<DataTable tableHeader={header} tableBody={body} />
-			</div>
+			</PageWrapper>
 		</>
 	);
 }
