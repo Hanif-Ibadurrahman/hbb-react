@@ -130,7 +130,7 @@ export function Sidebar() {
 				<SubMenu
 					className=""
 					icon={<img src={IconForm} className="h-5" alt="awSnap" />}
-					title="Peminjaman"
+					title="Persetujuan"
 				>
 					{PeminjamanData.map((val, key) => {
 						return (
