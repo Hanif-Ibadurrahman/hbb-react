@@ -1,0 +1,20 @@
+@import "../../../styles/core/variables";
+
+.dropdown-item.active,
+.dropdown-item:active {
+	color: $d-color-dark;
+	background-color: $d-color-medium;
+}
+
+.status-waiting {
+	background-color: $d-color-warning-1;
+	color: $d-color-warning-6;
+}
+.status-approved {
+	background-color: $d-color-success-1;
+	color: $d-color-success-6;
+}
+.status-declined {
+	background-color: $d-color-danger-1;
+	color: $d-color-danger-6;
+}
