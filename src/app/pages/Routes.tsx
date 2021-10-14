@@ -43,8 +43,8 @@ import { AreaPage } from "./AreaPage/Loadable";
 import { EditArea } from "./AreaPage/Edit";
 import { DivisiPage } from "./DivisiPage/Loadable";
 import { EditDevisi } from "./DivisiPage/Edit";
-import { LemariPage } from "./LemariPage/Loadable";
-import { EditLemari } from "./LemariPage/Edit";
+import { CabinetPage } from "./CabinetPage/Loadable";
+import { EditLemari } from "./CabinetPage/Edit";
 import { VehiclePage } from "./VehiclePage/Loadable";
 import { EditVehicle } from "./VehiclePage/Edit";
 //ADMIN CSR
@@ -158,7 +158,7 @@ export function Routes() {
 						/>
 						<Route
 							path={process.env.PUBLIC_URL + "/LemariPage"}
-							component={LemariPage}
+							component={CabinetPage}
 						/>
 						<Route
 							path={process.env.PUBLIC_URL + "/Lemari/Edit"}

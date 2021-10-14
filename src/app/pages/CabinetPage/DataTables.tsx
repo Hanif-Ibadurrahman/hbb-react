@@ -3,7 +3,7 @@ import { DataTable } from "app/components/Datatables";
 import Button from "react-bootstrap/Button";
 import { ModalHapus } from "./components/Modalhapus";
 
-export function DataTables() {
+export function LemariTables() {
 	function NavLinkAction(e, href) {
 		e.preventDefault();
 		window.location.pathname = href;
@@ -19,11 +19,27 @@ export function DataTables() {
 
 	const header = [
 		{
-			title: "Nama Divisi",
-			prop: "Divisi",
+			title: "Nama Record Center",
+			prop: "RecordCenter",
 			sortable: true,
 			cellProps: {
-				style: { width: "75%" },
+				style: { width: "25%" },
+			},
+		},
+		{
+			title: "Nama Ruang",
+			prop: "Ruang",
+			sortable: true,
+			cellProps: {
+				style: { width: "25%" },
+			},
+		},
+		{
+			title: "Kode Lemari",
+			prop: "KodeLemari",
+			sortable: true,
+			cellProps: {
+				style: { width: "25%" },
 			},
 		},
 		{
@@ -38,18 +54,18 @@ export function DataTables() {
 
 	const body = Array.from(new Array(30), () => {
 		return {
-			Divisi: `SDM`,
+			RecordCenter: `RC Bogor`,
+			Ruang: `Bogor 1`,
+			KodeLemari: `320`,
 			Action: (
-				<>
-					<div className="d-flex jc-center">
-						<NavLink href="Divisi/Edit">
-							<Button variant="warning mr-2">
-								Edit<i className="fas fa-edit ml-2"></i>
-							</Button>
-						</NavLink>
-						<ModalHapus show={modalShow} onHide={() => setModalShow(false)} />
-					</div>
-				</>
+				<div className="d-flex jc-center">
+					<NavLink href="Lemari/Edit">
+						<Button variant="warning mr-2">
+							Edit<i className="fas fa-edit ml-2"></i>
+						</Button>
+					</NavLink>
+					<ModalHapus show={modalShow} onHide={() => setModalShow(false)} />
+				</div>
 			),
 		};
 	});
