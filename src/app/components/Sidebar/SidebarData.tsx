@@ -60,12 +60,12 @@ export const MasterData = [
 	{
 		title: "Box",
 		icon: "",
-		link: "/BoxPage",
+		link: "/Box",
 	},
 	{
 		title: "Folder",
 		icon: "",
-		link: "/folder",
+		link: "/Folder",
 	},
 	{
 		title: "Dokumen",
