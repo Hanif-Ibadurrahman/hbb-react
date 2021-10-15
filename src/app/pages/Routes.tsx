@@ -38,6 +38,8 @@ import { ApprovalDetail } from "./Approval/Detail";
 // 1 - BOX
 import { BoxPage } from "./Master/BoxPage";
 import { BoxPageDetail } from "./Master/BoxPage/Detail";
+import { FolderPage } from "./Master/FolderPage";
+import { FolderPageDetail } from "./Master/FolderPage/Detail";
 // 2 - FOLDER
 // import { FolderPage } from "./Master/FolderPage";
 // -=-=-=-=-=-
@@ -132,6 +134,14 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/Box-Detail"}
 							component={BoxPageDetail}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Folder"}
+							component={FolderPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Folder-Detail"}
+							component={FolderPageDetail}
 						/>
 						{/* <Route
 							path={process.env.PUBLIC_URL + "/Folder"}
