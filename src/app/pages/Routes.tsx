@@ -35,7 +35,7 @@ import { ApprovalPengembalianItem } from "./Approval/PengembalianItem";
 import { ApprovalDetail } from "./Approval/Detail";
 // -=-=-=-=-=-
 import { DataTables } from "./Tables/DataTable/Loadable";
-import { BoxPage } from "./BoxPage/Loadable";
+import { BoxPage } from "./BoxPage";
 import { DetailBox } from "./BoxPage/Detail";
 import { EditBox } from "./BoxPage/Edit";
 import { TimeLine } from "./TimeLinePage/Loadable";
