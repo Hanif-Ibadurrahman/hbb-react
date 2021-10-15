@@ -38,6 +38,8 @@ import { ApprovalDetail } from "./Approval/Detail";
 // 1 - BOX
 import { BoxPage } from "./Master/BoxPage";
 import { BoxPageDetail } from "./Master/BoxPage/Detail";
+import { CabinetPage } from "./Master/CabinetPage";
+import { CabinetPageDetail } from "./Master/CabinetPage/Detail";
 // 2 - FOLDER
 // import { FolderPage } from "./Master/FolderPage";
 // -=-=-=-=-=-
@@ -50,7 +52,7 @@ import { AreaPage } from "./AreaPage/Loadable";
 import { EditArea } from "./AreaPage/Edit";
 import { DivisiPage } from "./DivisiPage/Loadable";
 import { EditDevisi } from "./DivisiPage/Edit";
-import { CabinetPage } from "./CabinetPage/Loadable";
+// import { CabinetPage } from "./CabinetPage/Loadable";
 import { EditLemari } from "./CabinetPage/Edit";
 import { VehiclePage } from "./VehiclePage/Loadable";
 import { EditVehicle } from "./VehiclePage/Edit";
@@ -132,6 +134,14 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/Box-Detail"}
 							component={BoxPageDetail}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Cabinet"}
+							component={CabinetPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Cabinet-Detail"}
+							component={CabinetPageDetail}
 						/>
 						{/* <Route
 							path={process.env.PUBLIC_URL + "/Folder"}
