@@ -88,10 +88,7 @@ export function FolderPage() {
 				/>
 			</Helmet>
 			<PageWrapper>
-				<PageHeader
-					breadcrumb={["Master", "Folders"]}
-					addForm={<ModalForm />}
-				/>
+				<PageHeader breadcrumb={["Master", "Folder"]} addForm={<ModalForm />} />
 				<DataTable tableHeader={header} tableBody={data} />
 			</PageWrapper>
 		</>
