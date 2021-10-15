@@ -67,7 +67,7 @@ export function FolderPage() {
 	const [data, setData] = useState([]);
 
 	// API hit.
-	async function getBoxes() {
+	async function getFolders() {
 		const { data } = await api.get<PaginatedFolderResponse>(`/folders`);
 		console.log(data.data);
 		const newData = data.data as any;
@@ -75,7 +75,7 @@ export function FolderPage() {
 	}
 
 	useEffect(() => {
-		getBoxes();
+		getFolders();
 	}, []);
 
 	return (
