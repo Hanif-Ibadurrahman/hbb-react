@@ -42,9 +42,9 @@ import { BoxPageDetail } from "./Master/BoxPage/Detail";
 // import { FolderPage } from "./Master/FolderPage";
 // -=-=-=-=-=-
 import { DataTables } from "./Tables/DataTable/Loadable";
-// import { BoxPage } from "./BoxPage/Loadable";
-// import { DetailBox } from "./BoxPage/Detail";
-// import { EditBox } from "./BoxPage/Edit";
+// import { BoxPage } from "./BoxPage";
+import { DetailBox } from "./BoxPage/Detail";
+import { EditBox } from "./BoxPage/Edit";
 import { TimeLine } from "./TimeLinePage/Loadable";
 import { AreaPage } from "./AreaPage/Loadable";
 import { EditArea } from "./AreaPage/Edit";
