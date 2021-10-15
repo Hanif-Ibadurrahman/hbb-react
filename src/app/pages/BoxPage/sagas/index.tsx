@@ -1,24 +1,24 @@
-import { put, takeLatest, all } from 'redux-saga/effects';
-import axios from 'axios';
-import React from 'react';
+import { put, takeLatest, all } from "redux-saga/effects";
+import axios from "axios";
+import React from "react";
 
-const baseURL = 'http://127.0.0.1:3333';
+const baseURL = "http://127.0.0.1:3333";
 
 async function* getBoxs() {
-  // const [boxs, setBoxs] = React.useState(null);
-  // React.useEffect(() => {
-  // 	axios.get(baseURL).then((response) => {
-  // 		setBoxs(response.data);
-  // 	});
-  // }, []);
+	// const [boxs, setBoxs] = React.useState(null);
+	// React.useEffect(() => {
+	// 	axios.get(baseURL).then((response) => {
+	// 		setBoxs(response.data);
+	// 	});
+	// }, []);
 
-  // if (!boxs) return null;
+	// if (!boxs) return null;
 
-  let data = await axios.get(baseURL + 'boxes').then(response => {
-    data = response.data;
-  });
-  console.log('>>>>>>>>>>>>>>>>', data);
-  return data;
+	let data = await axios.get(baseURL + "boxes").then(response => {
+		data = response.data;
+	});
+	console.log(">>>>>>>>>>>>>>>>", data);
+	return data;
 }
 
 // function* fetchNews() {
@@ -29,9 +29,9 @@ async function* getBoxs() {
 //   }
 
 function* actionWatcher() {
-  yield takeLatest('GET_BOXS', getBoxs); //fungsi jika GET_BOXS menerima dispatch ketika proses fetching sedang pending, maka proses pending akan dibatalkan dan proses terakhir kalinya lah yang hanya berjalan.
+	yield takeLatest("GET_BOXS", getBoxs); //fungsi jika GET_BOXS menerima dispatch ketika proses fetching sedang pending, maka proses pending akan dibatalkan dan proses terakhir kalinya lah yang hanya berjalan.
 }
 
 export default function* rootSaga() {
-  yield all([actionWatcher()]);
+	yield all([actionWatcher()]);
 }

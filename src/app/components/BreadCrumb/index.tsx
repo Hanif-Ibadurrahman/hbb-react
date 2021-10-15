@@ -7,7 +7,7 @@ export default function Breadcrumb(props) {
 	}
 
 	return (
-		<ol className="breadcrumb">
+		<ol className={"breadcrumb " + props.className}>
 			{props.crumbs.map((crumb, ci) => {
 				const disabled = isLast(ci) ? "disabled" : "";
 

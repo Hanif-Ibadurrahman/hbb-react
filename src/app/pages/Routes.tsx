@@ -34,8 +34,15 @@ import { ApprovalPinjamItem } from "./Approval/PinjamItem";
 import { ApprovalPengembalianItem } from "./Approval/PengembalianItem";
 import { ApprovalDetail } from "./Approval/Detail";
 // -=-=-=-=-=-
+// MASTER
+// 1 - BOX
+import { BoxPage } from "./Master/BoxPage";
+import { BoxPageDetail } from "./Master/BoxPage/Detail";
+// 2 - FOLDER
+// import { FolderPage } from "./Master/FolderPage";
+// -=-=-=-=-=-
 import { DataTables } from "./Tables/DataTable/Loadable";
-import { BoxPage } from "./BoxPage";
+// import { BoxPage } from "./BoxPage";
 import { DetailBox } from "./BoxPage/Detail";
 import { EditBox } from "./BoxPage/Edit";
 import { TimeLine } from "./TimeLinePage/Loadable";
@@ -120,11 +127,23 @@ export function Routes() {
 						/>
 						{/*---------- APPROVAL - - - END ---------*/}
 
+						{/*---------- MASTER ---------*/}
+						<Route path={process.env.PUBLIC_URL + "/Box"} component={BoxPage} />
+						<Route
+							path={process.env.PUBLIC_URL + "/Box-Detail"}
+							component={BoxPageDetail}
+						/>
+						{/* <Route
+							path={process.env.PUBLIC_URL + "/Folder"}
+							component={FolderPage}
+						/> */}
+						{/*---------- MASTER - - - END ---------*/}
+
 						<Route
 							path={process.env.PUBLIC_URL + "/Table/DataTables"}
 							component={DataTables}
 						/>
-						<Route
+						{/* <Route
 							path={process.env.PUBLIC_URL + "/BoxPage"}
 							component={BoxPage}
 						/>
@@ -135,7 +154,7 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/Box/Edit"}
 							component={EditBox}
-						/>
+						/> */}
 						<Route
 							path={process.env.PUBLIC_URL + "/Timeline"}
 							component={TimeLine}
