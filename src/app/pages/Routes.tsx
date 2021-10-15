@@ -41,7 +41,10 @@ import { BoxPageDetail } from "./Master/BoxPage/Detail";
 // 2 - FOLDER
 import { FolderPage } from "./Master/FolderPage";
 import { FolderPageDetail } from "./Master/FolderPage/Detail";
-// 3 - CABINET
+// 3 - DOCUMENT
+import { DocumentPage } from "./Master/DocumentPage";
+import { DocumentPageDetail } from "./Master/DocumentPage/Detail";
+// 4 - CABINET
 import { CabinetPage } from "./Master/CabinetPage";
 import { CabinetPageDetail } from "./Master/CabinetPage/Detail";
 // import { FolderPage } from "./Master/FolderPage";
@@ -153,6 +156,14 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/Cabinet-Detail"}
 							component={CabinetPageDetail}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Document"}
+							component={DocumentPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Document-Detail"}
+							component={DocumentPageDetail}
 						/>
 						{/* <Route
 							path={process.env.PUBLIC_URL + "/Folder"}
