@@ -34,6 +34,30 @@ const header = [
 	},
 ];
 
+const action = [
+	{
+		icon: "fa-search",
+		title: "Detail",
+		// action: NavLinkAction("/Box-Detail"),
+	},
+	{
+		icon: "fa-copy ",
+		title: "Duplicate",
+		// action: NavLinkAction("/Box-Detail"),
+	},
+	{
+		icon: "fa-edit",
+		title: "Edit",
+		// action: NavLinkAction("/Box-Detail"),
+	},
+	{
+		icon: "fa-trash-alt",
+		title: "Delete",
+		titleClass: "tc-danger-5",
+		// action: NavLinkAction("/Box-Detail"),
+	},
+];
+
 const body = Array.from(new Array(30), () => {
 	const rd = (Math.random() * 10).toFixed(2);
 
@@ -42,7 +66,7 @@ const body = Array.from(new Array(30), () => {
 		Tanggal: "05 - 09 - 21",
 		Waktu: "09:52 WIB",
 		Quantity: Math.floor(Math.random() * 10) + 1,
-		Action: <DropdownAction />,
+		Action: <DropdownAction list={action} />,
 	};
 });
 

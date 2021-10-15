@@ -48,14 +48,6 @@ export const PeminjamanData = [
 	},
 ];
 
-// export const ApprovalData = [
-//   {
-//     title: 'Approval Box',
-//     icon: '',
-//     link: '/BoxPage',
-//   },
-// ];
-
 export const MasterData = [
 	{
 		title: "Box",
@@ -70,68 +62,52 @@ export const MasterData = [
 	{
 		title: "Dokumen",
 		icon: "",
-		link: "/document",
+		link: "/Document",
 	},
 	{
-		title: "Kabinet",
+		title: "Lemari",
 		icon: "",
-		link: "/LemariPage",
+		link: "/Cabinet",
 	},
 	{
 		title: "Ruangan",
 		icon: "",
-		link: "/room",
+		link: "/Room",
 	},
 	{
 		title: "Record Center",
 		icon: "",
-		link: "/record",
+		link: "/Record-Center",
 	},
 	{
 		title: "Mobil",
 		icon: "",
-		link: "/VehiclePage",
+		link: "/Car",
 	},
 	{
 		title: "User",
 		icon: "",
-		link: "/user",
+		link: "/User",
 	},
 	{
 		title: "Divisi",
 		icon: "",
-		link: "/divisi",
+		link: "/Divisi",
 	},
-	// {
-	//   title: 'Berkas',
-	//   icon: '',
-	//   link: '/berkas',
-	// },
-	// {
-	//   title: 'Dokumen Duplikast',
-	//   icon: '',
-	//   link: '/dokumen',
-	// },
+	{
+		title: "Duplikat Dokumen",
+		icon: "",
+		link: "/Duplikat-Dokumen",
+	},
 	{
 		title: "Daftar Musnah",
 		icon: "",
-		link: "/musnah",
+		link: "/Daftar-Musnah",
 	},
-	// {
-	//   title: 'Daftar Upload',
-	//   icon: '',
-	//   link: '/upload',
-	// },
-	// {
-	//   title: 'User',
-	//   icon: '',
-	//   link: '/user',
-	// },
-
 	{
-		title: "Masa Restensi",
+		title: "Masa Retensi",
 		icon: "",
-		link: "/restensi",
+		link: "/Masa-Retensi",
 	},
 ];
 

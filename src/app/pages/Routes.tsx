@@ -37,6 +37,7 @@ import { ApprovalDetail } from "./Approval/Detail";
 // MASTER
 // 1 - BOX
 import { BoxPage } from "./Master/BoxPage";
+import { BoxPageDetail } from "./Master/BoxPage/Detail";
 // 2 - FOLDER
 // import { FolderPage } from "./Master/FolderPage";
 // -=-=-=-=-=-
@@ -128,6 +129,10 @@ export function Routes() {
 
 						{/*---------- MASTER ---------*/}
 						<Route path={process.env.PUBLIC_URL + "/Box"} component={BoxPage} />
+						<Route
+							path={process.env.PUBLIC_URL + "/Box-Detail"}
+							component={BoxPageDetail}
+						/>
 						{/* <Route
 							path={process.env.PUBLIC_URL + "/Folder"}
 							component={FolderPage}
