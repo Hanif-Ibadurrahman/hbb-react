@@ -90,7 +90,7 @@ export function ModalForm(props) {
 					>
 						<Modal.Header closeButton className="bg-primary-5">
 							<Modal.Title id="contained-modal-title-vcenter">
-								Code Box : {values.codeBox}
+								Code Cabinet : {values.codeBox}
 							</Modal.Title>
 						</Modal.Header>
 						<Modal.Body className="show-grid">
@@ -164,7 +164,7 @@ export function ModalForm(props) {
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Description</Form.Label>
+												<Form.Label>Notes</Form.Label>
 												<Form.Control
 													as="textarea"
 													name="notes"

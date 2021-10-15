@@ -6,7 +6,38 @@ import { ModalForm } from "./ModalForm";
 import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
 import api from "../../../../api/dox";
-import PaginatedDocumentResponse from "app/pages/Interface/document";
+import PaginatedCabinetResponse from "app/pages/Interface/cabinet";
+
+const header = [
+	{
+		title: "Code Cabinet",
+		prop: "code_cabinet",
+		sortable: true,
+		cellProps: {
+			style: { width: "80%" },
+		},
+	},
+	// {
+	// 	title: "Tanggal",
+	// 	prop: "created_at",
+	// 	sortable: true,
+	// 	cellProps: {
+	// 		style: { background: "#fafafa", width: "40%" },
+	// 		className: "realname-class",
+	// 	},
+	// },
+	{
+		title: "Action",
+		prop: "Action",
+		cellProps: {
+			style: { flex: 1 },
+			className: "realname-class",
+		},
+		cell: row => {
+			return <DropdownAction list={action} />;
+		},
+	},
+];
 
 const action = [
 	{
@@ -32,50 +63,19 @@ const action = [
 	},
 ];
 
-const header = [
-	{
-		title: "Code Document",
-		prop: "no",
-		sortable: true,
-		cellProps: {
-			style: { width: "40%" },
-		},
-	},
-	{
-		title: "Tanggal",
-		prop: "date",
-		sortable: true,
-		cellProps: {
-			style: { background: "#fafafa", width: "40%" },
-			className: "realname-class",
-		},
-	},
-	{
-		title: "Action",
-		prop: "Action",
-		cellProps: {
-			style: { flex: 1 },
-			className: "realname-class",
-		},
-		cell: row => {
-			return <DropdownAction list={action} />;
-		},
-	},
-];
-
-export function DocumentPage() {
+export function CabinetPage() {
 	const [data, setData] = useState([]);
 
 	// API hit.
-	async function getDocuments() {
-		const { data } = await api.get<PaginatedDocumentResponse>(`/documents`);
+	async function getCabinet() {
+		const { data } = await api.get<PaginatedCabinetResponse>(`/cabinets`);
 		console.log(data.data);
 		const newData = data.data as any;
 		setData(newData);
 	}
 
 	useEffect(() => {
-		getDocuments();
+		getCabinet();
 	}, []);
 
 	return (
@@ -89,7 +89,7 @@ export function DocumentPage() {
 			</Helmet>
 			<PageWrapper>
 				<PageHeader
-					breadcrumb={["Master", "Document"]}
+					breadcrumb={["Master", "Cabinet"]}
 					addForm={<ModalForm />}
 				/>
 				<DataTable tableHeader={header} tableBody={data} />
