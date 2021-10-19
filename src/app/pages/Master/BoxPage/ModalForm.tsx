@@ -3,8 +3,13 @@ import React, { useState } from "react";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
+import { useHistory } from "react-router";
+import api from "../../../../api/dox";
 
-export function ModalForm(props) {
+export function ModalForm() {
+	let history = useHistory();
+	const [code_box, setcode_box] = useState("");
+
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
 
@@ -15,20 +20,24 @@ export function ModalForm(props) {
 	};
 
 	const _onSubmit = () => {
+		api
+			.post(`/boxes`, {
+				code_box,
+			})
+			.then(() => {
+				history.push("/Box");
+			});
 		setModalShow(false);
 		setShowAlert(true);
 		setTimeout(function () {
 			setShowAlert(false);
 		}, 4000);
+		window.location.reload();
 		console.log("show alert hide modal");
 	};
 
 	const validationSchema = Yup.object().shape({
-		AlternativeCode: Yup.string().required("*Alternative Code required"),
-		date: Yup.date().required("*Date is required"),
-		time: Yup.string().required("*Time is required"),
-		quantity: Yup.string().required("*Quantity required"),
-		notes: Yup.string().required("*Notes required"),
+		code_box: Yup.string().required("*Code box required"),
 	});
 
 	return (
@@ -55,12 +64,7 @@ export function ModalForm(props) {
 			<Formik
 				validationSchema={validationSchema}
 				initialValues={{
-					AlternativeCode: "",
-					codeBox: "A091321",
-					date: "",
-					time: "",
-					quantity: "",
-					notes: "",
+					code_box: "",
 				}}
 				onSubmit={(values, { setSubmitting, resetForm }) => {
 					// When button submits form and form is in the process of submitting, submit button is disabled
@@ -90,7 +94,7 @@ export function ModalForm(props) {
 					>
 						<Modal.Header closeButton className="bg-primary-5">
 							<Modal.Title id="contained-modal-title-vcenter">
-								Code Box : {values.codeBox}
+								Form Input
 							</Modal.Title>
 						</Modal.Header>
 						<Modal.Body className="show-grid">
@@ -100,82 +104,21 @@ export function ModalForm(props) {
 										<Form onSubmit={handleSubmit}>
 											{console.log(values)}
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Alternative Code</Form.Label>
+												<Form.Label>Code Box</Form.Label>
 												<Form.Control
 													type="text"
-													name="AlternativeCode"
-													placeholder="Alternatice Code"
-													value={values.AlternativeCode}
-													onChange={handleChange}
+													name="code_box"
+													placeholder="Code"
+													value={values.code_box}
+													onChange={e => {
+														handleChange(e);
+														setcode_box(e.target.value);
+													}}
 													onBlur={handleBlur}
 												/>
-												{touched.AlternativeCode && errors.AlternativeCode ? (
+												{touched.code_box && errors.code_box ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.AlternativeCode}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Date</Form.Label>
-												<Form.Control
-													type="date"
-													name="date"
-													placeholder="Date"
-													value={values.date}
-													onChange={handleChange}
-													onBlur={handleBlur}
-												/>
-												{touched.date && errors.date ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.date}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Time</Form.Label>
-												<Form.Control
-													type="time"
-													name="time"
-													placeholder="time"
-													value={values.time}
-													onChange={handleChange}
-													onBlur={handleBlur}
-												/>
-												{touched.time && errors.time ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.time}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Quantity</Form.Label>
-												<Form.Control
-													type="number"
-													name="quantity"
-													placeholder="Quantity"
-													value={values.quantity}
-													onChange={handleChange}
-													onBlur={handleBlur}
-												/>
-												{touched.quantity && errors.quantity ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.quantity}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Notes</Form.Label>
-												<Form.Control
-													as="textarea"
-													name="notes"
-													placeholder="Notes"
-													value={values.notes}
-													onChange={handleChange}
-													onBlur={handleBlur}
-												/>
-												{touched.notes && errors.notes ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.notes}
+														{errors.code_box}
 													</p>
 												) : null}
 											</Form.Group>
