@@ -47,6 +47,10 @@ import { DocumentPageDetail } from "./Master/DocumentPage/Detail";
 // 4 - CABINET
 import { CabinetPage } from "./Master/CabinetPage";
 import { CabinetPageDetail } from "./Master/CabinetPage/Detail";
+// 4 - AREA
+import { AreaPage } from "./Master/AreaPage";
+import { AreaPageDetail } from "./Master/AreaPage/Detail";
+
 // import { FolderPage } from "./Master/FolderPage";
 // -=-=-=-=-=-
 import { DataTables } from "./Tables/DataTable/Loadable";
@@ -54,7 +58,7 @@ import { DataTables } from "./Tables/DataTable/Loadable";
 import { DetailBox } from "./BoxPage/Detail";
 import { EditBox } from "./BoxPage/Edit";
 import { TimeLine } from "./TimeLinePage/Loadable";
-import { AreaPage } from "./AreaPage/Loadable";
+// import { AreaPage } from "./AreaPage/Loadable";
 import { EditArea } from "./AreaPage/Edit";
 import { DivisiPage } from "./DivisiPage/Loadable";
 import { EditDevisi } from "./DivisiPage/Edit";
@@ -164,6 +168,14 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/Document-Detail"}
 							component={DocumentPageDetail}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Area"}
+							component={AreaPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Area-Detail"}
+							component={AreaPageDetail}
 						/>
 						{/* <Route
 							path={process.env.PUBLIC_URL + "/Folder"}

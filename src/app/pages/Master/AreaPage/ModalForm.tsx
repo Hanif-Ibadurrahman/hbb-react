@@ -4,7 +4,7 @@ import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 
-export function ModalForm(props) {
+export function ModalForm() {
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
 
@@ -24,10 +24,7 @@ export function ModalForm(props) {
 	};
 
 	const validationSchema = Yup.object().shape({
-		AlternativeCode: Yup.string().required("*Alternative Code required"),
-		date: Yup.date().required("*Date is required"),
-		time: Yup.string().required("*Time is required"),
-		quantity: Yup.string().required("*Quantity required"),
+		AreaName: Yup.string().required("*Alternative Code required"),
 		notes: Yup.string().required("*Notes required"),
 	});
 
@@ -55,11 +52,8 @@ export function ModalForm(props) {
 			<Formik
 				validationSchema={validationSchema}
 				initialValues={{
-					AlternativeCode: "",
-					codeBox: "A091321",
-					date: "",
-					time: "",
-					quantity: "",
+					AreaName: "",
+					codeArea: "Asaq",
 					notes: "",
 				}}
 				onSubmit={(values, { setSubmitting, resetForm }) => {
@@ -90,7 +84,7 @@ export function ModalForm(props) {
 					>
 						<Modal.Header closeButton className="bg-primary-5">
 							<Modal.Title id="contained-modal-title-vcenter">
-								Code Box : {values.codeBox}
+								Code Area : {values.codeArea}
 							</Modal.Title>
 						</Modal.Header>
 						<Modal.Body className="show-grid">
@@ -100,66 +94,18 @@ export function ModalForm(props) {
 										<Form onSubmit={handleSubmit}>
 											{console.log(values)}
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Alternative Code</Form.Label>
+												<Form.Label>Nama Area</Form.Label>
 												<Form.Control
 													type="text"
-													name="AlternativeCode"
-													placeholder="Alternatice Code"
-													value={values.AlternativeCode}
+													name="AreaName"
+													placeholder="Nama Area"
+													value={values.AreaName}
 													onChange={handleChange}
 													onBlur={handleBlur}
 												/>
-												{touched.AlternativeCode && errors.AlternativeCode ? (
+												{touched.AreaName && errors.AreaName ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.AlternativeCode}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Date</Form.Label>
-												<Form.Control
-													type="date"
-													name="date"
-													placeholder="Date"
-													value={values.date}
-													onChange={handleChange}
-													onBlur={handleBlur}
-												/>
-												{touched.date && errors.date ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.date}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Time</Form.Label>
-												<Form.Control
-													type="time"
-													name="time"
-													placeholder="time"
-													value={values.time}
-													onChange={handleChange}
-													onBlur={handleBlur}
-												/>
-												{touched.time && errors.time ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.time}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Quantity</Form.Label>
-												<Form.Control
-													type="number"
-													name="quantity"
-													placeholder="Quantity"
-													value={values.quantity}
-													onChange={handleChange}
-													onBlur={handleBlur}
-												/>
-												{touched.quantity && errors.quantity ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.quantity}
+														{errors.AreaName}
 													</p>
 												) : null}
 											</Form.Group>
