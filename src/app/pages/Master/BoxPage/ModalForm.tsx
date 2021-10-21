@@ -37,7 +37,7 @@ export function ModalForm() {
 	};
 
 	const validationSchema = Yup.object().shape({
-		code_box: Yup.string().required("*Code box required"),
+		code_box: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
@@ -94,7 +94,7 @@ export function ModalForm() {
 					>
 						<Modal.Header closeButton className="bg-primary-5">
 							<Modal.Title id="contained-modal-title-vcenter">
-								Form Input
+								Tambah Data
 							</Modal.Title>
 						</Modal.Header>
 						<Modal.Body className="show-grid">

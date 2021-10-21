@@ -3,8 +3,13 @@ import React, { useState } from "react";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
+import { useHistory } from "react-router";
+import api from "../../../../api/dox";
 
 export function ModalForm() {
+	let history = useHistory();
+	const [name, setname] = useState("");
+
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
 
@@ -15,17 +20,24 @@ export function ModalForm() {
 	};
 
 	const _onSubmit = () => {
+		api
+			.post(`/areas`, {
+				name,
+			})
+			.then(() => {
+				history.push("/Area");
+			});
 		setModalShow(false);
 		setShowAlert(true);
 		setTimeout(function () {
 			setShowAlert(false);
 		}, 4000);
+		window.location.reload();
 		console.log("show alert hide modal");
 	};
 
 	const validationSchema = Yup.object().shape({
-		AreaName: Yup.string().required("*Alternative Code required"),
-		notes: Yup.string().required("*Notes required"),
+		name: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
@@ -52,9 +64,7 @@ export function ModalForm() {
 			<Formik
 				validationSchema={validationSchema}
 				initialValues={{
-					AreaName: "",
-					codeArea: "Asaq",
-					notes: "",
+					name: "",
 				}}
 				onSubmit={(values, { setSubmitting, resetForm }) => {
 					// When button submits form and form is in the process of submitting, submit button is disabled
@@ -84,7 +94,7 @@ export function ModalForm() {
 					>
 						<Modal.Header closeButton className="bg-primary-5">
 							<Modal.Title id="contained-modal-title-vcenter">
-								Code Area : {values.codeArea}
+								Tambah Data
 							</Modal.Title>
 						</Modal.Header>
 						<Modal.Body className="show-grid">
@@ -93,35 +103,22 @@ export function ModalForm() {
 									<Col xs={12}>
 										<Form onSubmit={handleSubmit}>
 											{console.log(values)}
-											<Form.Group className="mb-4" controlId="formBasicEmail">
+											<Form.Group className="mb-4" controlId="formname">
 												<Form.Label>Nama Area</Form.Label>
 												<Form.Control
 													type="text"
-													name="AreaName"
+													name="name"
 													placeholder="Nama Area"
-													value={values.AreaName}
-													onChange={handleChange}
+													value={values.name}
+													onChange={e => {
+														handleChange(e);
+														setname(e.target.value);
+													}}
 													onBlur={handleBlur}
 												/>
-												{touched.AreaName && errors.AreaName ? (
+												{touched.name && errors.name ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.AreaName}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Notes</Form.Label>
-												<Form.Control
-													as="textarea"
-													name="notes"
-													placeholder="Notes"
-													value={values.notes}
-													onChange={handleChange}
-													onBlur={handleBlur}
-												/>
-												{touched.notes && errors.notes ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.notes}
+														{errors.name}
 													</p>
 												) : null}
 											</Form.Group>
