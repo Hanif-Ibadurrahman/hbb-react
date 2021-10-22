@@ -41,15 +41,6 @@ const header = [
 			style: { width: "80%" },
 		},
 	},
-	// {
-	// 	title: "Tanggal",
-	// 	prop: "created_at",
-	// 	sortable: true,
-	// 	cellProps: {
-	// 		style: { background: "#fafafa", width: "40%" },
-	// 		className: "realname-class",
-	// 	},
-	// },
 	{
 		title: "Action",
 		prop: "Action",
