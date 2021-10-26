@@ -3,8 +3,24 @@ import React, { useState } from "react";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
+import { useHistory } from "react-router";
+import api from "../../../../api/dox";
 
-export function ModalForm(props) {
+export function ModalForm() {
+	let history = useHistory();
+	const [no, setno] = useState("");
+	const [date, setdate] = useState("");
+	const [detail, setdetail] = useState("");
+	const [nominal, setnominal] = useState("");
+	const [active_year_for, setactive_year_for] = useState("");
+	const [level_progress, setlevel_progress] = useState("");
+	const [media_storage, setmedia_storage] = useState("");
+	const [condition, setcondition] = useState("");
+	const [amount, setamount] = useState("");
+	const [cross_point, setcross_point] = useState("");
+	const [description, setdescription] = useState("");
+	const [no_digital, setno_digital] = useState("");
+
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
 
@@ -15,20 +31,51 @@ export function ModalForm(props) {
 	};
 
 	const _onSubmit = () => {
+		api
+			.post(`/documents`, {
+				no,
+				date,
+				detail,
+				nominal,
+				active_year_for,
+				level_progress,
+				media_storage,
+				condition,
+				amount,
+				cross_point,
+				description,
+				no_digital,
+			})
+			.then(() => {
+				history.push("/Document");
+			});
 		setModalShow(false);
 		setShowAlert(true);
 		setTimeout(function () {
 			setShowAlert(false);
 		}, 4000);
+		setTimeout(function () {
+			window.location.reload();
+		}, 1000);
 		console.log("show alert hide modal");
 	};
 
 	const validationSchema = Yup.object().shape({
-		AlternativeCode: Yup.string().required("*Alternative Code required"),
-		date: Yup.date().required("*Date is required"),
-		time: Yup.string().required("*Time is required"),
-		quantity: Yup.string().required("*Quantity required"),
-		notes: Yup.string().required("*Notes required"),
+		no: Yup.string().required("*Wajib diisi"),
+		date: Yup.date().required("*Wajib diisi"),
+		detail: Yup.string().required("*Wajib diisi"),
+		nominal: Yup.number().required("*Wajib diisi"),
+		active_year_for: Yup.string()
+			.min(2021, "Minimal Tahun 2021.")
+			.max(2030, "Maximal Tahun 2030.")
+			.required("*Wajib diisi"),
+		level_progress: Yup.string().required("*Wajib diisi"),
+		media_storage: Yup.string().required("*Wajib diisi"),
+		condition: Yup.string().required("*Wajib diisi"),
+		amount: Yup.string().required("*Wajib diisi"),
+		cross_point: Yup.string().required("*Wajib diisi"),
+		description: Yup.string().required("*Wajib diisi"),
+		no_digital: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
@@ -55,12 +102,18 @@ export function ModalForm(props) {
 			<Formik
 				validationSchema={validationSchema}
 				initialValues={{
-					AlternativeCode: "",
-					codeBox: "A091321",
+					no: "",
 					date: "",
-					time: "",
-					quantity: "",
-					notes: "",
+					detail: "",
+					nominal: "",
+					active_year_for: "",
+					level_progress: "",
+					media_storage: "",
+					condition: "",
+					amount: "",
+					cross_point: "",
+					description: "",
+					no_digital: "",
 				}}
 				onSubmit={(values, { setSubmitting, resetForm }) => {
 					// When button submits form and form is in the process of submitting, submit button is disabled
@@ -90,7 +143,7 @@ export function ModalForm(props) {
 					>
 						<Modal.Header closeButton className="bg-primary-5">
 							<Modal.Title id="contained-modal-title-vcenter">
-								Code Doc : {values.codeBox}
+								Tambah Data
 							</Modal.Title>
 						</Modal.Header>
 						<Modal.Body className="show-grid">
@@ -99,30 +152,34 @@ export function ModalForm(props) {
 									<Col xs={12}>
 										<Form onSubmit={handleSubmit}>
 											{console.log(values)}
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Alternative Code</Form.Label>
+											<Form.Group className="mb-4" controlId="formNoDocument">
+												<Form.Label>No Document</Form.Label>
 												<Form.Control
 													type="text"
-													name="AlternativeCode"
-													placeholder="Alternatice Code"
-													value={values.AlternativeCode}
-													onChange={handleChange}
+													name="no"
+													placeholder="No Dokumen"
+													value={values.no}
+													onChange={e => {
+														handleChange(e);
+														setno(e.target.value);
+													}}
 													onBlur={handleBlur}
 												/>
-												{touched.AlternativeCode && errors.AlternativeCode ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.AlternativeCode}
-													</p>
+												{touched.no && errors.no ? (
+													<p className="tc-danger-5 pos-a p-sm">{errors.no}</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Date</Form.Label>
+											<Form.Group className="mb-4" controlId="formTanggal">
+												<Form.Label>Tanggal</Form.Label>
 												<Form.Control
 													type="date"
 													name="date"
-													placeholder="Date"
+													placeholder="Tanggal"
 													value={values.date}
-													onChange={handleChange}
+													onChange={e => {
+														handleChange(e);
+														setdate(e.target.value);
+													}}
 													onBlur={handleBlur}
 												/>
 												{touched.date && errors.date ? (
@@ -131,51 +188,195 @@ export function ModalForm(props) {
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Time</Form.Label>
-												<Form.Control
-													type="time"
-													name="time"
-													placeholder="time"
-													value={values.time}
-													onChange={handleChange}
-													onBlur={handleBlur}
-												/>
-												{touched.time && errors.time ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.time}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Quantity</Form.Label>
-												<Form.Control
-													type="number"
-													name="quantity"
-													placeholder="Quantity"
-													value={values.quantity}
-													onChange={handleChange}
-													onBlur={handleBlur}
-												/>
-												{touched.quantity && errors.quantity ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.quantity}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Description</Form.Label>
+											<Form.Group className="mb-4" controlId="formDetail">
+												<Form.Label>Detail Dokumen</Form.Label>
 												<Form.Control
 													as="textarea"
-													name="notes"
-													placeholder="Notes"
-													value={values.notes}
-													onChange={handleChange}
+													name="detail"
+													placeholder="Detail Dokumen"
+													value={values.detail}
+													onChange={e => {
+														handleChange(e);
+														setdetail(e.target.value);
+													}}
 													onBlur={handleBlur}
 												/>
-												{touched.notes && errors.notes ? (
+												{touched.detail && errors.detail ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.notes}
+														{errors.detail}
+													</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formNominal">
+												<Form.Label>Nominal</Form.Label>
+												<Form.Control
+													type="number"
+													name="nominal"
+													placeholder="Nominal"
+													value={values.nominal}
+													onChange={e => {
+														handleChange(e);
+														setnominal(e.target.value);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.nominal && errors.nominal ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.nominal}
+													</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formDokumenAktif">
+												<Form.Label>Dokumen Aktif</Form.Label>
+												<Form.Control
+													type="number"
+													name="active_year_for"
+													placeholder="Dokumen Aktif"
+													value={values.active_year_for}
+													min="2021"
+													max="2030"
+													onChange={e => {
+														handleChange(e);
+														setactive_year_for(e.target.value);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.active_year_for && errors.active_year_for ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.active_year_for}
+													</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formDokumenAktif">
+												<Form.Label>Level Progress</Form.Label>
+												<Form.Control
+													type="text"
+													name="level_progress"
+													placeholder="Level Progress"
+													value={values.level_progress}
+													onChange={e => {
+														handleChange(e);
+														setlevel_progress(e.target.value);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.level_progress && errors.level_progress ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.level_progress}
+													</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formMediaStorage">
+												<Form.Label>Tempat Penyimpanan</Form.Label>
+												<Form.Control
+													type="text"
+													name="media_storage"
+													placeholder="Tempat Penyimpanan"
+													value={values.media_storage}
+													onChange={e => {
+														handleChange(e);
+														setmedia_storage(e.target.value);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.media_storage && errors.media_storage ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.media_storage}
+													</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formKondisi">
+												<Form.Label>Kondisi Dokument</Form.Label>
+												<Form.Control
+													type="text"
+													name="condition"
+													placeholder="Kondisi Dokumen"
+													value={values.condition}
+													onChange={e => {
+														handleChange(e);
+														setcondition(e.target.value);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.condition && errors.condition ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.condition}
+													</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formAmount">
+												<Form.Label>Jumlah</Form.Label>
+												<Form.Control
+													type="number"
+													name="amount"
+													placeholder="Jumlah"
+													value={values.amount}
+													onChange={e => {
+														handleChange(e);
+														setamount(e.target.value);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.amount && errors.amount ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.amount}
+													</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formCrossPoint">
+												<Form.Label>Cross Point</Form.Label>
+												<Form.Control
+													type="text"
+													name="cross_point"
+													placeholder="Cross Point"
+													value={values.cross_point}
+													onChange={e => {
+														handleChange(e);
+														setcross_point(e.target.value);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.cross_point && errors.cross_point ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.cross_point}
+													</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formDeskripsi">
+												<Form.Label>Deskripsi</Form.Label>
+												<Form.Control
+													as="textarea"
+													name="description"
+													placeholder="Deskripsi"
+													value={values.description}
+													onChange={e => {
+														handleChange(e);
+														setdescription(e.target.value);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.description && errors.description ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.description}
+													</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formNoDigital">
+												<Form.Label>No Digital</Form.Label>
+												<Form.Control
+													type="text"
+													name="no_digital"
+													placeholder="No Digital"
+													value={values.no_digital}
+													onChange={e => {
+														handleChange(e);
+														setno_digital(e.target.value);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.no_digital && errors.no_digital ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.no_digital}
 													</p>
 												) : null}
 											</Form.Group>
@@ -185,7 +386,7 @@ export function ModalForm(props) {
 							</Container>
 						</Modal.Body>
 						<Modal.Footer>
-							<Button variant="danger" onClick={props.onHide}>
+							<Button variant="danger" onClick={_onHide}>
 								Close
 							</Button>
 							<Button
