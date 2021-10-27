@@ -55,6 +55,11 @@ export const MasterData = [
 		link: "/Box",
 	},
 	{
+		title: "Berkas",
+		icon: "",
+		link: "/Berkas",
+	},
+	{
 		title: "Folder",
 		icon: "",
 		link: "/Folder",

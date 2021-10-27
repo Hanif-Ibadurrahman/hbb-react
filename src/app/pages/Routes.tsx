@@ -50,6 +50,9 @@ import { CabinetPageDetail } from "./Master/CabinetPage/Detail";
 // 4 - AREA
 import { AreaPage } from "./Master/AreaPage";
 import { AreaPageDetail } from "./Master/AreaPage/Detail";
+// 5 - BERKAS
+import { BerkasPage } from "./Master/BerkasPage";
+import { BerkasPageDetail } from "./Master/BerkasPage/Detail";
 
 // import { FolderPage } from "./Master/FolderPage";
 // -=-=-=-=-=-
@@ -176,6 +179,14 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/Area-Detail"}
 							component={AreaPageDetail}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Berkas"}
+							component={BerkasPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Berkas-Detail"}
+							component={BerkasPageDetail}
 						/>
 						{/* <Route
 							path={process.env.PUBLIC_URL + "/Folder"}
