@@ -32,7 +32,9 @@ export function ModalForm() {
 		setTimeout(function () {
 			setShowAlert(false);
 		}, 4000);
-		window.location.reload();
+		setTimeout(function () {
+			window.location.reload();
+		}, 1000);
 		console.log("show alert hide modal");
 	};
 

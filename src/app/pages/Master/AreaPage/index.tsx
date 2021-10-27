@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
@@ -7,6 +7,7 @@ import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
 import api from "../../../../api/dox";
 import PaginatedAreaResponse from "app/pages/Interface/folder";
+import { Pagination } from "app/components/Pagination";
 
 const action = [
 	{
@@ -66,14 +67,34 @@ const header = [
 export function AreaPage() {
 	const [data, setData] = useState([]);
 
+	const [pageCount, setpageCount] = useState(0);
+
+	let limit = 20;
+
+	const pagination = async currentPage => {
+		const { data } = await api.get<PaginatedAreaResponse>(
+			`/areas?page=${currentPage}&_limit=${limit}`,
+		);
+		const newData = data.data as any;
+		return newData;
+	};
+
+	const handlePageClick = async data => {
+		console.log(data.selected);
+		let currentPage = data.selected + 1;
+		const commentsFormServer = await pagination(currentPage);
+		setData(commentsFormServer);
+	};
+
 	// API hit.
 	async function getAreas() {
-		const { data } = await api.get<PaginatedAreaResponse>(`/areas?limit`);
+		const { data } = await api.get<PaginatedAreaResponse>(
+			`/areas?page=1&limit=${limit}`,
+		);
 		console.log(data.data);
-
 		const newData = data.data as any;
-
 		setData(newData);
+		setpageCount(Math.ceil(data.meta.last_page));
 	}
 
 	useEffect(() => {
@@ -92,6 +113,7 @@ export function AreaPage() {
 			<PageWrapper>
 				<PageHeader breadcrumb={["Master", "Area"]} addForm={<ModalForm />} />
 				<DataTable tableHeader={header} tableBody={data} />
+				<Pagination pageCount={pageCount} onPageChange={handlePageClick} />
 			</PageWrapper>
 		</>
 	);

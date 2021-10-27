@@ -7,6 +7,7 @@ import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
 import api from "../../../../api/dox";
 import PaginatedBoxResponse from "app/pages/Interface/box";
+import { Pagination } from "app/components/Pagination";
 
 const header = [
 	{
@@ -66,17 +67,39 @@ const action = [
 export function BoxPage() {
 	const [data, setData] = useState([]);
 
+	const [pageCount, setpageCount] = useState(0);
+
+	let limit = 20;
+
+	const pagination = async currentPage => {
+		const { data } = await api.get<PaginatedBoxResponse>(
+			`/boxes?page=${currentPage}&_limit=${limit}`,
+		);
+		const newData = data.data as any;
+		return newData;
+	};
+
+	const handlePageClick = async data => {
+		console.log(data.selected);
+		let currentPage = data.selected + 1;
+		const commentsFormServer = await pagination(currentPage);
+		setData(commentsFormServer);
+	};
+
 	// API hit.
 	async function getBoxes() {
-		const { data } = await api.get<PaginatedBoxResponse>(`/boxes`);
+		const { data } = await api.get<PaginatedBoxResponse>(
+			`/boxes?page=1&limit=${limit}`,
+		);
 		console.log(data.data);
 		const newData = data.data as any;
 		setData(newData);
+		setpageCount(Math.ceil(data.meta.last_page));
 	}
 
 	useEffect(() => {
 		getBoxes();
-	}, []);
+	}, [limit]);
 
 	return (
 		<>
@@ -90,6 +113,7 @@ export function BoxPage() {
 			<PageWrapper>
 				<PageHeader breadcrumb={["Master", "Box"]} addForm={<ModalForm />} />
 				<DataTable tableHeader={header} tableBody={data} />
+				<Pagination pageCount={pageCount} onPageChange={handlePageClick} />
 			</PageWrapper>
 		</>
 	);

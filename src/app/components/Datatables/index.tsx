@@ -39,12 +39,8 @@ export function DataTable(props) {
 				<Datatable
 					tableHeaders={props.tableHeader}
 					tableBody={props.tableBody}
-					rowsPerPage={8}
-					rowsPerPageOption={[5, 10, 15, 20]}
-					initialSort={{ prop: "username", isAscending: true }}
 					labels={customLabels}
 					classes={classes}
-					onSort={onSortFunction}
 				/>
 			</div>
 		</>

@@ -7,6 +7,7 @@ import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
 import api from "../../../../api/dox";
 import PaginatedFolderResponse from "app/pages/Interface/folder";
+import { Pagination } from "app/components/Pagination";
 
 const action = [
 	{
@@ -57,12 +58,34 @@ const header = [
 export function FolderPage() {
 	const [data, setData] = useState([]);
 
+	const [pageCount, setpageCount] = useState(0);
+
+	let limit = 20;
+
+	const pagination = async currentPage => {
+		const { data } = await api.get<PaginatedFolderResponse>(
+			`/folders?page=${currentPage}&_limit=${limit}`,
+		);
+		const newData = data.data as any;
+		return newData;
+	};
+
+	const handlePageClick = async data => {
+		console.log(data.selected);
+		let currentPage = data.selected + 1;
+		const commentsFormServer = await pagination(currentPage);
+		setData(commentsFormServer);
+	};
+
 	// API hit.
 	async function getFolders() {
-		const { data } = await api.get<PaginatedFolderResponse>(`/folders`);
+		const { data } = await api.get<PaginatedFolderResponse>(
+			`/folders?page=1&limit=${limit}`,
+		);
 		console.log(data.data);
 		const newData = data.data as any;
 		setData(newData);
+		setpageCount(Math.ceil(data.meta.last_page));
 	}
 
 	useEffect(() => {
@@ -81,6 +104,7 @@ export function FolderPage() {
 			<PageWrapper>
 				<PageHeader breadcrumb={["Master", "Folder"]} addForm={<ModalForm />} />
 				<DataTable tableHeader={header} tableBody={data} />
+				<Pagination pageCount={pageCount} onPageChange={handlePageClick} />
 			</PageWrapper>
 		</>
 	);
