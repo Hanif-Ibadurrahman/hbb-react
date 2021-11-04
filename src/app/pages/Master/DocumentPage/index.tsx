@@ -8,53 +8,7 @@ import DropdownAction from "../Components/DropdownAction";
 import api from "../../../../api/dox";
 import PaginatedDocumentResponse from "app/pages/Interface/document";
 import { Pagination } from "app/components/Pagination";
-
-const action = [
-	{
-		icon: "fa-search",
-		title: "Detail",
-		// action: NavLinkAction("/Box-Detail"),
-	},
-	{
-		icon: "fa-copy ",
-		title: "Duplicate",
-		// action: NavLinkAction("/Box-Detail"),
-	},
-	{
-		icon: "fa-edit",
-		title: "Edit",
-		// action: NavLinkAction("/Box-Detail"),
-	},
-	{
-		icon: "fa-trash-alt",
-		title: "Delete",
-		titleClass: "tc-danger-5",
-		// action: NavLinkAction("/Box-Detail"),
-	},
-];
-
-const header = [
-	{
-		title: "Code Document",
-		prop: "no",
-		sortable: true,
-		cellProps: {
-			style: { width: "80%" },
-		},
-	},
-
-	{
-		title: "Action",
-		prop: "Action",
-		cellProps: {
-			style: { flex: 1 },
-			className: "realname-class",
-		},
-		cell: row => {
-			return <DropdownAction list={action} />;
-		},
-	},
-];
+import Swal from "sweetalert2";
 
 export function DocumentPage() {
 	const [data, setData] = useState([]);
@@ -92,6 +46,80 @@ export function DocumentPage() {
 	useEffect(() => {
 		getDocuments();
 	}, []);
+
+	const onDelete = key => {
+		Swal.fire({
+			text: "Apakah anda ingin menghapus data ini?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#d33",
+			confirmButtonText: "Hapus",
+		}).then(willDelete => {
+			if (willDelete.isConfirmed) {
+				api.delete(`/documents/${key}`).then(() => {
+					getDocuments();
+				});
+				Swal.fire({
+					text: "Data Berhasil di Hapus",
+					icon: "success",
+					confirmButtonColor: "#198754",
+					confirmButtonText: "Ok",
+				});
+			}
+		});
+
+		console.log("delete data");
+	};
+
+	const action = key => [
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "Box-Detail/" + key,
+			type: 1,
+		},
+		{
+			icon: "fa-copy ",
+			title: "Duplicate",
+			type: 2,
+		},
+		{
+			icon: "fa-edit",
+			title: "Edit",
+			type: 1,
+		},
+		{
+			icon: "fa-trash-alt",
+			title: "Delete",
+			titleClass: "tc-danger-5",
+			type: 2,
+			onclick: onDelete,
+			id: key,
+		},
+	];
+
+	const header = [
+		{
+			title: "Code Document",
+			prop: "no",
+			sortable: true,
+			cellProps: {
+				style: { width: "80%" },
+			},
+		},
+
+		{
+			title: "Action",
+			prop: "Action",
+			cellProps: {
+				style: { flex: 1 },
+				className: "realname-class",
+			},
+			cell: row => {
+				return <DropdownAction list={action(row.key)} />;
+			},
+		},
+	];
 
 	return (
 		<>
