@@ -107,13 +107,6 @@ export function BoxPage() {
 				className: "realname-class",
 			},
 			cell: row => {
-				// return (
-				// 	<Link to={"Box-Detail/" + row.key}>
-				// 		<Button color="dark" className="mr-2">
-				// 			Detail
-				// 		</Button>
-				// 	</Link>
-				// );
 				return <DropdownAction list={action(row.key)} />;
 			},
 		},

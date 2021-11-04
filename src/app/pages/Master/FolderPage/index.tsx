@@ -8,52 +8,7 @@ import DropdownAction from "../Components/DropdownAction";
 import api from "../../../../api/dox";
 import PaginatedFolderResponse from "app/pages/Interface/folder";
 import { Pagination } from "app/components/Pagination";
-
-const action = [
-	{
-		icon: "fa-search",
-		title: "Detail",
-		// action: NavLinkAction("/Box-Detail"),
-	},
-	{
-		icon: "fa-copy ",
-		title: "Duplicate",
-		// action: NavLinkAction("/Box-Detail"),
-	},
-	{
-		icon: "fa-edit",
-		title: "Edit",
-		// action: NavLinkAction("/Box-Detail"),
-	},
-	{
-		icon: "fa-trash-alt",
-		title: "Delete",
-		titleClass: "tc-danger-5",
-		// action: NavLinkAction("/Box-Detail"),
-	},
-];
-
-const header = [
-	{
-		title: "Code Folder",
-		prop: "no",
-		sortable: true,
-		cellProps: {
-			style: { width: "80%" },
-		},
-	},
-	{
-		title: "Action",
-		prop: "Action",
-		cellProps: {
-			style: { flex: 1 },
-			className: "realname-class",
-		},
-		cell: row => {
-			return <DropdownAction list={action} />;
-		},
-	},
-];
+import Swal from "sweetalert2";
 
 export function FolderPage() {
 	const [data, setData] = useState([]);
@@ -91,6 +46,77 @@ export function FolderPage() {
 	useEffect(() => {
 		getFolders();
 	}, []);
+
+	const onDelete = key => {
+		Swal.fire({
+			text: "Apakah anda ingin menghapus data ini?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#d33",
+			confirmButtonText: "Hapus",
+		}).then(willDelete => {
+			if (willDelete.isConfirmed) {
+				api.delete(`/folders/${key}`).then(() => {
+					getFolders();
+				});
+				Swal.fire({
+					text: "Data Berhasil di Hapus",
+					icon: "success",
+					confirmButtonColor: "#198754",
+					confirmButtonText: "Ok",
+				});
+			}
+		});
+	};
+
+	const action = key => [
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "Box-Detail/" + key,
+			type: 1,
+		},
+		{
+			icon: "fa-copy ",
+			title: "Duplicate",
+			type: 2,
+		},
+		{
+			icon: "fa-edit",
+			title: "Edit",
+			type: 1,
+		},
+		{
+			icon: "fa-trash-alt",
+			title: "Delete",
+			titleClass: "tc-danger-5",
+			type: 2,
+			onclick: onDelete,
+			id: key,
+		},
+	];
+
+	const header = [
+		{
+			title: "Code Folder",
+			prop: "no",
+			sortable: true,
+			cellProps: {
+				style: { width: "80%" },
+			},
+		},
+		{
+			title: "Action",
+			prop: "Action",
+			cellProps: {
+				style: { flex: 1 },
+				className: "realname-class",
+			},
+			cell: row => {
+				return <DropdownAction list={action(row.key)} />;
+			},
+		},
+	];
 
 	return (
 		<>
