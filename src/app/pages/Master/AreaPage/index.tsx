@@ -59,6 +59,12 @@ export function AreaPage() {
 				api.delete(`/areas/${id}`).then(() => {
 					getAreas();
 				});
+				Swal.fire({
+					text: "Data Berhasil di Hapus",
+					icon: "success",
+					confirmButtonColor: "#198754",
+					confirmButtonText: "Ok",
+				});
 			}
 		});
 	};
