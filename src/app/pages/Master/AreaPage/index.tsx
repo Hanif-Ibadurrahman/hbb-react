@@ -8,71 +8,7 @@ import DropdownAction from "../Components/DropdownAction";
 import api from "../../../../api/dox";
 import PaginatedAreaResponse from "app/pages/Interface/folder";
 import { Pagination } from "app/components/Pagination";
-import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
-
-const action = id => [
-	{
-		icon: "fa-search",
-		title: "Detail",
-		url: "Area-Detail/" + id,
-		// action: NavLinkAction("/Box-Detail"),
-	},
-	{
-		icon: "fa-copy ",
-		title: "Duplicate",
-		// action: NavLinkAction("/Box-Detail"),
-	},
-	{
-		icon: "fa-edit",
-		title: "Edit",
-		// action: NavLinkAction("/Box-Detail"),
-	},
-	{
-		icon: "fa-trash-alt",
-		title: "Delete",
-		titleClass: "tc-danger-5",
-		// action: NavLinkAction("/Box-Detail"),
-	},
-];
-
-const header = [
-	{
-		title: "Nama Area",
-		prop: "name",
-		sortable: true,
-		cellProps: {
-			style: { width: "80%" },
-		},
-	},
-	// {
-	// 	title: "Tanggal",
-	// 	prop: "created_at",
-	// 	sortable: true,
-	// 	cellProps: {
-	// 		style: { background: "#fafafa", width: "40%" },
-	// 		className: "realname-class",
-	// 	},
-	// },
-	{
-		title: "Action",
-		prop: "Action",
-		cellProps: {
-			style: { flex: 1 },
-			className: "realname-class",
-		},
-		cell: row => {
-			return <DropdownAction list={action(row.id)} />;
-			// return (
-			// 	<Link to={"Box-Detail/" + row.id}>
-			// 		<Button color="dark" className="mr-2">
-			// 			Detail
-			// 		</Button>
-			// 	</Link>
-			// );
-		},
-	},
-];
+import Swal from "sweetalert2";
 
 export function AreaPage() {
 	const [data, setData] = useState([]);
@@ -110,6 +46,78 @@ export function AreaPage() {
 	useEffect(() => {
 		getAreas();
 	}, []);
+
+	const onDelete = id => {
+		Swal.fire({
+			text: "Apakah anda ingin menghapus data ini?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#d33",
+			confirmButtonText: "Hapus",
+		}).then(willDelete => {
+			if (willDelete.isConfirmed) {
+				api.delete(`/areas/${id}`).then(() => {
+					getAreas();
+				});
+				Swal.fire({
+					text: "Data Berhasil di Hapus",
+					icon: "success",
+					confirmButtonColor: "#198754",
+					confirmButtonText: "Ok",
+				});
+			}
+		});
+	};
+
+	const action = id => [
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "Box-Detail/" + id,
+			type: 1,
+		},
+		{
+			icon: "fa-copy ",
+			title: "Duplicate",
+			type: 2,
+		},
+		{
+			icon: "fa-edit",
+			title: "Edit",
+			type: 1,
+		},
+		{
+			icon: "fa-trash-alt",
+			title: "Delete",
+			titleClass: "tc-danger-5",
+			type: 2,
+			onclick: onDelete,
+			id: id,
+			url: "",
+		},
+	];
+
+	const header = [
+		{
+			title: "Nama Area",
+			prop: "name",
+			sortable: true,
+			cellProps: {
+				style: { width: "80%" },
+			},
+		},
+		{
+			title: "Action",
+			prop: "Action",
+			cellProps: {
+				style: { flex: 1 },
+				className: "realname-class",
+			},
+			cell: row => {
+				return <DropdownAction list={action(row.id)} />;
+			},
+		},
+	];
 
 	return (
 		<>

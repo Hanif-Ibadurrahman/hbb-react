@@ -52,10 +52,14 @@ export function BoxPage() {
 				api.delete(`/boxes/${key}`).then(() => {
 					getBoxes();
 				});
+				Swal.fire({
+					text: "Data Berhasil di Hapus",
+					icon: "success",
+					confirmButtonColor: "#198754",
+					confirmButtonText: "Ok",
+				});
 			}
 		});
-
-		console.log("delete data");
 	};
 
 	const action = key => [
@@ -64,19 +68,16 @@ export function BoxPage() {
 			title: "Detail",
 			url: "Box-Detail/" + key,
 			type: 1,
-			// action: NavLinkAction("/Box-Detail"),
 		},
 		{
 			icon: "fa-copy ",
 			title: "Duplicate",
 			type: 2,
-			// action: NavLinkAction("/Box-Detail"),
 		},
 		{
 			icon: "fa-edit",
 			title: "Edit",
 			type: 1,
-			// action: NavLinkAction("/Box-Detail"),
 		},
 		{
 			icon: "fa-trash-alt",
@@ -86,7 +87,6 @@ export function BoxPage() {
 			onclick: onDelete,
 			id: key,
 			url: "",
-			// action: NavLinkAction("/Box-Detail"),
 		},
 	];
 
