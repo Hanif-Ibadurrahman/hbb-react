@@ -75,19 +75,16 @@ export function AreaPage() {
 			title: "Detail",
 			url: "Box-Detail/" + id,
 			type: 1,
-			// action: NavLinkAction("/Box-Detail"),
 		},
 		{
 			icon: "fa-copy ",
 			title: "Duplicate",
 			type: 2,
-			// action: NavLinkAction("/Box-Detail"),
 		},
 		{
 			icon: "fa-edit",
 			title: "Edit",
 			type: 1,
-			// action: NavLinkAction("/Box-Detail"),
 		},
 		{
 			icon: "fa-trash-alt",
@@ -97,7 +94,6 @@ export function AreaPage() {
 			onclick: onDelete,
 			id: id,
 			url: "",
-			// action: NavLinkAction("/Box-Detail"),
 		},
 	];
 
@@ -119,13 +115,6 @@ export function AreaPage() {
 			},
 			cell: row => {
 				return <DropdownAction list={action(row.id)} />;
-				// return (
-				// 	<Link to={"Box-Detail/" + row.id}>
-				// 		<Button color="dark" className="mr-2">
-				// 			Detail
-				// 		</Button>
-				// 	</Link>
-				// );
 			},
 		},
 	];

@@ -52,6 +52,12 @@ export function BoxPage() {
 				api.delete(`/boxes/${key}`).then(() => {
 					getBoxes();
 				});
+				Swal.fire({
+					text: "Data Berhasil di Hapus",
+					icon: "success",
+					confirmButtonColor: "#198754",
+					confirmButtonText: "Ok",
+				});
 			}
 		});
 	};
@@ -62,19 +68,16 @@ export function BoxPage() {
 			title: "Detail",
 			url: "Box-Detail/" + key,
 			type: 1,
-			// action: NavLinkAction("/Box-Detail"),
 		},
 		{
 			icon: "fa-copy ",
 			title: "Duplicate",
 			type: 2,
-			// action: NavLinkAction("/Box-Detail"),
 		},
 		{
 			icon: "fa-edit",
 			title: "Edit",
 			type: 1,
-			// action: NavLinkAction("/Box-Detail"),
 		},
 		{
 			icon: "fa-trash-alt",
@@ -84,7 +87,6 @@ export function BoxPage() {
 			onclick: onDelete,
 			id: key,
 			url: "",
-			// action: NavLinkAction("/Box-Detail"),
 		},
 	];
 
@@ -105,13 +107,6 @@ export function BoxPage() {
 				className: "realname-class",
 			},
 			cell: row => {
-				// return (
-				// 	<Link to={"Box-Detail/" + row.key}>
-				// 		<Button color="dark" className="mr-2">
-				// 			Detail
-				// 		</Button>
-				// 	</Link>
-				// );
 				return <DropdownAction list={action(row.key)} />;
 			},
 		},
