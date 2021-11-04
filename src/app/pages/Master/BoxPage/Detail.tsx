@@ -10,7 +10,7 @@ export function BoxPageDetail() {
 		<>
 			<PageWrapper className="row w-100%">
 				<Breadcrumb
-					crumbs={["Dashboard", "BoxPage", "Detail"]}
+					crumbs={["Dashboard", "Box", "Detail"]}
 					selected
 					className="mb-4"
 				/>

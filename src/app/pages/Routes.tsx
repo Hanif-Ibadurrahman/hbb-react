@@ -145,7 +145,7 @@ export function Routes() {
 						{/*---------- MASTER ---------*/}
 						<Route path={process.env.PUBLIC_URL + "/Box"} component={BoxPage} />
 						<Route
-							path={process.env.PUBLIC_URL + "/Box-Detail"}
+							path={process.env.PUBLIC_URL + "/Box-Detail/:id"}
 							component={BoxPageDetail}
 						/>
 						<Route

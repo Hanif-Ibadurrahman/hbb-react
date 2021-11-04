@@ -8,11 +8,14 @@ import DropdownAction from "../Components/DropdownAction";
 import api from "../../../../api/dox";
 import PaginatedAreaResponse from "app/pages/Interface/folder";
 import { Pagination } from "app/components/Pagination";
+import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
-const action = [
+const action = id => [
 	{
 		icon: "fa-search",
 		title: "Detail",
+		url: "Area-Detail/" + id,
 		// action: NavLinkAction("/Box-Detail"),
 	},
 	{
@@ -59,7 +62,14 @@ const header = [
 			className: "realname-class",
 		},
 		cell: row => {
-			return <DropdownAction list={action} />;
+			return <DropdownAction list={action(row.id)} />;
+			// return (
+			// 	<Link to={"Box-Detail/" + row.id}>
+			// 		<Button color="dark" className="mr-2">
+			// 			Detail
+			// 		</Button>
+			// 	</Link>
+			// );
 		},
 	},
 ];
