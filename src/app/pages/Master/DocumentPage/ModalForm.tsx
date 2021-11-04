@@ -65,10 +65,7 @@ export function ModalForm() {
 		date: Yup.date().required("*Wajib diisi"),
 		detail: Yup.string().required("*Wajib diisi"),
 		nominal: Yup.number().required("*Wajib diisi"),
-		active_year_for: Yup.string()
-			.min(2021, "Minimal Tahun 2021.")
-			.max(2030, "Maximal Tahun 2030.")
-			.required("*Wajib diisi"),
+		active_year_for: Yup.string().required("*Wajib diisi"),
 		level_progress: Yup.string().required("*Wajib diisi"),
 		media_storage: Yup.string().required("*Wajib diisi"),
 		condition: Yup.string().required("*Wajib diisi"),
