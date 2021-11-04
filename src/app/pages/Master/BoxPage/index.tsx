@@ -54,8 +54,6 @@ export function BoxPage() {
 				});
 			}
 		});
-
-		console.log("delete data");
 	};
 
 	const action = key => [
