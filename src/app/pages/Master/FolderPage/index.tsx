@@ -59,6 +59,12 @@ export function FolderPage() {
 				api.delete(`/folders/${key}`).then(() => {
 					getFolders();
 				});
+				Swal.fire({
+					text: "Data Berhasil di Hapus",
+					icon: "success",
+					confirmButtonColor: "#198754",
+					confirmButtonText: "Ok",
+				});
 			}
 		});
 	};
