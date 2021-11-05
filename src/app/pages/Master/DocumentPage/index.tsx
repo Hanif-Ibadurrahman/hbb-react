@@ -75,7 +75,7 @@ export function DocumentPage() {
 		{
 			icon: "fa-search",
 			title: "Detail",
-			url: "Box-Detail/" + key,
+			url: "Document-Detail/" + key,
 			type: 1,
 		},
 		{

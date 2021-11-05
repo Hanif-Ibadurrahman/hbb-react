@@ -1,16 +1,6 @@
 import React, { useState } from "react";
-import {
-	Dropdown,
-	Form,
-	Modal,
-	Container,
-	Row,
-	Col,
-	Button,
-} from "react-bootstrap";
+import { Dropdown } from "react-bootstrap";
 import { BrowserRouter } from "react-router-dom";
-import Alert from "app/components/Alerts";
-import { Link } from "react-router-dom";
 
 export default function DropdownAction(props) {
 	function NavLinkAction(e, href) {

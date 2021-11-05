@@ -1,16 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Card } from "react-bootstrap";
 import { PageWrapper } from "app/components/PageWrapper";
 import Breadcrumb from "app/components/BreadCrumb";
 import QR from "app/components/QRCode";
 import "../master.scoped.scss";
+import api from "../../../../api/dox";
+import PaginatedFolderResponse from "app/pages/Interface/cabinet";
+import { useHistory } from "react-router-dom";
 
-export function FolderPageDetail() {
+export function FolderPageDetail({ match }) {
+	let history = useHistory();
+
+	const goToPreviousPath = e => {
+		e.preventDefault();
+		history.goBack();
+	};
+
+	const [folderDetails, setfolderDetails] = useState([]);
+
+	const folder_id = match.params.key;
+
+	const getFoldersData = async key => {
+		const { data } = await api.get<PaginatedFolderResponse>(`/folders/${key}`);
+		const newData = data.data as any;
+		return newData;
+	};
+
+	const getFolders = async key => {
+		const details = await getFoldersData(key);
+		setfolderDetails(details);
+	};
+
+	useEffect(() => {
+		getFolders(folder_id);
+	}, []);
+
 	return (
 		<>
 			<PageWrapper className="row w-100%">
 				<Breadcrumb
-					crumbs={["Dashboard", "BoxPage", "Detail"]}
+					crumbs={["Dashboard", "Folder", "Detail"]}
 					selected
 					className="mb-4"
 				/>
@@ -18,8 +47,12 @@ export function FolderPageDetail() {
 					<Card className="ph-5 pv-3 bd-rs-2">
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Code</Form.Label>
-								<Form.Control type="text" disabled defaultValue="A12O2O3" />
+								<Form.Label>No Folder</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={folderDetails["no"]}
+								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Date</Form.Label>
@@ -51,7 +84,11 @@ export function FolderPageDetail() {
 								></Form.Control>
 							</Form.Group>
 							<div className="d-flex jc-end">
-								<Button className="mv-4 mr-4" variant="outline-secondary">
+								<Button
+									className="mv-4 mr-4"
+									variant="outline-secondary"
+									onClick={goToPreviousPath}
+								>
 									Kembali
 								</Button>{" "}
 								<Button
@@ -74,7 +111,9 @@ export function FolderPageDetail() {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">A12O2O3</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">
+								{folderDetails["no"]}
+							</p>
 						</div>
 					</Card>
 				</div>

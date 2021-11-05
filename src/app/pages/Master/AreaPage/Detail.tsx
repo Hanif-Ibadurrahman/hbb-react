@@ -1,16 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Card } from "react-bootstrap";
 import { PageWrapper } from "app/components/PageWrapper";
 import Breadcrumb from "app/components/BreadCrumb";
 import QR from "app/components/QRCode";
 import "../master.scoped.scss";
+import api from "../../../../api/dox";
+import PaginatedAreaResponse from "app/pages/Interface/area";
+import { useHistory } from "react-router-dom";
 
-export function AreaPageDetail() {
+export function AreaPageDetail({ match }) {
+	let history = useHistory();
+
+	const goToPreviousPath = e => {
+		e.preventDefault();
+		history.goBack();
+	};
+
+	const [areaDetails, setareaDetails] = useState([]);
+
+	const area_id = match.params.id;
+
+	const getAreasData = async id => {
+		const { data } = await api.get<PaginatedAreaResponse>(`/areas/${id}`);
+		const newData = data.data as any;
+		return newData;
+	};
+
+	const getAreas = async id => {
+		const details = await getAreasData(id);
+		setareaDetails(details);
+	};
+
+	useEffect(() => {
+		getAreas(area_id);
+	}, []);
+
 	return (
 		<>
 			<PageWrapper className="row w-100%">
 				<Breadcrumb
-					crumbs={["Dashboard", "AreaPage", "Detail"]}
+					crumbs={["Dashboard", "Area", "Detail"]}
 					selected
 					className="mb-4"
 				/>
@@ -18,8 +47,12 @@ export function AreaPageDetail() {
 					<Card className="ph-5 pv-3 bd-rs-2">
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Code</Form.Label>
-								<Form.Control type="text" disabled defaultValue="A12O2O3" />
+								<Form.Label>Nama Area</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={areaDetails["name"]}
+								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Date</Form.Label>
@@ -51,7 +84,11 @@ export function AreaPageDetail() {
 								></Form.Control>
 							</Form.Group>
 							<div className="d-flex jc-end">
-								<Button className="mv-4 mr-4" variant="outline-secondary">
+								<Button
+									className="mv-4 mr-4"
+									variant="outline-secondary"
+									onClick={goToPreviousPath}
+								>
 									Kembali
 								</Button>{" "}
 								<Button
@@ -74,7 +111,9 @@ export function AreaPageDetail() {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">A12O2O3</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">
+								{areaDetails["name"]}
+							</p>
 						</div>
 					</Card>
 				</div>

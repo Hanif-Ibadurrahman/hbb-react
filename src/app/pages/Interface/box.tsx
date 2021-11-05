@@ -14,8 +14,8 @@ interface PaginatedBoxResponse {
 }
 
 interface BoxResponse {
-	code_box: string;
 	key: string;
+	code_box: string;
 	created_at: string;
 	updated_at: string;
 }

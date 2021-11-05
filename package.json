@@ -43,6 +43,7 @@
 		"jest-styled-components": "7.0.4",
 		"lint-staged": "10.3.0",
 		"mocha": "^9.1.2",
+		"moment": "^2.29.1",
 		"node-plop": "0.26.2",
 		"plop": "2.7.4",
 		"react": "17.0.2",

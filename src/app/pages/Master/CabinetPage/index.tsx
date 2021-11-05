@@ -73,7 +73,7 @@ export function CabinetPage() {
 		{
 			icon: "fa-search",
 			title: "Detail",
-			url: "Box-Detail/" + key,
+			url: "Cabinet-Detail/" + key,
 			type: 1,
 		},
 		{

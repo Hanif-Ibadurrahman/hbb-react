@@ -145,7 +145,7 @@ export function Routes() {
 						{/*---------- MASTER ---------*/}
 						<Route path={process.env.PUBLIC_URL + "/Box"} component={BoxPage} />
 						<Route
-							path={process.env.PUBLIC_URL + "/Box-Detail/:id"}
+							path={process.env.PUBLIC_URL + "/Box-Detail/:key"}
 							component={BoxPageDetail}
 						/>
 						<Route
@@ -153,7 +153,7 @@ export function Routes() {
 							component={FolderPage}
 						/>
 						<Route
-							path={process.env.PUBLIC_URL + "/Folder-Detail"}
+							path={process.env.PUBLIC_URL + "/Folder-Detail/:key"}
 							component={FolderPageDetail}
 						/>
 						<Route
@@ -161,7 +161,7 @@ export function Routes() {
 							component={CabinetPage}
 						/>
 						<Route
-							path={process.env.PUBLIC_URL + "/Cabinet-Detail"}
+							path={process.env.PUBLIC_URL + "/Cabinet-Detail/:key"}
 							component={CabinetPageDetail}
 						/>
 						<Route
@@ -169,7 +169,7 @@ export function Routes() {
 							component={DocumentPage}
 						/>
 						<Route
-							path={process.env.PUBLIC_URL + "/Document-Detail"}
+							path={process.env.PUBLIC_URL + "/Document-Detail/:key"}
 							component={DocumentPageDetail}
 						/>
 						<Route
@@ -177,7 +177,7 @@ export function Routes() {
 							component={AreaPage}
 						/>
 						<Route
-							path={process.env.PUBLIC_URL + "/Area-Detail"}
+							path={process.env.PUBLIC_URL + "/Area-Detail/:id"}
 							component={AreaPageDetail}
 						/>
 						<Route
