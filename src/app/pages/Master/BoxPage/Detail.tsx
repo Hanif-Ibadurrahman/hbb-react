@@ -1,11 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Card } from "react-bootstrap";
 import { PageWrapper } from "app/components/PageWrapper";
 import Breadcrumb from "app/components/BreadCrumb";
 import QR from "app/components/QRCode";
 import "../master.scoped.scss";
+import PaginatedBoxResponse from "app/pages/Interface/box";
+import api from "../../../../api/dox";
+import { useHistory } from "react-router-dom";
 
-export function BoxPageDetail() {
+export function BoxPageDetail({ match }) {
+	let history = useHistory();
+
+	const goToPreviousPath = e => {
+		e.preventDefault();
+		history.goBack();
+	};
+
+	const [boxDetails, setboxDetails] = useState([]);
+
+	const box_id = match.params.key;
+
+	const getBoxesData = async key => {
+		const { data } = await api.get<PaginatedBoxResponse>(`/boxes/${key}`);
+		const newData = data.data as any;
+		return newData;
+	};
+
+	const getBoxes = async key => {
+		const details = await getBoxesData(key);
+		setboxDetails(details);
+	};
+
+	useEffect(() => {
+		getBoxes(box_id);
+	}, []);
+
 	return (
 		<>
 			<PageWrapper className="row w-100%">
@@ -18,8 +47,12 @@ export function BoxPageDetail() {
 					<Card className="ph-5 pv-3 bd-rs-2">
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Code</Form.Label>
-								<Form.Control type="text" disabled defaultValue="A12O2O3" />
+								<Form.Label>Code Box</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={boxDetails["code_box"]}
+								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Date</Form.Label>
@@ -51,7 +84,11 @@ export function BoxPageDetail() {
 								></Form.Control>
 							</Form.Group>
 							<div className="d-flex jc-end">
-								<Button className="mv-4 mr-4" variant="outline-secondary">
+								<Button
+									className="mv-4 mr-4"
+									variant="outline-secondary"
+									onClick={goToPreviousPath}
+								>
 									Kembali
 								</Button>{" "}
 								<Button
@@ -74,7 +111,9 @@ export function BoxPageDetail() {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">A12O2O3</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">
+								{boxDetails["code_box"]}
+							</p>
 						</div>
 					</Card>
 				</div>

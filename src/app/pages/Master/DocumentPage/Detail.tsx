@@ -1,16 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Card } from "react-bootstrap";
 import { PageWrapper } from "app/components/PageWrapper";
 import Breadcrumb from "app/components/BreadCrumb";
 import QR from "app/components/QRCode";
 import "../master.scoped.scss";
+import api from "../../../../api/dox";
+import PaginatedFolderResponse from "app/pages/Interface/cabinet";
+import { useHistory } from "react-router-dom";
+import moment from "moment";
 
-export function DocumentPageDetail() {
+export function DocumentPageDetail({ match }) {
+	let history = useHistory();
+
+	const goToPreviousPath = e => {
+		e.preventDefault();
+		history.goBack();
+	};
+
+	const [documentDetails, setdocumentDetails] = useState([]);
+
+	const document_id = match.params.key;
+
+	const getDocumentsData = async key => {
+		const { data } = await api.get<PaginatedFolderResponse>(
+			`/documents/${key}`,
+		);
+		const newData = data.data as any;
+		return newData;
+	};
+
+	const getDocument = async key => {
+		const details = await getDocumentsData(key);
+		setdocumentDetails(details);
+	};
+
+	useEffect(() => {
+		getDocument(document_id);
+	}, []);
+
+	const moment = require("moment");
+	const date = moment(documentDetails["date"]).format("d MMMM YYYY");
+
 	return (
 		<>
 			<PageWrapper className="row w-100%">
 				<Breadcrumb
-					crumbs={["Dashboard", "BoxPage", "Detail"]}
+					crumbs={["Dashboard", "Document", "Detail"]}
 					selected
 					className="mb-4"
 				/>
@@ -19,43 +54,39 @@ export function DocumentPageDetail() {
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>No Document</Form.Label>
-								<Form.Control type="text" disabled defaultValue="A12O2O3" />
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={documentDetails["no"]}
+								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Date</Form.Label>
-								<Form.Control type="date" disabled defaultValue="04/09/21" />
+								<Form.Control type="text" disabled defaultValue={date} />
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Tahun Dokumen Aktif</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={documentDetails["active_year_for"]}
+								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Detail</Form.Label>
 								<Form.Control
-									type="text"
-									disabled
-									defaultValue="Lorem ipsum dolor sit amet, consectetur adipisicing elit,"
-								/>
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Quantity</Form.Label>
-								<Form.Control type="text" disabled defaultValue="10" />
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Notes</Form.Label>
-								<Form.Control
 									as="textarea"
 									className="notesdisable"
 									disabled
-									defaultValue="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+									defaultValue={documentDetails["detail"]}
 								/>
 							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Status</Form.Label>
-								<Form.Control
-									className="bg-success-6 w-100%"
-									defaultValue="Approve"
-									disabled
-								></Form.Control>
-							</Form.Group>
 							<div className="d-flex jc-end">
-								<Button className="mv-4 mr-4" variant="outline-secondary">
+								<Button
+									className="mv-4 mr-4"
+									variant="outline-secondary"
+									onClick={goToPreviousPath}
+								>
 									Kembali
 								</Button>{" "}
 								<Button
@@ -78,7 +109,9 @@ export function DocumentPageDetail() {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">A12O2O3</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">
+								{documentDetails["no"]}
+							</p>
 						</div>
 					</Card>
 				</div>

@@ -73,7 +73,7 @@ export function FolderPage() {
 		{
 			icon: "fa-search",
 			title: "Detail",
-			url: "Box-Detail/" + key,
+			url: "Folder-Detail/" + key,
 			type: 1,
 		},
 		{

@@ -1,16 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Card } from "react-bootstrap";
 import { PageWrapper } from "app/components/PageWrapper";
 import Breadcrumb from "app/components/BreadCrumb";
 import QR from "app/components/QRCode";
 import "../master.scoped.scss";
+import api from "../../../../api/dox";
+import PaginatedCabinetResponse from "app/pages/Interface/cabinet";
+import { useHistory } from "react-router-dom";
 
-export function CabinetPageDetail() {
+export function CabinetPageDetail({ match }) {
+	let history = useHistory();
+
+	const goToPreviousPath = e => {
+		e.preventDefault();
+		history.goBack();
+	};
+
+	const [cabinetDetails, setcabinetDetails] = useState([]);
+
+	const cabinet_id = match.params.key;
+
+	const getCabinetsData = async key => {
+		const { data } = await api.get<PaginatedCabinetResponse>(
+			`/cabinets/${key}`,
+		);
+		const newData = data.data as any;
+		return newData;
+	};
+
+	const getCabinets = async key => {
+		const details = await getCabinetsData(key);
+		setcabinetDetails(details);
+	};
+
+	useEffect(() => {
+		getCabinets(cabinet_id);
+	}, []);
+
 	return (
 		<>
 			<PageWrapper className="row w-100%">
 				<Breadcrumb
-					crumbs={["Dashboard", "CabinetPage", "Detail"]}
+					crumbs={["Dashboard", "Cabinet", "Detail"]}
 					selected
 					className="mb-4"
 				/>
@@ -19,7 +50,11 @@ export function CabinetPageDetail() {
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Code Cabinet</Form.Label>
-								<Form.Control type="text" disabled defaultValue="A12O2O3" />
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={cabinetDetails["code_cabinet"]}
+								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Date</Form.Label>
@@ -51,7 +86,11 @@ export function CabinetPageDetail() {
 								></Form.Control>
 							</Form.Group>
 							<div className="d-flex jc-end">
-								<Button className="mv-4 mr-4" variant="outline-secondary">
+								<Button
+									className="mv-4 mr-4"
+									variant="outline-secondary"
+									onClick={goToPreviousPath}
+								>
 									Kembali
 								</Button>{" "}
 								<Button
@@ -74,7 +113,9 @@ export function CabinetPageDetail() {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">A12O2O3</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">
+								{cabinetDetails["code_cabinet"]}
+							</p>
 						</div>
 					</Card>
 				</div>

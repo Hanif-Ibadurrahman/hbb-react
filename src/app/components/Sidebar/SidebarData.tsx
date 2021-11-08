@@ -125,7 +125,7 @@ export const CustomerMasterData = [
 	{
 		title: "Box",
 		icon: "",
-		link: "/BoxPage",
+		link: "/Box",
 	},
 	{
 		title: "Folder",

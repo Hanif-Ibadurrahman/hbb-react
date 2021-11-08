@@ -73,7 +73,7 @@ export function AreaPage() {
 		{
 			icon: "fa-search",
 			title: "Detail",
-			url: "Box-Detail/" + id,
+			url: "Area-Detail/" + id,
 			type: 1,
 		},
 		{
