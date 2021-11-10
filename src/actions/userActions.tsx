@@ -1,8 +1,8 @@
 import React from "react";
 import api from "../api/dox";
 import PaginatedBoxResponse from "app/pages/Interface/box";
-
 export const GET_BOXES_LIST = "GET_BOXES_LIST";
+export const EDIT_BOX = "GET_BOXES_LIST";
 export const BOXES_ERROR = "BOXES_ERROR";
 
 let limit = 20;

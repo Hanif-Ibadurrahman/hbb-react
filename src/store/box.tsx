@@ -1,9 +1,18 @@
 import { GET_BOXES_LIST } from "../actions/userActions";
+import { EDIT_BOX } from "../actions/userActions";
 
 let initialState = {
-	getBoxesList: false,
-	errorBoxesList: false,
-	title: "DOX",
+	boxes: [],
+	key: "",
+	code_box: "",
+	meta: {
+		total: 0,
+		per_page: 0,
+		current_page: 1,
+	},
+	errorBoxesList: "",
+	errorBoxesDetail: "",
+	title: "BOX",
 };
 
 const box = (state = initialState, action) => {
@@ -11,10 +20,16 @@ const box = (state = initialState, action) => {
 		case GET_BOXES_LIST:
 			return {
 				...state,
-				getBoxesList: action.payload.data,
+				boxes: action.payload.data.data,
 				errorBoxesList: action.payload.errorMessage,
 			};
-
+		case EDIT_BOX:
+			return {
+				...state,
+				key: action.payload.data.key,
+				code_box: action.payload.data.code_box,
+				errorBoxesDetail: action.payload.errorMessage,
+			};
 		default:
 			return state;
 	}
