@@ -2,25 +2,33 @@ import React, { useState, useRef, useEffect, Component } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
-import { ModalForm } from "./ModalForm";
-import { ModalDelete } from "../Components/DeleteModal";
 import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
 import api from "../../../../api/dox";
 import PaginatedBoxResponse from "app/pages/Interface/box";
 import { Pagination } from "app/components/Pagination";
-import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
-import box from "store/box";
+import { useHistory } from "react-router";
 import { getBoxesList } from "actions/userActions";
 import { useDispatch } from "react-redux";
-import { configureAppStore } from "store/configureStore";
-import { GET_BOXES_LIST } from "actions/userActions";
-
-export function BoxPage() {
+import { connect } from "react-redux";
+const mapStateToProps = state => {
+	return {
+		boxes: state.boxes.boxes,
+	};
+};
+const BoxPage = props => {
 	const [data, setData] = useState([]);
-	// const userName = useSelect(state => state.data);
+
+	const [modalShow, setModalShow] = useState(false);
+	const [modalEdit, setModalEdit] = useState(false);
+	const [showAlert, setShowAlert] = useState(false);
+	let history = useHistory();
+
+	const _onHide = () => {
+		setModalShow(false);
+		setModalEdit(false);
+		setShowAlert(false);
+	};
 
 	const [pageCount, setpageCount] = useState(0);
 
@@ -40,28 +48,6 @@ export function BoxPage() {
 		setData(commentsFormServer);
 	};
 
-	const onDelete = key => {
-		Swal.fire({
-			text: "Apakah anda ingin menghapus data ini?",
-			icon: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#d33",
-			confirmButtonText: "Hapus",
-		}).then(willDelete => {
-			if (willDelete.isConfirmed) {
-				api.delete(`/boxes/${key}`).then(() => {
-					getBoxes();
-				});
-				Swal.fire({
-					text: "Data Berhasil di Hapus",
-					icon: "success",
-					confirmButtonColor: "#198754",
-					confirmButtonText: "Ok",
-				});
-			}
-		});
-	};
-
 	const action = key => [
 		{
 			icon: "fa-search",
@@ -77,16 +63,17 @@ export function BoxPage() {
 		{
 			icon: "fa-edit",
 			title: "Edit",
-			type: 1,
+			onclick: "",
+			value: key,
+			type: 2,
 		},
 		{
 			icon: "fa-trash-alt",
 			title: "Delete",
 			titleClass: "tc-danger-5",
 			type: 2,
-			onclick: onDelete,
-			id: key,
-			url: "",
+			onclick: "",
+			value: key,
 		},
 	];
 
@@ -112,28 +99,11 @@ export function BoxPage() {
 		},
 	];
 
-	// API hit.
-	async function getBoxes() {
-		const { data } = await api.get<PaginatedBoxResponse>(
-			`/boxes?page=1&limit=${limit}`,
-		);
-		console.log(data.data);
-		const newData = data.data as any;
-		setData(newData);
-		setpageCount(Math.ceil(data.meta.last_page));
-	}
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		getBoxes();
-	}, []);
-
-	//-------REDUX
-	// const dispatch = useDispatch()
-
-	// useEffect(() => {
-	// 	dispatch(getBoxesList())
-	// }, [dispatch])
-
+		dispatch(getBoxesList());
+	}, [dispatch]);
 	return (
 		<>
 			<Helmet>
@@ -144,10 +114,17 @@ export function BoxPage() {
 				/>
 			</Helmet>
 			<PageWrapper>
-				<PageHeader breadcrumb={["Master", "Box"]} addForm={<ModalForm />} />
-				<DataTable tableHeader={header} tableBody={data} />
+				<PageHeader
+					breadcrumb={["Master", "Box"]}
+					modal={setModalShow}
+					value={true}
+				/>
+				{console.log(props.boxes)}
+				<DataTable tableHeader={header} tableBody={props.boxes} />
 				<Pagination pageCount={pageCount} onPageChange={handlePageClick} />
 			</PageWrapper>
 		</>
 	);
-}
+};
+
+export default connect(mapStateToProps, null)(BoxPage);
