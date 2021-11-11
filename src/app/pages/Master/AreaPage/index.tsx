@@ -5,69 +5,27 @@ import { DataTable } from "app/components/Datatables";
 import { ModalForm } from "./ModalForm";
 import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
-import api from "../../../../api/dox";
-import PaginatedAreaResponse from "app/pages/Interface/folder";
 import { Pagination } from "app/components/Pagination";
-import Swal from "sweetalert2";
+import { getAreasList } from "actions/AreaAction";
+import { connect, useDispatch } from "react-redux";
 
-export function AreaPage() {
-	const [data, setData] = useState([]);
-
-	const [pageCount, setpageCount] = useState(0);
-
-	let limit = 20;
-
-	const pagination = async currentPage => {
-		const { data } = await api.get<PaginatedAreaResponse>(
-			`/areas?page=${currentPage}&_limit=${limit}`,
-		);
-		const newData = data.data as any;
-		return newData;
+const mapStateToProps = state => {
+	return {
+		areas: state.areas.areas,
+		meta: state.areas.meta,
 	};
+};
 
-	const handlePageClick = async data => {
-		console.log(data.selected);
-		let currentPage = data.selected + 1;
-		const commentsFormServer = await pagination(currentPage);
-		setData(commentsFormServer);
+const AreaPage = props => {
+	const dispatch = useDispatch();
+
+	const FetchData = (page = 1) => {
+		dispatch(getAreasList(page));
 	};
-
-	// API hit.
-	async function getAreas() {
-		const { data } = await api.get<PaginatedAreaResponse>(
-			`/areas?page=1&limit=${limit}`,
-		);
-		console.log(data.data);
-		const newData = data.data as any;
-		setData(newData);
-		setpageCount(Math.ceil(data.meta.last_page));
-	}
 
 	useEffect(() => {
-		getAreas();
+		FetchData();
 	}, []);
-
-	const onDelete = id => {
-		Swal.fire({
-			text: "Apakah anda ingin menghapus data ini?",
-			icon: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#d33",
-			confirmButtonText: "Hapus",
-		}).then(willDelete => {
-			if (willDelete.isConfirmed) {
-				api.delete(`/areas/${id}`).then(() => {
-					getAreas();
-				});
-				Swal.fire({
-					text: "Data Berhasil di Hapus",
-					icon: "success",
-					confirmButtonColor: "#198754",
-					confirmButtonText: "Ok",
-				});
-			}
-		});
-	};
 
 	const action = id => [
 		{
@@ -91,7 +49,7 @@ export function AreaPage() {
 			title: "Delete",
 			titleClass: "tc-danger-5",
 			type: 2,
-			onclick: onDelete,
+			onclick: "onDelete",
 			id: id,
 			url: "",
 		},
@@ -130,9 +88,14 @@ export function AreaPage() {
 			</Helmet>
 			<PageWrapper>
 				<PageHeader breadcrumb={["Master", "Area"]} addForm={<ModalForm />} />
-				<DataTable tableHeader={header} tableBody={data} />
-				<Pagination pageCount={pageCount} onPageChange={handlePageClick} />
+				<DataTable tableHeader={header} tableBody={props.areas} />
+				<Pagination
+					pageCount={props.meta.last_page}
+					onPageChange={data => FetchData(data.selected + 1)}
+				/>
 			</PageWrapper>
 		</>
 	);
-}
+};
+
+export default connect(mapStateToProps, null)(AreaPage);
