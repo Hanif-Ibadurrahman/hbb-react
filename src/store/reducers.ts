@@ -6,6 +6,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 
 import { InjectedReducersType } from "utils/types/injector-typings";
 import boxes from "./box";
+import areas from "./Reducer/area";
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -18,6 +19,7 @@ export function createReducer(injectedReducers: InjectedReducersType = {}) {
 		return combineReducers({
 			...injectedReducers,
 			boxes,
+			areas,
 		});
 	}
 }
