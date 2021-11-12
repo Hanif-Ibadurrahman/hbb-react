@@ -42,7 +42,7 @@ import { BoxPageDetail } from "./Master/BoxPage/Detail";
 import { FolderPage } from "./Master/FolderPage";
 import { FolderPageDetail } from "./Master/FolderPage/Detail";
 // 3 - DOCUMENT
-import { DocumentPage } from "./Master/DocumentPage";
+import DocumentPage from "./Master/DocumentPage";
 import { DocumentPageDetail } from "./Master/DocumentPage/Detail";
 // 4 - CABINET
 import { CabinetPage } from "./Master/CabinetPage";
