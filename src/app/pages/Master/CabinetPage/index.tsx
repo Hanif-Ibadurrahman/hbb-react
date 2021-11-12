@@ -8,66 +8,27 @@ import DropdownAction from "../Components/DropdownAction";
 import api from "../../../../api/dox";
 import PaginatedCabinetResponse from "app/pages/Interface/cabinet";
 import { Pagination } from "app/components/Pagination";
+import { getCabinetsList } from "actions/CabinetAction";
+import { connect, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 
-export function CabinetPage() {
-	const [data, setData] = useState([]);
-
-	const [pageCount, setpageCount] = useState(0);
-
-	let limit = 20;
-
-	const pagination = async currentPage => {
-		const { data } = await api.get<PaginatedCabinetResponse>(
-			`/cabinets?page=${currentPage}&_limit=${limit}`,
-		);
-		const newData = data.data as any;
-		return newData;
+const mapStateToProps = state => {
+	return {
+		cabinets: state.cabinets.cabinets,
+		meta: state.cabinets.meta,
 	};
+};
 
-	const handlePageClick = async data => {
-		console.log(data.selected);
-		let currentPage = data.selected + 1;
-		const commentsFormServer = await pagination(currentPage);
-		setData(commentsFormServer);
+const CabinetPage = props => {
+	const dispatch = useDispatch();
+
+	const FetchData = (page = 1) => {
+		dispatch(getCabinetsList(page));
 	};
-
-	// API hit.
-	async function getCabinet() {
-		const { data } = await api.get<PaginatedCabinetResponse>(
-			`/cabinets?page=1&limit=${limit}`,
-		);
-		console.log(data.data);
-		const newData = data.data as any;
-		setData(newData);
-		setpageCount(Math.ceil(data.meta.last_page));
-	}
 
 	useEffect(() => {
-		getCabinet();
+		FetchData();
 	}, []);
-
-	const onDelete = key => {
-		Swal.fire({
-			text: "Apakah anda ingin menghapus data ini?",
-			icon: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#d33",
-			confirmButtonText: "Hapus",
-		}).then(willDelete => {
-			if (willDelete.isConfirmed) {
-				api.delete(`/cabinets/${key}`).then(() => {
-					getCabinet();
-				});
-				Swal.fire({
-					text: "Data Berhasil di Hapus",
-					icon: "success",
-					confirmButtonColor: "#198754",
-					confirmButtonText: "Ok",
-				});
-			}
-		});
-	};
 
 	const action = key => [
 		{
@@ -91,7 +52,7 @@ export function CabinetPage() {
 			title: "Delete",
 			titleClass: "tc-danger-5",
 			type: 2,
-			onclick: onDelete,
+			onclick: "",
 			id: key,
 			url: "",
 		},
@@ -133,9 +94,14 @@ export function CabinetPage() {
 					breadcrumb={["Master", "Cabinet"]}
 					addForm={<ModalForm />}
 				/>
-				<DataTable tableHeader={header} tableBody={data} />
-				<Pagination pageCount={pageCount} onPageChange={handlePageClick} />
+				<DataTable tableHeader={header} tableBody={props.cabinets} />
+				<Pagination
+					pageCount={props.meta.last_page}
+					onPageChange={data => FetchData(data.selected + 1)}
+				/>
 			</PageWrapper>
 		</>
 	);
-}
+};
+
+export default connect(mapStateToProps, null)(CabinetPage);
