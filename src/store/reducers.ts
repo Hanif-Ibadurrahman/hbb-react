@@ -5,7 +5,7 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
 import { InjectedReducersType } from "utils/types/injector-typings";
-import boxes from "./box";
+import boxes from "./Reducer/box";
 import areas from "./Reducer/area";
 
 /**

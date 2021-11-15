@@ -7,10 +7,10 @@ export const BOXES_ERROR = "BOXES_ERROR";
 
 let limit = 20;
 
-export const getBoxesList = () => {
+export const getBoxesList = page => {
 	return dispatch => {
 		api
-			.get<PaginatedBoxResponse>(`/boxes?page=1&limit=${limit}`)
+			.get<PaginatedBoxResponse>(`/boxes?page=${page}&limit=${limit}`)
 			.then(function (response) {
 				dispatch({
 					type: GET_BOXES_LIST,
