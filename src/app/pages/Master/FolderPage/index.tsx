@@ -8,66 +8,28 @@ import DropdownAction from "../Components/DropdownAction";
 import api from "../../../../api/dox";
 import PaginatedFolderResponse from "app/pages/Interface/folder";
 import { Pagination } from "app/components/Pagination";
+import { getFoldersList } from "actions/FolderAction";
+import { connect, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
+import { propTypes } from "react-bootstrap/esm/Image";
 
-export function FolderPage() {
-	const [data, setData] = useState([]);
-
-	const [pageCount, setpageCount] = useState(0);
-
-	let limit = 20;
-
-	const pagination = async currentPage => {
-		const { data } = await api.get<PaginatedFolderResponse>(
-			`/folders?page=${currentPage}&_limit=${limit}`,
-		);
-		const newData = data.data as any;
-		return newData;
+const mapStateToProps = state => {
+	return {
+		folders: state.folders.folders,
+		meta: state.folders.meta,
 	};
+};
 
-	const handlePageClick = async data => {
-		console.log(data.selected);
-		let currentPage = data.selected + 1;
-		const commentsFormServer = await pagination(currentPage);
-		setData(commentsFormServer);
+const FolderPage = props => {
+	const dispatch = useDispatch();
+
+	const FetchData = (page = 1) => {
+		dispatch(getFoldersList(page));
 	};
-
-	// API hit.
-	async function getFolders() {
-		const { data } = await api.get<PaginatedFolderResponse>(
-			`/folders?page=1&limit=${limit}`,
-		);
-		console.log(data.data);
-		const newData = data.data as any;
-		setData(newData);
-		setpageCount(Math.ceil(data.meta.last_page));
-	}
 
 	useEffect(() => {
-		getFolders();
+		FetchData();
 	}, []);
-
-	const onDelete = key => {
-		Swal.fire({
-			text: "Apakah anda ingin menghapus data ini?",
-			icon: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#d33",
-			confirmButtonText: "Hapus",
-		}).then(willDelete => {
-			if (willDelete.isConfirmed) {
-				api.delete(`/folders/${key}`).then(() => {
-					getFolders();
-				});
-				Swal.fire({
-					text: "Data Berhasil di Hapus",
-					icon: "success",
-					confirmButtonColor: "#198754",
-					confirmButtonText: "Ok",
-				});
-			}
-		});
-	};
 
 	const action = key => [
 		{
@@ -91,7 +53,7 @@ export function FolderPage() {
 			title: "Delete",
 			titleClass: "tc-danger-5",
 			type: 2,
-			onclick: onDelete,
+			onclick: "",
 			id: key,
 		},
 	];
@@ -129,9 +91,14 @@ export function FolderPage() {
 			</Helmet>
 			<PageWrapper>
 				<PageHeader breadcrumb={["Master", "Folder"]} addForm={<ModalForm />} />
-				<DataTable tableHeader={header} tableBody={data} />
-				<Pagination pageCount={pageCount} onPageChange={handlePageClick} />
+				<DataTable tableHeader={header} tableBody={props.folders} />
+				<Pagination
+					pageCount={props.meta.last_page}
+					onPageChange={data => FetchData(data.selected + 1)}
+				/>
 			</PageWrapper>
 		</>
 	);
-}
+};
+
+export default connect(mapStateToProps, null)(FolderPage);
