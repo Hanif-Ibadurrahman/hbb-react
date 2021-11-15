@@ -5,71 +5,27 @@ import { DataTable } from "app/components/Datatables";
 import { ModalForm } from "./ModalForm";
 import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
-import api from "../../../../api/dox";
-import PaginatedDocumentResponse from "app/pages/Interface/document";
 import { Pagination } from "app/components/Pagination";
-import Swal from "sweetalert2";
+import { connect, useDispatch } from "react-redux";
+import { getDocumentsList } from "actions/DocumentAction";
 
-export function DocumentPage() {
-	const [data, setData] = useState([]);
-
-	const [pageCount, setpageCount] = useState(0);
-
-	let limit = 20;
-
-	const pagination = async currentPage => {
-		const { data } = await api.get<PaginatedDocumentResponse>(
-			`/documents?page=${currentPage}&_limit=${limit}`,
-		);
-		const newData = data.data as any;
-		return newData;
+const mapStateToProps = state => {
+	return {
+		documents: state.documents.documents,
+		meta: state.documents.meta,
 	};
+};
 
-	const handlePageClick = async data => {
-		console.log(data.selected);
-		let currentPage = data.selected + 1;
-		const commentsFormServer = await pagination(currentPage);
-		setData(commentsFormServer);
+const DocumentPage = props => {
+	const dispatch = useDispatch();
+
+	const FetchData = (page = 1) => {
+		dispatch(getDocumentsList(page));
 	};
-
-	// API hit.
-	async function getDocuments() {
-		const { data } = await api.get<PaginatedDocumentResponse>(
-			`/documents?page=1&limit=${limit}`,
-		);
-		console.log(data.data);
-		const newData = data.data as any;
-		setData(newData);
-		setpageCount(Math.ceil(data.meta.last_page));
-	}
 
 	useEffect(() => {
-		getDocuments();
+		FetchData();
 	}, []);
-
-	const onDelete = key => {
-		Swal.fire({
-			text: "Apakah anda ingin menghapus data ini?",
-			icon: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#d33",
-			confirmButtonText: "Hapus",
-		}).then(willDelete => {
-			if (willDelete.isConfirmed) {
-				api.delete(`/documents/${key}`).then(() => {
-					getDocuments();
-				});
-				Swal.fire({
-					text: "Data Berhasil di Hapus",
-					icon: "success",
-					confirmButtonColor: "#198754",
-					confirmButtonText: "Ok",
-				});
-			}
-		});
-
-		console.log("delete data");
-	};
 
 	const action = key => [
 		{
@@ -93,7 +49,7 @@ export function DocumentPage() {
 			title: "Delete",
 			titleClass: "tc-danger-5",
 			type: 2,
-			onclick: onDelete,
+			onclick: "",
 			id: key,
 		},
 	];
@@ -135,9 +91,14 @@ export function DocumentPage() {
 					breadcrumb={["Master", "Document"]}
 					addForm={<ModalForm />}
 				/>
-				<DataTable tableHeader={header} tableBody={data} />
-				<Pagination pageCount={pageCount} onPageChange={handlePageClick} />
+				<DataTable tableHeader={header} tableBody={props.documents} />
+				<Pagination
+					pageCount={props.meta.last_page}
+					onPageChange={data => FetchData(data.selected + 1)}
+				/>
 			</PageWrapper>
 		</>
 	);
-}
+};
+
+export default connect(mapStateToProps, null)(DocumentPage);
