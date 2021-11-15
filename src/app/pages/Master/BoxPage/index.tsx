@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, Component } from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
@@ -6,7 +6,6 @@ import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
 import { ModalForm } from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import { useHistory } from "react-router";
 import { getBoxesList } from "actions/BoxActions";
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
