@@ -61,7 +61,7 @@ const CabinetPage = props => {
 	const header = [
 		{
 			title: "Code Cabinet",
-			prop: "code_cabinet",
+			prop: "id",
 			sortable: true,
 			cellProps: {
 				style: { width: "80%" },

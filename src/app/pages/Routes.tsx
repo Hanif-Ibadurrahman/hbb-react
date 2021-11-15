@@ -39,7 +39,7 @@ import { ApprovalDetail } from "./Approval/Detail";
 import BoxPage from "./Master/BoxPage";
 import { BoxPageDetail } from "./Master/BoxPage/Detail";
 // 2 - FOLDER
-import { FolderPage } from "./Master/FolderPage";
+import FolderPage from "./Master/FolderPage";
 import { FolderPageDetail } from "./Master/FolderPage/Detail";
 // 3 - DOCUMENT
 import DocumentPage from "./Master/DocumentPage";

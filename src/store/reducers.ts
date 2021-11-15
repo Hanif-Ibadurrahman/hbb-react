@@ -9,6 +9,7 @@ import boxes from "./box";
 import areas from "./Reducer/area";
 import documents from "./Reducer/document";
 import cabinets from "./Reducer/cabinet";
+import folders from "./Reducer/folder";
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
  */
@@ -23,6 +24,7 @@ export function createReducer(injectedReducers: InjectedReducersType = {}) {
 			areas,
 			documents,
 			cabinets,
+			folders,
 		});
 	}
 }
