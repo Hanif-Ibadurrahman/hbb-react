@@ -1,5 +1,5 @@
-import { GET_BOXES_LIST } from "../actions/userActions";
-import { EDIT_BOX } from "../actions/userActions";
+import { GET_BOXES_LIST } from "../../actions/BoxActions";
+import { EDIT_BOX } from "../../actions/BoxActions";
 
 let initialState = {
 	boxes: [],
@@ -21,6 +21,7 @@ const box = (state = initialState, action) => {
 			return {
 				...state,
 				boxes: action.payload.data.data,
+				meta: action.payload.data.meta,
 				errorBoxesList: action.payload.errorMessage,
 			};
 		case EDIT_BOX:

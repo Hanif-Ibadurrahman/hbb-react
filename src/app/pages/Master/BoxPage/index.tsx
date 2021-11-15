@@ -1,52 +1,30 @@
-import React, { useState, useRef, useEffect, Component } from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
 import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
-import api from "../../../../api/dox";
-import PaginatedBoxResponse from "app/pages/Interface/box";
+import { ModalForm } from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import { useHistory } from "react-router";
-import { getBoxesList } from "actions/userActions";
+import { getBoxesList } from "actions/BoxActions";
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
 const mapStateToProps = state => {
 	return {
 		boxes: state.boxes.boxes,
+		meta: state.boxes.meta,
 	};
 };
 const BoxPage = props => {
-	const [data, setData] = useState([]);
+	const dispatch = useDispatch();
 
-	const [modalShow, setModalShow] = useState(false);
-	const [modalEdit, setModalEdit] = useState(false);
-	const [showAlert, setShowAlert] = useState(false);
-	let history = useHistory();
-
-	const _onHide = () => {
-		setModalShow(false);
-		setModalEdit(false);
-		setShowAlert(false);
+	const FetchData = (page = 1) => {
+		dispatch(getBoxesList(page));
 	};
 
-	const [pageCount, setpageCount] = useState(0);
-
-	let limit = 20;
-
-	const pagination = async currentPage => {
-		const { data } = await api.get<PaginatedBoxResponse>(
-			`/boxes?page=${currentPage}&_limit=${limit}`,
-		);
-		const newData = data.data as any;
-		return newData;
-	};
-
-	const handlePageClick = async data => {
-		let currentPage = data.selected + 1;
-		const commentsFormServer = await pagination(currentPage);
-		setData(commentsFormServer);
-	};
+	useEffect(() => {
+		FetchData();
+	}, []);
 
 	const action = key => [
 		{
@@ -99,11 +77,6 @@ const BoxPage = props => {
 		},
 	];
 
-	const dispatch = useDispatch();
-
-	useEffect(() => {
-		dispatch(getBoxesList());
-	}, [dispatch]);
 	return (
 		<>
 			<Helmet>
@@ -114,14 +87,12 @@ const BoxPage = props => {
 				/>
 			</Helmet>
 			<PageWrapper>
-				<PageHeader
-					breadcrumb={["Master", "Box"]}
-					modal={setModalShow}
-					value={true}
-				/>
-				{console.log(props.boxes)}
+				<PageHeader breadcrumb={["Master", "Box"]} addForm={<ModalForm />} />
 				<DataTable tableHeader={header} tableBody={props.boxes} />
-				<Pagination pageCount={pageCount} onPageChange={handlePageClick} />
+				<Pagination
+					pageCount={props.meta.last_page}
+					onPageChange={data => FetchData(data.selected + 1)}
+				/>
 			</PageWrapper>
 		</>
 	);
