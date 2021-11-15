@@ -7,8 +7,9 @@ import { combineReducers } from "@reduxjs/toolkit";
 import { InjectedReducersType } from "utils/types/injector-typings";
 import boxes from "./box";
 import areas from "./Reducer/area";
+import documents from "./Reducer/document";
+import cabinets from "./Reducer/cabinet";
 import folders from "./Reducer/folder";
-
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
  */
@@ -21,6 +22,8 @@ export function createReducer(injectedReducers: InjectedReducersType = {}) {
 			...injectedReducers,
 			boxes,
 			areas,
+			documents,
+			cabinets,
 			folders,
 		});
 	}
