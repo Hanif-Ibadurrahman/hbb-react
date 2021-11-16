@@ -30,11 +30,11 @@ const CabinetPage = props => {
 		FetchData();
 	}, []);
 
-	const action = key => [
+	const action = id => [
 		{
 			icon: "fa-search",
 			title: "Detail",
-			url: "Cabinet-Detail/" + key,
+			url: "Cabinet-Detail/" + id,
 			type: 1,
 		},
 		{
@@ -53,7 +53,7 @@ const CabinetPage = props => {
 			titleClass: "tc-danger-5",
 			type: 2,
 			onclick: "",
-			id: key,
+			id: id,
 			url: "",
 		},
 	];
@@ -75,7 +75,7 @@ const CabinetPage = props => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.key)} />;
+				return <DropdownAction list={action(row.id)} />;
 			},
 		},
 	];

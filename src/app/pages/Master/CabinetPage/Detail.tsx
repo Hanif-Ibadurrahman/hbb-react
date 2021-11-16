@@ -7,8 +7,17 @@ import "../master.scoped.scss";
 import api from "../../../../api/dox";
 import PaginatedCabinetResponse from "app/pages/Interface/cabinet";
 import { useHistory } from "react-router-dom";
+import { connect, useDispatch } from "react-redux";
+import { getCabinetDetail } from "actions/CabinetAction";
 
-export function CabinetPageDetail({ match }) {
+const mapStateToProps = state => {
+	return {
+		CabinetDetail: state.cabinets.CabinetDetail,
+		errorCabinetDetail: state.cabinets.errorBoxDetail,
+	};
+};
+
+const CabinetPageDetail = props => {
 	let history = useHistory();
 
 	const goToPreviousPath = e => {
@@ -16,25 +25,12 @@ export function CabinetPageDetail({ match }) {
 		history.goBack();
 	};
 
-	const [cabinetDetails, setcabinetDetails] = useState([]);
+	const cabinet_id = props.match.params.key;
 
-	const cabinet_id = match.params.key;
-
-	const getCabinetsData = async key => {
-		const { data } = await api.get<PaginatedCabinetResponse>(
-			`/cabinets/${key}`,
-		);
-		const newData = data.data as any;
-		return newData;
-	};
-
-	const getCabinets = async key => {
-		const details = await getCabinetsData(key);
-		setcabinetDetails(details);
-	};
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		getCabinets(cabinet_id);
+		dispatch(getCabinetDetail(cabinet_id));
 	}, []);
 
 	return (
@@ -53,7 +49,7 @@ export function CabinetPageDetail({ match }) {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={cabinetDetails["code_cabinet"]}
+									defaultValue={props.CabinetDetail.id}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -114,7 +110,7 @@ export function CabinetPageDetail({ match }) {
 						/>
 						<div className="d-flex jc-center">
 							<p className="p-xl ff-1-bd ta-center mt-3">
-								{cabinetDetails["code_cabinet"]}
+								{props.CabinetDetail.id}
 							</p>
 						</div>
 					</Card>
@@ -122,4 +118,6 @@ export function CabinetPageDetail({ match }) {
 			</PageWrapper>
 		</>
 	);
-}
+};
+
+export default connect(mapStateToProps, null)(CabinetPageDetail);
