@@ -4,8 +4,6 @@ import { PageWrapper } from "app/components/PageWrapper";
 import Breadcrumb from "app/components/BreadCrumb";
 import QR from "app/components/QRCode";
 import "../master.scoped.scss";
-import api from "../../../../api/dox";
-import PaginatedCabinetResponse from "app/pages/Interface/cabinet";
 import { useHistory } from "react-router-dom";
 import { connect, useDispatch } from "react-redux";
 import { getCabinetDetail } from "actions/CabinetAction";
@@ -49,7 +47,7 @@ const CabinetPageDetail = props => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={props.CabinetDetail.id}
+									defaultValue={props.CabinetDetail.code_cabinet}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -110,7 +108,7 @@ const CabinetPageDetail = props => {
 						/>
 						<div className="d-flex jc-center">
 							<p className="p-xl ff-1-bd ta-center mt-3">
-								{props.CabinetDetail.id}
+								{props.CabinetDetail.code_cabinet}
 							</p>
 						</div>
 					</Card>
