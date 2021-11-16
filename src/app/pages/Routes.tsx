@@ -46,7 +46,7 @@ import DocumentPage from "./Master/DocumentPage";
 import { DocumentPageDetail } from "./Master/DocumentPage/Detail";
 // 4 - CABINET
 import CabinetPage from "./Master/CabinetPage";
-import { CabinetPageDetail } from "./Master/CabinetPage/Detail";
+import CabinetPageDetail from "./Master/CabinetPage/Detail";
 // 4 - AREA
 import AreaPage from "./Master/AreaPage";
 import { AreaPageDetail } from "./Master/AreaPage/Detail";
