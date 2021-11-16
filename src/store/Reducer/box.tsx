@@ -1,10 +1,14 @@
-import { GET_BOXES_LIST } from "../../actions/BoxActions";
-import { EDIT_BOX } from "../../actions/BoxActions";
+import {
+	GET_BOXES_LIST,
+	GET_BOX_DETAIL,
+	EDIT_BOX,
+} from "../../actions/BoxActions";
 
 let initialState = {
 	boxes: [],
 	key: "",
 	code_box: "",
+	BoxDetail: "",
 	meta: {
 		total: 0,
 		per_page: 0,
@@ -23,6 +27,12 @@ const box = (state = initialState, action) => {
 				boxes: action.payload.data.data,
 				meta: action.payload.data.meta,
 				errorBoxesList: action.payload.errorMessage,
+			};
+		case GET_BOX_DETAIL:
+			return {
+				...state,
+				BoxDetail: action.payload.data.data,
+				errorBoxesDetail: action.payload.errorMessage,
 			};
 		case EDIT_BOX:
 			return {
