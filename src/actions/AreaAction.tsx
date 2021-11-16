@@ -5,12 +5,6 @@ export const GET_AREAS_LIST = "GET_AREAS_LIST";
 export const EDIT_BOX = "GET_AREAS_LIST";
 export const AREAS_ERROR = "AREAS_ERROR";
 
-export const GET_DATA_META = "GET_DATA_META";
-export const SET_PAGINATION = "SET_PAGINATION";
-export const SET_PERPAGE = "SET_PERPAGE";
-export const SET_PAGE_COUNT = "SET_PAGE_COUNT";
-export const SET_OFFSET = "SET_OFFSET";
-
 let limit = 20;
 export const getAreasList = page => {
 	return dispatch => {

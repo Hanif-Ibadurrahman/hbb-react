@@ -4,8 +4,6 @@ import { PageWrapper } from "app/components/PageWrapper";
 import Breadcrumb from "app/components/BreadCrumb";
 import QR from "app/components/QRCode";
 import "../master.scoped.scss";
-import PaginatedBoxResponse from "app/pages/Interface/box";
-import api from "../../../../api/dox";
 import { useHistory } from "react-router-dom";
 import { connect, useDispatch } from "react-redux";
 import { getBoxDetail } from "actions/BoxActions";
