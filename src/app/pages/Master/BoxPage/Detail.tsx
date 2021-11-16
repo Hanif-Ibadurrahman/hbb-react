@@ -4,11 +4,18 @@ import { PageWrapper } from "app/components/PageWrapper";
 import Breadcrumb from "app/components/BreadCrumb";
 import QR from "app/components/QRCode";
 import "../master.scoped.scss";
-import PaginatedBoxResponse from "app/pages/Interface/box";
-import api from "../../../../api/dox";
 import { useHistory } from "react-router-dom";
+import { connect, useDispatch } from "react-redux";
+import { getBoxDetail } from "actions/BoxActions";
 
-export function BoxPageDetail({ match }) {
+const mapStateToProps = state => {
+	return {
+		BoxDetail: state.boxes.BoxDetail,
+		errorUserDetail: state.boxes.errorBoxDetail,
+	};
+};
+
+const BoxPageDetail = props => {
 	let history = useHistory();
 
 	const goToPreviousPath = e => {
@@ -16,23 +23,12 @@ export function BoxPageDetail({ match }) {
 		history.goBack();
 	};
 
-	const [boxDetails, setboxDetails] = useState([]);
+	const box_id = props.match.params.key;
 
-	const box_id = match.params.key;
-
-	const getBoxesData = async key => {
-		const { data } = await api.get<PaginatedBoxResponse>(`/boxes/${key}`);
-		const newData = data.data as any;
-		return newData;
-	};
-
-	const getBoxes = async key => {
-		const details = await getBoxesData(key);
-		setboxDetails(details);
-	};
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		getBoxes(box_id);
+		dispatch(getBoxDetail(box_id));
 	}, []);
 
 	return (
@@ -48,10 +44,11 @@ export function BoxPageDetail({ match }) {
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Code Box</Form.Label>
+
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={boxDetails["code_box"]}
+									defaultValue={props.BoxDetail.code_box}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -112,7 +109,7 @@ export function BoxPageDetail({ match }) {
 						/>
 						<div className="d-flex jc-center">
 							<p className="p-xl ff-1-bd ta-center mt-3">
-								{boxDetails["code_box"]}
+								{props.BoxDetail.code_box}
 							</p>
 						</div>
 					</Card>
@@ -120,4 +117,6 @@ export function BoxPageDetail({ match }) {
 			</PageWrapper>
 		</>
 	);
-}
+};
+
+export default connect(mapStateToProps, null)(BoxPageDetail);

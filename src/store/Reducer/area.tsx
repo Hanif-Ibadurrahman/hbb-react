@@ -1,4 +1,4 @@
-import { GET_AREAS_LIST, GET_DATA_META } from "../../actions/AreaAction";
+import { GET_AREAS_LIST } from "../../actions/AreaAction";
 
 let initialState = {
 	areas: [],
