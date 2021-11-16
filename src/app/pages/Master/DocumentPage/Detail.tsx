@@ -4,12 +4,19 @@ import { PageWrapper } from "app/components/PageWrapper";
 import Breadcrumb from "app/components/BreadCrumb";
 import QR from "app/components/QRCode";
 import "../master.scoped.scss";
-import api from "../../../../api/dox";
-import PaginatedFolderResponse from "app/pages/Interface/cabinet";
 import { useHistory } from "react-router-dom";
+import { connect, useDispatch } from "react-redux";
+import { getDocumentDetail } from "actions/DocumentAction";
 import moment from "moment";
 
-export function DocumentPageDetail({ match }) {
+const mapStateToProps = state => {
+	return {
+		DocumentDetail: state.documents.DocumentDetail,
+		errorUserDetail: state.documents.errorDocumentDetail,
+	};
+};
+
+const DocumentPageDetail = props => {
 	let history = useHistory();
 
 	const goToPreviousPath = e => {
@@ -17,29 +24,15 @@ export function DocumentPageDetail({ match }) {
 		history.goBack();
 	};
 
-	const [documentDetails, setdocumentDetails] = useState([]);
+	const document_id = props.match.params.key;
 
-	const document_id = match.params.key;
-
-	const getDocumentsData = async key => {
-		const { data } = await api.get<PaginatedFolderResponse>(
-			`/documents/${key}`,
-		);
-		const newData = data.data as any;
-		return newData;
-	};
-
-	const getDocument = async key => {
-		const details = await getDocumentsData(key);
-		setdocumentDetails(details);
-	};
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		getDocument(document_id);
+		dispatch(getDocumentDetail(document_id));
 	}, []);
 
-	const moment = require("moment");
-	const date = moment(documentDetails["date"]).format("d MMMM YYYY");
+	const date = moment(props.DocumentDetail.date).format("d MMMM YYYY");
 
 	return (
 		<>
@@ -57,7 +50,7 @@ export function DocumentPageDetail({ match }) {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={documentDetails["no"]}
+									defaultValue={props.DocumentDetail.no}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -69,7 +62,7 @@ export function DocumentPageDetail({ match }) {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={documentDetails["active_year_for"]}
+									defaultValue={props.DocumentDetail.active_year_for}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -78,7 +71,7 @@ export function DocumentPageDetail({ match }) {
 									as="textarea"
 									className="notesdisable"
 									disabled
-									defaultValue={documentDetails["detail"]}
+									defaultValue={props.DocumentDetail.detail}
 								/>
 							</Form.Group>
 							<div className="d-flex jc-end">
@@ -110,7 +103,7 @@ export function DocumentPageDetail({ match }) {
 						/>
 						<div className="d-flex jc-center">
 							<p className="p-xl ff-1-bd ta-center mt-3">
-								{documentDetails["no"]}
+								{props.DocumentDetail.no}
 							</p>
 						</div>
 					</Card>
@@ -118,4 +111,6 @@ export function DocumentPageDetail({ match }) {
 			</PageWrapper>
 		</>
 	);
-}
+};
+
+export default connect(mapStateToProps, null)(DocumentPageDetail);
