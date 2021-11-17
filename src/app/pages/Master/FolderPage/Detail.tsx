@@ -7,8 +7,17 @@ import "../master.scoped.scss";
 import api from "../../../../api/dox";
 import PaginatedFolderResponse from "app/pages/Interface/cabinet";
 import { useHistory } from "react-router-dom";
+import { connect, useDispatch } from "react-redux";
+import { getFolderDetail } from "actions/FolderAction";
 
-export function FolderPageDetail({ match }) {
+const mapStateToProps = state => {
+	return {
+		FolderDetail: state.folders.FolderDetail,
+		errorUserDetail: state.folders.errorFolderDetail,
+	};
+};
+
+const FolderPageDetail = props => {
 	let history = useHistory();
 
 	const goToPreviousPath = e => {
@@ -16,23 +25,12 @@ export function FolderPageDetail({ match }) {
 		history.goBack();
 	};
 
-	const [folderDetails, setfolderDetails] = useState([]);
+	const folder_id = props.match.params.key;
 
-	const folder_id = match.params.key;
-
-	const getFoldersData = async key => {
-		const { data } = await api.get<PaginatedFolderResponse>(`/folders/${key}`);
-		const newData = data.data as any;
-		return newData;
-	};
-
-	const getFolders = async key => {
-		const details = await getFoldersData(key);
-		setfolderDetails(details);
-	};
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		getFolders(folder_id);
+		dispatch(getFolderDetail(folder_id));
 	}, []);
 
 	return (
@@ -51,7 +49,7 @@ export function FolderPageDetail({ match }) {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={folderDetails["no"]}
+									defaultValue={props.FolderDetail.no}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -112,7 +110,7 @@ export function FolderPageDetail({ match }) {
 						/>
 						<div className="d-flex jc-center">
 							<p className="p-xl ff-1-bd ta-center mt-3">
-								{folderDetails["no"]}
+								{props.FolderDetail.no}
 							</p>
 						</div>
 					</Card>
@@ -120,4 +118,6 @@ export function FolderPageDetail({ match }) {
 			</PageWrapper>
 		</>
 	);
-}
+};
+
+export default connect(mapStateToProps, null)(FolderPageDetail);
