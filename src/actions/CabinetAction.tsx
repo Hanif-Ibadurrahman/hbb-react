@@ -31,10 +31,10 @@ export const getCabinetsList = page => {
 	};
 };
 
-export const getCabinetDetail = key => {
+export const getCabinetDetail = id => {
 	return dispatch => {
 		api
-			.get("/cabinets/" + key)
+			.get("cabinets/" + id)
 			.then(function (response) {
 				dispatch({
 					type: GET_CABINET_DETAIL,
@@ -52,6 +52,19 @@ export const getCabinetDetail = key => {
 						errorMessage: error.message,
 					},
 				});
+			});
+	};
+};
+
+export const deleteCabinet = id => {
+	return dispatch => {
+		api
+			.delete(`cabinets/` + id)
+			.then(function (response) {
+				console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
 			});
 	};
 };

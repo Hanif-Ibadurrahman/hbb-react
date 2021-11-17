@@ -23,7 +23,7 @@ const CabinetPageDetail = props => {
 		history.goBack();
 	};
 
-	const cabinet_id = props.match.params.key;
+	const cabinet_id = props.match.params.id;
 
 	const dispatch = useDispatch();
 
