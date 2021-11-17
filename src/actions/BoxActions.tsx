@@ -36,7 +36,7 @@ export const getBoxesList = page => {
 export const getBoxDetail = key => {
 	return dispatch => {
 		api
-			.get("/boxes/" + key)
+			.get("boxes/" + key)
 			.then(function (response) {
 				dispatch({
 					type: GET_BOX_DETAIL,
@@ -58,10 +58,10 @@ export const getBoxDetail = key => {
 	};
 };
 
-export const deleteBoxes = id => {
+export const deleteBox = key => {
 	return dispatch => {
 		api
-			.delete(`/boxes` + id)
+			.delete(`boxes/` + key)
 			.then(function (response) {
 				console.log(response);
 			})

@@ -32,7 +32,7 @@ export default function DropdownAction(props) {
 				) : item.type === 2 ? (
 					<div
 						className="dropdown-item cur-p"
-						onClick={() => item.onclick(item.id)}
+						onClick={() => item.onclick(item.dispatch, item.row)}
 					>
 						<div className={"d-flex ai-center pv-2 " + item.titleClass}>
 							<span className="icon">
