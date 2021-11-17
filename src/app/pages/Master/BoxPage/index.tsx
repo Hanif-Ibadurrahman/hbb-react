@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
@@ -9,6 +9,10 @@ import { Pagination } from "app/components/Pagination";
 import { getBoxesList } from "actions/BoxActions";
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
+import Swal from "sweetalert2";
+import { deleteBox } from "actions/BoxActions";
+import Alert from "app/components/Alerts";
+
 const mapStateToProps = state => {
 	return {
 		boxes: state.boxes.boxes,
@@ -16,6 +20,9 @@ const mapStateToProps = state => {
 	};
 };
 const BoxPage = props => {
+	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
+	const [showAlertFailed, setShowAlertFailed] = useState(false);
+
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
@@ -25,6 +32,29 @@ const BoxPage = props => {
 	useEffect(() => {
 		FetchData();
 	}, []);
+
+	const onDelete = (dispatch, key) => {
+		Swal.fire({
+			text: "Apakah anda ingin menghapus data ini?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#d33",
+			confirmButtonText: "Hapus",
+		}).then(willDelete => {
+			if (willDelete) {
+				dispatch(deleteBox(key));
+				setShowAlertSuccess(true);
+				setTimeout(function () {
+					setShowAlertSuccess(false);
+				}, 4000);
+			} else {
+				setShowAlertFailed(true);
+				setTimeout(function () {
+					setShowAlertFailed(false);
+				}, 4000);
+			}
+		});
+	};
 
 	const action = key => [
 		{
@@ -50,8 +80,9 @@ const BoxPage = props => {
 			title: "Delete",
 			titleClass: "tc-danger-5",
 			type: 2,
-			onclick: "",
-			value: key,
+			onclick: onDelete,
+			dispatch: dispatch,
+			row: key,
 		},
 	];
 
@@ -87,6 +118,18 @@ const BoxPage = props => {
 				/>
 			</Helmet>
 			<PageWrapper>
+				<Alert
+					text="Data Berhasil Di Hapus"
+					variant="success"
+					show={showAlertSuccess}
+					onHide={() => setShowAlertSuccess(false)}
+				/>
+				<Alert
+					text="Data Gagal Di Hapus"
+					variant="danger"
+					show={showAlertFailed}
+					onHide={() => setShowAlertFailed(false)}
+				/>
 				<PageHeader breadcrumb={["Master", "Box"]} addForm={<ModalForm />} />
 				<DataTable tableHeader={header} tableBody={props.boxes} />
 				<Pagination
