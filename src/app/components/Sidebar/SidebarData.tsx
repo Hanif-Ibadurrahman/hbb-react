@@ -85,6 +85,11 @@ export const MasterData = [
 		link: "/Area",
 	},
 	{
+		title: "Room",
+		icon: "",
+		link: "/Room",
+	},
+	{
 		title: "Record Center",
 		icon: "",
 		link: "/Record-Center",
