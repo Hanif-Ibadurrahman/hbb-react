@@ -55,3 +55,16 @@ export const getFolderDetail = key => {
 			});
 	};
 };
+
+export const deleteFolder = key => {
+	return dispatch => {
+		api
+			.delete(`folders/` + key)
+			.then(function (response) {
+				console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	};
+};
