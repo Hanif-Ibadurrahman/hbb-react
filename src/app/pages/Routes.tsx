@@ -43,7 +43,7 @@ import FolderPage from "./Master/FolderPage";
 import { FolderPageDetail } from "./Master/FolderPage/Detail";
 // 3 - DOCUMENT
 import DocumentPage from "./Master/DocumentPage";
-import { DocumentPageDetail } from "./Master/DocumentPage/Detail";
+import DocumentPageDetail from "./Master/DocumentPage/Detail";
 // 4 - CABINET
 import CabinetPage from "./Master/CabinetPage";
 import CabinetPageDetail from "./Master/CabinetPage/Detail";
