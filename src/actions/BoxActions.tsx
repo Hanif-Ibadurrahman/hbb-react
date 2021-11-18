@@ -3,6 +3,7 @@ import api from "../api/dox";
 import PaginatedBoxResponse from "app/pages/Interface/box";
 export const GET_BOXES_LIST = "GET_BOXES_LIST";
 export const GET_BOX_DETAIL = "GET_BOX_DETAIL";
+export const CREATE_BOX = "CREAT_BOX";
 export const EDIT_BOX = "GET_BOXES_LIST";
 export const BOXES_ERROR = "BOXES_ERROR";
 
@@ -67,6 +68,32 @@ export const deleteBox = key => {
 			})
 			.catch(function (error) {
 				console.log(error);
+			});
+	};
+};
+
+export const CreateBox = data => {
+	return dispatch => {
+		api
+			.post("boxes/", data)
+			.then(function (response) {
+				console.log(response);
+				dispatch({
+					type: CREATE_BOX,
+					payload: {
+						data: response.data,
+						errorMessage: false,
+					},
+				});
+			})
+			.catch(function (error) {
+				dispatch({
+					type: CREATE_BOX,
+					payload: {
+						data: false,
+						errorMessage: error.message,
+					},
+				});
 			});
 	};
 };

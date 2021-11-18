@@ -1,33 +1,33 @@
 import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
-import React, { useState } from "react";
-import { Formik, ErrorMessage } from "formik";
+import React, { useState, useEffect } from "react";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 import { useHistory } from "react-router";
 import api from "../../../../api/dox";
+import { getBoxDetail } from "actions/BoxActions";
+import { CreateBox } from "actions/BoxActions";
+import { connect, useDispatch } from "react-redux";
 
-export function ModalForm() {
-	let history = useHistory();
+// const mapStateToProps = (state) => {
+// 	return {
+// 		initialValues: {
+// 			code_box: state.boxes.BoxDetail.code_box,
+// 		}
+// 	};
+// };
+
+export function ModalForm(props) {
 	const [code_box, setcode_box] = useState("");
-
-	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
 
-	const _onHide = () => {
-		setModalShow(false);
-		setShowAlert(false);
-		console.log("hide modal");
-	};
+	const dispatch = useDispatch();
 
-	const _onSubmit = () => {
-		api
-			.post(`/boxes`, {
-				code_box,
-			})
-			.then(() => {
-				history.push("/Box");
-			});
-		setModalShow(false);
+	function _onSubmit() {
+		const postData = {
+			code_box,
+		};
+		dispatch(CreateBox(postData));
 		setShowAlert(true);
 		setTimeout(function () {
 			setShowAlert(false);
@@ -35,8 +35,7 @@ export function ModalForm() {
 		setTimeout(function () {
 			window.location.reload();
 		}, 1000);
-		console.log("show alert hide modal");
-	};
+	}
 
 	const validationSchema = Yup.object().shape({
 		code_box: Yup.string().required("*Wajib diisi"),
@@ -44,13 +43,6 @@ export function ModalForm() {
 
 	return (
 		<>
-			<Button
-				className="d-flex ai-center bg-success-6"
-				variant="success"
-				onClick={() => setModalShow(true)}
-			>
-				Add Data<i className="far fa-plus ml-2"></i>
-			</Button>{" "}
 			<Alert
 				text="Data Berhasil Di Input"
 				variant="success"
@@ -90,8 +82,8 @@ export function ModalForm() {
 					isSubmitting,
 				}) => (
 					<Modal
-						show={modalShow}
-						onHide={() => setModalShow(false)}
+						show={props.modal}
+						onHide={props.hide}
 						aria-labelledby="contained-modal-title-vcenter"
 					>
 						<Modal.Header closeButton className="bg-primary-5">
@@ -130,7 +122,7 @@ export function ModalForm() {
 							</Container>
 						</Modal.Body>
 						<Modal.Footer>
-							<Button variant="danger" onClick={_onHide}>
+							<Button variant="danger" onClick={props.hide}>
 								Close
 							</Button>
 							<Button
@@ -149,3 +141,5 @@ export function ModalForm() {
 		</>
 	);
 }
+
+// export default connect(mapStateToProps, null)(ModalForm);

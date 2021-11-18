@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import Swal from "sweetalert2";
 import { deleteBox } from "actions/BoxActions";
 import Alert from "app/components/Alerts";
+import { useHistory } from "react-router";
 
 const mapStateToProps = state => {
 	return {
@@ -22,6 +23,8 @@ const mapStateToProps = state => {
 const BoxPage = props => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
+	const [modalShow, setModalShow] = useState(false);
+	const [showAlert, setShowAlert] = useState(false);
 
 	const dispatch = useDispatch();
 
@@ -54,6 +57,11 @@ const BoxPage = props => {
 				}, 4000);
 			}
 		});
+	};
+
+	const _onHide = () => {
+		setModalShow(false);
+		setShowAlert(false);
 	};
 
 	const action = key => [
@@ -130,7 +138,13 @@ const BoxPage = props => {
 					show={showAlertFailed}
 					onHide={() => setShowAlertFailed(false)}
 				/>
-				<PageHeader breadcrumb={["Master", "Box"]} addForm={<ModalForm />} />
+				<ModalForm modal={modalShow} hide={_onHide} />
+				<PageHeader
+					breadcrumb={["Master", "Box"]}
+					modal={setModalShow}
+					valueModalSet={false}
+					value={true}
+				/>
 				<DataTable tableHeader={header} tableBody={props.boxes} />
 				<Pagination
 					pageCount={props.meta.last_page}
