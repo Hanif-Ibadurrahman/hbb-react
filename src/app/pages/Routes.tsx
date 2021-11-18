@@ -161,7 +161,7 @@ export function Routes() {
 							component={CabinetPage}
 						/>
 						<Route
-							path={process.env.PUBLIC_URL + "/Cabinet-Detail/:key"}
+							path={process.env.PUBLIC_URL + "/Cabinet-Detail/:id"}
 							component={CabinetPageDetail}
 						/>
 						<Route
