@@ -1,17 +1,16 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
 import { ModalForm } from "./ModalForm";
 import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
-import api from "../../../../api/dox";
-import PaginatedFolderResponse from "app/pages/Interface/folder";
 import { Pagination } from "app/components/Pagination";
 import { getFoldersList } from "actions/FolderAction";
 import { connect, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
-import { propTypes } from "react-bootstrap/esm/Image";
+import { deleteFolder } from "actions/FolderAction";
+import Alert from "app/components/Alerts";
 
 const mapStateToProps = state => {
 	return {
@@ -21,6 +20,9 @@ const mapStateToProps = state => {
 };
 
 const FolderPage = props => {
+	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
+	const [showAlertFailed, setShowAlertFailed] = useState(false);
+
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
@@ -30,6 +32,32 @@ const FolderPage = props => {
 	useEffect(() => {
 		FetchData();
 	}, []);
+
+	const onDelete = (dispatch, key) => {
+		Swal.fire({
+			text: "Apakah anda ingin menghapus data ini?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#d33",
+			confirmButtonText: "Hapus",
+		}).then(willDelete => {
+			if (willDelete) {
+				dispatch(deleteFolder(key));
+				setShowAlertSuccess(true);
+				setTimeout(function () {
+					setShowAlertSuccess(false);
+				}, 4000);
+				setTimeout(function () {
+					window.location.reload();
+				}, 1000);
+			} else {
+				setShowAlertFailed(true);
+				setTimeout(function () {
+					setShowAlertFailed(false);
+				}, 4000);
+			}
+		});
+	};
 
 	const action = key => [
 		{
@@ -53,8 +81,9 @@ const FolderPage = props => {
 			title: "Delete",
 			titleClass: "tc-danger-5",
 			type: 2,
-			onclick: "",
-			id: key,
+			onclick: onDelete,
+			dispatch: dispatch,
+			row: key,
 		},
 	];
 
@@ -90,6 +119,18 @@ const FolderPage = props => {
 				/>
 			</Helmet>
 			<PageWrapper>
+				<Alert
+					text="Data Berhasil Di Hapus"
+					variant="success"
+					show={showAlertSuccess}
+					onHide={() => setShowAlertSuccess(false)}
+				/>
+				<Alert
+					text="Data Gagal Di Hapus"
+					variant="danger"
+					show={showAlertFailed}
+					onHide={() => setShowAlertFailed(false)}
+				/>
 				<PageHeader breadcrumb={["Master", "Folder"]} addForm={<ModalForm />} />
 				<DataTable tableHeader={header} tableBody={props.folders} />
 				<Pagination
