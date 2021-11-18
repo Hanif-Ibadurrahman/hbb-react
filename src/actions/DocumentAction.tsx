@@ -55,3 +55,16 @@ export const getDocumentDetail = key => {
 			});
 	};
 };
+
+export const deleteDocument = key => {
+	return dispatch => {
+		api
+			.delete(`documents/` + key)
+			.then(function (response) {
+				console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	};
+};
