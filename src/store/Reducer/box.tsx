@@ -2,13 +2,15 @@ import {
 	GET_BOXES_LIST,
 	GET_BOX_DETAIL,
 	EDIT_BOX,
+	CREATE_BOX,
 } from "../../actions/BoxActions";
 
 let initialState = {
 	boxes: [],
+	BoxDetail: "",
+	CreateBox: "",
 	key: "",
 	code_box: "",
-	BoxDetail: "",
 	meta: {
 		total: 0,
 		per_page: 0,
@@ -16,6 +18,7 @@ let initialState = {
 	},
 	errorBoxesList: "",
 	errorBoxesDetail: "",
+	errorCreateBox: "",
 	title: "BOX",
 };
 
@@ -33,6 +36,12 @@ const box = (state = initialState, action) => {
 				...state,
 				BoxDetail: action.payload.data.data,
 				errorBoxesDetail: action.payload.errorMessage,
+			};
+		case CREATE_BOX:
+			return {
+				...state,
+				CreateBox: action.payload.data.data,
+				errorCreateBox: action.payload.errorMessage,
 			};
 		case EDIT_BOX:
 			return {

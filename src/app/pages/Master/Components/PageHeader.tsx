@@ -28,7 +28,14 @@ export default function PageHeader(props) {
 					>
 						Export<i className="fas fa-download ml-2"></i>
 					</Button>{" "}
-					{props.addForm}
+					<Button
+						className="d-flex ai-center bg-success-6"
+						variant="success"
+						onClick={() => props.modal(props.value)}
+					>
+						Add Data<i className="far fa-plus ml-2"></i>
+					</Button>{" "}
+					{/* {props.addForm} */}
 				</div>
 			</div>
 		</>
