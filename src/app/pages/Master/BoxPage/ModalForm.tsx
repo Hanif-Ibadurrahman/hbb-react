@@ -30,6 +30,9 @@ export function ModalForm(props) {
 		dispatch(CreateBox(postData));
 		setShowAlert(true);
 		setTimeout(function () {
+			props.modalSet(props.valueModalSet);
+		}, 100);
+		setTimeout(function () {
 			setShowAlert(false);
 		}, 4000);
 		setTimeout(function () {

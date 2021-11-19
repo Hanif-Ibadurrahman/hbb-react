@@ -138,7 +138,12 @@ const BoxPage = props => {
 					show={showAlertFailed}
 					onHide={() => setShowAlertFailed(false)}
 				/>
-				<ModalForm modal={modalShow} hide={_onHide} />
+				<ModalForm
+					modal={modalShow}
+					hide={_onHide}
+					modalSet={setModalShow}
+					valueModalSet={false}
+				/>
 				<PageHeader
 					breadcrumb={["Master", "Box"]}
 					modal={setModalShow}
