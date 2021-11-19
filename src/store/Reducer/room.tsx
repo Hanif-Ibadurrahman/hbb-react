@@ -1,7 +1,8 @@
-import { GET_ROOMS_LIST } from "../../actions/RoomAction";
+import { GET_ROOMS_LIST, GET_ROOMS_DETAIL } from "../../actions/RoomAction";
 
 let initialState = {
 	rooms: [],
+	RoomDetail: "",
 	meta: {
 		total: 0,
 		per_page: 0,
@@ -18,6 +19,13 @@ const rooms = (state = initialState, action) => {
 			return {
 				...state,
 				rooms: action.payload.data.data,
+				meta: action.payload.data.meta,
+				errorRoomsList: action.payload.errorMessage,
+			};
+		case GET_ROOMS_DETAIL:
+			return {
+				...state,
+				RoomDetail: action.payload.data.data,
 				meta: action.payload.data.meta,
 				errorRoomsList: action.payload.errorMessage,
 			};

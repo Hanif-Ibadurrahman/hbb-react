@@ -7,8 +7,17 @@ import "../master.scoped.scss";
 import api from "../../../../api/dox";
 import PaginatedAreaResponse from "app/pages/Interface/area";
 import { useHistory } from "react-router-dom";
+import { getRoomDetail } from "actions/RoomAction";
+import { connect, useDispatch } from "react-redux";
 
-export function AreaPageDetail({ match }) {
+const mapStateToProps = state => {
+	return {
+		RoomDetail: state.rooms.RoomDetail,
+		errorUserDetail: state.rooms.errorRoomDetail,
+	};
+};
+
+const RoomPageDetail = props => {
 	let history = useHistory();
 
 	const goToPreviousPath = e => {
@@ -16,30 +25,20 @@ export function AreaPageDetail({ match }) {
 		history.goBack();
 	};
 
-	const [areaDetails, setareaDetails] = useState([]);
+	const room_id = props.match.params.id;
 
-	const area_id = match.params.id;
-
-	const getAreasData = async id => {
-		const { data } = await api.get<PaginatedAreaResponse>(`/areas/${id}`);
-		const newData = data.data as any;
-		return newData;
-	};
-
-	const getAreas = async id => {
-		const details = await getAreasData(id);
-		setareaDetails(details);
-	};
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		getAreas(area_id);
+		dispatch(getRoomDetail(room_id));
 	}, []);
+	console.log(props.RoomDetail);
 
 	return (
 		<>
 			<PageWrapper className="row w-100%">
 				<Breadcrumb
-					crumbs={["Dashboard", "Area", "Detail"]}
+					crumbs={["Dashboard", "Room", "Detail"]}
 					selected
 					className="mb-4"
 				/>
@@ -47,41 +46,12 @@ export function AreaPageDetail({ match }) {
 					<Card className="ph-5 pv-3 bd-rs-2">
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Nama Area</Form.Label>
+								<Form.Label>Kode Ruangan</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={areaDetails["name"]}
+									defaultValue={props.RoomDetail.code_room}
 								/>
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Date</Form.Label>
-								<Form.Control type="date" disabled defaultValue="04/09/21" />
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Time</Form.Label>
-								<Form.Control type="time" disabled defaultValue="16:27" />
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Quantity</Form.Label>
-								<Form.Control type="text" disabled defaultValue="10" />
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Notes</Form.Label>
-								<Form.Control
-									as="textarea"
-									className="notesdisable"
-									disabled
-									defaultValue="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-								/>
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Status</Form.Label>
-								<Form.Control
-									className="bg-success-6 w-100%"
-									defaultValue="Approve"
-									disabled
-								></Form.Control>
 							</Form.Group>
 							<div className="d-flex jc-end">
 								<Button
@@ -112,7 +82,7 @@ export function AreaPageDetail({ match }) {
 						/>
 						<div className="d-flex jc-center">
 							<p className="p-xl ff-1-bd ta-center mt-3">
-								{areaDetails["name"]}
+								{props.RoomDetail.code_room}
 							</p>
 						</div>
 					</Card>
@@ -120,4 +90,6 @@ export function AreaPageDetail({ match }) {
 			</PageWrapper>
 		</>
 	);
-}
+};
+
+export default connect(mapStateToProps, null)(RoomPageDetail);

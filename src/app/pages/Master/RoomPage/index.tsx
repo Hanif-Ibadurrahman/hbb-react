@@ -6,8 +6,10 @@ import { ModalForm } from "./ModalForm";
 import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
 import { Pagination } from "app/components/Pagination";
-import { getRoomsList } from "actions/RoomAction";
+import { getRoomsList, deleteRoom } from "actions/RoomAction";
 import { connect, useDispatch } from "react-redux";
+import Swal from "sweetalert2";
+import Alert from "app/components/Alerts";
 
 const mapStateToProps = state => {
 	return {
@@ -17,6 +19,9 @@ const mapStateToProps = state => {
 };
 
 const RoomPage = props => {
+	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
+	const [showAlertFailed, setShowAlertFailed] = useState(false);
+
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
@@ -27,11 +32,37 @@ const RoomPage = props => {
 		FetchData();
 	}, []);
 
+	const onDelete = (dispatch, id) => {
+		Swal.fire({
+			text: "Apakah anda ingin menghapus data ini?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#d33",
+			confirmButtonText: "Hapus",
+		}).then(willDelete => {
+			if (willDelete) {
+				dispatch(deleteRoom(id));
+				setShowAlertSuccess(true);
+				setTimeout(function () {
+					setShowAlertSuccess(false);
+				}, 4000);
+				setTimeout(function () {
+					window.location.reload();
+				}, 1000);
+			} else {
+				setShowAlertFailed(true);
+				setTimeout(function () {
+					setShowAlertFailed(false);
+				}, 4000);
+			}
+		});
+	};
+
 	const action = id => [
 		{
 			icon: "fa-search",
 			title: "Detail",
-			url: "Area-Detail/" + id,
+			url: "Room-Detail/" + id,
 			type: 1,
 		},
 		{
@@ -49,15 +80,15 @@ const RoomPage = props => {
 			title: "Delete",
 			titleClass: "tc-danger-5",
 			type: 2,
-			onclick: "onDelete",
-			id: id,
-			url: "",
+			onclick: onDelete,
+			dispatch: dispatch,
+			row: id,
 		},
 	];
 
 	const header = [
 		{
-			title: "Nama Area",
+			title: "Nama Ruangan",
 			prop: "code_room",
 			sortable: true,
 			cellProps: {
@@ -87,6 +118,18 @@ const RoomPage = props => {
 				/>
 			</Helmet>
 			<PageWrapper>
+				<Alert
+					text="Data Berhasil Di Hapus"
+					variant="success"
+					show={showAlertSuccess}
+					onHide={() => setShowAlertSuccess(false)}
+				/>
+				<Alert
+					text="Data Gagal Di Hapus"
+					variant="danger"
+					show={showAlertFailed}
+					onHide={() => setShowAlertFailed(false)}
+				/>
 				<PageHeader breadcrumb={["Master", "Room"]} addForm={<ModalForm />} />
 				<DataTable tableHeader={header} tableBody={props.rooms} />
 				<Pagination
