@@ -7,6 +7,7 @@ import {
 
 let initialState = {
 	boxes: [],
+
 	BoxDetail: "",
 	CreateBox: "",
 	key: "",

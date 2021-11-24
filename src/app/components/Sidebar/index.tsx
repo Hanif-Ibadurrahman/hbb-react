@@ -32,30 +32,18 @@ export function Sidebar() {
 				>
 					{""} Beranda
 				</MenuItem>
-				<SubMenu
-					className="pos-r"
+				<MenuItem
+					id={
+						window.location.pathname === "/Customer/Request-Box" ? "active" : ""
+					}
+					className=" pos-r"
 					icon={<img src={IconAdvanced} className="h-5" alt="awSnap" />}
-					title="Master"
+					onClick={() => {
+						window.location.pathname = "/Customer/Request-Box";
+					}}
 				>
-					{CustomerMasterData.map((val, key) => {
-						return (
-							<MenuItem
-								id={
-									window.location.pathname.split(val.link).pop() ? "" : "active"
-								}
-								className="pos-r"
-								icon={<img src={val.icon} className="h-5" alt="awSnap" />}
-								key={key}
-								onClick={() => {
-									window.location.pathname = val.link;
-								}}
-							>
-								{""}
-								{val.title}
-							</MenuItem>
-						);
-					})}
-				</SubMenu>
+					{""} Request Box
+				</MenuItem>
 				<MenuItem
 					id={
 						window.location.pathname === "/Customer/Borrow-Box" ? "active" : ""

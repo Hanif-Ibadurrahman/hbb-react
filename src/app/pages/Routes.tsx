@@ -77,8 +77,13 @@ import { ApprovalBoxPage } from "./AdminCSR/BoxPage/Loadable";
 import { DetailBoxCSR } from "./AdminCSR/BoxPage/Detail";
 import { EditBoxCSR } from "./AdminCSR/BoxPage/Edit";
 // -=-=-=-=-=-
+
 // CUSTOMER
+//1 - REQUEST BOX
+import RequestBox from "./Customer/RequestBox";
+//2 - Borrow
 import { BorrowBoxPage } from "./Customer/BorrowBox/Loadable";
+
 // -=-=-=-=-=-
 // ALL USER
 import { UserProfile } from "./ProfilePage/Loadable";
@@ -275,6 +280,10 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/Customer/Borrow-Box"}
 							component={BorrowBoxPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Customer/Request-Box"}
+							component={RequestBox}
 						/>
 
 						{/*--------- ALL USER ---------*/}
