@@ -23,7 +23,7 @@ export function ModalForm(props) {
 			delivered_at,
 			note,
 		};
-		dispatch(CreateBox(postData));
+		// dispatch(CreateBox(postData));
 		setShowAlert(true);
 		setTimeout(function () {
 			props.modalSet(props.valueModalSet);

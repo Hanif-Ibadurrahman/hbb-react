@@ -4,28 +4,28 @@ import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
 import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
-import { ModalForm } from "./ModalForm";
+import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import { getBoxesList } from "actions/BoxActions";
-import { useDispatch } from "react-redux";
-import { connect } from "react-redux";
+import { getBoxesList, getBoxDetail } from "actions/BoxActions";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { deleteBox } from "actions/BoxActions";
 import Alert from "app/components/Alerts";
 import { useHistory } from "react-router";
+import { selectBoxes } from "store/Selector/BoxSelector";
 
-const mapStateToProps = state => {
-	return {
-		boxes: state.boxes.boxes,
-		meta: state.boxes.meta,
-	};
-};
+// const mapStateToProps = state => {
+// 	return {
+// 		boxes: state.boxes.boxes,
+// 		meta: state.boxes.meta,
+// 	};
+// };
 const BoxPage = props => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
-
+	const boxes = useSelector(selectBoxes);
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
@@ -67,6 +67,11 @@ const BoxPage = props => {
 		setShowAlert(false);
 	};
 
+	const showEditForm = async id => {
+		dispatch(getBoxDetail(id));
+		setModalShow(true);
+	};
+
 	const action = key => [
 		{
 			icon: "fa-search",
@@ -82,8 +87,11 @@ const BoxPage = props => {
 		{
 			icon: "fa-edit",
 			title: "Edit",
-			onclick: "",
-			value: key,
+			onclick: () => {
+				showEditForm(key);
+			},
+			dispatch: dispatch,
+			row: key,
 			type: 2,
 		},
 		{
@@ -153,9 +161,9 @@ const BoxPage = props => {
 					valueModalSet={false}
 					value={true}
 				/>
-				<DataTable tableHeader={header} tableBody={props.boxes} />
+				<DataTable tableHeader={header} tableBody={boxes.Boxes} />
 				<Pagination
-					pageCount={props.meta.last_page}
+					pageCount={boxes.Meta.LastPage}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>
@@ -163,4 +171,4 @@ const BoxPage = props => {
 	);
 };
 
-export default connect(mapStateToProps, null)(BoxPage);
+export default BoxPage;

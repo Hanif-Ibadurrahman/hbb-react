@@ -1,5 +1,6 @@
-import { GithubRepoFormState } from 'app/pages/HomePage/Features/GithubRepoForm/slice/types';
-import { ThemeState } from 'styles/theme/slice/types';
+import { GithubRepoFormState } from "app/pages/HomePage/Features/GithubRepoForm/slice/types";
+import { ThemeState } from "styles/theme/slice/types";
+import { BoxesInterfaceState } from "store/Types/BoxTypes";
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -9,7 +10,8 @@ import { ThemeState } from 'styles/theme/slice/types';
   So, not available always
 */
 export interface RootState {
-  theme?: ThemeState;
-  githubRepoForm?: GithubRepoFormState;
-  // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
+	theme?: ThemeState;
+	githubRepoForm?: GithubRepoFormState;
+	boxes?: BoxesInterfaceState;
+	// [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }
