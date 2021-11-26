@@ -15,9 +15,8 @@ import { GlobalStyle } from "../../styles/global-styles";
 import { Sidebar } from "../components/Sidebar";
 import { NavBar } from "../components/NavBar";
 // --=-=-=-=-=-=- BIOLERPLATE EXAMPLE -=-=-=-=-=-=-=-
-import { HomePage } from "./HomePage/Loadable";
 import { NotFoundPage } from "./NotFoundPage/Loadable";
-import { Accordions } from "./UIElements/Accordions/Loadable";
+// import { Accordions } from "./UIElements/Accordions/Loadable";
 import { useTranslation } from "react-i18next";
 // --=-=-=-=-=-=- BIOLERPLATE EXAMPLE -=-=-=-=-=-=-=-
 
