@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const token =
-	"Y2t3ZzBtMG03MDAwODRtazVhN2k2YzJucA.vxjNJeHgjb-6GPVna0_lagrXtRphWvZQn-QdOzKvhe6P84lIV4b_EtadMaKa";
+	"Y2t3Z2RyYjc4MDAwMjRscGUzNm5kMGl4YQ.LpqeC4pCVKRYg5rTChE54K9eoDVf3PhmJbZQArxzouIeEOnHjR1V28SN8EQG";
 
 export default axios.create({
 	baseURL: "http://103.93.57.36:8008",

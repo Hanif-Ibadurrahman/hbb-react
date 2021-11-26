@@ -4,31 +4,32 @@ import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
 import PageHeader from "../../Master/Components/PageHeader";
 import DropdownAction from "../../Master/Components/DropdownAction";
-import { ModalForm } from "./ModalForm";
+import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import { getBoxesList } from "actions/BoxActions";
-import { useDispatch } from "react-redux";
-import { connect } from "react-redux";
+import {
+	getRequestBoxesList,
+	getRequestBoxDetail,
+} from "actions/RequestBoxAction";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { deleteBox } from "actions/BoxActions";
 import Alert from "app/components/Alerts";
-import { useHistory } from "react-router";
+import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
 
-const mapStateToProps = state => {
-	return {
-		boxes: state.boxes.boxes,
-		meta: state.boxes.meta,
-	};
-};
-const RequestBox = props => {
+import { selectBoxes } from "store/Selector/BoxSelector";
+import { getBoxesList, getBoxDetail } from "actions/BoxActions";
+
+const BoxPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
-
+	// const requestBoxes = useSelector(selectRequestBoxes);
+	const boxes = useSelector(selectBoxes);
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
+		// dispatch(getRequestBoxesList(page));
 		dispatch(getBoxesList(page));
 	};
 
@@ -36,7 +37,7 @@ const RequestBox = props => {
 		FetchData();
 	}, []);
 
-	const onDelete = (dispatch, key) => {
+	const onDelete = (dispatch, id) => {
 		Swal.fire({
 			text: "Apakah anda ingin menghapus data ini?",
 			icon: "warning",
@@ -45,7 +46,7 @@ const RequestBox = props => {
 			confirmButtonText: "Hapus",
 		}).then(willDelete => {
 			if (willDelete) {
-				dispatch(deleteBox(key));
+				dispatch(deleteBox(id));
 				setShowAlertSuccess(true);
 				setTimeout(function () {
 					setShowAlertSuccess(false);
@@ -67,11 +68,17 @@ const RequestBox = props => {
 		setShowAlert(false);
 	};
 
-	const action = key => [
+	const showEditForm = async id => {
+		// dispatch(getRequestBoxDetail(id));
+		dispatch(getBoxDetail(id));
+		setModalShow(true);
+	};
+
+	const action = id => [
 		{
 			icon: "fa-search",
 			title: "Detail",
-			url: "Box-Detail/" + key,
+			url: "Box-Detail/" + id,
 			type: 1,
 		},
 		{
@@ -82,8 +89,11 @@ const RequestBox = props => {
 		{
 			icon: "fa-edit",
 			title: "Edit",
-			onclick: "",
-			value: key,
+			onclick: () => {
+				showEditForm(id);
+			},
+			dispatch: dispatch,
+			row: id,
 			type: 2,
 		},
 		{
@@ -93,7 +103,7 @@ const RequestBox = props => {
 			type: 2,
 			onclick: onDelete,
 			dispatch: dispatch,
-			row: key,
+			row: id,
 		},
 	];
 
@@ -114,7 +124,7 @@ const RequestBox = props => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.key)} />;
+				return <DropdownAction list={action(row.id)} />;
 			},
 		},
 	];
@@ -148,14 +158,19 @@ const RequestBox = props => {
 					valueModalSet={false}
 				/>
 				<PageHeader
-					breadcrumb={["Dashboard", "Request Box"]}
+					breadcrumb={["Master", "Box"]}
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
 				/>
-				<DataTable tableHeader={header} tableBody={props.boxes} />
+				{/* <DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} /> */}
+				<DataTable tableHeader={header} tableBody={boxes.Boxes} />
+				{/* <Pagination
+					pageCount={requestBoxes.Meta.LastPage}
+					onPageChange={data => FetchData(data.selected + 1)}
+				/> */}
 				<Pagination
-					pageCount={props.meta.last_page}
+					pageCount={boxes.Meta.LastPage}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>
@@ -163,4 +178,4 @@ const RequestBox = props => {
 	);
 };
 
-export default connect(mapStateToProps, null)(RequestBox);
+export default BoxPage;

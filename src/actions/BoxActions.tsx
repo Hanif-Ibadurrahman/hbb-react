@@ -1,5 +1,4 @@
 import React from "react";
-import PaginatedBoxResponse from "app/pages/Interface/box";
 import { BoxInterfaceState } from "store/Types/BoxTypes";
 import { create, destroy, getAll, getById, update } from "../api/boxes";
 export const GET_BOXES_LIST = "GET_BOXES_LIST";
@@ -108,26 +107,6 @@ export const CreateBox = async (data: BoxInterfaceState) => {
 			console.log(error);
 			throw error;
 		}
-
-		// return create(data).then(function (response) {
-		// 	dispatch({
-		// 		type: CREATE_BOX,
-		// 		payload: {
-		// 			data: response.data,
-		// 			errorMessage: false,
-		// 		},
-		// 	});
-		// 	return response
-		// }).catch(function (error) {
-		// 	dispatch({
-		// 		type: CREATE_BOX,
-		// 		payload: {
-		// 			data: false,
-		// 			errorMessage: error.message,
-		// 		},
-		// 	});
-		// 	return error
-		// })
 	};
 };
 
