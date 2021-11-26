@@ -2,23 +2,30 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
-import PageHeader from "../Components/PageHeader";
-import DropdownAction from "../Components/DropdownAction";
-import ModalForm from "./ModalForm";
+import PageHeader from "../../Master/Components/PageHeader";
+import DropdownAction from "../../Master/Components/DropdownAction";
+import { ModalForm } from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import { getBoxesList, getBoxDetail } from "actions/BoxActions";
-import { useDispatch, useSelector } from "react-redux";
+import { getBoxesList } from "actions/BoxActions";
+import { useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import Swal from "sweetalert2";
 import { deleteBox } from "actions/BoxActions";
 import Alert from "app/components/Alerts";
-import { selectBoxes } from "store/Selector/BoxSelector";
+import { useHistory } from "react-router";
 
-const BoxPage = () => {
+const mapStateToProps = state => {
+	return {
+		boxes: state.boxes.boxes,
+		meta: state.boxes.meta,
+	};
+};
+const RequestBox = props => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
-	const boxes = useSelector(selectBoxes);
+
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
@@ -29,7 +36,7 @@ const BoxPage = () => {
 		FetchData();
 	}, []);
 
-	const onDelete = (dispatch, id) => {
+	const onDelete = (dispatch, key) => {
 		Swal.fire({
 			text: "Apakah anda ingin menghapus data ini?",
 			icon: "warning",
@@ -38,7 +45,7 @@ const BoxPage = () => {
 			confirmButtonText: "Hapus",
 		}).then(willDelete => {
 			if (willDelete) {
-				dispatch(deleteBox(id));
+				dispatch(deleteBox(key));
 				setShowAlertSuccess(true);
 				setTimeout(function () {
 					setShowAlertSuccess(false);
@@ -60,16 +67,11 @@ const BoxPage = () => {
 		setShowAlert(false);
 	};
 
-	const showEditForm = async id => {
-		dispatch(getBoxDetail(id));
-		setModalShow(true);
-	};
-
-	const action = id => [
+	const action = key => [
 		{
 			icon: "fa-search",
 			title: "Detail",
-			url: "Box-Detail/" + id,
+			url: "Box-Detail/" + key,
 			type: 1,
 		},
 		{
@@ -80,11 +82,8 @@ const BoxPage = () => {
 		{
 			icon: "fa-edit",
 			title: "Edit",
-			onclick: () => {
-				showEditForm(id);
-			},
-			dispatch: dispatch,
-			row: id,
+			onclick: "",
+			value: key,
 			type: 2,
 		},
 		{
@@ -94,7 +93,7 @@ const BoxPage = () => {
 			type: 2,
 			onclick: onDelete,
 			dispatch: dispatch,
-			row: id,
+			row: key,
 		},
 	];
 
@@ -115,7 +114,7 @@ const BoxPage = () => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.id)} />;
+				return <DropdownAction list={action(row.key)} />;
 			},
 		},
 	];
@@ -149,14 +148,14 @@ const BoxPage = () => {
 					valueModalSet={false}
 				/>
 				<PageHeader
-					breadcrumb={["Master", "Box"]}
+					breadcrumb={["Dashboard", "Request Box"]}
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
 				/>
-				<DataTable tableHeader={header} tableBody={boxes.Boxes} />
+				<DataTable tableHeader={header} tableBody={props.boxes} />
 				<Pagination
-					pageCount={boxes.Meta.LastPage}
+					pageCount={props.meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>
@@ -164,4 +163,4 @@ const BoxPage = () => {
 	);
 };
 
-export default BoxPage;
+export default connect(mapStateToProps, null)(RequestBox);

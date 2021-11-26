@@ -15,9 +15,8 @@ import { GlobalStyle } from "../../styles/global-styles";
 import { Sidebar } from "../components/Sidebar";
 import { NavBar } from "../components/NavBar";
 // --=-=-=-=-=-=- BIOLERPLATE EXAMPLE -=-=-=-=-=-=-=-
-import { HomePage } from "./HomePage/Loadable";
 import { NotFoundPage } from "./NotFoundPage/Loadable";
-import { Accordions } from "./UIElements/Accordions/Loadable";
+// import { Accordions } from "./UIElements/Accordions/Loadable";
 import { useTranslation } from "react-i18next";
 // --=-=-=-=-=-=- BIOLERPLATE EXAMPLE -=-=-=-=-=-=-=-
 
@@ -77,8 +76,13 @@ import { ApprovalBoxPage } from "./AdminCSR/BoxPage/Loadable";
 import { DetailBoxCSR } from "./AdminCSR/BoxPage/Detail";
 import { EditBoxCSR } from "./AdminCSR/BoxPage/Edit";
 // -=-=-=-=-=-
+
 // CUSTOMER
+//1 - REQUEST BOX
+import RequestBox from "./Customer/RequestBox";
+//2 - Borrow
 import { BorrowBoxPage } from "./Customer/BorrowBox/Loadable";
+
 // -=-=-=-=-=-
 // ALL USER
 import { UserProfile } from "./ProfilePage/Loadable";
@@ -100,6 +104,7 @@ export function Routes() {
 			</Helmet>
 			<div className="d-flex all-wrapper">
 				<Sidebar />
+
 				<div className="content-wrapper w-80%">
 					<NavBar />
 					<Switch>
@@ -148,7 +153,7 @@ export function Routes() {
 						{/*---------- MASTER ---------*/}
 						<Route path={process.env.PUBLIC_URL + "/Box"} component={BoxPage} />
 						<Route
-							path={process.env.PUBLIC_URL + "/Box-Detail/:key"}
+							path={process.env.PUBLIC_URL + "/Box-Detail/:id"}
 							component={BoxPageDetail}
 						/>
 						<Route
@@ -156,7 +161,7 @@ export function Routes() {
 							component={FolderPage}
 						/>
 						<Route
-							path={process.env.PUBLIC_URL + "/Folder-Detail/:key"}
+							path={process.env.PUBLIC_URL + "/Folder-Detail/:id"}
 							component={FolderPageDetail}
 						/>
 						<Route
@@ -275,6 +280,10 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/Customer/Borrow-Box"}
 							component={BorrowBoxPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Customer/Request-Box"}
+							component={RequestBox}
 						/>
 
 						{/*--------- ALL USER ---------*/}

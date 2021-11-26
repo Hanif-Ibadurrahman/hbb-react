@@ -1,58 +1,90 @@
 import {
 	GET_BOXES_LIST,
+	CREATE_BOX,
 	GET_BOX_DETAIL,
 	EDIT_BOX,
-	CREATE_BOX,
+	RESET_BOX_LIST,
+	RESET_BOX_FORM,
+	SET_BOX_DATA,
 } from "../../actions/BoxActions";
-
-let initialState = {
-	boxes: [],
-	BoxDetail: "",
-	CreateBox: "",
-	key: "",
-	code_box: "",
-	meta: {
-		total: 0,
-		per_page: 0,
-		current_page: 1,
+import { BoxesInterfaceState, BoxInterfaceState } from "../Types/BoxTypes";
+export const initialState: BoxesInterfaceState = {
+	Boxes: [],
+	Box: {
+		Id: "",
+		CodeBox: "",
 	},
-	errorBoxesList: "",
-	errorBoxesDetail: "",
-	errorCreateBox: "",
-	title: "BOX",
+	Meta: {
+		Total: 0,
+		PerPage: 0,
+		CurrentPage: 1,
+		LastPage: 1,
+	},
+	Title: "BOX",
+	ErrorBox: undefined,
 };
-
-const box = (state = initialState, action) => {
-	switch (action.type) {
+export default (
+	state = initialState,
+	{ type, payload },
+): BoxesInterfaceState => {
+	switch (type) {
+		case SET_BOX_DATA:
+			return {
+				...state,
+				Box: payload,
+			};
 		case GET_BOXES_LIST:
 			return {
 				...state,
-				boxes: action.payload.data.data,
-				meta: action.payload.data.meta,
-				errorBoxesList: action.payload.errorMessage,
+				Boxes: payload.data,
+				Meta: {
+					LastPage: payload.meta.last_page,
+					CurrentPage: payload.meta.current_page,
+					Total: payload.meta.total_page,
+					PerPage: payload.meta.total_page,
+				},
+				ErrorBox: payload.errorMessage,
 			};
 		case GET_BOX_DETAIL:
 			return {
 				...state,
-				BoxDetail: action.payload.data.data,
-				errorBoxesDetail: action.payload.errorMessage,
+				Box: {
+					CodeBox: payload.data.data.code_box,
+					Id: payload.data.data.id,
+				},
+				ErrorBox: payload.errorMessage,
 			};
 		case CREATE_BOX:
 			return {
 				...state,
-				CreateBox: action.payload.data.data,
-				errorCreateBox: action.payload.errorMessage,
+				Box: {
+					CodeBox: payload.data.data.code_box,
+					Id: payload.data.data.id,
+				},
 			};
 		case EDIT_BOX:
 			return {
 				...state,
-				key: action.payload.data.key,
-				code_box: action.payload.data.code_box,
-				errorBoxesDetail: action.payload.errorMessage,
+				Box: {
+					Id: payload.data.id,
+					CodeBox: payload.data.code_box,
+				},
+				ErrorBox: payload.errorMessage,
+			};
+		case RESET_BOX_LIST:
+			return {
+				...state,
+				Boxes: [],
+			};
+		case RESET_BOX_FORM:
+			return {
+				...state,
+				Box: {
+					Id: "",
+					CodeBox: "",
+				},
 			};
 		default:
 			return state;
 	}
 };
-
-export default box;
