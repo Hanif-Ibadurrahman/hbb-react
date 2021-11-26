@@ -15,6 +15,7 @@ export function configureAppStore() {
 
 	// Create the store with saga middleware
 	const middlewares = [sagaMiddleware, thunk];
+	// const middlewares = [sagaMiddleware];
 
 	const enhancers = [
 		createInjectorsEnhancer({
@@ -25,7 +26,10 @@ export function configureAppStore() {
 
 	const store = configureStore({
 		reducer: createReducer(),
-		middleware: [...getDefaultMiddleware(), ...middlewares],
+
+		// middleware: ()[...getDefaultMiddleware({
+		// 	thunk
+		// })],
 		devTools:
 			/* istanbul ignore next line */
 			process.env.NODE_ENV !== "production" ||

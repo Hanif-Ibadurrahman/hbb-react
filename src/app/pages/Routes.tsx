@@ -105,6 +105,7 @@ export function Routes() {
 			</Helmet>
 			<div className="d-flex all-wrapper">
 				<Sidebar />
+
 				<div className="content-wrapper w-80%">
 					<NavBar />
 					<Switch>
@@ -153,7 +154,7 @@ export function Routes() {
 						{/*---------- MASTER ---------*/}
 						<Route path={process.env.PUBLIC_URL + "/Box"} component={BoxPage} />
 						<Route
-							path={process.env.PUBLIC_URL + "/Box-Detail/:key"}
+							path={process.env.PUBLIC_URL + "/Box-Detail/:id"}
 							component={BoxPageDetail}
 						/>
 						<Route
@@ -161,7 +162,7 @@ export function Routes() {
 							component={FolderPage}
 						/>
 						<Route
-							path={process.env.PUBLIC_URL + "/Folder-Detail/:key"}
+							path={process.env.PUBLIC_URL + "/Folder-Detail/:id"}
 							component={FolderPageDetail}
 						/>
 						<Route

@@ -1,6 +1,6 @@
 import { PaginationState } from "../Types/PaginationTypes";
 export interface BoxInterfaceState {
-	Key: string | null;
+	Id: string | null;
 	CodeBox: string;
 }
 

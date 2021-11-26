@@ -42,9 +42,9 @@ export const getBoxesList = page => {
 	};
 };
 
-export const getBoxDetail = (key: String) => {
+export const getBoxDetail = (id: String) => {
 	return dispatch => {
-		return getById(key)
+		return getById(id)
 			.then(function (response) {
 				dispatch({
 					type: GET_BOX_DETAIL,
@@ -68,9 +68,9 @@ export const getBoxDetail = (key: String) => {
 	};
 };
 
-export const deleteBox = key => {
+export const deleteBox = id => {
 	return dispatch => {
-		destroy(key)
+		destroy(id)
 			.then(function (response) {
 				console.log(response);
 			})
@@ -83,10 +83,32 @@ export const deleteBox = key => {
 export const CreateBox = async (data: BoxInterfaceState) => {
 	console.log(data);
 	return async dispatch => {
-		dispatch({
-			type: SET_BOX_DATA,
-			payload: data,
-		});
+		try {
+			dispatch({
+				type: SET_BOX_DATA,
+				payload: data,
+			});
+			const response = await create(data);
+			dispatch({
+				type: CREATE_BOX,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: CREATE_BOX,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+
 		// return create(data).then(function (response) {
 		// 	dispatch({
 		// 		type: CREATE_BOX,
@@ -111,34 +133,56 @@ export const CreateBox = async (data: BoxInterfaceState) => {
 
 export const UpdateBox = async (data: BoxInterfaceState) => {
 	return async dispatch => {
-		console.log(dispatch);
-		dispatch({
-			type: SET_BOX_DATA,
-			payload: data,
-		});
-		console.log(dispatch);
-		console.log(data);
-		return await update(data)
-			.then(response => {
-				dispatch({
-					type: UPDATE_BOX,
-					payload: {
-						data: response.data,
-						errorMessage: false,
-					},
-				});
-				return response;
-			})
-			.catch(error => {
-				dispatch({
-					type: UPDATE_BOX,
-					payload: {
-						data: false,
-						errorMessage: error.message,
-					},
-				});
-				console.log(error);
-				return error;
+		try {
+			dispatch({
+				type: SET_BOX_DATA,
+				payload: data,
 			});
+			const response = await update(data);
+			dispatch({
+				type: UPDATE_BOX,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: UPDATE_BOX,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+		// dispatch({
+		// 	type: SET_BOX_DATA,
+		// 	payload: data,
+		// });
+		// return update(data)
+		// 	.then(response => {
+		// 		dispatch({
+		// 			type: UPDATE_BOX,
+		// 			payload: {
+		// 				data: response.data,
+		// 				errorMessage: false,
+		// 			},
+		// 		});
+		// 		return response;
+		// 	})
+		// 	.catch(error => {
+		// 		dispatch({
+		// 			type: UPDATE_BOX,
+		// 			payload: {
+		// 				data: false,
+		// 				errorMessage: error.message,
+		// 			},
+		// 		});
+		// 		console.log(error);
+		// 		throw error;
+		// 	});
 	};
 };

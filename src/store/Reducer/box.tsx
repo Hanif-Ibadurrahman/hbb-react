@@ -1,5 +1,6 @@
 import {
 	GET_BOXES_LIST,
+	CREATE_BOX,
 	GET_BOX_DETAIL,
 	EDIT_BOX,
 	RESET_BOX_LIST,
@@ -10,7 +11,7 @@ import { BoxesInterfaceState, BoxInterfaceState } from "../Types/BoxTypes";
 export const initialState: BoxesInterfaceState = {
 	Boxes: [],
 	Box: {
-		Key: "",
+		Id: "",
 		CodeBox: "",
 	},
 	Meta: {
@@ -49,15 +50,23 @@ export default (
 				...state,
 				Box: {
 					CodeBox: payload.data.data.code_box,
-					Key: payload.data.data.key,
+					Id: payload.data.data.id,
 				},
 				ErrorBox: payload.errorMessage,
+			};
+		case CREATE_BOX:
+			return {
+				...state,
+				Box: {
+					CodeBox: payload.data.data.code_box,
+					Id: payload.data.data.id,
+				},
 			};
 		case EDIT_BOX:
 			return {
 				...state,
 				Box: {
-					Key: payload.data.key,
+					Id: payload.data.id,
 					CodeBox: payload.data.code_box,
 				},
 				ErrorBox: payload.errorMessage,
@@ -71,7 +80,7 @@ export default (
 			return {
 				...state,
 				Box: {
-					Key: "",
+					Id: "",
 					CodeBox: "",
 				},
 			};

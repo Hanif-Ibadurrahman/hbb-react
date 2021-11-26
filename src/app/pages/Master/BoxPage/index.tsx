@@ -11,16 +11,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { deleteBox } from "actions/BoxActions";
 import Alert from "app/components/Alerts";
-import { useHistory } from "react-router";
 import { selectBoxes } from "store/Selector/BoxSelector";
 
-// const mapStateToProps = state => {
-// 	return {
-// 		boxes: state.boxes.boxes,
-// 		meta: state.boxes.meta,
-// 	};
-// };
-const BoxPage = props => {
+const BoxPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
@@ -36,7 +29,7 @@ const BoxPage = props => {
 		FetchData();
 	}, []);
 
-	const onDelete = (dispatch, key) => {
+	const onDelete = (dispatch, id) => {
 		Swal.fire({
 			text: "Apakah anda ingin menghapus data ini?",
 			icon: "warning",
@@ -45,7 +38,7 @@ const BoxPage = props => {
 			confirmButtonText: "Hapus",
 		}).then(willDelete => {
 			if (willDelete) {
-				dispatch(deleteBox(key));
+				dispatch(deleteBox(id));
 				setShowAlertSuccess(true);
 				setTimeout(function () {
 					setShowAlertSuccess(false);
@@ -72,11 +65,11 @@ const BoxPage = props => {
 		setModalShow(true);
 	};
 
-	const action = key => [
+	const action = id => [
 		{
 			icon: "fa-search",
 			title: "Detail",
-			url: "Box-Detail/" + key,
+			url: "Box-Detail/" + id,
 			type: 1,
 		},
 		{
@@ -88,10 +81,10 @@ const BoxPage = props => {
 			icon: "fa-edit",
 			title: "Edit",
 			onclick: () => {
-				showEditForm(key);
+				showEditForm(id);
 			},
 			dispatch: dispatch,
-			row: key,
+			row: id,
 			type: 2,
 		},
 		{
@@ -101,7 +94,7 @@ const BoxPage = props => {
 			type: 2,
 			onclick: onDelete,
 			dispatch: dispatch,
-			row: key,
+			row: id,
 		},
 	];
 
@@ -122,7 +115,7 @@ const BoxPage = props => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.key)} />;
+				return <DropdownAction list={action(row.id)} />;
 			},
 		},
 	];

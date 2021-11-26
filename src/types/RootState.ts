@@ -11,7 +11,8 @@ import { BoxesInterfaceState } from "store/Types/BoxTypes";
 */
 export interface RootState {
 	theme?: ThemeState;
-	githubRepoForm?: GithubRepoFormState;
 	boxes?: BoxesInterfaceState;
+	githubRepoForm?: GithubRepoFormState;
+
 	// [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }

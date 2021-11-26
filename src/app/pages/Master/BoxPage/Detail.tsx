@@ -5,17 +5,13 @@ import Breadcrumb from "app/components/BreadCrumb";
 import QR from "app/components/QRCode";
 import "../master.scoped.scss";
 import { useHistory } from "react-router-dom";
-import { connect, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getBoxDetail } from "actions/BoxActions";
+import { selectBoxes, selectBox } from "store/Selector/BoxSelector";
+import { BoxInterfaceState } from "store/Types/BoxTypes";
 
-const mapStateToProps = state => {
-	return {
-		BoxDetail: state.boxes.BoxDetail,
-		errorUserDetail: state.boxes.errorBoxDetail,
-	};
-};
-
-const BoxPageDetail = props => {
+const BoxPageDetail = match => {
+	const box: BoxInterfaceState = useSelector(selectBox);
 	let history = useHistory();
 
 	const goToPreviousPath = e => {
@@ -23,7 +19,7 @@ const BoxPageDetail = props => {
 		history.goBack();
 	};
 
-	const box_id = props.match.params.key;
+	const box_id = match.params.id;
 
 	const dispatch = useDispatch();
 
@@ -45,11 +41,7 @@ const BoxPageDetail = props => {
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Code Box</Form.Label>
 
-								<Form.Control
-									type="text"
-									disabled
-									defaultValue={props.BoxDetail.code_box}
-								/>
+								<Form.Control type="text" disabled defaultValue={box.CodeBox} />
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Date</Form.Label>
@@ -108,9 +100,7 @@ const BoxPageDetail = props => {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">
-								{props.BoxDetail.code_box}
-							</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">{box.CodeBox}</p>
 						</div>
 					</Card>
 				</div>
@@ -119,4 +109,4 @@ const BoxPageDetail = props => {
 	);
 };
 
-export default connect(mapStateToProps, null)(BoxPageDetail);
+export default BoxPageDetail;

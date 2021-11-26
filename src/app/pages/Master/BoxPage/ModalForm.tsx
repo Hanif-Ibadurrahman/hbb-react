@@ -7,18 +7,14 @@ import { useHistory } from "react-router";
 import api from "../../../../api/dox";
 import { selectBoxes, selectBox } from "../../../../store/Selector/BoxSelector";
 import { useDispatch, useSelector } from "react-redux";
-import {
-	CreateBox,
-	UpdateBox,
-	RESET_BOX_FORM,
-	getBoxesList,
-} from "actions/BoxActions";
+import { CreateBox, UpdateBox, RESET_BOX_FORM } from "actions/BoxActions";
 import { BoxInterfaceState } from "store/Types/BoxTypes";
 const ModalForm = props => {
 	// const [CodeBox, setCodeBox] = useState("");
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setalertMessage] = useState("");
 	const box: BoxInterfaceState = useSelector(selectBox);
+	const boxes = useSelector(selectBoxes);
 	const dispatch = useDispatch();
 	const validationSchema = Yup.object().shape({
 		CodeBox: Yup.string().required("*Wajib diisi"),
@@ -49,21 +45,27 @@ const ModalForm = props => {
 					validationSchema={validationSchema}
 					initialValues={box}
 					enableReinitialize={true}
-					onSubmit={values => {
-						let action = box.Key ? UpdateBox(values) : CreateBox(values);
-						action.then(res => {
-							dispatch(res);
+					onSubmit={async values => {
+						try {
+							let action = box.Id ? UpdateBox(values) : CreateBox(values);
+							// dispatch(loadingbarTurnOn)
+							const res = await action;
+							await dispatch(res);
+							action.then(() => {
+								dispatch({ type: RESET_BOX_FORM });
+								props.modalSet(props.valueModalSet);
+							});
 							dispatch({ type: RESET_BOX_FORM });
-							// dispatch(getBoxesList(page))
 							props.modalSet(props.valueModalSet);
-						});
-						// dispatch(action.then(res => {
-						// 	return res
-						// }))
-						// dispatch(UpdateBox(values))
-						// .then((res) => {
-						// 	dispatch(res)
-						// })
+							box.Id ? (
+								<>Data Berhasil di Edit</>
+							) : (
+								<>Data Berhasil di Tambah</>
+							);
+							console.log(action);
+						} catch (e) {
+							console.log("ini error di depan");
+						}
 					}}
 				>
 					{({
@@ -78,7 +80,7 @@ const ModalForm = props => {
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									{box.Key ? <>Edit Data</> : <>Tambah Data</>}
+									{box.Id ? <>Edit Data</> : <>Tambah Data</>}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
@@ -94,7 +96,6 @@ const ModalForm = props => {
 													value={values.CodeBox}
 													onChange={e => {
 														handleChange(e);
-														// setCodeBox(e.target.value);
 													}}
 													onBlur={handleBlur}
 												/>
