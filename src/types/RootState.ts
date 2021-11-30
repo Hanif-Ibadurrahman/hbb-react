@@ -1,5 +1,6 @@
 import { ThemeState } from "styles/theme/slice/types";
 import { BoxesInterfaceState } from "store/Types/BoxTypes";
+import { AreasInterfaceState } from "store/Types/AreaTypes";
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -11,6 +12,7 @@ import { BoxesInterfaceState } from "store/Types/BoxTypes";
 export interface RootState {
 	theme?: ThemeState;
 	boxes?: BoxesInterfaceState;
+	areas?: AreasInterfaceState;
 
 	// [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }

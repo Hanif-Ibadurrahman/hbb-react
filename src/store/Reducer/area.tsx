@@ -1,15 +1,21 @@
-import { GET_AREAS_LIST } from "../../actions/AreaAction";
+import { GET_AREAS_LIST } from "../../actions/AreaActions";
+import { AreasInterfaceState, AreaInterfaceState } from "../Types/AreaTypes";
 
-let initialState = {
-	areas: [],
-	meta: {
-		total: 0,
-		per_page: 0,
-		current_page: 1,
+export const initialState: AreasInterfaceState = {
+	Areas: [],
+	Area: {
+		Id: "",
+		CodeArea: "",
+		Name: "",
 	},
-	errorAreasList: "",
-	errorAreasDetail: "",
-	title: "AREA",
+	Meta: {
+		Total: 0,
+		PerPage: 0,
+		CurrentPage: 1,
+		LastPage: 1,
+	},
+	Title: "AREA",
+	ErrorArea: undefined,
 };
 
 const areas = (state = initialState, action) => {

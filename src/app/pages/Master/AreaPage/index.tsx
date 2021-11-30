@@ -6,17 +6,12 @@ import { ModalForm } from "./ModalForm";
 import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
 import { Pagination } from "app/components/Pagination";
-import { getAreasList } from "actions/AreaAction";
-import { connect, useDispatch } from "react-redux";
-
-const mapStateToProps = state => {
-	return {
-		areas: state.areas.areas,
-		meta: state.areas.meta,
-	};
-};
+import { selectAreas } from "store/Selector/AreaSelector";
+import { useDispatch, useSelector } from "react-redux";
+import { getAreasList, getAreaDetail } from "actions/AreaActions";
 
 const AreaPage = props => {
+	const areas = useSelector(selectAreas);
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
@@ -88,14 +83,14 @@ const AreaPage = props => {
 			</Helmet>
 			<PageWrapper>
 				<PageHeader breadcrumb={["Master", "Area"]} addForm={<ModalForm />} />
-				<DataTable tableHeader={header} tableBody={props.areas} />
-				<Pagination
+				<DataTable tableHeader={header} tableBody={areas.Areas} />
+				{/* <Pagination
 					pageCount={props.meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
-				/>
+				/> */}
 			</PageWrapper>
 		</>
 	);
 };
 
-export default connect(mapStateToProps, null)(AreaPage);
+export default AreaPage;
