@@ -1,14 +1,13 @@
 import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
-import { useHistory } from "react-router";
-import api from "../../../../api/dox";
 import { selectBoxes, selectBox } from "../../../../store/Selector/BoxSelector";
 import { useDispatch, useSelector } from "react-redux";
 import { CreateBox, UpdateBox, RESET_BOX_FORM } from "actions/BoxActions";
 import { BoxInterfaceState } from "store/Types/BoxTypes";
+
 const ModalForm = props => {
 	// const [CodeBox, setCodeBox] = useState("");
 	const [showAlert, setShowAlert] = useState(false);
