@@ -6,6 +6,7 @@ export const create = async (data: RequestBoxInterfaceState) => {
 		delivered_at: data.DeliveredAt,
 		note: data.Note,
 		status: data.Status,
+		code_boxes: data.CodeBoxes["Id_Box"],
 	};
 	return api.post("/request-box", payload);
 };
@@ -17,6 +18,7 @@ export const update = async (data: RequestBoxInterfaceState) => {
 		delivered_at: data.DeliveredAt,
 		note: data.Note,
 		status: data.Status,
+		code_boxes: data.CodeBoxes,
 	};
 	console.log(payload);
 	return await api.put(`/request-box/${id}`, payload);
@@ -28,7 +30,7 @@ export const getById = async (id: String) => {
 
 export const getAll = async params => {
 	return api
-		.get(`/request-box`, {
+		.get(`/requests?status=created`, {
 			params: params,
 		})
 		.then(res => {

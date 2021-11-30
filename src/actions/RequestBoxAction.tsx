@@ -5,38 +5,37 @@ export const GET_REQUEST_BOX_DETAIL = "GET_BOX_DETAIL";
 export const CREATE_REQUEST_BOX = "CREATE_REQUEST_BOX";
 export const EDIT_REQUEST_BOX = "GET_BOXES_LIST";
 export const REQUEST_BOXES_ERROR = "BOXES_ERROR";
-export const RESET_REQUEST_BOX_FORM = "RESET_BOX_FORM";
-export const RESET_REQUEST_BOX_LIST = "RESET_BOX_LIST";
+export const RESET_REQUEST_BOX_FORM = "RESET_REQUEST_BOX_FORM";
+export const RESET_REQUEST_BOX_LIST = "RESET_REQUEST_BOX_LIST";
 export const SET_REQUEST_BOX_DATA = "SET_REQUEST_BOX_DATA";
 export const UPDATE_REQUEST_BOX = "UPDATE_BOX";
 
 let limit = 20;
 
 export const getRequestBoxesList = page => {
-	return dispatch => {
-		getAll({
-			page,
-			limit,
-		})
-			.then(function (response) {
-				dispatch({
-					type: GET_REQUEST_BOXES_LIST,
-					payload: {
-						data: response.data,
-						meta: response.meta,
-						errorMessage: false,
-					},
-				});
-			})
-			.catch(function (error) {
-				dispatch({
-					type: GET_REQUEST_BOXES_LIST,
-					payload: {
-						data: false,
-						errorMessage: error.message,
-					},
-				});
+	return async dispatch => {
+		try {
+			const response = await getAll(page);
+			dispatch({
+				type: GET_REQUEST_BOXES_LIST,
+				payload: {
+					data: response.data,
+					meta: response.meta,
+					errorMessage: false,
+				},
 			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: GET_REQUEST_BOXES_LIST,
+				payload: {
+					data: false,
+					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
 	};
 };
 

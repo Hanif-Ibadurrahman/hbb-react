@@ -15,27 +15,29 @@ import Swal from "sweetalert2";
 import { deleteBox } from "actions/BoxActions";
 import Alert from "app/components/Alerts";
 import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
-
-import { selectBoxes } from "store/Selector/BoxSelector";
-import { getBoxesList, getBoxDetail } from "actions/BoxActions";
+import moment from "moment";
 
 const BoxPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
-	// const requestBoxes = useSelector(selectRequestBoxes);
-	const boxes = useSelector(selectBoxes);
+	const requestBoxes = useSelector(selectRequestBoxes);
+	// const boxes = useSelector(selectBoxes);
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		// dispatch(getRequestBoxesList(page));
-		dispatch(getBoxesList(page));
+		dispatch(getRequestBoxesList(page));
+		// dispatch(getBoxesList(page));
 	};
 
 	useEffect(() => {
 		FetchData();
 	}, []);
+
+	const NewData = moment(requestBoxes.RequestBoxes["Delivered_at"]).format(
+		"d MMMM YYYY",
+	);
 
 	const onDelete = (dispatch, id) => {
 		Swal.fire({
@@ -70,7 +72,7 @@ const BoxPage = () => {
 
 	const showEditForm = async id => {
 		// dispatch(getRequestBoxDetail(id));
-		dispatch(getBoxDetail(id));
+		dispatch(getRequestBoxDetail(id));
 		setModalShow(true);
 	};
 
@@ -109,24 +111,40 @@ const BoxPage = () => {
 
 	const header = [
 		{
-			title: "Code Box",
-			prop: "code_box",
+			title: "Id Request",
+			prop: "id",
 			sortable: true,
 			cellProps: {
-				style: { width: "80%" },
+				style: { width: "40%" },
 			},
 		},
 		{
-			title: "Action",
-			prop: "Action",
+			title: "Note",
+			prop: "note",
+			sortable: true,
 			cellProps: {
-				style: { flex: 1 },
-				className: "realname-class",
-			},
-			cell: row => {
-				return <DropdownAction list={action(row.id)} />;
+				style: { width: "40%" },
 			},
 		},
+		{
+			title: "Quantity",
+			prop: "quantity",
+			sortable: true,
+			cellProps: {
+				style: { width: "20%" },
+			},
+		},
+		// {
+		// 	title: "Action",
+		// 	prop: "Action",
+		// 	cellProps: {
+		// 		style: { flex: 1 },
+		// 		className: "realname-class",
+		// 	},
+		// 	cell: row => {
+		// 		return <DropdownAction list={action(row.id)} />;
+		// 	},
+		// },
 	];
 
 	return (
@@ -164,13 +182,13 @@ const BoxPage = () => {
 					value={true}
 				/>
 				{/* <DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} /> */}
-				<DataTable tableHeader={header} tableBody={boxes.Boxes} />
+				<DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} />
 				{/* <Pagination
 					pageCount={requestBoxes.Meta.LastPage}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/> */}
 				<Pagination
-					pageCount={boxes.Meta.LastPage}
+					pageCount={requestBoxes.Meta.LastPage}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

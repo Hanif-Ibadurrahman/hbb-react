@@ -5,6 +5,11 @@ export interface RequestBoxInterfaceState {
 	Note: string;
 	Status: string;
 	DeliveredAt: string;
+	CodeBoxes: [
+		{
+			Id_Box: string;
+		},
+	];
 }
 
 export interface RequestBoxesInterfaceState {

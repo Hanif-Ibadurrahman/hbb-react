@@ -21,6 +21,11 @@ export const initialState: RequestBoxesInterfaceState = {
 		Note: "",
 		Status: "CREATED",
 		DeliveredAt: "",
+		CodeBoxes: [
+			{
+				Id_Box: "",
+			},
+		],
 	},
 	Meta: {
 		Total: 0,
@@ -62,6 +67,7 @@ export default (
 					Note: payload.data.data.note,
 					Status: payload.data.data.status,
 					DeliveredAt: payload.data.data.delivered_at,
+					CodeBoxes: payload.data.data.code_boxes,
 				},
 				ErrorRequestBox: payload.errorMessage,
 			};
@@ -74,6 +80,12 @@ export default (
 					Note: payload?.data?.data?.note,
 					Status: payload?.data?.data?.status,
 					DeliveredAt: payload?.data?.data?.delivered_at,
+					CodeBoxes: [
+						{
+							Id_Box: payload?.data?.data?.code_boxes,
+						},
+					],
+					// CodeBoxes: payload?.data?.data?.code_boxes,
 				},
 			};
 		case EDIT_REQUEST_BOX:
@@ -85,6 +97,7 @@ export default (
 					Note: payload.data.data.note,
 					Status: payload.data.data.status,
 					DeliveredAt: payload.data.data.delivered_at,
+					CodeBoxes: payload?.data?.data?.code_boxes,
 				},
 				ErrorRequestBox: payload.errorMessage,
 			};
@@ -97,13 +110,19 @@ export default (
 			return {
 				...state,
 				RequestBox: {
-					Id: payload?.data?.data?.id,
-					Quantity: payload?.data?.data?.quantity,
-					Note: payload?.data?.data?.note,
-					Status: payload?.data?.data?.status,
-					DeliveredAt: payload?.data?.data?.delivered_at,
+					Id: "",
+					Quantity: "",
+					Note: "",
+					Status: "CREATED",
+					DeliveredAt: "",
+					CodeBoxes: [
+						{
+							Id_Box: "",
+						},
+					],
 				},
 			};
+
 		default:
 			return state;
 	}

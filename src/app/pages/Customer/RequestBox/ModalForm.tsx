@@ -1,6 +1,6 @@
 import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
 import React, { useState } from "react";
-import { Formik } from "formik";
+import { Formik, FieldArray, Field } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 import {
@@ -14,9 +14,11 @@ import {
 	RESET_REQUEST_BOX_FORM,
 } from "actions/RequestBoxAction";
 import { RequestBoxInterfaceState } from "store/Types/RequestBoxTypes";
+import moment from "moment";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
+	const [checked, setChecked] = useState(false);
 	const [alertMessage, setalertMessage] = useState("");
 	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
 	const dispatch = useDispatch();
@@ -26,13 +28,16 @@ const ModalForm = props => {
 		Note: Yup.string().required("*Wajib diisi"),
 	});
 
-	const newDate = new Date();
-	const dateDelivery =
-		newDate.getFullYear() +
-		"-" +
-		(newDate.getMonth() + 1) +
-		"-" +
-		(newDate.getDate() + 2);
+	function addDays(days) {
+		const result = new Date();
+		result.setDate(result.getDate() + days);
+		return result;
+	}
+	const DeliveredDate = moment(addDays(2)).format("YYYY-MM-D");
+
+	function handleOnChange() {
+		setChecked(!checked);
+	}
 
 	return (
 		<>
@@ -90,6 +95,7 @@ const ModalForm = props => {
 						handleChange,
 						handleBlur,
 						handleSubmit,
+						setFieldValue,
 						isSubmitting,
 					}) => (
 						<Form onSubmit={handleSubmit}>
@@ -124,7 +130,7 @@ const ModalForm = props => {
 												<Form.Label>Tanggal Pengiriman</Form.Label>
 												<Form.Control
 													type="date"
-													min={dateDelivery}
+													min={DeliveredDate}
 													name="DeliveredAt"
 													placeholder="DeliveredAt"
 													value={values.DeliveredAt}
@@ -157,24 +163,61 @@ const ModalForm = props => {
 													</p>
 												) : null}
 											</Form.Group>
-											{/* <Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Code Box</Form.Label>
-												<Form.Control
-													type="text"
-													name="Quantity"
-													placeholder="Quantity"
-													value={values.Quantity}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
+											<Form.Group className="mb-3">
+												<Form.Check
+													type="checkbox"
+													label="Required Code Box"
+													onChange={handleOnChange}
+													onClick={() => setFieldValue(`CodeBoxes.Id_Box`, "")}
 												/>
-												{touched.Quantity && errors.Quantity ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.Quantity}
-													</p>
-												) : null}
-											</Form.Group> */}
+											</Form.Group>
+											<FieldArray name="CodeBoxes">
+												{({ remove, push }) => (
+													<div className={checked ? "d-block" : "d-none"}>
+														{values.CodeBoxes.length > 0 &&
+															values.CodeBoxes.map((codeBox, index) => (
+																<Form.Group className="mb-4" key={index}>
+																	<Form.Label>Code Box</Form.Label>
+																	<Row>
+																		<Col xs={10}>
+																			<Form.Control
+																				type="text"
+																				name={`CodeBoxes.${index}`}
+																				placeholder="Code Box"
+																				value={values.CodeBoxes["Id_Box"]}
+																				onChange={e => {
+																					handleChange(e);
+																				}}
+																				onBlur={handleBlur}
+																			/>
+																			{touched.DeliveredAt &&
+																			errors.DeliveredAt ? (
+																				<p className="tc-danger-5 pos-a p-sm">
+																					{errors.DeliveredAt}
+																				</p>
+																			) : null}
+																		</Col>
+																		<Col xs={2}>
+																			<Button
+																				variant="danger"
+																				className="d-flex ai-center h-100% ml-a"
+																				onClick={() => remove(index)}
+																			>
+																				<i className="far fa-times"></i>
+																			</Button>
+																		</Col>
+																	</Row>
+																</Form.Group>
+															))}
+														<Button
+															variant="secondary"
+															onClick={() => push("")}
+														>
+															Tambah
+														</Button>
+													</div>
+												)}
+											</FieldArray>
 										</Col>
 									</Row>
 								</Container>
