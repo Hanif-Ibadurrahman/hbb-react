@@ -1,5 +1,4 @@
 import React from "react";
-import PaginatedBoxResponse from "app/pages/Interface/box";
 import { BoxInterfaceState } from "store/Types/BoxTypes";
 import { create, destroy, getAll, getById, update } from "../api/boxes";
 export const GET_BOXES_LIST = "GET_BOXES_LIST";
@@ -15,30 +14,29 @@ export const UPDATE_BOX = "UPDATE_BOX";
 let limit = 20;
 
 export const getBoxesList = page => {
-	return dispatch => {
-		getAll({
-			page,
-			limit,
-		})
-			.then(function (response) {
-				dispatch({
-					type: GET_BOXES_LIST,
-					payload: {
-						data: response.data,
-						meta: response.meta,
-						errorMessage: false,
-					},
-				});
-			})
-			.catch(function (error) {
-				dispatch({
-					type: GET_BOXES_LIST,
-					payload: {
-						data: false,
-						errorMessage: error.message,
-					},
-				});
+	return async dispatch => {
+		try {
+			const response = await getAll(page);
+			dispatch({
+				type: GET_BOXES_LIST,
+				payload: {
+					data: response.data,
+					meta: response.meta,
+					errorMessage: false,
+				},
 			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: GET_BOXES_LIST,
+				payload: {
+					data: false,
+					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
 	};
 };
 
@@ -108,26 +106,6 @@ export const CreateBox = async (data: BoxInterfaceState) => {
 			console.log(error);
 			throw error;
 		}
-
-		// return create(data).then(function (response) {
-		// 	dispatch({
-		// 		type: CREATE_BOX,
-		// 		payload: {
-		// 			data: response.data,
-		// 			errorMessage: false,
-		// 		},
-		// 	});
-		// 	return response
-		// }).catch(function (error) {
-		// 	dispatch({
-		// 		type: CREATE_BOX,
-		// 		payload: {
-		// 			data: false,
-		// 			errorMessage: error.message,
-		// 		},
-		// 	});
-		// 	return error
-		// })
 	};
 };
 
