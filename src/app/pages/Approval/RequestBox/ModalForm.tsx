@@ -1,13 +1,13 @@
 import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
 import React, { useState } from "react";
-import { Formik, FieldArray, Field } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
-import {
-	selectRequestBoxes,
-	selectRequestBox,
-} from "../../../../store/Selector/RequestBoxSelector";
 import { useDispatch, useSelector } from "react-redux";
+import {
+	selectRequestBox,
+	selectRequestBoxes,
+} from "../../../../store/Selector/RequestBoxSelector";
 import {
 	CreateRequestBox,
 	UpdateRequestBox,
@@ -18,31 +18,22 @@ import moment from "moment";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
-	const [checked, setChecked] = useState(false);
 	const [alertMessage, setalertMessage] = useState("");
 	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
+	// const requestBoxes: useSelector(selectRequestBoxes);
 	const dispatch = useDispatch();
 	const validationSchema = Yup.object().shape({
 		Quantity: Yup.string().required("*Wajib diisi"),
-		DeliveredAt: Yup.date().required("*Wajib diisi"),
+		DeliverdAt: Yup.string().required("*Wajib diisi"),
 		Note: Yup.string().required("*Wajib diisi"),
 	});
 
-	function addDays(days) {
-		const result = new Date();
-		result.setDate(result.getDate() + days);
-		return result;
-	}
-	const DeliveredDate = moment(addDays(2)).format("YYYY-MM-DD");
-
-	function handleOnChange() {
-		setChecked(!checked);
-	}
+	const NewDate = moment(requestBox.DeliveredAt).format("d MMMM YYYY");
 
 	return (
 		<>
 			<Alert
-				text="Data Berhasil Di Input"
+				text={alertMessage}
 				variant="success"
 				show={showAlert}
 				style={{
@@ -53,6 +44,7 @@ const ModalForm = props => {
 				}}
 				onHide={() => setShowAlert(false)}
 			/>
+
 			<Modal
 				show={props.modal}
 				onHide={props.hide}
@@ -95,13 +87,12 @@ const ModalForm = props => {
 						handleChange,
 						handleBlur,
 						handleSubmit,
-						setFieldValue,
 						isSubmitting,
 					}) => (
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									{requestBox.Id ? <>Edit Data</> : <>Tambah Data</>}
+									{requestBox.Id ? <>Detail Data</> : <>Tambah Data</>}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
@@ -111,7 +102,7 @@ const ModalForm = props => {
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Quantity</Form.Label>
 												<Form.Control
-													type="number"
+													type="text"
 													name="Quantity"
 													placeholder="Quantity"
 													value={values.Quantity}
@@ -119,6 +110,7 @@ const ModalForm = props => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
+													disabled
 												/>
 												{touched.Quantity && errors.Quantity ? (
 													<p className="tc-danger-5 pos-a p-sm">
@@ -127,17 +119,17 @@ const ModalForm = props => {
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Tanggal Pengiriman</Form.Label>
+												<Form.Label>Tanggal Kirim</Form.Label>
 												<Form.Control
-													type="date"
-													min={DeliveredDate}
+													type="text"
 													name="DeliveredAt"
 													placeholder="DeliveredAt"
-													value={values.DeliveredAt}
+													value={NewDate}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
+													disabled
 												/>
 												{touched.DeliveredAt && errors.DeliveredAt ? (
 													<p className="tc-danger-5 pos-a p-sm">
@@ -156,68 +148,14 @@ const ModalForm = props => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
+													disabled
 												/>
-												{touched.DeliveredAt && errors.DeliveredAt ? (
+												{touched.Note && errors.Note ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.DeliveredAt}
+														{errors.Note}
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-3">
-												<Form.Check
-													type="checkbox"
-													label="Required Code Box"
-													onChange={handleOnChange}
-													onClick={() => setFieldValue(`CodeBoxes.Id_Box`, "")}
-												/>
-											</Form.Group>
-											<FieldArray name="CodeBoxes">
-												{({ remove, push }) => (
-													<div className={checked ? "d-block" : "d-none"}>
-														{values.CodeBoxes.length > 0 &&
-															values.CodeBoxes.map((codeBox, index) => (
-																<Form.Group className="mb-4" key={index}>
-																	<Form.Label>Code Box</Form.Label>
-																	<Row>
-																		<Col xs={10}>
-																			<Form.Control
-																				type="text"
-																				name={`CodeBoxes.${index}`}
-																				placeholder="Code Box"
-																				value={values.CodeBoxes["Id_Box"]}
-																				onChange={e => {
-																					handleChange(e);
-																				}}
-																				onBlur={handleBlur}
-																			/>
-																			{touched.DeliveredAt &&
-																			errors.DeliveredAt ? (
-																				<p className="tc-danger-5 pos-a p-sm">
-																					{errors.DeliveredAt}
-																				</p>
-																			) : null}
-																		</Col>
-																		<Col xs={2}>
-																			<Button
-																				variant="danger"
-																				className="d-flex ai-center h-100% ml-a"
-																				onClick={() => remove(index)}
-																			>
-																				<i className="far fa-times"></i>
-																			</Button>
-																		</Col>
-																	</Row>
-																</Form.Group>
-															))}
-														<Button
-															variant="secondary"
-															onClick={() => push("")}
-														>
-															Tambah
-														</Button>
-													</div>
-												)}
-											</FieldArray>
 										</Col>
 									</Row>
 								</Container>
@@ -226,14 +164,6 @@ const ModalForm = props => {
 								<Button variant="danger" onClick={props.hide}>
 									Close
 								</Button>
-								<Button
-									type="submit"
-									disabled={isSubmitting}
-									className="bg-success-6"
-									variant="success"
-								>
-									Request
-								</Button>{" "}
 							</Modal.Footer>
 						</Form>
 					)}

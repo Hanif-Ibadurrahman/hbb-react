@@ -1,14 +1,23 @@
-import { RequestBoxInterfaceState } from "store/Types/RequestBoxTypes";
-import { create, update, getAll, getById } from "../api/requestBox";
+import {
+	ApprovalInterfaceState,
+	RequestBoxInterfaceState,
+} from "store/Types/RequestBoxTypes";
+import {
+	create,
+	update,
+	getAll,
+	getById,
+	approval_admin,
+} from "../api/requestBox";
 export const GET_REQUEST_BOXES_LIST = "GET_BOXES_LIST";
 export const GET_REQUEST_BOX_DETAIL = "GET_BOX_DETAIL";
 export const CREATE_REQUEST_BOX = "CREATE_REQUEST_BOX";
-export const EDIT_REQUEST_BOX = "GET_BOXES_LIST";
 export const REQUEST_BOXES_ERROR = "BOXES_ERROR";
 export const RESET_REQUEST_BOX_FORM = "RESET_REQUEST_BOX_FORM";
 export const RESET_REQUEST_BOX_LIST = "RESET_REQUEST_BOX_LIST";
 export const SET_REQUEST_BOX_DATA = "SET_REQUEST_BOX_DATA";
-export const UPDATE_REQUEST_BOX = "UPDATE_BOX";
+export const UPDATE_REQUEST_BOX = "UPDATE_REQUEST_BOX";
+export const APPROVAL_ADMIN = "APPROVAL_ADMIN";
 
 let limit = 20;
 
@@ -115,6 +124,62 @@ export const UpdateRequestBox = async (data: RequestBoxInterfaceState) => {
 		} catch (error: any) {
 			dispatch({
 				type: UPDATE_REQUEST_BOX,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const ApprovalAdmin = async (data: ApprovalInterfaceState) => {
+	return async dispatch => {
+		try {
+			const response = await approval_admin(data);
+			console.log("error: Aku aku");
+			dispatch({
+				type: APPROVAL_ADMIN,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			// return await approval_admin(data).then(response => {
+			// 	dispatch({
+			// 		type: APPROVAL_ADMIN,
+			// 		payload: {
+			// 			data: response.data,
+			// 			errorMessage: false,
+			// 		},
+			// 	});
+			// });
+			// const approval = await approval_admin(data)
+			// dispatch({
+			// 	type: APPROVAL_ADMIN,
+			// 	payload: {
+			// 		data: approval.data,
+			// 		errorMessage: false,
+			// 	},
+			// })
+		} catch (error: any) {
+			console.log("error: cana kayak hanif");
+			console.log(error);
+			// dispatch({
+			// 	type: APPROVAL_ADMIN,
+			// 	payload: {
+			// 		data: {
+			// 			data: {
+			// 				is_approved: true,
+			// 			},
+			// 		},
+			// 		errorMessage: error?.message,
+			// 	},
+			// });
+			dispatch({
+				type: APPROVAL_ADMIN,
 				payload: {
 					data: false,
 					errorMessage: error?.message,

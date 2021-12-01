@@ -2,24 +2,30 @@ import {
 	GET_REQUEST_BOXES_LIST,
 	CREATE_REQUEST_BOX,
 	GET_REQUEST_BOX_DETAIL,
-	EDIT_REQUEST_BOX,
+	UPDATE_REQUEST_BOX,
 	RESET_REQUEST_BOX_LIST,
 	RESET_REQUEST_BOX_FORM,
 	SET_REQUEST_BOX_DATA,
+	APPROVAL_ADMIN,
 } from "../../actions/RequestBoxAction";
 
 import {
 	RequestBoxesInterfaceState,
 	RequestBoxInterfaceState,
+	ApprovalInterfaceState,
 } from "../Types/RequestBoxTypes";
 
 export const initialState: RequestBoxesInterfaceState = {
 	RequestBoxes: [],
+	ApprovalAdmin: {
+		Id: "",
+		Approved: false,
+	},
 	RequestBox: {
 		Id: "",
 		Quantity: "",
 		Note: "",
-		Status: "CREATED",
+		Status: "",
 		DeliveredAt: "",
 		CodeBoxes: [
 			{
@@ -27,6 +33,7 @@ export const initialState: RequestBoxesInterfaceState = {
 			},
 		],
 	},
+
 	Meta: {
 		Total: 0,
 		PerPage: 0,
@@ -36,6 +43,7 @@ export const initialState: RequestBoxesInterfaceState = {
 	Title: "REQUEST_BOX",
 	ErrorRequestBox: undefined,
 };
+
 export default (
 	state = initialState,
 	{ type, payload },
@@ -88,7 +96,7 @@ export default (
 					// CodeBoxes: payload?.data?.data?.code_boxes,
 				},
 			};
-		case EDIT_REQUEST_BOX:
+		case UPDATE_REQUEST_BOX:
 			return {
 				...state,
 				RequestBox: {
@@ -100,6 +108,14 @@ export default (
 					CodeBoxes: payload?.data?.data?.code_boxes,
 				},
 				ErrorRequestBox: payload.errorMessage,
+			};
+		case APPROVAL_ADMIN:
+			return {
+				...state,
+				ApprovalAdmin: {
+					Id: null,
+					Approved: payload.data.data.is_approved,
+				},
 			};
 		case RESET_REQUEST_BOX_LIST:
 			return {
@@ -113,7 +129,7 @@ export default (
 					Id: "",
 					Quantity: "",
 					Note: "",
-					Status: "CREATED",
+					Status: "",
 					DeliveredAt: "",
 					CodeBoxes: [
 						{

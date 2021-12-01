@@ -12,7 +12,13 @@ export interface RequestBoxInterfaceState {
 	];
 }
 
+export interface ApprovalInterfaceState {
+	Id: string | null;
+	Approved: boolean;
+}
+
 export interface RequestBoxesInterfaceState {
+	ApprovalAdmin: ApprovalInterfaceState;
 	RequestBox: RequestBoxInterfaceState;
 	RequestBoxes: RequestBoxInterfaceState[];
 	ErrorRequestBox?: string;

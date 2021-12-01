@@ -27,7 +27,7 @@ import { DashboardAdminRC } from "./Dashboard/AdminRC";
 import { DashboardAdminTransport } from "./Dashboard/AdminTransport";
 // -=-=-=-=-=-
 // APPROVAL
-import { ApprovalRequestBox } from "./Approval/RequestBox";
+import ApprovalRCRequestBox from "./Approval/RequestBox";
 import { ApprovalPickupBox } from "./Approval/PickupBox";
 import { ApprovalPinjamItem } from "./Approval/PinjamItem";
 import { ApprovalPengembalianItem } from "./Approval/PengembalianItem";
@@ -130,7 +130,7 @@ export function Routes() {
 						{/*---------- APPROVAL ---------*/}
 						<Route
 							path={process.env.PUBLIC_URL + "/Approval/RequestBox"}
-							component={ApprovalRequestBox}
+							component={ApprovalRCRequestBox}
 						/>
 						<Route
 							path={process.env.PUBLIC_URL + "/Approval/PickupBox"}

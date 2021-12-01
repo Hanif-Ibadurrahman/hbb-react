@@ -1,101 +1,216 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import "../approval.scoped.scss";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
 import PageHeader from "../Components/PageHeader";
-import StatusApproval from "../Components/StatusApproval";
-import DropdownAction from "../Components/DropdownAction";
+import DropdownAction from "app/components/DropdownAction";
+import { Pagination } from "app/components/Pagination";
+import {
+	getRequestBoxesList,
+	getRequestBoxDetail,
+	UpdateRequestBox,
+	ApprovalAdmin,
+} from "actions/RequestBoxAction";
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import { deleteBox } from "actions/BoxActions";
+import Alert from "app/components/Alerts";
+import {
+	selectRequestBoxes,
+	selectRequestBox,
+} from "store/Selector/RequestBoxSelector";
+import moment from "moment";
+import ModalForm from "./ModalForm";
+import { RequestBoxInterfaceState } from "store/Types/RequestBoxTypes";
+import { approval_admin } from "api/requestBox";
 
-const header = [
-	{
-		title: "Code Box",
-		prop: "CodeBox",
-		sortable: true,
-		cellProps: {
-			style: { width: "20%" },
-		},
-	},
-	{
-		title: "Tanggal",
-		prop: "Tanggal",
-		sortable: true,
-		// Add classes and styles by objects and strings.
-		cellProps: {
-			style: { background: "#fafafa", width: "20%" },
-			className: "realname-class",
-		},
-	},
-	{
-		title: "Waktu",
-		prop: "Waktu",
-		sortable: true,
-		cellProps: {
-			style: { background: "#fafafa", width: "20%" },
-			className: "realname-class",
-		},
-	},
-	{
-		title: "Quantity",
-		prop: "Quantity",
-		sortable: true,
-		cellProps: {
-			style: { width: "15%" },
-		},
-	},
-	{
-		title: "Status",
-		prop: "Status",
-		sortable: true,
-		cellProps: {
-			style: { width: "15%" },
-		},
-	},
-	{
-		title: "Action",
-		prop: "Action",
-		cellProps: {
-			style: { flex: 1 },
-			className: "realname-class",
-		},
-	},
-];
+const BoxPage = () => {
+	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
+	const [showAlertFailed, setShowAlertFailed] = useState(false);
+	const [modalShow, setModalShow] = useState(false);
+	const [showAlert, setShowAlert] = useState(false);
+	const requestBoxes = useSelector(selectRequestBoxes);
 
-const body = Array.from(new Array(5), () => {
-	const rd = (Math.random() * 10).toFixed(10);
-	var statusArray = ["waiting", "approved", "declined"];
-	var statusMoreArray = [
-		"Menunggu disetujui Admin CSR.",
-		"Telah disetujui Admin CSR.",
-		"Tidak disetujui Admin CSR.",
-	];
-	var randomStatus =
-		statusArray[Math.floor(Math.random() * statusArray.length)];
+	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
+	// const boxes = useSelector(selectBoxes);
+	const dispatch = useDispatch();
 
-	return {
-		CodeBox: `A000000${rd}`,
-		Tanggal: "05 - 09 - 21",
-		Waktu: "09:52 WIB",
-		Quantity: Math.floor(Math.random() * 10) + 1,
-		Status: <StatusApproval status={randomStatus} tooltip={statusMoreArray} />,
-		Action: <DropdownAction />,
+	const FetchData = (page = 1) => {
+		dispatch(getRequestBoxesList(page));
+		// dispatch(getBoxesList(page));
 	};
-});
 
-export function ApprovalRequestBox() {
+	useEffect(() => {
+		FetchData();
+	}, []);
+
+	const NewDate = (date: any) => {
+		return moment(date).format("d MMMM YYYY");
+	};
+
+	const onDelete = (dispatch, id) => {
+		Swal.fire({
+			text: "Apakah anda ingin menghapus data ini?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#d33",
+			confirmButtonText: "Hapus",
+		}).then(willDelete => {
+			if (willDelete) {
+				dispatch(deleteBox(id));
+				setShowAlertSuccess(true);
+				setTimeout(function () {
+					setShowAlertSuccess(false);
+				}, 4000);
+				setTimeout(function () {
+					window.location.reload();
+				}, 1000);
+			} else {
+				setShowAlertFailed(true);
+				setTimeout(function () {
+					setShowAlertFailed(false);
+				}, 4000);
+			}
+		});
+	};
+
+	const _onHide = () => {
+		setModalShow(false);
+		setShowAlert(false);
+	};
+
+	const showEditForm = async id => {
+		dispatch(getRequestBoxDetail(id));
+		setModalShow(true);
+	};
+
+	const Approval = async id => {
+		console.log(">>>>>", id);
+
+		let payload = {
+			Id: id,
+			Approved: true,
+		};
+
+		dispatch(await ApprovalAdmin(payload));
+
+		// dispatch({
+		//     type:
+		//     data: {}
+		// })
+	};
+
+	const action = id => [
+		{
+			icon: "fa-search",
+			title: "Detail",
+			onclick: () => {
+				showEditForm(id);
+			},
+			dispatch: dispatch,
+			row: id,
+			type: 2,
+		},
+		{
+			icon: "fa-check-square",
+			title: "Terima",
+			titleClass: "tc-success-5",
+			onclick: () => {
+				Approval(id);
+			},
+			dispatch: dispatch,
+			row: id,
+			type: 2,
+		},
+		{
+			icon: "fa-vote-nay",
+			title: "Tolak",
+			titleClass: "tc-danger-5",
+			type: 2,
+			onclick: onDelete,
+			dispatch: dispatch,
+			row: id,
+		},
+	];
+
+	const header = [
+		{
+			title: "Id Request",
+			prop: "id",
+			sortable: true,
+			cellProps: {
+				style: { width: "40%" },
+			},
+		},
+		{
+			title: "Tanggal Kirim",
+			prop: "delivered_at",
+			sortable: true,
+			cellProps: {
+				style: { width: "20%" },
+			},
+			cell: row => {
+				return NewDate(row.delivered_at);
+			},
+		},
+		{
+			title: "Quantity",
+			prop: "quantity",
+			sortable: true,
+			cellProps: {
+				style: { width: "20%" },
+			},
+		},
+		{
+			title: "Action",
+			prop: "Action",
+			cellProps: {
+				style: { flex: 1 },
+				className: "realname-class",
+			},
+			cell: row => {
+				return <DropdownAction list={action(row.id)} />;
+			},
+		},
+	];
+
 	return (
 		<>
 			<Helmet>
-				<title>Dox - Persutujuan Request Box</title>
+				<title>Dox - Request Box</title>
 				<meta
 					name="description"
 					content="A React Boilerplate application homepage"
 				/>
 			</Helmet>
 			<PageWrapper>
-				<PageHeader breadcrumb={["Dashboard", "Approval", "Request Box"]} />
-				<DataTable tableHeader={header} tableBody={body} />
+				<Alert
+					text="Data Berhasil Di Hapus"
+					variant="success"
+					show={showAlertSuccess}
+					onHide={() => setShowAlertSuccess(false)}
+				/>
+				<Alert
+					text="Data Gagal Di Hapus"
+					variant="danger"
+					show={showAlertFailed}
+					onHide={() => setShowAlertFailed(false)}
+				/>
+				<ModalForm
+					modal={modalShow}
+					hide={_onHide}
+					modalSet={setModalShow}
+					valueModalSet={false}
+				/>
+				<PageHeader breadcrumb={["Master", "Approval Admin"]} />
+				<DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} />
+				<Pagination
+					pageCount={requestBoxes.Meta.LastPage}
+					onPageChange={data => FetchData(data.selected + 1)}
+				/>
 			</PageWrapper>
 		</>
 	);
-}
+};
+
+export default BoxPage;

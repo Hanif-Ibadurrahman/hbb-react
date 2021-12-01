@@ -4,7 +4,6 @@ import { create, destroy, getAll, getById, update } from "../api/boxes";
 export const GET_BOXES_LIST = "GET_BOXES_LIST";
 export const GET_BOX_DETAIL = "GET_BOX_DETAIL";
 export const CREATE_BOX = "CREAT_BOX";
-export const EDIT_BOX = "GET_BOXES_LIST";
 export const BOXES_ERROR = "BOXES_ERROR";
 export const RESET_BOX_FORM = "RESET_BOX_FORM";
 export const RESET_BOX_LIST = "RESET_BOX_LIST";
