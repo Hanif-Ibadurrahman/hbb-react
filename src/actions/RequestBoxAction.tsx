@@ -138,10 +138,7 @@ export const UpdateRequestBox = async (data: RequestBoxInterfaceState) => {
 export const ApprovalAdmin = async (data: ApprovalInterfaceState) => {
 	return async dispatch => {
 		try {
-			console.log("data", data);
-
 			const response = await approval_admin(data);
-			console.log("Bisa boy");
 			dispatch({
 				type: APPROVAL_ADMIN,
 				payload: {
@@ -149,37 +146,7 @@ export const ApprovalAdmin = async (data: ApprovalInterfaceState) => {
 					errorMessage: false,
 				},
 			});
-			// return await approval_admin(data).then(response => {
-			// 	dispatch({
-			// 		type: APPROVAL_ADMIN,
-			// 		payload: {
-			// 			data: response.data,
-			// 			errorMessage: false,
-			// 		},
-			// 	});
-			// });
-			// const approval = await approval_admin(data)
-			// dispatch({
-			// 	type: APPROVAL_ADMIN,
-			// 	payload: {
-			// 		data: approval.data,
-			// 		errorMessage: false,
-			// 	},
-			// })
 		} catch (error: any) {
-			console.log("error: cana kayak hanif");
-			console.log(error);
-			// dispatch({
-			// 	type: APPROVAL_ADMIN,
-			// 	payload: {
-			// 		data: {
-			// 			data: {
-			// 				is_approved: true,
-			// 			},
-			// 		},
-			// 		errorMessage: error?.message,
-			// 	},
-			// });
 			dispatch({
 				type: APPROVAL_ADMIN,
 				payload: {
