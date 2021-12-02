@@ -15,6 +15,7 @@ export interface RequestBoxInterfaceState {
 export interface ApprovalInterfaceState {
 	Id: string | null;
 	Approved: boolean;
+	Description: string;
 }
 
 export interface RequestBoxesInterfaceState {

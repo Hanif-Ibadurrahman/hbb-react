@@ -52,6 +52,7 @@ export const approval_admin = async (data: ApprovalInterfaceState) => {
 	let id = data?.Id;
 	let payload = {
 		is_approved: data?.Approved,
+		description: data?.Description,
 	};
 	console.log(payload);
 	return await api.put(`/requests/${id}/csr-approved/`, payload);

@@ -24,7 +24,7 @@ import ModalForm from "./ModalForm";
 import { RequestBoxInterfaceState } from "store/Types/RequestBoxTypes";
 import { approval_admin } from "api/requestBox";
 
-const BoxPage = () => {
+const ApprovalAdminRequestBox = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
@@ -84,32 +84,29 @@ const BoxPage = () => {
 		setModalShow(true);
 	};
 
+	const RejectForm = async id => {
+		console.log("Reject Id", id);
+		dispatch(getRequestBoxDetail(id));
+		setModalShow(true);
+	};
+
 	const Approval = async id => {
 		console.log(">>>>>", id);
 
 		let payload = {
 			Id: id,
 			Approved: true,
+			Description: "",
 		};
-
 		dispatch(await ApprovalAdmin(payload));
-
-		// dispatch({
-		//     type:
-		//     data: {}
-		// })
 	};
 
 	const action = id => [
 		{
 			icon: "fa-search",
 			title: "Detail",
-			onclick: () => {
-				showEditForm(id);
-			},
-			dispatch: dispatch,
-			row: id,
-			type: 2,
+			url: "DetailRequestBox/" + id,
+			type: 1,
 		},
 		{
 			icon: "fa-check-square",
@@ -127,7 +124,9 @@ const BoxPage = () => {
 			title: "Tolak",
 			titleClass: "tc-danger-5",
 			type: 2,
-			onclick: onDelete,
+			onclick: () => {
+				RejectForm(id);
+			},
 			dispatch: dispatch,
 			row: id,
 		},
@@ -213,4 +212,4 @@ const BoxPage = () => {
 	);
 };
 
-export default BoxPage;
+export default ApprovalAdminRequestBox;

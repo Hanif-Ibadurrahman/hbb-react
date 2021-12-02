@@ -20,6 +20,7 @@ export const initialState: RequestBoxesInterfaceState = {
 	ApprovalAdmin: {
 		Id: "",
 		Approved: false,
+		Description: "",
 	},
 	RequestBox: {
 		Id: "",
@@ -113,8 +114,9 @@ export default (
 			return {
 				...state,
 				ApprovalAdmin: {
-					Id: null,
-					Approved: payload.data.data.is_approved,
+					Id: payload.data?.data?.id,
+					Approved: payload.data?.data?.is_approved,
+					Description: payload.data?.data?.description,
 				},
 			};
 		case RESET_REQUEST_BOX_LIST:

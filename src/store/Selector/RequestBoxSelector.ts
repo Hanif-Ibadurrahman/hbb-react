@@ -18,3 +18,7 @@ export const selectRequestBox = createSelector(
 	requestBoxDomain,
 	state => state.RequestBox,
 );
+export const SelectApprovalAdmin = createSelector(
+	requestBoxDomain,
+	state => state.ApprovalAdmin,
+);

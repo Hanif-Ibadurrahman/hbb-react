@@ -138,8 +138,10 @@ export const UpdateRequestBox = async (data: RequestBoxInterfaceState) => {
 export const ApprovalAdmin = async (data: ApprovalInterfaceState) => {
 	return async dispatch => {
 		try {
+			console.log("data", data);
+
 			const response = await approval_admin(data);
-			console.log("error: Aku aku");
+			console.log("Bisa boy");
 			dispatch({
 				type: APPROVAL_ADMIN,
 				payload: {
