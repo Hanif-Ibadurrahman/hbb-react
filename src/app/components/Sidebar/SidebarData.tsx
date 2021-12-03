@@ -25,7 +25,7 @@ export const PeminjamanData = [
 	{
 		title: "Request Box",
 		icon: "",
-		link: "/Approval/RequestBox",
+		link: "/Approval-Admin/RequestBox",
 		notifications: "",
 	},
 	{
@@ -44,6 +44,15 @@ export const PeminjamanData = [
 		title: "Pengembalian Item",
 		icon: "",
 		link: "/Approval/PengembalianItem",
+		notifications: "",
+	},
+];
+
+export const ApprovalOperation = [
+	{
+		title: "Request Box",
+		icon: "",
+		link: "/Approval-Operation/RequestBox",
 		notifications: "",
 	},
 ];

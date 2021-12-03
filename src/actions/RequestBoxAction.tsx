@@ -8,6 +8,8 @@ import {
 	getAll,
 	getById,
 	approval_admin,
+	getAllConfirmed,
+	reject_operation,
 } from "../api/requestBox";
 export const GET_REQUEST_BOXES_LIST = "GET_BOXES_LIST";
 export const GET_REQUEST_BOX_DETAIL = "GET_BOX_DETAIL";
@@ -18,6 +20,8 @@ export const RESET_REQUEST_BOX_LIST = "RESET_REQUEST_BOX_LIST";
 export const SET_REQUEST_BOX_DATA = "SET_REQUEST_BOX_DATA";
 export const UPDATE_REQUEST_BOX = "UPDATE_REQUEST_BOX";
 export const APPROVAL_ADMIN = "APPROVAL_ADMIN";
+export const GET_CONFIRMED_ADMIN = "GET_CONFIRMED_ADMIN";
+export const REJECT_OPERTAION = "REJECT_OPERATION";
 
 let limit = 20;
 
@@ -149,6 +153,58 @@ export const ApprovalAdmin = async (data: ApprovalInterfaceState) => {
 		} catch (error: any) {
 			dispatch({
 				type: APPROVAL_ADMIN,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const getAllConfirmedAdmin = page => {
+	return async dispatch => {
+		try {
+			const response = await getAllConfirmed(page);
+			dispatch({
+				type: GET_CONFIRMED_ADMIN,
+				payload: {
+					data: response.data,
+					meta: response.meta,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: GET_CONFIRMED_ADMIN,
+				payload: {
+					data: false,
+					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const RejectOpertaion = async (data: ApprovalInterfaceState) => {
+	return async dispatch => {
+		try {
+			const response = await reject_operation(data);
+			dispatch({
+				type: REJECT_OPERTAION,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+		} catch (error: any) {
+			dispatch({
+				type: REJECT_OPERTAION,
 				payload: {
 					data: false,
 					errorMessage: error?.message,

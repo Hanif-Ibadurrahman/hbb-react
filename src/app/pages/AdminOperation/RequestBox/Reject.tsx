@@ -13,6 +13,7 @@ import {
 	CreateRequestBox,
 	UpdateRequestBox,
 	ApprovalAdmin,
+	RejectOpertaion,
 	RESET_REQUEST_BOX_FORM,
 } from "actions/RequestBoxAction";
 import {
@@ -62,7 +63,7 @@ const ModalForm = props => {
 					onSubmit={async values => {
 						try {
 							values.Id = requestBox.Id;
-							let action = dispatch(await ApprovalAdmin(values));
+							dispatch(await RejectOpertaion(values));
 							dispatch({ type: RESET_REQUEST_BOX_FORM });
 							props.modalSet(props.valueModalSet);
 							approvalAdmin.Id ? (
@@ -70,7 +71,6 @@ const ModalForm = props => {
 							) : (
 								<>Data Berhasil di Tambah</>
 							);
-							console.log(action);
 						} catch (e) {
 							console.log("ini error di depan");
 						}

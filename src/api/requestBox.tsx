@@ -57,3 +57,26 @@ export const approval_admin = async (data: ApprovalInterfaceState) => {
 	console.log(payload);
 	return await api.put(`/requests/${id}/csr-approved/`, payload);
 };
+
+export const getAllConfirmed = async params => {
+	return api
+		.get(`/requests?status=confirmed-by-csr-admin`, {
+			params: params,
+		})
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
+export const reject_operation = async (data: ApprovalInterfaceState) => {
+	let id = data?.Id;
+	let payload = {
+		is_approved: data?.Approved,
+		description: data?.Description,
+	};
+	console.log(payload);
+	return await api.put(`/requests/${id}/operation-approved/`, payload);
+};

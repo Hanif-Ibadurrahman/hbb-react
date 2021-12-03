@@ -7,6 +7,8 @@ import {
 	RESET_REQUEST_BOX_FORM,
 	SET_REQUEST_BOX_DATA,
 	APPROVAL_ADMIN,
+	GET_CONFIRMED_ADMIN,
+	REJECT_OPERTAION,
 } from "../../actions/RequestBoxAction";
 
 import {
@@ -67,6 +69,18 @@ export default (
 				},
 				ErrorRequestBox: payload.errorMessage,
 			};
+		case GET_CONFIRMED_ADMIN:
+			return {
+				...state,
+				RequestBoxes: payload.data,
+				Meta: {
+					LastPage: payload.meta.last_page,
+					CurrentPage: payload.meta.current_page,
+					Total: payload.meta.total_page,
+					PerPage: payload.meta.total_page,
+				},
+				ErrorRequestBox: payload.errorMessage,
+			};
 		case GET_REQUEST_BOX_DETAIL:
 			return {
 				...state,
@@ -111,6 +125,15 @@ export default (
 				ErrorRequestBox: payload.errorMessage,
 			};
 		case APPROVAL_ADMIN:
+			return {
+				...state,
+				ApprovalAdmin: {
+					Id: payload.data?.data?.id,
+					Approved: payload.data?.data?.is_approved,
+					Description: payload.data?.data?.description,
+				},
+			};
+		case REJECT_OPERTAION:
 			return {
 				...state,
 				ApprovalAdmin: {
