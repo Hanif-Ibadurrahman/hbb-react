@@ -21,13 +21,14 @@ import {
 	selectRequestBox,
 } from "store/Selector/RequestBoxSelector";
 import moment from "moment";
-import ModalForm from "./Reject";
 import { RequestBoxInterfaceState } from "store/Types/RequestBoxTypes";
+import { ModalFormReject, ModalFormApprove } from "./ModalForm";
 
 const ApprovalOperationRequestBox = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
+	const [modalShowApprove, setModalShowApprove] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
 	const requestBoxes = useSelector(selectRequestBoxes);
 
@@ -77,6 +78,7 @@ const ApprovalOperationRequestBox = () => {
 	const _onHide = () => {
 		setModalShow(false);
 		setShowAlert(false);
+		setModalShowApprove(false);
 	};
 
 	const showEditForm = async id => {
@@ -90,15 +92,10 @@ const ApprovalOperationRequestBox = () => {
 		setModalShow(true);
 	};
 
-	const Approval = async id => {
-		console.log(">>>>>", id);
-
-		let payload = {
-			Id: id,
-			Approved: true,
-			Description: "",
-		};
-		dispatch(await ApprovalAdmin(payload));
+	const ApproveForm = async id => {
+		console.log("Approve Id", id);
+		dispatch(getRequestBoxDetail(id));
+		setModalShowApprove(true);
 	};
 
 	const action = id => [
@@ -112,12 +109,12 @@ const ApprovalOperationRequestBox = () => {
 			icon: "fa-check-square",
 			title: "Terima",
 			titleClass: "tc-success-5",
+			type: 2,
 			onclick: () => {
-				Approval(id);
+				ApproveForm(id);
 			},
 			dispatch: dispatch,
 			row: id,
-			type: 2,
 		},
 		{
 			icon: "fa-vote-nay",
@@ -195,10 +192,16 @@ const ApprovalOperationRequestBox = () => {
 					show={showAlertFailed}
 					onHide={() => setShowAlertFailed(false)}
 				/>
-				<ModalForm
+				<ModalFormReject
 					modal={modalShow}
 					hide={_onHide}
 					modalSet={setModalShow}
+					valueModalSet={false}
+				/>
+				<ModalFormApprove
+					modalApprove={modalShowApprove}
+					hide={_onHide}
+					modalSet={setModalShowApprove}
 					valueModalSet={false}
 				/>
 				<PageHeader breadcrumb={["Master", "Approval Admin"]} />

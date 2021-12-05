@@ -49,8 +49,8 @@ export default (
 			return {
 				...state,
 				Box: {
-					CodeBox: payload.data.data.code_box,
-					Id: payload.data.data.id,
+					CodeBox: payload?.data?.data?.code_box,
+					Id: payload?.data?.data?.id,
 				},
 				ErrorBox: payload.errorMessage,
 			};

@@ -1,5 +1,6 @@
 import {
 	ApprovalInterfaceState,
+	ApprovalOperationInterfaceState,
 	RequestBoxInterfaceState,
 } from "store/Types/RequestBoxTypes";
 import {
@@ -10,6 +11,7 @@ import {
 	approval_admin,
 	getAllConfirmed,
 	reject_operation,
+	approval_operation,
 } from "../api/requestBox";
 export const GET_REQUEST_BOXES_LIST = "GET_BOXES_LIST";
 export const GET_REQUEST_BOX_DETAIL = "GET_BOX_DETAIL";
@@ -22,6 +24,7 @@ export const UPDATE_REQUEST_BOX = "UPDATE_REQUEST_BOX";
 export const APPROVAL_ADMIN = "APPROVAL_ADMIN";
 export const GET_CONFIRMED_ADMIN = "GET_CONFIRMED_ADMIN";
 export const REJECT_OPERTAION = "REJECT_OPERATION";
+export const APPROVAL_OPERATION = "APPROVAL_OPERATION";
 
 let limit = 20;
 
@@ -205,6 +208,32 @@ export const RejectOpertaion = async (data: ApprovalInterfaceState) => {
 		} catch (error: any) {
 			dispatch({
 				type: REJECT_OPERTAION,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+export const ApprovalOpertaion = async (
+	data: ApprovalOperationInterfaceState,
+) => {
+	return async dispatch => {
+		try {
+			const response = await approval_operation(data);
+			dispatch({
+				type: APPROVAL_OPERATION,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+		} catch (error: any) {
+			dispatch({
+				type: APPROVAL_OPERATION,
 				payload: {
 					data: false,
 					errorMessage: error?.message,

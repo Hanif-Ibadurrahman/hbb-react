@@ -1,5 +1,6 @@
 import {
 	ApprovalInterfaceState,
+	ApprovalOperationInterfaceState,
 	RequestBoxInterfaceState,
 } from "store/Types/RequestBoxTypes";
 import api from "./dox";
@@ -76,6 +77,20 @@ export const reject_operation = async (data: ApprovalInterfaceState) => {
 	let payload = {
 		is_approved: data?.Approved,
 		description: data?.Description,
+	};
+	console.log(payload);
+	return await api.put(`/requests/${id}/operation-approved/`, payload);
+};
+
+export const approval_operation = async (
+	data: ApprovalOperationInterfaceState,
+) => {
+	let id = data?.Id;
+	let payload = {
+		is_approved: data?.Approved,
+		delivery_date: data?.Date,
+		archiver_id: data?.Archiver,
+		transporter_id: data?.Transporter,
 	};
 	console.log(payload);
 	return await api.put(`/requests/${id}/operation-approved/`, payload);

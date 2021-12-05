@@ -18,8 +18,17 @@ export interface ApprovalInterfaceState {
 	Description: string;
 }
 
+export interface ApprovalOperationInterfaceState {
+	Id: string | null;
+	Approved: boolean;
+	Date: string;
+	Archiver: string;
+	Transporter: string;
+}
+
 export interface RequestBoxesInterfaceState {
 	ApprovalAdmin: ApprovalInterfaceState;
+	ApprovalOperation: ApprovalOperationInterfaceState;
 	RequestBox: RequestBoxInterfaceState;
 	RequestBoxes: RequestBoxInterfaceState[];
 	ErrorRequestBox?: string;

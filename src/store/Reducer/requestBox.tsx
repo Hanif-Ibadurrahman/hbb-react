@@ -24,6 +24,13 @@ export const initialState: RequestBoxesInterfaceState = {
 		Approved: false,
 		Description: "",
 	},
+	ApprovalOperation: {
+		Id: "",
+		Approved: false,
+		Date: "",
+		Archiver: "",
+		Transporter: "",
+	},
 	RequestBox: {
 		Id: "",
 		Quantity: "",
@@ -85,12 +92,12 @@ export default (
 			return {
 				...state,
 				RequestBox: {
-					Id: payload.data.data.id,
-					Quantity: payload.data.data.quantity,
-					Note: payload.data.data.note,
-					Status: payload.data.data.status,
-					DeliveredAt: payload.data.data.delivered_at,
-					CodeBoxes: payload.data.data.code_boxes,
+					Id: payload?.data?.data?.id,
+					Quantity: payload?.data?.data?.quantity,
+					Note: payload?.data?.data?.note,
+					Status: payload?.data?.data?.status,
+					DeliveredAt: payload?.data?.data?.delivered_at,
+					CodeBoxes: payload?.data?.data?.code_boxes,
 				},
 				ErrorRequestBox: payload.errorMessage,
 			};
