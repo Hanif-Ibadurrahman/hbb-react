@@ -2,15 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
-import { ModalForm } from "./ModalForm";
+import ModalForm from "./ModalForm";
 import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
 import { Pagination } from "app/components/Pagination";
 import { selectAreas } from "store/Selector/AreaSelector";
 import { useDispatch, useSelector } from "react-redux";
-import { getAreasList, getAreaDetail } from "actions/AreaActions";
+import { getAreasList, getAreaDetail, deleteArea } from "actions/AreaActions";
+import Swal from "sweetalert2";
 
-const AreaPage = props => {
+const AreaPage = () => {
+	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
+	const [showAlertFailed, setShowAlertFailed] = useState(false);
+	const [modalShow, setModalShow] = useState(false);
+	const [showAlert, setShowAlert] = useState(false);
 	const areas = useSelector(selectAreas);
 	const dispatch = useDispatch();
 
@@ -21,6 +26,42 @@ const AreaPage = props => {
 	useEffect(() => {
 		FetchData();
 	}, []);
+
+	const _onHide = () => {
+		setModalShow(false);
+		setShowAlert(false);
+	};
+
+	const showEditForm = async id => {
+		dispatch(getAreaDetail(id));
+		setModalShow(true);
+	};
+
+	const onDelete = (dispatch, id) => {
+		Swal.fire({
+			text: "Apakah anda ingin menghapus data ini?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#d33",
+			confirmButtonText: "Hapus",
+		}).then(willDelete => {
+			if (willDelete) {
+				dispatch(deleteArea(id));
+				setShowAlertSuccess(true);
+				setTimeout(function () {
+					setShowAlertSuccess(false);
+				}, 4000);
+				// setTimeout(function () {
+				// 	window.location.reload();
+				// }, 1000);
+			} else {
+				setShowAlertFailed(true);
+				setTimeout(function () {
+					setShowAlertFailed(false);
+				}, 4000);
+			}
+		});
+	};
 
 	const action = id => [
 		{
@@ -37,16 +78,21 @@ const AreaPage = props => {
 		{
 			icon: "fa-edit",
 			title: "Edit",
-			type: 1,
+			onclick: () => {
+				showEditForm(id);
+			},
+			dispatch: dispatch,
+			row: id,
+			type: 2,
 		},
 		{
 			icon: "fa-trash-alt",
 			title: "Delete",
 			titleClass: "tc-danger-5",
 			type: 2,
-			onclick: "onDelete",
-			id: id,
-			url: "",
+			onclick: onDelete,
+			dispatch: dispatch,
+			row: id,
 		},
 	];
 
@@ -56,7 +102,15 @@ const AreaPage = props => {
 			prop: "name",
 			sortable: true,
 			cellProps: {
-				style: { width: "80%" },
+				style: { width: "40%" },
+			},
+		},
+		{
+			title: "Code Area",
+			prop: "code_area",
+			sortable: true,
+			cellProps: {
+				style: { width: "40%" },
 			},
 		},
 		{
@@ -82,12 +136,23 @@ const AreaPage = props => {
 				/>
 			</Helmet>
 			<PageWrapper>
-				<PageHeader breadcrumb={["Master", "Area"]} addForm={<ModalForm />} />
+				<ModalForm
+					modal={modalShow}
+					hide={_onHide}
+					modalSet={setModalShow}
+					valueModalSet={false}
+				/>
+				<PageHeader
+					breadcrumb={["Master", "Area"]}
+					modal={setModalShow}
+					valueModalSet={false}
+					value={true}
+				/>
 				<DataTable tableHeader={header} tableBody={areas.Areas} />
-				{/* <Pagination
-					pageCount={props.meta.last_page}
+				<Pagination
+					pageCount={areas.Meta.LastPage}
 					onPageChange={data => FetchData(data.selected + 1)}
-				/> */}
+				/>
 			</PageWrapper>
 		</>
 	);
