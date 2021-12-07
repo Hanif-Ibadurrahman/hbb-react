@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
-import { selectBoxes, selectBox } from "../../../../store/Selector/BoxSelector";
+import { selectBox } from "../../../../store/Selector/BoxSelector";
 import { useDispatch, useSelector } from "react-redux";
 import { CreateBox, UpdateBox, RESET_BOX_FORM } from "actions/BoxActions";
 import { BoxInterfaceState } from "store/Types/BoxTypes";
@@ -13,7 +13,6 @@ const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setalertMessage] = useState("");
 	const box: BoxInterfaceState = useSelector(selectBox);
-	const boxes = useSelector(selectBoxes);
 	const dispatch = useDispatch();
 	const validationSchema = Yup.object().shape({
 		CodeBox: Yup.string().required("*Wajib diisi"),
