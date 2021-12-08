@@ -8,6 +8,7 @@ import {
 	PeminjamanData,
 	MasterData,
 	CustomerMasterData,
+	ApprovalOperation,
 } from "./SidebarData";
 import IconHome from "assets/images/icon/icon-1.png";
 import IconUI from "assets/images/icon/icon-2.png";
@@ -118,7 +119,7 @@ export function Sidebar() {
 				<SubMenu
 					className=""
 					icon={<img src={IconForm} className="h-5" alt="awSnap" />}
-					title="Persetujuan"
+					title="Persetujuan Admin"
 				>
 					{PeminjamanData.map((val, key) => {
 						return (
@@ -135,11 +136,40 @@ export function Sidebar() {
 							>
 								{""}
 								{val.title}
-								<span className="h-6 w-6 bd-rs-6 bg-danger-5 d-flex ai-center jc-center ml-a">
+								{/* <span className="h-6 w-6 bd-rs-6 bg-danger-5 d-flex ai-center jc-center ml-a">
 									<span className="text tc-danger-contrast">
 										{val.notifications}
 									</span>
-								</span>
+								</span> */}
+							</MenuItem>
+						);
+					})}
+				</SubMenu>
+				<SubMenu
+					className=""
+					icon={<img src={IconForm} className="h-5" alt="awSnap" />}
+					title="Persetujuan Operation"
+				>
+					{ApprovalOperation.map((val, key) => {
+						return (
+							<MenuItem
+								id={
+									window.location.pathname.split(val.link).pop() ? "" : "active"
+								}
+								className="pos-r"
+								icon={<img src={val.icon} className="h-5" alt="awSnap" />}
+								key={key}
+								onClick={() => {
+									window.location.pathname = val.link;
+								}}
+							>
+								{""}
+								{val.title}
+								{/* <span className="h-6 w-6 bd-rs-6 bg-danger-5 d-flex ai-center jc-center ml-a">
+									<span className="text tc-danger-contrast">
+										{val.notifications}
+									</span>
+								</span> */}
 							</MenuItem>
 						);
 					})}

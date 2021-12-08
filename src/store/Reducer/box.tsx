@@ -2,7 +2,7 @@ import {
 	GET_BOXES_LIST,
 	CREATE_BOX,
 	GET_BOX_DETAIL,
-	EDIT_BOX,
+	UPDATE_BOX,
 	RESET_BOX_LIST,
 	RESET_BOX_FORM,
 	SET_BOX_DATA,
@@ -49,8 +49,8 @@ export default (
 			return {
 				...state,
 				Box: {
-					CodeBox: payload.data.data.code_box,
-					Id: payload.data.data.id,
+					CodeBox: payload?.data?.data?.code_box,
+					Id: payload?.data?.data?.id,
 				},
 				ErrorBox: payload.errorMessage,
 			};
@@ -62,7 +62,7 @@ export default (
 					Id: payload.data.data.id,
 				},
 			};
-		case EDIT_BOX:
+		case UPDATE_BOX:
 			return {
 				...state,
 				Box: {
