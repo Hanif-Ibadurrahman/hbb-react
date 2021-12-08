@@ -6,12 +6,15 @@ import QR from "app/components/QRCode";
 import "../master.scoped.scss";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getAreaDetail } from "actions/AreaActions";
-import { selectAreas, selectArea } from "store/Selector/AreaSelector";
-import { AreaInterfaceState } from "store/Types/AreaTypes";
+import { getBoxDetail } from "actions/BoxActions";
+import { selectBoxes, selectBox } from "store/Selector/BoxSelector";
+import { BoxInterfaceState } from "store/Types/BoxTypes";
+import { CarInterfaceState } from "store/Types/CarTypes";
+import { selectCar } from "store/Selector/CarSelector";
+import { getCarDetail } from "actions/CarAction";
 
-const AreaPageDetail = ({ match }) => {
-	const area: AreaInterfaceState = useSelector(selectArea);
+const CarPageDetail = ({ match }) => {
+	const car: CarInterfaceState = useSelector(selectCar);
 	let history = useHistory();
 
 	const goToPreviousPath = e => {
@@ -19,19 +22,19 @@ const AreaPageDetail = ({ match }) => {
 		history.goBack();
 	};
 
-	const area_id = match.params.id;
+	const car_id = match.params.id;
 
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(getAreaDetail(area_id));
+		dispatch(getCarDetail(car_id));
 	}, []);
 
 	return (
 		<>
 			<PageWrapper className="row w-100%">
 				<Breadcrumb
-					crumbs={["Dashboard", "Box", "Detail"]}
+					crumbs={["Dashboard", "Car", "Detail"]}
 					selected
 					className="mb-4"
 				/>
@@ -39,15 +42,24 @@ const AreaPageDetail = ({ match }) => {
 					<Card className="ph-5 pv-3 bd-rs-2">
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Nama Area</Form.Label>
-								<Form.Control type="text" disabled defaultValue={area.Name} />
+								<Form.Label>Merk Kendaraan</Form.Label>
+
+								<Form.Control type="text" disabled defaultValue={car.Brand} />
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Kode Area</Form.Label>
+								<Form.Label>Kapasitas Kendaraan (KG) </Form.Label>
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={area.CodeArea}
+									defaultValue={car.Capacity}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Nomor Plat</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={car.LicensePlate}
 								/>
 							</Form.Group>
 							<div className="d-flex jc-end">
@@ -71,7 +83,7 @@ const AreaPageDetail = ({ match }) => {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">{area.Id}</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">{car.Id}</p>
 						</div>
 					</Card>
 				</div>
@@ -80,4 +92,4 @@ const AreaPageDetail = ({ match }) => {
 	);
 };
 
-export default AreaPageDetail;
+export default CarPageDetail;

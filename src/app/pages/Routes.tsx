@@ -48,13 +48,16 @@ import CabinetPage from "./Master/CabinetPage";
 import CabinetPageDetail from "./Master/CabinetPage/Detail";
 // 4 - AREA
 import AreaPage from "./Master/AreaPage";
-import { AreaPageDetail } from "./Master/AreaPage/Detail";
+import AreaPageDetail from "./Master/AreaPage/Detail";
 // 5 - BERKAS
 import { BerkasPage } from "./Master/BerkasPage";
 import { BerkasPageDetail } from "./Master/BerkasPage/Detail";
 // 6 - ROOM
 import RoomPage from "./Master/RoomPage";
 import RoomPageDetail from "./Master/RoomPage/Detail";
+// 7 - CAR
+import CarPage from "./Master/CarPage";
+import CarPageDetail from "./Master/CarPage/Detail";
 
 // import { FolderPage } from "./Master/FolderPage";
 // -=-=-=-=-=-
@@ -152,6 +155,11 @@ export function Routes() {
 
 						{/*---------- MASTER ---------*/}
 						<Route path={process.env.PUBLIC_URL + "/Box"} component={BoxPage} />
+						<Route path={process.env.PUBLIC_URL + "/Car"} component={CarPage} />
+						<Route
+							path={process.env.PUBLIC_URL + "/Car-Detail/:id"}
+							component={CarPageDetail}
+						/>
 						<Route
 							path={process.env.PUBLIC_URL + "/Box-Detail/:id"}
 							component={BoxPageDetail}

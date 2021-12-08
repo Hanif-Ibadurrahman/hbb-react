@@ -2,40 +2,34 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
-import ModalForm from "./ModalForm";
 import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
+import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import { selectAreas } from "store/Selector/AreaSelector";
 import { useDispatch, useSelector } from "react-redux";
-import { getAreasList, getAreaDetail, deleteArea } from "actions/AreaActions";
 import Swal from "sweetalert2";
+import Alert from "app/components/Alerts";
+import { selectCars } from "store/Selector/CarSelector";
+import { getCarsList, getCarDetail, deleteCar } from "actions/CarAction";
 
-const AreaPage = () => {
+const CarPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
-	const areas = useSelector(selectAreas);
+	const cars = useSelector(selectCars);
+
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		dispatch(getAreasList(page));
+		console.log("page", page);
+
+		dispatch(getCarsList(page));
 	};
 
 	useEffect(() => {
 		FetchData();
 	}, []);
-
-	const _onHide = () => {
-		setModalShow(false);
-		setShowAlert(false);
-	};
-
-	const showEditForm = async id => {
-		dispatch(getAreaDetail(id));
-		setModalShow(true);
-	};
 
 	const onDelete = (dispatch, id) => {
 		Swal.fire({
@@ -46,7 +40,7 @@ const AreaPage = () => {
 			confirmButtonText: "Hapus",
 		}).then(willDelete => {
 			if (willDelete) {
-				dispatch(deleteArea(id));
+				dispatch(deleteCar(id));
 				setShowAlertSuccess(true);
 				setTimeout(function () {
 					setShowAlertSuccess(false);
@@ -63,11 +57,21 @@ const AreaPage = () => {
 		});
 	};
 
+	const _onHide = () => {
+		setModalShow(false);
+		setShowAlert(false);
+	};
+
+	const showEditForm = async id => {
+		dispatch(getCarDetail(id));
+		setModalShow(true);
+	};
+
 	const action = id => [
 		{
 			icon: "fa-search",
 			title: "Detail",
-			url: "Area-Detail/" + id,
+			url: "Car-Detail/" + id,
 			type: 1,
 		},
 		{
@@ -98,19 +102,27 @@ const AreaPage = () => {
 
 	const header = [
 		{
-			title: "Nama Area",
-			prop: "name",
+			title: "Brand",
+			prop: "brand",
 			sortable: true,
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "30%" },
 			},
 		},
 		{
-			title: "Code Area",
-			prop: "code_area",
+			title: "Nomor Plat",
+			prop: "license_plate",
 			sortable: true,
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "30%" },
+			},
+		},
+		{
+			title: "Kapasitas",
+			prop: "capacity",
+			sortable: true,
+			cellProps: {
+				style: { width: "20%" },
 			},
 		},
 		{
@@ -129,13 +141,25 @@ const AreaPage = () => {
 	return (
 		<>
 			<Helmet>
-				<title>Dox - Master Area</title>
+				<title>Dox - Transportasi</title>
 				<meta
 					name="description"
 					content="A React Boilerplate application homepage"
 				/>
 			</Helmet>
 			<PageWrapper>
+				<Alert
+					text="Data Berhasil Di Hapus"
+					variant="success"
+					show={showAlertSuccess}
+					onHide={() => setShowAlertSuccess(false)}
+				/>
+				<Alert
+					text="Data Gagal Di Hapus"
+					variant="danger"
+					show={showAlertFailed}
+					onHide={() => setShowAlertFailed(false)}
+				/>
 				<ModalForm
 					modal={modalShow}
 					hide={_onHide}
@@ -143,19 +167,19 @@ const AreaPage = () => {
 					valueModalSet={false}
 				/>
 				<PageHeader
-					breadcrumb={["Master", "Area"]}
+					breadcrumb={["Master", "Car"]}
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
 				/>
-				<DataTable tableHeader={header} tableBody={areas.Areas} />
+				<DataTable tableHeader={header} tableBody={cars?.Cars} />
 				<Pagination
-					pageCount={areas.Meta.LastPage}
-					onPageChange={data => FetchData(data.selected + 1)}
+					pageCount={cars.Meta.LastPage}
+					onPageChange={data => FetchData(data?.selected + 1)}
 				/>
 			</PageWrapper>
 		</>
 	);
 };
 
-export default AreaPage;
+export default CarPage;
