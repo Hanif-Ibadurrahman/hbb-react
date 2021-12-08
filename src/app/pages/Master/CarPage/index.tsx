@@ -3,49 +3,58 @@ import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
 import PageHeader from "../Components/PageHeader";
-import DropdownAction from "app/components/DropdownAction";
+import DropdownAction from "../Components/DropdownAction";
+import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import {
-	getRequestBoxesList,
-	getRequestBoxDetail,
-	UpdateRequestBox,
-	ApprovalAdmin,
-} from "actions/RequestBoxAction";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { deleteBox } from "actions/BoxActions";
 import Alert from "app/components/Alerts";
-import {
-	selectRequestBoxes,
-	selectRequestBox,
-} from "store/Selector/RequestBoxSelector";
-import moment from "moment";
-import ModalForm from "./ModalForm";
-import { RequestBoxInterfaceState } from "store/Types/RequestBoxTypes";
-import { approval_admin } from "api/requestBox";
+import { selectCars } from "store/Selector/CarSelector";
+import { getCarsList, getCarDetail, deleteCar } from "actions/CarAction";
 
-const ApprovalAdminRequestBox = () => {
+const CarPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
-	const requestBoxes = useSelector(selectRequestBoxes);
+	const cars = useSelector(selectCars);
 
-	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
-	// const boxes = useSelector(selectBoxes);
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		dispatch(getRequestBoxesList(page));
-		// dispatch(getBoxesList(page));
+		console.log("page", page);
+
+		dispatch(getCarsList(page));
 	};
 
 	useEffect(() => {
 		FetchData();
 	}, []);
 
-	const NewDate = (date: any) => {
-		return moment(date).format("d MMMM YYYY");
+	const onDelete = (dispatch, id) => {
+		Swal.fire({
+			text: "Apakah anda ingin menghapus data ini?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#d33",
+			confirmButtonText: "Hapus",
+		}).then(willDelete => {
+			if (willDelete) {
+				dispatch(deleteCar(id));
+				setShowAlertSuccess(true);
+				setTimeout(function () {
+					setShowAlertSuccess(false);
+				}, 4000);
+				// setTimeout(function () {
+				// 	window.location.reload();
+				// }, 1000);
+			} else {
+				setShowAlertFailed(true);
+				setTimeout(function () {
+					setShowAlertFailed(false);
+				}, 4000);
+			}
+		});
 	};
 
 	const _onHide = () => {
@@ -53,55 +62,39 @@ const ApprovalAdminRequestBox = () => {
 		setShowAlert(false);
 	};
 
-	const RejectForm = async id => {
-		console.log("Reject Id", id);
-		dispatch(getRequestBoxDetail(id));
+	const showEditForm = async id => {
+		dispatch(getCarDetail(id));
 		setModalShow(true);
-	};
-
-	const Approval = async id => {
-		console.log(">>>>>", id);
-		let payload = {
-			Id: id,
-			Approved: true,
-			Description: "",
-		};
-		dispatch(await ApprovalAdmin(payload));
-		setShowAlertSuccess(true);
-		setTimeout(function () {
-			setShowAlertSuccess(false);
-		}, 4000);
-		setTimeout(function () {
-			window.location.reload();
-		}, 1000);
 	};
 
 	const action = id => [
 		{
 			icon: "fa-search",
 			title: "Detail",
-			url: "DetailRequestBox/" + id,
+			url: "Car-Detail/" + id,
 			type: 1,
 		},
 		{
-			icon: "fa-check-square",
-			title: "Terima",
-			titleClass: "tc-success-5",
+			icon: "fa-copy ",
+			title: "Duplicate",
+			type: 2,
+		},
+		{
+			icon: "fa-edit",
+			title: "Edit",
 			onclick: () => {
-				Approval(id);
+				showEditForm(id);
 			},
 			dispatch: dispatch,
 			row: id,
 			type: 2,
 		},
 		{
-			icon: "fa-vote-nay",
-			title: "Tolak",
+			icon: "fa-trash-alt",
+			title: "Delete",
 			titleClass: "tc-danger-5",
 			type: 2,
-			onclick: () => {
-				RejectForm(id);
-			},
+			onclick: onDelete,
 			dispatch: dispatch,
 			row: id,
 		},
@@ -109,27 +102,24 @@ const ApprovalAdminRequestBox = () => {
 
 	const header = [
 		{
-			title: "Id Request",
-			prop: "id",
+			title: "Brand",
+			prop: "brand",
 			sortable: true,
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "30%" },
 			},
 		},
 		{
-			title: "Tanggal Kirim",
-			prop: "delivered_at",
+			title: "Nomor Plat",
+			prop: "license_plate",
 			sortable: true,
 			cellProps: {
-				style: { width: "20%" },
-			},
-			cell: row => {
-				return NewDate(row.delivered_at);
+				style: { width: "30%" },
 			},
 		},
 		{
-			title: "Quantity",
-			prop: "quantity",
+			title: "Kapasitas",
+			prop: "capacity",
 			sortable: true,
 			cellProps: {
 				style: { width: "20%" },
@@ -151,7 +141,7 @@ const ApprovalAdminRequestBox = () => {
 	return (
 		<>
 			<Helmet>
-				<title>Dox - Request Box</title>
+				<title>Dox - Transportasi</title>
 				<meta
 					name="description"
 					content="A React Boilerplate application homepage"
@@ -159,7 +149,7 @@ const ApprovalAdminRequestBox = () => {
 			</Helmet>
 			<PageWrapper>
 				<Alert
-					text="Data Berhasil Di Approve"
+					text="Data Berhasil Di Hapus"
 					variant="success"
 					show={showAlertSuccess}
 					onHide={() => setShowAlertSuccess(false)}
@@ -176,15 +166,20 @@ const ApprovalAdminRequestBox = () => {
 					modalSet={setModalShow}
 					valueModalSet={false}
 				/>
-				<PageHeader breadcrumb={["Master", "Approval Admin"]} />
-				<DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} />
+				<PageHeader
+					breadcrumb={["Master", "Car"]}
+					modal={setModalShow}
+					valueModalSet={false}
+					value={true}
+				/>
+				<DataTable tableHeader={header} tableBody={cars?.Cars} />
 				<Pagination
-					pageCount={requestBoxes.Meta.LastPage}
-					onPageChange={data => FetchData(data.selected + 1)}
+					pageCount={cars.Meta.LastPage}
+					onPageChange={data => FetchData(data?.selected + 1)}
 				/>
 			</PageWrapper>
 		</>
 	);
 };
 
-export default ApprovalAdminRequestBox;
+export default CarPage;

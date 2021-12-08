@@ -3,32 +3,41 @@ import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
-import { selectBoxes, selectBox } from "../../../../store/Selector/BoxSelector";
-import { selectAreas, selectArea } from "store/Selector/AreaSelector";
 import { useDispatch, useSelector } from "react-redux";
-import { CreateBox, UpdateBox, RESET_BOX_FORM } from "actions/BoxActions";
-import { CreateArea, UpdateArea, RESET_AREA_FORM } from "actions/AreaActions";
-import { BoxInterfaceState } from "store/Types/BoxTypes";
-import { AreaInterfaceState } from "store/Types/AreaTypes";
+import {
+	SelectApprovalAdmin,
+	selectRequestBox,
+	selectRequestBoxes,
+} from "../../../../store/Selector/RequestBoxSelector";
+import {
+	CreateRequestBox,
+	UpdateRequestBox,
+	ApprovalAdmin,
+	RESET_REQUEST_BOX_FORM,
+} from "actions/RequestBoxAction";
+import {
+	RequestBoxInterfaceState,
+	ApprovalInterfaceState,
+} from "store/Types/RequestBoxTypes";
+import moment from "moment";
 
 const ModalForm = props => {
-	// const [CodeBox, setCodeBox] = useState("");
 	const [showAlert, setShowAlert] = useState(false);
-	const [alertMessage, setalertMessage] = useState("");
-	// const box: BoxInterfaceState = useSelector(selectBox);
-	const area: AreaInterfaceState = useSelector(selectArea);
-	const boxes = useSelector(selectBoxes);
+	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
+	// const requestBoxes: useSelector(selectRequestBoxes);
+	const approvalAdmin: ApprovalInterfaceState =
+		useSelector(SelectApprovalAdmin);
+
 	const dispatch = useDispatch();
 	const validationSchema = Yup.object().shape({
-		Name: Yup.string().required("*Wajib diisi"),
-		CodeArea: Yup.string().required("*Wajib diisi"),
+		Description: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
 		<>
 			<Alert
-				text={alertMessage}
-				variant="success"
+				text="Data Di Reject"
+				variant="danger"
 				show={showAlert}
 				style={{
 					top: 50,
@@ -47,25 +56,18 @@ const ModalForm = props => {
 				{" "}
 				<Formik
 					validationSchema={validationSchema}
-					initialValues={area}
+					initialValues={approvalAdmin}
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							let action = area.Id ? UpdateArea(values) : CreateArea(values);
-							// dispatch(loadingbarTurnOn)
-							const res = await action;
-							await dispatch(res);
-							action.then(() => {
-								dispatch({ type: RESET_AREA_FORM });
-								props.modalSet(props.valueModalSet);
-							});
-							dispatch({ type: RESET_BOX_FORM });
+							values.Id = requestBox.Id;
+							let action = dispatch(await ApprovalAdmin(values));
+							setShowAlert(true);
+							setTimeout(function () {
+								window.location.reload();
+							}, 1000);
+							dispatch({ type: RESET_REQUEST_BOX_FORM });
 							props.modalSet(props.valueModalSet);
-							area.Id ? (
-								<>Data Berhasil di Edit</>
-							) : (
-								<>Data Berhasil di Tambah</>
-							);
 							console.log(action);
 						} catch (e) {
 							console.log("ini error di depan");
@@ -84,7 +86,7 @@ const ModalForm = props => {
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									{area.Id ? <>Edit Data</> : <>Tambah Data</>}
+									Tambah Keterangan
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
@@ -92,38 +94,20 @@ const ModalForm = props => {
 									<Row>
 										<Col xs={12}>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Nama Area</Form.Label>
+												<Form.Label>Deskripsi</Form.Label>
 												<Form.Control
 													type="text"
-													name="Name"
-													placeholder="Nama Area"
-													value={values.Name}
+													name="Description"
+													placeholder="Description"
+													value={values.Description}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.Name && errors.Name ? (
+												{touched.Description && errors.Description ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.Name}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Kode Area</Form.Label>
-												<Form.Control
-													type="text"
-													name="CodeArea"
-													placeholder="Kode Area"
-													value={values.CodeArea}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>
-												{touched.CodeArea && errors.CodeArea ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.CodeArea}
+														{errors.Description}
 													</p>
 												) : null}
 											</Form.Group>
@@ -141,7 +125,7 @@ const ModalForm = props => {
 									className="bg-success-6"
 									variant="success"
 								>
-									Request
+									Kirim
 								</Button>{" "}
 							</Modal.Footer>
 						</Form>

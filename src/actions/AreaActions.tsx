@@ -1,23 +1,23 @@
 import React from "react";
-import { BoxInterfaceState } from "store/Types/BoxTypes";
-import { create, destroy, getAll, getById, update } from "../api/boxes";
-export const GET_BOXES_LIST = "GET_BOXES_LIST";
-export const GET_BOX_DETAIL = "GET_BOX_DETAIL";
-export const CREATE_BOX = "CREAT_BOX";
-export const BOXES_ERROR = "BOXES_ERROR";
-export const RESET_BOX_FORM = "RESET_BOX_FORM";
-export const RESET_BOX_LIST = "RESET_BOX_LIST";
-export const SET_BOX_DATA = "SET_BOX_DATA";
-export const UPDATE_BOX = "UPDATE_BOX";
+import { AreaInterfaceState } from "store/Types/AreaTypes";
+import { create, destroy, getAll, getById, update } from "../api/areas";
+export const GET_AREAS_LIST = "GET_AREAS_LIST";
+export const GET_AREA_DETAIL = "GET_AREA_DETAIL";
+export const CREATE_AREA = "CREAT_AREA";
+export const AREAS_ERROR = "AREAS_ERROR";
+export const RESET_AREA_FORM = "RESET_AREA_FORM";
+export const RESET_AREA_LIST = "RESET_AREA_LIST";
+export const SET_AREA_DATA = "SET_AREA_DATA";
+export const UPDATE_AREA = "UPDATE_AREA";
 
 let limit = 20;
 
-export const getBoxesList = page => {
+export const getAreasList = page => {
 	return async dispatch => {
 		try {
 			const response = await getAll(page);
 			dispatch({
-				type: GET_BOXES_LIST,
+				type: GET_AREAS_LIST,
 				payload: {
 					data: response.data,
 					meta: response.meta,
@@ -27,7 +27,7 @@ export const getBoxesList = page => {
 			return response;
 		} catch (error: any) {
 			dispatch({
-				type: GET_BOXES_LIST,
+				type: GET_AREAS_LIST,
 				payload: {
 					data: false,
 					errorMessage: error.message,
@@ -39,12 +39,12 @@ export const getBoxesList = page => {
 	};
 };
 
-export const getBoxDetail = (id: String) => {
+export const getAreaDetail = (id: String) => {
 	return dispatch => {
 		return getById(id)
 			.then(function (response) {
 				dispatch({
-					type: GET_BOX_DETAIL,
+					type: GET_AREA_DETAIL,
 					payload: {
 						data: response.data,
 						errorMessage: false,
@@ -54,7 +54,7 @@ export const getBoxDetail = (id: String) => {
 			})
 			.catch(function (error) {
 				dispatch({
-					type: GET_BOX_DETAIL,
+					type: GET_AREA_DETAIL,
 					payload: {
 						data: false,
 						errorMessage: error.message,
@@ -65,7 +65,7 @@ export const getBoxDetail = (id: String) => {
 	};
 };
 
-export const deleteBox = id => {
+export const deleteArea = id => {
 	return dispatch => {
 		destroy(id)
 			.then(function (response) {
@@ -77,17 +77,17 @@ export const deleteBox = id => {
 	};
 };
 
-export const CreateBox = async (data: BoxInterfaceState) => {
+export const CreateArea = async (data: AreaInterfaceState) => {
 	console.log(data);
 	return async dispatch => {
 		try {
 			dispatch({
-				type: SET_BOX_DATA,
+				type: SET_AREA_DATA,
 				payload: data,
 			});
 			const response = await create(data);
 			dispatch({
-				type: CREATE_BOX,
+				type: CREATE_AREA,
 				payload: {
 					data: response.data,
 					errorMessage: false,
@@ -96,7 +96,7 @@ export const CreateBox = async (data: BoxInterfaceState) => {
 			return response;
 		} catch (error: any) {
 			dispatch({
-				type: CREATE_BOX,
+				type: CREATE_AREA,
 				payload: {
 					data: false,
 					errorMessage: error?.message,
@@ -108,16 +108,16 @@ export const CreateBox = async (data: BoxInterfaceState) => {
 	};
 };
 
-export const UpdateBox = async (data: BoxInterfaceState) => {
+export const UpdateArea = async (data: AreaInterfaceState) => {
 	return async dispatch => {
 		try {
 			dispatch({
-				type: SET_BOX_DATA,
+				type: SET_AREA_DATA,
 				payload: data,
 			});
 			const response = await update(data);
 			dispatch({
-				type: UPDATE_BOX,
+				type: UPDATE_AREA,
 				payload: {
 					data: response.data,
 					errorMessage: false,
@@ -126,7 +126,7 @@ export const UpdateBox = async (data: BoxInterfaceState) => {
 			return response;
 		} catch (error: any) {
 			dispatch({
-				type: UPDATE_BOX,
+				type: UPDATE_AREA,
 				payload: {
 					data: false,
 					errorMessage: error?.message,

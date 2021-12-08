@@ -25,26 +25,35 @@ export const PeminjamanData = [
 	{
 		title: "Request Box",
 		icon: "",
-		link: "/Approval/RequestBox",
-		notifications: "5",
+		link: "/Approval-Admin/RequestBox",
+		notifications: "",
 	},
 	{
 		title: "Pickup Box",
 		icon: "",
 		link: "/Approval/PickupBox",
-		notifications: "3",
+		notifications: "",
 	},
 	{
 		title: "Pinjam Item",
 		icon: "",
 		link: "/Approval/PinjamItem",
-		notifications: "2",
+		notifications: "",
 	},
 	{
 		title: "Pengembalian Item",
 		icon: "",
 		link: "/Approval/PengembalianItem",
-		notifications: "6",
+		notifications: "",
+	},
+];
+
+export const ApprovalOperation = [
+	{
+		title: "Request Box",
+		icon: "",
+		link: "/Approval-Operation/RequestBox",
+		notifications: "",
 	},
 ];
 
@@ -88,6 +97,11 @@ export const MasterData = [
 		title: "Room",
 		icon: "",
 		link: "/Room",
+	},
+	{
+		title: "Transportasi",
+		icon: "",
+		link: "/Car",
 	},
 	{
 		title: "Record Center",

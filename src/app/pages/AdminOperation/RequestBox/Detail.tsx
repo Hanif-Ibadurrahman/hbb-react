@@ -3,15 +3,21 @@ import { Form, Button, Card } from "react-bootstrap";
 import { PageWrapper } from "app/components/PageWrapper";
 import Breadcrumb from "app/components/BreadCrumb";
 import QR from "app/components/QRCode";
-import "../master.scoped.scss";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getAreaDetail } from "actions/AreaActions";
-import { selectAreas, selectArea } from "store/Selector/AreaSelector";
-import { AreaInterfaceState } from "store/Types/AreaTypes";
+import {
+	selectRequestBox,
+	selectRequestBoxes,
+} from "../../../../store/Selector/RequestBoxSelector";
+import { getRequestBoxDetail } from "actions/RequestBoxAction";
+import {
+	RequestBoxInterfaceState,
+	ApprovalInterfaceState,
+} from "store/Types/RequestBoxTypes";
+import moment from "moment";
 
-const AreaPageDetail = ({ match }) => {
-	const area: AreaInterfaceState = useSelector(selectArea);
+const ApprovalAdminDetail = ({ match }) => {
+	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
 	let history = useHistory();
 
 	const goToPreviousPath = e => {
@@ -19,14 +25,15 @@ const AreaPageDetail = ({ match }) => {
 		history.goBack();
 	};
 
-	const area_id = match.params.id;
+	const request_id = match.params.id;
 
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(getAreaDetail(area_id));
+		dispatch(getRequestBoxDetail(request_id));
 	}, []);
 
+	const NewDate = moment(requestBox.DeliveredAt).format("d MMMM YYYY");
 	return (
 		<>
 			<PageWrapper className="row w-100%">
@@ -39,16 +46,20 @@ const AreaPageDetail = ({ match }) => {
 					<Card className="ph-5 pv-3 bd-rs-2">
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Nama Area</Form.Label>
-								<Form.Control type="text" disabled defaultValue={area.Name} />
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Kode Area</Form.Label>
+								<Form.Label>Quantity</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={area.CodeArea}
+									defaultValue={requestBox.Quantity}
 								/>
+							</Form.Group>
+							<Form.Group className="mb-4" controlId="formBasicEmail">
+								<Form.Label>Tanggal Kirim</Form.Label>
+								<Form.Control type="text" value={NewDate} disabled />
+							</Form.Group>
+							<Form.Group className="mb-4" controlId="formBasicEmail">
+								<Form.Label>Note</Form.Label>
+								<Form.Control as="textarea" value={requestBox.Note} disabled />
 							</Form.Group>
 							<div className="d-flex jc-end">
 								<Button
@@ -71,7 +82,7 @@ const AreaPageDetail = ({ match }) => {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">{area.Id}</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">{requestBox.Id}</p>
 						</div>
 					</Card>
 				</div>
@@ -80,4 +91,4 @@ const AreaPageDetail = ({ match }) => {
 	);
 };
 
-export default AreaPageDetail;
+export default ApprovalAdminDetail;

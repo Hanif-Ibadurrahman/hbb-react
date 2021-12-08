@@ -27,12 +27,16 @@ import { DashboardAdminRC } from "./Dashboard/AdminRC";
 import { DashboardAdminTransport } from "./Dashboard/AdminTransport";
 // -=-=-=-=-=-
 // APPROVAL
-import { ApprovalRequestBox } from "./Approval/RequestBox";
+import ApprovalAdminRequestBox from "./Approval/RequestBox";
+import ApprovalAdminDetail from "./Approval/RequestBox/Detail";
 import { ApprovalPickupBox } from "./Approval/PickupBox";
 import { ApprovalPinjamItem } from "./Approval/PinjamItem";
 import { ApprovalPengembalianItem } from "./Approval/PengembalianItem";
 import { ApprovalDetail } from "./Approval/Detail";
 // -=-=-=-=-=-
+//ADMIN OPERATION
+import ApprovalOperationRequestBox from "./AdminOperation/RequestBox";
+
 // MASTER
 // 1 - BOX
 import BoxPage from "./Master/BoxPage";
@@ -48,13 +52,16 @@ import CabinetPage from "./Master/CabinetPage";
 import CabinetPageDetail from "./Master/CabinetPage/Detail";
 // 4 - AREA
 import AreaPage from "./Master/AreaPage";
-import { AreaPageDetail } from "./Master/AreaPage/Detail";
+import AreaPageDetail from "./Master/AreaPage/Detail";
 // 5 - BERKAS
 import { BerkasPage } from "./Master/BerkasPage";
 import { BerkasPageDetail } from "./Master/BerkasPage/Detail";
 // 6 - ROOM
 import RoomPage from "./Master/RoomPage";
 import RoomPageDetail from "./Master/RoomPage/Detail";
+// 7 - CAR
+import CarPage from "./Master/CarPage";
+import CarPageDetail from "./Master/CarPage/Detail";
 
 // import { FolderPage } from "./Master/FolderPage";
 // -=-=-=-=-=-
@@ -75,6 +82,7 @@ import { EditVehicle } from "./VehiclePage/Edit";
 import { ApprovalBoxPage } from "./AdminCSR/BoxPage/Loadable";
 import { DetailBoxCSR } from "./AdminCSR/BoxPage/Detail";
 import { EditBoxCSR } from "./AdminCSR/BoxPage/Edit";
+
 // -=-=-=-=-=-
 
 // CUSTOMER
@@ -129,8 +137,16 @@ export function Routes() {
 
 						{/*---------- APPROVAL ---------*/}
 						<Route
-							path={process.env.PUBLIC_URL + "/Approval/RequestBox"}
-							component={ApprovalRequestBox}
+							path={process.env.PUBLIC_URL + "/Approval-Admin/RequestBox"}
+							component={ApprovalAdminRequestBox}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/DetailRequestBox/:id"}
+							component={ApprovalAdminDetail}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Approval-Operation/RequestBox"}
+							component={ApprovalOperationRequestBox}
 						/>
 						<Route
 							path={process.env.PUBLIC_URL + "/Approval/PickupBox"}
@@ -152,6 +168,11 @@ export function Routes() {
 
 						{/*---------- MASTER ---------*/}
 						<Route path={process.env.PUBLIC_URL + "/Box"} component={BoxPage} />
+						<Route path={process.env.PUBLIC_URL + "/Car"} component={CarPage} />
+						<Route
+							path={process.env.PUBLIC_URL + "/Car-Detail/:id"}
+							component={CarPageDetail}
+						/>
 						<Route
 							path={process.env.PUBLIC_URL + "/Box-Detail/:id"}
 							component={BoxPageDetail}

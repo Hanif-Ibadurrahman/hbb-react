@@ -10,7 +10,7 @@ import { getBoxDetail } from "actions/BoxActions";
 import { selectBoxes, selectBox } from "store/Selector/BoxSelector";
 import { BoxInterfaceState } from "store/Types/BoxTypes";
 
-const BoxPageDetail = match => {
+const BoxPageDetail = ({ match }) => {
 	const box: BoxInterfaceState = useSelector(selectBox);
 	let history = useHistory();
 
@@ -43,49 +43,13 @@ const BoxPageDetail = match => {
 
 								<Form.Control type="text" disabled defaultValue={box.CodeBox} />
 							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Date</Form.Label>
-								<Form.Control type="date" disabled defaultValue="04/09/21" />
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Time</Form.Label>
-								<Form.Control type="time" disabled defaultValue="16:27" />
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Quantity</Form.Label>
-								<Form.Control type="text" disabled defaultValue="10" />
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Notes</Form.Label>
-								<Form.Control
-									as="textarea"
-									className="notesdisable"
-									disabled
-									defaultValue="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-								/>
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Status</Form.Label>
-								<Form.Control
-									className="bg-success-6 w-100%"
-									defaultValue="Approve"
-									disabled
-								></Form.Control>
-							</Form.Group>
 							<div className="d-flex jc-end">
 								<Button
-									className="mv-4 mr-4"
+									className="mv-4"
 									variant="outline-secondary"
 									onClick={goToPreviousPath}
 								>
 									Kembali
-								</Button>{" "}
-								<Button
-									className="bg-success-6 mv-4 d-flex ai-center"
-									variant="success"
-								>
-									<i className="far fa-edit mr-2 p-md"></i>
-									<span className="text p-md">Edit Data</span>
 								</Button>{" "}
 							</div>
 						</Form>

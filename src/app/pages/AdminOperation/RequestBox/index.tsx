@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
-import PageHeader from "../Components/PageHeader";
+import PageHeader from "../../Approval/Components/PageHeader";
 import DropdownAction from "app/components/DropdownAction";
 import { Pagination } from "app/components/Pagination";
 import {
@@ -10,6 +10,7 @@ import {
 	getRequestBoxDetail,
 	UpdateRequestBox,
 	ApprovalAdmin,
+	getAllConfirmedAdmin,
 } from "actions/RequestBoxAction";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
@@ -20,14 +21,14 @@ import {
 	selectRequestBox,
 } from "store/Selector/RequestBoxSelector";
 import moment from "moment";
-import ModalForm from "./ModalForm";
 import { RequestBoxInterfaceState } from "store/Types/RequestBoxTypes";
-import { approval_admin } from "api/requestBox";
+import { ModalFormReject, ModalFormApprove } from "./ModalForm";
 
-const ApprovalAdminRequestBox = () => {
+const ApprovalOperationRequestBox = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
+	const [modalShowApprove, setModalShowApprove] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
 	const requestBoxes = useSelector(selectRequestBoxes);
 
@@ -36,7 +37,7 @@ const ApprovalAdminRequestBox = () => {
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		dispatch(getRequestBoxesList(page));
+		dispatch(getAllConfirmedAdmin(page));
 		// dispatch(getBoxesList(page));
 	};
 
@@ -48,9 +49,41 @@ const ApprovalAdminRequestBox = () => {
 		return moment(date).format("d MMMM YYYY");
 	};
 
+	const onDelete = (dispatch, id) => {
+		Swal.fire({
+			text: "Apakah anda ingin menghapus data ini?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#d33",
+			confirmButtonText: "Hapus",
+		}).then(willDelete => {
+			if (willDelete) {
+				dispatch(deleteBox(id));
+				setShowAlertSuccess(true);
+				setTimeout(function () {
+					setShowAlertSuccess(false);
+				}, 4000);
+				setTimeout(function () {
+					window.location.reload();
+				}, 1000);
+			} else {
+				setShowAlertFailed(true);
+				setTimeout(function () {
+					setShowAlertFailed(false);
+				}, 4000);
+			}
+		});
+	};
+
 	const _onHide = () => {
 		setModalShow(false);
 		setShowAlert(false);
+		setModalShowApprove(false);
+	};
+
+	const showEditForm = async id => {
+		dispatch(getRequestBoxDetail(id));
+		setModalShow(true);
 	};
 
 	const RejectForm = async id => {
@@ -59,21 +92,10 @@ const ApprovalAdminRequestBox = () => {
 		setModalShow(true);
 	};
 
-	const Approval = async id => {
-		console.log(">>>>>", id);
-		let payload = {
-			Id: id,
-			Approved: true,
-			Description: "",
-		};
-		dispatch(await ApprovalAdmin(payload));
-		setShowAlertSuccess(true);
-		setTimeout(function () {
-			setShowAlertSuccess(false);
-		}, 4000);
-		setTimeout(function () {
-			window.location.reload();
-		}, 1000);
+	const ApproveForm = async id => {
+		console.log("Approve Id", id);
+		dispatch(getRequestBoxDetail(id));
+		setModalShowApprove(true);
 	};
 
 	const action = id => [
@@ -87,12 +109,12 @@ const ApprovalAdminRequestBox = () => {
 			icon: "fa-check-square",
 			title: "Terima",
 			titleClass: "tc-success-5",
+			type: 2,
 			onclick: () => {
-				Approval(id);
+				ApproveForm(id);
 			},
 			dispatch: dispatch,
 			row: id,
-			type: 2,
 		},
 		{
 			icon: "fa-vote-nay",
@@ -159,7 +181,7 @@ const ApprovalAdminRequestBox = () => {
 			</Helmet>
 			<PageWrapper>
 				<Alert
-					text="Data Berhasil Di Approve"
+					text="Data Berhasil Di Hapus"
 					variant="success"
 					show={showAlertSuccess}
 					onHide={() => setShowAlertSuccess(false)}
@@ -170,10 +192,16 @@ const ApprovalAdminRequestBox = () => {
 					show={showAlertFailed}
 					onHide={() => setShowAlertFailed(false)}
 				/>
-				<ModalForm
+				<ModalFormReject
 					modal={modalShow}
 					hide={_onHide}
 					modalSet={setModalShow}
+					valueModalSet={false}
+				/>
+				<ModalFormApprove
+					modalApprove={modalShowApprove}
+					hide={_onHide}
+					modalSet={setModalShowApprove}
 					valueModalSet={false}
 				/>
 				<PageHeader breadcrumb={["Master", "Approval Admin"]} />
@@ -187,4 +215,4 @@ const ApprovalAdminRequestBox = () => {
 	);
 };
 
-export default ApprovalAdminRequestBox;
+export default ApprovalOperationRequestBox;
