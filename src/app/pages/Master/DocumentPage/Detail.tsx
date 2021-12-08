@@ -5,18 +5,14 @@ import Breadcrumb from "app/components/BreadCrumb";
 import QR from "app/components/QRCode";
 import "../master.scoped.scss";
 import { useHistory } from "react-router-dom";
-import { connect, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { DocumentInterfaceState } from "store/Types/DocumentTypes";
+import { selectDocument } from "store/Selector/DocumentSelector";
 import { getDocumentDetail } from "actions/DocumentAction";
 import moment from "moment";
 
-const mapStateToProps = state => {
-	return {
-		DocumentDetail: state.documents.DocumentDetail,
-		errorUserDetail: state.documents.errorDocumentDetail,
-	};
-};
-
-const DocumentPageDetail = props => {
+const DocumentPageDetail = ({ match }) => {
+	const document: DocumentInterfaceState = useSelector(selectDocument);
 	let history = useHistory();
 
 	const goToPreviousPath = e => {
@@ -24,7 +20,7 @@ const DocumentPageDetail = props => {
 		history.goBack();
 	};
 
-	const document_id = props.match.params.key;
+	const document_id = match.params.id;
 
 	const dispatch = useDispatch();
 
@@ -32,7 +28,7 @@ const DocumentPageDetail = props => {
 		dispatch(getDocumentDetail(document_id));
 	}, []);
 
-	const date = moment(props.DocumentDetail.date).format("d MMMM YYYY");
+	const NewDate = moment(document.Date).format("d MMMM YYYY");
 
 	return (
 		<>
@@ -45,33 +41,92 @@ const DocumentPageDetail = props => {
 				<div className="col col-9">
 					<Card className="ph-5 pv-3 bd-rs-2">
 						<Form className="mt-3">
-							<Form.Group className="mb-3" controlId="formBasicEmail">
+							<Form.Group className="mb-3">
 								<Form.Label>No Document</Form.Label>
-								<Form.Control
-									type="text"
-									disabled
-									defaultValue={props.DocumentDetail.no}
-								/>
+								<Form.Control type="text" disabled defaultValue={document.No} />
 							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Date</Form.Label>
-								<Form.Control type="text" disabled defaultValue={date} />
+							<Form.Group className="mb-3">
+								<Form.Label>Tanggal</Form.Label>
+								<Form.Control type="text" disabled defaultValue={NewDate} />
 							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Tahun Dokumen Aktif</Form.Label>
-								<Form.Control
-									type="text"
-									disabled
-									defaultValue={props.DocumentDetail.active_year_for}
-								/>
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
+							<Form.Group className="mb-3">
 								<Form.Label>Detail</Form.Label>
 								<Form.Control
-									as="textarea"
-									className="notesdisable"
+									type="text"
 									disabled
-									defaultValue={props.DocumentDetail.detail}
+									defaultValue={document.Detail}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>Nominal</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document.Nominal}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>Masa Aktif Dokument</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document.ActiveYear}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>Progress Level</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document.LevelProgress}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>Media Penyimpanan</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document.MediaStorage}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>Kondisi</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document.Condition}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>Jumlah</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document.Amount}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>Cross Point</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document.CrossPoint}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>Deskripsi</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document.Description}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>No Digital</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document.NoDigital}
 								/>
 							</Form.Group>
 							<div className="d-flex jc-end">
@@ -81,13 +136,6 @@ const DocumentPageDetail = props => {
 									onClick={goToPreviousPath}
 								>
 									Kembali
-								</Button>{" "}
-								<Button
-									className="bg-success-6 mv-4 d-flex ai-center"
-									variant="success"
-								>
-									<i className="far fa-edit mr-2 p-md"></i>
-									<span className="text p-md">Edit Data</span>
 								</Button>{" "}
 							</div>
 						</Form>
@@ -102,9 +150,7 @@ const DocumentPageDetail = props => {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">
-								{props.DocumentDetail.no}
-							</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">{document.Id}</p>
 						</div>
 					</Card>
 				</div>
@@ -113,4 +159,4 @@ const DocumentPageDetail = props => {
 	);
 };
 
-export default connect(mapStateToProps, null)(DocumentPageDetail);
+export default DocumentPageDetail;

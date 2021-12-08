@@ -1,28 +1,30 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
-import { ModalForm } from "./ModalForm";
 import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
+import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import { connect, useDispatch } from "react-redux";
-import { getDocumentsList } from "actions/DocumentAction";
+import { getBoxesList, getBoxDetail } from "actions/BoxActions";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { deleteDocument } from "actions/DocumentAction";
+import { deleteBox } from "actions/BoxActions";
 import Alert from "app/components/Alerts";
+import { selectBoxes } from "store/Selector/BoxSelector";
+import { selectDocuemnts } from "store/Selector/DocumentSelector";
+import {
+	deleteDocument,
+	getDocumentDetail,
+	getDocumentsList,
+} from "actions/DocumentAction";
 
-const mapStateToProps = state => {
-	return {
-		documents: state.documents.documents,
-		meta: state.documents.meta,
-	};
-};
-
-const DocumentPage = props => {
+const DocumentPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
-
+	const [modalShow, setModalShow] = useState(false);
+	const [showAlert, setShowAlert] = useState(false);
+	const documents = useSelector(selectDocuemnts);
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
@@ -33,7 +35,7 @@ const DocumentPage = props => {
 		FetchData();
 	}, []);
 
-	const onDelete = (dispatch, key) => {
+	const onDelete = (dispatch, id) => {
 		Swal.fire({
 			text: "Apakah anda ingin menghapus data ini?",
 			icon: "warning",
@@ -42,7 +44,7 @@ const DocumentPage = props => {
 			confirmButtonText: "Hapus",
 		}).then(willDelete => {
 			if (willDelete) {
-				dispatch(deleteDocument(key));
+				dispatch(deleteDocument(id));
 				setShowAlertSuccess(true);
 				setTimeout(function () {
 					setShowAlertSuccess(false);
@@ -59,11 +61,21 @@ const DocumentPage = props => {
 		});
 	};
 
-	const action = key => [
+	const _onHide = () => {
+		setModalShow(false);
+		setShowAlert(false);
+	};
+
+	const showEditForm = async id => {
+		dispatch(getDocumentDetail(id));
+		setModalShow(true);
+	};
+
+	const action = id => [
 		{
 			icon: "fa-search",
 			title: "Detail",
-			url: "Document-Detail/" + key,
+			url: "Document-Detail/" + id,
 			type: 1,
 		},
 		{
@@ -74,7 +86,12 @@ const DocumentPage = props => {
 		{
 			icon: "fa-edit",
 			title: "Edit",
-			type: 1,
+			onclick: () => {
+				showEditForm(id);
+			},
+			dispatch: dispatch,
+			row: id,
+			type: 2,
 		},
 		{
 			icon: "fa-trash-alt",
@@ -83,20 +100,35 @@ const DocumentPage = props => {
 			type: 2,
 			onclick: onDelete,
 			dispatch: dispatch,
-			row: key,
+			row: id,
 		},
 	];
 
 	const header = [
 		{
-			title: "Code Document",
+			title: "No Document",
 			prop: "no",
 			sortable: true,
 			cellProps: {
-				style: { width: "80%" },
+				style: { width: "40%" },
 			},
 		},
-
+		{
+			title: "No Digital",
+			prop: "no_digital",
+			sortable: true,
+			cellProps: {
+				style: { width: "20%" },
+			},
+		},
+		{
+			title: "Kondisi",
+			prop: "condition",
+			sortable: true,
+			cellProps: {
+				style: { width: "20%" },
+			},
+		},
 		{
 			title: "Action",
 			prop: "Action",
@@ -105,7 +137,7 @@ const DocumentPage = props => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.key)} />;
+				return <DropdownAction list={action(row.id)} />;
 			},
 		},
 	];
@@ -132,13 +164,21 @@ const DocumentPage = props => {
 					show={showAlertFailed}
 					onHide={() => setShowAlertFailed(false)}
 				/>
+				<ModalForm
+					modal={modalShow}
+					hide={_onHide}
+					modalSet={setModalShow}
+					valueModalSet={false}
+				/>
 				<PageHeader
 					breadcrumb={["Master", "Document"]}
-					addForm={<ModalForm />}
+					modal={setModalShow}
+					valueModalSet={false}
+					value={true}
 				/>
-				<DataTable tableHeader={header} tableBody={props.documents} />
+				<DataTable tableHeader={header} tableBody={documents.Documents} />
 				<Pagination
-					pageCount={props.meta.last_page}
+					pageCount={documents.Meta.LastPage}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>
@@ -146,4 +186,4 @@ const DocumentPage = props => {
 	);
 };
 
-export default connect(mapStateToProps, null)(DocumentPage);
+export default DocumentPage;

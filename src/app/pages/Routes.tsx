@@ -177,7 +177,7 @@ export function Routes() {
 							component={DocumentPage}
 						/>
 						<Route
-							path={process.env.PUBLIC_URL + "/Document-Detail/:key"}
+							path={process.env.PUBLIC_URL + "/Document-Detail/:id"}
 							component={DocumentPageDetail}
 						/>
 						<Route

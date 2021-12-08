@@ -1,91 +1,57 @@
 import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
 import React, { useState } from "react";
-import { Formik, ErrorMessage } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
-import { useHistory } from "react-router";
-import api from "../../../../api/dox";
+import { selectBoxes, selectBox } from "../../../../store/Selector/BoxSelector";
+import { useDispatch, useSelector } from "react-redux";
+import { CreateBox, UpdateBox, RESET_BOX_FORM } from "actions/BoxActions";
+import { BoxInterfaceState } from "store/Types/BoxTypes";
+import { DocumentInterfaceState } from "store/Types/DocumentTypes";
+import { selectDocument } from "store/Selector/DocumentSelector";
+import {
+	CreateDocument,
+	RESET_DOCUMENT_FORM,
+	UpdateDcoument,
+} from "actions/DocumentAction";
+import moment from "moment";
 
-export function ModalForm() {
-	let history = useHistory();
-	const [no, setno] = useState("");
-	const [date, setdate] = useState("");
-	const [detail, setdetail] = useState("");
-	const [nominal, setnominal] = useState("");
-	const [active_year_for, setactive_year_for] = useState("");
-	const [level_progress, setlevel_progress] = useState("");
-	const [media_storage, setmedia_storage] = useState("");
-	const [condition, setcondition] = useState("");
-	const [amount, setamount] = useState("");
-	const [cross_point, setcross_point] = useState("");
-	const [description, setdescription] = useState("");
-	const [no_digital, setno_digital] = useState("");
-
-	const [modalShow, setModalShow] = useState(false);
+const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
+	const [alertMessage, setalertMessage] = useState("");
+	const document: DocumentInterfaceState = useSelector(selectDocument);
+	const dispatch = useDispatch();
 
-	const _onHide = () => {
-		setModalShow(false);
-		setShowAlert(false);
-		console.log("hide modal");
-	};
+	function addDays(days) {
+		const result = new Date();
+		result.setDate(result.getDate() + days);
+		return result;
+	}
 
-	const _onSubmit = () => {
-		api
-			.post(`/documents`, {
-				no,
-				date,
-				detail,
-				nominal,
-				active_year_for,
-				level_progress,
-				media_storage,
-				condition,
-				amount,
-				cross_point,
-				description,
-				no_digital,
-			})
-			.then(() => {
-				history.push("/Document");
-			});
-		setModalShow(false);
-		setShowAlert(true);
-		setTimeout(function () {
-			setShowAlert(false);
-		}, 4000);
-		setTimeout(function () {
-			window.location.reload();
-		}, 1000);
-		console.log("show alert hide modal");
-	};
+	const Year = moment(addDays(2)).format("YYYY");
+	const MinDate = moment(addDays(0)).format("YYYY-MM-DD");
+
+	console.log("year:", Year);
 
 	const validationSchema = Yup.object().shape({
-		no: Yup.string().required("*Wajib diisi"),
-		date: Yup.date().required("*Wajib diisi"),
-		detail: Yup.string().required("*Wajib diisi"),
-		nominal: Yup.number().required("*Wajib diisi"),
-		active_year_for: Yup.string().required("*Wajib diisi"),
-		level_progress: Yup.string().required("*Wajib diisi"),
-		media_storage: Yup.string().required("*Wajib diisi"),
-		condition: Yup.string().required("*Wajib diisi"),
-		amount: Yup.string().required("*Wajib diisi"),
-		cross_point: Yup.string().required("*Wajib diisi"),
-		description: Yup.string().required("*Wajib diisi"),
-		no_digital: Yup.string().required("*Wajib diisi"),
+		No: Yup.string().required("*Wajib diisi"),
+		Date: Yup.string().required("*Wajib diisi"),
+		Detail: Yup.string().required("*Wajib diisi"),
+		Nominal: Yup.number().required("*Wajib diisi"),
+		ActiveYear: Yup.number().required("*Wajib diisi"),
+		LevelProgress: Yup.string().required("*Wajib diisi"),
+		MediaStorage: Yup.string().required("*Wajib diisi"),
+		Condition: Yup.string().required("*Wajib diisi"),
+		Amount: Yup.number().required("*Wajib diisi"),
+		CrossPoint: Yup.string().required("*Wajib diisi"),
+		Description: Yup.string().required("*Wajib diisi"),
+		NoDigital: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
 		<>
-			<Button
-				className="d-flex ai-center bg-success-6"
-				variant="success"
-				onClick={() => setModalShow(true)}
-			>
-				Add Data<i className="far fa-plus ml-2"></i>
-			</Button>{" "}
 			<Alert
-				text="Data Berhasil Di Input"
+				text={alertMessage}
 				variant="success"
 				show={showAlert}
 				style={{
@@ -96,309 +62,294 @@ export function ModalForm() {
 				}}
 				onHide={() => setShowAlert(false)}
 			/>
-			<Formik
-				validationSchema={validationSchema}
-				initialValues={{
-					no: "",
-					date: "",
-					detail: "",
-					nominal: "",
-					active_year_for: "",
-					level_progress: "",
-					media_storage: "",
-					condition: "",
-					amount: "",
-					cross_point: "",
-					description: "",
-					no_digital: "",
-				}}
-				onSubmit={(values, { setSubmitting, resetForm }) => {
-					// When button submits form and form is in the process of submitting, submit button is disabled
-					setSubmitting(true);
 
-					// Simulate submitting to database, shows us values submitted, resets form
-					setTimeout(() => {
-						alert(JSON.stringify(values, null, 2));
-						resetForm();
-						setSubmitting(false);
-					}, 500);
-				}}
+			<Modal
+				show={props.modal}
+				onHide={props.hide}
+				aria-labelledby="contained-modal-title-vcenter"
 			>
-				{({
-					values,
-					errors,
-					touched,
-					handleChange,
-					handleBlur,
-					handleSubmit,
-					isSubmitting,
-				}) => (
-					<Modal
-						show={modalShow}
-						onHide={() => setModalShow(false)}
-						aria-labelledby="contained-modal-title-vcenter"
-					>
-						<Modal.Header closeButton className="bg-primary-5">
-							<Modal.Title id="contained-modal-title-vcenter">
-								Tambah Data
-							</Modal.Title>
-						</Modal.Header>
-						<Modal.Body className="show-grid">
-							<Container>
-								<Row>
-									<Col xs={12}>
-										<Form onSubmit={handleSubmit}>
-											{console.log(values)}
-											<Form.Group className="mb-4" controlId="formNoDocument">
-												<Form.Label>No Document</Form.Label>
+				{" "}
+				<Formik
+					validationSchema={validationSchema}
+					initialValues={document}
+					enableReinitialize={true}
+					onSubmit={async values => {
+						try {
+							let action = document.Id
+								? UpdateDcoument(values)
+								: CreateDocument(values);
+							// dispatch(loadingbarTurnOn)
+							const res = await action;
+							await dispatch(res);
+							action.then(() => {
+								dispatch({ type: RESET_DOCUMENT_FORM });
+								props.modalSet(props.valueModalSet);
+							});
+							dispatch({ type: RESET_DOCUMENT_FORM });
+							props.modalSet(props.valueModalSet);
+							document.Id ? (
+								<>Data Berhasil di Edit</>
+							) : (
+								<>Data Berhasil di Tambah</>
+							);
+							console.log(action);
+						} catch (e) {
+							console.log("ini error di depan");
+						}
+					}}
+				>
+					{({
+						values,
+						errors,
+						touched,
+						handleChange,
+						handleBlur,
+						handleSubmit,
+						isSubmitting,
+					}) => (
+						<Form onSubmit={handleSubmit}>
+							<Modal.Header closeButton className="bg-primary-5">
+								<Modal.Title id="contained-modal-title-vcenter">
+									{document.Id ? <>Edit Data</> : <>Tambah Data</>}
+								</Modal.Title>
+							</Modal.Header>
+							<Modal.Body className="show-grid">
+								<Container>
+									<Row>
+										<Col xs={12}>
+											<Form.Group className="mb-4">
+												<Form.Label>Nomor Dokumen</Form.Label>
 												<Form.Control
 													type="text"
-													name="no"
-													placeholder="No Dokumen"
-													value={values.no}
+													name="No"
+													placeholder="No Dokument"
+													value={values.No}
 													onChange={e => {
 														handleChange(e);
-														setno(e.target.value);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.no && errors.no ? (
-													<p className="tc-danger-5 pos-a p-sm">{errors.no}</p>
+												{touched.No && errors.No ? (
+													<p className="tc-danger-5 pos-a p-sm">{errors.No}</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formTanggal">
+											<Form.Group className="mb-4">
 												<Form.Label>Tanggal</Form.Label>
 												<Form.Control
 													type="date"
-													name="date"
-													placeholder="Tanggal"
-													value={values.date}
+													name="Date"
+													min={MinDate}
+													placeholder="Date Document"
+													value={values.Date}
 													onChange={e => {
 														handleChange(e);
-														setdate(e.target.value);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.date && errors.date ? (
+												{touched.Date && errors.Date ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.date}
+														{errors.Date}
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formDetail">
-												<Form.Label>Detail Dokumen</Form.Label>
+											<Form.Group className="mb-4">
+												<Form.Label>Detail</Form.Label>
 												<Form.Control
 													as="textarea"
-													name="detail"
-													placeholder="Detail Dokumen"
-													value={values.detail}
+													name="Detail"
+													placeholder="Detail"
+													value={values.Detail}
 													onChange={e => {
 														handleChange(e);
-														setdetail(e.target.value);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.detail && errors.detail ? (
+												{touched.Detail && errors.Detail ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.detail}
+														{errors.Detail}
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formNominal">
+											<Form.Group className="mb-4">
 												<Form.Label>Nominal</Form.Label>
 												<Form.Control
 													type="number"
-													name="nominal"
+													name="Nominal"
 													placeholder="Nominal"
-													value={values.nominal}
+													min="1"
+													value={values.Nominal}
 													onChange={e => {
 														handleChange(e);
-														setnominal(e.target.value);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.nominal && errors.nominal ? (
+												{touched.Nominal && errors.Nominal ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.nominal}
+														{errors.Nominal}
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formDokumenAktif">
-												<Form.Label>Dokumen Aktif</Form.Label>
+											<Form.Group className="mb-4">
+												<Form.Label>Masa Aktif</Form.Label>
 												<Form.Control
 													type="number"
-													name="active_year_for"
-													placeholder="Dokumen Aktif"
-													value={values.active_year_for}
-													min="2021"
-													max="2030"
+													name="ActiveYear"
+													min={Year}
+													value={values.ActiveYear}
 													onChange={e => {
 														handleChange(e);
-														setactive_year_for(e.target.value);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.active_year_for && errors.active_year_for ? (
+												{touched.ActiveYear && errors.ActiveYear ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.active_year_for}
+														{errors.ActiveYear}
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formDokumenAktif">
+											<Form.Group className="mb-4">
 												<Form.Label>Level Progress</Form.Label>
 												<Form.Control
 													type="text"
-													name="level_progress"
-													placeholder="Level Progress"
-													value={values.level_progress}
+													name="LevelProgress"
+													value={values.LevelProgress}
 													onChange={e => {
 														handleChange(e);
-														setlevel_progress(e.target.value);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.level_progress && errors.level_progress ? (
+												{touched.LevelProgress && errors.LevelProgress ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.level_progress}
+														{errors.LevelProgress}
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formMediaStorage">
-												<Form.Label>Tempat Penyimpanan</Form.Label>
+											<Form.Group className="mb-4">
+												<Form.Label>Media Storage</Form.Label>
 												<Form.Control
 													type="text"
-													name="media_storage"
-													placeholder="Tempat Penyimpanan"
-													value={values.media_storage}
+													name="MediaStorage"
+													value={values.MediaStorage}
 													onChange={e => {
 														handleChange(e);
-														setmedia_storage(e.target.value);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.media_storage && errors.media_storage ? (
+												{touched.MediaStorage && errors.MediaStorage ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.media_storage}
+														{errors.MediaStorage}
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formKondisi">
+											<Form.Group className="mb-4">
 												<Form.Label>Kondisi Dokument</Form.Label>
 												<Form.Control
 													type="text"
-													name="condition"
-													placeholder="Kondisi Dokumen"
-													value={values.condition}
+													name="Condition"
+													value={values.Condition}
 													onChange={e => {
 														handleChange(e);
-														setcondition(e.target.value);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.condition && errors.condition ? (
+												{touched.Condition && errors.Condition ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.condition}
+														{errors.Condition}
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formAmount">
+											<Form.Group className="mb-4">
 												<Form.Label>Jumlah</Form.Label>
 												<Form.Control
 													type="number"
-													name="amount"
-													placeholder="Jumlah"
-													value={values.amount}
+													min="1"
+													name="Amount"
+													value={values.Amount}
 													onChange={e => {
 														handleChange(e);
-														setamount(e.target.value);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.amount && errors.amount ? (
+												{touched.Amount && errors.Amount ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.amount}
+														{errors.Amount}
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formCrossPoint">
+											<Form.Group className="mb-4">
 												<Form.Label>Cross Point</Form.Label>
 												<Form.Control
 													type="text"
-													name="cross_point"
-													placeholder="Cross Point"
-													value={values.cross_point}
+													name="CrossPoint"
+													value={values.CrossPoint}
 													onChange={e => {
 														handleChange(e);
-														setcross_point(e.target.value);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.cross_point && errors.cross_point ? (
+												{touched.CrossPoint && errors.CrossPoint ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.cross_point}
+														{errors.CrossPoint}
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formDeskripsi">
+											<Form.Group className="mb-4">
 												<Form.Label>Deskripsi</Form.Label>
 												<Form.Control
 													as="textarea"
-													name="description"
-													placeholder="Deskripsi"
-													value={values.description}
+													name="Description"
+													value={values.Description}
 													onChange={e => {
 														handleChange(e);
-														setdescription(e.target.value);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.description && errors.description ? (
+												{touched.Description && errors.Description ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.description}
+														{errors.Description}
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formNoDigital">
+											<Form.Group className="mb-4">
 												<Form.Label>No Digital</Form.Label>
 												<Form.Control
 													type="text"
-													name="no_digital"
-													placeholder="No Digital"
-													value={values.no_digital}
+													name="NoDigital"
+													value={values.NoDigital}
 													onChange={e => {
 														handleChange(e);
-														setno_digital(e.target.value);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.no_digital && errors.no_digital ? (
+												{touched.NoDigital && errors.NoDigital ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.no_digital}
+														{errors.NoDigital}
 													</p>
 												) : null}
 											</Form.Group>
-										</Form>
-									</Col>
-								</Row>
-							</Container>
-						</Modal.Body>
-						<Modal.Footer>
-							<Button variant="danger" onClick={_onHide}>
-								Close
-							</Button>
-							<Button
-								type="submit"
-								disabled={isSubmitting}
-								className="bg-success-6"
-								variant="success"
-								onClick={_onSubmit}
-							>
-								Request
-							</Button>{" "}
-						</Modal.Footer>
-					</Modal>
-				)}
-			</Formik>
+										</Col>
+									</Row>
+								</Container>
+							</Modal.Body>
+							<Modal.Footer>
+								<Button variant="danger" onClick={props.hide}>
+									Close
+								</Button>
+								<Button
+									type="submit"
+									disabled={isSubmitting}
+									className="bg-success-6"
+									variant="success"
+								>
+									Request
+								</Button>{" "}
+							</Modal.Footer>
+						</Form>
+					)}
+				</Formik>
+			</Modal>
 		</>
 	);
-}
+};
+
+export default ModalForm;
