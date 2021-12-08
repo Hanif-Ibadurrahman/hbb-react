@@ -12,6 +12,7 @@ import cabinets from "./Reducer/cabinet";
 import folders from "./Reducer/folder";
 import rooms from "./Reducer/room";
 import requestBoxes from "./Reducer/requestBox";
+import cars from "./Reducer/car";
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
  */
@@ -29,6 +30,7 @@ export function createReducer(injectedReducers: InjectedReducersType = {}) {
 			folders,
 			rooms,
 			requestBoxes,
+			cars,
 		});
 	}
 }
