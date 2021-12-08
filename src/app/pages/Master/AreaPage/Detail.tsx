@@ -4,11 +4,14 @@ import { PageWrapper } from "app/components/PageWrapper";
 import Breadcrumb from "app/components/BreadCrumb";
 import QR from "app/components/QRCode";
 import "../master.scoped.scss";
-import api from "../../../../api/dox";
-import PaginatedAreaResponse from "app/pages/Interface/area";
 import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { getAreaDetail } from "actions/AreaActions";
+import { selectAreas, selectArea } from "store/Selector/AreaSelector";
+import { AreaInterfaceState } from "store/Types/AreaTypes";
 
-export function AreaPageDetail({ match }) {
+const AreaPageDetail = ({ match }) => {
+	const area: AreaInterfaceState = useSelector(selectArea);
 	let history = useHistory();
 
 	const goToPreviousPath = e => {
@@ -16,30 +19,19 @@ export function AreaPageDetail({ match }) {
 		history.goBack();
 	};
 
-	const [areaDetails, setareaDetails] = useState([]);
-
 	const area_id = match.params.id;
 
-	const getAreasData = async id => {
-		const { data } = await api.get<PaginatedAreaResponse>(`/areas/${id}`);
-		const newData = data.data as any;
-		return newData;
-	};
-
-	const getAreas = async id => {
-		const details = await getAreasData(id);
-		setareaDetails(details);
-	};
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		getAreas(area_id);
+		dispatch(getAreaDetail(area_id));
 	}, []);
 
 	return (
 		<>
 			<PageWrapper className="row w-100%">
 				<Breadcrumb
-					crumbs={["Dashboard", "Area", "Detail"]}
+					crumbs={["Dashboard", "Box", "Detail"]}
 					selected
 					className="mb-4"
 				/>
@@ -48,40 +40,15 @@ export function AreaPageDetail({ match }) {
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Nama Area</Form.Label>
+								<Form.Control type="text" disabled defaultValue={area.Name} />
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Kode Area</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={areaDetails["name"]}
+									defaultValue={area.CodeArea}
 								/>
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Date</Form.Label>
-								<Form.Control type="date" disabled defaultValue="04/09/21" />
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Time</Form.Label>
-								<Form.Control type="time" disabled defaultValue="16:27" />
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Quantity</Form.Label>
-								<Form.Control type="text" disabled defaultValue="10" />
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Notes</Form.Label>
-								<Form.Control
-									as="textarea"
-									className="notesdisable"
-									disabled
-									defaultValue="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-								/>
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Status</Form.Label>
-								<Form.Control
-									className="bg-success-6 w-100%"
-									defaultValue="Approve"
-									disabled
-								></Form.Control>
 							</Form.Group>
 							<div className="d-flex jc-end">
 								<Button
@@ -90,13 +57,6 @@ export function AreaPageDetail({ match }) {
 									onClick={goToPreviousPath}
 								>
 									Kembali
-								</Button>{" "}
-								<Button
-									className="bg-success-6 mv-4 d-flex ai-center"
-									variant="success"
-								>
-									<i className="far fa-edit mr-2 p-md"></i>
-									<span className="text p-md">Edit Data</span>
 								</Button>{" "}
 							</div>
 						</Form>
@@ -111,13 +71,13 @@ export function AreaPageDetail({ match }) {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">
-								{areaDetails["name"]}
-							</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">{area.Id}</p>
 						</div>
 					</Card>
 				</div>
 			</PageWrapper>
 		</>
 	);
-}
+};
+
+export default AreaPageDetail;

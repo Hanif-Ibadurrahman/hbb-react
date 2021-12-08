@@ -48,7 +48,7 @@ import CabinetPage from "./Master/CabinetPage";
 import CabinetPageDetail from "./Master/CabinetPage/Detail";
 // 4 - AREA
 import AreaPage from "./Master/AreaPage";
-import { AreaPageDetail } from "./Master/AreaPage/Detail";
+import AreaPageDetail from "./Master/AreaPage/Detail";
 // 5 - BERKAS
 import { BerkasPage } from "./Master/BerkasPage";
 import { BerkasPageDetail } from "./Master/BerkasPage/Detail";
