@@ -42,7 +42,7 @@ const ModalForm = props => {
 	return (
 		<>
 			<Alert
-				text="Data Berhasil Di Input"
+				text="Request Berhasil Di Input"
 				variant="success"
 				show={showAlert}
 				style={{
@@ -74,6 +74,10 @@ const ModalForm = props => {
 							action.then(() => {
 								dispatch({ type: RESET_REQUEST_BOX_FORM });
 								props.modalSet(props.valueModalSet);
+								setShowAlert(true);
+								setTimeout(function () {
+									window.location.reload();
+								}, 1000);
 							});
 							dispatch({ type: RESET_REQUEST_BOX_FORM });
 							props.modalSet(props.valueModalSet);

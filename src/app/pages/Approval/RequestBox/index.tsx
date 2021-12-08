@@ -48,40 +48,9 @@ const ApprovalAdminRequestBox = () => {
 		return moment(date).format("d MMMM YYYY");
 	};
 
-	const onDelete = (dispatch, id) => {
-		Swal.fire({
-			text: "Apakah anda ingin menghapus data ini?",
-			icon: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#d33",
-			confirmButtonText: "Hapus",
-		}).then(willDelete => {
-			if (willDelete) {
-				dispatch(deleteBox(id));
-				setShowAlertSuccess(true);
-				setTimeout(function () {
-					setShowAlertSuccess(false);
-				}, 4000);
-				setTimeout(function () {
-					window.location.reload();
-				}, 1000);
-			} else {
-				setShowAlertFailed(true);
-				setTimeout(function () {
-					setShowAlertFailed(false);
-				}, 4000);
-			}
-		});
-	};
-
 	const _onHide = () => {
 		setModalShow(false);
 		setShowAlert(false);
-	};
-
-	const showEditForm = async id => {
-		dispatch(getRequestBoxDetail(id));
-		setModalShow(true);
 	};
 
 	const RejectForm = async id => {
@@ -92,13 +61,19 @@ const ApprovalAdminRequestBox = () => {
 
 	const Approval = async id => {
 		console.log(">>>>>", id);
-
 		let payload = {
 			Id: id,
 			Approved: true,
 			Description: "",
 		};
 		dispatch(await ApprovalAdmin(payload));
+		setShowAlertSuccess(true);
+		setTimeout(function () {
+			setShowAlertSuccess(false);
+		}, 4000);
+		setTimeout(function () {
+			window.location.reload();
+		}, 1000);
 	};
 
 	const action = id => [
@@ -184,7 +159,7 @@ const ApprovalAdminRequestBox = () => {
 			</Helmet>
 			<PageWrapper>
 				<Alert
-					text="Data Berhasil Di Hapus"
+					text="Data Berhasil Di Approve"
 					variant="success"
 					show={showAlertSuccess}
 					onHide={() => setShowAlertSuccess(false)}

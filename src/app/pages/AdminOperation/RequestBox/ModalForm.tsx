@@ -58,8 +58,8 @@ export const ModalFormReject = props => {
 	return (
 		<>
 			<Alert
-				text={alertMessage}
-				variant="success"
+				text="Data di Reject"
+				variant="danger"
 				show={showAlert}
 				style={{
 					top: 50,
@@ -84,6 +84,10 @@ export const ModalFormReject = props => {
 						try {
 							values.Id = requestBox.Id;
 							dispatch(await RejectOpertaion(values));
+							setShowAlert(true);
+							setTimeout(function () {
+								window.location.reload();
+							}, 1000);
 							dispatch({ type: RESET_REQUEST_BOX_FORM });
 							props.modalSet(props.valueModalSet);
 							approvalAdmin.Id ? (
@@ -162,8 +166,6 @@ export const ModalFormApprove = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setalertMessage] = useState("");
 	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
-	// const requestBoxes: useSelector(selectRequestBoxes);
-	// const approvalAdmin: ApprovalInterfaceState = useSelector(SelectApprovalAdmin);
 	const approvalOperation: ApprovalOperationInterfaceState = useSelector(
 		SelectApprovalOperation,
 	);
@@ -182,7 +184,7 @@ export const ModalFormApprove = props => {
 	return (
 		<>
 			<Alert
-				text={alertMessage}
+				text="Data Berhasil Approve"
 				variant="success"
 				show={showAlert}
 				style={{
@@ -213,11 +215,10 @@ export const ModalFormApprove = props => {
 							dispatch(await ApprovalOpertaion(values));
 							dispatch({ type: RESET_REQUEST_BOX_FORM });
 							props.modalSet(props.valueModalSet);
-							approvalOperation.Id ? (
-								<>Data Berhasil di Edit</>
-							) : (
-								<>Data Berhasil di Tambah</>
-							);
+							setShowAlert(true);
+							setTimeout(function () {
+								window.location.reload();
+							}, 1000);
 						} catch (e) {
 							console.log("ini error di depan");
 						}

@@ -23,7 +23,6 @@ import moment from "moment";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
-	const [alertMessage, setalertMessage] = useState("");
 	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
 	// const requestBoxes: useSelector(selectRequestBoxes);
 	const approvalAdmin: ApprovalInterfaceState =
@@ -37,8 +36,8 @@ const ModalForm = props => {
 	return (
 		<>
 			<Alert
-				text={alertMessage}
-				variant="success"
+				text="Data Di Reject"
+				variant="danger"
 				show={showAlert}
 				style={{
 					top: 50,
@@ -63,13 +62,12 @@ const ModalForm = props => {
 						try {
 							values.Id = requestBox.Id;
 							let action = dispatch(await ApprovalAdmin(values));
+							setShowAlert(true);
+							setTimeout(function () {
+								window.location.reload();
+							}, 1000);
 							dispatch({ type: RESET_REQUEST_BOX_FORM });
 							props.modalSet(props.valueModalSet);
-							approvalAdmin.Id ? (
-								<>Data Berhasil di Edit</>
-							) : (
-								<>Data Berhasil di Tambah</>
-							);
 							console.log(action);
 						} catch (e) {
 							console.log("ini error di depan");
