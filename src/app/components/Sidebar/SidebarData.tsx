@@ -90,6 +90,11 @@ export const MasterData = [
 		link: "/Room",
 	},
 	{
+		title: "Transportasi",
+		icon: "",
+		link: "/Car",
+	},
+	{
 		title: "Record Center",
 		icon: "",
 		link: "/Record-Center",

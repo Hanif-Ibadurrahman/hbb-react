@@ -17,7 +17,7 @@ import IconTable from "assets/images/icon/icon-5.png";
 
 export function Sidebar() {
 	const [isActive] = useState<boolean>(true);
-	const [role, setRole] = useState("customer");
+	const [role, setRole] = useState("admin");
 
 	const CustomerMenu = props => {
 		return (
