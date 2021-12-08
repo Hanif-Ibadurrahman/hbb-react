@@ -4,24 +4,23 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 import { selectBoxes, selectBox } from "../../../../store/Selector/BoxSelector";
-import { selectAreas, selectArea } from "store/Selector/AreaSelector";
 import { useDispatch, useSelector } from "react-redux";
 import { CreateBox, UpdateBox, RESET_BOX_FORM } from "actions/BoxActions";
-import { CreateArea, UpdateArea, RESET_AREA_FORM } from "actions/AreaActions";
+import { CreateCar, UpdateCar, RESET_CAR_FORM } from "actions/CarAction";
 import { BoxInterfaceState } from "store/Types/BoxTypes";
-import { AreaInterfaceState } from "store/Types/AreaTypes";
+import { CarInterfaceState } from "store/Types/CarTypes";
+import { selectCar } from "store/Selector/CarSelector";
 
 const ModalForm = props => {
-	// const [CodeBox, setCodeBox] = useState("");
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setalertMessage] = useState("");
 	// const box: BoxInterfaceState = useSelector(selectBox);
-	const area: AreaInterfaceState = useSelector(selectArea);
-	const boxes = useSelector(selectBoxes);
+	const car: CarInterfaceState = useSelector(selectCar);
 	const dispatch = useDispatch();
 	const validationSchema = Yup.object().shape({
-		Name: Yup.string().required("*Wajib diisi"),
-		CodeArea: Yup.string().required("*Wajib diisi"),
+		Brand: Yup.string().required("*Wajib diisi"),
+		Capacity: Yup.string().required("*Wajib diisi"),
+		LicensePlate: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
@@ -47,21 +46,21 @@ const ModalForm = props => {
 				{" "}
 				<Formik
 					validationSchema={validationSchema}
-					initialValues={area}
+					initialValues={car}
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							let action = area.Id ? UpdateArea(values) : CreateArea(values);
+							let action = car.Id ? UpdateCar(values) : CreateCar(values);
 							// dispatch(loadingbarTurnOn)
 							const res = await action;
 							await dispatch(res);
 							action.then(() => {
-								dispatch({ type: RESET_AREA_FORM });
+								dispatch({ type: RESET_CAR_FORM });
 								props.modalSet(props.valueModalSet);
 							});
-							dispatch({ type: RESET_BOX_FORM });
+							dispatch({ type: RESET_CAR_FORM });
 							props.modalSet(props.valueModalSet);
-							area.Id ? (
+							car.Id ? (
 								<>Data Berhasil di Edit</>
 							) : (
 								<>Data Berhasil di Tambah</>
@@ -84,7 +83,7 @@ const ModalForm = props => {
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									{area.Id ? <>Edit Data</> : <>Tambah Data</>}
+									{car.Id ? <>Edit Data</> : <>Tambah Data</>}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
@@ -92,38 +91,56 @@ const ModalForm = props => {
 									<Row>
 										<Col xs={12}>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Nama Area</Form.Label>
+												<Form.Label>Merk Mobil</Form.Label>
 												<Form.Control
 													type="text"
-													name="Name"
-													placeholder="Nama Area"
-													value={values.Name}
+													name="Brand"
+													placeholder="Merk"
+													value={values.Brand}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.Name && errors.Name ? (
+												{touched.Brand && errors.Brand ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.Name}
+														{errors.Brand}
 													</p>
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Kode Area</Form.Label>
+												<Form.Label>Kapasitas (KG)</Form.Label>
 												<Form.Control
-													type="text"
-													name="CodeArea"
-													placeholder="Kode Area"
-													value={values.CodeArea}
+													type="number"
+													name="Capacity"
+													placeholder="Kapasitas"
+													value={values.Capacity}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.CodeArea && errors.CodeArea ? (
+												{touched.Capacity && errors.Capacity ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.CodeArea}
+														{errors.Capacity}
+													</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Nomor Plat</Form.Label>
+												<Form.Control
+													type="text"
+													name="LicensePlate"
+													placeholder="Kapasitas"
+													value={values.LicensePlate}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.LicensePlate && errors.LicensePlate ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.LicensePlate}
 													</p>
 												) : null}
 											</Form.Group>

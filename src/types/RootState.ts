@@ -1,6 +1,8 @@
 import { ThemeState } from "styles/theme/slice/types";
 import { BoxesInterfaceState } from "store/Types/BoxTypes";
+import { AreasInterfaceState } from "store/Types/AreaTypes";
 import { RequestBoxesInterfaceState } from "store/Types/RequestBoxTypes";
+import { CarsInterfaceState } from "store/Types/CarTypes";
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -12,7 +14,9 @@ import { RequestBoxesInterfaceState } from "store/Types/RequestBoxTypes";
 export interface RootState {
 	theme?: ThemeState;
 	boxes?: BoxesInterfaceState;
+	areas?: AreasInterfaceState;
 	requestBoxes?: RequestBoxesInterfaceState;
+	cars?: CarsInterfaceState;
 
 	// [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }
