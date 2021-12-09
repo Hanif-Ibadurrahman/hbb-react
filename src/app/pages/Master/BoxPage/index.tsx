@@ -72,11 +72,11 @@ const BoxPage = () => {
 			url: "Box-Detail/" + id,
 			type: 1,
 		},
-		{
-			icon: "fa-copy ",
-			title: "Duplicate",
-			type: 2,
-		},
+		// {
+		// 	icon: "fa-copy ",
+		// 	title: "Duplicate",
+		// 	type: 2,
+		// },
 		{
 			icon: "fa-edit",
 			title: "Edit",
@@ -86,6 +86,12 @@ const BoxPage = () => {
 			dispatch: dispatch,
 			row: id,
 			type: 2,
+		},
+		{
+			icon: "fa-print",
+			title: "Print",
+			url: "Print-Barcode/" + id,
+			type: 1,
 		},
 		{
 			icon: "fa-trash-alt",
