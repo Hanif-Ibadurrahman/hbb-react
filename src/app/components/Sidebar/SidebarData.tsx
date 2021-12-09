@@ -28,24 +28,24 @@ export const PeminjamanData = [
 		link: "/Approval-Admin/RequestBox",
 		notifications: "",
 	},
-	{
-		title: "Pickup Box",
-		icon: "",
-		link: "/Approval/PickupBox",
-		notifications: "",
-	},
-	{
-		title: "Pinjam Item",
-		icon: "",
-		link: "/Approval/PinjamItem",
-		notifications: "",
-	},
-	{
-		title: "Pengembalian Item",
-		icon: "",
-		link: "/Approval/PengembalianItem",
-		notifications: "",
-	},
+	// {
+	// 	title: "Pickup Box",
+	// 	icon: "",
+	// 	link: "/Approval/PickupBox",
+	// 	notifications: "",
+	// },
+	// {
+	// 	title: "Pinjam Item",
+	// 	icon: "",
+	// 	link: "/Approval/PinjamItem",
+	// 	notifications: "",
+	// },
+	// {
+	// 	title: "Pengembalian Item",
+	// 	icon: "",
+	// 	link: "/Approval/PengembalianItem",
+	// 	notifications: "",
+	// },
 ];
 
 export const ApprovalOperation = [
