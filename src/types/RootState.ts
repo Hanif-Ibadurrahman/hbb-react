@@ -3,6 +3,7 @@ import { BoxesInterfaceState } from "store/Types/BoxTypes";
 import { AreasInterfaceState } from "store/Types/AreaTypes";
 import { RequestBoxesInterfaceState } from "store/Types/RequestBoxTypes";
 import { CarsInterfaceState } from "store/Types/CarTypes";
+import { DocumentsInterfaceState } from "store/Types/DocumentTypes";
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -16,6 +17,7 @@ export interface RootState {
 	boxes?: BoxesInterfaceState;
 	areas?: AreasInterfaceState;
 	requestBoxes?: RequestBoxesInterfaceState;
+	documents?: DocumentsInterfaceState;
 	cars?: CarsInterfaceState;
 
 	// [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly

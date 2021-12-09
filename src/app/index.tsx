@@ -16,6 +16,8 @@ import { useTranslation } from "react-i18next";
 import { LoginPage } from "./pages/LoginPage";
 import { Routes } from "./pages/Routes";
 
+import PrintBox from "../app/pages/Master/BoxPage/print";
+
 export function App() {
 	const { i18n } = useTranslation();
 	return (
@@ -30,6 +32,10 @@ export function App() {
 			<div className="d-flex all-wrapper">
 				<div className="content-wrapper w-100%">
 					<Switch>
+						<Route
+							path={process.env.PUBLIC_URL + "/Print-Barcode/:id"}
+							component={PrintBox}
+						/>
 						<Route
 							path={process.env.PUBLIC_URL + "/Login"}
 							component={LoginPage}
