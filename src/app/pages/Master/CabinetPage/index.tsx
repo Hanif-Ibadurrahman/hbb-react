@@ -1,27 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
-import { ModalForm } from "./ModalForm";
 import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
+import { ModalForm } from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import { getCabinetsList } from "actions/CabinetAction";
-import { connect, useDispatch } from "react-redux";
+import { getCabinetsList, getCabinetDetail } from "actions/CabinetAction";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { deleteCabinet } from "actions/CabinetAction";
 import Alert from "app/components/Alerts";
-
-const mapStateToProps = state => {
-	return {
-		cabinets: state.cabinets.cabinets,
-		meta: state.cabinets.meta,
-	};
-};
+import { selectCabinets } from "store/Selector/CabinetSelector";
 
 const CabinetPage = props => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
+	const [modalShow, setModalShow] = useState(false);
+	const [showAlert, setShowAlert] = useState(false);
+
+	const cabinets = useSelector(selectCabinets);
 
 	const dispatch = useDispatch();
 
@@ -33,7 +31,15 @@ const CabinetPage = props => {
 		FetchData();
 	}, []);
 
-	const onDelete = (dispatch, key) => {
+	const RoomArea = (page = 1) => {
+		dispatch(getCabinetsList(page));
+	};
+
+	useEffect(() => {
+		RoomArea();
+	}, []);
+
+	const onDelete = (dispatch, id) => {
 		Swal.fire({
 			text: "Apakah anda ingin menghapus data ini?",
 			icon: "warning",
@@ -42,7 +48,7 @@ const CabinetPage = props => {
 			confirmButtonText: "Hapus",
 		}).then(willDelete => {
 			if (willDelete) {
-				dispatch(deleteCabinet(key));
+				dispatch(deleteCabinet(id));
 				setShowAlertSuccess(true);
 				setTimeout(function () {
 					setShowAlertSuccess(false);
@@ -57,6 +63,16 @@ const CabinetPage = props => {
 				}, 4000);
 			}
 		});
+	};
+
+	const _onHide = () => {
+		setModalShow(false);
+		setShowAlert(false);
+	};
+
+	const showEditForm = async id => {
+		dispatch(getCabinetDetail(id));
+		setModalShow(true);
 	};
 
 	const action = id => [
@@ -74,7 +90,12 @@ const CabinetPage = props => {
 		{
 			icon: "fa-edit",
 			title: "Edit",
-			type: 1,
+			onclick: () => {
+				showEditForm(id);
+			},
+			dispatch: dispatch,
+			row: id,
+			type: 2,
 		},
 		{
 			icon: "fa-trash-alt",
@@ -112,7 +133,7 @@ const CabinetPage = props => {
 	return (
 		<>
 			<Helmet>
-				<title>Dox - Request Box</title>
+				<title>Dox - Request Cabinet</title>
 				<meta
 					name="description"
 					content="A React Boilerplate application homepage"
@@ -131,13 +152,22 @@ const CabinetPage = props => {
 					show={showAlertFailed}
 					onHide={() => setShowAlertFailed(false)}
 				/>
+				<ModalForm
+					modal={modalShow}
+					hide={_onHide}
+					modalSet={setModalShow}
+					valueModalSet={false}
+					data={props.areas}
+				/>
 				<PageHeader
 					breadcrumb={["Master", "Cabinet"]}
-					addForm={<ModalForm />}
+					modal={setModalShow}
+					valueModalSet={false}
+					value={true}
 				/>
-				<DataTable tableHeader={header} tableBody={props.cabinets} />
+				<DataTable tableHeader={header} tableBody={cabinets.Cabinets} />
 				<Pagination
-					pageCount={props.meta.last_page}
+					pageCount={cabinets.Meta.LastPage}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>
@@ -145,4 +175,4 @@ const CabinetPage = props => {
 	);
 };
 
-export default connect(mapStateToProps, null)(CabinetPage);
+export default CabinetPage;

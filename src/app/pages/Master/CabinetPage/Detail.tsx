@@ -5,17 +5,13 @@ import Breadcrumb from "app/components/BreadCrumb";
 import QR from "app/components/QRCode";
 import "../master.scoped.scss";
 import { useHistory } from "react-router-dom";
-import { connect, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getCabinetDetail } from "actions/CabinetAction";
+import { selectCabinets, selectCabinet } from "store/Selector/CabinetSelector";
+import { CabinetInterfaceState } from "store/Types/CabinetTypes";
 
-const mapStateToProps = state => {
-	return {
-		CabinetDetail: state.cabinets.CabinetDetail,
-		errorCabinetDetail: state.cabinets.errorBoxDetail,
-	};
-};
-
-const CabinetPageDetail = props => {
+const CabinetPageDetail = ({ match }) => {
+	const cabinet: CabinetInterfaceState = useSelector(selectCabinet);
 	let history = useHistory();
 
 	const goToPreviousPath = e => {
@@ -23,7 +19,7 @@ const CabinetPageDetail = props => {
 		history.goBack();
 	};
 
-	const cabinet_id = props.match.params.id;
+	const cabinet_id = match.params.id;
 
 	const dispatch = useDispatch();
 
@@ -47,38 +43,26 @@ const CabinetPageDetail = props => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={props.CabinetDetail.code_cabinet}
+									defaultValue={cabinet.CodeCabinet}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Date</Form.Label>
-								<Form.Control type="date" disabled defaultValue="04/09/21" />
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Time</Form.Label>
-								<Form.Control type="time" disabled defaultValue="16:27" />
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Quantity</Form.Label>
-								<Form.Control type="text" disabled defaultValue="10" />
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Notes</Form.Label>
+								<Form.Label>Total Bays</Form.Label>
 								<Form.Control
-									as="textarea"
-									className="notesdisable"
+									type="number"
 									disabled
-									defaultValue="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+									defaultValue={cabinet.CodeTotalBays}
 								/>
 							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
+
+							{/* <Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Status</Form.Label>
 								<Form.Control
 									className="bg-success-6 w-100%"
 									defaultValue="Approve"
 									disabled
 								></Form.Control>
-							</Form.Group>
+							</Form.Group> */}
 							<div className="d-flex jc-end">
 								<Button
 									className="mv-4 mr-4"
@@ -86,13 +70,6 @@ const CabinetPageDetail = props => {
 									onClick={goToPreviousPath}
 								>
 									Kembali
-								</Button>{" "}
-								<Button
-									className="bg-success-6 mv-4 d-flex ai-center"
-									variant="success"
-								>
-									<i className="far fa-edit mr-2 p-md"></i>
-									<span className="text p-md">Edit Data</span>
 								</Button>{" "}
 							</div>
 						</Form>
@@ -108,7 +85,7 @@ const CabinetPageDetail = props => {
 						/>
 						<div className="d-flex jc-center">
 							<p className="p-xl ff-1-bd ta-center mt-3">
-								{props.CabinetDetail.code_cabinet}
+								{cabinet.CodeCabinet}
 							</p>
 						</div>
 					</Card>
@@ -118,4 +95,4 @@ const CabinetPageDetail = props => {
 	);
 };
 
-export default connect(mapStateToProps, null)(CabinetPageDetail);
+export default CabinetPageDetail;
