@@ -1,3 +1,16 @@
+import React, { useEffect, useState } from "react";
+import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
+import { useSelector } from "react-redux";
+
+function User() {
+	const requestBoxes = useSelector(selectRequestBoxes);
+	const notif = requestBoxes.Meta.Total;
+	console.log("testing", notif);
+	return <>{notif}</>;
+}
+
+console.log("testing", User);
+
 export const DashboardData = [
 	{
 		title: "Superadmin",
@@ -26,7 +39,7 @@ export const PeminjamanData = [
 		title: "Request Box",
 		icon: "",
 		link: "/Approval-Admin/RequestBox",
-		notifications: "",
+		notifications: User,
 	},
 	// {
 	// 	title: "Pickup Box",

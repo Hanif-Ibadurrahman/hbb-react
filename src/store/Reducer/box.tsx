@@ -13,6 +13,7 @@ export const initialState: BoxesInterfaceState = {
 	Box: {
 		Id: "",
 		CodeBox: "",
+		SignCode: "",
 	},
 	Meta: {
 		Total: 0,
@@ -51,6 +52,7 @@ export default (
 				Box: {
 					CodeBox: payload?.data?.data?.code_box,
 					Id: payload?.data?.data?.id,
+					SignCode: payload?.data?.data?.sign_code,
 				},
 				ErrorBox: payload.errorMessage,
 			};
@@ -60,6 +62,7 @@ export default (
 				Box: {
 					CodeBox: payload.data.data.code_box,
 					Id: payload.data.data.id,
+					SignCode: payload?.data?.data?.sign_code,
 				},
 			};
 		case UPDATE_BOX:
@@ -68,6 +71,7 @@ export default (
 				Box: {
 					Id: payload.data.id,
 					CodeBox: payload.data.code_box,
+					SignCode: payload?.data?.data?.sign_code,
 				},
 				ErrorBox: payload.errorMessage,
 			};
@@ -82,6 +86,7 @@ export default (
 				Box: {
 					Id: "",
 					CodeBox: "",
+					SignCode: "",
 				},
 			};
 		default:

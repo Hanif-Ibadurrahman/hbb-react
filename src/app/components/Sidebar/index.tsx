@@ -136,11 +136,11 @@ export function Sidebar() {
 							>
 								{""}
 								{val.title}
-								{/* <span className="h-6 w-6 bd-rs-6 bg-danger-5 d-flex ai-center jc-center ml-a">
+								<span className="h-6 w-6 bd-rs-6 bg-danger-5 d-flex ai-center jc-center ml-a">
 									<span className="text tc-danger-contrast">
 										{val.notifications}
 									</span>
-								</span> */}
+								</span>
 							</MenuItem>
 						);
 					})}

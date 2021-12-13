@@ -25,19 +25,19 @@ const PrintBox = ({ match }) => {
 	return (
 		<>
 			<PageWrapper className="row row w-100%">
-				<div className="h-24 d-flex ai-center mb-12">
+				{/* <div className="h-24 d-flex ai-center mb-2">
 					<img src={Logo} alt="Logo" className="h-24" />
-				</div>
-				<div style={{ maxWidth: 300 }}>
+				</div> */}
+				<div style={{ maxWidth: 150 }}>
 					<Card className="p-4 bd-rs-2 d-flex ai-center jc-center">
 						<QR
 							id="Detail-Box-QR"
 							title="Scan here"
-							value="ID : A12O2O3"
+							value={box.SignCode}
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">{box.CodeBox}</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">Box</p>
 						</div>
 					</Card>
 					{/* <div className="d-flex jc-end">
