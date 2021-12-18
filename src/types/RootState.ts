@@ -5,6 +5,7 @@ import { RequestBoxesInterfaceState } from "store/Types/RequestBoxTypes";
 import { CarsInterfaceState } from "store/Types/CarTypes";
 import { DocumentsInterfaceState } from "store/Types/DocumentTypes";
 import { CabinetsInterfaceState } from "store/Types/CabinetTypes";
+import { CompanysInterfaceState } from "store/Types/CompanyTypes";
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -17,6 +18,11 @@ export interface RootState {
 	theme?: ThemeState;
 	boxes?: BoxesInterfaceState;
 	areas?: AreasInterfaceState;
+
+	companys?: CompanysInterfaceState;
+
+	// areas?: AreasInterfaceState;
+
 	requestBoxes?: RequestBoxesInterfaceState;
 	documents?: DocumentsInterfaceState;
 	cars?: CarsInterfaceState;

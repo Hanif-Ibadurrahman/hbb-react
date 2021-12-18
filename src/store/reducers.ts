@@ -11,6 +11,7 @@ import documents from "./Reducer/document";
 import cabinets from "./Reducer/cabinet";
 import folders from "./Reducer/folder";
 import rooms from "./Reducer/room";
+import companys from "./Reducer/company";
 import requestBoxes from "./Reducer/requestBox";
 import cars from "./Reducer/car";
 /**
@@ -29,6 +30,7 @@ export function createReducer(injectedReducers: InjectedReducersType = {}) {
 			cabinets,
 			folders,
 			rooms,
+			companys,
 			requestBoxes,
 			cars,
 		});
