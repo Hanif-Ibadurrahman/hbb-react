@@ -59,6 +59,9 @@ import { BerkasPageDetail } from "./Master/BerkasPage/Detail";
 // 6 - ROOM
 import RoomPage from "./Master/RoomPage";
 import RoomPageDetail from "./Master/RoomPage/Detail";
+// 7 - Company
+import CompanyPage from "./Master/CompanyPage";
+import CompanyPageDetail from "./Master/CompanyPage/Detail";
 // 7 - CAR
 import CarPage from "./Master/CarPage";
 import CarPageDetail from "./Master/CarPage/Detail";
@@ -228,6 +231,14 @@ export function Routes() {
 							path={process.env.PUBLIC_URL + "/Folder"}
 							component={FolderPage}
 						/> */}
+						<Route
+							path={process.env.PUBLIC_URL + "/Company"}
+							component={CompanyPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Company-Detail/:id"}
+							component={CompanyPageDetail}
+						/>
 						{/*---------- MASTER - - - END ---------*/}
 
 						<Route

@@ -114,6 +114,11 @@ export const MasterData = [
 		link: "/Car",
 	},
 	{
+		title: "Company",
+		icon: "",
+		link: "/Company",
+	},
+	{
 		title: "User",
 		icon: "",
 		link: "/User",
