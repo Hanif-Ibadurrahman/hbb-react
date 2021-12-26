@@ -29,6 +29,7 @@ export const initialState: DocumentsInterfaceState = {
 		NoDigital: "",
 		Location: "",
 		Status: "",
+		SignCode: "",
 	},
 	Meta: {
 		Total: 0,
@@ -80,6 +81,7 @@ export default (
 					NoDigital: payload?.data?.data?.no_digital,
 					Location: payload?.data?.data?.location,
 					Status: payload?.data?.data?.status,
+					SignCode: payload?.data?.data?.sign_code,
 				},
 				ErrorDocument: payload.errorMessage,
 			};
@@ -102,6 +104,7 @@ export default (
 					NoDigital: payload?.data?.data?.no_digital,
 					Location: payload?.data?.data?.location,
 					Status: payload?.data?.data?.status,
+					SignCode: payload?.data?.data?.status,
 				},
 			};
 		case EDIT_DOCUMENT:
@@ -123,6 +126,7 @@ export default (
 					NoDigital: payload?.data?.data?.no_digital,
 					Location: payload?.data?.data?.location,
 					Status: payload?.data?.data?.status,
+					SignCode: payload?.data?.data?.status,
 				},
 				ErrorDocument: payload?.errorMessage,
 			};
@@ -150,6 +154,7 @@ export default (
 					NoDigital: "",
 					Location: "",
 					Status: "",
+					SignCode: "",
 				},
 			};
 		default:

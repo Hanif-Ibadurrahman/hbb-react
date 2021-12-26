@@ -22,6 +22,17 @@ export const initialState: CabinetsInterfaceState = {
 		CodeTotalColumns: "",
 		CodeDepth: "",
 		CodeRoom: "",
+		SignCode: "",
+		CabinetSlots: [
+			{
+				Id: "",
+				Code: "",
+				Capacity: 0,
+				Column: 0,
+				Row: 0,
+				SignCode: "",
+			},
+		],
 	},
 
 	Meta: {
@@ -67,6 +78,17 @@ export default (
 					CodeBlockNumb: payload.data.data.block_numb,
 					CodeCabinet: payload.data.data.code_cabinet,
 					Id: payload.data.data.id,
+					SignCode: payload.data.data.sign_code,
+					CabinetSlots: [
+						{
+							Id: payload?.data?.data?.cabinetSlots?.id,
+							Code: payload?.data?.data?.cabinetSlots?.id,
+							Capacity: payload?.data?.data?.cabinetSlots?.capacity,
+							Column: payload?.data?.data?.cabinetSlots?.column,
+							Row: payload?.data?.data?.cabinetSlots?.row,
+							SignCode: payload?.data?.data?.cabinetSlots?.SignCode,
+						},
+					],
 				},
 				ErrorCabinet: payload.errorMessage,
 			};
@@ -82,6 +104,17 @@ export default (
 					CodeBlockNumb: payload.data.data.block_numb,
 					CodeCabinet: payload.data.data.code_cabinet,
 					Id: payload.data.data.id,
+					SignCode: payload.data.data.code_cabinet,
+					CabinetSlots: [
+						{
+							Id: payload?.data?.data?.cabinetSlots?.id,
+							Code: payload?.data?.data?.cabinetSlots?.id,
+							Capacity: payload?.data?.data?.cabinetSlots?.capacity,
+							Column: payload?.data?.data?.cabinetSlots?.column,
+							Row: payload?.data?.data?.cabinetSlots?.row,
+							SignCode: payload?.data?.data?.cabinetSlots?.SignCode,
+						},
+					],
 				},
 			};
 		case UPDATE_CABINET:
@@ -96,6 +129,17 @@ export default (
 					CodeBlockNumb: payload.data.data.block_numb,
 					Id: payload.data.id,
 					CodeCabinet: payload.data.code_cabinet,
+					SignCode: payload.data.data.code_cabinet,
+					CabinetSlots: [
+						{
+							Id: payload?.data?.data?.cabinetSlots?.id,
+							Code: payload?.data?.data?.cabinetSlots?.id,
+							Capacity: payload?.data?.data?.cabinetSlots?.capacity,
+							Column: payload?.data?.data?.cabinetSlots?.column,
+							Row: payload?.data?.data?.cabinetSlots?.row,
+							SignCode: payload?.data?.data?.cabinetSlots?.SignCode,
+						},
+					],
 				},
 				ErrorCabinet: payload.errorMessage,
 			};
@@ -116,6 +160,17 @@ export default (
 					CodeTotalColumns: "",
 					CodeDepth: "",
 					CodeRoom: "",
+					SignCode: "",
+					CabinetSlots: [
+						{
+							Id: "",
+							Code: "",
+							Capacity: 0,
+							Column: 0,
+							Row: 0,
+							SignCode: "",
+						},
+					],
 				},
 			};
 		default:

@@ -98,6 +98,12 @@ const CabinetPage = props => {
 			type: 2,
 		},
 		{
+			icon: "fa-print",
+			title: "Print",
+			url: "Print-Cabinet/" + id,
+			type: 1,
+		},
+		{
 			icon: "fa-trash-alt",
 			title: "Delete",
 			titleClass: "tc-danger-5",

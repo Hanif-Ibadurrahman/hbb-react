@@ -11,7 +11,7 @@ export default function QR(props) {
 	});
 
 	return (
-		<div className={props.className} style={{ width: "76px" }} ref={ref}>
+		<div className={props.className} style={{ width: "50mm" }} ref={ref}>
 			<QRCode
 				id={props.id}
 				title={props.title}

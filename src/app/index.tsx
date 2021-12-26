@@ -17,6 +17,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { Routes } from "./pages/Routes";
 
 import PrintBox from "../app/pages/Master/BoxPage/print";
+import PrintCabinet from "./pages/Master/CabinetPage/print";
 
 export function App() {
 	const { i18n } = useTranslation();
@@ -35,6 +36,10 @@ export function App() {
 						<Route
 							path={process.env.PUBLIC_URL + "/Print-Barcode/:id"}
 							component={PrintBox}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Print-Cabinet/:id"}
+							component={PrintCabinet}
 						/>
 						<Route
 							path={process.env.PUBLIC_URL + "/Login"}

@@ -8,6 +8,17 @@ export interface CabinetInterfaceState {
 	CodeTotalColumns: string;
 	CodeDepth: string;
 	CodeRoom: string;
+	SignCode: string;
+	CabinetSlots: [
+		{
+			Id: string | null;
+			Code: string;
+			Capacity: number;
+			Column: number;
+			Row: number;
+			SignCode: string;
+		},
+	];
 }
 
 export interface CabinetsInterfaceState {
@@ -17,11 +28,5 @@ export interface CabinetsInterfaceState {
 	Title: string;
 	Meta: PaginationState;
 }
-
-// interface AutocompleteOption {
-// 	label: string;
-// }
-// // or
-// type AutocompleteOptions = string;
 
 export type CabinetContainerState = CabinetsInterfaceState;
