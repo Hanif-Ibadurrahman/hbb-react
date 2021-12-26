@@ -6,6 +6,7 @@ import { CarsInterfaceState } from "store/Types/CarTypes";
 import { DocumentsInterfaceState } from "store/Types/DocumentTypes";
 import { CabinetsInterfaceState } from "store/Types/CabinetTypes";
 import { CompanysInterfaceState } from "store/Types/CompanyTypes";
+import { BorrowItemsInterfaceState } from "store/Types/BorrowItemTypes";
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -27,6 +28,7 @@ export interface RootState {
 	documents?: DocumentsInterfaceState;
 	cars?: CarsInterfaceState;
 	cabinets?: CabinetsInterfaceState;
+	borrowItems?: BorrowItemsInterfaceState;
 
 	// [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }

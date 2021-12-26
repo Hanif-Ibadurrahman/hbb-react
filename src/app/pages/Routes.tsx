@@ -91,7 +91,7 @@ import { EditBoxCSR } from "./AdminCSR/BoxPage/Edit";
 //1 - REQUEST BOX
 import RequestBox from "./Customer/RequestBox";
 //2 - Borrow
-import { BorrowBoxPage } from "./Customer/BorrowBox/Loadable";
+import BorrowBoxPage from "./Customer/BorrowBox";
 
 // -=-=-=-=-=-
 // ALL USER
