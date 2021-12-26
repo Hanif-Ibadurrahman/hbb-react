@@ -71,7 +71,7 @@ export default (
 				Meta: {
 					LastPage: payload.meta.last_page,
 					CurrentPage: payload.meta.current_page,
-					Total: payload.meta.total_page,
+					Total: payload.meta.total,
 					PerPage: payload.meta.total_page,
 				},
 				ErrorRequestBox: payload.errorMessage,

@@ -1,18 +1,18 @@
 import { PaginationState } from "../Types/PaginationTypes";
 export interface CabinetInterfaceState {
-	Id: string | null;
-	CodeCabinet: string;
+	id: string | null;
+	code_cabinet: string;
 	CodeBlockNumb: string;
-	CodeTotalBays: string;
+	total_bays: string;
 	CodeTotalRow: string;
 	CodeTotalColumns: string;
 	CodeDepth: string;
 	CodeRoom: string;
 	SignCode: string;
-	CabinetSlots: [
+	cabinetSlots: [
 		{
-			Id: string | null;
-			Code: string;
+			id: string | null;
+			code: string;
 			Capacity: number;
 			Column: number;
 			Row: number;

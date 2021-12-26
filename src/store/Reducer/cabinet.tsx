@@ -14,19 +14,19 @@ import {
 export const initialState: CabinetsInterfaceState = {
 	Cabinets: [],
 	Cabinet: {
-		Id: "",
-		CodeCabinet: "",
+		id: "",
+		code_cabinet: "",
 		CodeBlockNumb: "",
-		CodeTotalBays: "",
+		total_bays: "",
 		CodeTotalRow: "",
 		CodeTotalColumns: "",
 		CodeDepth: "",
 		CodeRoom: "",
 		SignCode: "",
-		CabinetSlots: [
+		cabinetSlots: [
 			{
-				Id: "",
-				Code: "",
+				id: "",
+				code: "",
 				Capacity: 0,
 				Column: 0,
 				Row: 0,
@@ -69,27 +69,7 @@ export default (
 		case GET_CABINET_DETAIL:
 			return {
 				...state,
-				Cabinet: {
-					CodeRoom: payload.data.data.room,
-					CodeDepth: payload.data.data.depth,
-					CodeTotalColumns: payload.data.data.total_columns,
-					CodeTotalRow: payload.data.data.total_rows,
-					CodeTotalBays: payload.data.data.total_bays,
-					CodeBlockNumb: payload.data.data.block_numb,
-					CodeCabinet: payload.data.data.code_cabinet,
-					Id: payload.data.data.id,
-					SignCode: payload.data.data.sign_code,
-					CabinetSlots: [
-						{
-							Id: payload?.data?.data?.cabinetSlots?.id,
-							Code: payload?.data?.data?.cabinetSlots?.id,
-							Capacity: payload?.data?.data?.cabinetSlots?.capacity,
-							Column: payload?.data?.data?.cabinetSlots?.column,
-							Row: payload?.data?.data?.cabinetSlots?.row,
-							SignCode: payload?.data?.data?.cabinetSlots?.SignCode,
-						},
-					],
-				},
+				Cabinet: payload.data.data,
 				ErrorCabinet: payload.errorMessage,
 			};
 		case CREATE_CABINET:
@@ -100,15 +80,15 @@ export default (
 					CodeDepth: payload.data.data.depth,
 					CodeTotalColumns: payload.data.data.total_columns,
 					CodeTotalRow: payload.data.data.total_rows,
-					CodeTotalBays: payload.data.data.total_bays,
+					total_bays: payload.data.data.total_bays,
 					CodeBlockNumb: payload.data.data.block_numb,
-					CodeCabinet: payload.data.data.code_cabinet,
-					Id: payload.data.data.id,
+					code_cabinet: payload.data.data.code_cabinet,
+					id: payload.data.data.id,
 					SignCode: payload.data.data.code_cabinet,
-					CabinetSlots: [
+					cabinetSlots: [
 						{
-							Id: payload?.data?.data?.cabinetSlots?.id,
-							Code: payload?.data?.data?.cabinetSlots?.id,
+							id: payload?.data?.data?.cabinetSlots?.id,
+							code: payload?.data?.data?.cabinetSlots?.id,
 							Capacity: payload?.data?.data?.cabinetSlots?.capacity,
 							Column: payload?.data?.data?.cabinetSlots?.column,
 							Row: payload?.data?.data?.cabinetSlots?.row,
@@ -125,15 +105,15 @@ export default (
 					CodeDepth: payload.data.data.depth,
 					CodeTotalColumns: payload.data.data.total_columns,
 					CodeTotalRow: payload.data.data.total_rows,
-					CodeTotalBays: payload.data.data.total_bays,
+					total_bays: payload.data.data.total_bays,
 					CodeBlockNumb: payload.data.data.block_numb,
-					Id: payload.data.id,
-					CodeCabinet: payload.data.code_cabinet,
+					id: payload.data.id,
+					code_cabinet: payload.data.code_cabinet,
 					SignCode: payload.data.data.code_cabinet,
-					CabinetSlots: [
+					cabinetSlots: [
 						{
-							Id: payload?.data?.data?.cabinetSlots?.id,
-							Code: payload?.data?.data?.cabinetSlots?.id,
+							id: payload?.data?.data?.cabinetSlots?.id,
+							code: payload?.data?.data?.cabinetSlots?.id,
 							Capacity: payload?.data?.data?.cabinetSlots?.capacity,
 							Column: payload?.data?.data?.cabinetSlots?.column,
 							Row: payload?.data?.data?.cabinetSlots?.row,
@@ -152,19 +132,19 @@ export default (
 			return {
 				...state,
 				Cabinet: {
-					Id: "",
-					CodeCabinet: "",
+					id: "",
+					code_cabinet: "",
 					CodeBlockNumb: "",
-					CodeTotalBays: "",
+					total_bays: "",
 					CodeTotalRow: "",
 					CodeTotalColumns: "",
 					CodeDepth: "",
 					CodeRoom: "",
 					SignCode: "",
-					CabinetSlots: [
+					cabinetSlots: [
 						{
-							Id: "",
-							Code: "",
+							id: "",
+							code: "",
 							Capacity: 0,
 							Column: 0,
 							Row: 0,

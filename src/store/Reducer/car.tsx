@@ -11,10 +11,10 @@ import { CarsInterfaceState, CarInterfaceState } from "../Types/CarTypes";
 export const initialState: CarsInterfaceState = {
 	Cars: [],
 	Car: {
-		Id: "",
-		Brand: "",
-		Capacity: "",
-		LicensePlate: "",
+		id: "",
+		brand: "",
+		capacity: "",
+		license_plate: "",
 	},
 	Meta: {
 		Total: 0,
@@ -50,33 +50,18 @@ export default (
 		case GET_CAR_DETAIL:
 			return {
 				...state,
-				Car: {
-					Id: payload.data.data.id,
-					Brand: payload.data.data.brand,
-					Capacity: payload.data.data.capacity,
-					LicensePlate: payload.data.data.license_plate,
-				},
+				Car: payload.data.data,
 				ErrorCar: payload.errorMessage,
 			};
 		case CREATE_CAR:
 			return {
 				...state,
-				Car: {
-					Id: payload.data.data.id,
-					Brand: payload.data.data.brand,
-					Capacity: payload.data.data.capacity,
-					LicensePlate: payload.data.data.license_plate,
-				},
+				Car: payload.data.data,
 			};
 		case EDIT_CAR:
 			return {
 				...state,
-				Car: {
-					Id: payload.data.data.id,
-					Brand: payload.data.data.brand,
-					Capacity: payload.data.data.capacity,
-					LicensePlate: payload.data.data.license_plate,
-				},
+				Car: payload.data.data,
 				ErrorCar: payload.errorMessage,
 			};
 		case RESET_CAR_LIST:
@@ -88,10 +73,10 @@ export default (
 			return {
 				...state,
 				Car: {
-					Id: "",
-					Brand: "",
-					Capacity: "",
-					LicensePlate: "",
+					id: "",
+					brand: "",
+					capacity: "",
+					license_plate: "",
 				},
 			};
 		default:

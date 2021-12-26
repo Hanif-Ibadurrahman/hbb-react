@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Logo from "assets/images/logo.png";
 import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import "./sidebar.scoped.scss";
@@ -15,10 +15,30 @@ import IconUI from "assets/images/icon/icon-2.png";
 import IconAdvanced from "assets/images/icon/icon-3.png";
 import IconForm from "assets/images/icon/icon-4.png";
 import IconTable from "assets/images/icon/icon-5.png";
+import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	getAllConfirmedAdmin,
+	getRequestBoxesList,
+} from "actions/RequestBoxAction";
 
 export function Sidebar() {
 	const [isActive] = useState<boolean>(true);
 	const [role, setRole] = useState("admin");
+
+	const dispatch = useDispatch();
+
+	const FetchData = (page = 1) => {
+		dispatch(getRequestBoxesList(page));
+		dispatch(getAllConfirmedAdmin(page));
+	};
+
+	useEffect(() => {
+		FetchData();
+	}, []);
+
+	const requestBoxes = useSelector(selectRequestBoxes);
+	const notifAdminBox = requestBoxes.Meta.Total;
 
 	const CustomerMenu = props => {
 		return (
@@ -138,7 +158,7 @@ export function Sidebar() {
 								{val.title}
 								<span className="h-6 w-6 bd-rs-6 bg-danger-5 d-flex ai-center jc-center ml-a">
 									<span className="text tc-danger-contrast">
-										{val.notifications}
+										{notifAdminBox}
 									</span>
 								</span>
 							</MenuItem>
@@ -165,11 +185,11 @@ export function Sidebar() {
 							>
 								{""}
 								{val.title}
-								{/* <span className="h-6 w-6 bd-rs-6 bg-danger-5 d-flex ai-center jc-center ml-a">
+								<span className="h-6 w-6 bd-rs-6 bg-danger-5 d-flex ai-center jc-center ml-a">
 									<span className="text tc-danger-contrast">
 										{val.notifications}
 									</span>
-								</span> */}
+								</span>
 							</MenuItem>
 						);
 					})}

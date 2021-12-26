@@ -19,7 +19,7 @@ const CabinetPageDetail = ({ match }) => {
 		history.goBack();
 	};
 
-	console.log("test boy", cabinet.CabinetSlots);
+	console.log("test boy>>>>>>>>>>>>>>>>>>>.", cabinet?.cabinetSlots[0].id);
 
 	const cabinet_id = match.params.id;
 
@@ -45,7 +45,7 @@ const CabinetPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={cabinet.CodeCabinet}
+									defaultValue={cabinet.code_cabinet}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -53,7 +53,15 @@ const CabinetPageDetail = ({ match }) => {
 								<Form.Control
 									type="number"
 									disabled
-									defaultValue={cabinet.CodeTotalBays}
+									defaultValue={cabinet.total_bays}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Total Bays</Form.Label>
+								<Form.Control
+									type="number"
+									disabled
+									defaultValue={cabinet.total_bays}
 								/>
 							</Form.Group>
 

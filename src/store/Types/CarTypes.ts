@@ -1,9 +1,9 @@
 import { PaginationState } from "../Types/PaginationTypes";
 export interface CarInterfaceState {
-	Id: string | null;
-	Brand: string;
-	Capacity: string;
-	LicensePlate: string;
+	id: string | null;
+	brand: string;
+	capacity: string;
+	license_plate: string;
 }
 
 export interface CarsInterfaceState {

@@ -50,7 +50,7 @@ const PrintCabinet = ({ match }) => {
 							Lemari
 						</p>
 						<p style={font} className="ff-1-bd ta-center">
-							{cabinet.CodeCabinet}
+							{cabinet.code_cabinet}
 						</p>
 					</div>
 				</div>
