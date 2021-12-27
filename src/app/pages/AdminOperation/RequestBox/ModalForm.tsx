@@ -1,5 +1,5 @@
 import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, FieldArray } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
@@ -8,12 +8,8 @@ import {
 	SelectApprovalAdmin,
 	SelectApprovalOperation,
 	selectRequestBox,
-	selectRequestBoxes,
 } from "../../../../store/Selector/RequestBoxSelector";
 import {
-	CreateRequestBox,
-	UpdateRequestBox,
-	ApprovalAdmin,
 	ApprovalOpertaion,
 	RejectOpertaion,
 	RESET_REQUEST_BOX_FORM,
@@ -25,22 +21,24 @@ import {
 } from "store/Types/RequestBoxTypes";
 import { Autocomplete, TextField } from "@mui/material";
 import moment from "moment";
+import { selectCars } from "store/Selector/CarSelector";
+import { getCarsList } from "actions/CarAction";
 
-const Driver = [
-	{ id: "10c7780a-f456-44f9-b47a-cdb00daa8ce7", driver: "Andri Sanjaya" },
-	{ id: "10c7780a-f456-44f9-b47a-cdb00daa8ce7", driver: "Wawan Sutisna" },
-	{ id: "10c7780a-f456-44f9-b47a-cdb00daa8ce7", driver: "Eky Rahman" },
-	{ id: "10c7780a-f456-44f9-b47a-cdb00daa8ce7", driver: "Luki Hakim" },
-	{ id: "10c7780a-f456-44f9-b47a-cdb00daa8ce7", driver: "Mamat Suparman" },
-];
+// const Driver = [
+// 	{ id: "10c7780a-f456-44f9-b47a-cdb00daa8ce7", driver: "Andri Sanjaya" },
+// 	{ id: "10c7780a-f456-44f9-b47a-cdb00daa8ce7", driver: "Wawan Sutisna" },
+// 	{ id: "10c7780a-f456-44f9-b47a-cdb00daa8ce7", driver: "Eky Rahman" },
+// 	{ id: "10c7780a-f456-44f9-b47a-cdb00daa8ce7", driver: "Luki Hakim" },
+// 	{ id: "10c7780a-f456-44f9-b47a-cdb00daa8ce7", driver: "Mamat Suparman" },
+// ];
 
-const Archiver = [
-	{ id: "159c8fc3-6ead-4dbf-9a7d-6152e4fca0da", archiver: "Wiwin Sunarsih" },
-	{ id: "159c8fc3-6ead-4dbf-9a7d-6152e4fca0da", archiver: "Rico Abdan" },
-	{ id: "159c8fc3-6ead-4dbf-9a7d-6152e4fca0da", archiver: "Herman Jumawan" },
-	{ id: "159c8fc3-6ead-4dbf-9a7d-6152e4fca0da", archiver: "Hakim Ahmad" },
-	{ id: "159c8fc3-6ead-4dbf-9a7d-6152e4fca0da", archiver: "Ilman Sudari" },
-];
+// const Archiver = [
+// 	{ id: "159c8fc3-6ead-4dbf-9a7d-6152e4fca0da", archiver: "Wiwin Sunarsih" },
+// 	{ id: "159c8fc3-6ead-4dbf-9a7d-6152e4fca0da", archiver: "Rico Abdan" },
+// 	{ id: "159c8fc3-6ead-4dbf-9a7d-6152e4fca0da", archiver: "Herman Jumawan" },
+// 	{ id: "159c8fc3-6ead-4dbf-9a7d-6152e4fca0da", archiver: "Hakim Ahmad" },
+// 	{ id: "159c8fc3-6ead-4dbf-9a7d-6152e4fca0da", archiver: "Ilman Sudari" },
+// ];
 
 export const ModalFormReject = props => {
 	const [showAlert, setShowAlert] = useState(false);
@@ -169,8 +167,20 @@ export const ModalFormApprove = props => {
 	const approvalOperation: ApprovalOperationInterfaceState = useSelector(
 		SelectApprovalOperation,
 	);
-
 	const dispatch = useDispatch();
+
+	const car = useSelector(selectCars);
+
+	console.log("driver >>>>", car.Cars);
+
+	const FetchData = (page = 1) => {
+		dispatch(getCarsList(page));
+	};
+
+	useEffect(() => {
+		FetchData();
+	}, []);
+
 	function addDays(days) {
 		const result = new Date();
 		result.setDate(result.getDate() + days);
@@ -262,30 +272,30 @@ export const ModalFormApprove = props => {
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
+											{/* <Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Archiver</Form.Label>
 												<Autocomplete
 													id="Archiver"
-													options={Archiver}
+													options={props.dataArchiver}
 													// value={values.Transporter = Archiver["id"]}
-													getOptionLabel={option => option.archiver}
+													getOptionLabel={option => props.dataArchiver.archiver}
 													renderInput={params => (
 														<TextField {...params} label="..." />
 													)}
 													onChange={(event, newValue) => {
 														console.log(
-															JSON.stringify(newValue?.id, null, " "),
+															JSON.stringify(newValue, null, " "),
 														);
 													}}
 												/>
-											</Form.Group>
+											</Form.Group> */}
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Driver</Form.Label>
 												<Autocomplete
 													id="Driver"
-													options={Driver}
+													options={car.Cars}
 													// value={values.Transporter = Driver["id"]}
-													getOptionLabel={option => option.driver}
+													getOptionLabel={driver => driver.license_plate}
 													renderInput={params => (
 														<TextField {...params} label="..." />
 													)}

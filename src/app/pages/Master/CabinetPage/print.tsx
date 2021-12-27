@@ -6,22 +6,20 @@ import QR from "app/components/QRCode";
 import "../master.scoped.scss";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getBoxDetail } from "actions/BoxActions";
-import { selectBoxes, selectBox } from "store/Selector/BoxSelector";
-import { BoxInterfaceState } from "store/Types/BoxTypes";
-import Logo from "assets/images/logo.png";
-import { height, width } from "@mui/system";
-import { size } from "lodash";
+import { getCabinetDetail } from "actions/CabinetAction";
+import { selectCabinets, selectCabinet } from "store/Selector/CabinetSelector";
+import { CabinetInterfaceState } from "store/Types/CabinetTypes";
 
-const PrintBox = ({ match }) => {
-	const box: BoxInterfaceState = useSelector(selectBox);
+const PrintCabinet = ({ match }) => {
+	const cabinet: CabinetInterfaceState = useSelector(selectCabinet);
+	let history = useHistory();
 
-	const box_id = match.params.id;
+	const cabinet_id = match.params.id;
 
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(getBoxDetail(box_id));
+		dispatch(getCabinetDetail(cabinet_id));
 	}, []);
 
 	const Width = {
@@ -43,16 +41,16 @@ const PrintBox = ({ match }) => {
 						<QR
 							id="Detail-Box-QR"
 							title="Scan here"
-							value={box.SignCode}
+							value={cabinet.SignCode}
 							className="d-flex jc-center"
 						/>
 					</Card>
 					<div className="ml-2 col-6">
 						<p style={font} className="ff-1-bd ta-center ">
-							Box
+							Lemari
 						</p>
 						<p style={font} className="ff-1-bd ta-center">
-							{box.CodeBox}
+							{cabinet.code_cabinet}
 						</p>
 					</div>
 				</div>
@@ -61,4 +59,4 @@ const PrintBox = ({ match }) => {
 	);
 };
 
-export default PrintBox;
+export default PrintCabinet;

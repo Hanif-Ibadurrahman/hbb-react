@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
-import { ModalForm } from "./ModalForm";
 import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
 import { Pagination } from "app/components/Pagination";
-import { getFoldersList } from "actions/FolderAction";
-import { connect, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { deleteFolder } from "actions/FolderAction";
 import Alert from "app/components/Alerts";
+import { selectDocuemnts } from "store/Selector/DocumentSelector";
 
-const mapStateToProps = state => {
-	return {
-		folders: state.folders.folders,
-		meta: state.folders.meta,
-	};
-};
+import {
+	deleteFolder,
+	getFolderDetail,
+	getFoldersList,
+} from "actions/FolderAction";
+import { selectFolders } from "store/Selector/FolderSelector";
 
-const FolderPage = props => {
+const DocumentPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
-
+	const [modalShow, setModalShow] = useState(false);
+	const [showAlert, setShowAlert] = useState(false);
+	const folders = useSelector(selectFolders);
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
@@ -33,7 +33,7 @@ const FolderPage = props => {
 		FetchData();
 	}, []);
 
-	const onDelete = (dispatch, key) => {
+	const onDelete = (dispatch, id) => {
 		Swal.fire({
 			text: "Apakah anda ingin menghapus data ini?",
 			icon: "warning",
@@ -42,7 +42,7 @@ const FolderPage = props => {
 			confirmButtonText: "Hapus",
 		}).then(willDelete => {
 			if (willDelete) {
-				dispatch(deleteFolder(key));
+				dispatch(deleteFolder(id));
 				setShowAlertSuccess(true);
 				setTimeout(function () {
 					setShowAlertSuccess(false);
@@ -59,11 +59,21 @@ const FolderPage = props => {
 		});
 	};
 
-	const action = key => [
+	const _onHide = () => {
+		setModalShow(false);
+		setShowAlert(false);
+	};
+
+	const showEditForm = async id => {
+		dispatch(getFolderDetail(id));
+		setModalShow(true);
+	};
+
+	const action = id => [
 		{
 			icon: "fa-search",
 			title: "Detail",
-			url: "Folder-Detail/" + key,
+			url: "Folder-Detail/" + id,
 			type: 1,
 		},
 		{
@@ -74,7 +84,12 @@ const FolderPage = props => {
 		{
 			icon: "fa-edit",
 			title: "Edit",
-			type: 1,
+			onclick: () => {
+				showEditForm(id);
+			},
+			dispatch: dispatch,
+			row: id,
+			type: 2,
 		},
 		{
 			icon: "fa-trash-alt",
@@ -83,13 +98,13 @@ const FolderPage = props => {
 			type: 2,
 			onclick: onDelete,
 			dispatch: dispatch,
-			row: key,
+			row: id,
 		},
 	];
 
 	const header = [
 		{
-			title: "Code Folder",
+			title: "No Folder",
 			prop: "no",
 			sortable: true,
 			cellProps: {
@@ -104,7 +119,7 @@ const FolderPage = props => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.key)} />;
+				return <DropdownAction list={action(row.id)} />;
 			},
 		},
 	];
@@ -131,10 +146,15 @@ const FolderPage = props => {
 					show={showAlertFailed}
 					onHide={() => setShowAlertFailed(false)}
 				/>
-				<PageHeader breadcrumb={["Master", "Folder"]} addForm={<ModalForm />} />
-				<DataTable tableHeader={header} tableBody={props.folders} />
+				<PageHeader
+					breadcrumb={["Master", "Document"]}
+					modal={setModalShow}
+					valueModalSet={false}
+					value={true}
+				/>
+				<DataTable tableHeader={header} tableBody={folders.Folders} />
 				<Pagination
-					pageCount={props.meta.last_page}
+					pageCount={folders.Meta.LastPage}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>
@@ -142,4 +162,4 @@ const FolderPage = props => {
 	);
 };
 
-export default connect(mapStateToProps, null)(FolderPage);
+export default DocumentPage;

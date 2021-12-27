@@ -1,3 +1,27 @@
+import React, { useEffect, useState } from "react";
+import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
+import { useDispatch, useSelector } from "react-redux";
+import { getRequestBoxesList } from "actions/RequestBoxAction";
+
+function DataSidebar() {
+	const dispatch = useDispatch();
+
+	const FetchData = (page = 1) => {
+		dispatch(getRequestBoxesList(page));
+	};
+
+	console.log("Data >>>>>", FetchData);
+
+	useEffect(() => {
+		FetchData();
+	}, []);
+
+	const requestBoxes = useSelector(selectRequestBoxes);
+	const notif = requestBoxes.Meta.Total;
+	console.log("testing notif", notif);
+	return { notif };
+}
+
 export const DashboardData = [
 	{
 		title: "Superadmin",
@@ -26,7 +50,7 @@ export const PeminjamanData = [
 		title: "Request Box",
 		icon: "",
 		link: "/Approval-Admin/RequestBox",
-		notifications: "",
+		notifications: DataSidebar,
 	},
 	// {
 	// 	title: "Pickup Box",

@@ -2,19 +2,19 @@ import { CarInterfaceState } from "store/Types/CarTypes";
 import api from "./dox";
 export const create = async (data: CarInterfaceState) => {
 	let payload = {
-		brand: data.Brand,
-		capacity: data.Capacity,
-		license_plate: data.LicensePlate,
+		brand: data.brand,
+		capacity: data.capacity,
+		license_plate: data.license_plate,
 	};
 	return api.post("/cars", payload);
 };
 
 export const update = async (data: CarInterfaceState) => {
-	let id = data.Id;
+	let id = data.id;
 	let payload = {
-		brand: data.Brand,
-		capacity: data.Capacity,
-		license_plate: data.LicensePlate,
+		brand: data.brand,
+		capacity: data.capacity,
+		license_plate: data.license_plate,
 	};
 	console.log(payload);
 	return await api.put(`/cars/${id}`, payload);

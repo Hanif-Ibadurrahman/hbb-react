@@ -18,9 +18,9 @@ const ModalForm = props => {
 	const car: CarInterfaceState = useSelector(selectCar);
 	const dispatch = useDispatch();
 	const validationSchema = Yup.object().shape({
-		Brand: Yup.string().required("*Wajib diisi"),
-		Capacity: Yup.string().required("*Wajib diisi"),
-		LicensePlate: Yup.string().required("*Wajib diisi"),
+		brand: Yup.string().required("*Wajib diisi"),
+		capacity: Yup.string().required("*Wajib diisi"),
+		license_plate: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
@@ -50,7 +50,7 @@ const ModalForm = props => {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							let action = car.Id ? UpdateCar(values) : CreateCar(values);
+							let action = car.id ? UpdateCar(values) : CreateCar(values);
 							// dispatch(loadingbarTurnOn)
 							const res = await action;
 							await dispatch(res);
@@ -60,7 +60,7 @@ const ModalForm = props => {
 							});
 							dispatch({ type: RESET_CAR_FORM });
 							props.modalSet(props.valueModalSet);
-							car.Id ? (
+							car.id ? (
 								<>Data Berhasil di Edit</>
 							) : (
 								<>Data Berhasil di Tambah</>
@@ -83,7 +83,7 @@ const ModalForm = props => {
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									{car.Id ? <>Edit Data</> : <>Tambah Data</>}
+									{car.id ? <>Edit Data</> : <>Tambah Data</>}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
@@ -94,17 +94,17 @@ const ModalForm = props => {
 												<Form.Label>Merk Mobil</Form.Label>
 												<Form.Control
 													type="text"
-													name="Brand"
+													name="brand"
 													placeholder="Merk"
-													value={values.Brand}
+													value={values.brand}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.Brand && errors.Brand ? (
+												{touched.brand && errors.brand ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.Brand}
+														{errors.brand}
 													</p>
 												) : null}
 											</Form.Group>
@@ -112,17 +112,17 @@ const ModalForm = props => {
 												<Form.Label>Kapasitas (KG)</Form.Label>
 												<Form.Control
 													type="number"
-													name="Capacity"
+													name="capacity"
 													placeholder="Kapasitas"
-													value={values.Capacity}
+													value={values.capacity}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.Capacity && errors.Capacity ? (
+												{touched.capacity && errors.capacity ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.Capacity}
+														{errors.capacity}
 													</p>
 												) : null}
 											</Form.Group>
@@ -130,17 +130,17 @@ const ModalForm = props => {
 												<Form.Label>Nomor Plat</Form.Label>
 												<Form.Control
 													type="text"
-													name="LicensePlate"
+													name="license_plate"
 													placeholder="Kapasitas"
-													value={values.LicensePlate}
+													value={values.license_plate}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.LicensePlate && errors.LicensePlate ? (
+												{touched.license_plate && errors.license_plate ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.LicensePlate}
+														{errors.license_plate}
 													</p>
 												) : null}
 											</Form.Group>

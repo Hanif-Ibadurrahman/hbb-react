@@ -30,6 +30,8 @@ const DocumentPageDetail = ({ match }) => {
 
 	const NewDate = moment(document.Date).format("d MMMM YYYY");
 
+	console.log("Sign Code", document.SignCode);
+
 	return (
 		<>
 			<PageWrapper className="row w-100%">
@@ -146,11 +148,11 @@ const DocumentPageDetail = ({ match }) => {
 						<QR
 							id="Detail-Box-QR"
 							title="Scan here"
-							value="ID : A12O2O3"
+							value={document.SignCode}
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">{document.Id}</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">Document</p>
 						</div>
 					</Card>
 				</div>

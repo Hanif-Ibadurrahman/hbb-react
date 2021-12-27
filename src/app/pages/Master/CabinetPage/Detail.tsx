@@ -19,6 +19,8 @@ const CabinetPageDetail = ({ match }) => {
 		history.goBack();
 	};
 
+	console.log("test boy>>>>>>>>>>>>>>>>>>>.", cabinet?.cabinetSlots[0].id);
+
 	const cabinet_id = match.params.id;
 
 	const dispatch = useDispatch();
@@ -43,7 +45,7 @@ const CabinetPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={cabinet.CodeCabinet}
+									defaultValue={cabinet.code_cabinet}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -51,7 +53,15 @@ const CabinetPageDetail = ({ match }) => {
 								<Form.Control
 									type="number"
 									disabled
-									defaultValue={cabinet.CodeTotalBays}
+									defaultValue={cabinet.total_bays}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Total Bays</Form.Label>
+								<Form.Control
+									type="number"
+									disabled
+									defaultValue={cabinet.total_bays}
 								/>
 							</Form.Group>
 
@@ -80,13 +90,11 @@ const CabinetPageDetail = ({ match }) => {
 						<QR
 							id="Detail-Box-QR"
 							title="Scan here"
-							value="ID : A12O2O3"
+							value="SLO-baf01be1-af41-448c-9e99-f1a0d59de5a1"
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">
-								{cabinet.CodeCabinet}
-							</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">Slot</p>
 						</div>
 					</Card>
 				</div>

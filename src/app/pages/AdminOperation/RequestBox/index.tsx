@@ -6,22 +6,15 @@ import PageHeader from "../../Approval/Components/PageHeader";
 import DropdownAction from "app/components/DropdownAction";
 import { Pagination } from "app/components/Pagination";
 import {
-	getRequestBoxesList,
 	getRequestBoxDetail,
-	UpdateRequestBox,
-	ApprovalAdmin,
 	getAllConfirmedAdmin,
 } from "actions/RequestBoxAction";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { deleteBox } from "actions/BoxActions";
 import Alert from "app/components/Alerts";
-import {
-	selectRequestBoxes,
-	selectRequestBox,
-} from "store/Selector/RequestBoxSelector";
+import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
 import moment from "moment";
-import { RequestBoxInterfaceState } from "store/Types/RequestBoxTypes";
 import { ModalFormReject, ModalFormApprove } from "./ModalForm";
 
 const ApprovalOperationRequestBox = () => {
@@ -31,14 +24,11 @@ const ApprovalOperationRequestBox = () => {
 	const [modalShowApprove, setModalShowApprove] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
 	const requestBoxes = useSelector(selectRequestBoxes);
-
-	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
 	// const boxes = useSelector(selectBoxes);
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
 		dispatch(getAllConfirmedAdmin(page));
-		// dispatch(getBoxesList(page));
 	};
 
 	useEffect(() => {

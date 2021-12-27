@@ -60,11 +60,11 @@ const BoxPageDetail = ({ match }) => {
 						<QR
 							id="Detail-Box-QR"
 							title="Scan here"
-							value="ID : A12O2O3"
+							value={box.SignCode}
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">{box.CodeBox}</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">Box</p>
 						</div>
 					</Card>
 				</div>
