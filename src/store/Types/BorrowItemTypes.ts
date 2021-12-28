@@ -2,7 +2,7 @@ import { PaginationState } from "./PaginationTypes";
 export interface BorrowItemInterfaceState {
 	id: string | null;
 	note: string;
-	box_codes: [];
+	box_codes: any[];
 }
 
 export interface BorrowItemsInterfaceState {

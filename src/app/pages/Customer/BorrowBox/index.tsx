@@ -8,11 +8,12 @@ import DropdownAction from "app/pages/Master/Components/DropdownAction";
 import { Pagination } from "app/components/Pagination";
 import { getBoxesList, getBoxDetail } from "actions/BoxActions";
 import { AddCart } from "actions/BorrowItemAction";
-import { useDispatch, useSelector } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import Alert from "app/components/Alerts";
 import { selectBoxes } from "store/Selector/BoxSelector";
-import { ConfirmationModal } from "./components/ConfirmationModal";
+import ModalForm from "./ModalForm";
 import "./page.scoped.scss";
+import _ from "lodash";
 import {
 	selectBorrowItem,
 	selectBorrowItems,
@@ -22,14 +23,21 @@ const BorrowBoxPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
-	const [showAlert, setShowAlert] = useState(false);
-	const [cartList, setCartList] = useState<number[]>([]);
-	const [inArray, setInArray] = useState<number[]>([]);
-
+	const [cart, setCart] = useState<Partial<any>>({});
 	const boxes = useSelector(selectBoxes);
-	const cart = useSelector(selectBorrowItems);
-	console.log("total boy", cart.numberCart);
-	console.log("cart boy", cart.Cart);
+	const cartStash = useSelector((state: RootStateOrAny) => state?.borrowItems);
+
+	// console.log("Total Cart Tash>>>>", Cart.length);
+
+	useEffect(() => {
+		setCart(cartStash);
+		console.log("CART NEW>>", cart.Cart);
+	}, []);
+
+	useEffect(() => {
+		setCart(cartStash);
+		console.log("CART NEW>>", cart.Cart);
+	}, [cartStash]);
 
 	const dispatch = useDispatch();
 
@@ -39,22 +47,24 @@ const BorrowBoxPage = () => {
 
 	useEffect(() => {
 		FetchData();
-		setInArray([]);
 	}, []);
 
 	const _onHide = () => {
 		setModalShow(false);
-		setShowAlert(false);
-	};
-
-	const showEditForm = async id => {
-		dispatch(getBoxDetail(id));
-		setModalShow(true);
 	};
 
 	const addCart = async id => {
-		console.log("id test", id);
+		checkCart(id);
 		dispatch(await AddCart(id));
+	};
+
+	const checkCart = id => {
+		if (cart) {
+			console.log("total cart", cart?.numberCart, cart?.Cart);
+			console.log("id onclick", id);
+			const checkCart = cart?.Cart.indexOf(String(id));
+			console.log("check cart index: ", checkCart);
+		}
 	};
 
 	const action = id => [
@@ -62,7 +72,6 @@ const BorrowBoxPage = () => {
 			icon: "fa-hand-holding-box",
 			title: "Pickup",
 			onclick: () => {
-				// showEditForm(id);
 				addCart(id);
 			},
 			dispatch: dispatch,
@@ -117,13 +126,18 @@ const BorrowBoxPage = () => {
 						<h5 className="text ff-1-bd mr-3">{cart.numberCart}</h5>
 						<p className="p-lg">Box dipilih</p>
 					</div>
-					<ConfirmationModal />
-					{/* <div className="d-flex ai-center">
-            <span className="icon p-lg mr-2" style={{ marginTop: -3 }}>
-              <i className="fas fa-exclamation-circle"></i>
-            </span>
-            <span className="text">Tidak ada box dipinjam</span>
-          </div> */}
+					<span
+						className="ph-2 h-12 bd-rs-6 d-flex ai-center jc-center bg-success-1 ml-a cur-p"
+						onClick={() => setModalShow(true)}
+					>
+						<span className="text p-lg mh-2 tc-success-5">Proses</span>
+						<span
+							className="icon h-9 w-9 bd-rs-6 d-flex ai-center jc-center bg-success-5"
+							style={{ marginTop: -3 }}
+						>
+							<i className="fas fa-chevron-double-right tc-dark-contrast"></i>
+						</span>
+					</span>
 				</div>
 			</>
 		);
@@ -152,18 +166,12 @@ const BorrowBoxPage = () => {
 					onHide={() => setShowAlertFailed(false)}
 				/>
 
-				{/* <ModalForm
+				<ModalForm
 					modal={modalShow}
 					hide={_onHide}
 					modalSet={setModalShow}
 					valueModalSet={false}
 				/>
-				<PageHeader
-					breadcrumb={["Master", "Box"]}
-					modal={setModalShow}
-					valueModalSet={false}
-					value={true}
-				/> */}
 				<DataTable tableHeader={header} tableBody={boxes.Boxes} />
 				<Pagination
 					pageCount={boxes.Meta.LastPage}

@@ -1,5 +1,8 @@
 import React from "react";
-import { BorrowItemInterfaceState } from "store/Types/BorrowItemTypes";
+import {
+	BorrowItemInterfaceState,
+	BorrowItemsInterfaceState,
+} from "store/Types/BorrowItemTypes";
 import { create } from "../api/borrowItem";
 export const CREATE_BORROW_ITEM = "CREATE_BORROW_ITEM";
 export const BORROW_ITEM_ERROR = "BORROW_ITEM_ERROR";
@@ -54,13 +57,13 @@ export const GetNumberCart = () => {
 	};
 };
 
-export const AddCart = payload => {
-	console.log("Add cart", payload);
+export const AddCart = async (data: BorrowItemInterfaceState) => {
+	console.log("Add cart action", data);
 	return async dispatch => {
 		try {
 			dispatch({
 				type: "ADD_CART",
-				payload,
+				payload: data,
 			});
 		} catch (error: any) {
 			console.log(error);
@@ -69,7 +72,7 @@ export const AddCart = payload => {
 	};
 };
 
-export const DeleteCart = (data: BorrowItemInterfaceState) => {
+export const DeleteCart = async (data: BorrowItemInterfaceState) => {
 	return async dispatch => {
 		try {
 			dispatch({

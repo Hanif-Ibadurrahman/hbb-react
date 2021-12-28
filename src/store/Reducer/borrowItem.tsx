@@ -1,4 +1,3 @@
-import { string } from "yup/lib/locale";
 import {
 	CREATE_BORROW_ITEM,
 	RESET_BORROW_LIST,
@@ -6,8 +5,10 @@ import {
 	SET_BORROW_DATA,
 	GET_NUMBER_CART,
 	ADD_CART,
+	DELETE_CART,
 } from "../../actions/BorrowItemAction";
 import { BorrowItemsInterfaceState } from "../Types/BorrowItemTypes";
+import _ from "lodash";
 export const initialState: BorrowItemsInterfaceState = {
 	BorrowItems: [],
 	BorrowItem: {
@@ -47,15 +48,24 @@ export default (
 				...state,
 			};
 		case ADD_CART:
-			let cart = {
-				id: payload?.data?.data?.id,
+			const checkCartExist = () => {
+				if (state?.Cart.indexOf(payload, 0) < 0) return true;
+				return false;
 			};
-			state.Cart.push(cart);
-			console.log("data redux", payload.box_codes);
-
 			return {
 				...state,
-				numberCart: state.numberCart + 1,
+				Cart: checkCartExist() ? [...state.Cart, payload] : [...state.Cart],
+				numberCart: checkCartExist() ? state.numberCart + 1 : state.numberCart,
+			};
+		case DELETE_CART:
+			// const cartStash = [...state.Cart]
+			// const deleteSelectedCart = _.remove(cartStash, function (n) {
+			// 	return n === payload;
+			// })
+			return {
+				...state,
+				numberCart: state.numberCart - 1,
+				Cart: state.Cart.filter(Cart => Cart !== payload),
 			};
 		case RESET_BORROW_LIST:
 			return {
