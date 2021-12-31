@@ -39,10 +39,10 @@ export default (
 				...state,
 				Boxes: payload.data,
 				Meta: {
-					LastPage: payload.meta.last_page,
-					CurrentPage: payload.meta.current_page,
-					Total: payload.meta.total_page,
-					PerPage: payload.meta.total_page,
+					LastPage: payload?.meta?.last_page,
+					CurrentPage: payload?.meta?.current_page,
+					Total: payload?.meta?.total_page,
+					PerPage: payload?.meta?.total_page,
 				},
 				ErrorBox: payload.errorMessage,
 			};
@@ -60,8 +60,8 @@ export default (
 			return {
 				...state,
 				Box: {
-					CodeBox: payload.data.data.code_box,
-					Id: payload.data.data.id,
+					CodeBox: payload?.data?.data?.code_box,
+					Id: payload?.data?.data?.id,
 					SignCode: payload?.data?.data?.sign_code,
 				},
 			};
@@ -69,8 +69,8 @@ export default (
 			return {
 				...state,
 				Box: {
-					Id: payload.data.id,
-					CodeBox: payload.data.code_box,
+					Id: payload?.data?.id,
+					CodeBox: payload?.data?.code_box,
 					SignCode: payload?.data?.data?.sign_code,
 				},
 				ErrorBox: payload.errorMessage,

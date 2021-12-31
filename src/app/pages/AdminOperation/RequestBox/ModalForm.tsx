@@ -20,25 +20,11 @@ import {
 	ApprovalOperationInterfaceState,
 } from "store/Types/RequestBoxTypes";
 import { Autocomplete, TextField } from "@mui/material";
+// import TextField from "@material-ui/core/TextField";
+// import Autocomplete from "@material-ui/lab/Autocomplete";
 import moment from "moment";
 import { selectCars } from "store/Selector/CarSelector";
 import { getCarsList } from "actions/CarAction";
-
-// const Driver = [
-// 	{ id: "10c7780a-f456-44f9-b47a-cdb00daa8ce7", driver: "Andri Sanjaya" },
-// 	{ id: "10c7780a-f456-44f9-b47a-cdb00daa8ce7", driver: "Wawan Sutisna" },
-// 	{ id: "10c7780a-f456-44f9-b47a-cdb00daa8ce7", driver: "Eky Rahman" },
-// 	{ id: "10c7780a-f456-44f9-b47a-cdb00daa8ce7", driver: "Luki Hakim" },
-// 	{ id: "10c7780a-f456-44f9-b47a-cdb00daa8ce7", driver: "Mamat Suparman" },
-// ];
-
-// const Archiver = [
-// 	{ id: "159c8fc3-6ead-4dbf-9a7d-6152e4fca0da", archiver: "Wiwin Sunarsih" },
-// 	{ id: "159c8fc3-6ead-4dbf-9a7d-6152e4fca0da", archiver: "Rico Abdan" },
-// 	{ id: "159c8fc3-6ead-4dbf-9a7d-6152e4fca0da", archiver: "Herman Jumawan" },
-// 	{ id: "159c8fc3-6ead-4dbf-9a7d-6152e4fca0da", archiver: "Hakim Ahmad" },
-// 	{ id: "159c8fc3-6ead-4dbf-9a7d-6152e4fca0da", archiver: "Ilman Sudari" },
-// ];
 
 export const ModalFormReject = props => {
 	const [showAlert, setShowAlert] = useState(false);
@@ -80,7 +66,7 @@ export const ModalFormReject = props => {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							values.Id = requestBox.Id;
+							values.Id = requestBox.id;
 							dispatch(await RejectOpertaion(values));
 							setShowAlert(true);
 							setTimeout(function () {
@@ -188,7 +174,7 @@ export const ModalFormApprove = props => {
 	}
 	const DeliveredDate = moment(addDays(2)).format("YYYY-MM-DD");
 	const validationSchema = Yup.object().shape({
-		Date: Yup.string().required("*Wajib diisi"),
+		delivery_date: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
@@ -218,17 +204,19 @@ export const ModalFormApprove = props => {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							values.Id = requestBox.Id;
-							values.Approved = true;
-							values.Transporter = "10c7780a-f456-44f9-b47a-cdb00daa8ce7";
-							values.Archiver = "159c8fc3-6ead-4dbf-9a7d-6152e4fca0da";
+							console.log("Kambing Hitam", values);
+
+							values.id = requestBox.id;
+							values.is_approved = true;
+							// values.Transporter = "10c7780a-f456-44f9-b47a-cdb00daa8ce7";
+							values.archiver_id = "f67312fb-8837-4661-b3e5-d59776f78c8c";
 							dispatch(await ApprovalOpertaion(values));
 							dispatch({ type: RESET_REQUEST_BOX_FORM });
 							props.modalSet(props.valueModalSet);
 							setShowAlert(true);
-							setTimeout(function () {
-								window.location.reload();
-							}, 1000);
+							// setTimeout(function () {
+							// 	window.location.reload();
+							// }, 1000);
 						} catch (e) {
 							console.log("ini error di depan");
 						}
@@ -242,6 +230,7 @@ export const ModalFormApprove = props => {
 						handleBlur,
 						handleSubmit,
 						isSubmitting,
+						setFieldValue,
 					}) => (
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
@@ -258,17 +247,17 @@ export const ModalFormApprove = props => {
 												<Form.Control
 													type="date"
 													min={DeliveredDate}
-													name="Date"
+													name="delivery_date"
 													placeholder="Date"
-													value={values.Date}
+													value={values.delivery_date}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.Date && errors.Date ? (
+												{touched.delivery_date && errors.delivery_date ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.Date}
+														{errors.delivery_date}
 													</p>
 												) : null}
 											</Form.Group>
@@ -291,10 +280,11 @@ export const ModalFormApprove = props => {
 											</Form.Group> */}
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Driver</Form.Label>
-												<Autocomplete
+												{/* <Autocomplete
 													id="Driver"
+													name="id"
 													options={car.Cars}
-													// value={values.Transporter = Driver["id"]}
+													value={values.transporter_id}
 													getOptionLabel={driver => driver.license_plate}
 													renderInput={params => (
 														<TextField {...params} label="..." />
@@ -302,6 +292,28 @@ export const ModalFormApprove = props => {
 													onChange={(event, newValue) => {
 														console.log(JSON.stringify(newValue, null, " "));
 													}}
+												/> */}
+												<Autocomplete
+													id="transporter_id"
+													// name="transporter_id"
+													options={car.Cars}
+													getOptionLabel={option => option.license_plate}
+													style={{ width: 300 }}
+													onChange={(e, value) => {
+														console.log(value);
+														setFieldValue(
+															"transporter_id",
+															value !== null ? value : values.transporter_id,
+														);
+													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															label="Cities"
+															name="transporter_id"
+															{...params}
+														/>
+													)}
 												/>
 											</Form.Group>
 										</Col>

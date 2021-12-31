@@ -1,5 +1,14 @@
-import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
-import React, { useState } from "react";
+import {
+	Form,
+	Modal,
+	Container,
+	Row,
+	Col,
+	Button,
+	Dropdown,
+	DropdownButton,
+} from "react-bootstrap";
+import React, { useEffect, useState } from "react";
 import { Formik, FieldArray, Field } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
@@ -23,9 +32,9 @@ const ModalForm = props => {
 	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
 	const dispatch = useDispatch();
 	const validationSchema = Yup.object().shape({
-		Quantity: Yup.string().required("*Wajib diisi"),
-		DeliveredAt: Yup.date().required("*Wajib diisi"),
-		Note: Yup.string().required("*Wajib diisi"),
+		quantity: Yup.string().required("*Wajib diisi"),
+		delivered_at: Yup.date().required("*Wajib diisi"),
+		note: Yup.string().required("*Wajib diisi"),
 	});
 
 	function addDays(days) {
@@ -33,7 +42,24 @@ const ModalForm = props => {
 		result.setDate(result.getDate() + days);
 		return result;
 	}
-	const DeliveredDate = moment(addDays(2)).format("YYYY-MM-DD");
+	const RegularDate = moment(addDays(2)).format("YYYY-MM-DD");
+	const Express = moment(addDays(0)).add(2, "hours").format("YYYY-MM-DDTHH:MM");
+
+	function addWeekdays(date, days) {
+		date = moment(date); // use a clone
+		while (days > 0) {
+			date = date.add(1, "days");
+			// decrease "days" only if it's a weekday.
+			if (date.isoWeekday() !== 6 && date.isoWeekday() !== 7) {
+				days -= 1;
+			}
+		}
+		return date;
+	}
+
+	const weekend = addWeekdays;
+
+	console.log("Kambing Hitam", weekend);
 
 	function handleOnChange() {
 		setChecked(!checked);
@@ -65,7 +91,8 @@ const ModalForm = props => {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							let action = requestBox.Id
+							console.log(values);
+							let action = requestBox.id
 								? UpdateRequestBox(values)
 								: CreateRequestBox(values);
 							// dispatch(loadingbarTurnOn)
@@ -75,13 +102,13 @@ const ModalForm = props => {
 								dispatch({ type: RESET_REQUEST_BOX_FORM });
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
-								setTimeout(function () {
-									window.location.reload();
-								}, 1000);
+								// setTimeout(function () {
+								// 	window.location.reload();
+								// }, 1000);
 							});
 							dispatch({ type: RESET_REQUEST_BOX_FORM });
 							props.modalSet(props.valueModalSet);
-							requestBox.Id ? (
+							requestBox.id ? (
 								<>Data Berhasil di Edit</>
 							) : (
 								<>Data Berhasil di Tambah</>
@@ -104,8 +131,8 @@ const ModalForm = props => {
 					}) => (
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
-								<Modal.Title id="contained-modal-title-vcenter">
-									{requestBox.Id ? <>Edit Data</> : <>Tambah Data</>}
+								<Modal.Title>
+									{requestBox.id ? <>Edit Data</> : <>Tambah Data</>}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
@@ -116,36 +143,69 @@ const ModalForm = props => {
 												<Form.Label>Quantity</Form.Label>
 												<Form.Control
 													type="number"
-													name="Quantity"
+													name="quantity"
 													placeholder="Quantity"
-													value={values.Quantity}
+													value={values.quantity}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.Quantity && errors.Quantity ? (
+												{touched.quantity && errors.quantity ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.Quantity}
+														{errors.quantity}
 													</p>
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Tanggal Pengiriman</Form.Label>
-												<Form.Control
-													type="date"
-													min={DeliveredDate}
-													name="DeliveredAt"
-													placeholder="DeliveredAt"
-													value={values.DeliveredAt}
+												<Form.Label>Metode Pengiriman</Form.Label>
+												<Form.Select
+													className="cur-p"
+													name="delivery_method"
+													value={values.delivery_method}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
-												/>
-												{touched.DeliveredAt && errors.DeliveredAt ? (
+												>
+													<option value="regular">Regular</option>
+													<option value="express">Express</option>
+													<option value="emergency">Emergency</option>
+												</Form.Select>
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Waktu Pengiriman</Form.Label>
+												{values.delivery_method == "regular" ? (
+													<Form.Control
+														type="date"
+														min={RegularDate}
+														name="delivered_at"
+														placeholder="Delivered"
+														value={values.delivered_at}
+														onChange={e => {
+															handleChange(e);
+														}}
+														onBlur={handleBlur}
+													/>
+												) : values.delivery_method == "express" ? (
+													<Form.Control
+														type="text"
+														// minTime="10:20:00"
+														name="delivered_at"
+														placeholder="Delivered"
+														value={(values.delivered_at = Express)}
+														onChange={e => {
+															handleChange(e);
+														}}
+														onBlur={handleBlur}
+														disabled
+													/>
+												) : values.delivery_method == "emergency" ? (
+													<></>
+												) : null}
+												{touched.delivered_at && errors.delivered_at ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.DeliveredAt}
+														{errors.delivered_at}
 													</p>
 												) : null}
 											</Form.Group>
@@ -153,17 +213,17 @@ const ModalForm = props => {
 												<Form.Label>Note</Form.Label>
 												<Form.Control
 													as="textarea"
-													name="Note"
+													name="note"
 													placeholder="Note"
-													value={values.Note}
+													value={values.note}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.DeliveredAt && errors.DeliveredAt ? (
+												{touched.delivered_at && errors.delivered_at ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.DeliveredAt}
+														{errors.delivered_at}
 													</p>
 												) : null}
 											</Form.Group>
@@ -172,34 +232,28 @@ const ModalForm = props => {
 													type="checkbox"
 													label="Required Code Box"
 													onChange={handleOnChange}
-													onClick={() => setFieldValue(`CodeBoxes.Id_Box`, "")}
+													onClick={() => setFieldValue(`code_boxes`, "")}
 												/>
 											</Form.Group>
-											<FieldArray name="CodeBoxes">
+											<FieldArray name="code_boxes">
 												{({ remove, push }) => (
 													<div className={checked ? "d-block" : "d-none"}>
-														{values.CodeBoxes.length > 0 &&
-															values.CodeBoxes.map((codeBox, index) => (
+														{values.code_boxes.length > 0 &&
+															values.code_boxes.map((codeBox, index) => (
 																<Form.Group className="mb-4" key={index}>
 																	<Form.Label>Code Box</Form.Label>
 																	<Row>
 																		<Col xs={10}>
 																			<Form.Control
 																				type="text"
-																				name={`CodeBoxes.${index}`}
+																				name={`code_boxes.${index}`}
 																				placeholder="Code Box"
-																				value={values.CodeBoxes["Id_Box"]}
+																				value={values.code_boxes[index]}
 																				onChange={e => {
 																					handleChange(e);
 																				}}
 																				onBlur={handleBlur}
 																			/>
-																			{touched.DeliveredAt &&
-																			errors.DeliveredAt ? (
-																				<p className="tc-danger-5 pos-a p-sm">
-																					{errors.DeliveredAt}
-																				</p>
-																			) : null}
 																		</Col>
 																		<Col xs={2}>
 																			<Button

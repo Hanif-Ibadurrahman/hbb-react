@@ -9,6 +9,7 @@ import {
 	APPROVAL_ADMIN,
 	GET_CONFIRMED_ADMIN,
 	REJECT_OPERTAION,
+	APPROVAL_OPERATION,
 } from "../../actions/RequestBoxAction";
 
 import {
@@ -25,23 +26,25 @@ export const initialState: RequestBoxesInterfaceState = {
 		Description: "",
 	},
 	ApprovalOperation: {
-		Id: "",
-		Approved: false,
-		Date: "",
-		Archiver: "",
-		Transporter: "",
+		id: "",
+		is_approved: false,
+		delivery_date: "",
+		archiver_id: "",
+		transporter_id: {
+			id: "",
+			brand: "",
+			capacity: "",
+			license_plate: "",
+		},
 	},
 	RequestBox: {
-		Id: "",
-		Quantity: "",
-		Note: "",
-		Status: "",
-		DeliveredAt: "",
-		CodeBoxes: [
-			{
-				Id_Box: "",
-			},
-		],
+		id: "",
+		quantity: "",
+		note: "",
+		status: "",
+		delivered_at: "",
+		delivery_method: "regular",
+		code_boxes: [],
 	},
 
 	Meta: {
@@ -67,12 +70,12 @@ export default (
 		case GET_REQUEST_BOXES_LIST:
 			return {
 				...state,
-				RequestBoxes: payload.data,
+				RequestBoxes: payload?.data,
 				Meta: {
-					LastPage: payload.meta.last_page,
-					CurrentPage: payload.meta.current_page,
-					Total: payload.meta.total,
-					PerPage: payload.meta.total_page,
+					LastPage: payload?.met?.last_page,
+					CurrentPage: payload?.meta?.current_page,
+					Total: payload?.meta?.total,
+					PerPage: payload?.meta?.total_page,
 				},
 				ErrorRequestBox: payload.errorMessage,
 			};
@@ -81,64 +84,43 @@ export default (
 				...state,
 				RequestBoxes: payload.data,
 				Meta: {
-					LastPage: payload.meta.last_page,
-					CurrentPage: payload.meta.current_page,
-					Total: payload.meta.total_page,
-					PerPage: payload.meta.total_page,
+					LastPage: payload?.meta?.last_page,
+					CurrentPage: payload?.meta?.current_page,
+					Total: payload?.meta?.total_page,
+					PerPage: payload?.meta?.total_page,
 				},
 				ErrorRequestBox: payload.errorMessage,
 			};
 		case GET_REQUEST_BOX_DETAIL:
 			return {
 				...state,
-				RequestBox: {
-					Id: payload?.data?.data?.id,
-					Quantity: payload?.data?.data?.quantity,
-					Note: payload?.data?.data?.note,
-					Status: payload?.data?.data?.status,
-					DeliveredAt: payload?.data?.data?.delivered_at,
-					CodeBoxes: payload?.data?.data?.code_boxes,
-				},
-				ErrorRequestBox: payload.errorMessage,
+				RequestBox: payload?.data?.data,
+				ErrorRequestBox: payload?.errorMessage,
 			};
 		case CREATE_REQUEST_BOX:
 			return {
 				...state,
-				RequestBox: {
-					Id: payload?.data?.data?.id,
-					Quantity: payload?.data?.data?.quantity,
-					Note: payload?.data?.data?.note,
-					Status: payload?.data?.data?.status,
-					DeliveredAt: payload?.data?.data?.delivered_at,
-					CodeBoxes: [
-						{
-							Id_Box: payload?.data?.data?.code_boxes,
-						},
-					],
-					// CodeBoxes: payload?.data?.data?.code_boxes,
-				},
+				RequestBox: payload?.data?.data,
 			};
 		case UPDATE_REQUEST_BOX:
 			return {
 				...state,
-				RequestBox: {
-					Id: payload.data.data.id,
-					Quantity: payload.data.data.quantity,
-					Note: payload.data.data.note,
-					Status: payload.data.data.status,
-					DeliveredAt: payload.data.data.delivered_at,
-					CodeBoxes: payload?.data?.data?.code_boxes,
-				},
-				ErrorRequestBox: payload.errorMessage,
+				RequestBox: payload?.data?.data,
+				ErrorRequestBox: payload?.errorMessage,
 			};
 		case APPROVAL_ADMIN:
 			return {
 				...state,
 				ApprovalAdmin: {
 					Id: payload.data?.data?.id,
-					Approved: payload.data?.data?.is_approved,
-					Description: payload.data?.data?.description,
+					Approved: payload?.data?.data?.is_approved,
+					Description: payload?.data?.data?.description,
 				},
+			};
+		case APPROVAL_OPERATION:
+			return {
+				...state,
+				ApprovalOperation: payload?.data?.data,
 			};
 		case REJECT_OPERTAION:
 			return {
@@ -158,16 +140,13 @@ export default (
 			return {
 				...state,
 				RequestBox: {
-					Id: "",
-					Quantity: "",
-					Note: "",
-					Status: "",
-					DeliveredAt: "",
-					CodeBoxes: [
-						{
-							Id_Box: "",
-						},
-					],
+					id: "",
+					quantity: "",
+					note: "",
+					status: "",
+					delivered_at: "",
+					delivery_method: "regular",
+					code_boxes: [],
 				},
 			};
 

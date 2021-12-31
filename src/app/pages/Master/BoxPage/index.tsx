@@ -6,7 +6,7 @@ import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
 import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import { getBoxesList, getBoxDetail } from "actions/BoxActions";
+import { getBoxesList, getBoxDetail, RESET_BOX_FORM } from "actions/BoxActions";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { deleteBox } from "actions/BoxActions";
@@ -58,6 +58,7 @@ const BoxPage = () => {
 	const _onHide = () => {
 		setModalShow(false);
 		setShowAlert(false);
+		dispatch({ type: RESET_BOX_FORM });
 	};
 
 	const showEditForm = async id => {

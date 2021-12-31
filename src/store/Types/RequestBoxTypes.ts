@@ -1,15 +1,13 @@
 import { PaginationState } from "../Types/PaginationTypes";
+import { CarInterfaceState } from "./CarTypes";
 export interface RequestBoxInterfaceState {
-	Id: string | null;
-	Quantity: string;
-	Note: string;
-	Status: string;
-	DeliveredAt: string;
-	CodeBoxes: [
-		{
-			Id_Box: string;
-		},
-	];
+	id: string | null;
+	quantity: string;
+	note: string;
+	status: string;
+	delivered_at: string;
+	delivery_method: string;
+	code_boxes: [];
 }
 
 export interface ApprovalInterfaceState {
@@ -19,11 +17,11 @@ export interface ApprovalInterfaceState {
 }
 
 export interface ApprovalOperationInterfaceState {
-	Id: string | null;
-	Approved: boolean;
-	Date: string;
-	Archiver: string;
-	Transporter: string;
+	id: string | null;
+	is_approved: boolean;
+	delivery_date: string;
+	archiver_id: string;
+	transporter_id: CarInterfaceState;
 }
 
 export interface RequestBoxesInterfaceState {
