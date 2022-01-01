@@ -143,9 +143,14 @@ export const MasterData = [
 		link: "/Company",
 	},
 	{
-		title: "User",
+		title: "Transporter",
 		icon: "",
-		link: "/User",
+		link: "/Trasnporter",
+	},
+	{
+		title: "Archiver",
+		icon: "",
+		link: "/Archiver",
 	},
 	{
 		title: "Divisi",

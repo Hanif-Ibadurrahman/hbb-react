@@ -7,6 +7,7 @@ import { DocumentsInterfaceState } from "store/Types/DocumentTypes";
 import { CabinetsInterfaceState } from "store/Types/CabinetTypes";
 import { CompanysInterfaceState } from "store/Types/CompanyTypes";
 import { FoldersInterfaceState } from "store/Types/FolderTypes";
+import { UsersInterfaceState } from "store/Types/UserTypes";
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -29,6 +30,7 @@ export interface RootState {
 	cars?: CarsInterfaceState;
 	cabinets?: CabinetsInterfaceState;
 	folders?: FoldersInterfaceState;
+	users?: UsersInterfaceState;
 
 	// [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }
