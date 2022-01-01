@@ -65,6 +65,10 @@ import CompanyPageDetail from "./Master/CompanyPage/Detail";
 // 7 - CAR
 import CarPage from "./Master/CarPage";
 import CarPageDetail from "./Master/CarPage/Detail";
+// 8 - USER TRANSPORTER
+import TransporterPage from "./Master/Staff/TransporterPage";
+// 9 - USER ARCHIVER
+import ArchiverPage from "./Master/Staff/ArchiverPage";
 
 // import { FolderPage } from "./Master/FolderPage";
 // -=-=-=-=-=-
@@ -238,6 +242,14 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/Company-Detail/:id"}
 							component={CompanyPageDetail}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Trasnporter"}
+							component={TransporterPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Archiver"}
+							component={ArchiverPage}
 						/>
 						{/*---------- MASTER - - - END ---------*/}
 
