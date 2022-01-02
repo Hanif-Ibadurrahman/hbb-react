@@ -7,12 +7,11 @@ import DropdownAction from "../../Components/DropdownAction";
 // import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
 import { useDispatch, useSelector } from "react-redux";
-import { selectBoxes } from "store/Selector/BoxSelector";
-import { getTransporterList } from "actions/UserAction";
-import { selectUsers } from "store/Selector/UserSelector";
+import { getTransporterList } from "actions/TransporterAction";
+import { selectTransporters } from "store/Selector/TransporterSelector";
 
 const TransporterPage = () => {
-	const transporter = useSelector(selectUsers);
+	const transporter = useSelector(selectTransporters);
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
@@ -86,7 +85,7 @@ const TransporterPage = () => {
 					valueModalSet={false}
 					value={true}
 				/>
-				<DataTable tableHeader={header} tableBody={transporter.Users} />
+				<DataTable tableHeader={header} tableBody={transporter.Transporters} />
 				<Pagination
 					pageCount={transporter.Meta.LastPage}
 					onPageChange={data => FetchData(data.selected + 1)}

@@ -1,6 +1,6 @@
 import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
-import { Formik, FieldArray } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,11 +20,12 @@ import {
 	ApprovalOperationInterfaceState,
 } from "store/Types/RequestBoxTypes";
 import { Autocomplete, TextField } from "@mui/material";
-// import TextField from "@material-ui/core/TextField";
-// import Autocomplete from "@material-ui/lab/Autocomplete";
 import moment from "moment";
-import { selectCars } from "store/Selector/CarSelector";
-import { getCarsList } from "actions/CarAction";
+import { selectTransporters } from "store/Selector/TransporterSelector";
+import { getTransporterList } from "actions/TransporterAction";
+import { selectArchivers } from "store/Selector/ArchiverSelector";
+import { getArchiverList } from "actions/ArchiverAction";
+import "./autocomplete.scoped.scss";
 
 export const ModalFormReject = props => {
 	const [showAlert, setShowAlert] = useState(false);
@@ -148,20 +149,30 @@ export const ModalFormReject = props => {
 
 export const ModalFormApprove = props => {
 	const [showAlert, setShowAlert] = useState(false);
-	const [alertMessage, setalertMessage] = useState("");
+	// const [alertMessage, setalertMessage] = useState("");
 	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
 	const approvalOperation: ApprovalOperationInterfaceState = useSelector(
 		SelectApprovalOperation,
 	);
 	const dispatch = useDispatch();
 
-	const car = useSelector(selectCars);
+	const transporter = useSelector(selectTransporters);
+	const archiver = useSelector(selectArchivers);
 
-	console.log("driver >>>>", car.Cars);
+	console.log("driver >>>>", transporter);
+	console.log("archiver >>>>", archiver.Archivers);
 
 	const FetchData = (page = 1) => {
-		dispatch(getCarsList(page));
+		dispatch(getTransporterList(page));
 	};
+
+	const ArchiverData = (page = 1) => {
+		dispatch(getArchiverList(page));
+	};
+
+	useEffect(() => {
+		ArchiverData();
+	}, []);
 
 	useEffect(() => {
 		FetchData();
@@ -208,8 +219,6 @@ export const ModalFormApprove = props => {
 
 							values.id = requestBox.id;
 							values.is_approved = true;
-							// values.Transporter = "10c7780a-f456-44f9-b47a-cdb00daa8ce7";
-							values.archiver_id = "f67312fb-8837-4661-b3e5-d59776f78c8c";
 							dispatch(await ApprovalOpertaion(values));
 							dispatch({ type: RESET_REQUEST_BOX_FORM });
 							props.modalSet(props.valueModalSet);
@@ -261,44 +270,35 @@ export const ModalFormApprove = props => {
 													</p>
 												) : null}
 											</Form.Group>
-											{/* <Form.Group className="mb-4" controlId="formBasicEmail">
+											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Archiver</Form.Label>
 												<Autocomplete
-													id="Archiver"
-													options={props.dataArchiver}
-													// value={values.Transporter = Archiver["id"]}
-													getOptionLabel={option => props.dataArchiver.archiver}
-													renderInput={params => (
-														<TextField {...params} label="..." />
-													)}
-													onChange={(event, newValue) => {
-														console.log(
-															JSON.stringify(newValue, null, " "),
+													id="archiver_id"
+													options={archiver.Archivers}
+													getOptionLabel={option => option.staff.name}
+													onChange={(e, value) => {
+														console.log(value);
+														setFieldValue(
+															"archiver_id",
+															value !== null ? value : values.archiver_id,
 														);
 													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															placeholder="Archiver"
+															name="archiver_id"
+															{...params}
+														/>
+													)}
 												/>
-											</Form.Group> */}
+											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Driver</Form.Label>
-												{/* <Autocomplete
-													id="Driver"
-													name="id"
-													options={car.Cars}
-													value={values.transporter_id}
-													getOptionLabel={driver => driver.license_plate}
-													renderInput={params => (
-														<TextField {...params} label="..." />
-													)}
-													onChange={(event, newValue) => {
-														console.log(JSON.stringify(newValue, null, " "));
-													}}
-												/> */}
 												<Autocomplete
 													id="transporter_id"
-													// name="transporter_id"
-													options={car.Cars}
-													getOptionLabel={option => option.license_plate}
-													style={{ width: 300 }}
+													options={transporter.Transporters}
+													getOptionLabel={option => option.staff.name}
 													onChange={(e, value) => {
 														console.log(value);
 														setFieldValue(
@@ -309,7 +309,7 @@ export const ModalFormApprove = props => {
 													renderInput={params => (
 														<TextField
 															margin="normal"
-															label="Cities"
+															placeholder="Transporter"
 															name="transporter_id"
 															{...params}
 														/>

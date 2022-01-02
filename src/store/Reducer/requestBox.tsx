@@ -29,12 +29,37 @@ export const initialState: RequestBoxesInterfaceState = {
 		id: "",
 		is_approved: false,
 		delivery_date: "",
-		archiver_id: "",
+		archiver_id: {
+			id: "",
+			username: "",
+			last_login: "",
+			roles: {
+				id: "",
+				name: "",
+				display_name: "",
+			},
+			staff: {
+				id: "",
+				nik: "",
+				name: "",
+				room: "",
+			},
+		},
 		transporter_id: {
 			id: "",
-			brand: "",
-			capacity: "",
-			license_plate: "",
+			username: "",
+			last_login: "",
+			roles: {
+				id: "",
+				name: "",
+				display_name: "",
+			},
+			staff: {
+				id: "",
+				nik: "",
+				name: "",
+				room: "",
+			},
 		},
 	},
 	RequestBox: {

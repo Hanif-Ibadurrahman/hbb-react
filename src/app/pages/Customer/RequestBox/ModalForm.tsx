@@ -143,6 +143,7 @@ const ModalForm = props => {
 												<Form.Label>Quantity</Form.Label>
 												<Form.Control
 													type="number"
+													min="0"
 													name="quantity"
 													placeholder="Quantity"
 													value={values.quantity}

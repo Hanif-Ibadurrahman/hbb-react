@@ -14,7 +14,8 @@ import rooms from "./Reducer/room";
 import companys from "./Reducer/company";
 import requestBoxes from "./Reducer/requestBox";
 import cars from "./Reducer/car";
-import users from "./Reducer/user";
+import transporters from "./Reducer/transporter";
+import archivers from "./Reducer/archiver";
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -35,7 +36,8 @@ export function createReducer(injectedReducers: InjectedReducersType = {}) {
 			companys,
 			requestBoxes,
 			cars,
-			users,
+			transporters,
+			archivers,
 		});
 	}
 }

@@ -12,6 +12,8 @@ export const create = async (data: RequestBoxInterfaceState) => {
 		note: data.note,
 		code_boxes: data.code_boxes,
 	};
+	console.log("Kambing Hitam Abdi", payload);
+
 	return api.post("/request-box", payload);
 };
 
@@ -24,7 +26,6 @@ export const update = async (data: RequestBoxInterfaceState) => {
 		status: data.status,
 		code_boxes: data.code_boxes,
 	};
-	console.log(payload);
 	return await api.put(`/request-box/${id}`, payload);
 };
 
@@ -55,7 +56,6 @@ export const approval_admin = async (data: ApprovalInterfaceState) => {
 		is_approved: data?.Approved,
 		description: data?.Description,
 	};
-	console.log(payload);
 	return await api.put(`/requests/${id}/csr-approved/`, payload);
 };
 
@@ -78,7 +78,6 @@ export const reject_operation = async (data: ApprovalInterfaceState) => {
 		is_approved: data?.Approved,
 		description: data?.Description,
 	};
-	console.log(payload);
 	return await api.put(`/requests/${id}/operation-approved/`, payload);
 };
 
@@ -89,9 +88,8 @@ export const approval_operation = async (
 	let payload = {
 		is_approved: data?.is_approved,
 		delivery_date: data?.delivery_date,
-		archiver_id: data?.archiver_id,
-		transporter_id: data?.transporter_id?.id,
+		archiver_id: data?.archiver_id?.staff?.id,
+		transporter_id: data?.transporter_id?.staff?.id,
 	};
-	console.log("Kambing API", payload);
 	return await api.put(`/requests/${id}/operation-approved/`, payload);
 };

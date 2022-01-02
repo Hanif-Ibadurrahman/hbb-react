@@ -26,8 +26,6 @@ export const GET_CONFIRMED_ADMIN = "GET_CONFIRMED_ADMIN";
 export const REJECT_OPERTAION = "REJECT_OPERATION";
 export const APPROVAL_OPERATION = "APPROVAL_OPERATION";
 
-let limit = 20;
-
 export const getRequestBoxesList = page => {
 	return async dispatch => {
 		try {
