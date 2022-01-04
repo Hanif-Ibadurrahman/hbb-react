@@ -159,7 +159,7 @@ export const ModalFormApprove = props => {
 	const transporter = useSelector(selectTransporters);
 	const archiver = useSelector(selectArchivers);
 
-	console.log("driver >>>>", transporter);
+	console.log("driver >>>>", transporter.Transporters);
 	console.log("archiver >>>>", archiver.Archivers);
 
 	const FetchData = (page = 1) => {

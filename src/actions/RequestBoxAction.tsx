@@ -219,6 +219,8 @@ export const RejectOpertaion = async (data: ApprovalInterfaceState) => {
 export const ApprovalOpertaion = async (
 	data: ApprovalOperationInterfaceState,
 ) => {
+	console.log("Action BOy", data);
+
 	return async dispatch => {
 		try {
 			const response = await approval_operation(data);

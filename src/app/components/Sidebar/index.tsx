@@ -38,7 +38,7 @@ export function Sidebar() {
 	}, []);
 
 	const requestBoxes = useSelector(selectRequestBoxes);
-	const notifAdminBox = requestBoxes.Meta.Total;
+	const notifAdminBox = requestBoxes.Meta.total;
 
 	const CustomerMenu = props => {
 		return (

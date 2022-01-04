@@ -36,10 +36,10 @@ export const initialState: CabinetsInterfaceState = {
 	},
 
 	Meta: {
-		Total: 0,
-		PerPage: 0,
-		CurrentPage: 1,
-		LastPage: 1,
+		total: 0,
+		per_page: 0,
+		current_page: 1,
+		last_page: 1,
 	},
 	Title: "CABINET",
 	ErrorCabinet: undefined,
@@ -59,10 +59,10 @@ export default (
 				...state,
 				Cabinets: payload.data,
 				Meta: {
-					LastPage: payload?.meta?.last_page,
-					CurrentPage: payload?.meta?.current_page,
-					Total: payload?.meta?.total_page,
-					PerPage: payload?.meta?.total_page,
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total_page,
+					per_page: payload?.meta?.total_page,
 				},
 				ErrorCabinet: payload.errorMessage,
 			};

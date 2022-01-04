@@ -87,7 +87,7 @@ const TransporterPage = () => {
 				/>
 				<DataTable tableHeader={header} tableBody={transporter.Transporters} />
 				<Pagination
-					pageCount={transporter.Meta.LastPage}
+					pageCount={transporter.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

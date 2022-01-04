@@ -89,7 +89,7 @@ const ArchiverPage = () => {
 				/>
 				<DataTable tableHeader={header} tableBody={archiver.Archivers} />
 				<Pagination
-					pageCount={archiver.Meta.LastPage}
+					pageCount={archiver.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

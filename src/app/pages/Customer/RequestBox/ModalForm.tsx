@@ -44,22 +44,7 @@ const ModalForm = props => {
 	}
 	const RegularDate = moment(addDays(2)).format("YYYY-MM-DD");
 	const Express = moment(addDays(0)).add(2, "hours").format("YYYY-MM-DDTHH:MM");
-
-	function addWeekdays(date, days) {
-		date = moment(date); // use a clone
-		while (days > 0) {
-			date = date.add(1, "days");
-			// decrease "days" only if it's a weekday.
-			if (date.isoWeekday() !== 6 && date.isoWeekday() !== 7) {
-				days -= 1;
-			}
-		}
-		return date;
-	}
-
-	const weekend = addWeekdays;
-
-	console.log("Kambing Hitam", weekend);
+	const Emergency = moment(addDays(0)).format("YYYY-MM-DD");
 
 	function handleOnChange() {
 		setChecked(!checked);
@@ -95,16 +80,15 @@ const ModalForm = props => {
 							let action = requestBox.id
 								? UpdateRequestBox(values)
 								: CreateRequestBox(values);
-							// dispatch(loadingbarTurnOn)
 							const res = await action;
 							await dispatch(res);
 							action.then(() => {
 								dispatch({ type: RESET_REQUEST_BOX_FORM });
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
-								// setTimeout(function () {
-								// 	window.location.reload();
-								// }, 1000);
+								setTimeout(function () {
+									window.location.reload();
+								}, 1000);
 							});
 							dispatch({ type: RESET_REQUEST_BOX_FORM });
 							props.modalSet(props.valueModalSet);
@@ -131,9 +115,7 @@ const ModalForm = props => {
 					}) => (
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
-								<Modal.Title>
-									{requestBox.id ? <>Edit Data</> : <>Tambah Data</>}
-								</Modal.Title>
+								<Modal.Title>Request Box</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
 								<Container>
@@ -143,7 +125,7 @@ const ModalForm = props => {
 												<Form.Label>Quantity</Form.Label>
 												<Form.Control
 													type="number"
-													min="0"
+													min="1"
 													name="quantity"
 													placeholder="Quantity"
 													value={values.quantity}
@@ -191,7 +173,6 @@ const ModalForm = props => {
 												) : values.delivery_method == "express" ? (
 													<Form.Control
 														type="text"
-														// minTime="10:20:00"
 														name="delivered_at"
 														placeholder="Delivered"
 														value={(values.delivered_at = Express)}
@@ -202,7 +183,22 @@ const ModalForm = props => {
 														disabled
 													/>
 												) : values.delivery_method == "emergency" ? (
-													<></>
+													<>
+														<Form.Control
+															type="text"
+															name="delivered_at"
+															placeholder="Delivered"
+															value={(values.delivered_at = Emergency)}
+															onChange={e => {
+																handleChange(e);
+															}}
+															onBlur={handleBlur}
+															disabled
+														/>
+														<p className="tc-danger-5 pos-a p-sm">
+															*Hanya Untuk Hari Libur
+														</p>
+													</>
 												) : null}
 												{touched.delivered_at && errors.delivered_at ? (
 													<p className="tc-danger-5 pos-a p-sm">
@@ -229,18 +225,11 @@ const ModalForm = props => {
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-3">
-												<Form.Check
-													type="checkbox"
-													label="Required Code Box"
-													onChange={handleOnChange}
-													onClick={() => setFieldValue(`code_boxes`, "")}
-												/>
-											</Form.Group>
-											<FieldArray name="code_boxes">
-												{({ remove, push }) => (
-													<div className={checked ? "d-block" : "d-none"}>
-														{values.code_boxes.length > 0 &&
-															values.code_boxes.map((codeBox, index) => (
+												<Form.Label>Custome Code Box</Form.Label>
+												<FieldArray name="code_boxes">
+													{({ remove, push }) => (
+														<div>
+															{values?.code_boxes?.map((codeBox, index) => (
 																<Form.Group className="mb-4" key={index}>
 																	<Form.Label>Code Box</Form.Label>
 																	<Row>
@@ -268,15 +257,16 @@ const ModalForm = props => {
 																	</Row>
 																</Form.Group>
 															))}
-														<Button
-															variant="secondary"
-															onClick={() => push("")}
-														>
-															Tambah
-														</Button>
-													</div>
-												)}
-											</FieldArray>
+															<Button
+																variant="secondary"
+																onClick={() => push("")}
+															>
+																Tambah
+															</Button>
+														</div>
+													)}
+												</FieldArray>
+											</Form.Group>
 										</Col>
 									</Row>
 								</Container>

@@ -73,10 +73,10 @@ export const initialState: RequestBoxesInterfaceState = {
 	},
 
 	Meta: {
-		Total: 0,
-		PerPage: 0,
-		CurrentPage: 1,
-		LastPage: 1,
+		total: 0,
+		per_page: 0,
+		current_page: 1,
+		last_page: 1,
 	},
 	Title: "REQUEST_BOX",
 	ErrorRequestBox: undefined,
@@ -97,10 +97,10 @@ export default (
 				...state,
 				RequestBoxes: payload?.data,
 				Meta: {
-					LastPage: payload?.met?.last_page,
-					CurrentPage: payload?.meta?.current_page,
-					Total: payload?.meta?.total,
-					PerPage: payload?.meta?.total_page,
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total_page,
+					per_page: payload?.meta?.total_page,
 				},
 				ErrorRequestBox: payload.errorMessage,
 			};
@@ -109,10 +109,10 @@ export default (
 				...state,
 				RequestBoxes: payload.data,
 				Meta: {
-					LastPage: payload?.meta?.last_page,
-					CurrentPage: payload?.meta?.current_page,
-					Total: payload?.meta?.total_page,
-					PerPage: payload?.meta?.total_page,
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total_page,
+					per_page: payload?.meta?.total_page,
 				},
 				ErrorRequestBox: payload.errorMessage,
 			};

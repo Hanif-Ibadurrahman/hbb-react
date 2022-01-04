@@ -17,7 +17,7 @@ function DataSidebar() {
 	}, []);
 
 	const requestBoxes = useSelector(selectRequestBoxes);
-	const notif = requestBoxes.Meta.Total;
+	const notif = requestBoxes.Meta.total;
 	console.log("testing notif", notif);
 	return { notif };
 }

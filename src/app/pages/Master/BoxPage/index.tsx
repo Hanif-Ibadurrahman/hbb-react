@@ -163,7 +163,7 @@ const BoxPage = () => {
 				/>
 				<DataTable tableHeader={header} tableBody={boxes.Boxes} />
 				<Pagination
-					pageCount={boxes.Meta.LastPage}
+					pageCount={boxes.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

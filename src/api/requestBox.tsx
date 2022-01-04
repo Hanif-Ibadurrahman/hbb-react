@@ -91,5 +91,7 @@ export const approval_operation = async (
 		archiver_id: data?.archiver_id?.staff?.id,
 		transporter_id: data?.transporter_id?.staff?.id,
 	};
+	console.log("Api Kambing", payload);
+
 	return await api.put(`/requests/${id}/operation-approved/`, payload);
 };
