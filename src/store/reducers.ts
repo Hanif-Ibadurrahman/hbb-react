@@ -14,6 +14,7 @@ import rooms from "./Reducer/room";
 import companys from "./Reducer/company";
 import requestBoxes from "./Reducer/requestBox";
 import cars from "./Reducer/car";
+import borrowItems from "./Reducer/borrowItem";
 import transporters from "./Reducer/transporter";
 import archivers from "./Reducer/archiver";
 
@@ -36,6 +37,7 @@ export function createReducer(injectedReducers: InjectedReducersType = {}) {
 			companys,
 			requestBoxes,
 			cars,
+			borrowItems,
 			transporters,
 			archivers,
 		});

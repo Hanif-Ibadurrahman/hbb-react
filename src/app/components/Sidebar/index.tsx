@@ -24,7 +24,7 @@ import {
 
 export function Sidebar() {
 	const [isActive] = useState<boolean>(true);
-	const [role, setRole] = useState("admin");
+	const [role, setRole] = useState("customer");
 
 	const dispatch = useDispatch();
 
