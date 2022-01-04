@@ -5,6 +5,7 @@ import { RequestBoxesInterfaceState } from "store/Types/RequestBoxTypes";
 import { CarsInterfaceState } from "store/Types/CarTypes";
 import { DocumentsInterfaceState } from "store/Types/DocumentTypes";
 import { CabinetsInterfaceState } from "store/Types/CabinetTypes";
+import { DivisionsInterfaceState } from "store/Types/DivisionTypes";
 import { CompanysInterfaceState } from "store/Types/CompanyTypes";
 import { BorrowItemsInterfaceState } from "store/Types/BorrowItemTypes";
 import { FoldersInterfaceState } from "store/Types/FolderTypes";
@@ -27,6 +28,7 @@ export interface RootState {
 	documents?: DocumentsInterfaceState;
 	cars?: CarsInterfaceState;
 	cabinets?: CabinetsInterfaceState;
+	divisions?: DivisionsInterfaceState;
 	borrowItems?: BorrowItemsInterfaceState;
 	folders?: FoldersInterfaceState;
 	transporters?: TransportersInterfaceState;

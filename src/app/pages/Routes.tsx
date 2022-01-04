@@ -65,6 +65,9 @@ import CompanyPageDetail from "./Master/CompanyPage/Detail";
 // 7 - CAR
 import CarPage from "./Master/CarPage";
 import CarPageDetail from "./Master/CarPage/Detail";
+//8 - DIVISI
+import DivisionPage from "./Master/DivisionPage";
+import DivisionPageDetail from "./Master/DivisionPage/Detail";
 // 8 - USER TRANSPORTER
 import TransporterPage from "./Master/Staff/TransporterPage";
 // 9 - USER ARCHIVER
@@ -231,6 +234,18 @@ export function Routes() {
 							path={process.env.PUBLIC_URL + "/Room-Detail/:id"}
 							component={RoomPageDetail}
 						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/DivisionPage"}
+							component={DivisionPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/DivisionPage-Detail/:id"}
+							component={DivisionPageDetail}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/DivisionPage/Edit"}
+							component={EditDevisi}
+						/>
 						{/* <Route
 							path={process.env.PUBLIC_URL + "/Folder"}
 							component={FolderPage}
@@ -281,14 +296,7 @@ export function Routes() {
 							path={process.env.PUBLIC_URL + "/Area/Edit"}
 							component={EditArea}
 						/>
-						<Route
-							path={process.env.PUBLIC_URL + "/DivisiPage"}
-							component={DivisiPage}
-						/>
-						<Route
-							path={process.env.PUBLIC_URL + "/Divisi/Edit"}
-							component={EditDevisi}
-						/>
+
 						<Route
 							path={process.env.PUBLIC_URL + "/LemariPage"}
 							component={CabinetPage}

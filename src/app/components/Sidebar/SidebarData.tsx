@@ -155,7 +155,7 @@ export const MasterData = [
 	{
 		title: "Divisi",
 		icon: "",
-		link: "/Divisi",
+		link: "/DivisionPage",
 	},
 	{
 		title: "Duplikat Dokumen",
