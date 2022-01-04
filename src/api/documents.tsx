@@ -17,6 +17,7 @@ export const create = async (data: DocumentInterfaceState) => {
 		no_digital: data.NoDigital,
 		location: data.Location,
 		status: data.Status,
+		sign_code: data.SignCode,
 	};
 	return api.post("/documents", payload);
 };
@@ -38,6 +39,7 @@ export const update = async (data: DocumentInterfaceState) => {
 		no_digital: data.NoDigital,
 		location: data.Location,
 		status: data.Status,
+		sign_code: data.SignCode,
 	};
 	console.log(payload);
 	return await api.put(`/documents/${id}`, payload);

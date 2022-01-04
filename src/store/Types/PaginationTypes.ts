@@ -1,6 +1,6 @@
 export interface PaginationState {
-	Total: any;
-	PerPage: any;
-	CurrentPage: any;
-	LastPage: any;
+	total: any;
+	per_page: any;
+	current_page: any;
+	last_page: any;
 }

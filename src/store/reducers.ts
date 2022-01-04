@@ -15,6 +15,9 @@ import companys from "./Reducer/company";
 import requestBoxes from "./Reducer/requestBox";
 import cars from "./Reducer/car";
 import borrowItems from "./Reducer/borrowItem";
+import transporters from "./Reducer/transporter";
+import archivers from "./Reducer/archiver";
+
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
  */
@@ -35,6 +38,8 @@ export function createReducer(injectedReducers: InjectedReducersType = {}) {
 			requestBoxes,
 			cars,
 			borrowItems,
+			transporters,
+			archivers,
 		});
 	}
 }

@@ -1,40 +1,45 @@
 import React from "react";
-import api from "../api/dox";
-import PaginatedFolderResponse from "app/pages/Interface/folder";
+import { FolderInterfaceState } from "store/Types/FolderTypes";
+import { create, destroy, getAll, getById, update } from "../api/folder";
 export const GET_FOLDERS_LIST = "GET_FOLDERS_LIST";
 export const GET_FOLDER_DETAIL = "GET_FOLDER_DETAIL";
+export const CREATE_FOLDER = "CREAT_FOLDER";
 export const FOLDERS_ERROR = "FOLDERS_ERROR";
+export const RESET_FOLDER_FORM = "RESET_FOLDER_FORM";
+export const RESET_FOLDER_LIST = "RESET_FOLDER_LIST";
+export const SET_FOLDER_DATA = "SET_FOLDER_DATA";
+export const UPDATE_FOLDER = "UPDATE_FOLDER";
 
-let limit = 20;
 export const getFoldersList = page => {
-	return dispatch => {
-		api
-			.get<PaginatedFolderResponse>(`/folders?page=${page}&limit=${limit}`)
-			.then(function (response) {
-				dispatch({
-					type: GET_FOLDERS_LIST,
-					payload: {
-						data: response.data,
-						errorMessage: false,
-					},
-				});
-			})
-			.catch(function (error) {
-				dispatch({
-					type: GET_FOLDERS_LIST,
-					payload: {
-						data: false,
-						errorMessage: error.message,
-					},
-				});
+	return async dispatch => {
+		try {
+			const response = await getAll(page);
+			dispatch({
+				type: GET_FOLDERS_LIST,
+				payload: {
+					data: response.data,
+					meta: response.meta,
+					errorMessage: false,
+				},
 			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: GET_FOLDERS_LIST,
+				payload: {
+					data: false,
+					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
 	};
 };
 
-export const getFolderDetail = key => {
+export const getFolderDetail = (id: String) => {
 	return dispatch => {
-		api
-			.get("/folders/" + key)
+		return getById(id)
 			.then(function (response) {
 				dispatch({
 					type: GET_FOLDER_DETAIL,
@@ -43,6 +48,7 @@ export const getFolderDetail = key => {
 						errorMessage: false,
 					},
 				});
+				return response;
 			})
 			.catch(function (error) {
 				dispatch({
@@ -52,19 +58,80 @@ export const getFolderDetail = key => {
 						errorMessage: error.message,
 					},
 				});
+				return error;
 			});
 	};
 };
 
-export const deleteFolder = key => {
+export const deleteFolder = id => {
 	return dispatch => {
-		api
-			.delete(`folders/` + key)
+		destroy(id)
 			.then(function (response) {
 				console.log(response);
 			})
 			.catch(function (error) {
 				console.log(error);
 			});
+	};
+};
+
+export const CreateFolder = async (data: FolderInterfaceState) => {
+	console.log(data);
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_FOLDER_DATA,
+				payload: data,
+			});
+			const response = await create(data);
+			dispatch({
+				type: CREATE_FOLDER,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: CREATE_FOLDER,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const UpdateFolder = async (data: FolderInterfaceState) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_FOLDER_DATA,
+				payload: data,
+			});
+			const response = await update(data);
+			dispatch({
+				type: UPDATE_FOLDER,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: UPDATE_FOLDER,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
 	};
 };

@@ -15,6 +15,7 @@ export interface DocumentInterfaceState {
 	NoDigital: string;
 	Location: string;
 	Status: string;
+	SignCode: string;
 }
 
 export interface DocumentsInterfaceState {

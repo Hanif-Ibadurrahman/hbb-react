@@ -14,21 +14,32 @@ import {
 export const initialState: CabinetsInterfaceState = {
 	Cabinets: [],
 	Cabinet: {
-		Id: "",
-		CodeCabinet: "",
+		id: "",
+		code_cabinet: "",
 		CodeBlockNumb: "",
-		CodeTotalBays: "",
+		total_bays: "",
 		CodeTotalRow: "",
 		CodeTotalColumns: "",
 		CodeDepth: "",
 		CodeRoom: "",
+		SignCode: "",
+		cabinetSlots: [
+			{
+				id: "",
+				code: "",
+				Capacity: 0,
+				Column: 0,
+				Row: 0,
+				SignCode: "",
+			},
+		],
 	},
 
 	Meta: {
-		Total: 0,
-		PerPage: 0,
-		CurrentPage: 1,
-		LastPage: 1,
+		total: 0,
+		per_page: 0,
+		current_page: 1,
+		last_page: 1,
 	},
 	Title: "CABINET",
 	ErrorCabinet: undefined,
@@ -48,26 +59,17 @@ export default (
 				...state,
 				Cabinets: payload.data,
 				Meta: {
-					LastPage: payload?.meta?.last_page,
-					CurrentPage: payload?.meta?.current_page,
-					Total: payload?.meta?.total_page,
-					PerPage: payload?.meta?.total_page,
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total_page,
+					per_page: payload?.meta?.total_page,
 				},
 				ErrorCabinet: payload.errorMessage,
 			};
 		case GET_CABINET_DETAIL:
 			return {
 				...state,
-				Cabinet: {
-					CodeRoom: payload.data.data.room,
-					CodeDepth: payload.data.data.depth,
-					CodeTotalColumns: payload.data.data.total_columns,
-					CodeTotalRow: payload.data.data.total_rows,
-					CodeTotalBays: payload.data.data.total_bays,
-					CodeBlockNumb: payload.data.data.block_numb,
-					CodeCabinet: payload.data.data.code_cabinet,
-					Id: payload.data.data.id,
-				},
+				Cabinet: payload.data.data,
 				ErrorCabinet: payload.errorMessage,
 			};
 		case CREATE_CABINET:
@@ -78,10 +80,21 @@ export default (
 					CodeDepth: payload.data.data.depth,
 					CodeTotalColumns: payload.data.data.total_columns,
 					CodeTotalRow: payload.data.data.total_rows,
-					CodeTotalBays: payload.data.data.total_bays,
+					total_bays: payload.data.data.total_bays,
 					CodeBlockNumb: payload.data.data.block_numb,
-					CodeCabinet: payload.data.data.code_cabinet,
-					Id: payload.data.data.id,
+					code_cabinet: payload.data.data.code_cabinet,
+					id: payload.data.data.id,
+					SignCode: payload.data.data.code_cabinet,
+					cabinetSlots: [
+						{
+							id: payload?.data?.data?.cabinetSlots?.id,
+							code: payload?.data?.data?.cabinetSlots?.id,
+							Capacity: payload?.data?.data?.cabinetSlots?.capacity,
+							Column: payload?.data?.data?.cabinetSlots?.column,
+							Row: payload?.data?.data?.cabinetSlots?.row,
+							SignCode: payload?.data?.data?.cabinetSlots?.SignCode,
+						},
+					],
 				},
 			};
 		case UPDATE_CABINET:
@@ -92,10 +105,21 @@ export default (
 					CodeDepth: payload.data.data.depth,
 					CodeTotalColumns: payload.data.data.total_columns,
 					CodeTotalRow: payload.data.data.total_rows,
-					CodeTotalBays: payload.data.data.total_bays,
+					total_bays: payload.data.data.total_bays,
 					CodeBlockNumb: payload.data.data.block_numb,
-					Id: payload.data.id,
-					CodeCabinet: payload.data.code_cabinet,
+					id: payload.data.id,
+					code_cabinet: payload.data.code_cabinet,
+					SignCode: payload.data.data.code_cabinet,
+					cabinetSlots: [
+						{
+							id: payload?.data?.data?.cabinetSlots?.id,
+							code: payload?.data?.data?.cabinetSlots?.id,
+							Capacity: payload?.data?.data?.cabinetSlots?.capacity,
+							Column: payload?.data?.data?.cabinetSlots?.column,
+							Row: payload?.data?.data?.cabinetSlots?.row,
+							SignCode: payload?.data?.data?.cabinetSlots?.SignCode,
+						},
+					],
 				},
 				ErrorCabinet: payload.errorMessage,
 			};
@@ -108,14 +132,25 @@ export default (
 			return {
 				...state,
 				Cabinet: {
-					Id: "",
-					CodeCabinet: "",
+					id: "",
+					code_cabinet: "",
 					CodeBlockNumb: "",
-					CodeTotalBays: "",
+					total_bays: "",
 					CodeTotalRow: "",
 					CodeTotalColumns: "",
 					CodeDepth: "",
 					CodeRoom: "",
+					SignCode: "",
+					cabinetSlots: [
+						{
+							id: "",
+							code: "",
+							Capacity: 0,
+							Column: 0,
+							Row: 0,
+							SignCode: "",
+						},
+					],
 				},
 			};
 		default:

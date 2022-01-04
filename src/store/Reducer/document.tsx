@@ -29,12 +29,13 @@ export const initialState: DocumentsInterfaceState = {
 		NoDigital: "",
 		Location: "",
 		Status: "",
+		SignCode: "",
 	},
 	Meta: {
-		Total: 0,
-		PerPage: 0,
-		CurrentPage: 1,
-		LastPage: 1,
+		total: 0,
+		per_page: 0,
+		current_page: 1,
+		last_page: 1,
 	},
 	Title: "BOX",
 	ErrorDocument: undefined,
@@ -54,10 +55,10 @@ export default (
 				...state,
 				Documents: payload.data,
 				Meta: {
-					LastPage: payload.meta.last_page,
-					CurrentPage: payload.meta.current_page,
-					Total: payload.meta.total_page,
-					PerPage: payload.meta.total_page,
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total_page,
+					per_page: payload?.meta?.total_page,
 				},
 				ErrorDocument: payload.errorMessage,
 			};
@@ -80,6 +81,7 @@ export default (
 					NoDigital: payload?.data?.data?.no_digital,
 					Location: payload?.data?.data?.location,
 					Status: payload?.data?.data?.status,
+					SignCode: payload?.data?.data?.sign_code,
 				},
 				ErrorDocument: payload.errorMessage,
 			};
@@ -102,6 +104,7 @@ export default (
 					NoDigital: payload?.data?.data?.no_digital,
 					Location: payload?.data?.data?.location,
 					Status: payload?.data?.data?.status,
+					SignCode: payload?.data?.data?.status,
 				},
 			};
 		case EDIT_DOCUMENT:
@@ -123,6 +126,7 @@ export default (
 					NoDigital: payload?.data?.data?.no_digital,
 					Location: payload?.data?.data?.location,
 					Status: payload?.data?.data?.status,
+					SignCode: payload?.data?.data?.status,
 				},
 				ErrorDocument: payload?.errorMessage,
 			};
@@ -150,6 +154,7 @@ export default (
 					NoDigital: "",
 					Location: "",
 					Status: "",
+					SignCode: "",
 				},
 			};
 		default:

@@ -33,7 +33,7 @@ const ApprovalAdminDetail = ({ match }) => {
 		dispatch(getRequestBoxDetail(request_id));
 	}, []);
 
-	const NewDate = moment(requestBox.DeliveredAt).format("d MMMM YYYY");
+	const NewDate = moment(requestBox.delivered_at).format("d MMMM YYYY");
 	return (
 		<>
 			<PageWrapper className="row w-100%">
@@ -50,7 +50,7 @@ const ApprovalAdminDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={requestBox.Quantity}
+									defaultValue={requestBox.quantity}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-4" controlId="formBasicEmail">
@@ -59,7 +59,7 @@ const ApprovalAdminDetail = ({ match }) => {
 							</Form.Group>
 							<Form.Group className="mb-4" controlId="formBasicEmail">
 								<Form.Label>Note</Form.Label>
-								<Form.Control as="textarea" value={requestBox.Note} disabled />
+								<Form.Control as="textarea" value={requestBox.note} disabled />
 							</Form.Group>
 							<div className="d-flex jc-end">
 								<Button
@@ -82,7 +82,7 @@ const ApprovalAdminDetail = ({ match }) => {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">{requestBox.Id}</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">{requestBox.id}</p>
 						</div>
 					</Card>
 				</div>

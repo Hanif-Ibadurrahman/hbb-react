@@ -11,16 +11,16 @@ import { CarsInterfaceState, CarInterfaceState } from "../Types/CarTypes";
 export const initialState: CarsInterfaceState = {
 	Cars: [],
 	Car: {
-		Id: "",
-		Brand: "",
-		Capacity: "",
-		LicensePlate: "",
+		id: "",
+		brand: "",
+		capacity: "",
+		license_plate: "",
 	},
 	Meta: {
-		Total: 0,
-		PerPage: 0,
-		CurrentPage: 1,
-		LastPage: 1,
+		total: 0,
+		per_page: 0,
+		current_page: 1,
+		last_page: 1,
 	},
 	Title: "CAR",
 	ErrorCar: undefined,
@@ -40,43 +40,28 @@ export default (
 				...state,
 				Cars: payload.data,
 				Meta: {
-					LastPage: payload?.meta?.last_page,
-					CurrentPage: payload?.meta?.current_page,
-					Total: payload?.meta?.total_page,
-					PerPage: payload?.meta?.total_page,
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total_page,
+					per_page: payload?.meta?.total_page,
 				},
 				ErrorCar: payload.errorMessage,
 			};
 		case GET_CAR_DETAIL:
 			return {
 				...state,
-				Car: {
-					Id: payload.data.data.id,
-					Brand: payload.data.data.brand,
-					Capacity: payload.data.data.capacity,
-					LicensePlate: payload.data.data.license_plate,
-				},
+				Car: payload.data.data,
 				ErrorCar: payload.errorMessage,
 			};
 		case CREATE_CAR:
 			return {
 				...state,
-				Car: {
-					Id: payload.data.data.id,
-					Brand: payload.data.data.brand,
-					Capacity: payload.data.data.capacity,
-					LicensePlate: payload.data.data.license_plate,
-				},
+				Car: payload.data.data,
 			};
 		case EDIT_CAR:
 			return {
 				...state,
-				Car: {
-					Id: payload.data.data.id,
-					Brand: payload.data.data.brand,
-					Capacity: payload.data.data.capacity,
-					LicensePlate: payload.data.data.license_plate,
-				},
+				Car: payload.data.data,
 				ErrorCar: payload.errorMessage,
 			};
 		case RESET_CAR_LIST:
@@ -88,10 +73,10 @@ export default (
 			return {
 				...state,
 				Car: {
-					Id: "",
-					Brand: "",
-					Capacity: "",
-					LicensePlate: "",
+					id: "",
+					brand: "",
+					capacity: "",
+					license_plate: "",
 				},
 			};
 		default:

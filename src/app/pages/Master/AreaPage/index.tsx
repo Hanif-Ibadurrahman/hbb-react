@@ -150,7 +150,7 @@ const AreaPage = () => {
 				/>
 				<DataTable tableHeader={header} tableBody={areas.Areas} />
 				<Pagination
-					pageCount={areas.Meta.LastPage}
+					pageCount={areas.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

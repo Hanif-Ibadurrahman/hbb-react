@@ -44,14 +44,14 @@ const CarPageDetail = ({ match }) => {
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Merk Kendaraan</Form.Label>
 
-								<Form.Control type="text" disabled defaultValue={car.Brand} />
+								<Form.Control type="text" disabled defaultValue={car.brand} />
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Kapasitas Kendaraan (KG) </Form.Label>
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={car.Capacity}
+									defaultValue={car.capacity}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -59,7 +59,7 @@ const CarPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={car.LicensePlate}
+									defaultValue={car.license_plate}
 								/>
 							</Form.Group>
 							<div className="d-flex jc-end">
@@ -83,7 +83,7 @@ const CarPageDetail = ({ match }) => {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">{car.Id}</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">{car.id}</p>
 						</div>
 					</Card>
 				</div>

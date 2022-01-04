@@ -176,7 +176,7 @@ const BorrowBoxPage = () => {
 				/>
 				<DataTable tableHeader={header} tableBody={borrowList.BorrowList} />
 				<Pagination
-					pageCount={boxes.Meta.LastPage}
+					pageCount={boxes.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 				<Cart />

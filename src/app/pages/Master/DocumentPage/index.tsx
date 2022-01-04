@@ -6,12 +6,9 @@ import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
 import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import { getBoxesList, getBoxDetail } from "actions/BoxActions";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { deleteBox } from "actions/BoxActions";
 import Alert from "app/components/Alerts";
-import { selectBoxes } from "store/Selector/BoxSelector";
 import { selectDocuemnts } from "store/Selector/DocumentSelector";
 import {
 	deleteDocument,
@@ -178,7 +175,7 @@ const DocumentPage = () => {
 				/>
 				<DataTable tableHeader={header} tableBody={documents.Documents} />
 				<Pagination
-					pageCount={documents.Meta.LastPage}
+					pageCount={documents.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

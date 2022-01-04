@@ -10,6 +10,8 @@ import { getBoxDetail } from "actions/BoxActions";
 import { selectBoxes, selectBox } from "store/Selector/BoxSelector";
 import { BoxInterfaceState } from "store/Types/BoxTypes";
 import Logo from "assets/images/logo.png";
+import { height, width } from "@mui/system";
+import { size } from "lodash";
 
 const PrintBox = ({ match }) => {
 	const box: BoxInterfaceState = useSelector(selectBox);
@@ -22,32 +24,37 @@ const PrintBox = ({ match }) => {
 		dispatch(getBoxDetail(box_id));
 	}, []);
 
+	const Width = {
+		width: "40mm",
+		height: "20mm",
+		marginTop: "-35px",
+	};
+
+	const font = {
+		fontSize: "8px",
+		lineHeight: "12px",
+	};
+
 	return (
 		<>
 			<PageWrapper className="row row w-100%">
-				<div className="h-24 d-flex ai-center mb-12">
-					<img src={Logo} alt="Logo" className="h-24" />
-				</div>
-				<div style={{ maxWidth: 300 }}>
-					<Card className="p-4 bd-rs-2 d-flex ai-center jc-center">
+				<div style={Width} className="d-flex ai-center jc-center ">
+					<Card className="pv-1 ph-1 d-flex ai-center jc-center fd-row col-6">
 						<QR
 							id="Detail-Box-QR"
 							title="Scan here"
-							value="ID : A12O2O3"
+							value={box.SignCode}
 							className="d-flex jc-center"
 						/>
-						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">{box.CodeBox}</p>
-						</div>
 					</Card>
-					{/* <div className="d-flex jc-end">
-						<Button
-							className="mv-4 w-100%"
-							variant="success"
-						>
-							Print
-						</Button>{" "}
-					</div> */}
+					<div className="ml-2 col-6">
+						<p style={font} className="ff-1-bd ta-center ">
+							Box
+						</p>
+						<p style={font} className="ff-1-bd ta-center">
+							{box.CodeBox}
+						</p>
+					</div>
 				</div>
 			</PageWrapper>
 		</>

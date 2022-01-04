@@ -13,12 +13,13 @@ export const initialState: BoxesInterfaceState = {
 	Box: {
 		Id: "",
 		CodeBox: "",
+		SignCode: "",
 	},
 	Meta: {
-		Total: 0,
-		PerPage: 0,
-		CurrentPage: 1,
-		LastPage: 1,
+		total: 0,
+		per_page: 0,
+		current_page: 1,
+		last_page: 1,
 	},
 	Title: "BOX",
 	ErrorBox: undefined,
@@ -38,10 +39,10 @@ export default (
 				...state,
 				Boxes: payload.data,
 				Meta: {
-					LastPage: payload.meta.last_page,
-					CurrentPage: payload.meta.current_page,
-					Total: payload.meta.total_page,
-					PerPage: payload.meta.total_page,
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total_page,
+					per_page: payload?.meta?.total_page,
 				},
 				ErrorBox: payload.errorMessage,
 			};
@@ -51,6 +52,7 @@ export default (
 				Box: {
 					CodeBox: payload?.data?.data?.code_box,
 					Id: payload?.data?.data?.id,
+					SignCode: payload?.data?.data?.sign_code,
 				},
 				ErrorBox: payload.errorMessage,
 			};
@@ -58,16 +60,18 @@ export default (
 			return {
 				...state,
 				Box: {
-					CodeBox: payload.data.data.code_box,
-					Id: payload.data.data.id,
+					CodeBox: payload?.data?.data?.code_box,
+					Id: payload?.data?.data?.id,
+					SignCode: payload?.data?.data?.sign_code,
 				},
 			};
 		case UPDATE_BOX:
 			return {
 				...state,
 				Box: {
-					Id: payload.data.id,
-					CodeBox: payload.data.code_box,
+					Id: payload?.data?.id,
+					CodeBox: payload?.data?.code_box,
+					SignCode: payload?.data?.data?.sign_code,
 				},
 				ErrorBox: payload.errorMessage,
 			};
@@ -82,6 +86,7 @@ export default (
 				Box: {
 					Id: "",
 					CodeBox: "",
+					SignCode: "",
 				},
 			};
 		default:

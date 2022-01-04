@@ -7,6 +7,9 @@ import { DocumentsInterfaceState } from "store/Types/DocumentTypes";
 import { CabinetsInterfaceState } from "store/Types/CabinetTypes";
 import { CompanysInterfaceState } from "store/Types/CompanyTypes";
 import { BorrowItemsInterfaceState } from "store/Types/BorrowItemTypes";
+import { FoldersInterfaceState } from "store/Types/FolderTypes";
+import { TransportersInterfaceState } from "store/Types/TransporterTypes";
+import { ArchiversInterfaceState } from "store/Types/ArchiverTypes";
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -19,16 +22,15 @@ export interface RootState {
 	theme?: ThemeState;
 	boxes?: BoxesInterfaceState;
 	areas?: AreasInterfaceState;
-
 	companys?: CompanysInterfaceState;
-
-	// areas?: AreasInterfaceState;
-
 	requestBoxes?: RequestBoxesInterfaceState;
 	documents?: DocumentsInterfaceState;
 	cars?: CarsInterfaceState;
 	cabinets?: CabinetsInterfaceState;
 	borrowItems?: BorrowItemsInterfaceState;
+	folders?: FoldersInterfaceState;
+	transporters?: TransportersInterfaceState;
+	archivers?: ArchiversInterfaceState;
 
 	// [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }
