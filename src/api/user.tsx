@@ -1,5 +1,4 @@
 import { identity } from "lodash";
-import { UserInterfaceState } from "store/Types/UserTypes";
 import api from "./dox";
 
 export const getAllTransporter = async params => {

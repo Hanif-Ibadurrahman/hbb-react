@@ -160,7 +160,7 @@ const CompanyPage = () => {
 				/>
 				<DataTable tableHeader={header} tableBody={Companys.Companys} />
 				<Pagination
-					pageCount={Companys.Meta.LastPage}
+					pageCount={Companys.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

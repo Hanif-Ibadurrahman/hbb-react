@@ -174,7 +174,7 @@ const CarPage = () => {
 				/>
 				<DataTable tableHeader={header} tableBody={cars?.Cars} />
 				<Pagination
-					pageCount={cars.Meta.LastPage}
+					pageCount={cars.Meta.last_page}
 					onPageChange={data => FetchData(data?.selected + 1)}
 				/>
 			</PageWrapper>

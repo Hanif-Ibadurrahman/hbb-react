@@ -179,7 +179,7 @@ const ApprovalAdminRequestBox = () => {
 				<PageHeader breadcrumb={["Master", "Approval Admin"]} />
 				<DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} />
 				<Pagination
-					pageCount={requestBoxes.Meta.LastPage}
+					pageCount={requestBoxes.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

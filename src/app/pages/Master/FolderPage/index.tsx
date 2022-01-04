@@ -154,7 +154,7 @@ const DocumentPage = () => {
 				/>
 				<DataTable tableHeader={header} tableBody={folders.Folders} />
 				<Pagination
-					pageCount={folders.Meta.LastPage}
+					pageCount={folders.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

@@ -7,14 +7,14 @@ import DropdownAction from "../../Components/DropdownAction";
 // import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
 import { useDispatch, useSelector } from "react-redux";
-import { selectBoxes } from "store/Selector/BoxSelector";
-import { getArchiverList, getTransporterList } from "actions/UserAction";
-import { selectUsers } from "store/Selector/UserSelector";
+import { getArchiverList } from "actions/ArchiverAction";
+import { selectArchivers } from "store/Selector/ArchiverSelector";
 
 const ArchiverPage = () => {
-	// const transporter = useSelector(selectUsers);
-	const archiver = useSelector(selectUsers);
+	const archiver = useSelector(selectArchivers);
 	const dispatch = useDispatch();
+
+	console.log("Archiver", archiver);
 
 	const FetchData = (page = 1) => {
 		dispatch(getArchiverList(page));
@@ -87,9 +87,9 @@ const ArchiverPage = () => {
 					valueModalSet={false}
 					value={true}
 				/>
-				<DataTable tableHeader={header} tableBody={archiver.Users} />
+				<DataTable tableHeader={header} tableBody={archiver.Archivers} />
 				<Pagination
-					pageCount={archiver.Meta.LastPage}
+					pageCount={archiver.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

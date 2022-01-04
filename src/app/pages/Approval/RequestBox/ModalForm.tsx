@@ -60,7 +60,7 @@ const ModalForm = props => {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							values.Id = requestBox.Id;
+							values.Id = requestBox.id;
 							let action = dispatch(await ApprovalAdmin(values));
 							setShowAlert(true);
 							setTimeout(function () {

@@ -173,7 +173,7 @@ const CabinetPage = props => {
 				/>
 				<DataTable tableHeader={header} tableBody={cabinets.Cabinets} />
 				<Pagination
-					pageCount={cabinets.Meta.LastPage}
+					pageCount={cabinets.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

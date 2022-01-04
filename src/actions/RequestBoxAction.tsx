@@ -26,8 +26,6 @@ export const GET_CONFIRMED_ADMIN = "GET_CONFIRMED_ADMIN";
 export const REJECT_OPERTAION = "REJECT_OPERATION";
 export const APPROVAL_OPERATION = "APPROVAL_OPERATION";
 
-let limit = 20;
-
 export const getRequestBoxesList = page => {
 	return async dispatch => {
 		try {
@@ -221,6 +219,8 @@ export const RejectOpertaion = async (data: ApprovalInterfaceState) => {
 export const ApprovalOpertaion = async (
 	data: ApprovalOperationInterfaceState,
 ) => {
+	console.log("Action BOy", data);
+
 	return async dispatch => {
 		try {
 			const response = await approval_operation(data);
