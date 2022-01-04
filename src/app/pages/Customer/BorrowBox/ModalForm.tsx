@@ -10,6 +10,7 @@ import {
 	selectBorrowItem,
 	selectBorrowItems,
 } from "store/Selector/BorrowItemSelector";
+import moment from "moment";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
@@ -18,11 +19,19 @@ const ModalForm = props => {
 	const cart = useSelector(selectBorrowItems);
 	const cartStash = cart.Cart;
 	console.log("Modal Cart>>>", cartStash);
+	function addDays(days) {
+		const result = new Date();
+		result.setDate(result.getDate() + days);
+		return result;
+	}
+
+	const DeliveredDate = moment(addDays(2)).format("YYYY-MM-DD");
 
 	const dispatch = useDispatch();
 
 	const validationSchema = Yup.object().shape({
 		note: Yup.string().required("*Wajib diisi"),
+		delivered_at: Yup.string().required("*Wajib diisi"),
 	});
 
 	const deleteCart = async id => {
@@ -89,6 +98,24 @@ const ModalForm = props => {
 								<Container>
 									<Row>
 										<Col xs={12}>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Tanggal Pengiriman</Form.Label>
+												<Form.Control
+													type="date"
+													min={DeliveredDate}
+													name="delivered_at"
+													value={values.delivered_at}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.delivered_at && errors.delivered_at ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.delivered_at}
+													</p>
+												) : null}
+											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Note</Form.Label>
 												<Form.Control

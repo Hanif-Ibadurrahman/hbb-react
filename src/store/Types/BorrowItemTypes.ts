@@ -1,6 +1,8 @@
 import { PaginationState } from "./PaginationTypes";
+import { BoxInterfaceState } from "./BoxTypes";
 export interface BorrowItemInterfaceState {
 	id: string | null;
+	delivered_at: string;
 	note: string;
 	box_codes: any[];
 }
@@ -8,6 +10,7 @@ export interface BorrowItemInterfaceState {
 export interface BorrowItemsInterfaceState {
 	BorrowItem: BorrowItemInterfaceState;
 	BorrowItems: BorrowItemInterfaceState[];
+	BorrowList: BoxInterfaceState[];
 	Cart: any[];
 	numberCart: number;
 	ErrorBorrowItem?: string;

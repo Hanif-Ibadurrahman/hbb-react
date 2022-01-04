@@ -7,7 +7,7 @@ import DropdownAction from "app/pages/Master/Components/DropdownAction";
 // import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
 import { getBoxesList, getBoxDetail } from "actions/BoxActions";
-import { AddCart } from "actions/BorrowItemAction";
+import { AddCart, getBorrowList } from "actions/BorrowItemAction";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import Alert from "app/components/Alerts";
 import { selectBoxes } from "store/Selector/BoxSelector";
@@ -25,6 +25,7 @@ const BorrowBoxPage = () => {
 	const [modalShow, setModalShow] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
 	const boxes = useSelector(selectBoxes);
+	const borrowList = useSelector(selectBorrowItems);
 	const cartStash = useSelector((state: RootStateOrAny) => state?.borrowItems);
 
 	// console.log("Total Cart Tash>>>>", Cart.length);
@@ -42,7 +43,8 @@ const BorrowBoxPage = () => {
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		dispatch(getBoxesList(page));
+		// dispatch(getBoxesList(page));
+		dispatch(getBorrowList(page));
 	};
 
 	useEffect(() => {
@@ -172,7 +174,7 @@ const BorrowBoxPage = () => {
 					modalSet={setModalShow}
 					valueModalSet={false}
 				/>
-				<DataTable tableHeader={header} tableBody={boxes.Boxes} />
+				<DataTable tableHeader={header} tableBody={borrowList.BorrowList} />
 				<Pagination
 					pageCount={boxes.Meta.LastPage}
 					onPageChange={data => FetchData(data.selected + 1)}

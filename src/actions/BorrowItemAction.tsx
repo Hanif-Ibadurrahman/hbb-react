@@ -3,7 +3,7 @@ import {
 	BorrowItemInterfaceState,
 	BorrowItemsInterfaceState,
 } from "store/Types/BorrowItemTypes";
-import { create } from "../api/borrowItem";
+import { create, getAll } from "../api/borrowItem";
 export const CREATE_BORROW_ITEM = "CREATE_BORROW_ITEM";
 export const BORROW_ITEM_ERROR = "BORROW_ITEM_ERROR";
 export const RESET_BORROW_FORM = "RESET_BORROW_FORM";
@@ -12,6 +12,34 @@ export const SET_BORROW_DATA = "SET_BORROW_DATA";
 export const GET_NUMBER_CART = "GET_NUMBER_CART";
 export const ADD_CART = "ADD_CART";
 export const DELETE_CART = "DELETE_CART";
+export const GET_BORROW_LIST = "GET_BORROW_LIST";
+
+export const getBorrowList = page => {
+	return async dispatch => {
+		try {
+			const response = await getAll(page);
+			dispatch({
+				type: GET_BORROW_LIST,
+				payload: {
+					data: response.data,
+					meta: response.meta,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: GET_BORROW_LIST,
+				payload: {
+					data: false,
+					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
 
 export const CreateBorrowItem = async (data: BorrowItemInterfaceState) => {
 	console.log("data create", data);
