@@ -40,14 +40,14 @@ const AreaPageDetail = ({ match }) => {
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Nama Area</Form.Label>
-								<Form.Control type="text" disabled defaultValue={area.Name} />
+								<Form.Control type="text" disabled defaultValue={area.name} />
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Kode Area</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={area.CodeArea}
+									defaultValue={area.code_area}
 								/>
 							</Form.Group>
 							<div className="d-flex jc-end">
@@ -71,7 +71,7 @@ const AreaPageDetail = ({ match }) => {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">{area.Id}</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">{area.id}</p>
 						</div>
 					</Card>
 				</div>

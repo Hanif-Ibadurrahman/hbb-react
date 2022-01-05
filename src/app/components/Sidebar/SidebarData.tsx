@@ -107,11 +107,11 @@ export const MasterData = [
 		icon: "",
 		link: "/Cabinet",
 	},
-	{
-		title: "Ruangan",
-		icon: "",
-		link: "/Room",
-	},
+	// {
+	// 	title: "Ruangan",
+	// 	icon: "",
+	// 	link: "/Room",
+	// },
 	{
 		title: "Area",
 		icon: "",

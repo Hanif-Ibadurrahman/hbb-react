@@ -20,8 +20,8 @@ const ModalForm = props => {
 	const boxes = useSelector(selectBoxes);
 	const dispatch = useDispatch();
 	const validationSchema = Yup.object().shape({
-		Name: Yup.string().required("*Wajib diisi"),
-		CodeArea: Yup.string().required("*Wajib diisi"),
+		name: Yup.string().required("*Wajib diisi"),
+		code_area: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
@@ -51,7 +51,7 @@ const ModalForm = props => {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							let action = area.Id ? UpdateArea(values) : CreateArea(values);
+							let action = area.id ? UpdateArea(values) : CreateArea(values);
 							// dispatch(loadingbarTurnOn)
 							const res = await action;
 							await dispatch(res);
@@ -59,9 +59,9 @@ const ModalForm = props => {
 								dispatch({ type: RESET_AREA_FORM });
 								props.modalSet(props.valueModalSet);
 							});
-							dispatch({ type: RESET_BOX_FORM });
+							dispatch({ type: RESET_AREA_FORM });
 							props.modalSet(props.valueModalSet);
-							area.Id ? (
+							area.id ? (
 								<>Data Berhasil di Edit</>
 							) : (
 								<>Data Berhasil di Tambah</>
@@ -84,7 +84,7 @@ const ModalForm = props => {
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									{area.Id ? <>Edit Data</> : <>Tambah Data</>}
+									{area.id ? <>Edit Data</> : <>Tambah Data</>}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
@@ -95,17 +95,17 @@ const ModalForm = props => {
 												<Form.Label>Nama Area</Form.Label>
 												<Form.Control
 													type="text"
-													name="Name"
+													name="name"
 													placeholder="Nama Area"
-													value={values.Name}
+													value={values.name}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.Name && errors.Name ? (
+												{touched.name && errors.name ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.Name}
+														{errors.name}
 													</p>
 												) : null}
 											</Form.Group>
@@ -113,17 +113,17 @@ const ModalForm = props => {
 												<Form.Label>Kode Area</Form.Label>
 												<Form.Control
 													type="text"
-													name="CodeArea"
+													name="code_area"
 													placeholder="Kode Area"
-													value={values.CodeArea}
+													value={values.code_area}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.CodeArea && errors.CodeArea ? (
+												{touched.code_area && errors.code_area ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.CodeArea}
+														{errors.code_area}
 													</p>
 												) : null}
 											</Form.Group>

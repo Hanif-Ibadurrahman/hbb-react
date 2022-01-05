@@ -3,17 +3,17 @@ import { AreaInterfaceState } from "store/Types/AreaTypes";
 import api from "./dox";
 export const create = async (data: AreaInterfaceState) => {
 	let payload = {
-		code_area: data.CodeArea,
-		name: data.Name,
+		code_area: data.code_area,
+		name: data.name,
 	};
 	return api.post("/areas", payload);
 };
 
 export const update = async (data: AreaInterfaceState) => {
-	let id = data.Id;
+	let id = data.id;
 	let payload = {
-		code_area: data.CodeArea,
-		name: data.Name,
+		code_area: data.code_area,
+		name: data.name,
 	};
 	console.log(payload);
 	return await api.put(`/areas/${id}`, payload);

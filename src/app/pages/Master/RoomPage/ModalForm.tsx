@@ -1,58 +1,44 @@
 import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
-import React, { useState } from "react";
-import { Formik, ErrorMessage } from "formik";
+import React, { useState, useEffect } from "react";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
-import { useHistory } from "react-router";
-import api from "../../../../api/dox";
+import {
+	selectRoom,
+	selectRooms,
+} from "../../../../store/Selector/RoomSelector";
+import { useDispatch, useSelector } from "react-redux";
+import { CreateRoom, UpdateRoom, RESET_ROOM_FORM } from "actions/RoomAction";
+import { RoomInterfaceState } from "store/Types/RoomTypes";
+import { Autocomplete, TextField } from "@mui/material";
+import { AreasInterfaceState } from "store/Types/AreaTypes";
+import { selectAreas, selectArea } from "store/Selector/AreaSelector";
+import { getAreasList } from "actions/AreaActions";
 
-export function ModalForm() {
-	let history = useHistory();
-	const [name, setname] = useState("");
-
-	const [modalShow, setModalShow] = useState(false);
+const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
-
-	const _onHide = () => {
-		setModalShow(false);
-		setShowAlert(false);
-		console.log("hide modal");
-	};
-
-	const _onSubmit = () => {
-		api
-			.post(`/areas`, {
-				name,
-			})
-			.then(() => {
-				history.push("/Area");
-			});
-		setModalShow(false);
-		setShowAlert(true);
-		setTimeout(function () {
-			setShowAlert(false);
-		}, 4000);
-		setTimeout(function () {
-			window.location.reload();
-		}, 1000);
-		console.log("show alert hide modal");
-	};
-
+	const [alertMessage, setalertMessage] = useState("");
+	const room: RoomInterfaceState = useSelector(selectRoom);
+	const area: AreasInterfaceState = useSelector(selectAreas);
+	const dispatch = useDispatch();
 	const validationSchema = Yup.object().shape({
+		code_room: Yup.string().required("*Wajib diisi"),
 		name: Yup.string().required("*Wajib diisi"),
 	});
 
+	console.log("Area >>>>", area.Areas);
+
+	const FetchData = (page = 1) => {
+		dispatch(getAreasList(page));
+	};
+
+	useEffect(() => {
+		FetchData();
+	}, []);
 	return (
 		<>
-			<Button
-				className="d-flex ai-center bg-success-6"
-				variant="success"
-				onClick={() => setModalShow(true)}
-			>
-				Add Data<i className="far fa-plus ml-2"></i>
-			</Button>{" "}
 			<Alert
-				text="Data Berhasil Di Input"
+				text={alertMessage}
 				variant="success"
 				show={showAlert}
 				style={{
@@ -63,58 +49,70 @@ export function ModalForm() {
 				}}
 				onHide={() => setShowAlert(false)}
 			/>
-			<Formik
-				validationSchema={validationSchema}
-				initialValues={{
-					name: "",
-				}}
-				onSubmit={(values, { setSubmitting, resetForm }) => {
-					// When button submits form and form is in the process of submitting, submit button is disabled
-					setSubmitting(true);
 
-					// Simulate submitting to database, shows us values submitted, resets form
-					setTimeout(() => {
-						alert(JSON.stringify(values, null, 2));
-						resetForm();
-						setSubmitting(false);
-					}, 500);
-				}}
+			<Modal
+				show={props.modal}
+				onHide={props.hide}
+				aria-labelledby="contained-modal-title-vcenter"
 			>
-				{({
-					values,
-					errors,
-					touched,
-					handleChange,
-					handleBlur,
-					handleSubmit,
-					isSubmitting,
-				}) => (
-					<Modal
-						show={modalShow}
-						onHide={() => setModalShow(false)}
-						aria-labelledby="contained-modal-title-vcenter"
-					>
-						<Modal.Header closeButton className="bg-primary-5">
-							<Modal.Title id="contained-modal-title-vcenter">
-								Tambah Data
-							</Modal.Title>
-						</Modal.Header>
-						<Modal.Body className="show-grid">
-							<Container>
-								<Row>
-									<Col xs={12}>
-										<Form onSubmit={handleSubmit}>
-											{console.log(values)}
-											<Form.Group className="mb-4" controlId="formname">
-												<Form.Label>Nama Area</Form.Label>
+				{" "}
+				<Formik
+					validationSchema={validationSchema}
+					initialValues={room}
+					enableReinitialize={true}
+					onSubmit={async values => {
+						try {
+							let action = room.id ? UpdateRoom(values) : CreateRoom(values);
+							// dispatch(loadingbarTurnOn)
+							const res = await action;
+							await dispatch(res);
+							action.then(() => {
+								dispatch({ type: RESET_ROOM_FORM });
+								props.modalSet(props.valueModalSet);
+							});
+							dispatch({ type: RESET_ROOM_FORM });
+							props.modalSet(props.valueModalSet);
+							room.id ? (
+								<>Data Berhasil di Edit</>
+							) : (
+								<>Data Berhasil di Tambah</>
+							);
+							console.log(action);
+						} catch (e) {
+							console.log("ini error di depan");
+						}
+					}}
+				>
+					{({
+						values,
+						errors,
+						touched,
+						handleChange,
+						handleBlur,
+						handleSubmit,
+						isSubmitting,
+						setFieldValue,
+					}) => (
+						<Form onSubmit={handleSubmit}>
+							{console.log("valued", values)}
+							<Modal.Header closeButton className="bg-primary-5">
+								<Modal.Title id="contained-modal-title-vcenter">
+									{room.id ? <>Edit Data</> : <>Tambah Data</>}
+								</Modal.Title>
+							</Modal.Header>
+							<Modal.Body className="show-grid">
+								<Container>
+									<Row>
+										<Col xs={12}>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Nama Ruangan</Form.Label>
 												<Form.Control
 													type="text"
 													name="name"
-													placeholder="Nama Area"
+													placeholder="Nama Ruangan"
 													value={values.name}
 													onChange={e => {
 														handleChange(e);
-														setname(e.target.value);
 													}}
 													onBlur={handleBlur}
 												/>
@@ -124,28 +122,70 @@ export function ModalForm() {
 													</p>
 												) : null}
 											</Form.Group>
-										</Form>
-									</Col>
-								</Row>
-							</Container>
-						</Modal.Body>
-						<Modal.Footer>
-							<Button variant="danger" onClick={_onHide}>
-								Close
-							</Button>
-							<Button
-								type="submit"
-								disabled={isSubmitting}
-								className="bg-success-6"
-								variant="success"
-								onClick={_onSubmit}
-							>
-								Request
-							</Button>{" "}
-						</Modal.Footer>
-					</Modal>
-				)}
-			</Formik>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Kode Ruangan</Form.Label>
+												<Form.Control
+													type="text"
+													name="code_room"
+													placeholder="Kode Ruangan"
+													value={values.code_room}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.code_room && errors.code_room ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.code_room}
+													</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Pilih Area</Form.Label>
+												<Autocomplete
+													id="area_id"
+													options={area.Areas}
+													getOptionLabel={option => option.code_area}
+													onChange={(e, value) => {
+														console.log(value);
+														setFieldValue(
+															"area_id",
+															value !== null ? value : values.area_id.code_area,
+														);
+													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															placeholder="Area"
+															name="area_id"
+															{...params}
+														/>
+													)}
+												/>
+											</Form.Group>
+										</Col>
+									</Row>
+								</Container>
+							</Modal.Body>
+							<Modal.Footer>
+								<Button variant="danger" onClick={props.hide}>
+									Close
+								</Button>
+								<Button
+									type="submit"
+									disabled={isSubmitting}
+									className="bg-success-6"
+									variant="success"
+								>
+									Request
+								</Button>{" "}
+							</Modal.Footer>
+						</Form>
+					)}
+				</Formik>
+			</Modal>
 		</>
 	);
-}
+};
+
+export default ModalForm;

@@ -1,8 +1,8 @@
 import { PaginationState } from "./PaginationTypes";
 export interface AreaInterfaceState {
-	Id: string | null;
-	Name: string;
-	CodeArea: string;
+	id: string | null;
+	name: string;
+	code_area: string;
 }
 
 export interface AreasInterfaceState {

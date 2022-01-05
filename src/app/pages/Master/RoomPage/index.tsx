@@ -2,26 +2,27 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
-import { ModalForm } from "./ModalForm";
 import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
+import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import { getRoomsList, deleteRoom } from "actions/RoomAction";
-import { connect, useDispatch } from "react-redux";
+import {
+	getRoomsList,
+	getRoomDetail,
+	deleteRoom,
+	RESET_ROOM_FORM,
+} from "actions/RoomAction";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import Alert from "app/components/Alerts";
+import { selectRooms } from "store/Selector/RoomSelector";
 
-const mapStateToProps = state => {
-	return {
-		rooms: state.rooms.rooms,
-		meta: state.rooms.meta,
-	};
-};
-
-const RoomPage = props => {
+const RoomPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
-
+	const [modalShow, setModalShow] = useState(false);
+	const [showAlert, setShowAlert] = useState(false);
+	const rooms = useSelector(selectRooms);
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
@@ -31,6 +32,17 @@ const RoomPage = props => {
 	useEffect(() => {
 		FetchData();
 	}, []);
+
+	const _onHide = () => {
+		setModalShow(false);
+		setShowAlert(false);
+		dispatch({ type: RESET_ROOM_FORM });
+	};
+
+	const showEditForm = async id => {
+		dispatch(getRoomDetail(id));
+		setModalShow(true);
+	};
 
 	const onDelete = (dispatch, id) => {
 		Swal.fire({
@@ -65,14 +77,25 @@ const RoomPage = props => {
 			url: "Room-Detail/" + id,
 			type: 1,
 		},
-		{
-			icon: "fa-copy ",
-			title: "Duplicate",
-			type: 2,
-		},
+		// {
+		// 	icon: "fa-copy ",
+		// 	title: "Duplicate",
+		// 	type: 2,
+		// },
 		{
 			icon: "fa-edit",
 			title: "Edit",
+			onclick: () => {
+				showEditForm(id);
+			},
+			dispatch: dispatch,
+			row: id,
+			type: 2,
+		},
+		{
+			icon: "fa-print",
+			title: "Print",
+			url: "Print-Barcode/" + id,
 			type: 1,
 		},
 		{
@@ -89,6 +112,14 @@ const RoomPage = props => {
 	const header = [
 		{
 			title: "Nama Ruangan",
+			prop: "name",
+			sortable: true,
+			cellProps: {
+				style: { width: "40%" },
+			},
+		},
+		{
+			title: "Code Room",
 			prop: "code_room",
 			sortable: true,
 			cellProps: {
@@ -111,7 +142,7 @@ const RoomPage = props => {
 	return (
 		<>
 			<Helmet>
-				<title>Dox - Master Area</title>
+				<title>Dox - Master Room</title>
 				<meta
 					name="description"
 					content="A React Boilerplate application homepage"
@@ -130,10 +161,21 @@ const RoomPage = props => {
 					show={showAlertFailed}
 					onHide={() => setShowAlertFailed(false)}
 				/>
-				<PageHeader breadcrumb={["Master", "Room"]} addForm={<ModalForm />} />
-				<DataTable tableHeader={header} tableBody={props.rooms} />
+				<ModalForm
+					modal={modalShow}
+					hide={_onHide}
+					modalSet={setModalShow}
+					valueModalSet={false}
+				/>
+				<PageHeader
+					breadcrumb={["Master", "Room"]}
+					modal={setModalShow}
+					valueModalSet={false}
+					value={true}
+				/>
+				<DataTable tableHeader={header} tableBody={rooms.Rooms} />
 				<Pagination
-					pageCount={props.meta.last_page}
+					pageCount={rooms.Meta.LastPage}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>
@@ -141,4 +183,4 @@ const RoomPage = props => {
 	);
 };
 
-export default connect(mapStateToProps, null)(RoomPage);
+export default RoomPage;

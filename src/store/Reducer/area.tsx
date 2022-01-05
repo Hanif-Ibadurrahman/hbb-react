@@ -12,9 +12,9 @@ import { AreasInterfaceState, AreaInterfaceState } from "../Types/AreaTypes";
 export const initialState: AreasInterfaceState = {
 	Areas: [],
 	Area: {
-		Id: "",
-		CodeArea: "",
-		Name: "",
+		id: "",
+		name: "",
+		code_area: "",
 	},
 	Meta: {
 		total: 0,
@@ -51,30 +51,18 @@ export default (
 		case GET_AREA_DETAIL:
 			return {
 				...state,
-				Area: {
-					Id: payload.data.data.id,
-					CodeArea: payload.data.data.code_area,
-					Name: payload.data.data.name,
-				},
+				Area: payload?.data?.data,
 				ErrorArea: payload.errorMessage,
 			};
 		case CREATE_AREA:
 			return {
 				...state,
-				Area: {
-					Id: payload.data.data.id,
-					CodeArea: payload.data.data.code_area,
-					Name: payload.data.data.name,
-				},
+				Area: payload?.data?.data,
 			};
 		case UPDATE_AREA:
 			return {
 				...state,
-				Area: {
-					Id: payload.data.data.id,
-					CodeArea: payload.data.data.code_area,
-					Name: payload.data.data.name,
-				},
+				Area: payload?.data?.data,
 				ErrorArea: payload.errorMessage,
 			};
 		case RESET_AREA_LIST:
@@ -86,9 +74,9 @@ export default (
 			return {
 				...state,
 				Area: {
-					Id: "",
-					CodeArea: "",
-					Name: "",
+					id: "",
+					name: "",
+					code_area: "",
 				},
 			};
 		default:

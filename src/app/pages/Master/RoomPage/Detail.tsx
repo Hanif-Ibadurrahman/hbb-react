@@ -4,20 +4,19 @@ import { PageWrapper } from "app/components/PageWrapper";
 import Breadcrumb from "app/components/BreadCrumb";
 import QR from "app/components/QRCode";
 import "../master.scoped.scss";
-import api from "../../../../api/dox";
-import PaginatedAreaResponse from "app/pages/Interface/area";
 import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { getRoomDetail } from "actions/RoomAction";
-import { connect, useDispatch } from "react-redux";
+import { selectRooms, selectRoom } from "store/Selector/RoomSelector";
+import { RoomInterfaceState } from "store/Types/RoomTypes";
+// import { getAreasList } from "actions/AreaActions";
+import { selectArea } from "store/Selector/AreaSelector";
+import { AreaInterfaceState } from "store/Types/AreaTypes";
+import { getAreasList } from "actions/AreaActions";
 
-const mapStateToProps = state => {
-	return {
-		RoomDetail: state.rooms.RoomDetail,
-		errorUserDetail: state.rooms.errorRoomDetail,
-	};
-};
-
-const RoomPageDetail = props => {
+const RoomPageDetail = ({ match }) => {
+	const room: RoomInterfaceState = useSelector(selectRoom);
+	const area: AreaInterfaceState = useSelector(selectArea);
 	let history = useHistory();
 
 	const goToPreviousPath = e => {
@@ -25,14 +24,13 @@ const RoomPageDetail = props => {
 		history.goBack();
 	};
 
-	const room_id = props.match.params.id;
+	const room_id = match.params.id;
 
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		dispatch(getRoomDetail(room_id));
 	}, []);
-	console.log(props.RoomDetail);
 
 	return (
 		<>
@@ -46,27 +44,26 @@ const RoomPageDetail = props => {
 					<Card className="ph-5 pv-3 bd-rs-2">
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Nama Ruangan</Form.Label>
+								<Form.Control type="text" disabled defaultValue={room.name} />
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Kode Ruangan</Form.Label>
+
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={props.RoomDetail.code_room}
+									defaultValue={room.code_room}
 								/>
 							</Form.Group>
+
 							<div className="d-flex jc-end">
 								<Button
-									className="mv-4 mr-4"
+									className="mv-4"
 									variant="outline-secondary"
 									onClick={goToPreviousPath}
 								>
 									Kembali
-								</Button>{" "}
-								<Button
-									className="bg-success-6 mv-4 d-flex ai-center"
-									variant="success"
-								>
-									<i className="far fa-edit mr-2 p-md"></i>
-									<span className="text p-md">Edit Data</span>
 								</Button>{" "}
 							</div>
 						</Form>
@@ -81,9 +78,7 @@ const RoomPageDetail = props => {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">
-								{props.RoomDetail.code_room}
-							</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">{room.code_room}</p>
 						</div>
 					</Card>
 				</div>
@@ -92,4 +87,4 @@ const RoomPageDetail = props => {
 	);
 };
 
-export default connect(mapStateToProps, null)(RoomPageDetail);
+export default RoomPageDetail;
