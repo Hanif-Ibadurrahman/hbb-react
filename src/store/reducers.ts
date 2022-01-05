@@ -18,6 +18,7 @@ import divisions from "./Reducer/division";
 import borrowItems from "./Reducer/borrowItem";
 import transporters from "./Reducer/transporter";
 import archivers from "./Reducer/archiver";
+import logins from "./Reducer/login";
 import pickUpItems from "./Reducer/pickUp";
 
 /**
@@ -43,6 +44,7 @@ export function createReducer(injectedReducers: InjectedReducersType = {}) {
 			borrowItems,
 			transporters,
 			archivers,
+			logins,
 			pickUpItems,
 		});
 	}

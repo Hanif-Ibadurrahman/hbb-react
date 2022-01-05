@@ -11,3 +11,4 @@ describe('<NavBar />', () => {
     expect(renderedOutput).toMatchSnapshot();
   });
 });
+

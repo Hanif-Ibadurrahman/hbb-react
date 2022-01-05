@@ -11,6 +11,7 @@ import { BorrowItemsInterfaceState } from "store/Types/BorrowItemTypes";
 import { FoldersInterfaceState } from "store/Types/FolderTypes";
 import { TransportersInterfaceState } from "store/Types/TransporterTypes";
 import { ArchiversInterfaceState } from "store/Types/ArchiverTypes";
+import { LoginsInterfaceState } from "store/Types/LoginTypes";
 import { PickUpItemsInterfaceState } from "store/Types/PickUpTypes";
 import { RoomsInterfaceState } from "store/Types/RoomTypes";
 
@@ -36,6 +37,7 @@ export interface RootState {
 	folders?: FoldersInterfaceState;
 	transporters?: TransportersInterfaceState;
 	archivers?: ArchiversInterfaceState;
+	logins?: LoginsInterfaceState;
 	pickUpItems?: PickUpItemsInterfaceState;
 	rooms?: RoomsInterfaceState;
 

@@ -24,7 +24,23 @@ import {
 
 export function Sidebar() {
 	const [isActive] = useState<boolean>(true);
-	const [role, setRole] = useState("admin");
+	const [role, setRole] = useState("");
+
+	const user = localStorage.getItem("User");
+
+	useEffect(() => {
+		switch (user) {
+			case "superadmin":
+				setRole("admin")
+				break;
+			case "customer":
+				setRole("customer")
+				break
+			default:
+				break;
+		}
+		console.log("User>>", user);
+	}, [user])
 
 	const dispatch = useDispatch();
 

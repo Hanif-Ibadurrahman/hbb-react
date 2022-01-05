@@ -23,8 +23,9 @@ export function NavBarDropdown(props) {
 	};
 
 	const logout = e => {
-		e.preventDefault();
 		history.push("/Login");
+		localStorage.clear();
+		e.preventDefault();
 	};
 
 	return (

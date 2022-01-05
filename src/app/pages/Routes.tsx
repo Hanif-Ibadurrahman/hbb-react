@@ -29,6 +29,7 @@ import { DashboardAdminTransport } from "./Dashboard/AdminTransport";
 // APPROVAL
 import ApprovalAdminRequestBox from "./Approval/RequestBox";
 import ApprovalAdminDetail from "./Approval/RequestBox/Detail";
+// import ApprovalPickupBox from "./Approval/PickupBox";
 import ApprovalAdminPickupBox from "./Approval/PickupBox";
 import { ApprovalPinjamItem } from "./Approval/PinjamItem";
 import { ApprovalPengembalianItem } from "./Approval/PengembalianItem";
@@ -159,6 +160,10 @@ export function Routes() {
 							path={process.env.PUBLIC_URL + "/Approval-Operation"}
 							component={ApprovalOperationRequestBox}
 						/>
+						{/* <Route
+							path={process.env.PUBLIC_URL + "/Approval/PickupBox"}
+							component={ApprovalPickupBox}
+						/> */}
 						<Route
 							path={process.env.PUBLIC_URL + "/Approval-Admin/PickupBox"}
 							component={ApprovalAdminPickupBox}

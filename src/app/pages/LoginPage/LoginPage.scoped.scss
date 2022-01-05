@@ -19,6 +19,7 @@
   .form-control {
     @include blur(rgba(28, 29, 33, 0.75), 20px);
     border: none;
+    color: #fff;
     &:focus {
       color: $d-color-dark-contrast;
     }
