@@ -1,40 +1,32 @@
-import {
-	Form,
-	Modal,
-	Container,
-	Row,
-	Col,
-	Button,
-	Dropdown,
-	DropdownButton,
-} from "react-bootstrap";
-import React, { useEffect, useState } from "react";
-import { Formik, FieldArray, Field } from "formik";
+import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
+import React, { useState } from "react";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
-import {
-	selectRequestBoxes,
-	selectRequestBox,
-} from "../../../../store/Selector/RequestBoxSelector";
 import { useDispatch, useSelector } from "react-redux";
+import { CreatePickUpItem, DeleteCart } from "actions/PickUpAction";
+import { PickUpItemInterfaceState } from "store/Types/PickUpTypes";
 import {
-	CreateRequestBox,
-	UpdateRequestBox,
-	RESET_REQUEST_BOX_FORM,
-} from "actions/RequestBoxAction";
-import { RequestBoxInterfaceState } from "store/Types/RequestBoxTypes";
+	selectPickUpItem,
+	selectPickUpItems,
+} from "store/Selector/PickUpSelector";
 import moment from "moment";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
-	const [checked, setChecked] = useState(false);
-	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
+	const borrowBox: PickUpItemInterfaceState = useSelector(selectPickUpItem);
+	const cart = useSelector(selectPickUpItems);
+	const cartStash = cart.Cart;
+
 	const dispatch = useDispatch();
+
 	const validationSchema = Yup.object().shape({
-		quantity: Yup.string().required("*Wajib diisi"),
-		delivered_at: Yup.date().required("*Wajib diisi"),
-		note: Yup.string().required("*Wajib diisi"),
+		delivered_at: Yup.string().required("*Wajib diisi"),
 	});
+
+	const deleteCart = async id => {
+		dispatch(await DeleteCart(id));
+	};
 
 	function addDays(days) {
 		const result = new Date();
@@ -45,14 +37,10 @@ const ModalForm = props => {
 	const Express = moment(addDays(0)).add(2, "hours").format("YYYY-MM-DDTHH:MM");
 	const Emergency = moment(addDays(0)).format("YYYY-MM-DD");
 
-	function handleOnChange() {
-		setChecked(!checked);
-	}
-
 	return (
 		<>
 			<Alert
-				text="Request Berhasil Di Input"
+				text="Pick Up Berhasil"
 				variant="success"
 				show={showAlert}
 				style={{
@@ -63,6 +51,7 @@ const ModalForm = props => {
 				}}
 				onHide={() => setShowAlert(false)}
 			/>
+
 			<Modal
 				show={props.modal}
 				onHide={props.hide}
@@ -71,17 +60,15 @@ const ModalForm = props => {
 				{" "}
 				<Formik
 					validationSchema={validationSchema}
-					initialValues={requestBox}
+					initialValues={borrowBox}
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							let action = requestBox.id
-								? UpdateRequestBox(values)
-								: CreateRequestBox(values);
+							values.box_codes = cartStash;
+							let action = CreatePickUpItem(values);
 							const res = await action;
 							await dispatch(res);
 							action.then(() => {
-								dispatch({ type: RESET_REQUEST_BOX_FORM });
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
 								setTimeout(function () {
@@ -104,31 +91,14 @@ const ModalForm = props => {
 					}) => (
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
-								<Modal.Title>Request Box</Modal.Title>
+								<Modal.Title id="contained-modal-title-vcenter">
+									Peminjaman
+								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
 								<Container>
 									<Row>
 										<Col xs={12}>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Quantity</Form.Label>
-												<Form.Control
-													type="number"
-													min="1"
-													name="quantity"
-													placeholder="Quantity"
-													value={values.quantity}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>
-												{touched.quantity && errors.quantity ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.quantity}
-													</p>
-												) : null}
-											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Metode Pengiriman</Form.Label>
 												<Form.Select
@@ -195,66 +165,28 @@ const ModalForm = props => {
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Note</Form.Label>
-												<Form.Control
-													as="textarea"
-													name="note"
-													placeholder="Note"
-													value={values.note}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>
-												{touched.delivered_at && errors.delivered_at ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.delivered_at}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-3">
-												<Form.Label>Custome Code Box</Form.Label>
-												<FieldArray name="code_boxes">
-													{({ remove, push }) => (
-														<div>
-															{values?.code_boxes?.map((codeBox, index) => (
-																<Form.Group className="mb-4" key={index}>
-																	<Form.Label>Code Box</Form.Label>
-																	<Row>
-																		<Col xs={10}>
-																			<Form.Control
-																				type="text"
-																				name={`code_boxes.${index}`}
-																				placeholder="Code Box"
-																				value={values.code_boxes[index]}
-																				onChange={e => {
-																					handleChange(e);
-																				}}
-																				onBlur={handleBlur}
-																			/>
-																		</Col>
-																		<Col xs={2}>
-																			<Button
-																				variant="danger"
-																				className="d-flex ai-center h-100% ml-a"
-																				onClick={() => remove(index)}
-																			>
-																				<i className="far fa-times"></i>
-																			</Button>
-																		</Col>
-																	</Row>
-																</Form.Group>
-															))}
+											<Form.Group>
+												<Form.Label>List Box</Form.Label>
+												{cartStash.map((cart, index) => (
+													<>
+														<div className="d-flex jc-between mb-2">
+															<div className="col-10">
+																<Form.Control
+																	type="text"
+																	value={cart}
+																	readOnly
+																/>
+															</div>
 															<Button
-																variant="secondary"
-																onClick={() => push("")}
+																variant="danger"
+																onClick={() => deleteCart(cart)}
+																className="d-flex jc-center ai-center"
 															>
-																Tambah
+																<i className="far fa-times"></i>
 															</Button>
 														</div>
-													)}
-												</FieldArray>
+													</>
+												))}
 											</Form.Group>
 										</Col>
 									</Row>

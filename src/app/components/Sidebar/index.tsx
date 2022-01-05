@@ -24,7 +24,7 @@ import {
 
 export function Sidebar() {
 	const [isActive] = useState<boolean>(true);
-	const [role, setRole] = useState("customer");
+	const [role, setRole] = useState("admin");
 
 	const dispatch = useDispatch();
 
@@ -64,6 +64,16 @@ export function Sidebar() {
 					}}
 				>
 					{""} Request Box
+				</MenuItem>
+				<MenuItem
+					id={window.location.pathname === "/Customer/Pick-Up" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconForm} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Customer/Pick-Up";
+					}}
+				>
+					{""} Pick Up
 				</MenuItem>
 				<MenuItem
 					id={
@@ -136,7 +146,29 @@ export function Sidebar() {
 						);
 					})}
 				</SubMenu>
-				<SubMenu
+				<MenuItem
+					id={window.location.pathname === "/Approval-Admin" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconUI} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Approval-Admin";
+					}}
+				>
+					{""} Approval Admin
+				</MenuItem>
+				<MenuItem
+					id={
+						window.location.pathname === "/Approval-Operation" ? "active" : ""
+					}
+					className=" pos-r"
+					icon={<img src={IconForm} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Approval-Operation";
+					}}
+				>
+					{""} Approval Operation
+				</MenuItem>
+				{/* <SubMenu
 					className=""
 					icon={<img src={IconForm} className="h-5" alt="awSnap" />}
 					title="Persetujuan Admin"
@@ -164,8 +196,8 @@ export function Sidebar() {
 							</MenuItem>
 						);
 					})}
-				</SubMenu>
-				<SubMenu
+				</SubMenu> */}
+				{/* <SubMenu
 					className=""
 					icon={<img src={IconForm} className="h-5" alt="awSnap" />}
 					title="Persetujuan Operation"
@@ -193,7 +225,7 @@ export function Sidebar() {
 							</MenuItem>
 						);
 					})}
-				</SubMenu>
+				</SubMenu> */}
 				<SubMenu
 					className=""
 					icon={<img src={IconAdvanced} className="h-5" alt="awSnap" />}

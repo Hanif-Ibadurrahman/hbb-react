@@ -11,6 +11,7 @@ import { BorrowItemsInterfaceState } from "store/Types/BorrowItemTypes";
 import { FoldersInterfaceState } from "store/Types/FolderTypes";
 import { TransportersInterfaceState } from "store/Types/TransporterTypes";
 import { ArchiversInterfaceState } from "store/Types/ArchiverTypes";
+import { PickUpItemsInterfaceState } from "store/Types/PickUpTypes";
 import { RoomsInterfaceState } from "store/Types/RoomTypes";
 
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
@@ -35,6 +36,7 @@ export interface RootState {
 	folders?: FoldersInterfaceState;
 	transporters?: TransportersInterfaceState;
 	archivers?: ArchiversInterfaceState;
+	pickUpItems?: PickUpItemsInterfaceState;
 	rooms?: RoomsInterfaceState;
 
 	// [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly

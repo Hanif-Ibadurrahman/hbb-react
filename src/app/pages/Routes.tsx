@@ -29,7 +29,7 @@ import { DashboardAdminTransport } from "./Dashboard/AdminTransport";
 // APPROVAL
 import ApprovalAdminRequestBox from "./Approval/RequestBox";
 import ApprovalAdminDetail from "./Approval/RequestBox/Detail";
-import { ApprovalPickupBox } from "./Approval/PickupBox";
+import ApprovalAdminPickupBox from "./Approval/PickupBox";
 import { ApprovalPinjamItem } from "./Approval/PinjamItem";
 import { ApprovalPengembalianItem } from "./Approval/PengembalianItem";
 import { ApprovalDetail } from "./Approval/Detail";
@@ -99,6 +99,8 @@ import { EditBoxCSR } from "./AdminCSR/BoxPage/Edit";
 import RequestBox from "./Customer/RequestBox";
 //2 - Borrow
 import BorrowBoxPage from "./Customer/BorrowBox";
+//3 - Pick Up
+import PickUpPage from "./Customer/PickUpBox";
 
 // -=-=-=-=-=-
 // ALL USER
@@ -146,7 +148,7 @@ export function Routes() {
 
 						{/*---------- APPROVAL ---------*/}
 						<Route
-							path={process.env.PUBLIC_URL + "/Approval-Admin/RequestBox"}
+							path={process.env.PUBLIC_URL + "/Approval-Admin"}
 							component={ApprovalAdminRequestBox}
 						/>
 						<Route
@@ -154,12 +156,12 @@ export function Routes() {
 							component={ApprovalAdminDetail}
 						/>
 						<Route
-							path={process.env.PUBLIC_URL + "/Approval-Operation/RequestBox"}
+							path={process.env.PUBLIC_URL + "/Approval-Operation"}
 							component={ApprovalOperationRequestBox}
 						/>
 						<Route
-							path={process.env.PUBLIC_URL + "/Approval/PickupBox"}
-							component={ApprovalPickupBox}
+							path={process.env.PUBLIC_URL + "/Approval-Admin/PickupBox"}
+							component={ApprovalAdminPickupBox}
 						/>
 						<Route
 							path={process.env.PUBLIC_URL + "/Approval/PinjamItem"}
@@ -331,6 +333,10 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/Customer/Request-Box"}
 							component={RequestBox}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Customer/Pick-Up"}
+							component={PickUpPage}
 						/>
 
 						{/*--------- ALL USER ---------*/}

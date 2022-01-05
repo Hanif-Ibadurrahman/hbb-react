@@ -1,5 +1,6 @@
 import * as React from "react";
 import Datatable from "react-bs-datatable";
+import moment from "moment";
 
 const customLabels = {
 	first: "<<",
@@ -28,7 +29,7 @@ const onSortFunction = {
 	date(columnValue) {
 		// Convert the string date format to UTC timestamp
 		// So the table could sort it by number instead of by string
-		return "Do MMMM YYYY".valueOf();
+		return moment(columnValue, "Do MMMM YYYY").valueOf();
 	},
 };
 
@@ -41,6 +42,11 @@ export function DataTable(props) {
 					tableBody={props.tableBody}
 					labels={customLabels}
 					classes={classes}
+					initialSort={props.initialSort}
+					onSort={onSortFunction}
+					onFilter={() => {
+						console.log("Filter");
+					}}
 				/>
 			</div>
 		</>

@@ -29,9 +29,8 @@ import "./autocomplete.scoped.scss";
 
 export const ModalFormReject = props => {
 	const [showAlert, setShowAlert] = useState(false);
-	const [alertMessage, setalertMessage] = useState("");
+	const [showAlertDanger, setShowAlertDanger] = useState(false);
 	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
-	// const requestBoxes: useSelector(selectRequestBoxes);
 	const approvalAdmin: ApprovalInterfaceState =
 		useSelector(SelectApprovalAdmin);
 
@@ -43,18 +42,17 @@ export const ModalFormReject = props => {
 	return (
 		<>
 			<Alert
-				text="Data di Reject"
-				variant="danger"
+				text="Data Berhasil di Reject"
+				variant="success"
 				show={showAlert}
-				style={{
-					top: 50,
-					position: "fixed",
-					left: "50%",
-					transform: [{ translateX: "-50%" }],
-				}}
 				onHide={() => setShowAlert(false)}
 			/>
-
+			<Alert
+				text="Data Gagal Di Update"
+				variant="danger"
+				show={showAlertDanger}
+				onHide={() => setShowAlertDanger(false)}
+			/>
 			<Modal
 				show={props.modal}
 				onHide={props.hide}
@@ -68,20 +66,30 @@ export const ModalFormReject = props => {
 					onSubmit={async values => {
 						try {
 							values.Id = requestBox.id;
-							dispatch(await RejectOpertaion(values));
-							setShowAlert(true);
+							let action = RejectOpertaion(values);
+							const res = await action;
+							await dispatch(res);
+							action.then(() => {
+								setShowAlert(true);
+								setTimeout(function () {
+									setShowAlert(false);
+								}, 4000);
+								setTimeout(function () {
+									window.location.reload();
+								}, 1000);
+								dispatch({ type: RESET_REQUEST_BOX_FORM });
+								props.modalSet(props.valueModalSet);
+							});
+						} catch (e) {
+							setShowAlertDanger(true);
+							setTimeout(function () {
+								setShowAlertDanger(false);
+							}, 4000);
 							setTimeout(function () {
 								window.location.reload();
 							}, 1000);
 							dispatch({ type: RESET_REQUEST_BOX_FORM });
 							props.modalSet(props.valueModalSet);
-							approvalAdmin.Id ? (
-								<>Data Berhasil di Edit</>
-							) : (
-								<>Data Berhasil di Tambah</>
-							);
-						} catch (e) {
-							console.log("ini error di depan");
 						}
 					}}
 				>
@@ -149,7 +157,7 @@ export const ModalFormReject = props => {
 
 export const ModalFormApprove = props => {
 	const [showAlert, setShowAlert] = useState(false);
-	// const [alertMessage, setalertMessage] = useState("");
+	const [showAlertDanger, setShowAlertDanger] = useState(false);
 	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
 	const approvalOperation: ApprovalOperationInterfaceState = useSelector(
 		SelectApprovalOperation,
@@ -158,9 +166,6 @@ export const ModalFormApprove = props => {
 
 	const transporter = useSelector(selectTransporters);
 	const archiver = useSelector(selectArchivers);
-
-	console.log("driver >>>>", transporter.Transporters);
-	console.log("archiver >>>>", archiver.Archivers);
 
 	const FetchData = (page = 1) => {
 		dispatch(getTransporterList(page));
@@ -191,15 +196,15 @@ export const ModalFormApprove = props => {
 	return (
 		<>
 			<Alert
+				text="Data Gagal Di Update"
+				variant="danger"
+				show={showAlertDanger}
+				onHide={() => setShowAlertDanger(false)}
+			/>
+			<Alert
 				text="Data Berhasil Approve"
 				variant="success"
 				show={showAlert}
-				style={{
-					top: 50,
-					position: "fixed",
-					left: "50%",
-					transform: [{ translateX: "-50%" }],
-				}}
 				onHide={() => setShowAlert(false)}
 			/>
 
@@ -215,19 +220,26 @@ export const ModalFormApprove = props => {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							console.log("Kambing Hitam", values);
-
 							values.id = requestBox.id;
 							values.is_approved = true;
-							dispatch(await ApprovalOpertaion(values));
+							let action = ApprovalOpertaion(values);
+							const res = await action;
+							await dispatch(res);
+							action.then(() => {
+								dispatch({ type: RESET_REQUEST_BOX_FORM });
+								props.modalSet(props.valueModalSet);
+								setShowAlert(true);
+								setTimeout(function () {
+									window.location.reload();
+								}, 1000);
+							});
+						} catch (e) {
+							setShowAlertDanger(true);
+							setTimeout(function () {
+								setShowAlertDanger(false);
+							}, 4000);
 							dispatch({ type: RESET_REQUEST_BOX_FORM });
 							props.modalSet(props.valueModalSet);
-							setShowAlert(true);
-							// setTimeout(function () {
-							// 	window.location.reload();
-							// }, 1000);
-						} catch (e) {
-							console.log("ini error di depan");
 						}
 					}}
 				>
@@ -258,7 +270,7 @@ export const ModalFormApprove = props => {
 													min={DeliveredDate}
 													name="delivery_date"
 													placeholder="Date"
-													value={values.delivery_date}
+													value={values?.delivery_date}
 													onChange={e => {
 														handleChange(e);
 													}}

@@ -7,13 +7,10 @@ import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
 import { getRequestBoxesList } from "actions/RequestBoxAction";
 import { useDispatch, useSelector } from "react-redux";
-import Alert from "app/components/Alerts";
 import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
 import moment from "moment";
 
 const BoxPage = () => {
-	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
-	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
 	const requestBoxes = useSelector(selectRequestBoxes);
@@ -69,24 +66,9 @@ const BoxPage = () => {
 		<>
 			<Helmet>
 				<title>Dox - Request Box</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="Request Box" />
 			</Helmet>
 			<PageWrapper>
-				<Alert
-					text="Data Berhasil Di Hapus"
-					variant="success"
-					show={showAlertSuccess}
-					onHide={() => setShowAlertSuccess(false)}
-				/>
-				<Alert
-					text="Data Gagal Di Hapus"
-					variant="danger"
-					show={showAlertFailed}
-					onHide={() => setShowAlertFailed(false)}
-				/>
 				<ModalForm
 					modal={modalShow}
 					hide={_onHide}

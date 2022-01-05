@@ -26,27 +26,20 @@ import { approval_admin } from "api/requestBox";
 
 const ApprovalAdminRequestBox = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
-	const [showAlertFailed, setShowAlertFailed] = useState(false);
+	const [showAlertDanger, setShowAlertDanger] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
 	const requestBoxes = useSelector(selectRequestBoxes);
 
-	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
-	// const boxes = useSelector(selectBoxes);
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
 		dispatch(getRequestBoxesList(page));
-		// dispatch(getBoxesList(page));
 	};
 
 	useEffect(() => {
 		FetchData();
 	}, []);
-
-	const NewDate = (date: any) => {
-		return moment(date).format("d MMMM YYYY");
-	};
 
 	const _onHide = () => {
 		setModalShow(false);
@@ -60,20 +53,30 @@ const ApprovalAdminRequestBox = () => {
 	};
 
 	const Approval = async id => {
-		console.log(">>>>>", id);
 		let payload = {
 			Id: id,
 			Approved: true,
 			Description: "",
 		};
-		dispatch(await ApprovalAdmin(payload));
-		setShowAlertSuccess(true);
-		setTimeout(function () {
-			setShowAlertSuccess(false);
-		}, 4000);
-		setTimeout(function () {
-			window.location.reload();
-		}, 1000);
+		try {
+			let action = ApprovalAdmin(payload);
+			const res = await action;
+			await dispatch(res);
+			action.then(() => {
+				setShowAlertSuccess(true);
+				setTimeout(function () {
+					setShowAlertSuccess(false);
+				}, 4000);
+				setTimeout(function () {
+					window.location.reload();
+				}, 1000);
+			});
+		} catch (e) {
+			setShowAlertDanger(true);
+			setTimeout(function () {
+				setShowAlertDanger(false);
+			}, 4000);
+		}
 	};
 
 	const action = id => [
@@ -124,15 +127,31 @@ const ApprovalAdminRequestBox = () => {
 				style: { width: "20%" },
 			},
 			cell: row => {
-				return NewDate(row.delivered_at);
+				// return NewDate(row.delivered_at);
+				return moment(row.delivered_at).format("DD MMMM YYYY");
 			},
 		},
 		{
-			title: "Quantity",
-			prop: "quantity",
+			title: "Tipe Permintaan",
+			prop: "type",
 			sortable: true,
 			cellProps: {
 				style: { width: "20%" },
+			},
+			cell: row => {
+				return (
+					<>
+						{row.type == "request-box"
+							? "Request Box"
+							: row.type == "pickup-box"
+							? "Pick Up Box"
+							: row.type == "borrow-item"
+							? "Peminjaman"
+							: row.type == "return-item"
+							? "Pengembalian"
+							: null}
+					</>
+				);
 			},
 		},
 		{
@@ -165,10 +184,10 @@ const ApprovalAdminRequestBox = () => {
 					onHide={() => setShowAlertSuccess(false)}
 				/>
 				<Alert
-					text="Data Gagal Di Hapus"
+					text="Data Gagal Di Update"
 					variant="danger"
-					show={showAlertFailed}
-					onHide={() => setShowAlertFailed(false)}
+					show={showAlertDanger}
+					onHide={() => setShowAlertDanger(false)}
 				/>
 				<ModalForm
 					modal={modalShow}
@@ -176,8 +195,12 @@ const ApprovalAdminRequestBox = () => {
 					modalSet={setModalShow}
 					valueModalSet={false}
 				/>
-				<PageHeader breadcrumb={["Master", "Approval Admin"]} />
-				<DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} />
+				<PageHeader breadcrumb={["Dashboard", "Approval"]} />
+				<DataTable
+					tableHeader={header}
+					tableBody={requestBoxes.RequestBoxes}
+					initialSort={{ prop: "delivered_at", isAscending: true }}
+				/>
 				<Pagination
 					pageCount={requestBoxes.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}

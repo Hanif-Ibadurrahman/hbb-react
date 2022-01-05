@@ -18,6 +18,7 @@ import divisions from "./Reducer/division";
 import borrowItems from "./Reducer/borrowItem";
 import transporters from "./Reducer/transporter";
 import archivers from "./Reducer/archiver";
+import pickUpItems from "./Reducer/pickUp";
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -42,6 +43,7 @@ export function createReducer(injectedReducers: InjectedReducersType = {}) {
 			borrowItems,
 			transporters,
 			archivers,
+			pickUpItems,
 		});
 	}
 }

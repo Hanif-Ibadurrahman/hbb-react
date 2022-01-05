@@ -175,7 +175,7 @@ const RoomPage = () => {
 				/>
 				<DataTable tableHeader={header} tableBody={rooms.Rooms} />
 				<Pagination
-					pageCount={rooms.Meta.LastPage}
+					pageCount={rooms.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

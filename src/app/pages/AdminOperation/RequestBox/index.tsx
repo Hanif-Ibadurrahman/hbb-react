@@ -10,21 +10,15 @@ import {
 	getAllConfirmedAdmin,
 } from "actions/RequestBoxAction";
 import { useDispatch, useSelector } from "react-redux";
-import Swal from "sweetalert2";
-import { deleteBox } from "actions/BoxActions";
-import Alert from "app/components/Alerts";
 import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
 import moment from "moment";
 import { ModalFormReject, ModalFormApprove } from "./ModalForm";
 
 const ApprovalOperationRequestBox = () => {
-	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
-	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [modalShowApprove, setModalShowApprove] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
 	const requestBoxes = useSelector(selectRequestBoxes);
-	// const boxes = useSelector(selectBoxes);
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
@@ -35,55 +29,18 @@ const ApprovalOperationRequestBox = () => {
 		FetchData();
 	}, []);
 
-	const NewDate = (date: any) => {
-		return moment(date).format("d MMMM YYYY");
-	};
-
-	const onDelete = (dispatch, id) => {
-		Swal.fire({
-			text: "Apakah anda ingin menghapus data ini?",
-			icon: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#d33",
-			confirmButtonText: "Hapus",
-		}).then(willDelete => {
-			if (willDelete) {
-				dispatch(deleteBox(id));
-				setShowAlertSuccess(true);
-				setTimeout(function () {
-					setShowAlertSuccess(false);
-				}, 4000);
-				setTimeout(function () {
-					window.location.reload();
-				}, 1000);
-			} else {
-				setShowAlertFailed(true);
-				setTimeout(function () {
-					setShowAlertFailed(false);
-				}, 4000);
-			}
-		});
-	};
-
 	const _onHide = () => {
 		setModalShow(false);
 		setShowAlert(false);
 		setModalShowApprove(false);
 	};
 
-	const showEditForm = async id => {
-		dispatch(getRequestBoxDetail(id));
-		setModalShow(true);
-	};
-
 	const RejectForm = async id => {
-		console.log("Reject Id", id);
 		dispatch(getRequestBoxDetail(id));
 		setModalShow(true);
 	};
 
 	const ApproveForm = async id => {
-		console.log("Approve Id", id);
 		dispatch(getRequestBoxDetail(id));
 		setModalShowApprove(true);
 	};
@@ -136,15 +93,30 @@ const ApprovalOperationRequestBox = () => {
 				style: { width: "20%" },
 			},
 			cell: row => {
-				return NewDate(row.delivered_at);
+				return moment(row.delivered_at).format("DD MMMM YYYY");
 			},
 		},
 		{
-			title: "Quantity",
-			prop: "quantity",
+			title: "Tipe Permintaan",
+			prop: "type",
 			sortable: true,
 			cellProps: {
 				style: { width: "20%" },
+			},
+			cell: row => {
+				return (
+					<>
+						{row.type == "request-box"
+							? "Request Box"
+							: row.type == "pickup-box"
+							? "Pick Up Box"
+							: row.type == "borrow-item"
+							? "Peminjaman"
+							: row.type == "return-item"
+							? "Pengembalian"
+							: null}
+					</>
+				);
 			},
 		},
 		{
@@ -170,18 +142,6 @@ const ApprovalOperationRequestBox = () => {
 				/>
 			</Helmet>
 			<PageWrapper>
-				<Alert
-					text="Data Berhasil Di Hapus"
-					variant="success"
-					show={showAlertSuccess}
-					onHide={() => setShowAlertSuccess(false)}
-				/>
-				<Alert
-					text="Data Gagal Di Hapus"
-					variant="danger"
-					show={showAlertFailed}
-					onHide={() => setShowAlertFailed(false)}
-				/>
 				<ModalFormReject
 					modal={modalShow}
 					hide={_onHide}
@@ -194,7 +154,7 @@ const ApprovalOperationRequestBox = () => {
 					modalSet={setModalShowApprove}
 					valueModalSet={false}
 				/>
-				<PageHeader breadcrumb={["Master", "Approval Admin"]} />
+				<PageHeader breadcrumb={["Master", "Approval Operation"]} />
 				<DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} />
 				<Pagination
 					pageCount={requestBoxes.Meta.last_page}

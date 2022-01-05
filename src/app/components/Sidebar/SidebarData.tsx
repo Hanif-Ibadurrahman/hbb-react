@@ -52,12 +52,12 @@ export const PeminjamanData = [
 		link: "/Approval-Admin/RequestBox",
 		notifications: DataSidebar,
 	},
-	// {
-	// 	title: "Pickup Box",
-	// 	icon: "",
-	// 	link: "/Approval/PickupBox",
-	// 	notifications: "",
-	// },
+	{
+		title: "Pickup Box",
+		icon: "",
+		link: "/Approval-Admin/PickupBox",
+		notifications: "",
+	},
 	// {
 	// 	title: "Pinjam Item",
 	// 	icon: "",

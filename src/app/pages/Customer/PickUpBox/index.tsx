@@ -2,49 +2,34 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
-// import PageHeader from "../Components/PageHeader";
 import DropdownAction from "app/pages/Master/Components/DropdownAction";
-// import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import { getBoxesList, getBoxDetail } from "actions/BoxActions";
 import { AddCart, getBorrowList } from "actions/BorrowItemAction";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import Alert from "app/components/Alerts";
-import { selectBoxes } from "store/Selector/BoxSelector";
 import ModalForm from "./ModalForm";
-import "./page.scoped.scss";
+import "../BorrowBox/page.scoped.scss";
 import _ from "lodash";
-import {
-	selectBorrowItem,
-	selectBorrowItems,
-} from "store/Selector/BorrowItemSelector";
+import { selectPickUpItems } from "store/Selector/PickUpSelector";
+import { getPickUpList } from "actions/PickUpAction";
 
-const BorrowBoxPage = () => {
-	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
-	const [showAlertFailed, setShowAlertFailed] = useState(false);
+const PickUpPage = () => {
 	const [modalShow, setModalShow] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
-	const boxes = useSelector(selectBoxes);
-	const borrowList = useSelector(selectBorrowItems);
-	const cartStash = useSelector((state: RootStateOrAny) => state?.pickUpItems);
+	const pickUpList = useSelector(selectPickUpItems);
+	const cartStash = useSelector((state: RootStateOrAny) => state?.borrowItems);
 
-	// console.log("Total Cart Tash>>>>", Cart.length);
-
-	useEffect(() => {
-		setCart(cartStash);
-		console.log("CART NEW>>", cart.Cart);
-	}, []);
+	// useEffect(() => {
+	// 	setCart(cartStash);
+	// }, []);
 
 	useEffect(() => {
 		setCart(cartStash);
-		console.log("CART NEW>>", cart.Cart);
 	}, [cartStash]);
 
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		// dispatch(getBoxesList(page));
-		dispatch(getBorrowList(page));
+		dispatch(getPickUpList(page));
 	};
 
 	useEffect(() => {
@@ -56,18 +41,16 @@ const BorrowBoxPage = () => {
 	};
 
 	const addCart = async id => {
-		checkCart(id);
+		// checkCart(id);
 		dispatch(await AddCart(id));
 	};
 
-	const checkCart = id => {
-		if (cart) {
-			console.log("total cart", cart?.numberCart, cart?.Cart);
-			console.log("id onclick", id);
-			const checkCart = cart?.Cart.indexOf(String(id));
-			console.log("check cart index: ", checkCart);
-		}
-	};
+	// const checkCart = id => {
+	// 	if (cart) {
+	// 		const checkCart = cart?.Cart.indexOf(String(id));
+	// 		console.log("check cart index: ", checkCart);
+	// 	}
+	// };
 
 	const action = id => [
 		{
@@ -92,11 +75,19 @@ const BorrowBoxPage = () => {
 
 	const header = [
 		{
+			title: "Id",
+			prop: "id",
+			sortable: true,
+			cellProps: {
+				style: { width: "40%" },
+			},
+		},
+		{
 			title: "Code Box",
 			prop: "code_box",
 			sortable: true,
 			cellProps: {
-				style: { width: "80%" },
+				style: { width: "40%" },
 			},
 		},
 		{
@@ -155,28 +146,15 @@ const BorrowBoxPage = () => {
 				/>
 			</Helmet>
 			<PageWrapper>
-				<Alert
-					text="Data Berhasil Di Hapus"
-					variant="success"
-					show={showAlertSuccess}
-					onHide={() => setShowAlertSuccess(false)}
-				/>
-				<Alert
-					text="Data Gagal Di Hapus"
-					variant="danger"
-					show={showAlertFailed}
-					onHide={() => setShowAlertFailed(false)}
-				/>
-
 				<ModalForm
 					modal={modalShow}
 					hide={_onHide}
 					modalSet={setModalShow}
 					valueModalSet={false}
 				/>
-				<DataTable tableHeader={header} tableBody={borrowList.BorrowList} />
+				<DataTable tableHeader={header} tableBody={pickUpList.PickUpItemList} />
 				<Pagination
-					pageCount={boxes.Meta.last_page}
+					pageCount={pickUpList.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 				<Cart />
@@ -185,4 +163,4 @@ const BorrowBoxPage = () => {
 	);
 };
 
-export default BorrowBoxPage;
+export default PickUpPage;
