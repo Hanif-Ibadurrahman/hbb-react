@@ -3,7 +3,7 @@ import { DivisionInterfaceState } from "store/Types/DivisionTypes";
 import api from "./dox";
 export const create = async (data: DivisionInterfaceState) => {
 	let payload = {
-		name: data.code_name,
+		name: data.name,
 	};
 	return api.post("/divisions", payload);
 };
@@ -11,7 +11,7 @@ export const create = async (data: DivisionInterfaceState) => {
 export const update = async (data: DivisionInterfaceState) => {
 	let id = data.id;
 	let payload = {
-		name: data.code_name,
+		name: data.name,
 	};
 	console.log(payload);
 	return await api.put(`/divisions/${id}`, payload);

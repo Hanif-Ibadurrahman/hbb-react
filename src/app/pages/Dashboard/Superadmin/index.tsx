@@ -64,6 +64,7 @@ const header = [
 ];
 
 export function DashboardSuperadmin() {
+	const user = localStorage.getItem("User");
 	return (
 		<>
 			<Helmet>
@@ -76,7 +77,8 @@ export function DashboardSuperadmin() {
 
 			<div className="pos-r p-8 bg-primary-5">
 				<h3 className="tc-dark-contrast mb-12 ff-1-bd">
-					<span className="ff-1">Selamat Datang,</span> Superadmin
+					<span className="ff-1">Selamat Datang,</span>
+					{user}
 				</h3>
 				<h6 className="mb-3 tc-dark-contrast">Today Summary</h6>
 				<div className="row w-100% mh-0 row-summary">

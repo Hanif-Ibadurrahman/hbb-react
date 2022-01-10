@@ -78,11 +78,11 @@ const ApprovalAdminDetail = ({ match }) => {
 						<QR
 							id="Detail-Box-QR"
 							title="Scan here"
-							value="ID : A12O2O3"
+							value="box-b29b0931-46b5-4326-9752-ecf1e855f711"
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">{requestBox.id}</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">Box 2</p>
 						</div>
 					</Card>
 				</div>

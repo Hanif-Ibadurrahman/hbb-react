@@ -31,16 +31,16 @@ export function Sidebar() {
 	useEffect(() => {
 		switch (user) {
 			case "superadmin":
-				setRole("admin")
+				setRole("admin");
 				break;
 			case "customer":
-				setRole("customer")
-				break
-			default:
+				setRole("customer");
 				break;
+			default:
+				setRole("customer");
 		}
 		console.log("User>>", user);
-	}, [user])
+	}, [user]);
 
 	const dispatch = useDispatch();
 

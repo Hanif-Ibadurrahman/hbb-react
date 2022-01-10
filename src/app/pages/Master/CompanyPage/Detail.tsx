@@ -43,7 +43,7 @@ const CompanyPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={Companys.CodeName}
+									defaultValue={Companys.name}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -51,7 +51,7 @@ const CompanyPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={Companys.CodeLocation}
+									defaultValue={Companys.location}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -59,7 +59,7 @@ const CompanyPageDetail = ({ match }) => {
 								<Form.Control
 									type="number"
 									disabled
-									defaultValue={Companys.CodeLatitude}
+									defaultValue={Companys.latitude}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -67,7 +67,7 @@ const CompanyPageDetail = ({ match }) => {
 								<Form.Control
 									type="number"
 									disabled
-									defaultValue={Companys.CodeLongitude}
+									defaultValue={Companys.longitude}
 								/>
 							</Form.Group>
 							<div className="d-flex jc-end">
@@ -91,7 +91,7 @@ const CompanyPageDetail = ({ match }) => {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">{Companys.CodeName}</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">{Companys.name}</p>
 						</div>
 					</Card>
 				</div>

@@ -1,7 +1,7 @@
 import { PaginationState } from "../Types/PaginationTypes";
 export interface DivisionInterfaceState {
 	id: string | null;
-	code_name: string;
+	name: string;
 }
 
 export interface DivisionsInterfaceState {

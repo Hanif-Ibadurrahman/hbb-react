@@ -15,7 +15,7 @@ export const initialState: DivisionsInterfaceState = {
 	Divisions: [],
 	Division: {
 		id: "",
-		code_name: "",
+		name: "",
 	},
 	Meta: {
 		total: 0,
@@ -52,7 +52,7 @@ export default (
 			return {
 				...state,
 				Division: {
-					code_name: payload?.data?.data?.name,
+					name: payload?.data?.data?.name,
 					id: payload?.data?.data?.id,
 				},
 				ErrorDivision: payload.errorMessage,
@@ -61,7 +61,7 @@ export default (
 			return {
 				...state,
 				Division: {
-					code_name: payload.data.data.name,
+					name: payload.data.data.name,
 					id: payload.data.data.id,
 				},
 			};
@@ -70,7 +70,7 @@ export default (
 				...state,
 				Division: {
 					id: payload.data.id,
-					code_name: payload.data.name,
+					name: payload.data.name,
 				},
 				ErrorDivision: payload.errorMessage,
 			};
@@ -84,7 +84,7 @@ export default (
 				...state,
 				Division: {
 					id: "",
-					code_name: "",
+					name: "",
 				},
 			};
 		default:

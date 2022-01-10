@@ -24,7 +24,7 @@ const ModalForm = props => {
 
 	const validationSchema = Yup.object().shape({
 		// CodeCompany: Yup.string().required("*Wajib diisi"),
-		code_name: Yup.string().required("*Wajib diisi"),
+		name: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
@@ -102,15 +102,15 @@ const ModalForm = props => {
 													type="text"
 													name="code_name"
 													placeholder="Name Divisi"
-													value={values.code_name}
+													value={values.name}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.code_name && errors.code_name ? (
+												{touched.name && errors.name ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.code_name}
+														{errors.name}
 													</p>
 												) : null}
 											</Form.Group>

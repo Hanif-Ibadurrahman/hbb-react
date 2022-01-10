@@ -5,14 +5,18 @@ export const create = async (data: CompanyInterfaceState) => {
 	// console.log("create api", data);
 
 	let payload = {
-		// code_company: data.CodeCompany,
-		name: data.CodeName,
-		location: data.CodeLocation,
-		latitude: data.CodeLatitude,
-		longitude: data.CodeLongitude,
-		is_agree: data.CodeAgree,
-		// created_at: data.CodeCreatedate,
-		// updated_at: data.CodeUpdatedate,
+		name: data.name,
+		location: data.location,
+		latitude: data.latitude,
+		longitude: data.longitude,
+		person_responsible: data.person_responsible,
+		npwp: data.npwp,
+		email: data.email,
+		phone: data.phone,
+		address: data.address,
+		service_type: data.service_type,
+		amount_access: data.amount_access,
+		is_agree: data.is_agree,
 	};
 	console.log("payload", payload);
 
@@ -20,16 +24,19 @@ export const create = async (data: CompanyInterfaceState) => {
 };
 
 export const update = async (data: CompanyInterfaceState) => {
-	let id = data.Id;
+	let id = data.id;
 	let payload = {
-		// code_company: data.CodeCompany,
-		name: data.CodeName,
-		location: data.CodeLocation,
-		latitude: data.CodeLatitude,
-		longitude: data.CodeLongitude,
-		is_agree: data.CodeAgree,
-		// created_at: data.CodeCreatedate,
-		// updated_at: data.CodeUpdatedate,
+		name: data.name,
+		location: data.location,
+		latitude: data.latitude,
+		longitude: data.longitude,
+		person_responsible: data.person_responsible,
+		npwp: data.npwp,
+		email: data.email,
+		phone: data.phone,
+		address: data.address,
+		service_type: data.service_type,
+		is_agree: data.is_agree,
 	};
 	console.log(payload);
 	return await api.put(`/companies/${id}`, payload);

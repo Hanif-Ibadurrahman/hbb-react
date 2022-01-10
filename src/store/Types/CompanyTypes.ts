@@ -1,12 +1,24 @@
 import { PaginationState } from "../Types/PaginationTypes";
 export interface CompanyInterfaceState {
-	Id: string | null;
+	id: string | null;
 	// CodeCompany: string;
-	CodeName: string;
-	CodeLocation: string;
-	CodeLatitude: string;
-	CodeLongitude: string;
-	CodeAgree: boolean;
+	name: string;
+	location: string;
+	latitude: string;
+	longitude: string;
+	is_agree: boolean;
+	person_responsible: string;
+	npwp: string;
+	email: string;
+	phone: string;
+	address: string;
+	amount_access: string;
+	service_type: [
+		{
+			type: string;
+			value: boolean;
+		},
+	];
 	// CodeCreatedate: string;
 	// CodeUpdatedate: string;
 }

@@ -37,6 +37,7 @@ import { ApprovalDetail } from "./Approval/Detail";
 // -=-=-=-=-=-
 //ADMIN OPERATION
 import ApprovalOperationRequestBox from "./AdminOperation/RequestBox";
+import ApprovalPreview from "./AdminOperation/RequestBox/ApprovePreview";
 
 // MASTER
 // 1 - BOX
@@ -73,6 +74,8 @@ import DivisionPageDetail from "./Master/DivisionPage/Detail";
 import TransporterPage from "./Master/Staff/TransporterPage";
 // 9 - USER ARCHIVER
 import ArchiverPage from "./Master/Staff/ArchiverPage";
+// 10 - CUSTOMER
+import CustomerPage from "./Master/CustomerPage";
 
 // import { FolderPage } from "./Master/FolderPage";
 // -=-=-=-=-=-
@@ -159,6 +162,10 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/Approval-Operation"}
 							component={ApprovalOperationRequestBox}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Preview-Approvral"}
+							component={ApprovalPreview}
 						/>
 						{/* <Route
 							path={process.env.PUBLIC_URL + "/Approval/PickupBox"}
@@ -272,6 +279,10 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/Archiver"}
 							component={ArchiverPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/CustomerPage"}
+							component={CustomerPage}
 						/>
 						{/*---------- MASTER - - - END ---------*/}
 

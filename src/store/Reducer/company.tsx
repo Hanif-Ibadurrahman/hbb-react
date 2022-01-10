@@ -14,15 +14,24 @@ import {
 export const initialState: CompanysInterfaceState = {
 	Companys: [],
 	Company: {
-		Id: "",
-		// CodeCompany: "",
-		CodeName: "",
-		CodeLocation: "",
-		CodeLongitude: "",
-		CodeLatitude: "",
-		CodeAgree: true,
-		// CodeCreatedate: "",
-		// CodeUpdatedate: "",
+		id: "",
+		name: "",
+		location: "",
+		longitude: "",
+		latitude: "",
+		person_responsible: "",
+		npwp: "",
+		email: "",
+		phone: "",
+		address: "",
+		amount_access: "",
+		service_type: [
+			{
+				type: "box",
+				value: true,
+			},
+		],
+		is_agree: true,
 	},
 	Meta: {
 		total: 0,
@@ -58,48 +67,18 @@ export default (
 		case GET_COMPANY_DETAIL:
 			return {
 				...state,
-				Company: {
-					// CodeUpdatedate: payload?.data?.data?.CodeUpdatedate,
-					// CodeCreatedate: payload?.data?.data?.CodeCreatedate,
-					CodeAgree: payload?.data?.data?.is_agree,
-					CodeLongitude: payload?.data?.data?.longitude,
-					CodeLatitude: payload?.data?.data?.latitude,
-					CodeLocation: payload?.data?.data?.location,
-					CodeName: payload?.data?.data?.name,
-					// CodeCompany: payload?.data?.data?.code_company,
-					Id: payload?.data?.data?.id,
-				},
+				Company: payload?.data?.data,
 				ErrorCompany: payload.errorMessage,
 			};
 		case CREATE_COMPANY:
 			return {
 				...state,
-				Company: {
-					// CodeUpdatedate: payload?.data?.data?.CodeUpdatedate,
-					// CodeCreatedate: payload?.data?.data?.CodeCreatedate,
-					CodeAgree: payload?.data?.data?.is_agree,
-					CodeLongitude: payload?.data?.data?.longitude,
-					CodeLatitude: payload?.data?.data?.latitude,
-					CodeLocation: payload?.data?.data?.location,
-					CodeName: payload?.data?.data?.name,
-					// CodeCompany: payload.data.data.code_company,
-					Id: payload.data.data.id,
-				},
+				Company: payload?.data?.data,
 			};
 		case UPDATE_COMPANY:
 			return {
 				...state,
-				Company: {
-					// CodeUpdatedate: payload?.data?.data?.CodeUpdatedate,
-					// CodeCreatedate: payload?.data?.data?.CodeCreatedate,
-					CodeAgree: payload?.data?.data?.is_agree,
-					CodeLongitude: payload?.data?.data?.longitude,
-					CodeLatitude: payload?.data?.data?.latitude,
-					CodeLocation: payload?.data?.data?.location,
-					CodeName: payload?.data?.data?.name,
-					// CodeCompany: payload.data.code_company,
-					Id: payload.data.id,
-				},
+				Company: payload?.data?.data,
 				ErrorCompany: payload.errorMessage,
 			};
 		case RESET_COMPANY_LIST:
@@ -111,15 +90,24 @@ export default (
 			return {
 				...state,
 				Company: {
-					Id: "",
-					// CodeCompany: "",
-					CodeName: "",
-					CodeLocation: "",
-					CodeLongitude: "",
-					CodeLatitude: "",
-					CodeAgree: true,
-					// CodeCreatedate: "",
-					// CodeUpdatedate: "",
+					id: "",
+					name: "",
+					location: "",
+					longitude: "",
+					latitude: "",
+					person_responsible: "",
+					npwp: "",
+					email: "",
+					phone: "",
+					address: "",
+					amount_access: "",
+					service_type: [
+						{
+							type: "box",
+							value: true,
+						},
+					],
+					is_agree: true,
 				},
 			};
 		default:

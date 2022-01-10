@@ -24,25 +24,18 @@ const ModalForm = props => {
 
 	const validationSchema = Yup.object().shape({
 		// CodeCompany: Yup.string().required("*Wajib diisi"),
-		CodeName: Yup.string().required("*Wajib diisi"),
-		CodeLocation: Yup.string().required("*Wajib diisi"),
-		CodeLatitude: Yup.string().required("*Wajib diisi"),
-		CodeLongitude: Yup.string().required("*Wajib diisi"),
-		CodeAgree: Yup.string().required("*Wajib diisi"),
+		name: Yup.string().required("*Wajib diisi"),
+		location: Yup.string().required("*Wajib diisi"),
+		latitude: Yup.string().required("*Wajib diisi"),
+		longitude: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
 		<>
 			<Alert
-				text={alertMessage}
+				text="Data Berhasil Di Tambah"
 				variant="success"
 				show={showAlert}
-				style={{
-					top: 50,
-					position: "fixed",
-					left: "50%",
-					transform: [{ translateX: "-50%" }],
-				}}
 				onHide={() => setShowAlert(false)}
 			/>
 
@@ -58,7 +51,7 @@ const ModalForm = props => {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							let action = Companys.Id
+							let action = Companys.id
 								? UpdateCompany(values)
 								: CreateCompany(values);
 							// dispatch(loadingbarTurnOn)
@@ -67,10 +60,14 @@ const ModalForm = props => {
 							action.then(() => {
 								dispatch({ type: RESET_COMPANY_FORM });
 								props.modalSet(props.valueModalSet);
+								setShowAlert(true);
+								setTimeout(function () {
+									window.location.reload();
+								}, 1000);
 							});
 							dispatch({ type: RESET_COMPANY_FORM });
 							props.modalSet(props.valueModalSet);
-							Companys.Id ? (
+							Companys.id ? (
 								<>Data Berhasil di Edit</>
 							) : (
 								<>Data Berhasil di Tambah</>
@@ -93,46 +90,28 @@ const ModalForm = props => {
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									{Companys.Id ? <>Edit Data</> : <>Tambah Data</>}
+									{Companys.id ? <>Edit Data</> : <>Tambah Data</>}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
 								<Container>
 									<Row>
 										<Col xs={12}>
-											{/* <Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Code Company</Form.Label>
-												<Form.Control
-													type="text"
-													name="CodeCompany"
-													placeholder="Code"
-													value={values.CodeCompany}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>
-												{touched.CodeCompany && errors.CodeCompany ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.CodeCompany}
-													</p>
-												) : null}
-											</Form.Group> */}
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Name Company</Form.Label>
 												<Form.Control
 													type="text"
-													name="CodeName"
+													name="name"
 													placeholder="Name Company"
-													value={values.CodeName}
+													value={values.name}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.CodeName && errors.CodeName ? (
+												{touched.name && errors.name ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.CodeName}
+														{errors.name}
 													</p>
 												) : null}
 											</Form.Group>
@@ -140,17 +119,17 @@ const ModalForm = props => {
 												<Form.Label>Location</Form.Label>
 												<Form.Control
 													type="text"
-													name="CodeLocation"
+													name="location"
 													placeholder="Location"
-													value={values.CodeLocation}
+													value={values.location}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.CodeLocation && errors.CodeLocation ? (
+												{touched.location && errors.location ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.CodeLocation}
+														{errors.location}
 													</p>
 												) : null}
 											</Form.Group>
@@ -158,17 +137,17 @@ const ModalForm = props => {
 												<Form.Label>Latitude</Form.Label>
 												<Form.Control
 													type="number"
-													name="CodeLatitude"
+													name="latitude"
 													placeholder="Latitude"
-													value={values.CodeLatitude}
+													value={values.latitude}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.CodeLatitude && errors.CodeLatitude ? (
+												{touched.latitude && errors.latitude ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.CodeLatitude}
+														{errors.latitude}
 													</p>
 												) : null}
 											</Form.Group>
@@ -176,63 +155,106 @@ const ModalForm = props => {
 												<Form.Label>Longitude</Form.Label>
 												<Form.Control
 													type="number"
-													name="CodeLongitude"
+													name="longitude"
 													placeholder="Longitude"
-													value={values.CodeLongitude}
+													value={values.longitude}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.CodeLongitude && errors.CodeLongitude ? (
+												{touched.longitude && errors.longitude ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.CodeLongitude}
+														{errors.longitude}
 													</p>
 												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Penanggung Jawab</Form.Label>
+												<Form.Control
+													type="text"
+													name="person_responsible"
+													placeholder="Penanggung Jawab"
+													value={values.person_responsible}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>NPWP</Form.Label>
+												<Form.Control
+													type="text"
+													name="npwp"
+													placeholder="NPWP"
+													value={values.npwp}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Email</Form.Label>
+												<Form.Control
+													type="email"
+													name="email"
+													placeholder="Email"
+													value={values.email}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Phone</Form.Label>
+												<Form.Control
+													type="text"
+													name="phone"
+													placeholder="Telephone"
+													value={values.phone}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Alamat</Form.Label>
+												<Form.Control
+													type="string"
+													name="address"
+													placeholder="Alamat"
+													value={values.address}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Jumlah Pengguna</Form.Label>
+												<Form.Control
+													type="number"
+													name="amount_access"
+													placeholder="Alamat"
+													value={values.amount_access}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Persetujuan</Form.Label>
-												<FormControlLabel
-													control={<Checkbox defaultChecked />}
-													label="Hide"
-												/>
+												<Row>
+													<Form.Check type="checkbox" label="box" />
+													<Form.Check type="checkbox" label="folder" />
+													<Form.Check type="checkbox" label="document" />
+												</Row>
 											</Form.Group>
-											{/* <Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Create</Form.Label>
-												<Form.Control
-													type="date"
-													name="CodeCreatedate"
-													placeholder="Code"
-													value={values.CodeCreatedate}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>
-												{touched.CodeCreatedate && errors.CodeCreatedate ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.CodeCreatedate}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Update</Form.Label>
-												<Form.Control
-													type="date"
-													name="CodeUpdatedate"
-													placeholder="Code"
-													value={values.CodeUpdatedate}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>
-												{touched.CodeUpdatedate && errors.CodeUpdatedate ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.CodeUpdatedate}
-													</p>
-												) : null}
-											</Form.Group> */}
 										</Col>
 									</Row>
 								</Container>

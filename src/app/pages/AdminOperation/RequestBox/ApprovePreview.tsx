@@ -13,10 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
 import moment from "moment";
 import { ModalFormReject, ModalFormApprove } from "./ModalForm";
-import { Button } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
 
-const ApprovalOperationRequestBox = () => {
+const ApprovalPreview = () => {
 	const [modalShow, setModalShow] = useState(false);
 	const [modalShowApprove, setModalShowApprove] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
@@ -47,13 +45,6 @@ const ApprovalOperationRequestBox = () => {
 		setModalShowApprove(true);
 	};
 
-	let history = useHistory();
-
-	const PreviewApproval = e => {
-		e.preventDefault();
-		history.push("/Preview-Approvral");
-	};
-
 	const action = id => [
 		{
 			icon: "fa-search",
@@ -62,26 +53,10 @@ const ApprovalOperationRequestBox = () => {
 			type: 1,
 		},
 		{
-			icon: "fa-check-square",
-			title: "Terima",
-			titleClass: "tc-success-5",
-			type: 2,
-			onclick: () => {
-				ApproveForm(id);
-			},
-			dispatch: dispatch,
-			row: id,
-		},
-		{
-			icon: "fa-vote-nay",
-			title: "Tolak",
-			titleClass: "tc-danger-5",
-			type: 2,
-			onclick: () => {
-				RejectForm(id);
-			},
-			dispatch: dispatch,
-			row: id,
+			icon: "fa-print",
+			title: "Print",
+			url: "/Print-Approval/" + id,
+			type: 1,
 		},
 	];
 
@@ -169,15 +144,9 @@ const ApprovalOperationRequestBox = () => {
 					pageCount={requestBoxes.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
-				<div className="d-flex jc-end mt-6">
-					<Button onClick={PreviewApproval} variant="secondary">
-						{" "}
-						Print Barcode <i className="fas fa-arrow-right ml-2"></i>{" "}
-					</Button>
-				</div>
 			</PageWrapper>
 		</>
 	);
 };
 
-export default ApprovalOperationRequestBox;
+export default ApprovalPreview;

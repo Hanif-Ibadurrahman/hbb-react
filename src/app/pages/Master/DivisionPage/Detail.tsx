@@ -47,7 +47,7 @@ const DivisionPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={Divisions.code_name}
+									defaultValue={Divisions.name}
 								/>
 							</Form.Group>
 							<div className="d-flex jc-end">
