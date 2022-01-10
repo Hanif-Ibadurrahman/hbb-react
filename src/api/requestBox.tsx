@@ -11,6 +11,7 @@ export const create = async (data: RequestBoxInterfaceState) => {
 		delivery_method: data.delivery_method,
 		note: data.note,
 		code_boxes: data.code_boxes,
+		request_logs: data.request_logs,
 	};
 	console.log("Kambing Hitam Abdi", payload);
 

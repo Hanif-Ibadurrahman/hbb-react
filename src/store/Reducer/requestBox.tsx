@@ -70,6 +70,12 @@ export const initialState: RequestBoxesInterfaceState = {
 		delivered_at: "",
 		delivery_method: "regular",
 		code_boxes: [],
+		request_logs: [
+			{
+				time: "",
+				status: "",
+			},
+		],
 	},
 
 	Meta: {
@@ -172,6 +178,12 @@ export default (
 					delivered_at: "",
 					delivery_method: "regular",
 					code_boxes: [],
+					request_logs: [
+						{
+							time: "",
+							status: "",
+						},
+					],
 				},
 			};
 

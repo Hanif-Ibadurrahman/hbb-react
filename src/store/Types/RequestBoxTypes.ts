@@ -9,6 +9,12 @@ export interface RequestBoxInterfaceState {
 	delivered_at: string;
 	delivery_method: string;
 	code_boxes: [];
+	request_logs: [
+		{
+			time: string;
+			status: string;
+		},
+	];
 }
 
 export interface ApprovalInterfaceState {

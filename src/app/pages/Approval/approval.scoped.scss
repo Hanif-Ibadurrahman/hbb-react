@@ -10,11 +10,52 @@
 	background-color: $d-color-warning-1;
 	color: $d-color-warning-6;
 }
-.status-approved {
-	background-color: $d-color-success-1;
-	color: $d-color-success-6;
-}
-.status-declined {
-	background-color: $d-color-danger-1;
-	color: $d-color-danger-6;
+// .status-approved {
+// 	background-color: $d-color-success-1;
+// 	color: $d-color-success-6;
+// }
+// .status-declined {
+// 	background-color: $d-color-danger-1;
+// 	color: $d-color-danger-6;
+// }
+
+.timeline-wrapper {
+	$indicator-size: 56px;
+	$icon-size: 40px;
+
+	.timeline-item {
+		&:not(:last-child) {
+			.timeline-indicator {
+				&:after {
+					content: "";
+					position: absolute;
+					left: 50%;
+					top: calc(#{$indicator-size} - 8px);
+					transform: translate(-50%, 0);
+					width: 2px;
+					height: $indicator-size;
+					background-color: rgba(#ddd, 0.5);
+				}
+			}
+		}
+
+		.timeline-indicator {
+			position: relative;
+			width: $indicator-size;
+			height: $indicator-size;
+			// background-color: #ddd;
+		}
+
+		.timeline-icon {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			height: $icon-size;
+			width: $icon-size;
+			border-radius: calc(#{$icon-size} / 2);
+			background-color: #aaa;
+			font-size: 20px;
+		}
+	}
 }
