@@ -41,7 +41,7 @@ const PrintCabinet = ({ match }) => {
 						<QR
 							id="Detail-Box-QR"
 							title="Scan here"
-							value={cabinet.SignCode}
+							value={cabinet.code_cabinet}
 							className="d-flex jc-center"
 						/>
 					</Card>

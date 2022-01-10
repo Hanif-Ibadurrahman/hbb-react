@@ -11,30 +11,29 @@ import {
 	CabinetsInterfaceState,
 	CabinetInterfaceState,
 } from "../Types/CabinetTypes";
+// import { AreaInterfaceState } from "store/Types/AreaTypes";
+
 export const initialState: CabinetsInterfaceState = {
 	Cabinets: [],
 	Cabinet: {
 		id: "",
 		code_cabinet: "",
-		CodeBlockNumb: "",
+		block_number: "",
 		total_bays: "",
-		CodeTotalRow: "",
-		CodeTotalColumns: "",
-		CodeDepth: "",
-		CodeRoom: "",
-		SignCode: "",
-		cabinetSlots: [
-			{
+		total_rows: "",
+		total_columns: "",
+		depth: "",
+		room: {
+			id: "",
+			name: "",
+			code_room: "",
+			area: {
 				id: "",
-				code: "",
-				Capacity: 0,
-				Column: 0,
-				Row: 0,
-				SignCode: "",
+				name: "",
+				code_area: "",
 			},
-		],
+		},
 	},
-
 	Meta: {
 		total: 0,
 		per_page: 0,
@@ -69,58 +68,18 @@ export default (
 		case GET_CABINET_DETAIL:
 			return {
 				...state,
-				Cabinet: payload.data.data,
+				Cabinet: payload?.data?.data,
 				ErrorCabinet: payload.errorMessage,
 			};
 		case CREATE_CABINET:
 			return {
 				...state,
-				Cabinet: {
-					CodeRoom: payload.data.data.room,
-					CodeDepth: payload.data.data.depth,
-					CodeTotalColumns: payload.data.data.total_columns,
-					CodeTotalRow: payload.data.data.total_rows,
-					total_bays: payload.data.data.total_bays,
-					CodeBlockNumb: payload.data.data.block_numb,
-					code_cabinet: payload.data.data.code_cabinet,
-					id: payload.data.data.id,
-					SignCode: payload.data.data.code_cabinet,
-					cabinetSlots: [
-						{
-							id: payload?.data?.data?.cabinetSlots?.id,
-							code: payload?.data?.data?.cabinetSlots?.id,
-							Capacity: payload?.data?.data?.cabinetSlots?.capacity,
-							Column: payload?.data?.data?.cabinetSlots?.column,
-							Row: payload?.data?.data?.cabinetSlots?.row,
-							SignCode: payload?.data?.data?.cabinetSlots?.SignCode,
-						},
-					],
-				},
+				Cabinet: payload?.data?.data,
 			};
 		case UPDATE_CABINET:
 			return {
 				...state,
-				Cabinet: {
-					CodeRoom: payload.data.data.room,
-					CodeDepth: payload.data.data.depth,
-					CodeTotalColumns: payload.data.data.total_columns,
-					CodeTotalRow: payload.data.data.total_rows,
-					total_bays: payload.data.data.total_bays,
-					CodeBlockNumb: payload.data.data.block_numb,
-					id: payload.data.id,
-					code_cabinet: payload.data.code_cabinet,
-					SignCode: payload.data.data.code_cabinet,
-					cabinetSlots: [
-						{
-							id: payload?.data?.data?.cabinetSlots?.id,
-							code: payload?.data?.data?.cabinetSlots?.id,
-							Capacity: payload?.data?.data?.cabinetSlots?.capacity,
-							Column: payload?.data?.data?.cabinetSlots?.column,
-							Row: payload?.data?.data?.cabinetSlots?.row,
-							SignCode: payload?.data?.data?.cabinetSlots?.SignCode,
-						},
-					],
-				},
+				Cabinet: payload?.data?.data,
 				ErrorCabinet: payload.errorMessage,
 			};
 		case RESET_CABINET_LIST:
@@ -134,23 +93,21 @@ export default (
 				Cabinet: {
 					id: "",
 					code_cabinet: "",
-					CodeBlockNumb: "",
+					block_number: "",
 					total_bays: "",
-					CodeTotalRow: "",
-					CodeTotalColumns: "",
-					CodeDepth: "",
-					CodeRoom: "",
-					SignCode: "",
-					cabinetSlots: [
-						{
+					total_rows: "",
+					total_columns: "",
+					depth: "",
+					room: {
+						id: "",
+						name: "",
+						code_room: "",
+						area: {
 							id: "",
-							code: "",
-							Capacity: 0,
-							Column: 0,
-							Row: 0,
-							SignCode: "",
+							name: "",
+							code_area: "",
 						},
-					],
+					},
 				},
 			};
 		default:

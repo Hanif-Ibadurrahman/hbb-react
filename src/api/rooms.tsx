@@ -5,7 +5,7 @@ export const create = async (data: RoomInterfaceState) => {
 	let payload = {
 		name: data?.name,
 		code_room: data?.code_room,
-		area_id: data?.area_id?.id,
+		area_id: data?.area?.id,
 	};
 	return api.post("/rooms", payload);
 };
@@ -15,7 +15,7 @@ export const update = async (data: RoomInterfaceState) => {
 	let payload = {
 		name: data?.name,
 		code_room: data?.code_room,
-		area_id: data?.area_id?.id,
+		area: data?.area?.id,
 	};
 	console.log(payload);
 	return await api.put(`/rooms/${id}`, payload);

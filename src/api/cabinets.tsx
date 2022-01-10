@@ -3,27 +3,27 @@ import { CabinetInterfaceState } from "store/Types/CabinetTypes";
 import api from "./dox";
 export const create = async (data: CabinetInterfaceState) => {
 	let payload = {
-		// code_cabinet: data.CodeCabinet,
-		// block_numb: data.CodeBlockNumb,
-		// total_bays: data.CodeTotalBays,
-		// total_rows: data.CodeTotalRow,
-		// total_columns: data.CodeTotalColumns,
-		// depth: data.CodeDepth,
-		// room_id: data.CodeRoom,
+		code_cabinet: data?.code_cabinet,
+		block_number: data?.block_number,
+		total_bays: data?.total_bays,
+		total_rows: data?.total_rows,
+		total_columns: data?.total_columns,
+		depth: data?.depth,
+		room_id: data?.room.id,
 	};
 	return api.post("/cabinets", payload);
 };
 
 export const update = async (data: CabinetInterfaceState) => {
-	let id = data.id;
+	let id = data?.id;
 	let payload = {
-		// code_cabinet: data.CodeCabinet,
-		// block_numb: data.CodeBlockNumb,
-		// total_bays: data.CodeTotalBays,
-		// total_rows: data.CodeTotalRow,
-		// total_columns: data.CodeTotalColumns,
-		// depth: data.CodeDepth,
-		// room_id: data.CodeRoom,
+		code_cabinet: data?.code_cabinet,
+		block_number: data?.block_number,
+		total_bays: data?.total_bays,
+		total_rows: data?.total_rows,
+		total_columns: data?.total_columns,
+		depth: data?.depth,
+		room: data?.room.id,
 	};
 	console.log(payload);
 	return await api.put(`/cabinets/${id}`, payload);

@@ -5,7 +5,7 @@ export interface RoomInterfaceState {
 	id: string | null;
 	name: string;
 	code_room: string;
-	area_id: AreaInterfaceState;
+	area: AreaInterfaceState;
 }
 
 export interface RoomsInterfaceState {

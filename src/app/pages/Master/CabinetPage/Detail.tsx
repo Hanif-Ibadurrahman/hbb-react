@@ -19,13 +19,14 @@ const CabinetPageDetail = ({ match }) => {
 		history.goBack();
 	};
 
-	console.log("test boy>>>>>>>>>>>>>>>>>>>.", cabinet?.cabinetSlots[0].id);
+	console.log("ngeliat cabinet,", cabinet);
 
 	const cabinet_id = match.params.id;
 
 	const dispatch = useDispatch();
 
 	useEffect(() => {
+		console.log("ini cabinet", cabinet);
 		dispatch(getCabinetDetail(cabinet_id));
 	}, []);
 
@@ -56,23 +57,15 @@ const CabinetPageDetail = ({ match }) => {
 									defaultValue={cabinet.total_bays}
 								/>
 							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Total Bays</Form.Label>
-								<Form.Control
-									type="number"
-									disabled
-									defaultValue={cabinet.total_bays}
-								/>
-							</Form.Group>
 
-							{/* <Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Status</Form.Label>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Ruangan</Form.Label>
 								<Form.Control
-									className="bg-success-6 w-100%"
-									defaultValue="Approve"
+									type="text"
 									disabled
+									defaultValue={cabinet.room.area.code_area}
 								></Form.Control>
-							</Form.Group> */}
+							</Form.Group>
 							<div className="d-flex jc-end">
 								<Button
 									className="mv-4 mr-4"
@@ -94,7 +87,9 @@ const CabinetPageDetail = ({ match }) => {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">Slot</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">
+								{cabinet.code_cabinet}
+							</p>
 						</div>
 					</Card>
 				</div>

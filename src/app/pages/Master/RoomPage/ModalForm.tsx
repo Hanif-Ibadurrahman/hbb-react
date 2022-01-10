@@ -143,21 +143,21 @@ const ModalForm = props => {
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Area</Form.Label>
 												<Autocomplete
-													id="area_id"
+													id="area"
 													options={area.Areas}
 													getOptionLabel={option => option.code_area}
 													onChange={(e, value) => {
 														console.log(value);
 														setFieldValue(
-															"area_id",
-															value !== null ? value : values.area_id.code_area,
+															"area",
+															value !== null ? value : values.area.code_area,
 														);
 													}}
 													renderInput={params => (
 														<TextField
 															margin="normal"
 															placeholder="Area"
-															name="area_id"
+															name="area"
 															{...params}
 														/>
 													)}
