@@ -10,6 +10,7 @@ import {
 	GET_CONFIRMED_ADMIN,
 	REJECT_OPERTAION,
 	APPROVAL_OPERATION,
+	GET_ALL_REQUEST,
 } from "../../actions/RequestBoxAction";
 
 import {
@@ -76,6 +77,39 @@ export const initialState: RequestBoxesInterfaceState = {
 				status: "",
 			},
 		],
+		customer: {
+			id: "",
+			username: "",
+			password: "",
+			name: "",
+			email: "",
+			phone: "",
+			location: "",
+			company: {
+				id: "",
+				name: "",
+				location: "",
+				longitude: "",
+				latitude: "",
+				person_responsible: "",
+				npwp: "",
+				email: "",
+				phone: "",
+				address: "",
+				amount_access: "",
+				service_type: [
+					{
+						type: "box",
+						value: true,
+					},
+				],
+				is_agree: true,
+			},
+			division_id: {
+				id: "",
+				name: "",
+			},
+		},
 	},
 
 	Meta: {
@@ -111,6 +145,18 @@ export default (
 				ErrorRequestBox: payload.errorMessage,
 			};
 		case GET_CONFIRMED_ADMIN:
+			return {
+				...state,
+				RequestBoxes: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total_page,
+					per_page: payload?.meta?.total_page,
+				},
+				ErrorRequestBox: payload.errorMessage,
+			};
+		case GET_ALL_REQUEST:
 			return {
 				...state,
 				RequestBoxes: payload.data,
@@ -184,6 +230,39 @@ export default (
 							status: "",
 						},
 					],
+					customer: {
+						id: "",
+						username: "",
+						password: "",
+						name: "",
+						email: "",
+						phone: "",
+						location: "",
+						company: {
+							id: "",
+							name: "",
+							location: "",
+							longitude: "",
+							latitude: "",
+							person_responsible: "",
+							npwp: "",
+							email: "",
+							phone: "",
+							address: "",
+							amount_access: "",
+							service_type: [
+								{
+									type: "box",
+									value: true,
+								},
+							],
+							is_agree: true,
+						},
+						division_id: {
+							id: "",
+							name: "",
+						},
+					},
 				},
 			};
 

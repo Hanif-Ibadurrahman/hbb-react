@@ -73,6 +73,19 @@ export const getAllConfirmed = async params => {
 		});
 };
 
+export const getAllRequest = async params => {
+	return api
+		.get(`/requests`, {
+			params: params,
+		})
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
 export const reject_operation = async (data: ApprovalInterfaceState) => {
 	let id = data?.Id;
 	let payload = {

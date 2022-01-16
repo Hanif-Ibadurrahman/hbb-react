@@ -1,25 +1,25 @@
 import {
-	CREATE_BORROW_ITEM,
-	RESET_BORROW_LIST,
-	RESET_BORROW_FORM,
-	SET_BORROW_DATA,
+	CREATE_RETURN_ITEM,
+	RESET_RETURN_LIST,
+	RESET_RETURN_FORM,
+	SET_RETURN_DATA,
 	GET_NUMBER_CART,
 	ADD_CART,
 	DELETE_CART,
-	GET_BORROW_LIST,
-} from "../../actions/BorrowItemAction";
-import { BorrowItemsInterfaceState } from "../Types/BorrowItemTypes";
+	GET_RETURN_LIST,
+} from "../../actions/ReturnAction";
+import { ReturnItemsInterfaceState } from "../Types/ReturnItemTypes";
 import _ from "lodash";
-export const initialState: BorrowItemsInterfaceState = {
-	BorrowItems: [],
-	BorrowItem: {
+export const initialState: ReturnItemsInterfaceState = {
+	ReturnItems: [],
+	ReturnItem: {
 		id: "",
 		delivered_at: "",
-		note: "",
 		delivery_method: "regular",
+		note: "",
 		box_codes: [],
 	},
-	BorrowList: [],
+	ReturnList: [],
 	Cart: [],
 	numberCart: 0,
 	Meta: {
@@ -28,36 +28,36 @@ export const initialState: BorrowItemsInterfaceState = {
 		current_page: 1,
 		last_page: 1,
 	},
-	Title: "BORROW ITEM",
-	ErrorBorrowItem: undefined,
+	Title: "RETURN ITEM",
+	ErrorReturnItem: undefined,
 };
 
 export default (
 	state = initialState,
 	{ type, payload },
-): BorrowItemsInterfaceState => {
+): ReturnItemsInterfaceState => {
 	switch (type) {
-		case SET_BORROW_DATA:
+		case SET_RETURN_DATA:
 			return {
 				...state,
-				BorrowItem: payload,
+				ReturnItem: payload,
 			};
-		case GET_BORROW_LIST:
+		case GET_RETURN_LIST:
 			return {
 				...state,
-				BorrowList: payload.data,
+				ReturnList: payload.data,
 				Meta: {
 					last_page: payload.meta.last_page,
 					current_page: payload.meta.current_page,
 					total: payload.meta.total_page,
 					per_page: payload.meta.total_page,
 				},
-				ErrorBorrowItem: payload.errorMessage,
+				ErrorReturnItem: payload.errorMessage,
 			};
-		case CREATE_BORROW_ITEM:
+		case CREATE_RETURN_ITEM:
 			return {
 				...state,
-				BorrowItem: payload?.data?.data,
+				ReturnItem: payload?.data?.data,
 			};
 		case GET_NUMBER_CART:
 			return {
@@ -83,15 +83,15 @@ export default (
 				numberCart: state.numberCart - 1,
 				Cart: state.Cart.filter(Cart => Cart !== payload),
 			};
-		case RESET_BORROW_LIST:
+		case RESET_RETURN_LIST:
 			return {
 				...state,
-				BorrowItems: [],
+				ReturnItems: [],
 			};
-		case RESET_BORROW_FORM:
+		case RESET_RETURN_FORM:
 			return {
 				...state,
-				BorrowItem: {
+				ReturnItem: {
 					delivered_at: "",
 					delivery_method: "regular",
 					id: "",

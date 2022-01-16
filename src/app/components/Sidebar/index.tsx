@@ -105,31 +105,29 @@ export function Sidebar() {
 				</MenuItem>
 				<MenuItem
 					id={
-						window.location.pathname === "Customer/Returning-Box"
-							? "active"
-							: ""
+						window.location.pathname === "/Customer/Return" ? "active" : ""
 					}
 					className=" pos-r"
 					icon={<img src={IconUI} className="h-5" alt="awSnap" />}
 					onClick={() => {
-						window.location.pathname = "Customer/Returning-Box";
+						window.location.pathname = "/Customer/Return";
 					}}
 				>
 					{""} Pengembalian
 				</MenuItem>
 				<MenuItem
 					id={
-						window.location.pathname === "Customer/Destroy-Suggestion"
+						window.location.pathname === "Customer/History"
 							? "active"
 							: ""
 					}
 					className=" pos-r"
 					icon={<img src={IconTable} className="h-5" alt="awSnap" />}
 					onClick={() => {
-						window.location.pathname = "Customer/Destroy-Suggestion";
+						window.location.pathname = "Customer/History";
 					}}
 				>
-					{""} Usulan Penghapusan
+					{""} Riwayat Permintaan
 				</MenuItem>
 			</>
 		);

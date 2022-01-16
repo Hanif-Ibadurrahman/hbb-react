@@ -4,6 +4,7 @@ export interface BorrowItemInterfaceState {
 	id: string | null;
 	delivered_at: string;
 	note: string;
+	delivery_method: string;
 	box_codes: any[];
 }
 

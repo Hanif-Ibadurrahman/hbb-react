@@ -238,14 +238,14 @@ export const ModalForm = props => {
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Perusahaan</Form.Label>
 												<Autocomplete
-													id="company_id"
+													id="company"
 													options={company.Companys}
 													getOptionLabel={option => option.name}
 													onChange={(e, value) => {
 														console.log(value);
 														setFieldValue(
-															"company_id",
-															value !== null ? value : values.company_id,
+															"company",
+															value !== null ? value : values.company,
 														);
 													}}
 													renderInput={params => (

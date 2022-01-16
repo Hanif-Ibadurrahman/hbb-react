@@ -1,6 +1,7 @@
 import { PaginationState } from "../Types/PaginationTypes";
 import { TransporterInterfaceState } from "./TransporterTypes";
 import { ArchiverInterfaceState } from "./ArchiverTypes";
+import {CustomerInterfaceState} from "./CustomerTypes";
 export interface RequestBoxInterfaceState {
 	id: string | null;
 	quantity: string;
@@ -15,6 +16,7 @@ export interface RequestBoxInterfaceState {
 			status: string;
 		},
 	];
+	customer: CustomerInterfaceState;
 }
 
 export interface ApprovalInterfaceState {

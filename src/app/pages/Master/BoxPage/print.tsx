@@ -35,6 +35,9 @@ const PrintBox = ({ match }) => {
 		lineHeight: "12px",
 	};
 
+	console.log("QR CODE >>", box.SignCode);
+
+
 	return (
 		<>
 			<PageWrapper className="row row w-100%">

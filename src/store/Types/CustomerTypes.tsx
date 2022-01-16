@@ -11,7 +11,7 @@ export interface CustomerInterfaceState {
 	email: string;
 	phone: string;
 	location: string;
-	company_id: CompanyInterfaceState;
+	company: CompanyInterfaceState;
 	division_id: DivisionInterfaceState;
 }
 

@@ -21,6 +21,7 @@ import archivers from "./Reducer/archiver";
 import logins from "./Reducer/login";
 import pickUpItems from "./Reducer/pickUp";
 import customers from "./Reducer/customer";
+import returnItems from "./Reducer/returnItem";
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -48,6 +49,7 @@ export function createReducer(injectedReducers: InjectedReducersType = {}) {
 			logins,
 			pickUpItems,
 			customers,
+			returnItems,
 		});
 	}
 }

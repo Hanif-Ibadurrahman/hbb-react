@@ -61,6 +61,14 @@ const ApprovalAdminDetail = ({ match }) => {
 								<Form.Label>Note</Form.Label>
 								<Form.Control as="textarea" value={requestBox.note} disabled />
 							</Form.Group>
+							<Form.Group className="mb-4" controlId="formBasicEmail">
+								<Form.Label>Nama Customer</Form.Label>
+								<Form.Control type="text" value={requestBox.customer.name} disabled />
+							</Form.Group>
+							<Form.Group className="mb-4" controlId="formBasicEmail">
+								<Form.Label>Nama Perusahaan</Form.Label>
+								<Form.Control type="text" value={requestBox.customer.company.name} disabled />
+							</Form.Group>
 							<div className="d-flex jc-end">
 								<Button
 									className="mv-4"
@@ -79,9 +87,8 @@ const ApprovalAdminDetail = ({ match }) => {
 								return (
 									<div
 										key={index}
-										className={`${
-											index != requestLogs.length - 1 ? "mb-3" : ""
-										} row ai-center timeline-item w-100% ml-0 mr-0`}
+										className={`${index != requestLogs.length - 1 ? "mb-3" : ""
+											} row ai-center timeline-item w-100% ml-0 mr-0`}
 									>
 										{/* {`${index + " != " + (requestLogs.length - 1)}`} */}
 										{/* <p key={index}>{item.status}</p> */}
@@ -99,20 +106,20 @@ const ApprovalAdminDetail = ({ match }) => {
 											<p className="txtf-c ff-1-bd">
 												{item.status != null
 													? item.status.split("-").map((item, index) => {
-															const turnToUppercase = word => {
-																if (word === "csr" || word === "rc")
-																	return word.toUpperCase();
-																else return word;
-															};
+														const turnToUppercase = word => {
+															if (word === "csr" || word === "rc")
+																return word.toUpperCase();
+															else return word;
+														};
 
-															return (
-																<>
-																	{index != 0
-																		? " " + turnToUppercase(item)
-																		: turnToUppercase(item)}
-																</>
-															);
-													  })
+														return (
+															<>
+																{index != 0
+																	? " " + turnToUppercase(item)
+																	: turnToUppercase(item)}
+															</>
+														);
+													})
 													: item.status}
 											</p>
 											<p>{formatDate(item.time)}</p>
@@ -132,7 +139,7 @@ const ApprovalAdminDetail = ({ match }) => {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">Box 2</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">Barcode</p>
 						</div>
 					</Card>
 				</div>
