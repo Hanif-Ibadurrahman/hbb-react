@@ -3,15 +3,15 @@ import { BoxInterfaceState } from "store/Types/BoxTypes";
 import api from "./dox";
 export const create = async (data: BoxInterfaceState) => {
 	let payload = {
-		code_box: data.CodeBox,
+		code_box: data.code_box,
 	};
 	return api.post("/boxes", payload);
 };
 
 export const update = async (data: BoxInterfaceState) => {
-	let id = data.Id;
+	let id = data.id;
 	let payload = {
-		code_box: data.CodeBox,
+		code_box: data.code_box,
 	};
 	console.log(payload);
 	return await api.put(`/boxes/${id}`, payload);

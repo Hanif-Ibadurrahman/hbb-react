@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Card } from "react-bootstrap";
+import { Form, Button, Card, Row } from "react-bootstrap";
 import { PageWrapper } from "app/components/PageWrapper";
 import Breadcrumb from "app/components/BreadCrumb";
 import QR from "app/components/QRCode";
@@ -14,6 +14,7 @@ const ApprovalAdminDetail = ({ match }) => {
 	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
 	const requestLogs = requestBox.request_logs ?? [];
 	let history = useHistory();
+	const requestItems = requestBox.request_items ?? [];
 
 	const goToPreviousPath = e => {
 		e.preventDefault();
@@ -80,6 +81,46 @@ const ApprovalAdminDetail = ({ match }) => {
 							</div>
 						</Form>
 					</Card>
+					<h6 className="mb-2 mt-4">Box List</h6>
+					<Card className="ph-5 pv-3 bd-rs-2 mt-3">
+						{requestItems.map((item, index) => {
+							return (
+								<div>
+									<p className="mb-2">Box {index + 1}</p>
+									<div className="mb-3">
+										<div className="row">
+											<div className="col-6">
+												<Form.Group>
+													<Form.Label>Code Box</Form.Label>
+													<Form.Control
+														type="text"
+														disabled
+														defaultValue={item.box.code_box}
+													/>
+												</Form.Group>
+												<Form.Group className="mt-2">
+													<Form.Label>Status</Form.Label>
+													<Form.Control
+														type="text"
+														disabled
+														defaultValue={item.status}
+													/>
+												</Form.Group>
+											</div>
+											<div className="col-6 d-flex jc-center">
+												<QR
+													id="QR Box"
+													title="Scan here"
+													value={item.box.sign_code}
+													className="d-flex jc-center mb-2"
+												/>
+											</div>
+										</div>
+									</div>
+								</div>
+							)
+						})}
+					</Card>
 					<Card className="ph-5 pt-7 pb-4 mt-3 bd-rs-2">
 						<h6 className="mb-3">Timeline </h6>
 						<div className="timeline-wrapper w-100%">
@@ -127,19 +168,6 @@ const ApprovalAdminDetail = ({ match }) => {
 									</div>
 								);
 							})}
-						</div>
-					</Card>
-				</div>
-				<div className="col col-3">
-					<Card className="p-4 bd-rs-2 d-flex ai-center jc-center">
-						<QR
-							id="Detail-Box-QR"
-							title="Scan here"
-							value="box-b29b0931-46b5-4326-9752-ecf1e855f711"
-							className="d-flex jc-center"
-						/>
-						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">Barcode</p>
 						</div>
 					</Card>
 				</div>

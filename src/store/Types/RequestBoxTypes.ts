@@ -1,7 +1,8 @@
 import { PaginationState } from "../Types/PaginationTypes";
 import { TransporterInterfaceState } from "./TransporterTypes";
 import { ArchiverInterfaceState } from "./ArchiverTypes";
-import {CustomerInterfaceState} from "./CustomerTypes";
+import { CustomerInterfaceState } from "./CustomerTypes";
+import { BoxInterfaceState } from "./BoxTypes";
 export interface RequestBoxInterfaceState {
 	id: string | null;
 	quantity: string;
@@ -15,6 +16,13 @@ export interface RequestBoxInterfaceState {
 			time: string;
 			status: string;
 		},
+	];
+	created_at: string;
+	request_items: [
+		{
+			box: BoxInterfaceState,
+			status: string,
+		}
 	];
 	customer: CustomerInterfaceState;
 }

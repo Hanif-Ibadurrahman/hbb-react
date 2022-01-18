@@ -77,6 +77,17 @@ export const initialState: RequestBoxesInterfaceState = {
 				status: "",
 			},
 		],
+		request_items: [
+			{
+				box: {
+					id: "",
+					code_box: "",
+					sign_code: "",
+				},
+				status: "",
+			}
+		],
+		created_at: "",
 		customer: {
 			id: "",
 			username: "",
@@ -224,6 +235,17 @@ export default (
 					delivered_at: "",
 					delivery_method: "regular",
 					code_boxes: [],
+					created_at: "",
+					request_items: [
+						{
+							box: {
+								id: "",
+								code_box: "",
+								sign_code: "",
+							},
+							status: "",
+						}
+					],
 					request_logs: [
 						{
 							time: "",

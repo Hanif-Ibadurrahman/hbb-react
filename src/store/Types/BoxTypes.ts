@@ -1,8 +1,8 @@
 import { PaginationState } from "../Types/PaginationTypes";
 export interface BoxInterfaceState {
-	Id: string | null;
-	CodeBox: string;
-	SignCode: string;
+	id: string | null;
+	code_box: string;
+	sign_code: string;
 }
 
 export interface BoxesInterfaceState {

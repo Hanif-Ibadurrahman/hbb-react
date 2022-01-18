@@ -41,7 +41,7 @@ const BoxPageDetail = ({ match }) => {
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Code Box</Form.Label>
 
-								<Form.Control type="text" disabled defaultValue={box.CodeBox} />
+								<Form.Control type="text" disabled defaultValue={box.code_box} />
 							</Form.Group>
 							<div className="d-flex jc-end">
 								<Button
@@ -60,7 +60,7 @@ const BoxPageDetail = ({ match }) => {
 						<QR
 							id="Detail-Box-QR"
 							title="Scan here"
-							value={box.SignCode}
+							value={box.sign_code}
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
