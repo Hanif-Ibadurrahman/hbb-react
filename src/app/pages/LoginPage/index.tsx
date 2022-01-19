@@ -1,4 +1,4 @@
-import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -14,13 +14,6 @@ import { Login } from "actions/LoginAction";
 export function LoginPage() {
 	let history = useHistory();
 	const [active, setActive] = useState(false);
-
-	const onSubmit = e => {
-		e.preventDefault();
-		history.push("/Dashboard/Superadmin");
-	};
-
-	const login = useSelector(selectLogins);
 
 	// const LoginForm = () => {
 	// 	return (
@@ -89,9 +82,8 @@ export function LoginPage() {
 								await dispatch(res);
 								action.then(() => {
 									history.push("/Dashboard/Superadmin");
+									window.location.reload();
 								});
-								props.modalSet(props.valueModalSet);
-								console.log(action);
 							} catch (e) {
 								console.log("ini error di depan");
 							}

@@ -120,7 +120,7 @@ const ApprovalAdminRequestBox = () => {
 			},
 		},
 		{
-			title: "Tanggal Kirim",
+			title: "Tanggal Permintaan",
 			prop: "delivered_at",
 			sortable: true,
 			cellProps: {
@@ -144,12 +144,12 @@ const ApprovalAdminRequestBox = () => {
 						{row.type == "request-box"
 							? "Request Box"
 							: row.type == "pickup-box"
-							? "Pick Up Box"
-							: row.type == "borrow-item"
-							? "Peminjaman"
-							: row.type == "return-item"
-							? "Pengembalian"
-							: null}
+								? "Pick Up Box"
+								: row.type == "borrow-item"
+									? "Peminjaman"
+									: row.type == "return-item"
+										? "Pengembalian"
+										: null}
 					</>
 				);
 			},

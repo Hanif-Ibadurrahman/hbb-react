@@ -11,12 +11,11 @@ import {
 	REJECT_OPERTAION,
 	APPROVAL_OPERATION,
 	GET_ALL_REQUEST,
+	GET_ALL_APPROVED,
 } from "../../actions/RequestBoxAction";
 
 import {
-	RequestBoxesInterfaceState,
-	RequestBoxInterfaceState,
-	ApprovalInterfaceState,
+	RequestBoxesInterfaceState
 } from "../Types/RequestBoxTypes";
 
 export const initialState: RequestBoxesInterfaceState = {
@@ -180,6 +179,12 @@ export default (
 				ErrorRequestBox: payload.errorMessage,
 			};
 		case GET_REQUEST_BOX_DETAIL:
+			return {
+				...state,
+				RequestBox: payload?.data?.data,
+				ErrorRequestBox: payload?.errorMessage,
+			};
+		case GET_ALL_APPROVED:
 			return {
 				...state,
 				RequestBox: payload?.data?.data,

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Form, Button, Card, Row } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { Form, Button, Card } from "react-bootstrap";
 import { PageWrapper } from "app/components/PageWrapper";
 import Breadcrumb from "app/components/BreadCrumb";
 import QR from "app/components/QRCode";
@@ -35,14 +35,22 @@ const ApprovalAdminDetail = ({ match }) => {
 		<>
 			<PageWrapper className="row w-100%">
 				<Breadcrumb
-					crumbs={["Dashboard", "Box", "Detail"]}
+					crumbs={["Dashboard", "Request", "Detail"]}
 					selected
 					className="mb-4"
 				/>
 				<div className="col col-9">
 					<Card className="ph-5 pv-3 bd-rs-2">
 						<Form className="mt-3">
-							<Form.Group className="mb-3" controlId="formBasicEmail">
+							<Form.Group className="mb-4" controlId="formBasicEmail">
+								<Form.Label>Nama Customer</Form.Label>
+								<Form.Control type="text" value={requestBox.customer.name} disabled />
+							</Form.Group>
+							<Form.Group className="mb-4" controlId="formBasicEmail">
+								<Form.Label>Nama Perusahaan</Form.Label>
+								<Form.Control type="text" value={requestBox.customer.company.name} disabled />
+							</Form.Group>
+							<Form.Group className="mb-4" controlId="formBasicEmail">
 								<Form.Label>Quantity</Form.Label>
 								<Form.Control
 									type="text"
@@ -62,14 +70,6 @@ const ApprovalAdminDetail = ({ match }) => {
 								<Form.Label>Note</Form.Label>
 								<Form.Control as="textarea" value={requestBox.note} disabled />
 							</Form.Group>
-							<Form.Group className="mb-4" controlId="formBasicEmail">
-								<Form.Label>Nama Customer</Form.Label>
-								<Form.Control type="text" value={requestBox.customer.name} disabled />
-							</Form.Group>
-							<Form.Group className="mb-4" controlId="formBasicEmail">
-								<Form.Label>Nama Perusahaan</Form.Label>
-								<Form.Control type="text" value={requestBox.customer.company.name} disabled />
-							</Form.Group>
 							<div className="d-flex jc-end">
 								<Button
 									className="mv-4"
@@ -81,40 +81,39 @@ const ApprovalAdminDetail = ({ match }) => {
 							</div>
 						</Form>
 					</Card>
-					<h6 className="mb-2 mt-4">Box List</h6>
 					<Card className="ph-5 pv-3 bd-rs-2 mt-3">
+						<h6 className="mb-4 mt-4">Box List</h6>
 						{requestItems.map((item, index) => {
 							return (
 								<div>
-									<p className="mb-2">Box {index + 1}</p>
-									<div className="mb-3">
-										<div className="row">
-											<div className="col-6">
-												<Form.Group>
-													<Form.Label>Code Box</Form.Label>
-													<Form.Control
-														type="text"
-														disabled
-														defaultValue={item.box.code_box}
-													/>
-												</Form.Group>
-												<Form.Group className="mt-2">
-													<Form.Label>Status</Form.Label>
-													<Form.Control
-														type="text"
-														disabled
-														defaultValue={item.status}
-													/>
-												</Form.Group>
-											</div>
-											<div className="col-6 d-flex jc-center">
-												<QR
-													id="QR Box"
-													title="Scan here"
-													value={item.box.sign_code}
-													className="d-flex jc-center mb-2"
+									<p className="mb-1 p-lg">Box {index + 1}</p>
+									<div className="w-50% bg-dark h-2px mb-4" />
+									<div className="row mb-4">
+										<div className="col-6">
+											<Form.Group>
+												<Form.Label>Code Box</Form.Label>
+												<Form.Control
+													type="text"
+													disabled
+													defaultValue={item.box.code_box}
 												/>
-											</div>
+											</Form.Group>
+											<Form.Group className="mt-2">
+												<Form.Label>Status</Form.Label>
+												<Form.Control
+													type="text"
+													disabled
+													defaultValue={item.status}
+												/>
+											</Form.Group>
+										</div>
+										<div className="col-6 d-flex jc-center ai-center">
+											<QR
+												id="QR Box"
+												title="Scan here"
+												value={item.box.sign_code}
+												className="d-flex jc-center"
+											/>
 										</div>
 									</div>
 								</div>

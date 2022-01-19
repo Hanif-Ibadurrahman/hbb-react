@@ -47,15 +47,15 @@ const RequestHistory = () => {
             cellProps: {
                 style: { width: "20%" },
             },
-            headerCell: (icon, sortedProp) => {
+            headerCell: (sortedProp) => {
                 const isActive = sortedProp.prop === 'created_at';
                 const order = sortedProp.isAscending ? 'Terlama' : 'Terbaru';
 
                 return (
-                    <>
+                    <div className="cur-p">
                         {`Tanggal Permintaan ${isActive ? `(${order})` : '(Inactive)'}`}
-                        <span className="pull-right">{icon}</span>
-                    </>
+                        <i className="fas fa-sort-alt ml-2"></i>
+                    </div>
                 );
             },
             cell: row => {

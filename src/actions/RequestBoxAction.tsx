@@ -13,6 +13,7 @@ import {
 	reject_operation,
 	approval_operation,
 	getAllRequest,
+	getAllApproved,
 } from "../api/requestBox";
 export const GET_REQUEST_BOXES_LIST = "GET_BOXES_LIST";
 export const GET_REQUEST_BOX_DETAIL = "GET_BOX_DETAIL";
@@ -27,6 +28,7 @@ export const GET_CONFIRMED_ADMIN = "GET_CONFIRMED_ADMIN";
 export const REJECT_OPERTAION = "REJECT_OPERATION";
 export const APPROVAL_OPERATION = "APPROVAL_OPERATION";
 export const GET_ALL_REQUEST = "GET_ALL_REQUEST";
+export const GET_ALL_APPROVED = "GET_ALL_APPROVED";
 
 export const getRequestBoxesList = page => {
 	return async dispatch => {
@@ -218,6 +220,7 @@ export const RejectOpertaion = async (data: ApprovalInterfaceState) => {
 		}
 	};
 };
+
 export const ApprovalOpertaion = async (
 	data: ApprovalOperationInterfaceState,
 ) => {
@@ -263,6 +266,33 @@ export const getAllRequestList = page => {
 		} catch (error: any) {
 			dispatch({
 				type: GET_ALL_REQUEST,
+				payload: {
+					data: false,
+					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const getAllApprovedList = page => {
+	return async dispatch => {
+		try {
+			const response = await getAllApproved(page);
+			dispatch({
+				type: GET_ALL_APPROVED,
+				payload: {
+					data: response.data,
+					meta: response.meta,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: GET_ALL_APPROVED,
 				payload: {
 					data: false,
 					errorMessage: error.message,

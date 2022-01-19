@@ -6,44 +6,23 @@ import PageHeader from "../../Approval/Components/PageHeader";
 import DropdownAction from "app/components/DropdownAction";
 import { Pagination } from "app/components/Pagination";
 import {
-	getRequestBoxDetail,
-	getAllConfirmedAdmin,
+	getAllApprovedList
 } from "actions/RequestBoxAction";
 import { useDispatch, useSelector } from "react-redux";
 import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
 import moment from "moment";
-import { ModalFormReject, ModalFormApprove } from "./ModalForm";
 
 const ApprovalPreview = () => {
-	const [modalShow, setModalShow] = useState(false);
-	const [modalShowApprove, setModalShowApprove] = useState(false);
-	const [showAlert, setShowAlert] = useState(false);
 	const requestBoxes = useSelector(selectRequestBoxes);
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		dispatch(getAllConfirmedAdmin(page));
+		dispatch(getAllApprovedList(page));
 	};
 
 	useEffect(() => {
 		FetchData();
 	}, []);
-
-	const _onHide = () => {
-		setModalShow(false);
-		setShowAlert(false);
-		setModalShowApprove(false);
-	};
-
-	const RejectForm = async id => {
-		dispatch(getRequestBoxDetail(id));
-		setModalShow(true);
-	};
-
-	const ApproveForm = async id => {
-		dispatch(getRequestBoxDetail(id));
-		setModalShowApprove(true);
-	};
 
 	const action = id => [
 		{
@@ -64,26 +43,34 @@ const ApprovalPreview = () => {
 		{
 			title: "Id Request",
 			prop: "id",
-			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
 			},
 		},
 		{
-			title: "Tanggal Kirim",
-			prop: "delivered_at",
+			prop: 'created_at',
 			sortable: true,
 			cellProps: {
 				style: { width: "20%" },
 			},
+			headerCell: (sortedProp) => {
+				const isActive = sortedProp.prop === 'created_at';
+				const order = sortedProp.isAscending ? 'Terlama' : 'Terbaru';
+
+				return (
+					<div className="cur-p">
+						{`Tanggal Permintaan ${isActive ? `(${order})` : '(Inactive)'}`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
+			},
 			cell: row => {
-				return moment(row.delivered_at).format("DD MMMM YYYY");
+				return moment(row.created_at).format("DD MMMM YYYY");
 			},
 		},
 		{
 			title: "Tipe Permintaan",
 			prop: "type",
-			sortable: true,
 			cellProps: {
 				style: { width: "20%" },
 			},
@@ -93,12 +80,12 @@ const ApprovalPreview = () => {
 						{row.type == "request-box"
 							? "Request Box"
 							: row.type == "pickup-box"
-							? "Pick Up Box"
-							: row.type == "borrow-item"
-							? "Peminjaman"
-							: row.type == "return-item"
-							? "Pengembalian"
-							: null}
+								? "Pick Up Box"
+								: row.type == "borrow-item"
+									? "Peminjaman"
+									: row.type == "return-item"
+										? "Pengembalian"
+										: null}
 					</>
 				);
 			},
@@ -126,20 +113,8 @@ const ApprovalPreview = () => {
 				/>
 			</Helmet>
 			<PageWrapper>
-				<ModalFormReject
-					modal={modalShow}
-					hide={_onHide}
-					modalSet={setModalShow}
-					valueModalSet={false}
-				/>
-				<ModalFormApprove
-					modalApprove={modalShowApprove}
-					hide={_onHide}
-					modalSet={setModalShowApprove}
-					valueModalSet={false}
-				/>
-				<PageHeader breadcrumb={["Master", "Approval Operation"]} />
-				<DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} />
+				<PageHeader breadcrumb={["Customer", "Riwayat Approval"]} />
+				<DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} initialSort={{ prop: 'created_at', isAscending: true }} />
 				<Pagination
 					pageCount={requestBoxes.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
