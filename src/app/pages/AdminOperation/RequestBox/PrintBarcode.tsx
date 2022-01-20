@@ -31,7 +31,7 @@ const ApprovalPrint = ({ match }) => {
 	const Width = {
 		width: "40mm",
 		height: "20mm",
-		marginTop: "-25px",
+		// marginTop: "-25px",
 	};
 
 	const font = {
@@ -42,10 +42,10 @@ const ApprovalPrint = ({ match }) => {
 	const qr = "box-" + requestBox.id;
 
 	return (
-		<>
+		<div>
 			{requestItems.map((item, index) => {
 				return (
-					<PageWrapper className="row row w-100%">
+					<div style={{ marginBottom: 7, marginLeft: 10 }}>
 						<div style={Width} className="d-flex ai-center jc-center">
 							<Card className="pv-1 ph-1 d-flex ai-center jc-center fd-row col-6">
 								<QR
@@ -64,10 +64,10 @@ const ApprovalPrint = ({ match }) => {
 								</p>
 							</div>
 						</div>
-					</PageWrapper>
+					</div>
 				)
 			})}
-		</>
+		</div>
 	);
 };
 

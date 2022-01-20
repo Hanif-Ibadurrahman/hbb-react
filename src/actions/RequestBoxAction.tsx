@@ -289,6 +289,7 @@ export const getAllApprovedList = page => {
 					errorMessage: false,
 				},
 			});
+			console.log("data action >>>", response)
 			return response;
 		} catch (error: any) {
 			dispatch({

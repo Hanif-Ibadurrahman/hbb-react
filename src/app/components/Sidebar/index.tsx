@@ -182,64 +182,18 @@ export function Sidebar() {
 				>
 					{""} Approval Operation
 				</MenuItem>
-				{/* <SubMenu
-					className=""
+				<MenuItem
+					id={
+						window.location.pathname === "/Preview-Approvral" ? "active" : ""
+					}
+					className=" pos-r"
 					icon={<img src={IconForm} className="h-5" alt="awSnap" />}
-					title="Persetujuan Admin"
+					onClick={() => {
+						window.location.pathname = "/Preview-Approvral";
+					}}
 				>
-					{PeminjamanData.map((val, key) => {
-						return (
-							<MenuItem
-								id={
-									window.location.pathname.split(val.link).pop() ? "" : "active"
-								}
-								className="pos-r"
-								icon={<img src={val.icon} className="h-5" alt="awSnap" />}
-								key={key}
-								onClick={() => {
-									window.location.pathname = val.link;
-								}}
-							>
-								{""}
-								{val.title}
-								<span className="h-6 w-6 bd-rs-6 bg-danger-5 d-flex ai-center jc-center ml-a">
-									<span className="text tc-danger-contrast">
-										{notifAdminBox}
-									</span>
-								</span>
-							</MenuItem>
-						);
-					})}
-				</SubMenu> */}
-				{/* <SubMenu
-					className=""
-					icon={<img src={IconForm} className="h-5" alt="awSnap" />}
-					title="Persetujuan Operation"
-				>
-					{ApprovalOperation.map((val, key) => {
-						return (
-							<MenuItem
-								id={
-									window.location.pathname.split(val.link).pop() ? "" : "active"
-								}
-								className="pos-r"
-								icon={<img src={val.icon} className="h-5" alt="awSnap" />}
-								key={key}
-								onClick={() => {
-									window.location.pathname = val.link;
-								}}
-							>
-								{""}
-								{val.title}
-								<span className="h-6 w-6 bd-rs-6 bg-danger-5 d-flex ai-center jc-center ml-a">
-									<span className="text tc-danger-contrast">
-										{val.notifications}
-									</span>
-								</span>
-							</MenuItem>
-						);
-					})}
-				</SubMenu> */}
+					{""} Riwayat Approval
+				</MenuItem>
 				<SubMenu
 					className=""
 					icon={<img src={IconAdvanced} className="h-5" alt="awSnap" />}

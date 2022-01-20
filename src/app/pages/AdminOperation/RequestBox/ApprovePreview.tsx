@@ -15,7 +15,6 @@ import moment from "moment";
 const ApprovalPreview = () => {
 	const requestBoxes = useSelector(selectRequestBoxes);
 	const dispatch = useDispatch();
-
 	const FetchData = (page = 1) => {
 		dispatch(getAllApprovedList(page));
 	};
@@ -114,7 +113,7 @@ const ApprovalPreview = () => {
 			</Helmet>
 			<PageWrapper>
 				<PageHeader breadcrumb={["Customer", "Riwayat Approval"]} />
-				<DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} initialSort={{ prop: 'created_at', isAscending: true }} />
+				<DataTable tableHeader={header} tableBody={requestBoxes.ApprovalRequest} initialSort={{ prop: 'created_at', isAscending: true }} />
 				<Pagination
 					pageCount={requestBoxes.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}

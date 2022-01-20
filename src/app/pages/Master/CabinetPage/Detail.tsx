@@ -83,7 +83,7 @@ const CabinetPageDetail = ({ match }) => {
 						<QR
 							id="Detail-Box-QR"
 							title="Scan here"
-							value="SLO-baf01be1-af41-448c-9e99-f1a0d59de5a1"
+							value="SLO-c5aff1e8-cf9e-43c5-a853-e43d5b31c716"
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">

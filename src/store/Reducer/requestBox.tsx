@@ -20,6 +20,7 @@ import {
 
 export const initialState: RequestBoxesInterfaceState = {
 	RequestBoxes: [],
+	ApprovalRequest: [],
 	ApprovalAdmin: {
 		Id: "",
 		Approved: false,
@@ -187,8 +188,14 @@ export default (
 		case GET_ALL_APPROVED:
 			return {
 				...state,
-				RequestBox: payload?.data?.data,
+				ApprovalRequest: payload?.data,
 				ErrorRequestBox: payload?.errorMessage,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total_page,
+					per_page: payload?.meta?.total_page,
+				},
 			};
 		case CREATE_REQUEST_BOX:
 			return {

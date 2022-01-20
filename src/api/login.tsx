@@ -1,6 +1,5 @@
 import api from "./dox";
 import { LoginInterfaceState } from "store/Types/LoginTypes";
-import { DataTable } from "app/components/Datatables";
 
 export const login = async (data: LoginInterfaceState) => {
 	let payload = {

@@ -46,6 +46,7 @@ export interface RequestBoxesInterfaceState {
 	ApprovalOperation: ApprovalOperationInterfaceState;
 	RequestBox: RequestBoxInterfaceState;
 	RequestBoxes: RequestBoxInterfaceState[];
+	ApprovalRequest: RequestBoxInterfaceState[];
 	ErrorRequestBox?: string;
 	Title: string;
 	Meta: PaginationState;
