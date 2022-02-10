@@ -1,16 +1,27 @@
 import { PaginationState } from "../Types/PaginationTypes";
 import { RoomInterfaceState } from "store/Types/RoomTypes";
 import { AreaInterfaceState } from "store/Types/AreaTypes";
+
+export interface CabinetSlotInterfaceState {
+	id: string | null;
+	capacity: number;
+	code: string;
+	column: string;
+	name: string;
+	row: number;
+	sign_code: string;
+}
 export interface CabinetInterfaceState {
 	id: string | null;
 	code_cabinet: string;
-	block_number: string;
 	total_bays: string;
-	total_rows: string;
-	total_columns: string;
-	depth: string;
 	room: RoomInterfaceState;
-	area?: AreaInterfaceState;
+	sign_code: string;
+	cabinet: {
+		code_cabinet: string;
+		id: string;
+	};
+	cabinet_slots: [CabinetSlotInterfaceState]
 }
 
 export interface CabinetsInterfaceState {

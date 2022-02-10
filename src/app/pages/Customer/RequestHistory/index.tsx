@@ -53,7 +53,7 @@ const RequestHistory = () => {
 
                 return (
                     <div className="cur-p">
-                        {`Tanggal Permintaan ${isActive ? `(${order})` : '(Inactive)'}`}
+                        {`Tanggal Permintaan`}
                         <i className="fas fa-sort-alt ml-2"></i>
                     </div>
                 );

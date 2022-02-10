@@ -1,20 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Form, Button, Card } from "react-bootstrap";
-import { PageWrapper } from "app/components/PageWrapper";
-import Breadcrumb from "app/components/BreadCrumb";
+import React, { useEffect } from "react";
+import { Card } from "react-bootstrap";
 import QR from "app/components/QRCode";
-import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
 	selectRequestBox,
-	selectRequestBoxes,
 } from "../../../../store/Selector/RequestBoxSelector";
 import { getRequestBoxDetail } from "actions/RequestBoxAction";
 import {
 	RequestBoxInterfaceState,
-	ApprovalInterfaceState,
 } from "store/Types/RequestBoxTypes";
-import moment from "moment";
 
 const ApprovalPrint = ({ match }) => {
 	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
@@ -31,15 +25,12 @@ const ApprovalPrint = ({ match }) => {
 	const Width = {
 		width: "40mm",
 		height: "20mm",
-		// marginTop: "-25px",
 	};
 
 	const font = {
 		fontSize: "8px",
 		lineHeight: "12px",
 	};
-
-	const qr = "box-" + requestBox.id;
 
 	return (
 		<div>

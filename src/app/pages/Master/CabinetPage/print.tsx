@@ -12,6 +12,7 @@ import { CabinetInterfaceState } from "store/Types/CabinetTypes";
 
 const PrintCabinet = ({ match }) => {
 	const cabinet: CabinetInterfaceState = useSelector(selectCabinet);
+	const cabinetSlot = cabinet.cabinet_slots ?? []
 	let history = useHistory();
 
 	const cabinet_id = match.params.id;
@@ -25,7 +26,6 @@ const PrintCabinet = ({ match }) => {
 	const Width = {
 		width: "40mm",
 		height: "20mm",
-		marginTop: "-35px",
 	};
 
 	const font = {
@@ -35,26 +35,50 @@ const PrintCabinet = ({ match }) => {
 
 	return (
 		<>
-			<PageWrapper className="row row w-100%">
-				<div style={Width} className="d-flex ai-center jc-center ">
+			<div style={{ marginBottom: 7, marginLeft: 10 }}>
+				<div style={Width} className="d-flex ai-center jc-center">
 					<Card className="pv-1 ph-1 d-flex ai-center jc-center fd-row col-6">
 						<QR
-							id="Detail-Box-QR"
+							id="QR Box"
 							title="Scan here"
-							value={cabinet.code_cabinet}
+							value={cabinet.sign_code}
 							className="d-flex jc-center"
 						/>
 					</Card>
 					<div className="ml-2 col-6">
 						<p style={font} className="ff-1-bd ta-center ">
-							Lemari
+							Cabinet
 						</p>
 						<p style={font} className="ff-1-bd ta-center">
-							{cabinet.code_cabinet}
+							{cabinet.id}
 						</p>
 					</div>
 				</div>
-			</PageWrapper>
+			</div>
+			{cabinetSlot.map((item, index) => {
+				return (
+					<div style={{ marginBottom: 7.5, marginLeft: 10 }}>
+						<div style={Width} className="d-flex ai-center jc-center">
+							<Card className="pv-1 ph-1 d-flex ai-center jc-center fd-row col-6">
+								<QR
+									id="QR Box"
+									title="Scan here"
+									value={item.sign_code}
+									className="d-flex jc-center"
+								/>
+							</Card>
+							<div className="ml-2 col-6">
+								<p style={font} className="ff-1-bd ta-center ">
+									Cabinet Slot {index + 1}
+								</p>
+								<p style={font} className="ff-1-bd ta-center">
+									{item.code}
+								</p>
+							</div>
+						</div>
+					</div>
+				)
+			})}
 		</>
 	);
 };

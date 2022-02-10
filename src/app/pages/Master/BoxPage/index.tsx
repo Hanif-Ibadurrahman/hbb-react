@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import { deleteBox } from "actions/BoxActions";
 import Alert from "app/components/Alerts";
 import { selectBoxes } from "store/Selector/BoxSelector";
+import moment from "moment";
 
 const BoxPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -73,11 +74,6 @@ const BoxPage = () => {
 			url: "Box-Detail/" + id,
 			type: 1,
 		},
-		// {
-		// 	icon: "fa-copy ",
-		// 	title: "Duplicate",
-		// 	type: 2,
-		// },
 		{
 			icon: "fa-edit",
 			title: "Edit",
@@ -111,7 +107,28 @@ const BoxPage = () => {
 			prop: "code_box",
 			sortable: true,
 			cellProps: {
-				style: { width: "80%" },
+				style: { width: "40%" },
+			},
+		},
+		{
+			prop: 'created_at',
+			sortable: true,
+			cellProps: {
+				style: { width: "40%" },
+			},
+			headerCell: (sortedProp) => {
+				const isActive = sortedProp.prop === 'created_at';
+				const order = sortedProp.isAscending ? 'Terlama' : 'Terbaru';
+
+				return (
+					<div className="cur-p">
+						{`Tanggal Pembuatan`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
+			},
+			cell: row => {
+				return moment(row.created_at).format("DD MMMM YYYY");
 			},
 		},
 		{

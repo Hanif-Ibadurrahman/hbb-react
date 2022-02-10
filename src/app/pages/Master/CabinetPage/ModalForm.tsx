@@ -31,15 +31,9 @@ export const ModalForm = props => {
 
 	const validationSchema = Yup.object().shape({
 		code_cabinet: Yup.string().required("*Wajib diisi"),
-		block_number: Yup.string().required("*Wajib diisi"),
 		total_bays: Yup.string().required("*Wajib diisi"),
-		total_rows: Yup.string().required("*Wajib diisi"),
-		total_columns: Yup.string().required("*Wajib diisi"),
-		depth: Yup.string().required("*Wajib diisi"),
 		// area_id: Yup.string().required("*Wajib diisi"),
 	});
-
-	console.log("Room >>>>", rooms.Rooms);
 
 	const FetchData = (page = 1) => {
 		dispatch(getRoomsList(page));
@@ -92,7 +86,6 @@ export const ModalForm = props => {
 							) : (
 								<>Data Berhasil di Tambah</>
 							);
-							console.log(action);
 						} catch (e) {
 							console.log("ini error di depan");
 						}
@@ -119,7 +112,6 @@ export const ModalForm = props => {
 									<Row>
 										<Col xs={12}>
 											<Form onSubmit={handleSubmit}>
-												{console.log(values)}
 												<Form.Group className="mb-4" controlId="formBasicEmail">
 													<Form.Label>Pilih Area</Form.Label>
 													<Autocomplete
@@ -127,7 +119,6 @@ export const ModalForm = props => {
 														options={rooms.Rooms}
 														getOptionLabel={option => option.code_room}
 														onChange={(e, value) => {
-															console.log(value);
 															setFieldValue(
 																"room",
 																value !== null ? value : values.room.code_room,
@@ -162,24 +153,6 @@ export const ModalForm = props => {
 													) : null}
 												</Form.Group>
 												<Form.Group className="mb-4" controlId="formname">
-													<Form.Label>Block Number</Form.Label>
-													<Form.Control
-														type="text"
-														name="block_number"
-														placeholder="Blok"
-														value={values.block_number}
-														onChange={e => {
-															handleChange(e);
-														}}
-														onBlur={handleBlur}
-													/>
-													{touched.block_number && errors.block_number ? (
-														<p className="tcdanger5 posa psm">
-															{errors.block_number}
-														</p>
-													) : null}
-												</Form.Group>
-												<Form.Group className="mb-4" controlId="formname">
 													<Form.Label>Bays</Form.Label>
 													<Form.Control
 														type="text"
@@ -195,58 +168,6 @@ export const ModalForm = props => {
 														<p className="tcdanger5 posa psm">
 															{errors.total_bays}
 														</p>
-													) : null}
-												</Form.Group>
-												<Form.Group className="mb-4" controlId="formname">
-													<Form.Label>Row</Form.Label>
-													<Form.Control
-														type="text"
-														name="total_rows"
-														placeholder="Row"
-														value={values.total_rows}
-														onChange={e => {
-															handleChange(e);
-														}}
-														onBlur={handleBlur}
-													/>
-													{touched.total_rows && errors.total_rows ? (
-														<p className="tcdanger5 posa psm">
-															{errors.total_rows}
-														</p>
-													) : null}
-												</Form.Group>
-												<Form.Group className="mb-4" controlId="formname">
-													<Form.Label>Columns</Form.Label>
-													<Form.Control
-														type="text"
-														name="total_columns"
-														placeholder="Columns"
-														value={values.total_columns}
-														onChange={e => {
-															handleChange(e);
-														}}
-														onBlur={handleBlur}
-													/>
-													{touched.total_columns && errors.total_columns ? (
-														<p className="tcdanger5 posa psm">
-															{errors.total_columns}
-														</p>
-													) : null}
-												</Form.Group>
-												<Form.Group className="mb-4" controlId="formname">
-													<Form.Label>Muatan</Form.Label>
-													<Form.Control
-														type="text"
-														name="depth"
-														placeholder="Depth"
-														value={values.depth}
-														onChange={e => {
-															handleChange(e);
-														}}
-														onBlur={handleBlur}
-													/>
-													{touched.depth && errors.depth ? (
-														<p className="tcdanger5 posa psm">{errors.depth}</p>
 													) : null}
 												</Form.Group>
 											</Form>
