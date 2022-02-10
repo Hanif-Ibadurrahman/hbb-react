@@ -7,9 +7,8 @@ import "../master.scoped.scss";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getBoxDetail } from "actions/BoxActions";
-import { selectBoxes, selectBox } from "store/Selector/BoxSelector";
+import { selectBox } from "store/Selector/BoxSelector";
 import { BoxInterfaceState } from "store/Types/BoxTypes";
-import moment from "moment";
 
 const BoxPageDetail = ({ match }) => {
 	const box: BoxInterfaceState = useSelector(selectBox);
@@ -28,13 +27,13 @@ const BoxPageDetail = ({ match }) => {
 		dispatch(getBoxDetail(box_id));
 	}, []);
 
-	const folders = box.folders ?? []
+	const folders = box?.folders
 
 	return (
 		<>
 			<PageWrapper className="row w-100%">
 				<Breadcrumb
-					crumbs={["Dashboard", "Box", "Detail"]}
+					crumbs={["Dashboard", "Folder", "Detail"]}
 					selected
 					className="mb-4"
 				/>
@@ -69,32 +68,39 @@ const BoxPageDetail = ({ match }) => {
 						{folders.map((item, index) => {
 							return (
 								<div>
-									<p className="mb-1 p-lg">Slot {index + 1}</p>
+									<p className="mb-1 p-lg">Folder {index + 1}</p>
 									<div className="w-50% bg-dark h-2px mb-4" />
 									<div className="row mb-4">
 										<div className="col-6">
 											<Form.Group>
-												<Form.Label>Nama Folder</Form.Label>
+												<Form.Label>No Folder</Form.Label>
 												<Form.Control
 													type="text"
 													disabled
-													defaultValue={""}
+													defaultValue={item.no}
 												/>
 											</Form.Group>
 											<Form.Group className="mt-2">
-												<Form.Label>Tanggal Pembuatan</Form.Label>
+												<Form.Label>Location</Form.Label>
 												<Form.Control
 													type="text"
 													disabled
-													defaultValue={""}
+													defaultValue={item.status}
 												/>
 											</Form.Group>
+											<Button
+												className="mv-4 mr-4"
+												variant="success"
+												onClick={() => history.push("/Folder-Detail/" + item.id)}
+											>
+												Lihat Detail
+											</Button>{" "}
 										</div>
 										<div className="col-6 d-flex jc-center ai-center">
 											<QR
-												id="QR Box"
+												id="QRBox"
 												title="Scan here"
-												value="Folder-Code"
+												value={item.sign_code}
 												className="d-flex jc-center"
 											/>
 										</div>
@@ -113,7 +119,7 @@ const BoxPageDetail = ({ match }) => {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">{box.id}</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">Box Barcode</p>
 						</div>
 					</Card>
 				</div>

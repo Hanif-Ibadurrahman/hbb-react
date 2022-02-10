@@ -1,6 +1,13 @@
 import { PaginationState } from "../Types/PaginationTypes";
 import { CabinetSlotInterfaceState } from "./CabinetTypes";
 import { CompanyInterfaceState } from "./CompanyTypes";
+
+interface FolderBoxInterfaceState{
+	id: string |null;
+	status: string;
+	no: string;
+	sign_code: string;
+}
 export interface BoxInterfaceState {
 	id: string | null;
 	code_box: string;
@@ -10,7 +17,7 @@ export interface BoxInterfaceState {
 	created_at: string;
 	cabinet_slot: CabinetSlotInterfaceState;
 	company: CompanyInterfaceState;
-	folders: [],
+	folders: [FolderBoxInterfaceState],
 }
 
 export interface BoxesInterfaceState {

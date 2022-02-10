@@ -86,7 +86,12 @@ export const initialState: RequestBoxesInterfaceState = {
 					status: "",
 					location: "",
 					created_at: "",
-					folders: [],
+					folders: [{
+						id: "",
+						no: "",
+						sign_code: "",
+						status: "",
+					}],
 					cabinet_slot: {
 						id: "",
 						capacity: 0,
@@ -290,7 +295,12 @@ export default (
 								status: "",
 								location: "",
 								created_at: "",
-								folders: [],
+								folders: [{
+									id: "",
+									no: "",
+									sign_code: "",
+									status: "",
+								}],
 								cabinet_slot: {
 									id: "",
 									capacity: 0,

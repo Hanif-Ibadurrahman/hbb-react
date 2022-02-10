@@ -3,43 +3,43 @@ import { DocumentInterfaceState } from "store/Types/DocumentTypes";
 import api from "./dox";
 export const create = async (data: DocumentInterfaceState) => {
 	let payload = {
-		no: data.No,
-		date: data.Date,
-		detail: data.Detail,
-		nominal: data.Nominal,
-		active_year_for: data.ActiveYear,
-		level_progress: data.LevelProgress,
-		media_storage: data.MediaStorage,
-		condition: data.Condition,
-		amount: data.Amount,
-		cross_point: data.CrossPoint,
-		description: data.Description,
-		no_digital: data.NoDigital,
-		location: data.Location,
-		status: data.Status,
-		sign_code: data.SignCode,
+		no: data.no,
+		date: data.date,
+		detail: data.detail,
+		nominal: data.nominal,
+		active_year_for: data.active_year_for,
+		level_progress: data.level_progress,
+		media_storage: data.media_storage,
+		condition: data.condition,
+		amount: data.amount,
+		cross_point: data.cross_point,
+		description: data.description,
+		no_digital: data.no_digital,
+		location: data.location,
+		status: data.status,
+		sign_code: data.sign_code,
 	};
 	return api.post("/documents", payload);
 };
 
 export const update = async (data: DocumentInterfaceState) => {
-	let id = data.Id;
+	let id = data.id;
 	let payload = {
-		no: data.No,
-		date: data.Date,
-		detail: data.Detail,
-		nominal: data.Nominal,
-		active_year_for: data.ActiveYear,
-		level_progress: data.LevelProgress,
-		media_storage: data.MediaStorage,
-		condition: data.Condition,
-		amount: data.Amount,
-		cross_point: data.CrossPoint,
-		description: data.Description,
-		no_digital: data.NoDigital,
-		location: data.Location,
-		status: data.Status,
-		sign_code: data.SignCode,
+		no: data.no,
+		date: data.date,
+		detail: data.detail,
+		nominal: data.nominal,
+		active_year_for: data.active_year_for,
+		level_progress: data.level_progress,
+		media_storage: data.media_storage,
+		condition: data.condition,
+		amount: data.amount,
+		cross_point: data.cross_point,
+		description: data.description,
+		no_digital: data.no_digital,
+		location: data.location,
+		status: data.status,
+		sign_code: data.sign_code,
 	};
 	console.log(payload);
 	return await api.put(`/documents/${id}`, payload);

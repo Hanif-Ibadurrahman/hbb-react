@@ -9,8 +9,8 @@ export default function PageHeader(props) {
 			<div className="d-flex jc-between ai-center mb-4">
 				<Breadcrumb crumbs={props.breadcrumb} selected />
 				<div className="d-flex ml-a">
-					<Filter />
-					<Button
+					{/* <Filter /> */}
+					{/* <Button
 						className="d-flex ai-center mr-2 bg-warning-5"
 						variant="warning"
 					>
@@ -27,7 +27,7 @@ export default function PageHeader(props) {
 						variant="warning"
 					>
 						Export<i className="fas fa-download ml-2"></i>
-					</Button>{" "}
+					</Button>{" "} */}
 					<Button
 						className="d-flex ai-center bg-success-6"
 						variant="success"

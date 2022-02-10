@@ -136,7 +136,17 @@ export function Sidebar() {
 	const AdminMenu = props => {
 		return (
 			<>
-				<SubMenu
+				<MenuItem
+					id={window.location.pathname === "/Dashboard" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconHome} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Dashboard";
+					}}
+				>
+					{""} Dashboard
+				</MenuItem>
+				{/* <SubMenu
 					className="pos-r"
 					icon={<img src={IconHome} className="h-5" alt="awSnap" />}
 					title="Dashboard"
@@ -159,7 +169,7 @@ export function Sidebar() {
 							</MenuItem>
 						);
 					})}
-				</SubMenu>
+				</SubMenu> */}
 				<MenuItem
 					id={window.location.pathname === "/Approval-Admin" ? "active" : ""}
 					className=" pos-r"

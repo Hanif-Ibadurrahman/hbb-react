@@ -107,7 +107,7 @@ const RequestHistory = () => {
                 />
             </Helmet>
             <PageWrapper>
-                <PageHeader breadcrumb={["Customer", "Riwayat Perminataan"]} />
+                {/* <PageHeader breadcrumb={["Customer", "Riwayat Perminataan"]} /> */}
                 <DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} initialSort={{ prop: 'created_at', isAscending: true }} />
                 <Pagination
                     pageCount={requestBoxes.Meta.last_page}

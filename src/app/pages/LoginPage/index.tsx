@@ -81,7 +81,7 @@ export function LoginPage() {
 								const res = await action;
 								await dispatch(res);
 								action.then(() => {
-									history.push("/Dashboard/Superadmin");
+									history.push("/Dashboard");
 									window.location.reload();
 								});
 							} catch (e) {

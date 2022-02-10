@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Form, Button, Card } from "react-bootstrap";
-import { PageWrapper } from "app/components/PageWrapper";
-import Breadcrumb from "app/components/BreadCrumb";
+import React, { useEffect } from "react";
+import {  Card } from "react-bootstrap";
 import QR from "app/components/QRCode";
 import "../master.scoped.scss";
 import { useHistory } from "react-router-dom";

@@ -75,7 +75,7 @@ const ModalForm = props => {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							let action = document.Id
+							let action = document.id
 								? UpdateDcoument(values)
 								: CreateDocument(values);
 							// dispatch(loadingbarTurnOn)
@@ -87,7 +87,7 @@ const ModalForm = props => {
 							});
 							dispatch({ type: RESET_DOCUMENT_FORM });
 							props.modalSet(props.valueModalSet);
-							document.Id ? (
+							document.id ? (
 								<>Data Berhasil di Edit</>
 							) : (
 								<>Data Berhasil di Tambah</>
@@ -110,7 +110,7 @@ const ModalForm = props => {
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									{document.Id ? <>Edit Data</> : <>Tambah Data</>}
+									{document.id ? <>Edit Data</> : <>Tambah Data</>}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
@@ -121,34 +121,34 @@ const ModalForm = props => {
 												<Form.Label>Nomor Dokumen</Form.Label>
 												<Form.Control
 													type="text"
-													name="No"
+													name="no"
 													placeholder="No Dokument"
-													value={values.No}
+													value={values.no}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.No && errors.No ? (
-													<p className="tc-danger-5 pos-a p-sm">{errors.No}</p>
+												{touched.no && errors.no ? (
+													<p className="tc-danger-5 pos-a p-sm">{errors.no}</p>
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4">
 												<Form.Label>Tanggal</Form.Label>
 												<Form.Control
 													type="date"
-													name="Date"
+													name="date"
 													min={MinDate}
 													placeholder="Date Document"
-													value={values.Date}
+													value={values.date}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.Date && errors.Date ? (
+												{touched.date && errors.date ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.Date}
+														{errors.date}
 													</p>
 												) : null}
 											</Form.Group>
@@ -156,17 +156,17 @@ const ModalForm = props => {
 												<Form.Label>Detail</Form.Label>
 												<Form.Control
 													as="textarea"
-													name="Detail"
+													name="detail"
 													placeholder="Detail"
-													value={values.Detail}
+													value={values.detail}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.Detail && errors.Detail ? (
+												{touched.detail && errors.detail ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.Detail}
+														{errors.detail}
 													</p>
 												) : null}
 											</Form.Group>
@@ -174,18 +174,18 @@ const ModalForm = props => {
 												<Form.Label>Nominal</Form.Label>
 												<Form.Control
 													type="number"
-													name="Nominal"
+													name="nominal"
 													placeholder="Nominal"
 													min="1"
-													value={values.Nominal}
+													value={values.nominal}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.Nominal && errors.Nominal ? (
+												{touched.nominal && errors.nominal ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.Nominal}
+														{errors.nominal}
 													</p>
 												) : null}
 											</Form.Group>
@@ -193,17 +193,17 @@ const ModalForm = props => {
 												<Form.Label>Masa Aktif</Form.Label>
 												<Form.Control
 													type="number"
-													name="ActiveYear"
+													name="active_year_for"
 													min={Year}
-													value={values.ActiveYear}
+													value={values.active_year_for}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.ActiveYear && errors.ActiveYear ? (
+												{touched.active_year_for && errors.active_year_for ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.ActiveYear}
+														{errors.active_year_for}
 													</p>
 												) : null}
 											</Form.Group>
@@ -211,16 +211,16 @@ const ModalForm = props => {
 												<Form.Label>Level Progress</Form.Label>
 												<Form.Control
 													type="text"
-													name="LevelProgress"
-													value={values.LevelProgress}
+													name="level_progress"
+													value={values.level_progress}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.LevelProgress && errors.LevelProgress ? (
+												{touched.level_progress && errors.level_progress ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.LevelProgress}
+														{errors.level_progress}
 													</p>
 												) : null}
 											</Form.Group>
@@ -228,16 +228,16 @@ const ModalForm = props => {
 												<Form.Label>Media Storage</Form.Label>
 												<Form.Control
 													type="text"
-													name="MediaStorage"
-													value={values.MediaStorage}
+													name="media_storage"
+													value={values.media_storage}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.MediaStorage && errors.MediaStorage ? (
+												{touched.media_storage && errors.media_storage ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.MediaStorage}
+														{errors.media_storage}
 													</p>
 												) : null}
 											</Form.Group>
@@ -245,16 +245,16 @@ const ModalForm = props => {
 												<Form.Label>Kondisi Dokument</Form.Label>
 												<Form.Control
 													type="text"
-													name="Condition"
-													value={values.Condition}
+													name="condition"
+													value={values.condition}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.Condition && errors.Condition ? (
+												{touched.condition && errors.condition ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.Condition}
+														{errors.condition}
 													</p>
 												) : null}
 											</Form.Group>
@@ -263,16 +263,16 @@ const ModalForm = props => {
 												<Form.Control
 													type="number"
 													min="1"
-													name="Amount"
-													value={values.Amount}
+													name="amount"
+													value={values.amount}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.Amount && errors.Amount ? (
+												{touched.amount && errors.amount ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.Amount}
+														{errors.amount}
 													</p>
 												) : null}
 											</Form.Group>
@@ -280,16 +280,16 @@ const ModalForm = props => {
 												<Form.Label>Cross Point</Form.Label>
 												<Form.Control
 													type="text"
-													name="CrossPoint"
-													value={values.CrossPoint}
+													name="cross_point"
+													value={values.cross_point}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.CrossPoint && errors.CrossPoint ? (
+												{touched.cross_point && errors.cross_point ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.CrossPoint}
+														{errors.cross_point}
 													</p>
 												) : null}
 											</Form.Group>
@@ -297,16 +297,16 @@ const ModalForm = props => {
 												<Form.Label>Deskripsi</Form.Label>
 												<Form.Control
 													as="textarea"
-													name="Description"
-													value={values.Description}
+													name="description"
+													value={values.description}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.Description && errors.Description ? (
+												{touched.description && errors.description ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.Description}
+														{errors.description}
 													</p>
 												) : null}
 											</Form.Group>
@@ -314,16 +314,16 @@ const ModalForm = props => {
 												<Form.Label>No Digital</Form.Label>
 												<Form.Control
 													type="text"
-													name="NoDigital"
-													value={values.NoDigital}
+													name="no_digital"
+													value={values.no_digital}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.NoDigital && errors.NoDigital ? (
+												{touched.no_digital && errors.no_digital ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.NoDigital}
+														{errors.no_digital}
 													</p>
 												) : null}
 											</Form.Group>

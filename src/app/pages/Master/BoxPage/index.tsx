@@ -13,6 +13,8 @@ import { deleteBox } from "actions/BoxActions";
 import Alert from "app/components/Alerts";
 import { selectBoxes } from "store/Selector/BoxSelector";
 import moment from "moment";
+import { Button } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 const BoxPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -21,6 +23,14 @@ const BoxPage = () => {
 	const [showAlert, setShowAlert] = useState(false);
 	const boxes = useSelector(selectBoxes);
 	const dispatch = useDispatch();
+
+	let history = useHistory();
+	const handlePrint = () => {
+		history.push("/Print-PerPage")
+		setTimeout(function () {
+			window.location.reload();
+		}, 1000);
+	}
 
 	const FetchData = (page = 1) => {
 		dispatch(getBoxesList(page));
@@ -116,10 +126,7 @@ const BoxPage = () => {
 			cellProps: {
 				style: { width: "40%" },
 			},
-			headerCell: (sortedProp) => {
-				const isActive = sortedProp.prop === 'created_at';
-				const order = sortedProp.isAscending ? 'Terlama' : 'Terbaru';
-
+			headerCell: () => {
 				return (
 					<div className="cur-p">
 						{`Tanggal Pembuatan`}
@@ -147,7 +154,7 @@ const BoxPage = () => {
 	return (
 		<>
 			<Helmet>
-				<title>Dox - Request Box</title>
+				<title>Dox - Box Page</title>
 				<meta
 					name="description"
 					content="A React Boilerplate application homepage"
@@ -178,6 +185,15 @@ const BoxPage = () => {
 					valueModalSet={false}
 					value={true}
 				/>
+				<div className="d-flex mb-6">
+					<Button
+						className="d-flex ai-center mr-2 bg-warning-5"
+						variant="warning"
+						onClick={handlePrint}
+					>
+						Print All Box<i className="fas fa-print ml-2"></i>
+					</Button>{" "}
+				</div>
 				<DataTable tableHeader={header} tableBody={boxes.Boxes} />
 				<Pagination
 					pageCount={boxes.Meta.last_page}

@@ -19,6 +19,7 @@ import { Routes } from "./pages/Routes";
 import PrintBox from "../app/pages/Master/BoxPage/print";
 import PrintCabinet from "./pages/Master/CabinetPage/print";
 import ApprovalPrint from "./pages/AdminOperation/RequestBox/PrintBarcode";
+import PrintBoxPerpage from "./pages/Master/BoxPage/PrintPerPage"
 
 export function App() {
 	const { i18n } = useTranslation();
@@ -49,6 +50,10 @@ export function App() {
 						<Route
 							path={process.env.PUBLIC_URL + "/Login"}
 							component={LoginPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Print-PerPage"}
+							component={PrintBoxPerpage}
 						/>
 						<Route path={process.env.PUBLIC_URL + "/"} component={Routes} />
 					</Switch>

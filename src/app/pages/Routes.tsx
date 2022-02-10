@@ -137,7 +137,7 @@ export function Routes() {
 					<Switch>
 						{/*---------- DASHBOARD ---------*/}
 						<Route
-							path={process.env.PUBLIC_URL + "/Dashboard/Superadmin"}
+							path={process.env.PUBLIC_URL + "/Dashboard"}
 							component={DashboardSuperadmin}
 						/>
 						<Route

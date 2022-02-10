@@ -58,7 +58,7 @@ export const ModalForm = props => {
 	const validationSchema = Yup.object().shape({
 		// CodeCompany: Yup.string().required("*Wajib diisi"),
 		username: Yup.string().required("*Wajib diisi"),
-		password: Yup.string().required("*Wajib diisi"),
+		password: Yup.string().required("*Wajib diisi").min(8, "Min 8 Karakter"),
 		name: Yup.string().required("*Wajib diisi"),
 		email: Yup.string().required("*Wajib diisi"),
 		phone: Yup.string().required("*Wajib diisi"),

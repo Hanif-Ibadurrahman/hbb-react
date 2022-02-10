@@ -34,7 +34,6 @@ const ModalForm = props => {
 	const dispatch = useDispatch();
 
 	const validationSchema = Yup.object().shape({
-		note: Yup.string().required("*Wajib diisi"),
 		delivered_at: Yup.string().required("*Wajib diisi"),
 	});
 
@@ -45,7 +44,7 @@ const ModalForm = props => {
 	return (
 		<>
 			<Alert
-				text={alertMessage}
+				text="Data Berhasil di Request"
 				variant="success"
 				show={showAlert}
 				style={{
@@ -75,6 +74,10 @@ const ModalForm = props => {
 							await dispatch(res);
 							action.then(() => {
 								props.modalSet(props.valueModalSet);
+								setShowAlert(true);
+								setTimeout(function () {
+									window.location.reload();
+								}, 1000);
 							});
 							props.modalSet(props.valueModalSet);
 							console.log(action);
@@ -102,7 +105,7 @@ const ModalForm = props => {
 								<Container>
 									<Row>
 										<Col xs={12}>
-										<Form.Group className="mb-4" controlId="formBasicEmail">
+											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Metode Pengiriman</Form.Label>
 												<Form.Select
 													className="cur-p"
