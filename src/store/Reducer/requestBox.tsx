@@ -86,6 +86,7 @@ export const initialState: RequestBoxesInterfaceState = {
 					status: "",
 					location: "",
 					created_at: "",
+					custom_code_box: "",
 					folders: [{
 						id: "",
 						no: "",
@@ -295,6 +296,7 @@ export default (
 								status: "",
 								location: "",
 								created_at: "",
+								custom_code_box: "",
 								folders: [{
 									id: "",
 									no: "",

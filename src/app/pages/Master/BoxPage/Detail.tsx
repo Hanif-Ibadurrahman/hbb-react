@@ -45,6 +45,10 @@ const BoxPageDetail = ({ match }) => {
 								<Form.Control type="text" disabled defaultValue={box.code_box} />
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Custome Code</Form.Label>
+								<Form.Control type="text" disabled defaultValue={box.custom_code_box} />
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Status</Form.Label>
 								<Form.Control type="text" disabled defaultValue={box.status} />
 							</Form.Group>

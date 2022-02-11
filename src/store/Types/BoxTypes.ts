@@ -16,6 +16,7 @@ export interface BoxInterfaceState {
 	location: string;
 	created_at: string;
 	cabinet_slot: CabinetSlotInterfaceState;
+	custom_code_box: string;
 	company: CompanyInterfaceState;
 	folders: [FolderBoxInterfaceState],
 }

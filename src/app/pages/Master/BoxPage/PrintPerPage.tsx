@@ -56,7 +56,7 @@ const PrintBoxPerPage = () => {
 										Box
 									</p>
 									<p style={font} className="ff-1-bd ta-center">
-										{item.code_box}
+										{item?.code_box || item?.custom_code_box}
 									</p>
 								</div>
 							</div>

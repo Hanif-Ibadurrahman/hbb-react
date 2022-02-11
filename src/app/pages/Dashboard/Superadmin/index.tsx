@@ -52,13 +52,10 @@ export function DashboardSuperadmin() {
 			cellProps: {
 				style: { width: "20%" },
 			},
-			headerCell: (sortedProp) => {
-				const isActive = sortedProp.prop === 'created_at';
-				const order = sortedProp.isAscending ? 'Terlama' : 'Terbaru';
-
+			headerCell: () => {
 				return (
 					<div className="cur-p">
-						{`Tanggal Permintaan ${isActive ? `(${order})` : '(Inactive)'}`}
+						{`Tanggal Permintaan`}
 						<i className="fas fa-sort-alt ml-2"></i>
 					</div>
 				);
@@ -90,14 +87,18 @@ export function DashboardSuperadmin() {
 			},
 		},
 		{
-			title: "Action",
-			prop: "Action",
+			prop: 'quantity',
+			sortable: true,
 			cellProps: {
-				style: { flex: 1 },
-				className: "realname-class",
+				style: { width: "20%" },
 			},
-			cell: row => {
-				return <DropdownAction list={action(row.id)} />;
+			headerCell: () => {
+				return (
+					<div className="cur-p">
+						{`Quantity`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
 			},
 		},
 	];

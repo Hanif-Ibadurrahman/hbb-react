@@ -17,6 +17,7 @@ export const initialState: BoxesInterfaceState = {
 		status: "",
 		location: "",
 		created_at: "",
+		custom_code_box: "",
 		folders: [{
 			id: "",
 			no: "",
@@ -116,6 +117,7 @@ export default (
 					status: "",
 					location: "",
 					created_at: "",
+					custom_code_box: "",
 					folders: [{
 						id: "",
 						no: "",
