@@ -108,7 +108,31 @@ const DocumentPage = () => {
 			prop: "no",
 			sortable: true,
 			cellProps: {
-				style: { width: "80%" },
+				style: { width: "40%" },
+			},
+			headerCell: () => {
+				return (
+					<div className="cur-p">
+						{`No Folder`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
+			},
+		},
+		{
+			title: "Status Folder",
+			prop: "status",
+			sortable: true,
+			cellProps: {
+				style: { width: "40%" },
+			},
+			headerCell: () => {
+				return (
+					<div className="cur-p">
+						{`Status Folder`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
 			},
 		},
 		{

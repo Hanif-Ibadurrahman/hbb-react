@@ -105,6 +105,10 @@ import RequestBox from "./Customer/RequestBox";
 import BorrowBoxPage from "./Customer/BorrowBox";
 //3 - Pick Up
 import PickUpPage from "./Customer/PickUpBox";
+//4 - Return
+import ReturnItemPage from "./Customer/ReturnItem";
+//5 - History of Request
+import RequestHistory from "./Customer/RequestHistory";
 
 // -=-=-=-=-=-
 // ALL USER
@@ -133,7 +137,7 @@ export function Routes() {
 					<Switch>
 						{/*---------- DASHBOARD ---------*/}
 						<Route
-							path={process.env.PUBLIC_URL + "/Dashboard/Superadmin"}
+							path={process.env.PUBLIC_URL + "/Dashboard"}
 							component={DashboardSuperadmin}
 						/>
 						<Route
@@ -353,6 +357,14 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/Customer/Pick-Up"}
 							component={PickUpPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Customer/Return"}
+							component={ReturnItemPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Customer/History"}
+							component={RequestHistory}
 						/>
 
 						{/*--------- ALL USER ---------*/}

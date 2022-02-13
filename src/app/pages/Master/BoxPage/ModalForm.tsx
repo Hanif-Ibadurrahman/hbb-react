@@ -15,7 +15,7 @@ const ModalForm = props => {
 	const box: BoxInterfaceState = useSelector(selectBox);
 	const dispatch = useDispatch();
 	const validationSchema = Yup.object().shape({
-		CodeBox: Yup.string().required("*Wajib diisi"),
+		code_box: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
@@ -45,7 +45,7 @@ const ModalForm = props => {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							let action = box.Id ? UpdateBox(values) : CreateBox(values);
+							let action = box.id ? UpdateBox(values) : CreateBox(values);
 							// dispatch(loadingbarTurnOn)
 							const res = await action;
 							await dispatch(res);
@@ -55,7 +55,7 @@ const ModalForm = props => {
 							});
 							dispatch({ type: RESET_BOX_FORM });
 							props.modalSet(props.valueModalSet);
-							box.Id ? (
+							box.id ? (
 								<>Data Berhasil di Edit</>
 							) : (
 								<>Data Berhasil di Tambah</>
@@ -78,7 +78,7 @@ const ModalForm = props => {
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									{box.Id ? <>Edit Data</> : <>Tambah Data</>}
+									{box.id ? <>Edit Data</> : <>Tambah Data</>}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
@@ -91,15 +91,15 @@ const ModalForm = props => {
 													type="text"
 													name="CodeBox"
 													placeholder="Code"
-													value={values.CodeBox}
+													value={values.code_box}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.CodeBox && errors.CodeBox ? (
+												{touched.code_box && errors.code_box ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.CodeBox}
+														{errors.code_box}
 													</p>
 												) : null}
 											</Form.Group>

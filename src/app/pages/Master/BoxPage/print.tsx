@@ -35,6 +35,7 @@ const PrintBox = ({ match }) => {
 		lineHeight: "12px",
 	};
 
+
 	return (
 		<>
 			<PageWrapper className="row row w-100%">
@@ -43,7 +44,7 @@ const PrintBox = ({ match }) => {
 						<QR
 							id="Detail-Box-QR"
 							title="Scan here"
-							value={box.SignCode}
+							value={box.sign_code}
 							className="d-flex jc-center"
 						/>
 					</Card>
@@ -52,7 +53,7 @@ const PrintBox = ({ match }) => {
 							Box
 						</p>
 						<p style={font} className="ff-1-bd ta-center">
-							{box.CodeBox}
+							{box.sign_code}
 						</p>
 					</div>
 				</div>

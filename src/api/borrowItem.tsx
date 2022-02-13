@@ -7,6 +7,7 @@ export const create = async (data: BorrowItemInterfaceState) => {
 		delivered_at: data.delivered_at,
 		note: data.note,
 		box_codes: data.box_codes,
+		delivery_method: data.delivery_method,
 	};
 	return api.post("/borrow", payload);
 };

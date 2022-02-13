@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
-import PageHeader from "../../Master/Components/PageHeader";
 import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
 import { getRequestBoxesList } from "actions/RequestBoxAction";
@@ -74,12 +73,6 @@ const BoxPage = () => {
 					hide={_onHide}
 					modalSet={setModalShow}
 					valueModalSet={false}
-				/>
-				<PageHeader
-					breadcrumb={["Master", "Box"]}
-					modal={setModalShow}
-					valueModalSet={false}
-					value={true}
 				/>
 				<DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} />
 				<Pagination

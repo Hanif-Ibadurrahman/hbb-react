@@ -105,31 +105,29 @@ export function Sidebar() {
 				</MenuItem>
 				<MenuItem
 					id={
-						window.location.pathname === "Customer/Returning-Box"
-							? "active"
-							: ""
+						window.location.pathname === "/Customer/Return" ? "active" : ""
 					}
 					className=" pos-r"
 					icon={<img src={IconUI} className="h-5" alt="awSnap" />}
 					onClick={() => {
-						window.location.pathname = "Customer/Returning-Box";
+						window.location.pathname = "/Customer/Return";
 					}}
 				>
 					{""} Pengembalian
 				</MenuItem>
 				<MenuItem
 					id={
-						window.location.pathname === "Customer/Destroy-Suggestion"
+						window.location.pathname === "Customer/History"
 							? "active"
 							: ""
 					}
 					className=" pos-r"
 					icon={<img src={IconTable} className="h-5" alt="awSnap" />}
 					onClick={() => {
-						window.location.pathname = "Customer/Destroy-Suggestion";
+						window.location.pathname = "Customer/History";
 					}}
 				>
-					{""} Usulan Penghapusan
+					{""} Riwayat Permintaan
 				</MenuItem>
 			</>
 		);
@@ -138,7 +136,17 @@ export function Sidebar() {
 	const AdminMenu = props => {
 		return (
 			<>
-				<SubMenu
+				<MenuItem
+					id={window.location.pathname === "/Dashboard" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconHome} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Dashboard";
+					}}
+				>
+					{""} Dashboard
+				</MenuItem>
+				{/* <SubMenu
 					className="pos-r"
 					icon={<img src={IconHome} className="h-5" alt="awSnap" />}
 					title="Dashboard"
@@ -161,7 +169,7 @@ export function Sidebar() {
 							</MenuItem>
 						);
 					})}
-				</SubMenu>
+				</SubMenu> */}
 				<MenuItem
 					id={window.location.pathname === "/Approval-Admin" ? "active" : ""}
 					className=" pos-r"
@@ -184,64 +192,18 @@ export function Sidebar() {
 				>
 					{""} Approval Operation
 				</MenuItem>
-				{/* <SubMenu
-					className=""
+				<MenuItem
+					id={
+						window.location.pathname === "/Preview-Approvral" ? "active" : ""
+					}
+					className=" pos-r"
 					icon={<img src={IconForm} className="h-5" alt="awSnap" />}
-					title="Persetujuan Admin"
+					onClick={() => {
+						window.location.pathname = "/Preview-Approvral";
+					}}
 				>
-					{PeminjamanData.map((val, key) => {
-						return (
-							<MenuItem
-								id={
-									window.location.pathname.split(val.link).pop() ? "" : "active"
-								}
-								className="pos-r"
-								icon={<img src={val.icon} className="h-5" alt="awSnap" />}
-								key={key}
-								onClick={() => {
-									window.location.pathname = val.link;
-								}}
-							>
-								{""}
-								{val.title}
-								<span className="h-6 w-6 bd-rs-6 bg-danger-5 d-flex ai-center jc-center ml-a">
-									<span className="text tc-danger-contrast">
-										{notifAdminBox}
-									</span>
-								</span>
-							</MenuItem>
-						);
-					})}
-				</SubMenu> */}
-				{/* <SubMenu
-					className=""
-					icon={<img src={IconForm} className="h-5" alt="awSnap" />}
-					title="Persetujuan Operation"
-				>
-					{ApprovalOperation.map((val, key) => {
-						return (
-							<MenuItem
-								id={
-									window.location.pathname.split(val.link).pop() ? "" : "active"
-								}
-								className="pos-r"
-								icon={<img src={val.icon} className="h-5" alt="awSnap" />}
-								key={key}
-								onClick={() => {
-									window.location.pathname = val.link;
-								}}
-							>
-								{""}
-								{val.title}
-								<span className="h-6 w-6 bd-rs-6 bg-danger-5 d-flex ai-center jc-center ml-a">
-									<span className="text tc-danger-contrast">
-										{val.notifications}
-									</span>
-								</span>
-							</MenuItem>
-						);
-					})}
-				</SubMenu> */}
+					{""} Riwayat Approval
+				</MenuItem>
 				<SubMenu
 					className=""
 					icon={<img src={IconAdvanced} className="h-5" alt="awSnap" />}

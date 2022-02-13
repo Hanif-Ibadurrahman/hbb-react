@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Form, Button, Card } from "react-bootstrap";
 import { PageWrapper } from "app/components/PageWrapper";
 import Breadcrumb from "app/components/BreadCrumb";
@@ -14,6 +14,7 @@ const ApprovalAdminDetail = ({ match }) => {
 	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
 	const requestLogs = requestBox.request_logs ?? [];
 	let history = useHistory();
+	const requestItems = requestBox.request_items ?? [];
 
 	const goToPreviousPath = e => {
 		e.preventDefault();
@@ -34,14 +35,22 @@ const ApprovalAdminDetail = ({ match }) => {
 		<>
 			<PageWrapper className="row w-100%">
 				<Breadcrumb
-					crumbs={["Dashboard", "Box", "Detail"]}
+					crumbs={["Dashboard", "Request", "Detail"]}
 					selected
 					className="mb-4"
 				/>
 				<div className="col col-9">
 					<Card className="ph-5 pv-3 bd-rs-2">
 						<Form className="mt-3">
-							<Form.Group className="mb-3" controlId="formBasicEmail">
+							<Form.Group className="mb-4" controlId="formBasicEmail">
+								<Form.Label>Nama Customer</Form.Label>
+								<Form.Control type="text" value={requestBox.customer.name} disabled />
+							</Form.Group>
+							<Form.Group className="mb-4" controlId="formBasicEmail">
+								<Form.Label>Nama Perusahaan</Form.Label>
+								<Form.Control type="text" value={requestBox.customer.company.name} disabled />
+							</Form.Group>
+							<Form.Group className="mb-4" controlId="formBasicEmail">
 								<Form.Label>Quantity</Form.Label>
 								<Form.Control
 									type="text"
@@ -72,6 +81,45 @@ const ApprovalAdminDetail = ({ match }) => {
 							</div>
 						</Form>
 					</Card>
+					<Card className="ph-5 pv-3 bd-rs-2 mt-3">
+						<h6 className="mb-4 mt-4">Box List</h6>
+						{requestItems.map((item, index) => {
+							return (
+								<div>
+									<p className="mb-1 p-lg">Box {index + 1}</p>
+									<div className="w-50% bg-dark h-2px mb-4" />
+									<div className="row mb-4">
+										<div className="col-6">
+											<Form.Group>
+												<Form.Label>Code Box</Form.Label>
+												<Form.Control
+													type="text"
+													disabled
+													defaultValue={item.box.code_box}
+												/>
+											</Form.Group>
+											<Form.Group className="mt-2">
+												<Form.Label>Status</Form.Label>
+												<Form.Control
+													type="text"
+													disabled
+													defaultValue={item.status}
+												/>
+											</Form.Group>
+										</div>
+										<div className="col-6 d-flex jc-center ai-center">
+											<QR
+												id="QR Box"
+												title="Scan here"
+												value={item.box.sign_code}
+												className="d-flex jc-center"
+											/>
+										</div>
+									</div>
+								</div>
+							)
+						})}
+					</Card>
 					<Card className="ph-5 pt-7 pb-4 mt-3 bd-rs-2">
 						<h6 className="mb-3">Timeline </h6>
 						<div className="timeline-wrapper w-100%">
@@ -79,9 +127,8 @@ const ApprovalAdminDetail = ({ match }) => {
 								return (
 									<div
 										key={index}
-										className={`${
-											index != requestLogs.length - 1 ? "mb-3" : ""
-										} row ai-center timeline-item w-100% ml-0 mr-0`}
+										className={`${index != requestLogs.length - 1 ? "mb-3" : ""
+											} row ai-center timeline-item w-100% ml-0 mr-0`}
 									>
 										{/* {`${index + " != " + (requestLogs.length - 1)}`} */}
 										{/* <p key={index}>{item.status}</p> */}
@@ -99,20 +146,20 @@ const ApprovalAdminDetail = ({ match }) => {
 											<p className="txtf-c ff-1-bd">
 												{item.status != null
 													? item.status.split("-").map((item, index) => {
-															const turnToUppercase = word => {
-																if (word === "csr" || word === "rc")
-																	return word.toUpperCase();
-																else return word;
-															};
+														const turnToUppercase = word => {
+															if (word === "csr" || word === "rc")
+																return word.toUpperCase();
+															else return word;
+														};
 
-															return (
-																<>
-																	{index != 0
-																		? " " + turnToUppercase(item)
-																		: turnToUppercase(item)}
-																</>
-															);
-													  })
+														return (
+															<>
+																{index != 0
+																	? " " + turnToUppercase(item)
+																	: turnToUppercase(item)}
+															</>
+														);
+													})
 													: item.status}
 											</p>
 											<p>{formatDate(item.time)}</p>
@@ -120,19 +167,6 @@ const ApprovalAdminDetail = ({ match }) => {
 									</div>
 								);
 							})}
-						</div>
-					</Card>
-				</div>
-				<div className="col col-3">
-					<Card className="p-4 bd-rs-2 d-flex ai-center jc-center">
-						<QR
-							id="Detail-Box-QR"
-							title="Scan here"
-							value="box-b29b0931-46b5-4326-9752-ecf1e855f711"
-							className="d-flex jc-center"
-						/>
-						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">Box 2</p>
 						</div>
 					</Card>
 				</div>

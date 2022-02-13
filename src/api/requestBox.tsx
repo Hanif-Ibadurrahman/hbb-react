@@ -36,9 +36,7 @@ export const getById = async (id: String) => {
 
 export const getAll = async params => {
 	return api
-		.get(`/requests?status=created`, {
-			params: params,
-		})
+		.get(`/requests?status=created&page=${params}`)
 		.then(res => {
 			return res.data;
 		})
@@ -62,9 +60,18 @@ export const approval_admin = async (data: ApprovalInterfaceState) => {
 
 export const getAllConfirmed = async params => {
 	return api
-		.get(`/requests?status=confirmed-by-csr-admin`, {
-			params: params,
+		.get(`/requests?status=confirmed-by-csr-admin&page=${params}`)
+		.then(res => {
+			return res.data;
 		})
+		.catch(error => {
+			return error;
+		});
+};
+
+export const getAllRequest = async params => {
+	return api
+		.get(`/requests?page=${params}`)
 		.then(res => {
 			return res.data;
 		})
@@ -95,4 +102,15 @@ export const approval_operation = async (
 	console.log("Api Kambing", payload);
 
 	return await api.put(`/requests/${id}/operation-approved/`, payload);
+};
+
+export const getAllApproved = async params => {
+	return api
+		.get(`/requests?status=approved&page=${params}`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
 };

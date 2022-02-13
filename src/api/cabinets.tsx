@@ -4,11 +4,7 @@ import api from "./dox";
 export const create = async (data: CabinetInterfaceState) => {
 	let payload = {
 		code_cabinet: data?.code_cabinet,
-		block_number: data?.block_number,
 		total_bays: data?.total_bays,
-		total_rows: data?.total_rows,
-		total_columns: data?.total_columns,
-		depth: data?.depth,
 		room_id: data?.room.id,
 	};
 	return api.post("/cabinets", payload);
@@ -18,11 +14,7 @@ export const update = async (data: CabinetInterfaceState) => {
 	let id = data?.id;
 	let payload = {
 		code_cabinet: data?.code_cabinet,
-		block_number: data?.block_number,
 		total_bays: data?.total_bays,
-		total_rows: data?.total_rows,
-		total_columns: data?.total_columns,
-		depth: data?.depth,
 		room: data?.room.id,
 	};
 	console.log(payload);

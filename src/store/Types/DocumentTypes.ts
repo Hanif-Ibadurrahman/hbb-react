@@ -1,21 +1,21 @@
 import { PaginationState } from "../Types/PaginationTypes";
 export interface DocumentInterfaceState {
-	Id: string | null;
-	No: string;
-	Date: string;
-	Detail: string;
-	Nominal: number;
-	ActiveYear: number;
-	LevelProgress: string;
-	MediaStorage: string;
-	Condition: string;
-	Amount: number;
-	CrossPoint: string;
-	Description: string;
-	NoDigital: string;
-	Location: string;
-	Status: string;
-	SignCode: string;
+	id: string | null;
+	no: string;
+	date: string;
+	detail: string;
+	nominal: number;
+	active_year_for: number;
+	level_progress: string;
+	media_storage: string;
+	condition: string;
+	amount: number;
+	cross_point: string;
+	description: string;
+	no_digital: string;
+	location: string;
+	status: string;
+	sign_code: string;
 }
 
 export interface DocumentsInterfaceState {

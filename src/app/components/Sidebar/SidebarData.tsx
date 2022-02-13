@@ -87,11 +87,11 @@ export const MasterData = [
 		icon: "",
 		link: "/Box",
 	},
-	{
-		title: "Berkas",
-		icon: "",
-		link: "/Berkas",
-	},
+	// {
+	// 	title: "Berkas",
+	// 	icon: "",
+	// 	link: "/Berkas",
+	// },
 	{
 		title: "Folder",
 		icon: "",
@@ -122,21 +122,21 @@ export const MasterData = [
 		icon: "",
 		link: "/Room",
 	},
-	{
-		title: "Transportasi",
-		icon: "",
-		link: "/Car",
-	},
-	{
-		title: "Record Center",
-		icon: "",
-		link: "/Record-Center",
-	},
-	{
-		title: "Mobil",
-		icon: "",
-		link: "/Car",
-	},
+	// {
+	// 	title: "Transportasi",
+	// 	icon: "",
+	// 	link: "/Car",
+	// },
+	// {
+	// 	title: "Record Center",
+	// 	icon: "",
+	// 	link: "/Record-Center",
+	// },
+	// {
+	// 	title: "Mobil",
+	// 	icon: "",
+	// 	link: "/Car",
+	// },
 	{
 		title: "Customer",
 		icon: "",
@@ -147,36 +147,36 @@ export const MasterData = [
 		icon: "",
 		link: "/Company",
 	},
-	{
-		title: "Transporter",
-		icon: "",
-		link: "/Trasnporter",
-	},
-	{
-		title: "Archiver",
-		icon: "",
-		link: "/Archiver",
-	},
+	// {
+	// 	title: "Transporter",
+	// 	icon: "",
+	// 	link: "/Trasnporter",
+	// },
+	// {
+	// 	title: "Archiver",
+	// 	icon: "",
+	// 	link: "/Archiver",
+	// },
 	{
 		title: "Divisi",
 		icon: "",
 		link: "/DivisionPage",
 	},
-	{
-		title: "Duplikat Dokumen",
-		icon: "",
-		link: "/Duplikat-Dokumen",
-	},
-	{
-		title: "Daftar Musnah",
-		icon: "",
-		link: "/Daftar-Musnah",
-	},
-	{
-		title: "Masa Retensi",
-		icon: "",
-		link: "/Masa-Retensi",
-	},
+	// {
+	// 	title: "Duplikat Dokumen",
+	// 	icon: "",
+	// 	link: "/Duplikat-Dokumen",
+	// },
+	// {
+	// 	title: "Daftar Musnah",
+	// 	icon: "",
+	// 	link: "/Daftar-Musnah",
+	// },
+	// {
+	// 	title: "Masa Retensi",
+	// 	icon: "",
+	// 	link: "/Masa-Retensi",
+	// },
 ];
 
 export const CustomerMasterData = [

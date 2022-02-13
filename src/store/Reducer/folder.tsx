@@ -14,11 +14,34 @@ import {
 export const initialState: FoldersInterfaceState = {
 	Folders: [],
 	Folder: {
-		Id: "",
-		No: "",
-		Location: "",
-		Status: "",
-		SignCode: "",
+		id: "",
+		box: {
+			id: "",
+			code_box: "",
+			custom_code_box: "",
+			location: "",
+			status: "",
+		},
+		no: "",
+		location: "",
+		status: "",
+		sign_code: "",
+		cabinet_slot: "",
+		company: {
+			id: "",
+			location: "",
+			name: "",
+			phone: ""
+		},
+		documents: [{
+			id: "",
+			condition: "",
+			description: "",
+			detail: "",
+			media_storage: "",
+			status: "",
+			sign_code: ""
+		}]
 	},
 	Meta: {
 		total: 0,
@@ -54,36 +77,18 @@ export default (
 		case GET_FOLDER_DETAIL:
 			return {
 				...state,
-				Folder: {
-					Id: payload?.data?.data?.id,
-					No: payload?.data?.data?.no,
-					Location: payload?.data?.data?.location,
-					Status: payload?.data?.data?.status,
-					SignCode: payload?.data?.data?.sign_code,
-				},
+				Folder: payload?.data?.data,
 				ErrorFolder: payload.errorMessage,
 			};
 		case CREATE_FOLDER:
 			return {
 				...state,
-				Folder: {
-					Id: payload?.data?.data?.id,
-					No: payload?.data?.data?.no,
-					Location: payload?.data?.data?.location,
-					Status: payload?.data?.data?.status,
-					SignCode: payload?.data?.data?.sign_code,
-				},
+				Folder: payload?.data?.data,
 			};
 		case UPDATE_FOLDER:
 			return {
 				...state,
-				Folder: {
-					Id: payload?.data?.data?.id,
-					No: payload?.data?.data?.no,
-					Location: payload?.data?.data?.location,
-					Status: payload?.data?.data?.status,
-					SignCode: payload?.data?.data?.sign_code,
-				},
+				Folder: payload?.data?.data,
 				ErrorFolder: payload.errorMessage,
 			};
 		case RESET_FOLDER_LIST:
@@ -95,11 +100,34 @@ export default (
 			return {
 				...state,
 				Folder: {
-					Id: "",
-					No: "",
-					Location: "",
-					Status: "",
-					SignCode: "",
+					id: "",
+					box: {
+						id: "",
+						code_box: "",
+						custom_code_box: "",
+						location: "",
+						status: "",
+					},
+					no: "",
+					location: "",
+					status: "",
+					sign_code: "",
+					cabinet_slot: "",
+					company: {
+						id: "",
+						location: "",
+						name: "",
+						phone: ""
+					},
+					documents: [{
+						id: "",
+						condition: "",
+						description: "",
+						detail: "",
+						media_storage: "",
+						status: "",
+						sign_code: "",
+					}]
 				},
 			};
 		default:

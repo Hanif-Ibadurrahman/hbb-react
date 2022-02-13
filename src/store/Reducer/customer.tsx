@@ -23,7 +23,7 @@ export const initialState: CustomersInterfaceState = {
 		email: "",
 		phone: "",
 		location: "",
-		company_id: {
+		company: {
 			id: "",
 			name: "",
 			location: "",
@@ -112,7 +112,7 @@ export default (
 					email: "",
 					phone: "",
 					location: "",
-					company_id: {
+					company: {
 						id: "",
 						name: "",
 						location: "",

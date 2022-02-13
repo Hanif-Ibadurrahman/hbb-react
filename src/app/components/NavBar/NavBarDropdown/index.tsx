@@ -25,6 +25,7 @@ export function NavBarDropdown(props) {
 	const logout = e => {
 		history.push("/Login");
 		localStorage.clear();
+		window.location.reload();
 		e.preventDefault();
 	};
 

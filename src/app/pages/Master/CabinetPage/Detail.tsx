@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Form, Button, Card } from "react-bootstrap";
 import { PageWrapper } from "app/components/PageWrapper";
 import Breadcrumb from "app/components/BreadCrumb";
@@ -7,11 +7,12 @@ import "../master.scoped.scss";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getCabinetDetail } from "actions/CabinetAction";
-import { selectCabinets, selectCabinet } from "store/Selector/CabinetSelector";
+import { selectCabinet } from "store/Selector/CabinetSelector";
 import { CabinetInterfaceState } from "store/Types/CabinetTypes";
 
 const CabinetPageDetail = ({ match }) => {
 	const cabinet: CabinetInterfaceState = useSelector(selectCabinet);
+	const cabinetSlot = cabinet.cabinet_slots ?? []
 	let history = useHistory();
 
 	const goToPreviousPath = e => {
@@ -19,14 +20,11 @@ const CabinetPageDetail = ({ match }) => {
 		history.goBack();
 	};
 
-	console.log("ngeliat cabinet,", cabinet);
-
 	const cabinet_id = match.params.id;
 
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		console.log("ini cabinet", cabinet);
 		dispatch(getCabinetDetail(cabinet_id));
 	}, []);
 
@@ -77,18 +75,65 @@ const CabinetPageDetail = ({ match }) => {
 							</div>
 						</Form>
 					</Card>
+					<Card className="ph-5 pv-3 bd-rs-2 mt-3">
+						<h6 className="mb-4 mt-4">Cabinet Slot</h6>
+						{cabinetSlot.map((item, index) => {
+							return (
+								<div>
+									<p className="mb-1 p-lg">Slot {index + 1}</p>
+									<div className="w-50% bg-dark h-2px mb-4" />
+									<div className="row mb-4">
+										<div className="col-6">
+											<Form.Group>
+												<Form.Label>Nama Cabinet Slot</Form.Label>
+												<Form.Control
+													type="text"
+													disabled
+													defaultValue={item.name}
+												/>
+											</Form.Group>
+											<Form.Group className="mt-2">
+												<Form.Label>Kode Cabinet Slot</Form.Label>
+												<Form.Control
+													type="text"
+													disabled
+													defaultValue={item.code}
+												/>
+											</Form.Group>
+											<Form.Group className="mt-2">
+												<Form.Label>Kapasitas</Form.Label>
+												<Form.Control
+													type="text"
+													disabled
+													defaultValue={item.capacity}
+												/>
+											</Form.Group>
+										</div>
+										<div className="col-6 d-flex jc-center ai-center">
+											<QR
+												id="QR Box"
+												title="Scan here"
+												value={item.sign_code}
+												className="d-flex jc-center"
+											/>
+										</div>
+									</div>
+								</div>
+							)
+						})}
+					</Card>
 				</div>
 				<div className="col col-3">
 					<Card className="p-4 bd-rs-2 d-flex ai-center jc-center">
 						<QR
-							id="Detail-Box-QR"
+							id="Cabinet-QR"
 							title="Scan here"
-							value="SLO-baf01be1-af41-448c-9e99-f1a0d59de5a1"
+							value={cabinet.sign_code}
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
 							<p className="p-xl ff-1-bd ta-center mt-3">
-								{cabinet.code_cabinet}
+								{cabinet.id}
 							</p>
 						</div>
 					</Card>

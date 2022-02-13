@@ -11,9 +11,48 @@ import { BoxesInterfaceState, BoxInterfaceState } from "../Types/BoxTypes";
 export const initialState: BoxesInterfaceState = {
 	Boxes: [],
 	Box: {
-		Id: "",
-		CodeBox: "",
-		SignCode: "",
+		id: "",
+		code_box: "",
+		sign_code: "",
+		status: "",
+		location: "",
+		created_at: "",
+		custom_code_box: "",
+		folders: [{
+			id: "",
+			no: "",
+			sign_code: "",
+			status: "",
+		}],
+		cabinet_slot: {
+			id: "",
+			capacity: 0,
+			code: "",
+			column: "",
+			name: "",
+			row: 0,
+			sign_code: "",
+		},
+		company: {
+			id: "",
+			name: "",
+			location: "",
+			longitude: "",
+			latitude: "",
+			person_responsible: "",
+			npwp: "",
+			email: "",
+			phone: "",
+			address: "",
+			amount_access: "",
+			service_type: [
+				{
+					type: "box",
+					value: true,
+				},
+			],
+			is_agree: true,
+		}
 	},
 	Meta: {
 		total: 0,
@@ -49,30 +88,18 @@ export default (
 		case GET_BOX_DETAIL:
 			return {
 				...state,
-				Box: {
-					CodeBox: payload?.data?.data?.code_box,
-					Id: payload?.data?.data?.id,
-					SignCode: payload?.data?.data?.sign_code,
-				},
+				Box: payload?.data?.data,
 				ErrorBox: payload.errorMessage,
 			};
 		case CREATE_BOX:
 			return {
 				...state,
-				Box: {
-					CodeBox: payload?.data?.data?.code_box,
-					Id: payload?.data?.data?.id,
-					SignCode: payload?.data?.data?.sign_code,
-				},
+				Box: payload?.data?.data,
 			};
 		case UPDATE_BOX:
 			return {
 				...state,
-				Box: {
-					Id: payload?.data?.id,
-					CodeBox: payload?.data?.code_box,
-					SignCode: payload?.data?.data?.sign_code,
-				},
+				Box: payload?.data?.data,
 				ErrorBox: payload.errorMessage,
 			};
 		case RESET_BOX_LIST:
@@ -84,9 +111,48 @@ export default (
 			return {
 				...state,
 				Box: {
-					Id: "",
-					CodeBox: "",
-					SignCode: "",
+					id: "",
+					code_box: "",
+					sign_code: "",
+					status: "",
+					location: "",
+					created_at: "",
+					custom_code_box: "",
+					folders: [{
+						id: "",
+						no: "",
+						sign_code: "",
+						status: "",
+					}],
+					cabinet_slot: {
+						id: "",
+						capacity: 0,
+						code: "",
+						column: "",
+						name: "",
+						row: 0,
+						sign_code: "",
+					},
+					company: {
+						id: "",
+						name: "",
+						location: "",
+						longitude: "",
+						latitude: "",
+						person_responsible: "",
+						npwp: "",
+						email: "",
+						phone: "",
+						address: "",
+						amount_access: "",
+						service_type: [
+							{
+								type: "box",
+								value: true,
+							},
+						],
+						is_agree: true,
+					}
 				},
 			};
 		default:

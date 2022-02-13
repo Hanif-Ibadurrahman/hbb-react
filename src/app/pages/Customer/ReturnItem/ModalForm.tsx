@@ -11,11 +11,15 @@ import {
 	selectBorrowItems,
 } from "store/Selector/BorrowItemSelector";
 import moment from "moment";
+import { CreateReturnItem } from "actions/ReturnAction";
+import { ReturnItemInterfaceState } from "store/Types/ReturnItemTypes";
+import { selectReturnItem } from "store/Selector/ReturnItemSelector";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setalertMessage] = useState("");
-	const borrowBox: BorrowItemInterfaceState = useSelector(selectBorrowItem);
+	// const borrowBox: BorrowItemInterfaceState = useSelector(selectBorrowItem);
+	const returnItem: ReturnItemInterfaceState = useSelector(selectReturnItem);
 	const cart = useSelector(selectBorrowItems);
 	const cartStash = cart.Cart;
 	console.log("Modal Cart>>>", cartStash);
@@ -34,6 +38,7 @@ const ModalForm = props => {
 	const dispatch = useDispatch();
 
 	const validationSchema = Yup.object().shape({
+		note: Yup.string().required("*Wajib diisi"),
 		delivered_at: Yup.string().required("*Wajib diisi"),
 	});
 
@@ -44,7 +49,7 @@ const ModalForm = props => {
 	return (
 		<>
 			<Alert
-				text="Data Berhasil di Request"
+				text="Data Berhasil Di Request"
 				variant="success"
 				show={showAlert}
 				style={{
@@ -64,12 +69,12 @@ const ModalForm = props => {
 				{" "}
 				<Formik
 					validationSchema={validationSchema}
-					initialValues={borrowBox}
+					initialValues={returnItem}
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
 							values.box_codes = cartStash;
-							let action = CreateBorrowItem(values);
+							let action = CreateReturnItem(values);
 							const res = await action;
 							await dispatch(res);
 							action.then(() => {
@@ -98,7 +103,7 @@ const ModalForm = props => {
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									Peminjaman
+									Pengembalian
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">

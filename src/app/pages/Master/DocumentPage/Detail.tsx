@@ -28,9 +28,7 @@ const DocumentPageDetail = ({ match }) => {
 		dispatch(getDocumentDetail(document_id));
 	}, []);
 
-	const NewDate = moment(document.Date).format("d MMMM YYYY");
-
-	console.log("Sign Code", document.SignCode);
+	const NewDate = moment(document.date).format("d MMMM YYYY");
 
 	return (
 		<>
@@ -45,7 +43,7 @@ const DocumentPageDetail = ({ match }) => {
 						<Form className="mt-3">
 							<Form.Group className="mb-3">
 								<Form.Label>No Document</Form.Label>
-								<Form.Control type="text" disabled defaultValue={document.No} />
+								<Form.Control type="text" disabled defaultValue={document.no} />
 							</Form.Group>
 							<Form.Group className="mb-3">
 								<Form.Label>Tanggal</Form.Label>
@@ -54,9 +52,9 @@ const DocumentPageDetail = ({ match }) => {
 							<Form.Group className="mb-3">
 								<Form.Label>Detail</Form.Label>
 								<Form.Control
-									type="text"
+									as="textarea"
 									disabled
-									defaultValue={document.Detail}
+									defaultValue={document.detail}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
@@ -64,7 +62,7 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document.Nominal}
+									defaultValue={document.nominal}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
@@ -72,15 +70,7 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document.ActiveYear}
-								/>
-							</Form.Group>
-							<Form.Group className="mb-3">
-								<Form.Label>Progress Level</Form.Label>
-								<Form.Control
-									type="text"
-									disabled
-									defaultValue={document.LevelProgress}
+									defaultValue={document.active_year_for}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
@@ -88,7 +78,7 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document.MediaStorage}
+									defaultValue={document.media_storage}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
@@ -96,31 +86,15 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document.Condition}
-								/>
-							</Form.Group>
-							<Form.Group className="mb-3">
-								<Form.Label>Jumlah</Form.Label>
-								<Form.Control
-									type="text"
-									disabled
-									defaultValue={document.Amount}
-								/>
-							</Form.Group>
-							<Form.Group className="mb-3">
-								<Form.Label>Cross Point</Form.Label>
-								<Form.Control
-									type="text"
-									disabled
-									defaultValue={document.CrossPoint}
+									defaultValue={document.condition}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
 								<Form.Label>Deskripsi</Form.Label>
 								<Form.Control
-									type="text"
+									as="textarea"
 									disabled
-									defaultValue={document.Description}
+									defaultValue={document.description}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
@@ -128,7 +102,7 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document.NoDigital}
+									defaultValue={document.no_digital}
 								/>
 							</Form.Group>
 							<div className="d-flex jc-end">
@@ -148,11 +122,11 @@ const DocumentPageDetail = ({ match }) => {
 						<QR
 							id="Detail-Box-QR"
 							title="Scan here"
-							value={document.SignCode}
+							value={document.sign_code}
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">Document</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">Document Barcode</p>
 						</div>
 					</Card>
 				</div>

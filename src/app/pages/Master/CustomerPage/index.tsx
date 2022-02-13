@@ -75,12 +75,6 @@ const CustomerPage = () => {
 
 	const action = id => [
 		{
-			icon: "fa-search",
-			title: "Detail",
-			url: "Room-Detail/" + id,
-			type: 1,
-		},
-		{
 			icon: "fa-trash-alt",
 			title: "Delete",
 			titleClass: "tc-danger-5",

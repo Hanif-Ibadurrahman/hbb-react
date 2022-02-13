@@ -18,11 +18,8 @@ export const initialState: CabinetsInterfaceState = {
 	Cabinet: {
 		id: "",
 		code_cabinet: "",
-		block_number: "",
 		total_bays: "",
-		total_rows: "",
-		total_columns: "",
-		depth: "",
+		sign_code: "",
 		room: {
 			id: "",
 			name: "",
@@ -33,6 +30,19 @@ export const initialState: CabinetsInterfaceState = {
 				code_area: "",
 			},
 		},
+		cabinet: {
+			code_cabinet: "",
+			id: "",
+		},
+		cabinet_slots: [{
+			id: "",
+			capacity: 0,
+			code: "",
+			column: "",
+			name: "",
+			row: 0,
+			sign_code: "",
+		}],
 	},
 	Meta: {
 		total: 0,
@@ -93,11 +103,8 @@ export default (
 				Cabinet: {
 					id: "",
 					code_cabinet: "",
-					block_number: "",
 					total_bays: "",
-					total_rows: "",
-					total_columns: "",
-					depth: "",
+					sign_code: "",
 					room: {
 						id: "",
 						name: "",
@@ -108,6 +115,19 @@ export default (
 							code_area: "",
 						},
 					},
+					cabinet: {
+						code_cabinet: "",
+						id: "",
+					},
+					cabinet_slots: [{
+						id: "",
+						capacity: 0,
+						code: "",
+						column: "",
+						name: "",
+						row: 0,
+						sign_code: "",
+					}],
 				},
 			};
 		default:

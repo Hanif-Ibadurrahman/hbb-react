@@ -114,27 +114,34 @@ const ApprovalAdminRequestBox = () => {
 		{
 			title: "Id Request",
 			prop: "id",
-			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
 			},
 		},
 		{
-			title: "Tanggal Kirim",
-			prop: "delivered_at",
+			prop: 'created_at',
 			sortable: true,
 			cellProps: {
 				style: { width: "20%" },
 			},
+			headerCell: (sortedProp) => {
+				const isActive = sortedProp.prop === 'created_at';
+				const order = sortedProp.isAscending ? 'Terlama' : 'Terbaru';
+
+				return (
+					<div className="cur-p">
+						{`Tanggal Permintaan`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
+			},
 			cell: row => {
-				// return NewDate(row.delivered_at);
-				return moment(row.delivered_at).format("DD MMMM YYYY");
+				return moment(row.created_at).format("DD MMMM YYYY");
 			},
 		},
 		{
 			title: "Tipe Permintaan",
 			prop: "type",
-			sortable: true,
 			cellProps: {
 				style: { width: "20%" },
 			},
@@ -144,12 +151,12 @@ const ApprovalAdminRequestBox = () => {
 						{row.type == "request-box"
 							? "Request Box"
 							: row.type == "pickup-box"
-							? "Pick Up Box"
-							: row.type == "borrow-item"
-							? "Peminjaman"
-							: row.type == "return-item"
-							? "Pengembalian"
-							: null}
+								? "Pick Up Box"
+								: row.type == "borrow-item"
+									? "Peminjaman"
+									: row.type == "return-item"
+										? "Pengembalian"
+										: null}
 					</>
 				);
 			},
@@ -199,7 +206,7 @@ const ApprovalAdminRequestBox = () => {
 				<DataTable
 					tableHeader={header}
 					tableBody={requestBoxes.RequestBoxes}
-					initialSort={{ prop: "delivered_at", isAscending: true }}
+					initialSort={{ prop: "created_at", isAscending: true }}
 				/>
 				<Pagination
 					pageCount={requestBoxes.Meta.last_page}

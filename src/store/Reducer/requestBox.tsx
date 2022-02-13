@@ -10,16 +10,17 @@ import {
 	GET_CONFIRMED_ADMIN,
 	REJECT_OPERTAION,
 	APPROVAL_OPERATION,
+	GET_ALL_REQUEST,
+	GET_ALL_APPROVED,
 } from "../../actions/RequestBoxAction";
 
 import {
-	RequestBoxesInterfaceState,
-	RequestBoxInterfaceState,
-	ApprovalInterfaceState,
+	RequestBoxesInterfaceState
 } from "../Types/RequestBoxTypes";
 
 export const initialState: RequestBoxesInterfaceState = {
 	RequestBoxes: [],
+	ApprovalRequest: [],
 	ApprovalAdmin: {
 		Id: "",
 		Approved: false,
@@ -76,6 +77,89 @@ export const initialState: RequestBoxesInterfaceState = {
 				status: "",
 			},
 		],
+		request_items: [
+			{
+				box: {
+					id: "",
+					code_box: "",
+					sign_code: "",
+					status: "",
+					location: "",
+					created_at: "",
+					custom_code_box: "",
+					folders: [{
+						id: "",
+						no: "",
+						sign_code: "",
+						status: "",
+					}],
+					cabinet_slot: {
+						id: "",
+						capacity: 0,
+						code: "",
+						column: "",
+						name: "",
+						row: 0,
+						sign_code: "",
+					},
+					company: {
+						id: "",
+						name: "",
+						location: "",
+						longitude: "",
+						latitude: "",
+						person_responsible: "",
+						npwp: "",
+						email: "",
+						phone: "",
+						address: "",
+						amount_access: "",
+						service_type: [
+							{
+								type: "box",
+								value: true,
+							},
+						],
+						is_agree: true,
+					}
+				},
+				status: "",
+			}
+		],
+		created_at: "",
+		customer: {
+			id: "",
+			username: "",
+			password: "",
+			name: "",
+			email: "",
+			phone: "",
+			location: "",
+			company: {
+				id: "",
+				name: "",
+				location: "",
+				longitude: "",
+				latitude: "",
+				person_responsible: "",
+				npwp: "",
+				email: "",
+				phone: "",
+				address: "",
+				amount_access: "",
+				service_type: [
+					{
+						type: "box",
+						value: true,
+					},
+				],
+				is_agree: true,
+			},
+			division_id: {
+				id: "",
+				name: "",
+			},
+		},
 	},
 
 	Meta: {
@@ -122,11 +206,35 @@ export default (
 				},
 				ErrorRequestBox: payload.errorMessage,
 			};
+		case GET_ALL_REQUEST:
+			return {
+				...state,
+				RequestBoxes: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total_page,
+					per_page: payload?.meta?.total_page,
+				},
+				ErrorRequestBox: payload.errorMessage,
+			};
 		case GET_REQUEST_BOX_DETAIL:
 			return {
 				...state,
 				RequestBox: payload?.data?.data,
 				ErrorRequestBox: payload?.errorMessage,
+			};
+		case GET_ALL_APPROVED:
+			return {
+				...state,
+				ApprovalRequest: payload?.data,
+				ErrorRequestBox: payload?.errorMessage,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total_page,
+					per_page: payload?.meta?.total_page,
+				},
 			};
 		case CREATE_REQUEST_BOX:
 			return {
@@ -178,12 +286,95 @@ export default (
 					delivered_at: "",
 					delivery_method: "regular",
 					code_boxes: [],
+					created_at: "",
+					request_items: [
+						{
+							box: {
+								id: "",
+								code_box: "",
+								sign_code: "",
+								status: "",
+								location: "",
+								created_at: "",
+								custom_code_box: "",
+								folders: [{
+									id: "",
+									no: "",
+									sign_code: "",
+									status: "",
+								}],
+								cabinet_slot: {
+									id: "",
+									capacity: 0,
+									code: "",
+									column: "",
+									name: "",
+									row: 0,
+									sign_code: "",
+								},
+								company: {
+									id: "",
+									name: "",
+									location: "",
+									longitude: "",
+									latitude: "",
+									person_responsible: "",
+									npwp: "",
+									email: "",
+									phone: "",
+									address: "",
+									amount_access: "",
+									service_type: [
+										{
+											type: "box",
+											value: true,
+										},
+									],
+									is_agree: true,
+								}
+							},
+							status: "",
+						}
+					],
 					request_logs: [
 						{
 							time: "",
 							status: "",
 						},
 					],
+					customer: {
+						id: "",
+						username: "",
+						password: "",
+						name: "",
+						email: "",
+						phone: "",
+						location: "",
+						company: {
+							id: "",
+							name: "",
+							location: "",
+							longitude: "",
+							latitude: "",
+							person_responsible: "",
+							npwp: "",
+							email: "",
+							phone: "",
+							address: "",
+							amount_access: "",
+							service_type: [
+								{
+									type: "box",
+									value: true,
+								},
+							],
+							is_agree: true,
+						},
+						division_id: {
+							id: "",
+							name: "",
+						},
+					},
 				},
 			};
 

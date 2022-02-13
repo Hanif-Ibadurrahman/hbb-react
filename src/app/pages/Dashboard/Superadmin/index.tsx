@@ -1,69 +1,111 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import "../dashboard.scoped.scss";
 import { DataTable } from "../../../components/Datatables";
-import { Button } from "react-bootstrap";
 import { Card, CardHeader } from "../Components/CardDashboard";
-
-const body = Array.from(new Array(1), () => {
-	const rd = (Math.random() * 10).toFixed(10);
-
-	return {
-		id: `A000000${rd}`,
-		NamaPerusahaan: "05 - 09 - 21",
-		NamaPeminjaman: "09:52 WIB",
-		JumlahBox: "10",
-		Action: <Button>Lihat</Button>,
-	};
-});
-
-const header = [
-	{
-		title: "Id",
-		prop: "id",
-		sortable: true,
-		cellProps: {
-			style: { width: "25%" },
-		},
-	},
-	{
-		title: "Nama Perusahaan",
-		prop: "NamaPerusahaan",
-		sortable: true,
-		// Add classes and styles by objects and strings.
-		cellProps: {
-			style: { background: "#fafafa", width: "20%" },
-			className: "realname-class",
-		},
-	},
-	{
-		title: "Nama Pemijaman",
-		prop: "NamaPeminjaman",
-		sortable: true,
-		cellProps: {
-			style: { background: "#fafafa", width: "20%" },
-			className: "realname-class",
-		},
-	},
-	{
-		title: "Jumlah Box",
-		prop: "JumlahBox",
-		sortable: true,
-		cellProps: {
-			style: { width: "20%" },
-		},
-	},
-	{
-		title: "Action",
-		prop: "Action",
-		cellProps: {
-			style: { flex: 1 },
-			className: "realname-class",
-		},
-	},
-];
+import DropdownAction from "app/components/DropdownAction";
+import { Pagination } from "app/components/Pagination";
+import {
+	getAllApprovedList
+} from "actions/RequestBoxAction";
+import { useDispatch, useSelector } from "react-redux";
+import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
+import moment from "moment";
 
 export function DashboardSuperadmin() {
+	const requestBoxes = useSelector(selectRequestBoxes);
+	const dispatch = useDispatch();
+	const FetchData = (page = 1) => {
+		dispatch(getAllApprovedList(page));
+	};
+
+	useEffect(() => {
+		FetchData();
+	}, []);
+
+	const action = id => [
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "DetailRequestBox/" + id,
+			type: 1,
+		},
+		{
+			icon: "fa-print",
+			title: "Print",
+			url: "/Print-Approval/" + id,
+			type: 1,
+		},
+	];
+
+	const header = [
+		{
+			title: "Id Request",
+			prop: "id",
+			cellProps: {
+				style: { width: "40%" },
+			},
+		},
+		{
+			prop: 'created_at',
+			sortable: true,
+			cellProps: {
+				style: { width: "20%" },
+			},
+			headerCell: () => {
+				return (
+					<div className="cur-p">
+						{`Tanggal Permintaan`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
+			},
+			cell: row => {
+				return moment(row.created_at).format("DD MMMM YYYY");
+			},
+		},
+		{
+			title: "Tipe Permintaan",
+			prop: "type",
+			cellProps: {
+				style: { width: "20%" },
+			},
+			cell: row => {
+				return (
+					<>
+						{row.type == "request-box"
+							? "Request Box"
+							: row.type == "pickup-box"
+								? "Pick Up Box"
+								: row.type == "borrow-item"
+									? "Peminjaman"
+									: row.type == "return-item"
+										? "Pengembalian"
+										: null}
+					</>
+				);
+			},
+		},
+		{
+			prop: 'quantity',
+			sortable: true,
+			cellProps: {
+				style: { width: "20%" },
+			},
+			headerCell: () => {
+				return (
+					<div className="cur-p">
+						{`Quantity`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
+			},
+		},
+	];
+
+	const totalEntry = requestBoxes.ApprovalRequest.length
+	const totalRequest = requestBoxes.RequestBoxes.length
+
 	const user = localStorage.getItem("User");
 	return (
 		<>
@@ -85,14 +127,14 @@ export function DashboardSuperadmin() {
 					<div className="col col-4 ph-0">
 						<CardHeader
 							icon="archive"
-							total="86"
+							total={totalEntry}
 							text={["Entry", <br />, "Baru."]}
 						/>
 					</div>
 					<div className="col col-4 ph-0 mh-4">
 						<CardHeader
 							icon="boxes"
-							total="449"
+							total={totalRequest}
 							text={["Box", <br />, "Requested."]}
 						/>
 					</div>
@@ -110,7 +152,11 @@ export function DashboardSuperadmin() {
 				<div className="row w-100% mh-0">
 					<div className="col col-12 ph-0 mr-2">
 						<Card style={{ border: "1px solid rgba(0,0,0,.1)" }}>
-							<DataTable tableHeader={header} tableBody={body} />
+							<DataTable tableHeader={header} tableBody={requestBoxes.ApprovalRequest} initialSort={{ prop: 'created_at', isAscending: true }} />
+							<Pagination
+								pageCount={requestBoxes.Meta.last_page}
+								onPageChange={data => FetchData(data.selected + 1)}
+							/>
 						</Card>
 					</div>
 					{/* <div className="col col-4 ph-0 ml-2">

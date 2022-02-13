@@ -109,6 +109,14 @@ const DocumentPage = () => {
 			cellProps: {
 				style: { width: "40%" },
 			},
+			headerCell: () => {
+				return (
+					<div className="cur-p">
+						{`No Document`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
+			},
 		},
 		{
 			title: "No Digital",
@@ -117,6 +125,14 @@ const DocumentPage = () => {
 			cellProps: {
 				style: { width: "20%" },
 			},
+			headerCell: () => {
+				return (
+					<div className="cur-p">
+						{`No Digital`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
+			},
 		},
 		{
 			title: "Kondisi",
@@ -124,6 +140,14 @@ const DocumentPage = () => {
 			sortable: true,
 			cellProps: {
 				style: { width: "20%" },
+			},
+			headerCell: () => {
+				return (
+					<div className="cur-p">
+						{`Kondisi`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
 			},
 		},
 		{
@@ -142,7 +166,7 @@ const DocumentPage = () => {
 	return (
 		<>
 			<Helmet>
-				<title>Dox - Request Box</title>
+				<title>Document</title>
 				<meta
 					name="description"
 					content="A React Boilerplate application homepage"

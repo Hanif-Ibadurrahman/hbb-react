@@ -1,6 +1,8 @@
 import { PaginationState } from "../Types/PaginationTypes";
 import { TransporterInterfaceState } from "./TransporterTypes";
 import { ArchiverInterfaceState } from "./ArchiverTypes";
+import { CustomerInterfaceState } from "./CustomerTypes";
+import { BoxInterfaceState } from "./BoxTypes";
 export interface RequestBoxInterfaceState {
 	id: string | null;
 	quantity: string;
@@ -15,6 +17,14 @@ export interface RequestBoxInterfaceState {
 			status: string;
 		},
 	];
+	created_at: string;
+	request_items: [
+		{
+			box: BoxInterfaceState,
+			status: string,
+		}
+	];
+	customer: CustomerInterfaceState;
 }
 
 export interface ApprovalInterfaceState {
@@ -36,6 +46,7 @@ export interface RequestBoxesInterfaceState {
 	ApprovalOperation: ApprovalOperationInterfaceState;
 	RequestBox: RequestBoxInterfaceState;
 	RequestBoxes: RequestBoxInterfaceState[];
+	ApprovalRequest: RequestBoxInterfaceState[];
 	ErrorRequestBox?: string;
 	Title: string;
 	Meta: PaginationState;

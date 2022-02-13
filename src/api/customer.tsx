@@ -9,7 +9,7 @@ export const create = async (data: CustomerInterfaceState) => {
 		email: data?.email,
 		phone: data?.phone,
 		location: data?.location,
-		company_id: data?.company_id?.id,
+		company_id: data?.company?.id,
 		division_id: data?.division_id?.id,
 	};
 	return api.post("/users/customer", payload);
