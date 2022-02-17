@@ -1,0 +1,7 @@
+@import '../../../styles/core/mixins';
+@import '../../../styles/core/variables';
+
+.hero {
+  height: 250px;
+  @include bg-image('', cover, no-repeat, center);
+}

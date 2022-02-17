@@ -1,0 +1,57 @@
+@import '../../../styles/core/mixins';
+@import '../../../styles/core/variables';
+
+.login-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  @include bg-image('', cover, no-repeat, center);
+}
+.login-wrapper {
+  @include blur(rgba(28, 29, 33, 0.5), 20px);
+  min-width: 450px;
+  max-width: 450px;
+  height: 450px;
+
+  .form-control {
+    @include blur(rgba(28, 29, 33, 0.75), 20px);
+    border: none;
+    color: #fff;
+    &:focus {
+      color: $d-color-dark-contrast;
+    }
+  }
+
+  .form-wrapper {
+    transition: all 0.32s;
+    .form-signin,
+    .form-password {
+      position: absolute;
+      width: 100%;
+      transition: all 0.32s;
+    }
+
+    .form-password {
+      visibility: hidden;
+      opacity: 0;
+      top: 50px;
+    }
+
+    &.active {
+      .form-password {
+        visibility: visible;
+        opacity: 1;
+        top: 0;
+      }
+
+      .form-signin {
+        visibility: hidden;
+        opacity: 0;
+        top: 50px;
+      }
+    }
+  }
+}

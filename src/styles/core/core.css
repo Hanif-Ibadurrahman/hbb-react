@@ -1,12 +1,12 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap");
 @font-face {
-  font-family: "Cera-Bold";
+  font-family: 'Cera-Bold';
   src: url(../../assets/fonts/CeraPro-Bold.ttf) format("opentype"); }
 @font-face {
-  font-family: "Cera-Light";
+  font-family: 'Cera-Light';
   src: url(../../assets/fonts/CeraPro-Light.ttf) format("opentype"); }
 @font-face {
-  font-family: "Cera-Regular";
+  font-family: 'Cera-Regular';
   src: url(../../assets/fonts/CeraPro-Regular.ttf) format("opentype"); }
 @font-face {
   font-family: "Flow";

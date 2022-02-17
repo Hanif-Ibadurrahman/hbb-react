@@ -1,5 +1,22 @@
-import { GithubRepoFormState } from 'app/pages/HomePage/Features/GithubRepoForm/slice/types';
-import { ThemeState } from 'styles/theme/slice/types';
+import { ThemeState } from "styles/theme/slice/types";
+import { BoxesInterfaceState } from "store/Types/BoxTypes";
+import { AreasInterfaceState } from "store/Types/AreaTypes";
+import { RequestBoxesInterfaceState } from "store/Types/RequestBoxTypes";
+import { CarsInterfaceState } from "store/Types/CarTypes";
+import { DocumentsInterfaceState } from "store/Types/DocumentTypes";
+import { CabinetsInterfaceState } from "store/Types/CabinetTypes";
+import { DivisionsInterfaceState } from "store/Types/DivisionTypes";
+import { CompanysInterfaceState } from "store/Types/CompanyTypes";
+import { BorrowItemsInterfaceState } from "store/Types/BorrowItemTypes";
+import { FoldersInterfaceState } from "store/Types/FolderTypes";
+import { TransportersInterfaceState } from "store/Types/TransporterTypes";
+import { ArchiversInterfaceState } from "store/Types/ArchiverTypes";
+import { LoginsInterfaceState } from "store/Types/LoginTypes";
+import { PickUpItemsInterfaceState } from "store/Types/PickUpTypes";
+import { RoomsInterfaceState } from "store/Types/RoomTypes";
+import { CustomersInterfaceState } from "store/Types/CustomerTypes";
+import { ReturnItemsInterfaceState } from "store/Types/ReturnItemTypes";
+
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
 /* 
@@ -9,7 +26,24 @@ import { ThemeState } from 'styles/theme/slice/types';
   So, not available always
 */
 export interface RootState {
-  theme?: ThemeState;
-  githubRepoForm?: GithubRepoFormState;
-  // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
+	theme?: ThemeState;
+	boxes?: BoxesInterfaceState;
+	areas?: AreasInterfaceState;
+	companys?: CompanysInterfaceState;
+	requestBoxes?: RequestBoxesInterfaceState;
+	documents?: DocumentsInterfaceState;
+	cars?: CarsInterfaceState;
+	cabinets?: CabinetsInterfaceState;
+	divisions?: DivisionsInterfaceState;
+	borrowItems?: BorrowItemsInterfaceState;
+	folders?: FoldersInterfaceState;
+	transporters?: TransportersInterfaceState;
+	archivers?: ArchiversInterfaceState;
+	logins?: LoginsInterfaceState;
+	pickUpItems?: PickUpItemsInterfaceState;
+	rooms?: RoomsInterfaceState;
+	customers?: CustomersInterfaceState;
+	returnItems?: ReturnItemsInterfaceState;
+
+	// [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }

@@ -1,0 +1,46 @@
+@import '../../../styles/core/variables';
+
+.navbar {
+  .dropdown {
+    .dropdown-item,
+    .dropdown-toggle {
+      &:hover,
+      &:focus,
+      &:active {
+        background: rgba(0, 0, 0, 0.05);
+        border-color: transparent;
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.05);
+        color: inherit;
+      }
+    }
+
+    .dropdown-toggle {
+      background: rgba(0, 0, 0, 0.05);
+      &:after {
+        display: none;
+      }
+      .dropdown-toggle-indicator {
+        position: absolute;
+        right: 1.25rem;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: all 0.32s;
+      }
+    }
+    .dropdown-menu {
+      max-width: 100%;
+      width: calc(100% - 1rem * 2);
+    }
+    &.show {
+      .dropdown-toggle {
+        background: rgba(0, 0, 0, 0.05);
+        border-color: transparent;
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.05);
+
+        .dropdown-toggle-indicator {
+          transform: translateY(-50%) rotate(180deg);
+        }
+      }
+    }
+  }
+}

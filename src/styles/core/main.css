@@ -1,38 +1,15 @@
-#root {
-  overflow: hidden; }
-
+@charset "UTF-8";
 .all-wrapper {
   min-height: 100vh; }
 
-.navbar .dropdown .dropdown-item:hover, .navbar .dropdown .dropdown-item:focus, .navbar .dropdown .dropdown-item:active,
-.navbar .dropdown .dropdown-toggle:hover,
-.navbar .dropdown .dropdown-toggle:focus,
-.navbar .dropdown .dropdown-toggle:active {
-  background: rgba(0, 0, 0, 0.1);
-  border-color: transparent;
-  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
-  color: inherit; }
-.navbar .dropdown .dropdown-toggle:after {
-  display: none; }
-.navbar .dropdown .dropdown-toggle .dropdown-toggle-indicator {
-  position: absolute;
-  right: 1.25rem;
-  top: 50%;
-  transform: translateY(-50%);
-  transition: all .32s; }
-.navbar .dropdown .dropdown-menu {
-  max-width: 100%;
-  width: calc(100% - 1rem*2); }
-.navbar .dropdown.show .dropdown-toggle {
-  background: rgba(0, 0, 0, 0.1);
-  border-color: transparent;
-  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1); }
-  .navbar .dropdown.show .dropdown-toggle .dropdown-toggle-indicator {
-    transform: translateY(-50%) rotate(180deg); }
+.content-wrapper {
+  background: #F7F7F7; }
 
 .sidebar {
   box-shadow: 8px 0 8px rgba(0, 0, 0, 0.05);
-  height: 100vh; }
+  height: 100vh;
+  position: sticky;
+  top: 0; }
   .sidebar.icon {
     background-color: #000; }
   .sidebar .sidebar-header {
@@ -46,7 +23,7 @@
       color: #121014;
       height: calc(100vh - 5rem); }
       .sidebar .pro-sidebar .pro-sidebar-inner .pro-sidebar-layout .pro-menu .pro-menu-item::after {
-        content: "";
+        content: '';
         width: 5px;
         height: 100%;
         position: absolute;
@@ -55,7 +32,7 @@
         left: 0;
         background-color: #fad400;
         opacity: 0;
-        transition: all .32s; }
+        transition: all 0.32s; }
       .sidebar .pro-sidebar .pro-sidebar-inner .pro-sidebar-layout .pro-menu .pro-menu-item#active {
         background-color: #e7e7e7; }
         .sidebar .pro-sidebar .pro-sidebar-inner .pro-sidebar-layout .pro-menu .pro-menu-item#active::after {
@@ -72,5 +49,114 @@
         background-color: transparent; }
       .sidebar .pro-sidebar .pro-sidebar-inner .pro-sidebar-layout .pro-menu .pro-menu-item::before {
         display: none; }
+
+.controlRow__root .col-sm-6 .btn-group .btn:disabled {
+  background-color: #121014;
+  opacity: 0.9;
+  border-color: #121014; }
+
+.notes {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; }
+
+.fontLoaded {
+  padding-right: 0 !important; }
+
+.breadcrumb {
+  margin-bottom: 0; }
+
+.notesdisable {
+  height: 194px; }
+
+.icon-created i:before {
+  content: ""; }
+
+.icon-approved {
+  background-color: #10B981 !important;
+  color: #fff; }
+  .icon-approved i:before {
+    content: ""; }
+
+.status-approved {
+  background-color: #D1FAE5;
+  color: #089365; }
+
+.icon-confirmed-by-csr-admin {
+  background-color: #10B981 !important;
+  color: #fff; }
+  .icon-confirmed-by-csr-admin i:before {
+    content: ""; }
+
+.status-confirmed-by-csr-admin {
+  background-color: #D1FAE5;
+  color: #089365; }
+
+.icon-ready-to-pickup i:before {
+  content: ""; }
+
+.icon-rejected {
+  background-color: #eb445a !important;
+  color: #fff; }
+  .icon-rejected i:before {
+    content: ""; }
+
+.status-rejected {
+  background-color: #f9c7ce;
+  color: #bc3648; }
+
+.icon-staging i:before {
+  content: ""; }
+
+.icon-on-rc {
+  background-color: #10B981 !important;
+  color: #fff; }
+  .icon-on-rc i:before {
+    content: ""; }
+
+.status-on-rc {
+  background-color: #D1FAE5;
+  color: #089365; }
+
+.icon-on-delivery i:before {
+  content: ""; }
+
+.icon-customer-to-staging i:before {
+  content: ""; }
+
+.icon-delivered {
+  background-color: #10B981 !important;
+  color: #fff; }
+  .icon-delivered i:before {
+    content: ""; }
+
+.status-delivered {
+  background-color: #D1FAE5;
+  color: #089365; }
+
+.icon-borrowed i:before {
+  content: ""; }
+
+.icon-arrived {
+  background-color: #10B981 !important;
+  color: #fff; }
+  .icon-arrived i:before {
+    content: ""; }
+
+.status-arrived {
+  background-color: #D1FAE5;
+  color: #089365; }
+
+.icon-on-cabinet {
+  background-color: #10B981 !important;
+  color: #fff; }
+  .icon-on-cabinet i:before {
+    content: ""; }
+
+.status-on-cabinet {
+  background-color: #D1FAE5;
+  color: #089365; }
 
 /*# sourceMappingURL=main.css.map */

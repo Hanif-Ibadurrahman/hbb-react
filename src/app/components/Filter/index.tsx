@@ -1,0 +1,22 @@
+import Button from 'react-bootstrap/Button';
+// import { ModalFilter } from './TagValueModalFilter';
+import { ModalFilter } from './SingleValueModalFilter';
+import React, { useState } from 'react';
+import './filter.scoped.scss';
+
+export function Filter() {
+  const [modalShow, setModalShow] = useState(false);
+
+  return (
+    <>
+      <Button
+        className="d-flex ai-center mr-2"
+        variant="secondary"
+        onClick={() => setModalShow(true)}
+      >
+        Filter<i className="fas fa-sort-alt ml-2"></i>
+      </Button>{' '}
+      <ModalFilter show={modalShow} onHide={() => setModalShow(false)} />
+    </>
+  );
+}

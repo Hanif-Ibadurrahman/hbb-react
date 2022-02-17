@@ -1,139 +1,201 @@
-$ultrawide      : "only screen and (min-width: 1536px)";
-$dekstop        : "only screen and (min-width: 1281px)";
-$laptop         : "only screen and (min-width: 1025px) and (max-width: 1280px)";
-$tablet         : "only screen and (min-width: 768px) and (max-width: 1024px)";
-$tablet-l       : "only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape)";
-$phone          : "only screen and (min-width: 320px) and (max-width: 480px)";
-$phone-l        : "only screen and (min-width: 481px) and (max-width: 767px)";
+$ultrawide: 'only screen and (min-width: 1536px)';
+$dekstop: 'only screen and (min-width: 1281px)';
+$laptop: 'only screen and (min-width: 1025px) and (max-width: 1280px)';
+$tablet: 'only screen and (min-width: 768px) and (max-width: 1024px)';
+$tablet-l: 'only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape)';
+$phone: 'only screen and (min-width: 320px) and (max-width: 480px)';
+$phone-l: 'only screen and (min-width: 481px) and (max-width: 767px)';
 
-@import "variables";
-@import "mixins";
-
-#root {
-	overflow: hidden;
-}
+@import 'variables';
+@import 'mixins';
 
 .all-wrapper {
-	min-height: 100vh;
+  min-height: 100vh;
 }
 
-.navbar {
-	.dropdown {
-		.dropdown-item,
-		.dropdown-toggle {
-			&:hover, 
-			&:focus, 
-			&:active {
-				background: rgba(0,0,0,.1);
-				border-color: transparent;
-				box-shadow: 0 0 0 0 rgba(0,0,0,.1);
-				color: inherit;
-			}
-		}
-
-		.dropdown-toggle {
-			&:after {
-				display: none;
-			}
-			.dropdown-toggle-indicator {
-				position: absolute;
-				right: 1.25rem;
-				top: 50%;
-				transform: translateY(-50%);
-				transition: all .32s;
-			}
-		}
-		.dropdown-menu {
-			max-width: 100%;
-			width: calc(100% - 1rem*2);
-		}
-		&.show {
-			.dropdown-toggle {
-				background: rgba(0,0,0,.1);
-				border-color: transparent;
-				box-shadow: 0 0 0 0 rgba(0,0,0,.1);
-
-				.dropdown-toggle-indicator {
-					transform: translateY(-50%) rotate(180deg);
-				}
-			}
-		}
-	}	
+.content-wrapper {
+  background: $bg-color;
 }
 
 .sidebar {
-	box-shadow: 8px 0 8px rgba(0,0,0,.05);
-	height: 100vh;
+  box-shadow: 8px 0 8px rgba(0, 0, 0, 0.05);
+  height: 100vh;
+  position: sticky;
+  top: 0;
 
-	&.icon {
-		background-color: #000;
-	}
+  &.icon {
+    background-color: #000;
+  }
 
-	.sidebar-header {
-		opacity: 1;
-	}
+  .sidebar-header {
+    opacity: 1;
+  }
 
-	.pro-sidebar {
-		min-width: auto;
-		width: auto;
-		height: auto;
+  .pro-sidebar {
+    min-width: auto;
+    width: auto;
+    height: auto;
 
-		.pro-sidebar-inner {
-			background-color: $d-color-dark-contrast;
-			color: $d-color-primary-contrast;
-			height: calc(100vh - 5rem);
+    .pro-sidebar-inner {
+      background-color: $d-color-dark-contrast;
+      color: $d-color-primary-contrast;
+      height: calc(100vh - 5rem);
 
-			.pro-sidebar-layout {
+      .pro-sidebar-layout {
+        .pro-menu {
+          .pro-menu-item {
+            &::after {
+              content: '';
+              width: 5px;
+              height: 100%;
+              position: absolute;
+              display: block;
+              top: 0;
+              left: 0;
+              background-color: $d-color-primary-5;
+              opacity: 0;
+              transition: all 0.32s;
+            }
 
-				.pro-menu {
+            &#active {
+              background-color: #e7e7e7;
 
-					.pro-menu-item {
+              &::after {
+                opacity: 1;
+              }
+            }
 
-						&::after {
-							content: "";
-							width: 5px;
-							height: 100%;
-							position: absolute;
-							display: block;
-							top: 0;
-							left: 0;
-							background-color: $d-color-primary-5;
-							opacity: 0;
-							transition: all .32s;
-						}
+            .pro-inner-item {
+              padding-top: 1rem;
+              padding-bottom: 1rem;
+              color: $d-color-primary-contrast;
 
-						&#active {
-							background-color: #e7e7e7;
+              &:hover {
+                background-color: #e7e7e7;
+              }
 
-							&::after {
-								opacity: 1;
-							}
-						}
+              .pro-icon-wrapper {
+                background-color: transparent;
+              }
+            }
 
-						.pro-inner-item {
-							padding-top: 1rem;
-							padding-bottom: 1rem;
-							color: $d-color-primary-contrast;
+            .pro-inner-list-item {
+              background-color: transparent;
+            }
 
-							&:hover {
-								background-color: #e7e7e7;
-							}
+            &::before {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
-							.pro-icon-wrapper {
-								background-color: transparent;
-							}
-						}
+.controlRow__root {
+  .col-sm-6 {
+    .btn-group {
+      .btn {
+        &:disabled {
+          background-color: $d-color-dark;
+          opacity: 0.9;
+          border-color: $d-color-dark;
+        }
+      }
+    }
+  }
+}
 
-						.pro-inner-list-item {
-							background-color: transparent;
-						}
+.notes {
+  @include line-clamp(1);
+}
 
-						&::before {
-							display: none;
-						}
-					}
-				}
-			}
-		}
-	}
+.fontLoaded {
+  padding-right: 0 !important;
+}
+
+.breadcrumb {
+  margin-bottom: 0;
+}
+
+.notesdisable {
+  height: 194px;
+}
+
+$status-icons : 
+  (
+    created : "\f466",
+    approved : "\f467",
+    confirmed-by-csr-admin : "\f058",
+    ready-to-pickup : "\f4de",
+    rejected : "\f057",
+    staging : "\f482",
+    on-rc : "\f468",
+    on-delivery : "\f0d1",
+    customer-to-staging : "\f47b",
+    delivered : "\f467",
+    borrowed : "\f46c",
+    arrived : "\f467",
+    on-cabinet : "\f480",
+  );
+
+$status-icon-positive : 
+  (
+    approved,
+    confirmed-by-csr-admin,
+    on-rc,
+    delivered,
+    arrived,
+    on-cabinet,
+  );
+
+$status-icon-negative : 
+  (
+    rejected
+  );
+
+
+@mixin icon-class-builder($name, $value) {
+  .icon-#{$name} {
+    i {
+      &:before {
+        content: $value;
+      }
+    }
+
+    @each $positive in $status-icon-positive {
+      @if ($name == $positive) {
+        background-color: $d-color-success-5 !important;
+        color: #fff;
+      }
+    }
+
+    @each $negative in $status-icon-negative {
+      @if ($name == $negative) {
+        background-color: $d-color-danger-5 !important;
+        color: #fff;
+      }
+    }
+  }
+
+  .status-#{$name} {
+    @each $positive in $status-icon-positive {
+      @if ($name == $positive) {
+        background-color: $d-color-success-1;
+	      color: $d-color-success-6;
+      }
+    }
+
+    @each $negative in $status-icon-negative {
+      @if ($name == $negative) {
+        background-color: $d-color-danger-1;
+	      color: $d-color-danger-6;
+      }
+    }
+  }
+}
+
+@each $name, $value in $status-icons {
+  @include icon-class-builder($name, $value);
 }
