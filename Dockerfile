@@ -1,10 +1,14 @@
 FROM node:16.13.2-alpine as build-stage
+ARG APP_ENV
 WORKDIR /app
+RUN apk update \
+    && apk add bash
 COPY yarn.lock ./
 COPY package.json ./
 RUN yarn
 COPY ./ ./
-RUN yarn build
+RUN ["chmod", "+x", "start.sh"]
+RUN ./start.sh
 
 FROM nginx:1.19 as production-stage
 WORKDIR /app
