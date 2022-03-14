@@ -1,6 +1,6 @@
 {
 	"name": "dox-frontend",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"private": true,
 	"dependencies": {
 		"@emotion/react": "^11.4.1",
@@ -29,6 +29,7 @@
 		"bootstrap-sass": "^3.4.1",
 		"chalk": "4.1.1",
 		"cross-env": "7.0.3",
+		"env-cmd": "^10.1.0",
 		"eslint-plugin-prettier": "3.4.0",
 		"eslint-plugin-react-hooks": "4.2.0",
 		"font-awesome": "^4.7.0",
@@ -90,6 +91,9 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
+		"build:local": "env-cmd -f .env.local react-scripts build",
+		"build:development": "env-cmd -f .env.development react-scripts build",
+		"build:production": "env-cmd -f .env.production react-scripts build",
 		"test": "cross-env CI=true react-scripts test --color",
 		"eject": "react-scripts eject",
 		"test:generators": "ts-node --project=./internals/ts-node.tsconfig.json ./internals/testing/generators/test-generators.ts",
