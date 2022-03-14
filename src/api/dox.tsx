@@ -5,6 +5,6 @@ const token = localStorage.getItem("Token");
 console.log("token >>>", token);
 
 export default axios.create({
-	baseURL: "http://103.93.57.36:8008",
+	baseURL: process.env.REACT_APP_API_URL,
 	headers: { Authorization: "Bearer " + token },
 });
