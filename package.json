@@ -29,6 +29,7 @@
 		"bootstrap-sass": "^3.4.1",
 		"chalk": "4.1.1",
 		"cross-env": "7.0.3",
+		"env-cmd": "^10.1.0",
 		"eslint-plugin-prettier": "3.4.0",
 		"eslint-plugin-react-hooks": "4.2.0",
 		"font-awesome": "^4.7.0",
