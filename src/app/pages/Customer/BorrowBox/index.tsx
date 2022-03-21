@@ -2,48 +2,33 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
-// import PageHeader from "../Components/PageHeader";
 import DropdownAction from "app/pages/Master/Components/DropdownAction";
-// import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import { getBoxesList, getBoxDetail } from "actions/BoxActions";
 import { AddCart, getBorrowList } from "actions/BorrowItemAction";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import Alert from "app/components/Alerts";
 import { selectBoxes } from "store/Selector/BoxSelector";
 import ModalForm from "./ModalForm";
 import "./page.scoped.scss";
 import _ from "lodash";
-import {
-	selectBorrowItem,
-	selectBorrowItems,
-} from "store/Selector/BorrowItemSelector";
+import { selectBorrowItems } from "store/Selector/BorrowItemSelector";
 
 const BorrowBoxPage = () => {
-	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
-	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
-	const boxes = useSelector(selectBoxes);
 	const borrowList = useSelector(selectBorrowItems);
 	const cartStash = useSelector((state: RootStateOrAny) => state?.pickUpItems);
 
-	// console.log("Total Cart Tash>>>>", Cart.length);
-
 	useEffect(() => {
 		setCart(cartStash);
-		console.log("CART NEW>>", cart.Cart);
 	}, []);
 
 	useEffect(() => {
 		setCart(cartStash);
-		console.log("CART NEW>>", cart.Cart);
 	}, [cartStash]);
 
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		// dispatch(getBoxesList(page));
 		dispatch(getBorrowList(page));
 	};
 
@@ -62,10 +47,7 @@ const BorrowBoxPage = () => {
 
 	const checkCart = id => {
 		if (cart) {
-			console.log("total cart", cart?.numberCart, cart?.Cart);
-			console.log("id onclick", id);
 			const checkCart = cart?.Cart.indexOf(String(id));
-			console.log("check cart index: ", checkCart);
 		}
 	};
 
@@ -83,10 +65,8 @@ const BorrowBoxPage = () => {
 		{
 			icon: "fa-search",
 			title: "Detail",
-			type: 2,
-			onclick: "",
-			dispatch: dispatch,
-			row: id,
+			url: "Box-Detail/" + id,
+			type: 1,
 		},
 	];
 
@@ -96,7 +76,15 @@ const BorrowBoxPage = () => {
 			prop: "code_box",
 			sortable: true,
 			cellProps: {
-				style: { width: "80%" },
+				style: { width: "40%" },
+			},
+		},
+		{
+			title: "Custome Code Box",
+			prop: "custom_code_box",
+			sortable: true,
+			cellProps: {
+				style: { width: "40%" },
 			},
 		},
 		{
@@ -148,26 +136,13 @@ const BorrowBoxPage = () => {
 	return (
 		<>
 			<Helmet>
-				<title>Dox - Request Box</title>
+				<title>Dox - Borrow Box</title>
 				<meta
 					name="description"
 					content="A React Boilerplate application homepage"
 				/>
 			</Helmet>
 			<PageWrapper>
-				<Alert
-					text="Data Berhasil Di Hapus"
-					variant="success"
-					show={showAlertSuccess}
-					onHide={() => setShowAlertSuccess(false)}
-				/>
-				<Alert
-					text="Data Gagal Di Hapus"
-					variant="danger"
-					show={showAlertFailed}
-					onHide={() => setShowAlertFailed(false)}
-				/>
-
 				<ModalForm
 					modal={modalShow}
 					hide={_onHide}
@@ -176,7 +151,7 @@ const BorrowBoxPage = () => {
 				/>
 				<DataTable tableHeader={header} tableBody={borrowList.BorrowList} />
 				<Pagination
-					pageCount={boxes.Meta.last_page}
+					pageCount={borrowList.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 				<Cart />

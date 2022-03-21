@@ -6,28 +6,37 @@ import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
 import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import { getDivisionsList, getDivisionDetail } from "actions/DivisionAction";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { deleteDivision } from "actions/DivisionAction";
-import Alert from "app/components/Alerts";
-import { selectDivisions } from "store/Selector/DivisionSelector";
+import { selectStaffs } from "store/Selector/StaffSelector";
+import { getstaffsList, RESET_STAFF_FORM } from "actions/StaffAction";
 
-const DivisionPage = () => {
+const StaffPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
-	const divisions = useSelector(selectDivisions);
+	const staffs = useSelector(selectStaffs);
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		dispatch(getDivisionsList(page));
+		dispatch(getstaffsList(page));
 	};
 
 	useEffect(() => {
 		FetchData();
 	}, []);
+
+	const _onHide = () => {
+		setModalShow(false);
+		setShowAlert(false);
+		dispatch({ type: RESET_STAFF_FORM });
+	};
+
+	const showEditForm = async id => {
+		// dispatch(getRoomDetail(id));
+		setModalShow(true);
+	};
 
 	const onDelete = (dispatch, id) => {
 		Swal.fire({
@@ -38,7 +47,7 @@ const DivisionPage = () => {
 			confirmButtonText: "Hapus",
 		}).then(willDelete => {
 			if (willDelete) {
-				dispatch(deleteDivision(id));
+				// dispatch(deleteRoom(id));
 				setShowAlertSuccess(true);
 				setTimeout(function () {
 					setShowAlertSuccess(false);
@@ -55,38 +64,7 @@ const DivisionPage = () => {
 		});
 	};
 
-	const _onHide = () => {
-		setModalShow(false);
-		setShowAlert(false);
-	};
-
-	const showEditForm = async id => {
-		dispatch(getDivisionDetail(id));
-		setModalShow(true);
-	};
-
 	const action = id => [
-		{
-			icon: "fa-search",
-			title: "Detail",
-			url: "DivisionPage-Detail/" + id,
-			type: 1,
-		},
-		{
-			icon: "fa-copy ",
-			title: "Duplicate",
-			type: 2,
-		},
-		{
-			icon: "fa-edit",
-			title: "Edit",
-			onclick: () => {
-				showEditForm(id);
-			},
-			dispatch: dispatch,
-			row: id,
-			type: 2,
-		},
 		{
 			icon: "fa-trash-alt",
 			title: "Delete",
@@ -100,16 +78,16 @@ const DivisionPage = () => {
 
 	const header = [
 		{
-			title: "Code Division",
-			prop: "code",
+			title: "Id",
+			prop: "id",
 			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
 			},
 		},
 		{
-			title: "Nama Divisi",
-			prop: "name",
+			title: "username",
+			prop: "username",
 			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
@@ -128,30 +106,16 @@ const DivisionPage = () => {
 		},
 	];
 
-	console.log(divisions);
-
 	return (
 		<>
 			<Helmet>
-				<title>Dox - Division</title>
+				<title>Dox - Master Room</title>
 				<meta
 					name="description"
 					content="A React Boilerplate application homepage"
 				/>
 			</Helmet>
 			<PageWrapper>
-				<Alert
-					text="Data Berhasil Di Hapus"
-					variant="success"
-					show={showAlertSuccess}
-					onHide={() => setShowAlertSuccess(false)}
-				/>
-				<Alert
-					text="Data Gagal Di Hapus"
-					variant="danger"
-					show={showAlertFailed}
-					onHide={() => setShowAlertFailed(false)}
-				/>
 				<ModalForm
 					modal={modalShow}
 					hide={_onHide}
@@ -159,14 +123,14 @@ const DivisionPage = () => {
 					valueModalSet={false}
 				/>
 				<PageHeader
-					breadcrumb={["Master", "Division"]}
+					breadcrumb={["Master", "Staff"]}
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
 				/>
-				<DataTable tableHeader={header} tableBody={divisions.Divisions} />
+				<DataTable tableHeader={header} tableBody={staffs.Staffs} />
 				<Pagination
-					pageCount={divisions.Meta.last_page}
+					pageCount={staffs.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>
@@ -174,4 +138,4 @@ const DivisionPage = () => {
 	);
 };
 
-export default DivisionPage;
+export default StaffPage;

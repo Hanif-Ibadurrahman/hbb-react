@@ -5,30 +5,35 @@ import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 import { useDispatch, useSelector } from "react-redux";
 import { Autocomplete, TextField } from "@mui/material";
-import { selectCompanys } from "store/Selector/CompanySelector";
-import { CustomerInterfaceState } from "store/Types/CustomerTypes";
-import { selectDivisions } from "store/Selector/DivisionSelector";
-import { getCompanyList } from "actions/CompanyAction";
-import { getDivisionsList } from "actions/DivisionAction";
-import { CreateCustomer, RESET_CUSTOMER_FORM } from "actions/CustomerAction";
-import { selectCustomer } from "store/Selector/CustomerSelector";
+import { selectRooms } from "store/Selector/RoomSelector";
+import { StaffInterfaceState } from "store/Types/StaffTypes";
+import { getRoomsList } from "actions/RoomAction";
+import {
+	CreateStaff,
+	RESET_STAFF_FORM,
+	getRoleList,
+} from "actions/StaffAction";
+import {
+	selectStaff,
+	selectRoles,
+	selectStaffs,
+} from "store/Selector/StaffSelector";
 
 export const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setAlertMessage] = useState("");
 	const [varianAlert, setVarianAlert] = useState("");
-	const customer: CustomerInterfaceState = useSelector(selectCustomer);
+	const staff: StaffInterfaceState = useSelector(selectStaff);
 	const dispatch = useDispatch();
 
-	const company = useSelector(selectCompanys);
-	const division = useSelector(selectDivisions);
-
-	const FetchData = (page = 1) => {
-		dispatch(getCompanyList(page));
+	const rooms = useSelector(selectRooms);
+	const roles = useSelector(selectStaffs);
+	const FetchData = () => {
+		dispatch(getRoleList());
 	};
 
 	const DivisionData = (page = 1) => {
-		dispatch(getDivisionsList(page));
+		dispatch(getRoomsList(page));
 	};
 
 	useEffect(() => {
@@ -43,9 +48,7 @@ export const ModalForm = props => {
 		username: Yup.string().required("*Wajib diisi"),
 		password: Yup.string().required("*Wajib diisi").min(8, "Min 8 Karakter"),
 		name: Yup.string().required("*Wajib diisi"),
-		email: Yup.string().required("*Wajib diisi"),
-		phone: Yup.string().required("*Wajib diisi"),
-		location: Yup.string().required("*Wajib diisi"),
+		nik: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
@@ -71,19 +74,19 @@ export const ModalForm = props => {
 				{" "}
 				<Formik
 					validationSchema={validationSchema}
-					initialValues={customer}
+					initialValues={staff}
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							let action = CreateCustomer(values);
+							let action = CreateStaff(values);
 							const res = await action;
 							await dispatch(res);
 							action.then(() => {
-								dispatch({ type: RESET_CUSTOMER_FORM });
+								dispatch({ type: RESET_STAFF_FORM });
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
 								setVarianAlert("success");
-								customer.id
+								staff.id
 									? setAlertMessage("Data Berhasil di Edit")
 									: setAlertMessage("Data Berhasil di Tambah");
 								setTimeout(function () {
@@ -97,7 +100,7 @@ export const ModalForm = props => {
 							setTimeout(function () {
 								setShowAlert(false);
 							}, 4000);
-							dispatch({ type: RESET_CUSTOMER_FORM });
+							dispatch({ type: RESET_STAFF_FORM });
 						}
 					}}
 				>
@@ -176,70 +179,32 @@ export const ModalForm = props => {
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Email</Form.Label>
+												<Form.Label>NIK</Form.Label>
 												<Form.Control
 													type="text"
-													name="email"
-													placeholder="Email"
-													value={values?.email}
+													name="nik"
+													placeholder="NIK"
+													value={values?.nik}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.email && errors.email ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.email}
-													</p>
+												{touched.nik && errors.nik ? (
+													<p className="tc-danger-5 pos-a p-sm">{errors.nik}</p>
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Phone</Form.Label>
-												<Form.Control
-													type="text"
-													name="phone"
-													placeholder="Nomer Telepon"
-													value={values?.phone}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>
-												{touched.phone && errors.phone ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.phone}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Location</Form.Label>
-												<Form.Control
-													type="text"
-													name="location"
-													placeholder="Location"
-													value={values?.location}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>
-												{touched.location && errors.location ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.location}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Pilih Perusahaan</Form.Label>
+												<Form.Label>Pilih Ruangan</Form.Label>
 												<Autocomplete
-													id="company"
-													options={company.Companys}
+													id="room_id"
+													options={rooms.Rooms}
 													getOptionLabel={option => option.name}
 													onChange={(e, value) => {
 														console.log(value);
 														setFieldValue(
-															"company",
-															value !== null ? value : values.company,
+															"room_id",
+															value !== null ? value : values.room_id,
 														);
 													}}
 													renderInput={params => (
@@ -253,23 +218,22 @@ export const ModalForm = props => {
 												/>
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Pilih Divisi</Form.Label>
+												<Form.Label>Jenis Pekerjaan</Form.Label>
 												<Autocomplete
-													id="division_id"
-													options={division.Divisions}
+													id="role_id"
+													options={roles.Roles}
 													getOptionLabel={option => option.name}
 													onChange={(e, value) => {
-														console.log(value);
 														setFieldValue(
-															"division_id",
-															value !== null ? value : values.division_id,
+															"role_id",
+															value !== null ? value : values.role_id,
 														);
 													}}
 													renderInput={params => (
 														<TextField
 															margin="normal"
-															placeholder="Transporter"
-															name="division_id"
+															placeholder="Jenis Pekerjaan"
+															name="role_id"
 															{...params}
 														/>
 													)}

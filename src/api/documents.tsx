@@ -1,6 +1,16 @@
 import { identity } from "lodash";
 import { DocumentInterfaceState } from "store/Types/DocumentTypes";
 import api from "./dox";
+import { useSelector, useDispatch } from "react-redux";
+import { selectDocument } from "store/Selector/DocumentSelector";
+import { getDocumentDetail } from "actions/DocumentAction";
+
+function filterData() {
+	// const document: DocumentInterfaceState = useSelector(selectDocument);
+	// return <>{document.description}</>
+	console.log("document get all >>>", document);
+}
+
 export const create = async (data: DocumentInterfaceState) => {
 	let payload = {
 		no: data.no,
@@ -41,7 +51,6 @@ export const update = async (data: DocumentInterfaceState) => {
 		status: data.status,
 		sign_code: data.sign_code,
 	};
-	console.log(payload);
 	return await api.put(`/documents/${id}`, payload);
 };
 
@@ -62,4 +71,22 @@ export const getAll = async params => {
 
 export const destroy = id => {
 	return api.delete(`/documents/${id}`);
+};
+
+export const filter = async (data: DocumentInterfaceState) => {
+	let filter = {
+		no: data.no,
+		detail: data.detail,
+		active_year_for: data.active_year_for,
+		level_progress: data.level_progress,
+		media_storage: data.media_storage,
+		condition: data.condition,
+		description: data.description,
+		status: data.status,
+	};
+	console.log("filter >>>", filter);
+
+	return api.get(
+		`/documents?detail=${filter.detail}&active_year_for=${filter.active_year_for}&level_progress=${filter.level_progress}&media_storage=${filter.media_storage}&condition=${filter.condition}&description=${filter.description}&status=${filter.status}`,
+	);
 };

@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
-import PageHeader from "../../Approval/Components/PageHeader";
 import DropdownAction from "app/components/DropdownAction";
 import { Pagination } from "app/components/Pagination";
 import {
@@ -48,9 +47,6 @@ const RequestHistory = () => {
                 style: { width: "20%" },
             },
             headerCell: (sortedProp) => {
-                const isActive = sortedProp.prop === 'created_at';
-                const order = sortedProp.isAscending ? 'Terlama' : 'Terbaru';
-
                 return (
                     <div className="cur-p">
                         {`Tanggal Permintaan`}
@@ -107,7 +103,6 @@ const RequestHistory = () => {
                 />
             </Helmet>
             <PageWrapper>
-                {/* <PageHeader breadcrumb={["Customer", "Riwayat Perminataan"]} /> */}
                 <DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} initialSort={{ prop: 'created_at', isAscending: true }} />
                 <Pagination
                     pageCount={requestBoxes.Meta.last_page}

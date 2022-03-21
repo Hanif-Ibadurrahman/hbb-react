@@ -74,10 +74,6 @@ export default (
 				numberCart: checkCartExist() ? state.numberCart + 1 : state.numberCart,
 			};
 		case DELETE_CART:
-			// const cartStash = [...state.Cart]
-			// const deleteSelectedCart = _.remove(cartStash, function (n) {
-			// 	return n === payload;
-			// })
 			return {
 				...state,
 				numberCart: state.numberCart - 1,

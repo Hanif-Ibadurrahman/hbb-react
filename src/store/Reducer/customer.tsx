@@ -7,11 +7,7 @@ import {
 	RESET_CUSTOMER_FORM,
 	SET_CUSTOMER_DATA,
 } from "../../actions/CustomerAction";
-import {
-	CustomersInterfaceState,
-	CustomerInterfaceState,
-} from "../Types/CustomerTypes";
-// import { AreaInterfaceState } from "store/Types/AreaTypes";
+import { CustomersInterfaceState } from "../Types/CustomerTypes";
 
 export const initialState: CustomersInterfaceState = {
 	Customers: [],
@@ -25,6 +21,7 @@ export const initialState: CustomersInterfaceState = {
 		location: "",
 		company: {
 			id: "",
+			code: "",
 			name: "",
 			location: "",
 			longitude: "",
@@ -114,6 +111,7 @@ export default (
 					location: "",
 					company: {
 						id: "",
+						code: "",
 						name: "",
 						location: "",
 						longitude: "",

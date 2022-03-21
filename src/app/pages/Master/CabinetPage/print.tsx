@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import {  Card } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import QR from "app/components/QRCode";
 import "../master.scoped.scss";
 import { useHistory } from "react-router-dom";
@@ -10,7 +10,7 @@ import { CabinetInterfaceState } from "store/Types/CabinetTypes";
 
 const PrintCabinet = ({ match }) => {
 	const cabinet: CabinetInterfaceState = useSelector(selectCabinet);
-	const cabinetSlot = cabinet.cabinet_slots ?? []
+	const cabinetSlot = cabinet.cabinet_slots ?? [];
 	let history = useHistory();
 
 	const cabinet_id = match.params.id;
@@ -27,13 +27,13 @@ const PrintCabinet = ({ match }) => {
 	};
 
 	const font = {
-		fontSize: "8px",
+		fontSize: "10px",
 		lineHeight: "12px",
 	};
 
 	return (
 		<>
-			<div style={{ marginBottom: 7, marginLeft: 10 }}>
+			{/* <div style={{ marginBottom: 7.5, marginLeft: 10 }}>
 				<div style={Width} className="d-flex ai-center jc-center">
 					<Card className="pv-1 ph-1 d-flex ai-center jc-center fd-row col-6">
 						<QR
@@ -43,7 +43,7 @@ const PrintCabinet = ({ match }) => {
 							className="d-flex jc-center"
 						/>
 					</Card>
-					<div className="ml-2 col-6">
+					<div className="ml-6 col-6">
 						<p style={font} className="ff-1-bd ta-center ">
 							Cabinet
 						</p>
@@ -52,10 +52,10 @@ const PrintCabinet = ({ match }) => {
 						</p>
 					</div>
 				</div>
-			</div>
+			</div> */}
 			{cabinetSlot.map((item, index) => {
 				return (
-					<div style={{ marginBottom: 7.5, marginLeft: 10 }}>
+					<div style={{ marginBottom: 7.5, marginLeft: 27 }}>
 						<div style={Width} className="d-flex ai-center jc-center">
 							<Card className="pv-1 ph-1 d-flex ai-center jc-center fd-row col-6">
 								<QR
@@ -65,17 +65,17 @@ const PrintCabinet = ({ match }) => {
 									className="d-flex jc-center"
 								/>
 							</Card>
-							<div className="ml-2 col-6">
+							<div className="ml-2 col-8">
 								<p style={font} className="ff-1-bd ta-center ">
-									Cabinet Slot {index + 1}
+									Cabinet
 								</p>
 								<p style={font} className="ff-1-bd ta-center">
-									{item.code}
+									{item.name}
 								</p>
 							</div>
 						</div>
 					</div>
-				)
+				);
 			})}
 		</>
 	);

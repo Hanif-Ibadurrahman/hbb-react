@@ -8,63 +8,24 @@ import LoginBg from "assets/images/login.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import "./LoginPage.scoped.scss";
 import { LoginInterfaceState } from "store/Types/LoginTypes";
-import { selectLogin, selectLogins } from "store/Selector/LoginSelector";
+import { selectLogin } from "store/Selector/LoginSelector";
 import { Login } from "actions/LoginAction";
+import Alert from "app/components/Alerts";
 
 export function LoginPage() {
 	let history = useHistory();
 	const [active, setActive] = useState(false);
-
-	// const LoginForm = () => {
-	// 	return (
-	// 		<form className="form-signin">
-	// 			<h1 className="h3 mb-12 font-weight-normal tc-dark-contrast">
-	// 				Sign In
-	// 			</h1>
-	// 			<div className="pos-r">
-	// 				<Form.Group controlId="formHorizontalEmail" className="mb-3">
-	// 					<Form.Control
-	// 						type="email"
-	// 						placeholder="Email"
-	// 						id="email"
-	// 						className="pv-3 ph-4 fc-white"
-	// 					/>
-	// 				</Form.Group>
-	// 				<Form.Group controlId="formHorizontalPassword">
-	// 					<Form.Control
-	// 						type="password"
-	// 						placeholder="Password"
-	// 						id="password"
-	// 						className="pv-3 ph-4"
-	// 					/>
-	// 				</Form.Group>
-	// 			</div>
-	// 			<div className="d-grid gap-2 mt-8 mb-6">
-	// 				<Button variant="primary" className="pv-3 ph-4" onClick={onSubmit}>
-	// 					Log In
-	// 				</Button>
-	// 			</div>
-	// 			<div className="d-flex jc-center">
-	// 				<span
-	// 					className="cur-p tc-medium-tint hover:tc-light"
-	// 					onClick={e => setActive(true)}
-	// 				>
-	// 					Lupa Password?
-	// 				</span>
-	// 			</div>
-	// 		</form>
-	// 	);
-	// };
+	const [showAlert, setShowAlert] = useState(false);
+	const [alertMessage, setAlertMessage] = useState("");
+	const [varianAlert, setVarianAlert] = useState("");
 
 	const LoginForm = props => {
-		// const [CodeBox, setCodeBox] = useState("");
 		const login: LoginInterfaceState = useSelector(selectLogin);
 		const dispatch = useDispatch();
 		const validationSchema = Yup.object().shape({
 			username: Yup.string().required("*Wajib diisi"),
 			password: Yup.string().required("*Wajib diisi"),
-		});
-
+		})
 		return (
 			<>
 				<div>
@@ -77,15 +38,25 @@ export function LoginPage() {
 							try {
 								console.log("data", values);
 								let action = Login(values);
-								// dispatch(loadingbarTurnOn)
 								const res = await action;
 								await dispatch(res);
 								action.then(() => {
+									setShowAlert(true)
+									setAlertMessage("Anda Berhasil Login")
+									setVarianAlert("success")
+									setTimeout(function () {
+										setShowAlert(false)
+									}, 4000);
 									history.push("/Dashboard");
 									window.location.reload();
 								});
 							} catch (e) {
-								console.log("ini error di depan");
+								setShowAlert(true)
+								setAlertMessage("Username atau Password salah")
+								setVarianAlert("danger")
+								setTimeout(function () {
+									setShowAlert(false)
+								}, 4000);
 							}
 						}}
 					>
@@ -212,6 +183,18 @@ export function LoginPage() {
 					content="A React Boilerplate application homepage"
 				/>
 			</Helmet>
+			<Alert
+				text={alertMessage}
+				variant={varianAlert}
+				show={showAlert}
+				style={{
+					top: 50,
+					position: "fixed",
+					left: "50%",
+					transform: [{ translateX: "-50%" }],
+				}}
+				onHide={() => setShowAlert(false)}
+			/>
 			<div
 				className="login-bg"
 				style={{ backgroundImage: "url(" + LoginBg + ")" }}

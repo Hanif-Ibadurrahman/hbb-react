@@ -4,7 +4,7 @@ import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
 import DropdownAction from "app/pages/Master/Components/DropdownAction";
 import { Pagination } from "app/components/Pagination";
-import { AddCart, getBorrowList } from "actions/BorrowItemAction";
+import { AddCart } from "actions/BorrowItemAction";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import ModalForm from "./ModalForm";
 import "../BorrowBox/page.scoped.scss";
@@ -17,10 +17,6 @@ const PickUpPage = () => {
 	const [cart, setCart] = useState<Partial<any>>({});
 	const pickUpList = useSelector(selectPickUpItems);
 	const cartStash = useSelector((state: RootStateOrAny) => state?.borrowItems);
-
-	// useEffect(() => {
-	// 	setCart(cartStash);
-	// }, []);
 
 	useEffect(() => {
 		setCart(cartStash);
@@ -41,16 +37,8 @@ const PickUpPage = () => {
 	};
 
 	const addCart = async id => {
-		// checkCart(id);
 		dispatch(await AddCart(id));
 	};
-
-	// const checkCart = id => {
-	// 	if (cart) {
-	// 		const checkCart = cart?.Cart.indexOf(String(id));
-	// 		console.log("check cart index: ", checkCart);
-	// 	}
-	// };
 
 	const action = id => [
 		{
@@ -139,7 +127,7 @@ const PickUpPage = () => {
 	return (
 		<>
 			<Helmet>
-				<title>Dox - Request Box</title>
+				<title>Dox - Pick Up Box</title>
 				<meta
 					name="description"
 					content="A React Boilerplate application homepage"

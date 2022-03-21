@@ -18,12 +18,20 @@ export const initialState: BoxesInterfaceState = {
 		location: "",
 		created_at: "",
 		custom_code_box: "",
-		folders: [{
+		division: {
 			id: "",
-			no: "",
-			sign_code: "",
-			status: "",
-		}],
+			code: "",
+			name: "",
+		},
+		folders: [
+			{
+				id: "",
+				no: "",
+				sign_code: "",
+				status: "",
+				location: "",
+			},
+		],
 		cabinet_slot: {
 			id: "",
 			capacity: 0,
@@ -35,6 +43,7 @@ export const initialState: BoxesInterfaceState = {
 		},
 		company: {
 			id: "",
+			code: "",
 			name: "",
 			location: "",
 			longitude: "",
@@ -52,7 +61,7 @@ export const initialState: BoxesInterfaceState = {
 				},
 			],
 			is_agree: true,
-		}
+		},
 	},
 	Meta: {
 		total: 0,
@@ -118,12 +127,20 @@ export default (
 					location: "",
 					created_at: "",
 					custom_code_box: "",
-					folders: [{
+					division: {
 						id: "",
-						no: "",
-						sign_code: "",
-						status: "",
-					}],
+						code: "",
+						name: "",
+					},
+					folders: [
+						{
+							id: "",
+							no: "",
+							sign_code: "",
+							status: "",
+							location: "",
+						},
+					],
 					cabinet_slot: {
 						id: "",
 						capacity: 0,
@@ -135,6 +152,7 @@ export default (
 					},
 					company: {
 						id: "",
+						code: "",
 						name: "",
 						location: "",
 						longitude: "",
@@ -152,7 +170,7 @@ export default (
 							},
 						],
 						is_agree: true,
-					}
+					},
 				},
 			};
 		default:

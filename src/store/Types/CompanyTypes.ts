@@ -1,7 +1,7 @@
 import { PaginationState } from "../Types/PaginationTypes";
 export interface CompanyInterfaceState {
 	id: string | null;
-	// CodeCompany: string;
+	code: string;
 	name: string;
 	location: string;
 	latitude: string;
@@ -19,8 +19,6 @@ export interface CompanyInterfaceState {
 			value: boolean;
 		},
 	];
-	// CodeCreatedate: string;
-	// CodeUpdatedate: string;
 }
 
 export interface CompanysInterfaceState {

@@ -51,9 +51,6 @@ const AreaPage = () => {
 				setTimeout(function () {
 					setShowAlertSuccess(false);
 				}, 4000);
-				// setTimeout(function () {
-				// 	window.location.reload();
-				// }, 1000);
 			} else {
 				setShowAlertFailed(true);
 				setTimeout(function () {

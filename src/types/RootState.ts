@@ -16,6 +16,8 @@ import { PickUpItemsInterfaceState } from "store/Types/PickUpTypes";
 import { RoomsInterfaceState } from "store/Types/RoomTypes";
 import { CustomersInterfaceState } from "store/Types/CustomerTypes";
 import { ReturnItemsInterfaceState } from "store/Types/ReturnItemTypes";
+import { StaffsInterfaceState } from "store/Types/StaffTypes";
+import { RolesInterfaceState } from "store/Types/StaffTypes";
 
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
@@ -44,6 +46,7 @@ export interface RootState {
 	rooms?: RoomsInterfaceState;
 	customers?: CustomersInterfaceState;
 	returnItems?: ReturnItemsInterfaceState;
-
+	staffs?: StaffsInterfaceState;
+	roles?: RolesInterfaceState;
 	// [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }

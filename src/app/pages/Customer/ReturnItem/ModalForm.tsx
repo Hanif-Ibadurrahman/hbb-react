@@ -4,10 +4,8 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 import { useDispatch, useSelector } from "react-redux";
-import { CreateBorrowItem, DeleteCart } from "actions/BorrowItemAction";
-import { BorrowItemInterfaceState } from "store/Types/BorrowItemTypes";
+import { DeleteCart } from "actions/BorrowItemAction";
 import {
-	selectBorrowItem,
 	selectBorrowItems,
 } from "store/Selector/BorrowItemSelector";
 import moment from "moment";
@@ -17,19 +15,16 @@ import { selectReturnItem } from "store/Selector/ReturnItemSelector";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
-	const [alertMessage, setalertMessage] = useState("");
-	// const borrowBox: BorrowItemInterfaceState = useSelector(selectBorrowItem);
+	const [alertMessage, setAlertMessage] = useState("");
+	const [varianAlert, setVarianAlert] = useState("");
 	const returnItem: ReturnItemInterfaceState = useSelector(selectReturnItem);
 	const cart = useSelector(selectBorrowItems);
 	const cartStash = cart.Cart;
-	console.log("Modal Cart>>>", cartStash);
 	function addDays(days) {
 		const result = new Date();
 		result.setDate(result.getDate() + days);
 		return result;
 	}
-
-	const DeliveredDate = moment(addDays(2)).format("YYYY-MM-DD");
 
 	const RegularDate = moment(addDays(2)).format("YYYY-MM-DD");
 	const Express = moment(addDays(0)).add(2, "hours").format("YYYY-MM-DDTHH:MM");
@@ -49,8 +44,8 @@ const ModalForm = props => {
 	return (
 		<>
 			<Alert
-				text="Data Berhasil Di Request"
-				variant="success"
+				text={alertMessage}
+				variant={varianAlert}
 				show={showAlert}
 				style={{
 					top: 50,
@@ -80,14 +75,20 @@ const ModalForm = props => {
 							action.then(() => {
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
+								setAlertMessage("Request Pengembalian Berhasil");
+								setVarianAlert("success");
 								setTimeout(function () {
 									window.location.reload();
 								}, 1000);
 							});
 							props.modalSet(props.valueModalSet);
-							console.log(action);
 						} catch (e) {
-							console.log("ini error di depan");
+							setShowAlert(true);
+							setAlertMessage("Request Gagal");
+							setVarianAlert("danger");
+							setTimeout(function () {
+								setShowAlert(false);
+							}, 4000);
 						}
 					}}
 				>

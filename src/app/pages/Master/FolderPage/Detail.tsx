@@ -9,6 +9,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { getFolderDetail } from "actions/FolderAction";
 import { FolderInterfaceState } from "store/Types/FolderTypes";
 import { selectFolder } from "store/Selector/FolderSelector";
+import { DataTable } from "app/components/Datatables";
+import DropdownAction from "../Components/DropdownAction";
 
 const FolderPageDetail = ({ match }) => {
 	const folder: FolderInterfaceState = useSelector(selectFolder);
@@ -33,6 +35,45 @@ const FolderPageDetail = ({ match }) => {
 	useEffect(() => {
 		dispatch(getFolderDetail(folder_id));
 	}, []);
+
+	const action = id => [
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "Document-Detail/" + id,
+			type: 1,
+		},
+	];
+
+	const header = [
+		{
+			title: "Detail Document",
+			prop: "detail",
+			sortable: true,
+			cellProps: {
+				style: { width: "80%", textAlign: "left", lineHeight: "40px" },
+			},
+			headerCell: () => {
+				return (
+					<div className="cur-p">
+						{`Detail Document`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
+			},
+		},
+		{
+			title: "Action",
+			prop: "Action",
+			cellProps: {
+				style: { flex: 1 },
+				className: "realname-class",
+			},
+			cell: row => {
+				return <DropdownAction list={action(row.id)} />;
+			},
+		},
+	];
 
 	return (
 		<>
@@ -84,60 +125,6 @@ const FolderPageDetail = ({ match }) => {
 							</div>
 						</Form>
 					</Card>
-					<Card className="ph-5 pv-3 bd-rs-2 mt-3">
-						<h6 className="mb-4 mt-4">List Document</h6>
-						{documents.map((item, index) => {
-							return (
-								<div>
-									<p className="mb-1 p-lg">Document {index + 1}</p>
-									<div className="w-50% bg-dark h-2px mb-4" />
-									<div className="row mb-4">
-										<div className="col-6">
-											<Form.Group>
-												<Form.Label>Kondisi Dokumen</Form.Label>
-												<Form.Control
-													type="text"
-													disabled
-													defaultValue={item?.condition}
-												/>
-											</Form.Group>
-											<Form.Group className="mt-2">
-												<Form.Label>Detail Dokumen</Form.Label>
-												<Form.Control
-													as="textarea"
-													disabled
-													defaultValue={item?.detail}
-												/>
-											</Form.Group>
-											<Form.Group className="mt-2">
-												<Form.Label>Status Dokumen</Form.Label>
-												<Form.Control
-													type="text"
-													disabled
-													defaultValue={item?.status}
-												/>
-											</Form.Group>
-											<Button
-												className="mv-4 mr-4"
-												variant="success"
-												onClick={() => history.push("/Document-Detail/" + item.id)}
-											>
-												Lihat Detail
-											</Button>{" "}
-										</div>
-										<div className="col-6 d-flex jc-center ai-center">
-											<QR
-												id="QR Box"
-												title="Scan here"
-												value={item?.sign_code}
-												className="d-flex jc-center"
-											/>
-										</div>
-									</div>
-								</div>
-							)
-						})}
-					</Card>
 				</div>
 				<div className="col col-3">
 					<Card className="p-4 bd-rs-2 d-flex ai-center jc-center">
@@ -151,6 +138,10 @@ const FolderPageDetail = ({ match }) => {
 							<p className="p-xl ff-1-bd ta-center mt-3">Folder Barcode</p>
 						</div>
 					</Card>
+				</div>
+				<div>
+					<h6 className="mb-4 mt-4">List Document</h6>
+					<DataTable tableHeader={header} tableBody={documents} />
 				</div>
 			</PageWrapper>
 		</>

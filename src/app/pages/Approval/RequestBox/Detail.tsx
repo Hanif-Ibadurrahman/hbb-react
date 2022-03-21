@@ -44,11 +44,19 @@ const ApprovalAdminDetail = ({ match }) => {
 						<Form className="mt-3">
 							<Form.Group className="mb-4" controlId="formBasicEmail">
 								<Form.Label>Nama Customer</Form.Label>
-								<Form.Control type="text" value={requestBox.customer.name} disabled />
+								<Form.Control
+									type="text"
+									value={requestBox.customer.name}
+									disabled
+								/>
 							</Form.Group>
 							<Form.Group className="mb-4" controlId="formBasicEmail">
 								<Form.Label>Nama Perusahaan</Form.Label>
-								<Form.Control type="text" value={requestBox.customer.company.name} disabled />
+								<Form.Control
+									type="text"
+									value={requestBox.customer.company.name}
+									disabled
+								/>
 							</Form.Group>
 							<Form.Group className="mb-4" controlId="formBasicEmail">
 								<Form.Label>Quantity</Form.Label>
@@ -95,7 +103,7 @@ const ApprovalAdminDetail = ({ match }) => {
 												<Form.Control
 													type="text"
 													disabled
-													defaultValue={item.box.code_box}
+													defaultValue={item?.box?.code_box}
 												/>
 											</Form.Group>
 											<Form.Group className="mt-2">
@@ -103,7 +111,7 @@ const ApprovalAdminDetail = ({ match }) => {
 												<Form.Control
 													type="text"
 													disabled
-													defaultValue={item.status}
+													defaultValue={item?.status}
 												/>
 											</Form.Group>
 										</div>
@@ -111,13 +119,13 @@ const ApprovalAdminDetail = ({ match }) => {
 											<QR
 												id="QR Box"
 												title="Scan here"
-												value={item.box.sign_code}
+												value={item?.box !== null ? item?.box?.sign_code : "-"}
 												className="d-flex jc-center"
 											/>
 										</div>
 									</div>
 								</div>
-							)
+							);
 						})}
 					</Card>
 					<Card className="ph-5 pt-7 pb-4 mt-3 bd-rs-2">
@@ -127,8 +135,9 @@ const ApprovalAdminDetail = ({ match }) => {
 								return (
 									<div
 										key={index}
-										className={`${index != requestLogs.length - 1 ? "mb-3" : ""
-											} row ai-center timeline-item w-100% ml-0 mr-0`}
+										className={`${
+											index != requestLogs.length - 1 ? "mb-3" : ""
+										} row ai-center timeline-item w-100% ml-0 mr-0`}
 									>
 										{/* {`${index + " != " + (requestLogs.length - 1)}`} */}
 										{/* <p key={index}>{item.status}</p> */}
@@ -146,20 +155,20 @@ const ApprovalAdminDetail = ({ match }) => {
 											<p className="txtf-c ff-1-bd">
 												{item.status != null
 													? item.status.split("-").map((item, index) => {
-														const turnToUppercase = word => {
-															if (word === "csr" || word === "rc")
-																return word.toUpperCase();
-															else return word;
-														};
+															const turnToUppercase = word => {
+																if (word === "csr" || word === "rc")
+																	return word.toUpperCase();
+																else return word;
+															};
 
-														return (
-															<>
-																{index != 0
-																	? " " + turnToUppercase(item)
-																	: turnToUppercase(item)}
-															</>
-														);
-													})
+															return (
+																<>
+																	{index != 0
+																		? " " + turnToUppercase(item)
+																		: turnToUppercase(item)}
+																</>
+															);
+													  })
 													: item.status}
 											</p>
 											<p>{formatDate(item.time)}</p>

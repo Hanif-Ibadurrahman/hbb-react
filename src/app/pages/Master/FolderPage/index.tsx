@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import Alert from "app/components/Alerts";
 import { selectDocuemnts } from "store/Selector/DocumentSelector";
-
+import ModalForm from "./ModalForm";
 import {
 	deleteFolder,
 	getFolderDetail,
@@ -151,7 +151,7 @@ const DocumentPage = () => {
 	return (
 		<>
 			<Helmet>
-				<title>Dox - Request Box</title>
+				<title>Dox - Master Data</title>
 				<meta
 					name="description"
 					content="A React Boilerplate application homepage"
@@ -170,8 +170,14 @@ const DocumentPage = () => {
 					show={showAlertFailed}
 					onHide={() => setShowAlertFailed(false)}
 				/>
+				<ModalForm
+					modal={modalShow}
+					hide={_onHide}
+					modalSet={setModalShow}
+					valueModalSet={false}
+				/>
 				<PageHeader
-					breadcrumb={["Master", "Document"]}
+					breadcrumb={["Master", "Folder"]}
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}

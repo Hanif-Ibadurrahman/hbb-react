@@ -6,6 +6,7 @@ import {
 	RESET_DOCUMENT_LIST,
 	RESET_DOCUMENT_FORM,
 	SET_DOCUMENT_DATA,
+	GET_DOCUMENTS_FILTER,
 } from "../../actions/DocumentAction";
 import {
 	DocumentsInterfaceState,
@@ -30,6 +31,16 @@ export const initialState: DocumentsInterfaceState = {
 		location: "",
 		status: "",
 		sign_code: "",
+		box: {
+			code_box: "",
+			id: "",
+		},
+		folder: {
+			id: "",
+			location: "",
+			no: "",
+			sign_code: "",
+		},
 	},
 	Meta: {
 		total: 0,
@@ -61,6 +72,18 @@ export default (
 					per_page: payload?.meta?.total_page,
 				},
 				ErrorDocument: payload.errorMessage,
+			};
+		case GET_DOCUMENTS_FILTER:
+			return {
+				...state,
+				Document: payload?.data?.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total_page,
+					per_page: payload?.meta?.total_page,
+				},
+				ErrorDocument: payload?.errorMessage,
 			};
 		case GET_DOCUMENT_DETAIL:
 			return {
@@ -104,6 +127,16 @@ export default (
 					location: "",
 					status: "",
 					sign_code: "",
+					box: {
+						code_box: "",
+						id: "",
+					},
+					folder: {
+						id: "",
+						location: "",
+						no: "",
+						sign_code: "",
+					},
 				},
 			};
 		default:
