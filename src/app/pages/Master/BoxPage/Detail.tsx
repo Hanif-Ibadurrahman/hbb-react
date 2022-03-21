@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Form, Button, Card } from "react-bootstrap";
 import { PageWrapper } from "app/components/PageWrapper";
 import Breadcrumb from "app/components/BreadCrumb";
@@ -9,6 +9,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { getBoxDetail } from "actions/BoxActions";
 import { selectBox } from "store/Selector/BoxSelector";
 import { BoxInterfaceState } from "store/Types/BoxTypes";
+import { DataTable } from "app/components/Datatables";
+import DropdownAction from "../Components/DropdownAction";
 
 const BoxPageDetail = ({ match }) => {
 	const box: BoxInterfaceState = useSelector(selectBox);
@@ -27,7 +29,46 @@ const BoxPageDetail = ({ match }) => {
 		dispatch(getBoxDetail(box_id));
 	}, []);
 
-	const folders = box?.folders
+	const folders = box?.folders;
+
+	const action = id => [
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "Folder-Detail/" + id,
+			type: 1,
+		},
+	];
+
+	const header = [
+		{
+			title: "No Folder",
+			prop: "no",
+			sortable: true,
+			cellProps: {
+				style: { width: "80%" },
+			},
+			headerCell: () => {
+				return (
+					<div className="cur-p">
+						{`No Folder`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
+			},
+		},
+		{
+			title: "Action",
+			prop: "Action",
+			cellProps: {
+				style: { flex: 1 },
+				className: "realname-class",
+			},
+			cell: row => {
+				return <DropdownAction list={action(row.id)} />;
+			},
+		},
+	];
 
 	return (
 		<>
@@ -42,19 +83,31 @@ const BoxPageDetail = ({ match }) => {
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Code Box</Form.Label>
-								<Form.Control type="text" disabled defaultValue={box.code_box} />
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={box?.code_box}
+								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Custome Code</Form.Label>
-								<Form.Control type="text" disabled defaultValue={box.custom_code_box} />
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={box?.custom_code_box}
+								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Status</Form.Label>
-								<Form.Control type="text" disabled defaultValue={box.status} />
+								<Form.Control type="text" disabled defaultValue={box?.status} />
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Code Lemari</Form.Label>
-								<Form.Control type="text" disabled defaultValue={box.cabinet_slot.name} />
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={box?.cabinet_slot?.name}
+								/>
 							</Form.Group>
 							<div className="d-flex jc-end">
 								<Button
@@ -67,65 +120,24 @@ const BoxPageDetail = ({ match }) => {
 							</div>
 						</Form>
 					</Card>
-					<Card className="ph-5 pv-3 bd-rs-2 mt-3">
-						<h6 className="mb-4 mt-4">Folder</h6>
-						{folders.map((item, index) => {
-							return (
-								<div>
-									<p className="mb-1 p-lg">Folder {index + 1}</p>
-									<div className="w-50% bg-dark h-2px mb-4" />
-									<div className="row mb-4">
-										<div className="col-6">
-											<Form.Group>
-												<Form.Label>No Folder</Form.Label>
-												<Form.Control
-													type="text"
-													disabled
-													defaultValue={item.no}
-												/>
-											</Form.Group>
-											<Form.Group className="mt-2">
-												<Form.Label>Location</Form.Label>
-												<Form.Control
-													type="text"
-													disabled
-													defaultValue={item.status}
-												/>
-											</Form.Group>
-											<Button
-												className="mv-4 mr-4"
-												variant="success"
-												onClick={() => history.push("/Folder-Detail/" + item.id)}
-											>
-												Lihat Detail
-											</Button>{" "}
-										</div>
-										<div className="col-6 d-flex jc-center ai-center">
-											<QR
-												id="QRBox"
-												title="Scan here"
-												value={item.sign_code}
-												className="d-flex jc-center"
-											/>
-										</div>
-									</div>
-								</div>
-							)
-						})}
-					</Card>
 				</div>
 				<div className="col col-3">
 					<Card className="p-4 bd-rs-2 d-flex ai-center jc-center">
 						<QR
 							id="Detail-Box-QR"
 							title="Scan here"
-							value={box.sign_code}
+							// value={box !== null ? box?.sign_code : "-"}
+							value={"-"}
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
 							<p className="p-xl ff-1-bd ta-center mt-3">Box Barcode</p>
 						</div>
 					</Card>
+				</div>
+				<div>
+					<h6 className="mb-4 mt-4">Folder</h6>
+					<DataTable tableHeader={header} tableBody={folders} />
 				</div>
 			</PageWrapper>
 		</>

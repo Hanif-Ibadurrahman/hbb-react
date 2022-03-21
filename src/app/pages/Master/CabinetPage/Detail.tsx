@@ -12,7 +12,7 @@ import { CabinetInterfaceState } from "store/Types/CabinetTypes";
 
 const CabinetPageDetail = ({ match }) => {
 	const cabinet: CabinetInterfaceState = useSelector(selectCabinet);
-	const cabinetSlot = cabinet.cabinet_slots ?? []
+	const cabinetSlot = cabinet.cabinet_slots ?? [];
 	let history = useHistory();
 
 	const goToPreviousPath = e => {
@@ -27,6 +27,8 @@ const CabinetPageDetail = ({ match }) => {
 	useEffect(() => {
 		dispatch(getCabinetDetail(cabinet_id));
 	}, []);
+
+	console.log("test", cabinet.total_bays);
 
 	return (
 		<>
@@ -50,7 +52,7 @@ const CabinetPageDetail = ({ match }) => {
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Total Bays</Form.Label>
 								<Form.Control
-									type="number"
+									type="text"
 									disabled
 									defaultValue={cabinet.total_bays}
 								/>
@@ -119,7 +121,7 @@ const CabinetPageDetail = ({ match }) => {
 										</div>
 									</div>
 								</div>
-							)
+							);
 						})}
 					</Card>
 				</div>
@@ -132,9 +134,7 @@ const CabinetPageDetail = ({ match }) => {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">
-								{cabinet.id}
-							</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">{cabinet.id}</p>
 						</div>
 					</Card>
 				</div>

@@ -5,15 +5,12 @@ import {
 	Row,
 	Col,
 	Button,
-	Dropdown,
-	DropdownButton,
 } from "react-bootstrap";
-import React, { useEffect, useState } from "react";
-import { Formik, FieldArray, Field } from "formik";
+import React, { useState } from "react";
+import { Formik, FieldArray } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 import {
-	selectRequestBoxes,
 	selectRequestBox,
 } from "../../../../store/Selector/RequestBoxSelector";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,7 +24,8 @@ import moment from "moment";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
-	const [checked, setChecked] = useState(false);
+	const [alertMessage, setAlertMessage] = useState("");
+	const [varianAlert, setVarianAlert] = useState("");
 	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
 	const dispatch = useDispatch();
 	const validationSchema = Yup.object().shape({
@@ -45,15 +43,11 @@ const ModalForm = props => {
 	const Express = moment(addDays(0)).add(2, "hours").format("YYYY-MM-DDTHH:MM");
 	const Emergency = moment(addDays(0)).format("YYYY-MM-DD");
 
-	function handleOnChange() {
-		setChecked(!checked);
-	}
-
 	return (
 		<>
 			<Alert
-				text="Request Berhasil Di Input"
-				variant="success"
+				text={alertMessage}
+				variant={varianAlert}
 				show={showAlert}
 				style={{
 					top: 50,
@@ -84,12 +78,19 @@ const ModalForm = props => {
 								dispatch({ type: RESET_REQUEST_BOX_FORM });
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
+								setAlertMessage("Request Berhasil Di Input");
+								setVarianAlert("success");
 								setTimeout(function () {
 									window.location.reload();
 								}, 1000);
 							});
 						} catch (e) {
-							console.log("Error Redux");
+							setShowAlert(true);
+							setAlertMessage("Request Gagal");
+							setVarianAlert("danger");
+							setTimeout(function () {
+								setShowAlert(false);
+							}, 4000);
 						}
 					}}
 				>

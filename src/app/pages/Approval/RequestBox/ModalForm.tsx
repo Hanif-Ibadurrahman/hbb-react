@@ -23,8 +23,9 @@ import moment from "moment";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
+	const [alertMessage, setAlertMessage] = useState("");
+	const [varianAlert, setVarianAlert] = useState("");
 	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
-	// const requestBoxes: useSelector(selectRequestBoxes);
 	const approvalAdmin: ApprovalInterfaceState =
 		useSelector(SelectApprovalAdmin);
 
@@ -36,8 +37,8 @@ const ModalForm = props => {
 	return (
 		<>
 			<Alert
-				text="Data Di Reject"
-				variant="danger"
+				text={alertMessage}
+				variant={varianAlert}
 				show={showAlert}
 				style={{
 					top: 50,
@@ -61,16 +62,22 @@ const ModalForm = props => {
 					onSubmit={async values => {
 						try {
 							values.Id = requestBox.id;
-							let action = dispatch(await ApprovalAdmin(values));
+							dispatch(await ApprovalAdmin(values));
 							setShowAlert(true);
+							setAlertMessage("Data Berhasil di Reject");
+							setVarianAlert("success");
 							setTimeout(function () {
 								window.location.reload();
 							}, 1000);
 							dispatch({ type: RESET_REQUEST_BOX_FORM });
 							props.modalSet(props.valueModalSet);
-							console.log(action);
 						} catch (e) {
-							console.log("ini error di depan");
+							setShowAlert(true);
+							setAlertMessage("Request Gagal");
+							setVarianAlert("danger");
+							setTimeout(function () {
+								setShowAlert(false);
+							}, 4000);
 						}
 					}}
 				>

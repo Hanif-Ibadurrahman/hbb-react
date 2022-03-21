@@ -3,10 +3,7 @@ import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
-import { selectBoxes, selectBox } from "../../../../store/Selector/BoxSelector";
 import { useDispatch, useSelector } from "react-redux";
-import { CreateBox, UpdateBox, RESET_BOX_FORM } from "actions/BoxActions";
-import { BoxInterfaceState } from "store/Types/BoxTypes";
 import { DocumentInterfaceState } from "store/Types/DocumentTypes";
 import { selectDocument } from "store/Selector/DocumentSelector";
 import {
@@ -18,7 +15,8 @@ import moment from "moment";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
-	const [alertMessage, setalertMessage] = useState("");
+	const [alertMessage, setAlertMessage] = useState("");
+	const [varianAlert, setVarianAlert] = useState("");
 	const document: DocumentInterfaceState = useSelector(selectDocument);
 	const dispatch = useDispatch();
 
@@ -31,38 +29,35 @@ const ModalForm = props => {
 	const Year = moment(addDays(2)).format("YYYY");
 	const MinDate = moment(addDays(0)).format("YYYY-MM-DD");
 
-	console.log("year:", Year);
-
 	const validationSchema = Yup.object().shape({
-		No: Yup.string().required("*Wajib diisi"),
-		Date: Yup.string().required("*Wajib diisi"),
-		Detail: Yup.string().required("*Wajib diisi"),
-		Nominal: Yup.number().required("*Wajib diisi"),
-		ActiveYear: Yup.number().required("*Wajib diisi"),
-		LevelProgress: Yup.string().required("*Wajib diisi"),
-		MediaStorage: Yup.string().required("*Wajib diisi"),
-		Condition: Yup.string().required("*Wajib diisi"),
-		Amount: Yup.number().required("*Wajib diisi"),
-		CrossPoint: Yup.string().required("*Wajib diisi"),
-		Description: Yup.string().required("*Wajib diisi"),
-		NoDigital: Yup.string().required("*Wajib diisi"),
+		// no: Yup.string().required("*Wajib diisi"),
+		// date: Yup.string().required("*Wajib diisi"),
+		// detail: Yup.string().required("*Wajib diisi"),
+		// nominal: Yup.number().required("*Wajib diisi"),
+		// ActiveYear: Yup.number().required("*Wajib diisi"),
+		// LevelProgress: Yup.string().required("*Wajib diisi"),
+		// MediaStorage: Yup.string().required("*Wajib diisi"),
+		// Condition: Yup.string().required("*Wajib diisi"),
+		// Amount: Yup.number().required("*Wajib diisi"),
+		// CrossPoint: Yup.string().required("*Wajib diisi"),
+		// Description: Yup.string().required("*Wajib diisi"),
+		// NoDigital: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
 		<>
 			<Alert
 				text={alertMessage}
-				variant="success"
+				variant={varianAlert}
 				show={showAlert}
 				style={{
 					top: 50,
 					position: "fixed",
 					left: "50%",
-					transform: [{ translateX: "-50%" }],
+					transform: [{ translateX: "50%" }],
 				}}
 				onHide={() => setShowAlert(false)}
 			/>
-
 			<Modal
 				show={props.modal}
 				onHide={props.hide}
@@ -75,26 +70,32 @@ const ModalForm = props => {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							let action = document.id
+							let action = document?.id
 								? UpdateDcoument(values)
 								: CreateDocument(values);
-							// dispatch(loadingbarTurnOn)
 							const res = await action;
 							await dispatch(res);
 							action.then(() => {
 								dispatch({ type: RESET_DOCUMENT_FORM });
 								props.modalSet(props.valueModalSet);
+								props.modalSet(props.valueModalSet);
+								setShowAlert(true);
+								setAlertMessage("Data Berhasil di Reject");
+								setVarianAlert("success");
 							});
-							dispatch({ type: RESET_DOCUMENT_FORM });
-							props.modalSet(props.valueModalSet);
-							document.id ? (
-								<>Data Berhasil di Edit</>
-							) : (
-								<>Data Berhasil di Tambah</>
-							);
-							console.log(action);
+							document.id
+								? setAlertMessage("Data Berhasil di Edit")
+								: setAlertMessage("Data Berhasil di Tambah");
+							setTimeout(function () {
+								window.location.reload();
+							}, 1000);
 						} catch (e) {
-							console.log("ini error di depan");
+							setShowAlert(true);
+							setAlertMessage("Gagal Update Data");
+							setVarianAlert("danger");
+							setTimeout(function () {
+								setShowAlert(false);
+							}, 4000);
 						}
 					}}
 				>

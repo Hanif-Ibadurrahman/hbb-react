@@ -23,16 +23,20 @@ import { getRoomsList } from "actions/RoomAction";
 
 export const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
-	const [alertMessage, setalertMessage] = useState("");
+	const [alertMessage, setAlertMessage] = useState("");
+	const [varianAlert, setVarianAlert] = useState("");
 	const cabinet: CabinetInterfaceState = useSelector(selectCabinet);
 	const rooms: RoomsInterfaceState = useSelector(selectRooms);
 
 	const dispatch = useDispatch();
 
 	const validationSchema = Yup.object().shape({
-		code_cabinet: Yup.string().required("*Wajib diisi"),
-		total_bays: Yup.string().required("*Wajib diisi"),
-		// area_id: Yup.string().required("*Wajib diisi"),
+		// code_cabinet: Yup.string().required("*Wajib diisi"),
+		// block_number: Yup.string().required("*Wajib diisi"),
+		// total_bays: Yup.string().required("*Wajib diisi"),
+		// total_rows: Yup.string().required("*Wajib diisi"),
+		// total_column: Yup.string().required("*Wajib diisi"),
+		// depth: Yup.string().required("*Wajib diisi"),
 	});
 
 	const FetchData = (page = 1) => {
@@ -46,8 +50,8 @@ export const ModalForm = props => {
 	return (
 		<>
 			<Alert
-				text="Data Berhasil Di Input"
-				variant="success"
+				text={alertMessage}
+				variant={varianAlert}
 				show={showAlert}
 				style={{
 					top: 50,
@@ -72,7 +76,6 @@ export const ModalForm = props => {
 							let action = cabinet.id
 								? UpdateCabinet(values)
 								: CreateCabinet(values);
-							// dispatch(loadingbarTurnOn)
 							const res = await action;
 							await dispatch(res);
 							action.then(() => {
@@ -81,13 +84,21 @@ export const ModalForm = props => {
 							});
 							dispatch({ type: RESET_CABINET_FORM });
 							props.modalSet(props.valueModalSet);
-							cabinet.id ? (
-								<>Data Berhasil di Edit</>
-							) : (
-								<>Data Berhasil di Tambah</>
-							);
+							setShowAlert(true);
+							setVarianAlert("success");
+							cabinet.id
+								? setAlertMessage("Data Berhasil di Edit")
+								: setAlertMessage("Data Berhasil di Tambah");
+							setTimeout(function () {
+								window.location.reload();
+							}, 1000);
 						} catch (e) {
-							console.log("ini error di depan");
+							setShowAlert(true);
+							setAlertMessage("Gagal Update Data");
+							setVarianAlert("danger");
+							setTimeout(function () {
+								setShowAlert(false);
+							}, 4000);
 						}
 					}}
 				>
@@ -153,9 +164,27 @@ export const ModalForm = props => {
 													) : null}
 												</Form.Group>
 												<Form.Group className="mb-4" controlId="formname">
-													<Form.Label>Bays</Form.Label>
+													<Form.Label>Nomor Blok</Form.Label>
 													<Form.Control
-														type="text"
+														type="number"
+														name="block_number"
+														placeholder="Bays"
+														value={values.block_number}
+														onChange={e => {
+															handleChange(e);
+														}}
+														onBlur={handleBlur}
+													/>
+													{touched.block_number && errors.block_number ? (
+														<p className="tcdanger5 posa psm">
+															{errors.block_number}
+														</p>
+													) : null}
+												</Form.Group>
+												<Form.Group className="mb-4" controlId="formname">
+													<Form.Label>Jumlah Bays</Form.Label>
+													<Form.Control
+														type="number"
 														name="total_bays"
 														placeholder="Bays"
 														value={values.total_bays}
@@ -168,6 +197,58 @@ export const ModalForm = props => {
 														<p className="tcdanger5 posa psm">
 															{errors.total_bays}
 														</p>
+													) : null}
+												</Form.Group>
+												<Form.Group className="mb-4" controlId="formname">
+													<Form.Label>Jumlah Baris</Form.Label>
+													<Form.Control
+														type="number"
+														name="total_rows"
+														placeholder="Jumlah Baris"
+														value={values.total_rows}
+														onChange={e => {
+															handleChange(e);
+														}}
+														onBlur={handleBlur}
+													/>
+													{touched.total_rows && errors.total_rows ? (
+														<p className="tcdanger5 posa psm">
+															{errors.total_rows}
+														</p>
+													) : null}
+												</Form.Group>
+												<Form.Group className="mb-4" controlId="formname">
+													<Form.Label>Jumlah Column</Form.Label>
+													<Form.Control
+														type="number"
+														name="total_columns"
+														placeholder="columns"
+														value={values.total_columns}
+														onChange={e => {
+															handleChange(e);
+														}}
+														onBlur={handleBlur}
+													/>
+													{touched.total_columns && errors.total_columns ? (
+														<p className="tcdanger5 posa psm">
+															{errors.total_columns}
+														</p>
+													) : null}
+												</Form.Group>
+												<Form.Group className="mb-4" controlId="formname">
+													<Form.Label>Depth</Form.Label>
+													<Form.Control
+														type="number"
+														name="depth"
+														placeholder="Depth"
+														value={values.depth}
+														onChange={e => {
+															handleChange(e);
+														}}
+														onBlur={handleBlur}
+													/>
+													{touched.depth && errors.depth ? (
+														<p className="tcdanger5 posa psm">{errors.depth}</p>
 													) : null}
 												</Form.Group>
 											</Form>

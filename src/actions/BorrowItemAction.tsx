@@ -42,7 +42,6 @@ export const getBorrowList = page => {
 };
 
 export const CreateBorrowItem = async (data: BorrowItemInterfaceState) => {
-	console.log("data create", data);
 	return async dispatch => {
 		try {
 			dispatch({
@@ -86,7 +85,6 @@ export const GetNumberCart = () => {
 };
 
 export const AddCart = async (data: BorrowItemInterfaceState) => {
-	console.log("Add cart action", data);
 	return async dispatch => {
 		try {
 			dispatch({

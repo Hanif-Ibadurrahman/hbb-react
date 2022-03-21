@@ -21,8 +21,6 @@ const CompanyPage = () => {
 	const Companys = useSelector(selectCompanys);
 	const dispatch = useDispatch();
 
-	console.log("Data Test", Companys);
-
 	const FetchData = (page = 1) => {
 		dispatch(getCompanyList(page));
 	};

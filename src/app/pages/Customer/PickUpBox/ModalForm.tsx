@@ -14,6 +14,8 @@ import moment from "moment";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
+	const [alertMessage, setAlertMessage] = useState("");
+	const [varianAlert, setVarianAlert] = useState("");
 	const borrowBox: PickUpItemInterfaceState = useSelector(selectPickUpItem);
 	const cart = useSelector(selectPickUpItems);
 	const cartStash = cart.Cart;
@@ -40,8 +42,8 @@ const ModalForm = props => {
 	return (
 		<>
 			<Alert
-				text="Pick Up Berhasil"
-				variant="success"
+				text={alertMessage}
+				variant={varianAlert}
 				show={showAlert}
 				style={{
 					top: 50,
@@ -71,12 +73,19 @@ const ModalForm = props => {
 							action.then(() => {
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
+								setAlertMessage("Request Pick Up Berhasil");
+								setVarianAlert("success");
 								setTimeout(function () {
 									window.location.reload();
 								}, 1000);
 							});
 						} catch (e) {
-							console.log("Error Redux");
+							setShowAlert(true);
+							setAlertMessage("Request Gagal");
+							setVarianAlert("danger");
+							setTimeout(function () {
+								setShowAlert(false);
+							}, 4000);
 						}
 					}}
 				>

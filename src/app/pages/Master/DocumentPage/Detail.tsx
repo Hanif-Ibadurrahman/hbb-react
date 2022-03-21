@@ -105,6 +105,22 @@ const DocumentPageDetail = ({ match }) => {
 									defaultValue={document.no_digital}
 								/>
 							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>No Folder</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document?.folder?.no}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>No Box</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document?.box?.code_box}
+								/>
+							</Form.Group>
 							<div className="d-flex jc-end">
 								<Button
 									className="mv-4 mr-4"

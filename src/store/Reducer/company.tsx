@@ -15,6 +15,7 @@ export const initialState: CompanysInterfaceState = {
 	Companys: [],
 	Company: {
 		id: "",
+		code: "",
 		name: "",
 		location: "",
 		longitude: "",
@@ -91,6 +92,7 @@ export default (
 				...state,
 				Company: {
 					id: "",
+					code: "",
 					name: "",
 					location: "",
 					longitude: "",

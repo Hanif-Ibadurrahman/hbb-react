@@ -22,6 +22,7 @@ import logins from "./Reducer/login";
 import pickUpItems from "./Reducer/pickUp";
 import customers from "./Reducer/customer";
 import returnItems from "./Reducer/returnItem";
+import staffs from "./Reducer/staff";
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -50,6 +51,7 @@ export function createReducer(injectedReducers: InjectedReducersType = {}) {
 			pickUpItems,
 			customers,
 			returnItems,
+			staffs,
 		});
 	}
 }

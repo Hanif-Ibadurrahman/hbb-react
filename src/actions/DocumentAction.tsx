@@ -1,6 +1,14 @@
 import React from "react";
 import { DocumentInterfaceState } from "store/Types/DocumentTypes";
-import { create, destroy, getAll, getById, update } from "../api/documents";
+import {
+	create,
+	destroy,
+	getAll,
+	getById,
+	update,
+	filter,
+} from "../api/documents";
+export const GET_DOCUMENTS_FILTER = "GET_DOCUMENT_FILTER";
 export const GET_DOCUMENTS_LIST = "GET_DOCUMENTS_LIST";
 export const GET_DOCUMENT_DETAIL = "GET_DOCUMENT_DETAIL";
 export const CREATE_DOCUMENT = "CREAT_DOCUMENT";
@@ -12,6 +20,29 @@ export const SET_DOCUMENT_DATA = "SET_DOCUMENT_DATA";
 export const UPDATE_DOCUMENT = "UPDATE_DOCUMENT";
 
 let limit = 20;
+
+export const filterData = async (data: DocumentInterfaceState) => {
+	console.log("data redux >>>>");
+
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_DOCUMENT_DATA,
+				payload: data,
+			});
+		} catch (error: any) {
+			dispatch({
+				type: GET_DOCUMENTS_FILTER,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
 
 export const getDocumentsList = page => {
 	return async dispatch => {

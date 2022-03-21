@@ -14,18 +14,16 @@ import moment from "moment";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
-	const [alertMessage, setalertMessage] = useState("");
+	const [alertMessage, setAlertMessage] = useState("");
+	const [varianAlert, setVarianAlert] = useState("");
 	const borrowBox: BorrowItemInterfaceState = useSelector(selectBorrowItem);
 	const cart = useSelector(selectBorrowItems);
 	const cartStash = cart.Cart;
-	console.log("Modal Cart>>>", cartStash);
 	function addDays(days) {
 		const result = new Date();
 		result.setDate(result.getDate() + days);
 		return result;
 	}
-
-	const DeliveredDate = moment(addDays(2)).format("YYYY-MM-DD");
 
 	const RegularDate = moment(addDays(2)).format("YYYY-MM-DD");
 	const Express = moment(addDays(0)).add(2, "hours").format("YYYY-MM-DDTHH:MM");
@@ -44,8 +42,8 @@ const ModalForm = props => {
 	return (
 		<>
 			<Alert
-				text="Data Berhasil di Request"
-				variant="success"
+				text={alertMessage}
+				variant={varianAlert}
 				show={showAlert}
 				style={{
 					top: 50,
@@ -75,14 +73,20 @@ const ModalForm = props => {
 							action.then(() => {
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
+								setAlertMessage("Request Peminjaman Berhasil");
+								setVarianAlert("success");
 								setTimeout(function () {
 									window.location.reload();
 								}, 1000);
 							});
 							props.modalSet(props.valueModalSet);
-							console.log(action);
 						} catch (e) {
-							console.log("ini error di depan");
+							setShowAlert(true);
+							setAlertMessage("Request Gagal");
+							setVarianAlert("danger");
+							setTimeout(function () {
+								setShowAlert(false);
+							}, 4000);
 						}
 					}}
 				>
