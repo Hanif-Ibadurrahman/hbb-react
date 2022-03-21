@@ -16,14 +16,13 @@ import {
 import { DivisionInterfaceState } from "store/Types/DivisionTypes";
 
 const ModalForm = props => {
-	// const [CodeCompany, setCodeCompany] = useState("");
 	const [showAlert, setShowAlert] = useState(false);
-	const [alertMessage, setalertMessage] = useState("");
+	const [alertMessage, setAlertMessage] = useState("");
+	const [varianAlert, setVarianAlert] = useState("");
 	const divisions: DivisionInterfaceState = useSelector(selectDivision);
 	const dispatch = useDispatch();
 
 	const validationSchema = Yup.object().shape({
-		// CodeCompany: Yup.string().required("*Wajib diisi"),
 		name: Yup.string().required("*Wajib diisi"),
 	});
 
@@ -31,7 +30,7 @@ const ModalForm = props => {
 		<>
 			<Alert
 				text={alertMessage}
-				variant="success"
+				variant={varianAlert}
 				show={showAlert}
 				style={{
 					top: 50,
@@ -41,7 +40,6 @@ const ModalForm = props => {
 				}}
 				onHide={() => setShowAlert(false)}
 			/>
-
 			<Modal
 				show={props.modal}
 				onHide={props.hide}
@@ -61,19 +59,25 @@ const ModalForm = props => {
 							const res = await action;
 							await dispatch(res);
 							action.then(() => {
+								setShowAlert(true);
+								setVarianAlert("success");
+								divisions.id
+									? setAlertMessage("Data Berhasil di Edit")
+									: setAlertMessage("Data Berhasil di Tambah");
+								setTimeout(function () {
+									window.location.reload();
+								}, 1000);
 								dispatch({ type: RESET_DIVISION_FORM });
 								props.modalSet(props.valueModalSet);
 							});
-							dispatch({ type: RESET_DIVISION_FORM });
-							props.modalSet(props.valueModalSet);
-							divisions.id ? (
-								<>Data Berhasil di Edit</>
-							) : (
-								<>Data Berhasil di Tambah</>
-							);
-							console.log(action);
 						} catch (e) {
-							console.log("ini error di depan");
+							setShowAlert(true);
+							setAlertMessage("Gagal Update Data");
+							setVarianAlert("danger");
+							setTimeout(function () {
+								setShowAlert(false);
+							}, 4000);
+							dispatch({ type: RESET_DIVISION_FORM });
 						}
 					}}
 				>
@@ -100,7 +104,7 @@ const ModalForm = props => {
 												<Form.Label>Name Divisi</Form.Label>
 												<Form.Control
 													type="text"
-													name="code_name"
+													name="name"
 													placeholder="Name Divisi"
 													value={values.name}
 													onChange={e => {

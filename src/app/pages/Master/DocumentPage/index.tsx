@@ -14,7 +14,9 @@ import {
 	deleteDocument,
 	getDocumentDetail,
 	getDocumentsList,
+	filterData,
 } from "actions/DocumentAction";
+import { DocumentInterfaceState } from "store/Types/DocumentTypes";
 
 const DocumentPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);

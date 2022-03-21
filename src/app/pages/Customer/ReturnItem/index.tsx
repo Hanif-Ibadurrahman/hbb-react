@@ -2,13 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
-// import PageHeader from "../Components/PageHeader";
 import DropdownAction from "app/pages/Master/Components/DropdownAction";
-// import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import { AddCart, getBorrowList } from "actions/BorrowItemAction";
+import { AddCart } from "actions/BorrowItemAction";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import Alert from "app/components/Alerts";
 import ModalForm from "./ModalForm";
 import "../BorrowBox/page.scoped.scss";
 import _ from "lodash";
@@ -16,32 +13,22 @@ import { selectReturnItems } from "store/Selector/ReturnItemSelector";
 import { getReturnList } from "actions/ReturnAction";
 
 const ReturnItemPage = () => {
-	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
-	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
 	const returnList = useSelector(selectReturnItems);
 	const cartStash = useSelector((state: RootStateOrAny) => state?.pickUpItems);
 
-	console.log("data >>>", returnList);
-
-
-	// console.log("Total Cart Tash>>>>", Cart.length);
-
 	useEffect(() => {
 		setCart(cartStash);
-		console.log("CART NEW>>", cart.Cart);
 	}, []);
 
 	useEffect(() => {
 		setCart(cartStash);
-		console.log("CART NEW>>", cart.Cart);
 	}, [cartStash]);
 
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		// dispatch(getBoxesList(page));
 		dispatch(getReturnList(page));
 	};
 
@@ -60,10 +47,7 @@ const ReturnItemPage = () => {
 
 	const checkCart = id => {
 		if (cart) {
-			console.log("total cart", cart?.numberCart, cart?.Cart);
-			console.log("id onclick", id);
 			const checkCart = cart?.Cart.indexOf(String(id));
-			console.log("check cart index: ", checkCart);
 		}
 	};
 
@@ -81,10 +65,8 @@ const ReturnItemPage = () => {
 		{
 			icon: "fa-search",
 			title: "Detail",
-			type: 2,
-			onclick: "",
-			dispatch: dispatch,
-			row: id,
+			url: "Box-Detail/" + id,
+			type: 1,
 		},
 	];
 
@@ -94,7 +76,15 @@ const ReturnItemPage = () => {
 			prop: "code_box",
 			sortable: true,
 			cellProps: {
-				style: { width: "80%" },
+				style: { width: "40%" },
+			},
+		},
+		{
+			title: "Custome Code Box",
+			prop: "custom_code_box",
+			sortable: true,
+			cellProps: {
+				style: { width: "40%" },
 			},
 		},
 		{
@@ -153,19 +143,6 @@ const ReturnItemPage = () => {
 				/>
 			</Helmet>
 			<PageWrapper>
-				<Alert
-					text="Data Berhasil Di Hapus"
-					variant="success"
-					show={showAlertSuccess}
-					onHide={() => setShowAlertSuccess(false)}
-				/>
-				<Alert
-					text="Data Gagal Di Hapus"
-					variant="danger"
-					show={showAlertFailed}
-					onHide={() => setShowAlertFailed(false)}
-				/>
-
 				<ModalForm
 					modal={modalShow}
 					hide={_onHide}

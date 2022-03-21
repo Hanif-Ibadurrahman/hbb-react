@@ -1,4 +1,16 @@
 import { PaginationState } from "../Types/PaginationTypes";
+
+interface BoxDocumentInterfaceState {
+	id: string | null;
+	code_box: string;
+}
+
+interface FolderDocumentInterfaceState {
+	id: string | null;
+	location: string;
+	no: string;
+	sign_code: string;
+}
 export interface DocumentInterfaceState {
 	id: string | null;
 	no: string;
@@ -16,6 +28,8 @@ export interface DocumentInterfaceState {
 	location: string;
 	status: string;
 	sign_code: string;
+	box: BoxDocumentInterfaceState;
+	folder: FolderDocumentInterfaceState;
 }
 
 export interface DocumentsInterfaceState {

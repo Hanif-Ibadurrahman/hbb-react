@@ -9,7 +9,7 @@ export default function PageHeader(props) {
 			<div className="d-flex jc-between ai-center mb-4">
 				<Breadcrumb crumbs={props.breadcrumb} selected />
 				<div className="d-flex ml-a">
-					{/* <Filter /> */}
+					<Filter />
 					{/* <Button
 						className="d-flex ai-center mr-2 bg-warning-5"
 						variant="warning"

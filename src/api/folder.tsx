@@ -4,9 +4,7 @@ import api from "./dox";
 export const create = async (data: FolderInterfaceState) => {
 	let payload = {
 		no: data.no,
-		location: data.location,
-		status: data.status,
-		sign_code: data.sign_code,
+		company_id: data.company.id,
 	};
 	return api.post("/folders", payload);
 };
@@ -15,11 +13,8 @@ export const update = async (data: FolderInterfaceState) => {
 	let id = data.id;
 	let payload = {
 		no: data.no,
-		location: data.location,
-		status: data.status,
-		sign_code: data.sign_code,
+		company_id: data.company.id,
 	};
-	console.log(payload);
 	return await api.put(`/folders/${id}`, payload);
 };
 

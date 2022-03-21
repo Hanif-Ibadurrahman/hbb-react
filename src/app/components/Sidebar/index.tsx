@@ -33,13 +33,15 @@ export function Sidebar() {
 			case "superadmin":
 				setRole("admin");
 				break;
-			case "customer":
-				setRole("customer");
+			case "csradmin":
+				setRole("csradmin");
+				break;
+			case "csroperation":
+				setRole("csroperation");
 				break;
 			default:
 				setRole("customer");
 		}
-		console.log("User>>", user);
 	}, [user]);
 
 	const dispatch = useDispatch();
@@ -56,7 +58,7 @@ export function Sidebar() {
 	const requestBoxes = useSelector(selectRequestBoxes);
 	const notifAdminBox = requestBoxes.Meta.total;
 
-	const CustomerMenu = props => {
+	const CustomerMenu = () => {
 		return (
 			<>
 				<MenuItem
@@ -104,9 +106,7 @@ export function Sidebar() {
 					{""} Peminjaman
 				</MenuItem>
 				<MenuItem
-					id={
-						window.location.pathname === "/Customer/Return" ? "active" : ""
-					}
+					id={window.location.pathname === "/Customer/Return" ? "active" : ""}
 					className=" pos-r"
 					icon={<img src={IconUI} className="h-5" alt="awSnap" />}
 					onClick={() => {
@@ -116,11 +116,7 @@ export function Sidebar() {
 					{""} Pengembalian
 				</MenuItem>
 				<MenuItem
-					id={
-						window.location.pathname === "Customer/History"
-							? "active"
-							: ""
-					}
+					id={window.location.pathname === "Customer/History" ? "active" : ""}
 					className=" pos-r"
 					icon={<img src={IconTable} className="h-5" alt="awSnap" />}
 					onClick={() => {
@@ -133,7 +129,7 @@ export function Sidebar() {
 		);
 	};
 
-	const AdminMenu = props => {
+	const AdminMenu = () => {
 		return (
 			<>
 				<MenuItem
@@ -146,30 +142,6 @@ export function Sidebar() {
 				>
 					{""} Dashboard
 				</MenuItem>
-				{/* <SubMenu
-					className="pos-r"
-					icon={<img src={IconHome} className="h-5" alt="awSnap" />}
-					title="Dashboard"
-				>
-					{DashboardData.map((val, key) => {
-						return (
-							<MenuItem
-								id={
-									window.location.pathname.split(val.link).pop() ? "" : "active"
-								}
-								className="pos-r"
-								icon={<img src={val.icon} className="h-5" alt="awSnap" />}
-								key={key}
-								onClick={() => {
-									window.location.pathname = val.link;
-								}}
-							>
-								{""}
-								{val.title}
-							</MenuItem>
-						);
-					})}
-				</SubMenu> */}
 				<MenuItem
 					id={window.location.pathname === "/Approval-Admin" ? "active" : ""}
 					className=" pos-r"
@@ -178,7 +150,7 @@ export function Sidebar() {
 						window.location.pathname = "/Approval-Admin";
 					}}
 				>
-					{""} Approval Admin
+					{""} Approval CSR Admin
 				</MenuItem>
 				<MenuItem
 					id={
@@ -190,12 +162,10 @@ export function Sidebar() {
 						window.location.pathname = "/Approval-Operation";
 					}}
 				>
-					{""} Approval Operation
+					{""} Approval CSR Operation
 				</MenuItem>
 				<MenuItem
-					id={
-						window.location.pathname === "/Preview-Approvral" ? "active" : ""
-					}
+					id={window.location.pathname === "/Preview-Approvral" ? "active" : ""}
 					className=" pos-r"
 					icon={<img src={IconForm} className="h-5" alt="awSnap" />}
 					onClick={() => {
@@ -232,6 +202,84 @@ export function Sidebar() {
 		);
 	};
 
+	const CsrAdminMenu = () => {
+		return (
+			<>
+				<MenuItem
+					id={window.location.pathname === "/Dashboard" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconHome} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Dashboard";
+					}}
+				>
+					{""} Dashboard
+				</MenuItem>
+				<MenuItem
+					id={window.location.pathname === "/Approval-Admin" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconUI} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Approval-Admin";
+					}}
+				>
+					{""} Approval Admin
+				</MenuItem>
+			</>
+		);
+	};
+
+	const CsrOperationMenu = () => {
+		return (
+			<>
+				<MenuItem
+					id={window.location.pathname === "/Dashboard" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconHome} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Dashboard";
+					}}
+				>
+					{""} Dashboard
+				</MenuItem>
+				<MenuItem
+					id={
+						window.location.pathname === "/Approval-Operation" ? "active" : ""
+					}
+					className=" pos-r"
+					icon={<img src={IconForm} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Approval-Operation";
+					}}
+				>
+					{""} Approval CSR Operation
+				</MenuItem>
+				<MenuItem
+					id={window.location.pathname === "/Preview-Approvral" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconForm} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Preview-Approvral";
+					}}
+				>
+					{""} Riwayat Approval
+				</MenuItem>
+			</>
+		);
+	};
+
+	const SideBarMenu = () => {
+		if (role === "admin") {
+			return <AdminMenu />;
+		} else if (role === "csradmin") {
+			return <CsrAdminMenu />;
+		} else if (role === "csroperation") {
+			return <CsrOperationMenu />;
+		} else {
+			return <CustomerMenu />;
+		}
+	};
+
 	return (
 		<div className={`sidebar bg-medium-tint w-20% ${isActive ? "" : "icon"}`}>
 			<div className="sidebar-header">
@@ -241,7 +289,8 @@ export function Sidebar() {
 			</div>
 			<ProSidebar>
 				<Menu iconShape="square">
-					{role === "admin" ? <AdminMenu /> : <CustomerMenu />}
+					{/* {role === "admin" ? <AdminMenu /> : <CustomerMenu />} */}
+					<SideBarMenu />
 				</Menu>
 				{/* <div className="w-8 h-8 bd-rs-6 d-flex jc-center ai-center ml-a mr-a pos-r p-2 bg-warning-3 btn-sidebar cur-p" onClick={handleToggle}><i className="fas fa-chevron-left"></i></div> */}
 			</ProSidebar>

@@ -1,12 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
 import { ModalForm } from "./ModalForm";
 import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
-import api from "../../../../api/dox";
-import PaginatedAreaResponse from "app/pages/Interface/folder";
 
 const action = [
 	{

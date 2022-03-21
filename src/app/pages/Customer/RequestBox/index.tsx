@@ -19,8 +19,6 @@ const BoxPage = () => {
 		dispatch(getRequestBoxesList(page));
 	};
 
-	console.log("Data Request", requestBoxes.Meta);
-
 	useEffect(() => {
 		FetchData();
 	}, []);

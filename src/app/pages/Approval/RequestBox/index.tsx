@@ -47,7 +47,6 @@ const ApprovalAdminRequestBox = () => {
 	};
 
 	const RejectForm = async id => {
-		console.log("Reject Id", id);
 		dispatch(getRequestBoxDetail(id));
 		setModalShow(true);
 	};
@@ -125,9 +124,6 @@ const ApprovalAdminRequestBox = () => {
 				style: { width: "20%" },
 			},
 			headerCell: (sortedProp) => {
-				const isActive = sortedProp.prop === 'created_at';
-				const order = sortedProp.isAscending ? 'Terlama' : 'Terbaru';
-
 				return (
 					<div className="cur-p">
 						{`Tanggal Permintaan`}

@@ -10,8 +10,6 @@ function DataSidebar() {
 		dispatch(getRequestBoxesList(page));
 	};
 
-	console.log("Data >>>>>", FetchData);
-
 	useEffect(() => {
 		FetchData();
 	}, []);
@@ -141,6 +139,11 @@ export const MasterData = [
 		title: "Customer",
 		icon: "",
 		link: "/CustomerPage",
+	},
+	{
+		title: "Staff",
+		icon: "",
+		link: "/StaffPage",
 	},
 	{
 		title: "Company",

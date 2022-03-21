@@ -14,9 +14,7 @@ import {
 	GET_ALL_APPROVED,
 } from "../../actions/RequestBoxAction";
 
-import {
-	RequestBoxesInterfaceState
-} from "../Types/RequestBoxTypes";
+import { RequestBoxesInterfaceState } from "../Types/RequestBoxTypes";
 
 export const initialState: RequestBoxesInterfaceState = {
 	RequestBoxes: [],
@@ -87,12 +85,20 @@ export const initialState: RequestBoxesInterfaceState = {
 					location: "",
 					created_at: "",
 					custom_code_box: "",
-					folders: [{
+					division: {
 						id: "",
-						no: "",
-						sign_code: "",
-						status: "",
-					}],
+						code: "",
+						name: "",
+					},
+					folders: [
+						{
+							id: "",
+							no: "",
+							sign_code: "",
+							status: "",
+							location: "",
+						},
+					],
 					cabinet_slot: {
 						id: "",
 						capacity: 0,
@@ -104,6 +110,7 @@ export const initialState: RequestBoxesInterfaceState = {
 					},
 					company: {
 						id: "",
+						code: "",
 						name: "",
 						location: "",
 						longitude: "",
@@ -121,10 +128,10 @@ export const initialState: RequestBoxesInterfaceState = {
 							},
 						],
 						is_agree: true,
-					}
+					},
 				},
 				status: "",
-			}
+			},
 		],
 		created_at: "",
 		customer: {
@@ -137,6 +144,7 @@ export const initialState: RequestBoxesInterfaceState = {
 			location: "",
 			company: {
 				id: "",
+				code: "",
 				name: "",
 				location: "",
 				longitude: "",
@@ -297,12 +305,20 @@ export default (
 								location: "",
 								created_at: "",
 								custom_code_box: "",
-								folders: [{
+								division: {
 									id: "",
-									no: "",
-									sign_code: "",
-									status: "",
-								}],
+									code: "",
+									name: "",
+								},
+								folders: [
+									{
+										id: "",
+										no: "",
+										sign_code: "",
+										status: "",
+										location: "",
+									},
+								],
 								cabinet_slot: {
 									id: "",
 									capacity: 0,
@@ -314,6 +330,7 @@ export default (
 								},
 								company: {
 									id: "",
+									code: "",
 									name: "",
 									location: "",
 									longitude: "",
@@ -331,10 +348,10 @@ export default (
 										},
 									],
 									is_agree: true,
-								}
+								},
 							},
 							status: "",
-						}
+						},
 					],
 					request_logs: [
 						{
@@ -352,6 +369,7 @@ export default (
 						location: "",
 						company: {
 							id: "",
+							code: "",
 							name: "",
 							location: "",
 							longitude: "",

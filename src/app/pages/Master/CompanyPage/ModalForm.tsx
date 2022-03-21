@@ -16,14 +16,13 @@ import {
 import { CompanyInterfaceState } from "store/Types/CompanyTypes";
 
 const ModalForm = props => {
-	// const [CodeCompany, setCodeCompany] = useState("");
 	const [showAlert, setShowAlert] = useState(false);
-	const [alertMessage, setalertMessage] = useState("");
+	const [alertMessage, setAlertMessage] = useState("");
+	const [varianAlert, setVarianAlert] = useState("");
 	const Companys: CompanyInterfaceState = useSelector(selectCompany);
 	const dispatch = useDispatch();
 
 	const validationSchema = Yup.object().shape({
-		// CodeCompany: Yup.string().required("*Wajib diisi"),
 		name: Yup.string().required("*Wajib diisi"),
 		location: Yup.string().required("*Wajib diisi"),
 		latitude: Yup.string().required("*Wajib diisi"),
@@ -33,9 +32,15 @@ const ModalForm = props => {
 	return (
 		<>
 			<Alert
-				text="Data Berhasil Di Tambah"
-				variant="success"
+				text={alertMessage}
+				variant={varianAlert}
 				show={showAlert}
+				style={{
+					top: 50,
+					position: "fixed",
+					left: "50%",
+					transform: [{ translateX: "-50%" }],
+				}}
 				onHide={() => setShowAlert(false)}
 			/>
 
@@ -51,30 +56,32 @@ const ModalForm = props => {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							let action = Companys.id
+							let action = Companys?.id
 								? UpdateCompany(values)
 								: CreateCompany(values);
-							// dispatch(loadingbarTurnOn)
 							const res = await action;
 							await dispatch(res);
 							action.then(() => {
 								dispatch({ type: RESET_COMPANY_FORM });
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
+								setVarianAlert("success");
+								Companys.id
+									? setAlertMessage("Data Berhasil di Edit")
+									: setAlertMessage("Data Berhasil di Tambah");
 								setTimeout(function () {
 									window.location.reload();
 								}, 1000);
 							});
 							dispatch({ type: RESET_COMPANY_FORM });
-							props.modalSet(props.valueModalSet);
-							Companys.id ? (
-								<>Data Berhasil di Edit</>
-							) : (
-								<>Data Berhasil di Tambah</>
-							);
-							console.log(action);
 						} catch (e) {
-							console.log("ini error di depan");
+							setShowAlert(true);
+							setAlertMessage("Gagal Update Data");
+							setVarianAlert("danger");
+							setTimeout(function () {
+								setShowAlert(false);
+							}, 4000);
+							dispatch({ type: RESET_COMPANY_FORM });
 						}
 					}}
 				>
@@ -90,7 +97,7 @@ const ModalForm = props => {
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									{Companys.id ? <>Edit Data</> : <>Tambah Data</>}
+									{Companys?.id ? <>Edit Data</> : <>Tambah Data</>}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
@@ -103,7 +110,7 @@ const ModalForm = props => {
 													type="text"
 													name="name"
 													placeholder="Name Company"
-													value={values.name}
+													value={values?.name}
 													onChange={e => {
 														handleChange(e);
 													}}
@@ -121,7 +128,7 @@ const ModalForm = props => {
 													type="text"
 													name="location"
 													placeholder="Location"
-													value={values.location}
+													value={values?.location}
 													onChange={e => {
 														handleChange(e);
 													}}
@@ -136,10 +143,10 @@ const ModalForm = props => {
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Latitude</Form.Label>
 												<Form.Control
-													type="number"
+													type="text"
 													name="latitude"
 													placeholder="Latitude"
-													value={values.latitude}
+													value={values?.latitude}
 													onChange={e => {
 														handleChange(e);
 													}}
@@ -154,10 +161,10 @@ const ModalForm = props => {
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Longitude</Form.Label>
 												<Form.Control
-													type="number"
+													type="text"
 													name="longitude"
 													placeholder="Longitude"
-													value={values.longitude}
+													value={values?.longitude}
 													onChange={e => {
 														handleChange(e);
 													}}
@@ -175,7 +182,7 @@ const ModalForm = props => {
 													type="text"
 													name="person_responsible"
 													placeholder="Penanggung Jawab"
-													value={values.person_responsible}
+													value={values?.person_responsible}
 													onChange={e => {
 														handleChange(e);
 													}}
@@ -188,7 +195,7 @@ const ModalForm = props => {
 													type="text"
 													name="npwp"
 													placeholder="NPWP"
-													value={values.npwp}
+													value={values?.npwp}
 													onChange={e => {
 														handleChange(e);
 													}}
@@ -201,7 +208,7 @@ const ModalForm = props => {
 													type="email"
 													name="email"
 													placeholder="Email"
-													value={values.email}
+													value={values?.email}
 													onChange={e => {
 														handleChange(e);
 													}}
@@ -214,7 +221,7 @@ const ModalForm = props => {
 													type="text"
 													name="phone"
 													placeholder="Telephone"
-													value={values.phone}
+													value={values?.phone}
 													onChange={e => {
 														handleChange(e);
 													}}
@@ -227,7 +234,7 @@ const ModalForm = props => {
 													type="string"
 													name="address"
 													placeholder="Alamat"
-													value={values.address}
+													value={values?.address}
 													onChange={e => {
 														handleChange(e);
 													}}
@@ -240,7 +247,7 @@ const ModalForm = props => {
 													type="number"
 													name="amount_access"
 													placeholder="Alamat"
-													value={values.amount_access}
+													value={values?.amount_access}
 													onChange={e => {
 														handleChange(e);
 													}}
@@ -249,11 +256,11 @@ const ModalForm = props => {
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Persetujuan</Form.Label>
-												<Row>
+												<div className="d-flex">
 													<Form.Check type="checkbox" label="box" />
 													<Form.Check type="checkbox" label="folder" />
 													<Form.Check type="checkbox" label="document" />
-												</Row>
+												</div>
 											</Form.Group>
 										</Col>
 									</Row>
