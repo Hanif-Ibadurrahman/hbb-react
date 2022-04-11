@@ -7,6 +7,7 @@ import {
 	RESET_STAFF_FORM,
 	SET_STAFF_DATA,
 	GET_ROLE_LIST,
+	SEARCH_STAFF,
 } from "../../actions/StaffAction";
 import { StaffsInterfaceState } from "../Types/StaffTypes";
 
@@ -68,8 +69,20 @@ export default (
 				Meta: {
 					last_page: payload?.meta?.last_page,
 					current_page: payload?.meta?.current_page,
-					total: payload?.meta?.total_page,
-					per_page: payload?.meta?.total_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorStaff: payload.errorMessage,
+			};
+		case SEARCH_STAFF:
+			return {
+				...state,
+				Staffs: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
 				},
 				ErrorStaff: payload.errorMessage,
 			};
@@ -80,8 +93,8 @@ export default (
 				Meta: {
 					last_page: payload?.meta?.last_page,
 					current_page: payload?.meta?.current_page,
-					total: payload?.meta?.total_page,
-					per_page: payload?.meta?.total_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
 				},
 				ErrorStaff: payload.errorMessage,
 			};

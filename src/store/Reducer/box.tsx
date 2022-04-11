@@ -6,6 +6,7 @@ import {
 	RESET_BOX_LIST,
 	RESET_BOX_FORM,
 	SET_BOX_DATA,
+	FILTER_BOXES,
 } from "../../actions/BoxActions";
 import { BoxesInterfaceState, BoxInterfaceState } from "../Types/BoxTypes";
 export const initialState: BoxesInterfaceState = {
@@ -89,8 +90,20 @@ export default (
 				Meta: {
 					last_page: payload?.meta?.last_page,
 					current_page: payload?.meta?.current_page,
-					total: payload?.meta?.total_page,
-					per_page: payload?.meta?.total_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorBox: payload.errorMessage,
+			};
+		case FILTER_BOXES:
+			return {
+				...state,
+				Boxes: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
 				},
 				ErrorBox: payload.errorMessage,
 			};

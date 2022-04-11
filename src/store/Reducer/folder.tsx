@@ -6,11 +6,9 @@ import {
 	RESET_FOLDER_LIST,
 	RESET_FOLDER_FORM,
 	SET_FOLDER_DATA,
+	FILTER_FOLDER,
 } from "../../actions/FolderAction";
-import {
-	FoldersInterfaceState,
-	FolderInterfaceState,
-} from "../Types/FolderTypes";
+import { FoldersInterfaceState } from "../Types/FolderTypes";
 export const initialState: FoldersInterfaceState = {
 	Folders: [],
 	Folder: {
@@ -31,17 +29,19 @@ export const initialState: FoldersInterfaceState = {
 			id: "",
 			location: "",
 			name: "",
-			phone: ""
+			phone: "",
 		},
-		documents: [{
-			id: "",
-			condition: "",
-			description: "",
-			detail: "",
-			media_storage: "",
-			status: "",
-			sign_code: ""
-		}]
+		documents: [
+			{
+				id: "",
+				condition: "",
+				description: "",
+				detail: "",
+				media_storage: "",
+				status: "",
+				sign_code: "",
+			},
+		],
 	},
 	Meta: {
 		total: 0,
@@ -69,8 +69,20 @@ export default (
 				Meta: {
 					last_page: payload?.meta?.last_page,
 					current_page: payload?.meta?.current_page,
-					total: payload?.meta?.total_page,
-					per_page: payload?.meta?.total_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorFolder: payload.errorMessage,
+			};
+		case FILTER_FOLDER:
+			return {
+				...state,
+				Folders: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
 				},
 				ErrorFolder: payload.errorMessage,
 			};
@@ -117,17 +129,19 @@ export default (
 						id: "",
 						location: "",
 						name: "",
-						phone: ""
+						phone: "",
 					},
-					documents: [{
-						id: "",
-						condition: "",
-						description: "",
-						detail: "",
-						media_storage: "",
-						status: "",
-						sign_code: "",
-					}]
+					documents: [
+						{
+							id: "",
+							condition: "",
+							description: "",
+							detail: "",
+							media_storage: "",
+							status: "",
+							sign_code: "",
+						},
+					],
 				},
 			};
 		default:

@@ -81,7 +81,6 @@ const ModalForm = props => {
 							setTimeout(function () {
 								setShowAlert(false);
 							}, 4000);
-							dispatch({ type: RESET_COMPANY_FORM });
 						}
 					}}
 				>

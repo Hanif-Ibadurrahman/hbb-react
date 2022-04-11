@@ -56,18 +56,6 @@ export const PeminjamanData = [
 		link: "/Approval-Admin/PickupBox",
 		notifications: "",
 	},
-	// {
-	// 	title: "Pinjam Item",
-	// 	icon: "",
-	// 	link: "/Approval/PinjamItem",
-	// 	notifications: "",
-	// },
-	// {
-	// 	title: "Pengembalian Item",
-	// 	icon: "",
-	// 	link: "/Approval/PengembalianItem",
-	// 	notifications: "",
-	// },
 ];
 
 export const ApprovalOperation = [

@@ -4,6 +4,7 @@ import {
 	RequestBoxInterfaceState,
 } from "store/Types/RequestBoxTypes";
 import api from "./dox";
+
 export const create = async (data: RequestBoxInterfaceState) => {
 	let payload = {
 		quantity: data.quantity,
@@ -45,6 +46,20 @@ export const getAll = async params => {
 		});
 };
 
+export const filterApprovalAdmin = async (data: RequestBoxInterfaceState) => {
+	let filter = {
+		type: data?.type,
+	};
+	return api
+		.get(`/requests?status=created&type=${filter.type}`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
 export const destroy = id => {
 	return api.delete(`/request-box/${id}`);
 };
@@ -61,6 +76,22 @@ export const approval_admin = async (data: ApprovalInterfaceState) => {
 export const getAllConfirmed = async params => {
 	return api
 		.get(`/requests?status=confirmed-by-csr-admin&page=${params}`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
+export const filterApprovalOperation = async (
+	data: RequestBoxInterfaceState,
+) => {
+	let filter = {
+		type: data?.type,
+	};
+	return api
+		.get(`/requests?status=confirmed-by-csr-admin&type=${filter.type}`)
 		.then(res => {
 			return res.data;
 		})
@@ -106,7 +137,21 @@ export const approval_operation = async (
 
 export const getAllApproved = async params => {
 	return api
-		.get(`/requests?status=approved&page=${params}`)
+		.get(`/requests?order_direction=desc&status=approved&page=${params}`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
+export const filterAllApproved = async (data: RequestBoxInterfaceState) => {
+	let filter = {
+		type: data?.type,
+	};
+	return api
+		.get(`/requests?order_direction=desc&status=approved&type=${filter.type}`)
 		.then(res => {
 			return res.data;
 		})

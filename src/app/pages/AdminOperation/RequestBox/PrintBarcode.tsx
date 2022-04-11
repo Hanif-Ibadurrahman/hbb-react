@@ -2,13 +2,9 @@ import React, { useEffect } from "react";
 import { Card } from "react-bootstrap";
 import QR from "app/components/QRCode";
 import { useSelector, useDispatch } from "react-redux";
-import {
-	selectRequestBox,
-} from "../../../../store/Selector/RequestBoxSelector";
+import { selectRequestBox } from "../../../../store/Selector/RequestBoxSelector";
 import { getRequestBoxDetail } from "actions/RequestBoxAction";
-import {
-	RequestBoxInterfaceState,
-} from "store/Types/RequestBoxTypes";
+import { RequestBoxInterfaceState } from "store/Types/RequestBoxTypes";
 
 const ApprovalPrint = ({ match }) => {
 	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
@@ -42,7 +38,7 @@ const ApprovalPrint = ({ match }) => {
 								<QR
 									id="QR Box"
 									title="Scan here"
-									value={item.box.sign_code}
+									value={item?.box?.sign_code || "-"}
 									className="d-flex jc-center"
 								/>
 							</Card>
@@ -51,12 +47,12 @@ const ApprovalPrint = ({ match }) => {
 									Box {index + 1}
 								</p>
 								<p style={font} className="ff-1-bd ta-center">
-									{item.box.code_box}
+									{item?.box?.code_box || "-"}
 								</p>
 							</div>
 						</div>
 					</div>
-				)
+				);
 			})}
 		</div>
 	);

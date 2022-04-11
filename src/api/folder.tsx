@@ -33,6 +33,21 @@ export const getAll = async params => {
 		});
 };
 
+export const filterFolders = async (data: FolderInterfaceState) => {
+	let filter = {
+		no: data.no,
+	};
+
+	return api
+		.get(`/folders?no=${filter.no}`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
 export const destroy = id => {
 	return api.delete(`/folders/${id}`);
 };

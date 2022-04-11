@@ -12,6 +12,9 @@ import {
 	APPROVAL_OPERATION,
 	GET_ALL_REQUEST,
 	GET_ALL_APPROVED,
+	SEARCH_APPROVAL_ADMIN,
+	SEARCH_APPROVAL_OPERATION,
+	SEARCH_ALL_APPROVAL,
 } from "../../actions/RequestBoxAction";
 
 import { RequestBoxesInterfaceState } from "../Types/RequestBoxTypes";
@@ -69,6 +72,7 @@ export const initialState: RequestBoxesInterfaceState = {
 		delivered_at: "",
 		delivery_method: "regular",
 		code_boxes: [],
+		type: "",
 		request_logs: [
 			{
 				time: "",
@@ -176,6 +180,18 @@ export const initialState: RequestBoxesInterfaceState = {
 		current_page: 1,
 		last_page: 1,
 	},
+	CSROperationNotif: {
+		total: 0,
+		per_page: 0,
+		current_page: 1,
+		last_page: 1,
+	},
+	CSRAdminNotif: {
+		total: 0,
+		per_page: 0,
+		current_page: 1,
+		last_page: 1,
+	},
 	Title: "REQUEST_BOX",
 	ErrorRequestBox: undefined,
 };
@@ -197,8 +213,50 @@ export default (
 				Meta: {
 					last_page: payload?.meta?.last_page,
 					current_page: payload?.meta?.current_page,
-					total: payload?.meta?.total_page,
-					per_page: payload?.meta?.total_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				CSRAdminNotif: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorRequestBox: payload.errorMessage,
+			};
+		case SEARCH_APPROVAL_ADMIN:
+			return {
+				...state,
+				RequestBoxes: payload?.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				CSRAdminNotif: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorRequestBox: payload.errorMessage,
+			};
+		case SEARCH_APPROVAL_OPERATION:
+			return {
+				...state,
+				RequestBoxes: payload?.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				CSRAdminNotif: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
 				},
 				ErrorRequestBox: payload.errorMessage,
 			};
@@ -209,8 +267,14 @@ export default (
 				Meta: {
 					last_page: payload?.meta?.last_page,
 					current_page: payload?.meta?.current_page,
-					total: payload?.meta?.total_page,
-					per_page: payload?.meta?.total_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				CSROperationNotif: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
 				},
 				ErrorRequestBox: payload.errorMessage,
 			};
@@ -221,8 +285,8 @@ export default (
 				Meta: {
 					last_page: payload?.meta?.last_page,
 					current_page: payload?.meta?.current_page,
-					total: payload?.meta?.total_page,
-					per_page: payload?.meta?.total_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
 				},
 				ErrorRequestBox: payload.errorMessage,
 			};
@@ -240,9 +304,21 @@ export default (
 				Meta: {
 					last_page: payload?.meta?.last_page,
 					current_page: payload?.meta?.current_page,
-					total: payload?.meta?.total_page,
-					per_page: payload?.meta?.total_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
 				},
+			};
+		case SEARCH_ALL_APPROVAL:
+			return {
+				...state,
+				ApprovalRequest: payload?.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorRequestBox: payload.errorMessage,
 			};
 		case CREATE_REQUEST_BOX:
 			return {
@@ -293,6 +369,7 @@ export default (
 					status: "",
 					delivered_at: "",
 					delivery_method: "regular",
+					type: "",
 					code_boxes: [],
 					created_at: "",
 					request_items: [

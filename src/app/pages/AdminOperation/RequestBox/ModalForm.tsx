@@ -191,6 +191,22 @@ export const ModalFormApprove = props => {
 	const DeliveredDate = moment(addDays(2)).format("YYYY-MM-DD");
 	const validationSchema = Yup.object().shape({
 		delivery_date: Yup.string().required("*Wajib diisi"),
+		// archiver_id: Yup.object().shape({
+		// 	id: Yup.string().required('Contact is required'),
+		// 	username: Yup.string().required('Contact is required'),
+		// 	last_login: Yup.string().required('Contact is required'),
+		// 	roles: Yup.object().shape({
+		// 		id: Yup.string().required('Contact is required'),
+		// 		name: Yup.string().required('Contact is required'),
+		// 		display_name: Yup.string().required('Contact is required'),
+		// 	}),
+		// 	staff: Yup.object().shape({
+		// 		id: Yup.string().required('Contact is required'),
+		// 		nik: Yup.string().required('Contact is required'),
+		// 		name: Yup.string().required('Contact is required'),
+		// 		room: Yup.string().required('Contact is required'),
+		// 	}),
+		// })
 	});
 
 	return (
@@ -253,99 +269,104 @@ export const ModalFormApprove = props => {
 						isSubmitting,
 						setFieldValue,
 					}) => (
-						<Form onSubmit={handleSubmit}>
-							<Modal.Header closeButton className="bg-primary-5">
-								<Modal.Title id="contained-modal-title-vcenter">
-									Tambah Keterangan
-								</Modal.Title>
-							</Modal.Header>
-							<Modal.Body className="show-grid">
-								<Container>
-									<Row>
-										<Col xs={12}>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Tanggal Pengiriman</Form.Label>
-												<Form.Control
-													type="date"
-													min={DeliveredDate}
-													name="delivery_date"
-													placeholder="Date"
-													value={values?.delivery_date}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>
-												{touched.delivery_date && errors.delivery_date ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.delivery_date}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Pilih Archiver</Form.Label>
-												<Autocomplete
-													id="archiver_id"
-													options={archiver.Archivers}
-													getOptionLabel={option => option.staff.name}
-													onChange={(e, value) => {
-														console.log(value);
-														setFieldValue(
-															"archiver_id",
-															value !== null ? value : values.archiver_id,
-														);
-													}}
-													renderInput={params => (
-														<TextField
-															margin="normal"
-															placeholder="Archiver"
-															name="archiver_id"
-															{...params}
-														/>
-													)}
-												/>
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Pilih Driver</Form.Label>
-												<Autocomplete
-													id="transporter_id"
-													options={transporter.Transporters}
-													getOptionLabel={option => option.staff.name}
-													onChange={(e, value) => {
-														console.log(value);
-														setFieldValue(
-															"transporter_id",
-															value !== null ? value : values.transporter_id,
-														);
-													}}
-													renderInput={params => (
-														<TextField
-															margin="normal"
-															placeholder="Transporter"
-															name="transporter_id"
-															{...params}
-														/>
-													)}
-												/>
-											</Form.Group>
-										</Col>
-									</Row>
-								</Container>
-							</Modal.Body>
-							<Modal.Footer>
-								<Button variant="danger" onClick={props.hide}>
-									Close
-								</Button>
-								<Button
-									type="submit"
-									disabled={isSubmitting}
-									className="bg-success-6"
-									variant="success"
-								>
-									Kirim
-								</Button>{" "}
-							</Modal.Footer>
-						</Form>
+						<>
+							<Form onSubmit={handleSubmit}>
+								<Modal.Header closeButton className="bg-primary-5">
+									<Modal.Title id="contained-modal-title-vcenter">
+										Tambah Keterangan
+									</Modal.Title>
+								</Modal.Header>
+								<Modal.Body className="show-grid">
+									<Container>
+										<Row>
+											<Col xs={12}>
+												<Form.Group className="mb-4" controlId="formBasicEmail">
+													<Form.Label>Tanggal Pengiriman</Form.Label>
+													<Form.Control
+														type="date"
+														min={DeliveredDate}
+														name="delivery_date"
+														placeholder="Date"
+														value={values?.delivery_date}
+														onChange={e => {
+															handleChange(e);
+														}}
+														onBlur={handleBlur}
+													/>
+													{touched.delivery_date && errors.delivery_date ? (
+														<p className="tc-danger-5 pos-a p-sm">
+															{errors.delivery_date}
+														</p>
+													) : null}
+												</Form.Group>
+												<Form.Group className="mb-4" controlId="formBasicEmail">
+													<Form.Label>Pilih Archiver</Form.Label>
+													<Autocomplete
+														id="archiver_id"
+														options={archiver.Archivers}
+														getOptionLabel={option => option.staff.name}
+														onChange={(e, value) => {
+															setFieldValue(
+																"archiver_id",
+																value !== null ? value : values.archiver_id,
+															);
+														}}
+														renderInput={params => (
+															<TextField
+																margin="normal"
+																placeholder="Transporter"
+																name="archiver_id"
+																{...params}
+															/>
+														)}
+													/>
+													{/* <div className={values.archiver_id.id === "" ? "show-error" : "hide-error"}>Archiver harus dipilih</div> */}
+												</Form.Group>
+												<Form.Group className="mb-4" controlId="formBasicEmail">
+													<Form.Label>Pilih Driver</Form.Label>
+													<Autocomplete
+														id="transporter_id"
+														options={transporter.Transporters}
+														getOptionLabel={option => option.staff.name}
+														onChange={(e, value) => {
+															setFieldValue(
+																"transporter_id",
+																value !== null ? value : values.transporter_id,
+															);
+														}}
+														renderInput={params => (
+															<TextField
+																margin="normal"
+																placeholder="Transporter"
+																name="transporter_id"
+																{...params}
+															/>
+														)}
+													/>
+												</Form.Group>
+											</Col>
+										</Row>
+									</Container>
+								</Modal.Body>
+								<Modal.Footer>
+									<Button variant="danger" onClick={props.hide}>
+										Close
+									</Button>
+									<Button
+										type="submit"
+										disabled={
+											isSubmitting ||
+											values?.archiver_id?.id === "" ||
+											values?.transporter_id?.id === ""
+										}
+										className="bg-success-6"
+										variant="success"
+									>
+										Kirim
+									</Button>{" "}
+								</Modal.Footer>
+							</Form>
+						</>
 					)}
 				</Formik>
 			</Modal>

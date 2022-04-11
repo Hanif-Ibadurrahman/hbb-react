@@ -15,19 +15,32 @@ import {
 	getDocumentDetail,
 	getDocumentsList,
 	filterData,
+	RESET_DOCUMENT_FORM,
 } from "actions/DocumentAction";
-import { DocumentInterfaceState } from "store/Types/DocumentTypes";
+import { ModalFilter } from "./ModalFilter";
 
 const DocumentPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
-	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
 	const documents = useSelector(selectDocuemnts);
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		dispatch(getDocumentsList(page));
+		if (
+			documents.Document.no === "" ||
+			documents.Document.detail === "" ||
+			documents.Document.active_year_for === 0 ||
+			documents.Document.level_progress === "" ||
+			documents.Document.media_storage === "" ||
+			documents.Document.condition === "" ||
+			documents.Document.description === "" ||
+			documents.Document.status === ""
+		) {
+			dispatch(getDocumentsList(page));
+		} else {
+			dispatch(filterData);
+		}
 	};
 
 	useEffect(() => {
@@ -42,7 +55,7 @@ const DocumentPage = () => {
 			confirmButtonColor: "#d33",
 			confirmButtonText: "Hapus",
 		}).then(willDelete => {
-			if (willDelete) {
+			if (willDelete.isConfirmed) {
 				dispatch(deleteDocument(id));
 				setShowAlertSuccess(true);
 				setTimeout(function () {
@@ -51,11 +64,6 @@ const DocumentPage = () => {
 				setTimeout(function () {
 					window.location.reload();
 				}, 1000);
-			} else {
-				setShowAlertFailed(true);
-				setTimeout(function () {
-					setShowAlertFailed(false);
-				}, 4000);
 			}
 		});
 	};
@@ -63,6 +71,7 @@ const DocumentPage = () => {
 	const _onHide = () => {
 		setModalShow(false);
 		setShowAlert(false);
+		dispatch({ type: RESET_DOCUMENT_FORM });
 	};
 
 	const showEditForm = async id => {
@@ -76,11 +85,6 @@ const DocumentPage = () => {
 			title: "Detail",
 			url: "Document-Detail/" + id,
 			type: 1,
-		},
-		{
-			icon: "fa-copy ",
-			title: "Duplicate",
-			type: 2,
 		},
 		{
 			icon: "fa-edit",
@@ -181,12 +185,6 @@ const DocumentPage = () => {
 					show={showAlertSuccess}
 					onHide={() => setShowAlertSuccess(false)}
 				/>
-				<Alert
-					text="Data Gagal Di Hapus"
-					variant="danger"
-					show={showAlertFailed}
-					onHide={() => setShowAlertFailed(false)}
-				/>
 				<ModalForm
 					modal={modalShow}
 					hide={_onHide}
@@ -198,10 +196,11 @@ const DocumentPage = () => {
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
+					filter={ModalFilter}
 				/>
 				<DataTable tableHeader={header} tableBody={documents.Documents} />
 				<Pagination
-					pageCount={documents.Meta.last_page}
+					pageCount={documents.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

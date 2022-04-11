@@ -71,15 +71,14 @@ const ModalForm = props => {
 								props.modalSet(props.valueModalSet);
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
-								setAlertMessage("Data Berhasil di Reject");
 								setVarianAlert("success");
+								folder?.id
+									? setAlertMessage("Data Berhasil di Edit")
+									: setAlertMessage("Data Berhasil di Tambah");
+								setTimeout(function () {
+									window.location.reload();
+								}, 1000);
 							});
-							folder?.id
-								? setAlertMessage("Data Berhasil di Edit")
-								: setAlertMessage("Data Berhasil di Tambah");
-							setTimeout(function () {
-								window.location.reload();
-							}, 1000);
 						} catch (e) {
 							setShowAlert(true);
 							setAlertMessage("Gagal Update Data");
@@ -131,6 +130,7 @@ const ModalForm = props => {
 												<Autocomplete
 													id="company"
 													options={company.Companys}
+													value={values.company}
 													getOptionLabel={option => option.name}
 													onChange={(e, value) => {
 														console.log(value);
@@ -159,7 +159,7 @@ const ModalForm = props => {
 								</Button>
 								<Button
 									type="submit"
-									disabled={isSubmitting}
+									disabled={isSubmitting || values.company.id === ""}
 									className="bg-success-6"
 									variant="success"
 								>

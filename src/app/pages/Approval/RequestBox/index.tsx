@@ -2,27 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
-import PageHeader from "../Components/PageHeader";
 import DropdownAction from "app/components/DropdownAction";
 import { Pagination } from "app/components/Pagination";
 import {
 	getRequestBoxesList,
 	getRequestBoxDetail,
-	UpdateRequestBox,
 	ApprovalAdmin,
+	SearchApprovalAdmin,
 } from "actions/RequestBoxAction";
 import { useDispatch, useSelector } from "react-redux";
-import Swal from "sweetalert2";
-import { deleteBox } from "actions/BoxActions";
 import Alert from "app/components/Alerts";
-import {
-	selectRequestBoxes,
-	selectRequestBox,
-} from "store/Selector/RequestBoxSelector";
+import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
 import moment from "moment";
 import ModalForm from "./ModalForm";
-import { RequestBoxInterfaceState } from "store/Types/RequestBoxTypes";
-import { approval_admin } from "api/requestBox";
+import { SearchInput } from "./FilterInput";
 
 const ApprovalAdminRequestBox = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -34,7 +27,11 @@ const ApprovalAdminRequestBox = () => {
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		dispatch(getRequestBoxesList(page));
+		if (requestBoxes.RequestBoxes.length === 0) {
+			dispatch(getRequestBoxesList(page));
+		} else {
+			dispatch(SearchApprovalAdmin);
+		}
 	};
 
 	useEffect(() => {
@@ -118,12 +115,12 @@ const ApprovalAdminRequestBox = () => {
 			},
 		},
 		{
-			prop: 'created_at',
+			prop: "created_at",
 			sortable: true,
 			cellProps: {
 				style: { width: "20%" },
 			},
-			headerCell: (sortedProp) => {
+			headerCell: sortedProp => {
 				return (
 					<div className="cur-p">
 						{`Tanggal Permintaan`}
@@ -147,12 +144,12 @@ const ApprovalAdminRequestBox = () => {
 						{row.type == "request-box"
 							? "Request Box"
 							: row.type == "pickup-box"
-								? "Pick Up Box"
-								: row.type == "borrow-item"
-									? "Peminjaman"
-									: row.type == "return-item"
-										? "Pengembalian"
-										: null}
+							? "Pick Up Box"
+							: row.type == "borrow-item"
+							? "Peminjaman"
+							: row.type == "return-item"
+							? "Pengembalian"
+							: null}
 					</>
 				);
 			},
@@ -169,6 +166,11 @@ const ApprovalAdminRequestBox = () => {
 			},
 		},
 	];
+
+	const onSubmit = e => {
+		e.preventDefault();
+		getRequestBoxesList(e);
+	};
 
 	return (
 		<>
@@ -198,14 +200,14 @@ const ApprovalAdminRequestBox = () => {
 					modalSet={setModalShow}
 					valueModalSet={false}
 				/>
-				<PageHeader breadcrumb={["Dashboard", "Approval"]} />
+				<SearchInput />
 				<DataTable
 					tableHeader={header}
 					tableBody={requestBoxes.RequestBoxes}
 					initialSort={{ prop: "created_at", isAscending: true }}
 				/>
 				<Pagination
-					pageCount={requestBoxes.Meta.last_page}
+					pageCount={requestBoxes.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>
