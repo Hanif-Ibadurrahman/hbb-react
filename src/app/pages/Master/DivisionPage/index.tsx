@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import { deleteDivision } from "actions/DivisionAction";
 import Alert from "app/components/Alerts";
 import { selectDivisions } from "store/Selector/DivisionSelector";
+import { ModalFilter } from "app/components/Filter/FormikModalFilter";
 
 const DivisionPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -37,7 +38,7 @@ const DivisionPage = () => {
 			confirmButtonColor: "#d33",
 			confirmButtonText: "Hapus",
 		}).then(willDelete => {
-			if (willDelete) {
+			if (willDelete.isConfirmed) {
 				dispatch(deleteDivision(id));
 				setShowAlertSuccess(true);
 				setTimeout(function () {
@@ -46,11 +47,6 @@ const DivisionPage = () => {
 				setTimeout(function () {
 					window.location.reload();
 				}, 1000);
-			} else {
-				setShowAlertFailed(true);
-				setTimeout(function () {
-					setShowAlertFailed(false);
-				}, 4000);
 			}
 		});
 	};
@@ -71,11 +67,6 @@ const DivisionPage = () => {
 			title: "Detail",
 			url: "DivisionPage-Detail/" + id,
 			type: 1,
-		},
-		{
-			icon: "fa-copy ",
-			title: "Duplicate",
-			type: 2,
 		},
 		{
 			icon: "fa-edit",
@@ -106,11 +97,18 @@ const DivisionPage = () => {
 			cellProps: {
 				style: { width: "40%" },
 			},
+			headerCell: () => {
+				return (
+					<div className="cur-p">
+						{`Kode Divisi`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
+			},
 		},
 		{
 			title: "Nama Divisi",
 			prop: "name",
-			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
 			},
@@ -127,8 +125,6 @@ const DivisionPage = () => {
 			},
 		},
 	];
-
-	console.log(divisions);
 
 	return (
 		<>
@@ -163,6 +159,7 @@ const DivisionPage = () => {
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
+					filter={ModalFilter}
 				/>
 				<DataTable tableHeader={header} tableBody={divisions.Divisions} />
 				<Pagination

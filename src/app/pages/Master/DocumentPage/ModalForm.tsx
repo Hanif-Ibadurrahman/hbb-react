@@ -1,5 +1,5 @@
 import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
@@ -12,11 +12,21 @@ import {
 	UpdateDcoument,
 } from "actions/DocumentAction";
 import moment from "moment";
+import { selectCompanys } from "store/Selector/CompanySelector";
+import { getCompanyList } from "actions/CompanyAction";
+import { Autocomplete, TextField } from "@mui/material";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setAlertMessage] = useState("");
 	const [varianAlert, setVarianAlert] = useState("");
+	const company = useSelector(selectCompanys);
+	const FetchData = (page = 1) => {
+		dispatch(getCompanyList(page));
+	};
+	useEffect(() => {
+		FetchData();
+	}, []);
 	const document: DocumentInterfaceState = useSelector(selectDocument);
 	const dispatch = useDispatch();
 
@@ -30,18 +40,18 @@ const ModalForm = props => {
 	const MinDate = moment(addDays(0)).format("YYYY-MM-DD");
 
 	const validationSchema = Yup.object().shape({
-		// no: Yup.string().required("*Wajib diisi"),
-		// date: Yup.string().required("*Wajib diisi"),
-		// detail: Yup.string().required("*Wajib diisi"),
-		// nominal: Yup.number().required("*Wajib diisi"),
-		// ActiveYear: Yup.number().required("*Wajib diisi"),
-		// LevelProgress: Yup.string().required("*Wajib diisi"),
-		// MediaStorage: Yup.string().required("*Wajib diisi"),
-		// Condition: Yup.string().required("*Wajib diisi"),
-		// Amount: Yup.number().required("*Wajib diisi"),
-		// CrossPoint: Yup.string().required("*Wajib diisi"),
-		// Description: Yup.string().required("*Wajib diisi"),
-		// NoDigital: Yup.string().required("*Wajib diisi"),
+		no: Yup.string().required("*Wajib diisi"),
+		date: Yup.string().required("*Wajib diisi"),
+		detail: Yup.string().required("*Wajib diisi"),
+		nominal: Yup.number().required("*Wajib diisi"),
+		active_year_for: Yup.number().required("*Wajib diisi"),
+		level_progress: Yup.string().required("*Wajib diisi"),
+		media_storage: Yup.string().required("*Wajib diisi"),
+		condition: Yup.string().required("*Wajib diisi"),
+		amount: Yup.number().required("*Wajib diisi"),
+		cross_point: Yup.string().required("*Wajib diisi"),
+		description: Yup.string().required("*Wajib diisi"),
+		no_digital: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
@@ -80,15 +90,14 @@ const ModalForm = props => {
 								props.modalSet(props.valueModalSet);
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
-								setAlertMessage("Data Berhasil di Reject");
+								document.id
+									? setAlertMessage("Data Berhasil di Edit")
+									: setAlertMessage("Data Berhasil di Tambah");
+								setTimeout(function () {
+									window.location.reload();
+								}, 1000);
 								setVarianAlert("success");
 							});
-							document.id
-								? setAlertMessage("Data Berhasil di Edit")
-								: setAlertMessage("Data Berhasil di Tambah");
-							setTimeout(function () {
-								window.location.reload();
-							}, 1000);
 						} catch (e) {
 							setShowAlert(true);
 							setAlertMessage("Gagal Update Data");
@@ -106,6 +115,7 @@ const ModalForm = props => {
 						handleChange,
 						handleBlur,
 						handleSubmit,
+						setFieldValue,
 						isSubmitting,
 					}) => (
 						<Form onSubmit={handleSubmit}>
@@ -328,6 +338,29 @@ const ModalForm = props => {
 													</p>
 												) : null}
 											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Pilih Perusahaan</Form.Label>
+												<Autocomplete
+													id="company"
+													options={company.Companys}
+													getOptionLabel={option => option.name}
+													value={values.company}
+													onChange={(e, value) => {
+														setFieldValue(
+															"company",
+															value !== null ? value : values.company,
+														);
+													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															placeholder="Company"
+															name="comapany_id"
+															{...params}
+														/>
+													)}
+												/>
+											</Form.Group>
 										</Col>
 									</Row>
 								</Container>
@@ -338,7 +371,7 @@ const ModalForm = props => {
 								</Button>
 								<Button
 									type="submit"
-									disabled={isSubmitting}
+									disabled={isSubmitting || values.company.id === ""}
 									className="bg-success-6"
 									variant="success"
 								>

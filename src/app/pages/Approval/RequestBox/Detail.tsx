@@ -29,7 +29,7 @@ const ApprovalAdminDetail = ({ match }) => {
 		dispatch(getRequestBoxDetail(request_id));
 	}, []);
 
-	const formatDate = date => moment(date ?? "").format("d MMMM YYYY - hh:mm");
+	const delivered_at = moment(requestBox.delivered_at).format("MM/DD/YYYY");
 
 	return (
 		<>
@@ -68,11 +68,7 @@ const ApprovalAdminDetail = ({ match }) => {
 							</Form.Group>
 							<Form.Group className="mb-4" controlId="formBasicEmail">
 								<Form.Label>Tanggal Kirim</Form.Label>
-								<Form.Control
-									type="text"
-									value={formatDate(requestBox.delivered_at)}
-									disabled
-								/>
+								<Form.Control type="text" value={delivered_at} disabled />
 							</Form.Group>
 							<Form.Group className="mb-4" controlId="formBasicEmail">
 								<Form.Label>Note</Form.Label>
@@ -171,7 +167,11 @@ const ApprovalAdminDetail = ({ match }) => {
 													  })
 													: item.status}
 											</p>
-											<p>{formatDate(item.time)}</p>
+											<p>
+												{moment(item.time).format(
+													"dddd, MMMM Do YYYY, h:mm:ss a",
+												)}
+											</p>
 										</div>
 									</div>
 								);

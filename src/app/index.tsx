@@ -19,10 +19,12 @@ import { Routes } from "./pages/Routes";
 import PrintBox from "../app/pages/Master/BoxPage/print";
 import PrintCabinet from "./pages/Master/CabinetPage/print";
 import ApprovalPrint from "./pages/AdminOperation/RequestBox/PrintBarcode";
-import PrintBoxPerpage from "./pages/Master/BoxPage/PrintPerPage"
+import PrintBoxPerpage from "./pages/Master/BoxPage/PrintPerPage";
 
 export function App() {
 	const { i18n } = useTranslation();
+	const user = localStorage.getItem("User");
+
 	return (
 		<BrowserRouter>
 			<Helmet
@@ -55,7 +57,10 @@ export function App() {
 							path={process.env.PUBLIC_URL + "/Print-PerPage"}
 							component={PrintBoxPerpage}
 						/>
-						<Route path={process.env.PUBLIC_URL + "/"} component={Routes} />
+						<Route
+							path={process.env.PUBLIC_URL + "/"}
+							component={user === null ? LoginPage : Routes}
+						/>
 					</Switch>
 				</div>
 			</div>

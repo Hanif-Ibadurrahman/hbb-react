@@ -22,14 +22,21 @@ export const UPDATE_DOCUMENT = "UPDATE_DOCUMENT";
 let limit = 20;
 
 export const filterData = async (data: DocumentInterfaceState) => {
-	console.log("data redux >>>>");
-
 	return async dispatch => {
 		try {
 			dispatch({
 				type: SET_DOCUMENT_DATA,
 				payload: data,
 			});
+			const response = await filter(data);
+			dispatch({
+				type: GET_DOCUMENTS_FILTER,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
 		} catch (error: any) {
 			dispatch({
 				type: GET_DOCUMENTS_FILTER,

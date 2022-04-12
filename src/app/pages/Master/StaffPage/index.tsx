@@ -9,7 +9,13 @@ import { Pagination } from "app/components/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { selectStaffs } from "store/Selector/StaffSelector";
-import { getstaffsList, RESET_STAFF_FORM } from "actions/StaffAction";
+import {
+	deleteStaff,
+	getstaffsList,
+	RESET_STAFF_FORM,
+	SearchStaff,
+} from "actions/StaffAction";
+import { SearchInput } from "./FilterInput";
 
 const StaffPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -20,7 +26,11 @@ const StaffPage = () => {
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		dispatch(getstaffsList(page));
+		if (staffs.Staff.username === "") {
+			dispatch(getstaffsList(page));
+		} else {
+			dispatch(SearchStaff);
+		}
 	};
 
 	useEffect(() => {
@@ -46,8 +56,8 @@ const StaffPage = () => {
 			confirmButtonColor: "#d33",
 			confirmButtonText: "Hapus",
 		}).then(willDelete => {
-			if (willDelete) {
-				// dispatch(deleteRoom(id));
+			if (willDelete.isConfirmed) {
+				dispatch(deleteStaff(id));
 				setShowAlertSuccess(true);
 				setTimeout(function () {
 					setShowAlertSuccess(false);
@@ -55,11 +65,6 @@ const StaffPage = () => {
 				setTimeout(function () {
 					window.location.reload();
 				}, 1000);
-			} else {
-				setShowAlertFailed(true);
-				setTimeout(function () {
-					setShowAlertFailed(false);
-				}, 4000);
 			}
 		});
 	};
@@ -80,7 +85,6 @@ const StaffPage = () => {
 		{
 			title: "Id",
 			prop: "id",
-			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
 			},
@@ -88,7 +92,6 @@ const StaffPage = () => {
 		{
 			title: "username",
 			prop: "username",
-			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
 			},
@@ -127,10 +130,11 @@ const StaffPage = () => {
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
+					filter={SearchInput}
 				/>
 				<DataTable tableHeader={header} tableBody={staffs.Staffs} />
 				<Pagination
-					pageCount={staffs.Meta.last_page}
+					pageCount={staffs.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

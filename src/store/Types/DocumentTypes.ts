@@ -1,4 +1,5 @@
 import { PaginationState } from "../Types/PaginationTypes";
+import { CompanyInterfaceState } from "./CompanyTypes";
 
 interface BoxDocumentInterfaceState {
 	id: string | null;
@@ -30,6 +31,7 @@ export interface DocumentInterfaceState {
 	sign_code: string;
 	box: BoxDocumentInterfaceState;
 	folder: FolderDocumentInterfaceState;
+	company: CompanyInterfaceState;
 }
 
 export interface DocumentsInterfaceState {

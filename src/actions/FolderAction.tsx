@@ -1,6 +1,13 @@
 import React from "react";
 import { FolderInterfaceState } from "store/Types/FolderTypes";
-import { create, destroy, getAll, getById, update } from "../api/folder";
+import {
+	create,
+	destroy,
+	getAll,
+	getById,
+	update,
+	filterFolders,
+} from "../api/folder";
 export const GET_FOLDERS_LIST = "GET_FOLDERS_LIST";
 export const GET_FOLDER_DETAIL = "GET_FOLDER_DETAIL";
 export const CREATE_FOLDER = "CREAT_FOLDER";
@@ -9,6 +16,7 @@ export const RESET_FOLDER_FORM = "RESET_FOLDER_FORM";
 export const RESET_FOLDER_LIST = "RESET_FOLDER_LIST";
 export const SET_FOLDER_DATA = "SET_FOLDER_DATA";
 export const UPDATE_FOLDER = "UPDATE_FOLDER";
+export const FILTER_FOLDER = "FILTER_FOLDER";
 
 export const getFoldersList = page => {
 	return async dispatch => {
@@ -29,6 +37,36 @@ export const getFoldersList = page => {
 				payload: {
 					data: false,
 					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const SearchFolders = async (data: FolderInterfaceState) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_FOLDER_DATA,
+				payload: data,
+			});
+			const response = await filterFolders(data);
+			dispatch({
+				type: FILTER_FOLDER,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: FILTER_FOLDER,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
 				},
 			});
 			console.log(error);

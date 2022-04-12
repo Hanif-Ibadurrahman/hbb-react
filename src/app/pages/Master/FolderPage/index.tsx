@@ -8,25 +8,30 @@ import { Pagination } from "app/components/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import Alert from "app/components/Alerts";
-import { selectDocuemnts } from "store/Selector/DocumentSelector";
 import ModalForm from "./ModalForm";
 import {
 	deleteFolder,
 	getFolderDetail,
 	getFoldersList,
+	SearchFolders,
+	RESET_FOLDER_FORM,
 } from "actions/FolderAction";
 import { selectFolders } from "store/Selector/FolderSelector";
+import { SearchInput } from "./FilterInput";
 
 const DocumentPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
-	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
 	const folders = useSelector(selectFolders);
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		dispatch(getFoldersList(page));
+		if (folders.Folder.no === "") {
+			dispatch(getFoldersList(page));
+		} else {
+			dispatch(SearchFolders);
+		}
 	};
 
 	useEffect(() => {
@@ -41,7 +46,7 @@ const DocumentPage = () => {
 			confirmButtonColor: "#d33",
 			confirmButtonText: "Hapus",
 		}).then(willDelete => {
-			if (willDelete) {
+			if (willDelete.isConfirmed) {
 				dispatch(deleteFolder(id));
 				setShowAlertSuccess(true);
 				setTimeout(function () {
@@ -50,16 +55,12 @@ const DocumentPage = () => {
 				setTimeout(function () {
 					window.location.reload();
 				}, 1000);
-			} else {
-				setShowAlertFailed(true);
-				setTimeout(function () {
-					setShowAlertFailed(false);
-				}, 4000);
 			}
 		});
 	};
 
 	const _onHide = () => {
+		dispatch({ type: RESET_FOLDER_FORM });
 		setModalShow(false);
 		setShowAlert(false);
 	};
@@ -75,11 +76,6 @@ const DocumentPage = () => {
 			title: "Detail",
 			url: "Folder-Detail/" + id,
 			type: 1,
-		},
-		{
-			icon: "fa-copy ",
-			title: "Duplicate",
-			type: 2,
 		},
 		{
 			icon: "fa-edit",
@@ -122,17 +118,8 @@ const DocumentPage = () => {
 		{
 			title: "Status Folder",
 			prop: "status",
-			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
-			},
-			headerCell: () => {
-				return (
-					<div className="cur-p">
-						{`Status Folder`}
-						<i className="fas fa-sort-alt ml-2"></i>
-					</div>
-				);
 			},
 		},
 		{
@@ -164,12 +151,6 @@ const DocumentPage = () => {
 					show={showAlertSuccess}
 					onHide={() => setShowAlertSuccess(false)}
 				/>
-				<Alert
-					text="Data Gagal Di Hapus"
-					variant="danger"
-					show={showAlertFailed}
-					onHide={() => setShowAlertFailed(false)}
-				/>
 				<ModalForm
 					modal={modalShow}
 					hide={_onHide}
@@ -181,10 +162,11 @@ const DocumentPage = () => {
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
+					filter={SearchInput}
 				/>
 				<DataTable tableHeader={header} tableBody={folders.Folders} />
 				<Pagination
-					pageCount={folders.Meta.last_page}
+					pageCount={folders.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

@@ -10,6 +10,7 @@ import { selectAreas } from "store/Selector/AreaSelector";
 import { useDispatch, useSelector } from "react-redux";
 import { getAreasList, getAreaDetail, deleteArea } from "actions/AreaActions";
 import Swal from "sweetalert2";
+import { ModalFilter } from "./ModalFilter";
 
 const AreaPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -144,6 +145,7 @@ const AreaPage = () => {
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
+					filter={ModalFilter}
 				/>
 				<DataTable tableHeader={header} tableBody={areas.Areas} />
 				<Pagination

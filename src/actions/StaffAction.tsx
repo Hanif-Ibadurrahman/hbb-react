@@ -1,6 +1,6 @@
 import React from "react";
 import { StaffInterfaceState } from "store/Types/StaffTypes";
-import { create, destroy, getAll, getAllRole } from "../api/staff";
+import { create, destroy, getAll, getAllRole, filterStaff } from "../api/staff";
 export const GET_STAFFS_LIST = "GET_STAFF_LIST";
 export const GET_ROLE_LIST = "GET_ROLE_LIST";
 export const GET_STAFF_DETAIL = "GET_STAFF_DETAIL";
@@ -10,6 +10,7 @@ export const RESET_STAFF_FORM = "RESET_STAFF_FORM";
 export const RESET_STAFF_LIST = "RESET_STAFF_LIST";
 export const SET_STAFF_DATA = "SET_STAFF_DATA";
 export const UPDATE_STAFF = "UPDATE_STAFF";
+export const SEARCH_STAFF = "SEARCH_STAFF";
 
 let limit = 20;
 export const getstaffsList = page => {
@@ -31,6 +32,36 @@ export const getstaffsList = page => {
 				payload: {
 					data: false,
 					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const SearchStaff = async (data: StaffInterfaceState) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_STAFF_DATA,
+				payload: data,
+			});
+			const response = await filterStaff(data);
+			dispatch({
+				type: SEARCH_STAFF,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: SEARCH_STAFF,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
 				},
 			});
 			console.log(error);

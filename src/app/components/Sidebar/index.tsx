@@ -15,11 +15,15 @@ import IconUI from "assets/images/icon/icon-2.png";
 import IconAdvanced from "assets/images/icon/icon-3.png";
 import IconForm from "assets/images/icon/icon-4.png";
 import IconTable from "assets/images/icon/icon-5.png";
-import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
+import {
+	selectApprovalList,
+	selectRequestBoxes,
+} from "store/Selector/RequestBoxSelector";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	getAllConfirmedAdmin,
 	getRequestBoxesList,
+	SearchApprovalAdmin,
 } from "actions/RequestBoxAction";
 
 export function Sidebar() {
@@ -45,28 +49,38 @@ export function Sidebar() {
 	}, [user]);
 
 	const dispatch = useDispatch();
-
-	const FetchData = (page = 1) => {
-		dispatch(getRequestBoxesList(page));
+	const requestBoxes = useSelector(selectApprovalList);
+	const csrOperation = (page = 1) => {
 		dispatch(getAllConfirmedAdmin(page));
 	};
 
 	useEffect(() => {
-		FetchData();
+		csrOperation();
 	}, []);
 
-	const requestBoxes = useSelector(selectRequestBoxes);
-	const notifAdminBox = requestBoxes.Meta.total;
+	const csrAdmin = (page = 1) => {
+		if (requestBoxes.RequestBoxes.length === 0) {
+			dispatch(getRequestBoxesList(page));
+		} else {
+			dispatch(SearchApprovalAdmin);
+		}
+	};
 
+	useEffect(() => {
+		csrAdmin();
+	}, []);
+
+	const notifCSROperation = requestBoxes.CSROperationNotif.total;
+	const notifCSRAdmin = requestBoxes.CSRAdminNotif.total;
 	const CustomerMenu = () => {
 		return (
 			<>
 				<MenuItem
-					id={window.location.pathname === "/" ? "active" : ""}
+					id={window.location.pathname === "/Dashboard" ? "active" : ""}
 					className=" pos-r"
 					icon={<img src={IconHome} className="h-5" alt="awSnap" />}
 					onClick={() => {
-						window.location.pathname = "/";
+						window.location.pathname = "/Dashboard";
 					}}
 				>
 					{""} Beranda
@@ -150,7 +164,16 @@ export function Sidebar() {
 						window.location.pathname = "/Approval-Admin";
 					}}
 				>
-					{""} Approval CSR Admin
+					{" "}
+					<div
+						className="d-flex jc-between ai-center"
+						style={{ minWidth: "100%" }}
+					>
+						<div>Approval Admin</div>
+						<div className="pv-2 ph-3 bd-rs-5 bg-primary-5">
+							{notifCSRAdmin || 0}
+						</div>
+					</div>
 				</MenuItem>
 				<MenuItem
 					id={
@@ -162,7 +185,15 @@ export function Sidebar() {
 						window.location.pathname = "/Approval-Operation";
 					}}
 				>
-					{""} Approval CSR Operation
+					<div
+						className="d-flex jc-between ai-center"
+						style={{ minWidth: "100%" }}
+					>
+						<div>Approval Operation</div>
+						<div className="pv-2 ph-3 bd-rs-5 bg-primary-5">
+							{notifCSROperation || 0}
+						</div>
+					</div>
 				</MenuItem>
 				<MenuItem
 					id={window.location.pathname === "/Preview-Approvral" ? "active" : ""}
@@ -223,7 +254,15 @@ export function Sidebar() {
 						window.location.pathname = "/Approval-Admin";
 					}}
 				>
-					{""} Approval Admin
+					<div
+						className="d-flex jc-between ai-center"
+						style={{ minWidth: "100%" }}
+					>
+						<div>Approval Request</div>
+						<div className="pv-2 ph-3 bd-rs-5 bg-primary-5">
+							{notifCSRAdmin || 0}
+						</div>
+					</div>
 				</MenuItem>
 			</>
 		);
@@ -252,7 +291,16 @@ export function Sidebar() {
 						window.location.pathname = "/Approval-Operation";
 					}}
 				>
-					{""} Approval CSR Operation
+					{" "}
+					<div
+						className="d-flex jc-between ai-center"
+						style={{ minWidth: "100%" }}
+					>
+						<div>Approval Request</div>
+						<div className="pv-2 ph-3 bd-rs-5 bg-primary-5">
+							{notifCSROperation || 0}
+						</div>
+					</div>
 				</MenuItem>
 				<MenuItem
 					id={window.location.pathname === "/Preview-Approvral" ? "active" : ""}

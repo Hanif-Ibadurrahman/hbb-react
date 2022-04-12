@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import Alert from "app/components/Alerts";
 import { selectRooms } from "store/Selector/RoomSelector";
+import { ModalFilter } from "./ModalFilter";
 
 const RoomPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -52,7 +53,7 @@ const RoomPage = () => {
 			confirmButtonColor: "#d33",
 			confirmButtonText: "Hapus",
 		}).then(willDelete => {
-			if (willDelete) {
+			if (willDelete.isConfirmed) {
 				dispatch(deleteRoom(id));
 				setShowAlertSuccess(true);
 				setTimeout(function () {
@@ -61,11 +62,6 @@ const RoomPage = () => {
 				setTimeout(function () {
 					window.location.reload();
 				}, 1000);
-			} else {
-				setShowAlertFailed(true);
-				setTimeout(function () {
-					setShowAlertFailed(false);
-				}, 4000);
 			}
 		});
 	};
@@ -91,12 +87,6 @@ const RoomPage = () => {
 			dispatch: dispatch,
 			row: id,
 			type: 2,
-		},
-		{
-			icon: "fa-print",
-			title: "Print",
-			url: "Print-Barcode/" + id,
-			type: 1,
 		},
 		{
 			icon: "fa-trash-alt",
@@ -155,12 +145,6 @@ const RoomPage = () => {
 					show={showAlertSuccess}
 					onHide={() => setShowAlertSuccess(false)}
 				/>
-				<Alert
-					text="Data Gagal Di Hapus"
-					variant="danger"
-					show={showAlertFailed}
-					onHide={() => setShowAlertFailed(false)}
-				/>
 				<ModalForm
 					modal={modalShow}
 					hide={_onHide}
@@ -172,6 +156,7 @@ const RoomPage = () => {
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
+					filter={ModalFilter}
 				/>
 				<DataTable tableHeader={header} tableBody={rooms.Rooms} />
 				<Pagination

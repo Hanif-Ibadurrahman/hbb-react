@@ -41,6 +41,27 @@ export const initialState: DocumentsInterfaceState = {
 			no: "",
 			sign_code: "",
 		},
+		company: {
+			id: "",
+			code: "",
+			name: "",
+			location: "",
+			longitude: "",
+			latitude: "",
+			person_responsible: "",
+			npwp: "",
+			email: "",
+			phone: "",
+			address: "",
+			amount_access: "",
+			service_type: [
+				{
+					type: "box",
+					value: true,
+				},
+			],
+			is_agree: true,
+		},
 	},
 	Meta: {
 		total: 0,
@@ -68,20 +89,20 @@ export default (
 				Meta: {
 					last_page: payload?.meta?.last_page,
 					current_page: payload?.meta?.current_page,
-					total: payload?.meta?.total_page,
-					per_page: payload?.meta?.total_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
 				},
 				ErrorDocument: payload.errorMessage,
 			};
 		case GET_DOCUMENTS_FILTER:
 			return {
 				...state,
-				Document: payload?.data?.data,
+				Documents: payload?.data?.data,
 				Meta: {
 					last_page: payload?.meta?.last_page,
 					current_page: payload?.meta?.current_page,
-					total: payload?.meta?.total_page,
-					per_page: payload?.meta?.total_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
 				},
 				ErrorDocument: payload?.errorMessage,
 			};
@@ -136,6 +157,27 @@ export default (
 						location: "",
 						no: "",
 						sign_code: "",
+					},
+					company: {
+						id: "",
+						code: "",
+						name: "",
+						location: "",
+						longitude: "",
+						latitude: "",
+						person_responsible: "",
+						npwp: "",
+						email: "",
+						phone: "",
+						address: "",
+						amount_access: "",
+						service_type: [
+							{
+								type: "box",
+								value: true,
+							},
+						],
+						is_agree: true,
 					},
 				},
 			};
