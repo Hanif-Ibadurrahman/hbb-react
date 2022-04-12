@@ -24,8 +24,23 @@ export const getAll = async params => {
 		});
 };
 
+export const filterStaff = async (data: StaffInterfaceState) => {
+	let filter = {
+		username: data.username,
+	};
+
+	return api
+		.get(`/users?role=staff&username=${filter.username}`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
 export const destroy = id => {
-	return api.delete(`/users/customer/${id}`);
+	return api.delete(`/users/staff/${id}`);
 };
 
 export const getAllRole = () => {

@@ -71,8 +71,8 @@ export default (
 				Meta: {
 					last_page: payload?.meta?.last_page,
 					current_page: payload?.meta?.current_page,
-					total: payload?.meta?.total_page,
-					per_page: payload?.meta?.total_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
 				},
 				ErrorCustomer: payload.errorMessage,
 			};

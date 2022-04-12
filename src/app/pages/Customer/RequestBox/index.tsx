@@ -8,6 +8,8 @@ import { getRequestBoxesList } from "actions/RequestBoxAction";
 import { useDispatch, useSelector } from "react-redux";
 import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
 import moment from "moment";
+import PageHeader from "app/pages/Master/Components/PageHeader";
+import { Button } from "react-bootstrap";
 
 const BoxPage = () => {
 	const [modalShow, setModalShow] = useState(false);
@@ -59,6 +61,10 @@ const BoxPage = () => {
 		},
 	];
 
+	const filter = () => {
+		//
+	};
+
 	return (
 		<>
 			<Helmet>
@@ -72,6 +78,15 @@ const BoxPage = () => {
 					modalSet={setModalShow}
 					valueModalSet={false}
 				/>
+				<div className="d-flex jc-end mb-4">
+					<Button
+						className="d-flex ai-center bg-success-6"
+						variant="success"
+						onClick={() => setModalShow(true)}
+					>
+						Add Data<i className="far fa-plus ml-2"></i>
+					</Button>{" "}
+				</div>
 				<DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} />
 				<Pagination
 					pageCount={requestBoxes.Meta.last_page}

@@ -1,18 +1,9 @@
-import {
-	Form,
-	Modal,
-	Container,
-	Row,
-	Col,
-	Button,
-} from "react-bootstrap";
+import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
 import React, { useState } from "react";
 import { Formik, FieldArray } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
-import {
-	selectRequestBox,
-} from "../../../../store/Selector/RequestBoxSelector";
+import { selectRequestBox } from "../../../../store/Selector/RequestBoxSelector";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	CreateRequestBox,
@@ -29,7 +20,7 @@ const ModalForm = props => {
 	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
 	const dispatch = useDispatch();
 	const validationSchema = Yup.object().shape({
-		quantity: Yup.string().required("*Wajib diisi"),
+		quantity: Yup.number().min(10, "Minimal 10 Box").required("*Wajib diisi"),
 		delivered_at: Yup.date().required("*Wajib diisi"),
 		note: Yup.string().required("*Wajib diisi"),
 	});
@@ -39,7 +30,7 @@ const ModalForm = props => {
 		result.setDate(result.getDate() + days);
 		return result;
 	}
-	const RegularDate = moment(addDays(2)).format("YYYY-MM-DD");
+	const RegularDate = moment(addDays(0)).format("YYYY-MM-DD");
 	const Express = moment(addDays(0)).add(2, "hours").format("YYYY-MM-DDTHH:MM");
 	const Emergency = moment(addDays(0)).format("YYYY-MM-DD");
 
@@ -111,11 +102,11 @@ const ModalForm = props => {
 								<Container>
 									<Row>
 										<Col xs={12}>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
+											<Form.Group className="mb-4">
 												<Form.Label>Quantity</Form.Label>
 												<Form.Control
 													type="number"
-													min="1"
+													min="10"
 													name="quantity"
 													placeholder="Quantity"
 													value={values.quantity}
@@ -130,7 +121,7 @@ const ModalForm = props => {
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
+											<Form.Group className="mb-4">
 												<Form.Label>Metode Pengiriman</Form.Label>
 												<Form.Select
 													className="cur-p"
@@ -140,63 +131,40 @@ const ModalForm = props => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
+													disabled
 												>
 													<option value="regular">Regular</option>
-													<option value="express">Express</option>
-													<option value="emergency">Emergency</option>
 												</Form.Select>
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Waktu Pengiriman</Form.Label>
-												{values.delivery_method == "regular" ? (
-													<Form.Control
-														type="date"
-														min={RegularDate}
-														name="delivered_at"
-														placeholder="Delivered"
-														value={values.delivered_at}
-														onChange={e => {
-															handleChange(e);
-														}}
-														onBlur={handleBlur}
-													/>
-												) : values.delivery_method == "express" ? (
-													<Form.Control
-														type="text"
-														name="delivered_at"
-														placeholder="Delivered"
-														value={(values.delivered_at = Express)}
-														onChange={e => {
-															handleChange(e);
-														}}
-														onBlur={handleBlur}
-														disabled
-													/>
-												) : values.delivery_method == "emergency" ? (
-													<>
-														<Form.Control
-															type="text"
-															name="delivered_at"
-															placeholder="Delivered"
-															value={(values.delivered_at = Emergency)}
-															onChange={e => {
-																handleChange(e);
-															}}
-															onBlur={handleBlur}
-															disabled
-														/>
-														<p className="tc-danger-5 pos-a p-sm">
-															*Hanya Untuk Hari Libur
-														</p>
-													</>
-												) : null}
+											<Form.Group className="mb-4">
+												<Form.Label>Tanggal Permintaan</Form.Label>
+												<Form.Control
+													type="date"
+													min={RegularDate}
+													name="delivered_at"
+													placeholder="Delivered"
+													value={values.delivered_at}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
 												{touched.delivered_at && errors.delivered_at ? (
 													<p className="tc-danger-5 pos-a p-sm">
 														{errors.delivered_at}
 													</p>
 												) : null}
+												<p
+													className="tc-danger-5 pos-a p-sm"
+													style={{
+														display:
+															values.delivered_at.length > 0 ? "block" : "none",
+													}}
+												>
+													Untuk pengiriman dilakukan H+2 dihari kerja
+												</p>
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
+											<Form.Group className="mb-4">
 												<Form.Label>Note</Form.Label>
 												<Form.Control
 													as="textarea"
@@ -214,7 +182,7 @@ const ModalForm = props => {
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-3">
+											{/* <Form.Group className="mb-3">
 												<Form.Label>Custome Code Box</Form.Label>
 												<FieldArray name="code_boxes">
 													{({ remove, push }) => (
@@ -256,7 +224,7 @@ const ModalForm = props => {
 														</div>
 													)}
 												</FieldArray>
-											</Form.Group>
+											</Form.Group> */}
 										</Col>
 									</Row>
 								</Container>

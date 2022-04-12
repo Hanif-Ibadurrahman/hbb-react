@@ -49,11 +49,26 @@ const RoomPageDetail = ({ match }) => {
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Kode Ruangan</Form.Label>
-
 								<Form.Control
 									type="text"
 									disabled
 									defaultValue={room.code_room}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Nama Area</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={room.area.name}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Code Area</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={room.area.code_area}
 								/>
 							</Form.Group>
 
@@ -67,19 +82,6 @@ const RoomPageDetail = ({ match }) => {
 								</Button>{" "}
 							</div>
 						</Form>
-					</Card>
-				</div>
-				<div className="col col-3">
-					<Card className="p-4 bd-rs-2 d-flex ai-center jc-center">
-						<QR
-							id="Detail-Box-QR"
-							title="Scan here"
-							value="ID : A12O2O3"
-							className="d-flex jc-center"
-						/>
-						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">{room.code_room}</p>
-						</div>
 					</Card>
 				</div>
 			</PageWrapper>

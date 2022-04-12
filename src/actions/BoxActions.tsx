@@ -1,6 +1,13 @@
 import React from "react";
 import { BoxInterfaceState } from "store/Types/BoxTypes";
-import { create, destroy, getAll, getById, update } from "../api/boxes";
+import {
+	create,
+	destroy,
+	getAll,
+	getById,
+	update,
+	filterBoxes,
+} from "../api/boxes";
 export const GET_BOXES_LIST = "GET_BOXES_LIST";
 export const GET_BOX_DETAIL = "GET_BOX_DETAIL";
 export const CREATE_BOX = "CREAT_BOX";
@@ -9,6 +16,7 @@ export const RESET_BOX_FORM = "RESET_BOX_FORM";
 export const RESET_BOX_LIST = "RESET_BOX_LIST";
 export const SET_BOX_DATA = "SET_BOX_DATA";
 export const UPDATE_BOX = "UPDATE_BOX";
+export const FILTER_BOXES = "FILTER_BOXES";
 
 let limit = 20;
 
@@ -19,8 +27,8 @@ export const getBoxesList = page => {
 			dispatch({
 				type: GET_BOXES_LIST,
 				payload: {
-					data: response.data,
-					meta: response.meta,
+					data: response?.data,
+					meta: response?.meta,
 					errorMessage: false,
 				},
 			});
@@ -31,6 +39,36 @@ export const getBoxesList = page => {
 				payload: {
 					data: false,
 					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const SearchBoxes = async (data: BoxInterfaceState) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_BOX_DATA,
+				payload: data,
+			});
+			const response = await filterBoxes(data);
+			dispatch({
+				type: FILTER_BOXES,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: FILTER_BOXES,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
 				},
 			});
 			console.log(error);
@@ -78,7 +116,6 @@ export const deleteBox = id => {
 };
 
 export const CreateBox = async (data: BoxInterfaceState) => {
-	console.log(data);
 	return async dispatch => {
 		try {
 			dispatch({

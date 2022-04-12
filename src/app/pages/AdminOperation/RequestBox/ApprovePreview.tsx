@@ -6,17 +6,23 @@ import PageHeader from "../../Approval/Components/PageHeader";
 import DropdownAction from "app/components/DropdownAction";
 import { Pagination } from "app/components/Pagination";
 import {
-	getAllApprovedList
+	getAllApprovedList,
+	SearchAllApprovedList,
 } from "actions/RequestBoxAction";
 import { useDispatch, useSelector } from "react-redux";
 import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
 import moment from "moment";
+import { SearchInput } from "./FilterPreviewApproval";
 
 const ApprovalPreview = () => {
 	const requestBoxes = useSelector(selectRequestBoxes);
 	const dispatch = useDispatch();
 	const FetchData = (page = 1) => {
-		dispatch(getAllApprovedList(page));
+		if (requestBoxes.RequestBoxes.length === 0) {
+			dispatch(getAllApprovedList(page));
+		} else {
+			dispatch(SearchAllApprovedList);
+		}
 	};
 
 	useEffect(() => {
@@ -47,15 +53,10 @@ const ApprovalPreview = () => {
 			},
 		},
 		{
-			prop: 'created_at',
+			title: "Tanggal Permintaan",
 			sortable: true,
-			cellProps: {
-				style: { width: "20%" },
-			},
-			headerCell: (sortedProp) => {
-				const isActive = sortedProp.prop === 'created_at';
-				const order = sortedProp.isAscending ? 'Terlama' : 'Terbaru';
-
+			prop: "created_at",
+			headerCell: () => {
 				return (
 					<div className="cur-p">
 						{`Tanggal Permintaan`}
@@ -79,12 +80,12 @@ const ApprovalPreview = () => {
 						{row.type == "request-box"
 							? "Request Box"
 							: row.type == "pickup-box"
-								? "Pick Up Box"
-								: row.type == "borrow-item"
-									? "Peminjaman"
-									: row.type == "return-item"
-										? "Pengembalian"
-										: null}
+							? "Pick Up Box"
+							: row.type == "borrow-item"
+							? "Peminjaman"
+							: row.type == "return-item"
+							? "Pengembalian"
+							: null}
 					</>
 				);
 			},
@@ -112,10 +113,13 @@ const ApprovalPreview = () => {
 				/>
 			</Helmet>
 			<PageWrapper>
-				<PageHeader breadcrumb={["Customer", "Riwayat Approval"]} />
-				<DataTable tableHeader={header} tableBody={requestBoxes.ApprovalRequest} initialSort={{ prop: 'created_at', isAscending: true }} />
+				<SearchInput />
+				<DataTable
+					tableHeader={header}
+					tableBody={requestBoxes.ApprovalRequest}
+				/>
 				<Pagination
-					pageCount={requestBoxes.Meta.last_page}
+					pageCount={requestBoxes.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

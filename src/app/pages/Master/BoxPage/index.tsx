@@ -6,7 +6,12 @@ import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
 import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import { getBoxesList, getBoxDetail, RESET_BOX_FORM } from "actions/BoxActions";
+import {
+	getBoxesList,
+	getBoxDetail,
+	RESET_BOX_FORM,
+	SearchBoxes,
+} from "actions/BoxActions";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { deleteBox } from "actions/BoxActions";
@@ -15,10 +20,10 @@ import { selectBoxes } from "store/Selector/BoxSelector";
 import moment from "moment";
 import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import { SearchInput } from "./FilterInput";
 
 const BoxPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
-	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
 	const boxes = useSelector(selectBoxes);
@@ -26,14 +31,18 @@ const BoxPage = () => {
 
 	let history = useHistory();
 	const handlePrint = () => {
-		history.push("/Print-PerPage")
+		history.push("/Print-PerPage");
 		setTimeout(function () {
 			window.location.reload();
 		}, 1000);
-	}
+	};
 
 	const FetchData = (page = 1) => {
-		dispatch(getBoxesList(page));
+		if (boxes.Box.code_box === "") {
+			dispatch(getBoxesList(page));
+		} else {
+			dispatch(SearchBoxes);
+		}
 	};
 
 	useEffect(() => {
@@ -48,7 +57,7 @@ const BoxPage = () => {
 			confirmButtonColor: "#d33",
 			confirmButtonText: "Hapus",
 		}).then(willDelete => {
-			if (willDelete) {
+			if (willDelete.isConfirmed) {
 				dispatch(deleteBox(id));
 				setShowAlertSuccess(true);
 				setTimeout(function () {
@@ -57,11 +66,6 @@ const BoxPage = () => {
 				setTimeout(function () {
 					window.location.reload();
 				}, 1000);
-			} else {
-				setShowAlertFailed(true);
-				setTimeout(function () {
-					setShowAlertFailed(false);
-				}, 4000);
 			}
 		});
 	};
@@ -115,13 +119,12 @@ const BoxPage = () => {
 		{
 			title: "Code Box",
 			prop: "code_box",
-			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
 			},
 		},
 		{
-			prop: 'created_at',
+			prop: "created_at",
 			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
@@ -167,12 +170,6 @@ const BoxPage = () => {
 					show={showAlertSuccess}
 					onHide={() => setShowAlertSuccess(false)}
 				/>
-				<Alert
-					text="Data Gagal Di Hapus"
-					variant="danger"
-					show={showAlertFailed}
-					onHide={() => setShowAlertFailed(false)}
-				/>
 				<ModalForm
 					modal={modalShow}
 					hide={_onHide}
@@ -184,6 +181,7 @@ const BoxPage = () => {
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
+					filter={SearchInput}
 				/>
 				<div className="d-flex mb-6">
 					<Button
@@ -196,7 +194,7 @@ const BoxPage = () => {
 				</div>
 				<DataTable tableHeader={header} tableBody={boxes.Boxes} />
 				<Pagination
-					pageCount={boxes.Meta.last_page}
+					pageCount={boxes.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

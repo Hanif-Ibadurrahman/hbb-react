@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import { deleteCabinet } from "actions/CabinetAction";
 import Alert from "app/components/Alerts";
 import { selectCabinets } from "store/Selector/CabinetSelector";
+import { ModalFilter } from "./ModalFilter";
 
 const CabinetPage = props => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -47,7 +48,7 @@ const CabinetPage = props => {
 			confirmButtonColor: "#d33",
 			confirmButtonText: "Hapus",
 		}).then(willDelete => {
-			if (willDelete) {
+			if (willDelete.isConfirmed) {
 				dispatch(deleteCabinet(id));
 				setShowAlertSuccess(true);
 				setTimeout(function () {
@@ -56,11 +57,6 @@ const CabinetPage = props => {
 				setTimeout(function () {
 					window.location.reload();
 				}, 1000);
-			} else {
-				setShowAlertFailed(true);
-				setTimeout(function () {
-					setShowAlertFailed(false);
-				}, 4000);
 			}
 		});
 	};
@@ -81,11 +77,6 @@ const CabinetPage = props => {
 			title: "Detail",
 			url: "Cabinet-Detail/" + id,
 			type: 1,
-		},
-		{
-			icon: "fa-copy ",
-			title: "Duplicate",
-			type: 2,
 		},
 		{
 			icon: "fa-edit",
@@ -170,6 +161,7 @@ const CabinetPage = props => {
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
+					filter={ModalFilter}
 				/>
 				<DataTable tableHeader={header} tableBody={cabinets.Cabinets} />
 				<Pagination

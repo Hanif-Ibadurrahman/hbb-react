@@ -17,7 +17,8 @@ import Swal from "sweetalert2";
 import Alert from "app/components/Alerts";
 import { selectRooms } from "store/Selector/RoomSelector";
 import { selectCustomers } from "store/Selector/CustomerSelector";
-import { getCustomersList } from "actions/CustomerAction";
+import { deleteCustomer, getCustomersList } from "actions/CustomerAction";
+import { ModalFilter } from "./ModalFilter";
 
 const CustomerPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -55,8 +56,8 @@ const CustomerPage = () => {
 			confirmButtonColor: "#d33",
 			confirmButtonText: "Hapus",
 		}).then(willDelete => {
-			if (willDelete) {
-				dispatch(deleteRoom(id));
+			if (willDelete.isConfirmed) {
+				dispatch(deleteCustomer(id));
 				setShowAlertSuccess(true);
 				setTimeout(function () {
 					setShowAlertSuccess(false);
@@ -64,11 +65,6 @@ const CustomerPage = () => {
 				setTimeout(function () {
 					window.location.reload();
 				}, 1000);
-			} else {
-				setShowAlertFailed(true);
-				setTimeout(function () {
-					setShowAlertFailed(false);
-				}, 4000);
 			}
 		});
 	};
@@ -148,6 +144,7 @@ const CustomerPage = () => {
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
+					filter={ModalFilter}
 				/>
 				<DataTable tableHeader={header} tableBody={customers.Customers} />
 				<Pagination

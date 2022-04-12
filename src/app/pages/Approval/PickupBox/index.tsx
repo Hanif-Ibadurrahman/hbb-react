@@ -56,7 +56,6 @@ const ApprovalAdminPickupBox = () => {
 	};
 
 	const Approval = async id => {
-		console.log(">>>>>", id);
 		let payload = {
 			Id: id,
 			Approved: true,

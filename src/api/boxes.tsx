@@ -4,6 +4,7 @@ import api from "./dox";
 export const create = async (data: BoxInterfaceState) => {
 	let payload = {
 		code_box: data.code_box,
+		company_id: data.company.id,
 	};
 	return api.post("/boxes", payload);
 };
@@ -12,6 +13,7 @@ export const update = async (data: BoxInterfaceState) => {
 	let id = data.id;
 	let payload = {
 		code_box: data.code_box,
+		company_id: data.company.id,
 	};
 	console.log(payload);
 	return await api.put(`/boxes/${id}`, payload);
@@ -24,6 +26,21 @@ export const getById = async (id: String) => {
 export const getAll = async params => {
 	return api
 		.get(`/boxes?page=${params}`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
+export const filterBoxes = async (data: BoxInterfaceState) => {
+	let filter = {
+		code: data.code_box,
+	};
+
+	return api
+		.get(`/boxes?code=${filter.code}`)
 		.then(res => {
 			return res.data;
 		})

@@ -22,13 +22,12 @@ export function ModalFilter(props) {
 				enableReinitialize={true}
 				onSubmit={async values => {
 					try {
-						console.log("values >>>", values);
 						const res = await filterData(values);
 						await dispatch(res);
 						dispatch({ type: RESET_DOCUMENT_FORM });
 						props.modalSet(props.valueModalSet);
 					} catch (e) {
-						console.log("ini error di depan");
+						console.log("error");
 					}
 				}}
 			>

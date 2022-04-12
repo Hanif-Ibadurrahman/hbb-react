@@ -22,8 +22,6 @@ const CarPage = () => {
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		console.log("page", page);
-
 		dispatch(getCarsList(page));
 	};
 

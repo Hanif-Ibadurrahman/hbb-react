@@ -1,5 +1,5 @@
 import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
@@ -7,13 +7,23 @@ import { selectBox } from "../../../../store/Selector/BoxSelector";
 import { useDispatch, useSelector } from "react-redux";
 import { CreateBox, UpdateBox, RESET_BOX_FORM } from "actions/BoxActions";
 import { BoxInterfaceState } from "store/Types/BoxTypes";
+import { Autocomplete, TextField } from "@mui/material";
+import { selectCompanys } from "store/Selector/CompanySelector";
+import { getCompanyList } from "actions/CompanyAction";
 
 const ModalForm = props => {
-	// const [CodeBox, setCodeBox] = useState("");
 	const [showAlert, setShowAlert] = useState(false);
-	const [alertMessage, setalertMessage] = useState("");
+	const [alertMessage, setAlertMessage] = useState("");
+	const [varianAlert, setVarianAlert] = useState("");
 	const box: BoxInterfaceState = useSelector(selectBox);
 	const dispatch = useDispatch();
+	const company = useSelector(selectCompanys);
+	const FetchData = (page = 1) => {
+		dispatch(getCompanyList(page));
+	};
+	useEffect(() => {
+		FetchData();
+	}, []);
 	const validationSchema = Yup.object().shape({
 		code_box: Yup.string().required("*Wajib diisi"),
 	});
@@ -22,13 +32,13 @@ const ModalForm = props => {
 		<>
 			<Alert
 				text={alertMessage}
-				variant="success"
+				variant={varianAlert}
 				show={showAlert}
 				style={{
 					top: 50,
 					position: "fixed",
 					left: "50%",
-					transform: [{ translateX: "-50%" }],
+					transform: [{ translateX: "50%" }],
 				}}
 				onHide={() => setShowAlert(false)}
 			/>
@@ -45,24 +55,28 @@ const ModalForm = props => {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							let action = box.id ? UpdateBox(values) : CreateBox(values);
-							// dispatch(loadingbarTurnOn)
+							let action = box?.id ? UpdateBox(values) : CreateBox(values);
 							const res = await action;
 							await dispatch(res);
 							action.then(() => {
 								dispatch({ type: RESET_BOX_FORM });
 								props.modalSet(props.valueModalSet);
+								setShowAlert(true);
+								setVarianAlert("success");
+								box.id
+									? setAlertMessage("Data Berhasil di Edit")
+									: setAlertMessage("Data Berhasil di Tambah");
+								setTimeout(function () {
+									window.location.reload();
+								}, 1000);
 							});
-							dispatch({ type: RESET_BOX_FORM });
-							props.modalSet(props.valueModalSet);
-							box.id ? (
-								<>Data Berhasil di Edit</>
-							) : (
-								<>Data Berhasil di Tambah</>
-							);
-							console.log(action);
 						} catch (e) {
-							console.log("ini error di depan");
+							setShowAlert(true);
+							setAlertMessage("Gagal Update Data");
+							setVarianAlert("danger");
+							setTimeout(function () {
+								setShowAlert(false);
+							}, 4000);
 						}
 					}}
 				>
@@ -73,9 +87,11 @@ const ModalForm = props => {
 						handleChange,
 						handleBlur,
 						handleSubmit,
+						setFieldValue,
 						isSubmitting,
 					}) => (
 						<Form onSubmit={handleSubmit}>
+							{console.log("values >>>>", values)}
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
 									{box.id ? <>Edit Data</> : <>Tambah Data</>}
@@ -89,7 +105,7 @@ const ModalForm = props => {
 												<Form.Label>Code Box</Form.Label>
 												<Form.Control
 													type="text"
-													name="CodeBox"
+													name="code_box"
 													placeholder="Code"
 													value={values.code_box}
 													onChange={e => {
@@ -103,6 +119,29 @@ const ModalForm = props => {
 													</p>
 												) : null}
 											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Pilih Perusahaan</Form.Label>
+												<Autocomplete
+													id="company"
+													options={company.Companys}
+													getOptionLabel={option => option.name}
+													value={values.company}
+													onChange={(e, value) => {
+														setFieldValue(
+															"company",
+															value !== null ? value : values.company,
+														);
+													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															placeholder="Company"
+															name="comapany_id"
+															{...params}
+														/>
+													)}
+												/>
+											</Form.Group>
 										</Col>
 									</Row>
 								</Container>
@@ -113,7 +152,7 @@ const ModalForm = props => {
 								</Button>
 								<Button
 									type="submit"
-									disabled={isSubmitting}
+									disabled={isSubmitting || values.company.id === ""}
 									className="bg-success-6"
 									variant="success"
 								>

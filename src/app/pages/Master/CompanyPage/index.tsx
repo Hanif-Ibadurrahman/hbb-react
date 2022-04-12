@@ -73,11 +73,6 @@ const CompanyPage = () => {
 			type: 1,
 		},
 		{
-			icon: "fa-copy ",
-			title: "Duplicate",
-			type: 2,
-		},
-		{
 			icon: "fa-edit",
 			title: "Edit",
 			onclick: () => {
@@ -100,11 +95,17 @@ const CompanyPage = () => {
 
 	const header = [
 		{
-			title: "Code Company",
-			prop: "name",
-			sortable: true,
+			title: "Code Perusahaan",
+			prop: "code",
 			cellProps: {
-				style: { width: "80%" },
+				style: { width: "40%" },
+			},
+		},
+		{
+			title: "Nama Perusahaan",
+			prop: "name",
+			cellProps: {
+				style: { width: "40%" },
 			},
 		},
 		{
@@ -120,7 +121,9 @@ const CompanyPage = () => {
 		},
 	];
 
-	console.log(Companys);
+	const Filter = () => {
+		return <div></div>;
+	};
 
 	return (
 		<>
@@ -155,6 +158,7 @@ const CompanyPage = () => {
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
+					filter={Filter}
 				/>
 				<DataTable tableHeader={header} tableBody={Companys.Companys} />
 				<Pagination

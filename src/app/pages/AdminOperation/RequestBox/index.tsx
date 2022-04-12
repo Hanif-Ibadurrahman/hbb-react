@@ -8,6 +8,7 @@ import { Pagination } from "app/components/Pagination";
 import {
 	getRequestBoxDetail,
 	getAllConfirmedAdmin,
+	SearchApprovalOperation,
 } from "actions/RequestBoxAction";
 import { useDispatch, useSelector } from "react-redux";
 import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
@@ -15,6 +16,7 @@ import moment from "moment";
 import { ModalFormReject, ModalFormApprove } from "./ModalForm";
 import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import { SearchInput } from "./FilterInput";
 
 const ApprovalOperationRequestBox = () => {
 	const [modalShow, setModalShow] = useState(false);
@@ -24,7 +26,11 @@ const ApprovalOperationRequestBox = () => {
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		dispatch(getAllConfirmedAdmin(page));
+		if (requestBoxes.RequestBoxes.length === 0) {
+			dispatch(getAllConfirmedAdmin(page));
+		} else {
+			dispatch(SearchApprovalOperation);
+		}
 	};
 
 	useEffect(() => {
@@ -94,15 +100,12 @@ const ApprovalOperationRequestBox = () => {
 			},
 		},
 		{
-			prop: 'created_at',
+			prop: "created_at",
 			sortable: true,
 			cellProps: {
 				style: { width: "20%" },
 			},
-			headerCell: (sortedProp) => {
-				const isActive = sortedProp.prop === 'created_at';
-				const order = sortedProp.isAscending ? 'Terlama' : 'Terbaru';
-
+			headerCell: sortedProp => {
 				return (
 					<div className="cur-p">
 						{`Tanggal Permintaan`}
@@ -126,12 +129,12 @@ const ApprovalOperationRequestBox = () => {
 						{row.type == "request-box"
 							? "Request Box"
 							: row.type == "pickup-box"
-								? "Pick Up Box"
-								: row.type == "borrow-item"
-									? "Peminjaman"
-									: row.type == "return-item"
-										? "Pengembalian"
-										: null}
+							? "Pick Up Box"
+							: row.type == "borrow-item"
+							? "Peminjaman"
+							: row.type == "return-item"
+							? "Pengembalian"
+							: null}
 					</>
 				);
 			},
@@ -171,10 +174,10 @@ const ApprovalOperationRequestBox = () => {
 					modalSet={setModalShowApprove}
 					valueModalSet={false}
 				/>
-				<PageHeader breadcrumb={["Master", "Approval Operation"]} />
+				<SearchInput />
 				<DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} />
 				<Pagination
-					pageCount={requestBoxes.Meta.last_page}
+					pageCount={requestBoxes.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 				<div className="d-flex jc-end mt-6">

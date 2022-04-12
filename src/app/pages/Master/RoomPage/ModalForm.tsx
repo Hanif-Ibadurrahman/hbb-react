@@ -17,7 +17,8 @@ import { getAreasList } from "actions/AreaActions";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
-	const [alertMessage, setalertMessage] = useState("");
+	const [alertMessage, setAlertMessage] = useState("");
+	const [varianAlert, setVarianAlert] = useState("");
 	const room: RoomInterfaceState = useSelector(selectRoom);
 	const area: AreasInterfaceState = useSelector(selectAreas);
 	const dispatch = useDispatch();
@@ -25,8 +26,6 @@ const ModalForm = props => {
 		code_room: Yup.string().required("*Wajib diisi"),
 		name: Yup.string().required("*Wajib diisi"),
 	});
-
-	console.log("Area >>>>", area.Areas);
 
 	const FetchData = (page = 1) => {
 		dispatch(getAreasList(page));
@@ -39,13 +38,13 @@ const ModalForm = props => {
 		<>
 			<Alert
 				text={alertMessage}
-				variant="success"
+				variant={varianAlert}
 				show={showAlert}
 				style={{
 					top: 50,
 					position: "fixed",
 					left: "50%",
-					transform: [{ translateX: "-50%" }],
+					transform: [{ translateX: "50%" }],
 				}}
 				onHide={() => setShowAlert(false)}
 			/>
@@ -63,23 +62,27 @@ const ModalForm = props => {
 					onSubmit={async values => {
 						try {
 							let action = room.id ? UpdateRoom(values) : CreateRoom(values);
-							// dispatch(loadingbarTurnOn)
 							const res = await action;
 							await dispatch(res);
 							action.then(() => {
 								dispatch({ type: RESET_ROOM_FORM });
 								props.modalSet(props.valueModalSet);
+								setShowAlert(true);
+								setVarianAlert("success");
+								room.id
+									? setAlertMessage("Data Berhasil di Edit")
+									: setAlertMessage("Data Berhasil di Tambah");
+								setTimeout(function () {
+									window.location.reload();
+								}, 1000);
 							});
-							dispatch({ type: RESET_ROOM_FORM });
-							props.modalSet(props.valueModalSet);
-							room.id ? (
-								<>Data Berhasil di Edit</>
-							) : (
-								<>Data Berhasil di Tambah</>
-							);
-							console.log(action);
 						} catch (e) {
-							console.log("ini error di depan");
+							setShowAlert(true);
+							setAlertMessage("Gagal Update Data");
+							setVarianAlert("danger");
+							setTimeout(function () {
+								setShowAlert(false);
+							}, 4000);
 						}
 					}}
 				>
@@ -145,9 +148,9 @@ const ModalForm = props => {
 												<Autocomplete
 													id="area"
 													options={area.Areas}
+													value={values.area}
 													getOptionLabel={option => option.code_area}
 													onChange={(e, value) => {
-														console.log(value);
 														setFieldValue(
 															"area",
 															value !== null ? value : values.area.code_area,
@@ -173,7 +176,7 @@ const ModalForm = props => {
 								</Button>
 								<Button
 									type="submit"
-									disabled={isSubmitting}
+									disabled={isSubmitting || values.area.id === ""}
 									className="bg-success-6"
 									variant="success"
 								>

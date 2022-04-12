@@ -31,12 +31,12 @@ export const ModalForm = props => {
 	const dispatch = useDispatch();
 
 	const validationSchema = Yup.object().shape({
-		// code_cabinet: Yup.string().required("*Wajib diisi"),
-		// block_number: Yup.string().required("*Wajib diisi"),
-		// total_bays: Yup.string().required("*Wajib diisi"),
-		// total_rows: Yup.string().required("*Wajib diisi"),
-		// total_column: Yup.string().required("*Wajib diisi"),
-		// depth: Yup.string().required("*Wajib diisi"),
+		code_cabinet: Yup.string().required("*Wajib diisi"),
+		block_number: Yup.string().required("*Wajib diisi"),
+		total_bays: Yup.string().required("*Wajib diisi"),
+		total_rows: Yup.string().required("*Wajib diisi"),
+		total_columns: Yup.string().required("*Wajib diisi"),
+		depth: Yup.string().required("*Wajib diisi"),
 	});
 
 	const FetchData = (page = 1) => {
@@ -124,10 +124,11 @@ export const ModalForm = props => {
 										<Col xs={12}>
 											<Form onSubmit={handleSubmit}>
 												<Form.Group className="mb-4" controlId="formBasicEmail">
-													<Form.Label>Pilih Area</Form.Label>
+													<Form.Label>Pilih Ruangan</Form.Label>
 													<Autocomplete
 														id="room"
 														options={rooms.Rooms}
+														value={values.room}
 														getOptionLabel={option => option.code_room}
 														onChange={(e, value) => {
 															setFieldValue(

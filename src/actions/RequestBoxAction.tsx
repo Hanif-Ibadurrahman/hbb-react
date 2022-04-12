@@ -14,6 +14,9 @@ import {
 	approval_operation,
 	getAllRequest,
 	getAllApproved,
+	filterApprovalAdmin,
+	filterApprovalOperation,
+	filterAllApproved,
 } from "../api/requestBox";
 export const GET_REQUEST_BOXES_LIST = "GET_BOXES_LIST";
 export const GET_REQUEST_BOX_DETAIL = "GET_BOX_DETAIL";
@@ -29,6 +32,9 @@ export const REJECT_OPERTAION = "REJECT_OPERATION";
 export const APPROVAL_OPERATION = "APPROVAL_OPERATION";
 export const GET_ALL_REQUEST = "GET_ALL_REQUEST";
 export const GET_ALL_APPROVED = "GET_ALL_APPROVED";
+export const SEARCH_APPROVAL_ADMIN = "SEARCH_APPROVAL_ADMIN";
+export const SEARCH_APPROVAL_OPERATION = "SEARCH_APPROVAL_OPERATION";
+export const SEARCH_ALL_APPROVAL = "SEARCH_ALL_APPROVAL";
 
 export const getRequestBoxesList = page => {
 	return async dispatch => {
@@ -49,6 +55,36 @@ export const getRequestBoxesList = page => {
 				payload: {
 					data: false,
 					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const SearchApprovalAdmin = async (data: RequestBoxInterfaceState) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_REQUEST_BOX_DATA,
+				payload: data,
+			});
+			const response = await filterApprovalAdmin(data);
+			dispatch({
+				type: SEARCH_APPROVAL_ADMIN,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: SEARCH_APPROVAL_ADMIN,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
 				},
 			});
 			console.log(error);
@@ -196,6 +232,38 @@ export const getAllConfirmedAdmin = page => {
 	};
 };
 
+export const SearchApprovalOperation = async (
+	data: RequestBoxInterfaceState,
+) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_REQUEST_BOX_DATA,
+				payload: data,
+			});
+			const response = await filterApprovalOperation(data);
+			dispatch({
+				type: SEARCH_APPROVAL_OPERATION,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: SEARCH_APPROVAL_OPERATION,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
 export const RejectOpertaion = async (data: ApprovalInterfaceState) => {
 	return async dispatch => {
 		try {
@@ -224,8 +292,6 @@ export const RejectOpertaion = async (data: ApprovalInterfaceState) => {
 export const ApprovalOpertaion = async (
 	data: ApprovalOperationInterfaceState,
 ) => {
-	console.log("Action BOy", data);
-
 	return async dispatch => {
 		try {
 			const response = await approval_operation(data);
@@ -289,7 +355,6 @@ export const getAllApprovedList = page => {
 					errorMessage: false,
 				},
 			});
-			console.log("data action >>>", response)
 			return response;
 		} catch (error: any) {
 			dispatch({
@@ -297,6 +362,36 @@ export const getAllApprovedList = page => {
 				payload: {
 					data: false,
 					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const SearchAllApprovedList = async (data: RequestBoxInterfaceState) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_REQUEST_BOX_DATA,
+				payload: data,
+			});
+			const response = await filterAllApproved(data);
+			dispatch({
+				type: SEARCH_ALL_APPROVAL,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: SEARCH_ALL_APPROVAL,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
 				},
 			});
 			console.log(error);

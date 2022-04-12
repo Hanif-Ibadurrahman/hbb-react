@@ -10,6 +10,7 @@ export interface RequestBoxInterfaceState {
 	status: string;
 	delivered_at: string;
 	delivery_method: string;
+	type: string;
 	code_boxes: [];
 	request_logs: [
 		{
@@ -20,9 +21,9 @@ export interface RequestBoxInterfaceState {
 	created_at: string;
 	request_items: [
 		{
-			box: BoxInterfaceState,
-			status: string,
-		}
+			box: BoxInterfaceState;
+			status: string;
+		},
 	];
 	customer: CustomerInterfaceState;
 }
@@ -50,6 +51,8 @@ export interface RequestBoxesInterfaceState {
 	ErrorRequestBox?: string;
 	Title: string;
 	Meta: PaginationState;
+	CSROperationNotif: PaginationState;
+	CSRAdminNotif: PaginationState;
 }
 
 export type RequestBoxContainerState = RequestBoxesInterfaceState;

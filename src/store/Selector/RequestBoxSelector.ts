@@ -14,6 +14,10 @@ export const selectRequestBoxes = createSelector(
 	requestBoxDomain,
 	state => state,
 );
+export const selectApprovalList = createSelector(
+	requestBoxDomain,
+	state => state,
+);
 export const selectRequestBox = createSelector(
 	requestBoxDomain,
 	state => state.RequestBox,
