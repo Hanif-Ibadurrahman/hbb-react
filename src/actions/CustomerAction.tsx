@@ -1,6 +1,6 @@
 import React from "react";
 import { CustomerInterfaceState } from "store/Types/CustomerTypes";
-import { create, destroy, getAll } from "../api/customer";
+import { create, destroy, getAll, update, getById } from "../api/customer";
 export const GET_CUSTOMERS_LIST = "GET_CUSTOMERS_LIST";
 export const GET_CUSTOMER_DETAIL = "GET_CUSTOMER_DETAIL";
 export const CREATE_CUSTOMER = "CREATE_CUSTOMER";
@@ -10,7 +10,6 @@ export const RESET_CUSTOMER_LIST = "RESET_CUSTOMER_LIST";
 export const SET_CUSTOMER_DATA = "SET_CUSTOMER_DATA";
 export const UPDATE_CUSTOMER = "UPDATE_CUSTOMER";
 
-let limit = 20;
 export const getCustomersList = page => {
 	return async dispatch => {
 		try {
@@ -38,6 +37,32 @@ export const getCustomersList = page => {
 	};
 };
 
+export const getCustomerDetail = (id: String) => {
+	return dispatch => {
+		return getById(id)
+			.then(function (response) {
+				dispatch({
+					type: GET_CUSTOMER_DETAIL,
+					payload: {
+						data: response.data,
+						errorMessage: false,
+					},
+				});
+				return response;
+			})
+			.catch(function (error) {
+				dispatch({
+					type: GET_CUSTOMER_DETAIL,
+					payload: {
+						data: false,
+						errorMessage: error.message,
+					},
+				});
+				return error;
+			});
+	};
+};
+
 export const deleteCustomer = id => {
 	return dispatch => {
 		destroy(id)
@@ -51,7 +76,6 @@ export const deleteCustomer = id => {
 };
 
 export const CreateCustomer = async (data: CustomerInterfaceState) => {
-	console.log(data);
 	return async dispatch => {
 		try {
 			dispatch({
@@ -70,6 +94,36 @@ export const CreateCustomer = async (data: CustomerInterfaceState) => {
 		} catch (error: any) {
 			dispatch({
 				type: CREATE_CUSTOMER,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const UpdateCustomer = async (data: CustomerInterfaceState) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_CUSTOMER_DATA,
+				payload: data,
+			});
+			const response = await update(data);
+			dispatch({
+				type: UPDATE_CUSTOMER,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: UPDATE_CUSTOMER,
 				payload: {
 					data: false,
 					errorMessage: error?.message,

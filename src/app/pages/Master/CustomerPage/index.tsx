@@ -6,19 +6,16 @@ import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
 import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import {
-	getRoomsList,
-	getRoomDetail,
-	deleteRoom,
-	RESET_ROOM_FORM,
-} from "actions/RoomAction";
+import { getRoomDetail, RESET_ROOM_FORM } from "actions/RoomAction";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import Alert from "app/components/Alerts";
-import { selectRooms } from "store/Selector/RoomSelector";
 import { selectCustomers } from "store/Selector/CustomerSelector";
-import { deleteCustomer, getCustomersList } from "actions/CustomerAction";
-import { ModalFilter } from "./ModalFilter";
+import {
+	deleteCustomer,
+	getCustomerDetail,
+	getCustomersList,
+} from "actions/CustomerAction";
 
 const CustomerPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -44,7 +41,7 @@ const CustomerPage = () => {
 	};
 
 	const showEditForm = async id => {
-		dispatch(getRoomDetail(id));
+		dispatch(getCustomerDetail(id));
 		setModalShow(true);
 	};
 
@@ -70,6 +67,22 @@ const CustomerPage = () => {
 	};
 
 	const action = id => [
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "Customer-Detail/" + id,
+			type: 1,
+		},
+		{
+			icon: "fa-edit",
+			title: "Edit",
+			onclick: () => {
+				showEditForm(id);
+			},
+			dispatch: dispatch,
+			row: id,
+			type: 2,
+		},
 		{
 			icon: "fa-trash-alt",
 			title: "Delete",
@@ -111,6 +124,10 @@ const CustomerPage = () => {
 		},
 	];
 
+	const Filter = () => {
+		return <div></div>;
+	};
+
 	return (
 		<>
 			<Helmet>
@@ -144,7 +161,7 @@ const CustomerPage = () => {
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
-					filter={ModalFilter}
+					filter={Filter}
 				/>
 				<DataTable tableHeader={header} tableBody={customers.Customers} />
 				<Pagination

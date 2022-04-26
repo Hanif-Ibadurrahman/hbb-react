@@ -47,8 +47,8 @@ export default (
 				...state,
 				BorrowList: payload.data,
 				Meta: {
-					last_page: payload.meta.last_page,
-					current_page: payload.meta.current_page,
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
 					total: payload?.meta?.total,
 					per_page: payload?.meta?.per_page,
 				},

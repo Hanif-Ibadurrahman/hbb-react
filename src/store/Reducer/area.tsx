@@ -6,6 +6,7 @@ import {
 	RESET_AREA_LIST,
 	RESET_AREA_FORM,
 	SET_AREA_DATA,
+	FILTER_AREA,
 } from "../../actions/AreaActions";
 import { AreasInterfaceState, AreaInterfaceState } from "../Types/AreaTypes";
 
@@ -37,6 +38,18 @@ export default (
 				Area: payload,
 			};
 		case GET_AREAS_LIST:
+			return {
+				...state,
+				Areas: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorArea: payload.errorMessage,
+			};
+		case FILTER_AREA:
 			return {
 				...state,
 				Areas: payload.data,

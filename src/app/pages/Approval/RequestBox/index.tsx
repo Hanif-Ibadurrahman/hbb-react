@@ -203,11 +203,11 @@ const ApprovalAdminRequestBox = () => {
 				<SearchInput />
 				<DataTable
 					tableHeader={header}
-					tableBody={requestBoxes.RequestBoxes}
+					tableBody={requestBoxes?.RequestBoxes}
 					initialSort={{ prop: "created_at", isAscending: true }}
 				/>
 				<Pagination
-					pageCount={requestBoxes.Meta.last_page || 1}
+					pageCount={requestBoxes?.Meta?.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

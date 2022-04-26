@@ -16,6 +16,21 @@ export const initialState: DivisionsInterfaceState = {
 	Division: {
 		id: "",
 		name: "",
+		customers: [
+			{
+				id: "",
+				name: "",
+				phone: "",
+				email: "",
+				location: "",
+				company: {
+					id: "",
+					name: "",
+					code: 0,
+					location: "",
+				},
+			},
+		],
 	},
 	Meta: {
 		total: 0,
@@ -51,27 +66,18 @@ export default (
 		case GET_DIVISION_DETAIL:
 			return {
 				...state,
-				Division: {
-					name: payload?.data?.data?.name,
-					id: payload?.data?.data?.id,
-				},
+				Division: payload?.data?.data,
 				ErrorDivision: payload.errorMessage,
 			};
 		case CREATE_DIVISION:
 			return {
 				...state,
-				Division: {
-					name: payload.data.data.name,
-					id: payload.data.data.id,
-				},
+				Division: payload?.data?.data,
 			};
 		case UPDATE_DIVISION:
 			return {
 				...state,
-				Division: {
-					id: payload.data.id,
-					name: payload.data.name,
-				},
+				Division: payload?.data?.data,
 				ErrorDivision: payload.errorMessage,
 			};
 		case RESET_DIVISION_LIST:
@@ -85,6 +91,21 @@ export default (
 				Division: {
 					id: "",
 					name: "",
+					customers: [
+						{
+							id: "",
+							name: "",
+							phone: "",
+							email: "",
+							location: "",
+							company: {
+								id: "",
+								name: "",
+								code: 0,
+								location: "",
+							},
+						},
+					],
 				},
 			};
 		default:

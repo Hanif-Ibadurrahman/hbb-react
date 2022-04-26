@@ -34,6 +34,7 @@ export const initialState: StaffsInterfaceState = {
 		room_id: {
 			id: "",
 			name: "",
+			floor: 0,
 			area: {
 				id: "",
 				code_area: "",
@@ -144,6 +145,7 @@ export default (
 					room_id: {
 						id: "",
 						name: "",
+						floor: 0,
 						area: {
 							id: "",
 							code_area: "",

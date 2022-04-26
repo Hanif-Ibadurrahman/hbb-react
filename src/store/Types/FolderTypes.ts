@@ -1,4 +1,5 @@
 import { PaginationState } from "../Types/PaginationTypes";
+import { DivisionInterfaceState } from "./DivisionTypes";
 interface BoxFolderInterface {
 	id: string | null;
 	code_box: string;
@@ -28,6 +29,7 @@ export interface FolderInterfaceState {
 	cabinet_slot: string;
 	company: CompanyFolderInterface;
 	documents: [DocumentFolderInterface];
+	division: DivisionInterfaceState;
 	location: string;
 	no: string;
 	sign_code: string;

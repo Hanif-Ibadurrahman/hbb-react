@@ -6,13 +6,17 @@ import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
 import { ModalForm } from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import { getCabinetsList, getCabinetDetail } from "actions/CabinetAction";
+import {
+	getCabinetsList,
+	getCabinetDetail,
+	SearchCabinet,
+} from "actions/CabinetAction";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { deleteCabinet } from "actions/CabinetAction";
 import Alert from "app/components/Alerts";
 import { selectCabinets } from "store/Selector/CabinetSelector";
-import { ModalFilter } from "./ModalFilter";
+import { SearchInput } from "./FilterInput";
 
 const CabinetPage = props => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -25,7 +29,11 @@ const CabinetPage = props => {
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		dispatch(getCabinetsList(page));
+		if (cabinets.Cabinet.code_cabinet === "") {
+			dispatch(getCabinetsList(page));
+		} else {
+			dispatch(SearchCabinet);
+		}
 	};
 
 	useEffect(() => {
@@ -161,11 +169,11 @@ const CabinetPage = props => {
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
-					filter={ModalFilter}
+					filter={SearchInput}
 				/>
 				<DataTable tableHeader={header} tableBody={cabinets.Cabinets} />
 				<Pagination
-					pageCount={cabinets.Meta.last_page}
+					pageCount={cabinets.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

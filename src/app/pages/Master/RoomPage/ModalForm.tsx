@@ -25,6 +25,7 @@ const ModalForm = props => {
 	const validationSchema = Yup.object().shape({
 		code_room: Yup.string().required("*Wajib diisi"),
 		name: Yup.string().required("*Wajib diisi"),
+		floor: Yup.number().required("*Wajib diisi"),
 	});
 
 	const FetchData = (page = 1) => {
@@ -69,7 +70,7 @@ const ModalForm = props => {
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
 								setVarianAlert("success");
-								room.id
+								room?.id
 									? setAlertMessage("Data Berhasil di Edit")
 									: setAlertMessage("Data Berhasil di Tambah");
 								setTimeout(function () {
@@ -97,10 +98,9 @@ const ModalForm = props => {
 						setFieldValue,
 					}) => (
 						<Form onSubmit={handleSubmit}>
-							{console.log("valued", values)}
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									{room.id ? <>Edit Data</> : <>Tambah Data</>}
+									{room?.id ? <>Edit Data</> : <>Tambah Data</>}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
@@ -140,6 +140,25 @@ const ModalForm = props => {
 												{touched.code_room && errors.code_room ? (
 													<p className="tc-danger-5 pos-a p-sm">
 														{errors.code_room}
+													</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Lantai</Form.Label>
+												<Form.Control
+													type="number"
+													min="1"
+													name="floor"
+													placeholder="Nama Ruangan"
+													value={values.floor}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.floor && errors.floor ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.floor}
 													</p>
 												) : null}
 											</Form.Group>

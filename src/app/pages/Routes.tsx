@@ -70,6 +70,7 @@ import TransporterPage from "./Master/Staff/TransporterPage";
 import ArchiverPage from "./Master/Staff/ArchiverPage";
 // # - CUSTOMER
 import CustomerPage from "./Master/CustomerPage";
+import CustomerPageDetail from "./Master/CustomerPage/Detail";
 // # -STAFF
 import StaffPage from "./Master/StaffPage";
 // -=-=-=-=-=-
@@ -232,6 +233,10 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/CustomerPage"}
 							component={CustomerPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Customer-Detail/:id"}
+							component={CustomerPageDetail}
 						/>
 						<Route
 							path={process.env.PUBLIC_URL + "/StaffPage"}

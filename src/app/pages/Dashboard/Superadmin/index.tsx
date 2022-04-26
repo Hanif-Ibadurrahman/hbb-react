@@ -5,7 +5,6 @@ import { DataTable } from "../../../components/Datatables";
 import { Card, CardHeader } from "../Components/CardDashboard";
 import { Pagination } from "app/components/Pagination";
 import {
-	getAllApprovedList,
 	getAllConfirmedAdmin,
 	getRequestBoxesList,
 } from "actions/RequestBoxAction";
@@ -22,6 +21,11 @@ import { getBoxesList } from "actions/BoxActions";
 import { selectReturnItems } from "store/Selector/ReturnItemSelector";
 import { getReturnList } from "actions/ReturnAction";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+import { selectBorrowItems } from "store/Selector/BorrowItemSelector";
+import { getBorrowList } from "actions/BorrowItemAction";
+import { UploadExcel } from "./UploadExcel";
+import { selectTransporters } from "store/Selector/TransporterSelector";
+import { getBoxesListNoAsign } from "actions/TransporterAction";
 
 export function DashboardSuperadmin() {
 	const user = localStorage.getItem("User");
@@ -29,12 +33,17 @@ export function DashboardSuperadmin() {
 	const dispatch = useDispatch();
 	const cabinets = useSelector(selectCabinets);
 	const boxes = useSelector(selectBoxes);
+	const boxesNoAsign = useSelector(selectTransporters);
 	const returnItems = useSelector(selectReturnItems);
 	const approvalOperationList = useSelector(selectApprovalList);
+	const borrowList = useSelector(selectBorrowItems);
 	const [title, setTitle] = useState("");
 
 	const BoxData = (page = 1) => {
 		dispatch(getBoxesList(page));
+	};
+	const BoxNoAsign = (page = 1) => {
+		dispatch(getBoxesListNoAsign(page));
 	};
 	const CabinetData = (page = 1) => {
 		dispatch(getCabinetsList(page));
@@ -48,12 +57,23 @@ export function DashboardSuperadmin() {
 	const FetchData = (page = 1) => {
 		dispatch(getAllConfirmedAdmin(page));
 	};
+	const BorrowList = (page = 1) => {
+		dispatch(getBorrowList(page));
+	};
+	useEffect(() => {
+		BorrowList();
+	}, []);
 	useEffect(() => {
 		CabinetData();
 	}, []);
 	useEffect(() => {
 		if (user === "superadmin") {
 			BoxData();
+		}
+	}, []);
+	useEffect(() => {
+		if (user === "superadmin") {
+			BoxNoAsign();
 		}
 	}, []);
 	useEffect(() => {
@@ -83,8 +103,10 @@ export function DashboardSuperadmin() {
 
 	const totalCabinets = cabinets.Meta.total;
 	const totalBox = boxes.Meta.total;
+	const totalBoxNoAsign = boxesNoAsign.Meta.total;
 	const totalReturn = returnItems.Meta.total;
 	const totalApprovalAdminCSR = requestBoxes.Meta.total;
+	const boxCustomer = borrowList.Meta.total;
 
 	const header = [
 		{
@@ -166,15 +188,15 @@ export function DashboardSuperadmin() {
 				<div className="col col-4 ph-0 mh-4">
 					<CardHeader
 						icon="truck-loading"
-						total="0"
-						text={["Cabinet", <br />, "Tersedia."]}
+						total={totalBoxNoAsign || 0}
+						text={["Total Box", <br />, "Tidak terdaftar"]}
 					/>
 				</div>
 				<div className="col col-4 ph-0">
 					<CardHeader
 						icon="boxes"
 						total={totalBox || 0}
-						text={["Total", <br />, "Box."]}
+						text={["Total Box", <br />, "terdaftar."]}
 					/>
 				</div>
 			</div>
@@ -215,8 +237,15 @@ export function DashboardSuperadmin() {
 				<div className="col col-4 ph-0">
 					<CardHeader
 						icon="archive"
-						total={totalBox || 0}
-						text={["Total", <br />, "Box."]}
+						total={boxCustomer || 0}
+						text={["Total", <br />, "Box Terdaftar"]}
+					/>
+				</div>
+				<div className="col col-4 ph-0 mh-4">
+					<CardHeader
+						icon="truck-loading"
+						total={totalBoxNoAsign || 0}
+						text={["Total Box", <br />, "Tidak terdaftar"]}
 					/>
 				</div>
 				<div className="col col-4 ph-0 mh-4">
@@ -274,6 +303,7 @@ export function DashboardSuperadmin() {
 	const TableCustomer = () => {
 		return (
 			<div style={{ width: "100%" }}>
+				<UploadExcel />
 				<DataTable
 					tableHeader={headerCustomer}
 					tableBody={returnItems?.ReturnList}

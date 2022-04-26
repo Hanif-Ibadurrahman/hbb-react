@@ -170,6 +170,21 @@ export const initialState: RequestBoxesInterfaceState = {
 			division_id: {
 				id: "",
 				name: "",
+				customers: [
+					{
+						id: "",
+						name: "",
+						phone: "",
+						email: "",
+						location: "",
+						company: {
+							id: "",
+							name: "",
+							code: 0,
+							location: "",
+						},
+					},
+				],
 			},
 		},
 	},
@@ -468,6 +483,21 @@ export default (
 						division_id: {
 							id: "",
 							name: "",
+							customers: [
+								{
+									id: "",
+									name: "",
+									phone: "",
+									email: "",
+									location: "",
+									company: {
+										id: "",
+										name: "",
+										code: 0,
+										location: "",
+									},
+								},
+							],
 						},
 					},
 				},

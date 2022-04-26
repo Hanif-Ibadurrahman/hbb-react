@@ -15,6 +15,7 @@ export const initialState: PickUpItemsInterfaceState = {
 	PickUpItems: [],
 	PickUpItem: {
 		id: "",
+		quantity: 0,
 		delivered_at: "",
 		delivery_method: "regular",
 		box_codes: [],
@@ -47,8 +48,8 @@ export default (
 				...state,
 				PickUpItemList: payload.data,
 				Meta: {
-					last_page: payload.meta.last_page,
-					current_page: payload.meta.current_page,
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
 					total: payload?.meta?.total,
 					per_page: payload?.meta?.per_page,
 				},
@@ -59,8 +60,8 @@ export default (
 				...state,
 				PickUpItemList: payload.data,
 				Meta: {
-					last_page: payload.meta.last_page,
-					current_page: payload.meta.current_page,
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
 					total: payload?.meta?.total,
 					per_page: payload?.meta?.per_page,
 				},
@@ -104,6 +105,7 @@ export default (
 			return {
 				...state,
 				PickUpItem: {
+					quantity: 0,
 					delivered_at: "",
 					delivery_method: "regular",
 					id: "",

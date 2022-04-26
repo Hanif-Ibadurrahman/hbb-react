@@ -13,6 +13,25 @@ export const initialState: FoldersInterfaceState = {
 	Folders: [],
 	Folder: {
 		id: "",
+		division: {
+			id: "",
+			name: "",
+			customers: [
+				{
+					id: "",
+					name: "",
+					phone: "",
+					email: "",
+					location: "",
+					company: {
+						id: "",
+						name: "",
+						code: 0,
+						location: "",
+					},
+				},
+			],
+		},
 		box: {
 			id: "",
 			code_box: "",
@@ -113,6 +132,25 @@ export default (
 				...state,
 				Folder: {
 					id: "",
+					division: {
+						id: "",
+						name: "",
+						customers: [
+							{
+								id: "",
+								name: "",
+								phone: "",
+								email: "",
+								location: "",
+								company: {
+									id: "",
+									name: "",
+									code: 0,
+									location: "",
+								},
+							},
+						],
+					},
 					box: {
 						id: "",
 						code_box: "",

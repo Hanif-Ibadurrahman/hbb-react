@@ -117,7 +117,7 @@ export const ModalForm = props => {
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									Tambah Customer
+									Tambah Staff
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">

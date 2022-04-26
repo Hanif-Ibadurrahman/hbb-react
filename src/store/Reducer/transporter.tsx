@@ -1,9 +1,11 @@
 import {
 	GET_TRANSPORTER_LIST,
 	SET_TRANSPORTER_DATA,
+	GET_BOX_NO_ASIGN,
 } from "../../actions/TransporterAction";
 import { TransportersInterfaceState } from "../Types/TransporterTypes";
 export const initialState: TransportersInterfaceState = {
+	BoxNoAsign: [],
 	Transporters: [],
 	Transporter: {
 		id: "",
@@ -44,6 +46,18 @@ export default (
 			return {
 				...state,
 				Transporters: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorTransporter: payload.errorMessage,
+			};
+		case GET_BOX_NO_ASIGN:
+			return {
+				...state,
+				BoxNoAsign: payload.data,
 				Meta: {
 					last_page: payload?.meta?.last_page,
 					current_page: payload?.meta?.current_page,
