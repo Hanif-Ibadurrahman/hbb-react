@@ -26,17 +26,24 @@ export const create = async (data: DocumentInterfaceState) => {
 	return api.post("/documents", payload);
 };
 
-export const uploadFile = async (data: UploadFile) => {
+export const uploadFile = async data => {
 	console.log("data upload >>", data);
-	var formData = new FormData();
-	formData.append("file", data.file);
-	console.log("form data >>", formData);
-	const response = api({
-		method: "post",
-		url: "/uploads/excel/document",
-		data: formData,
-		headers: { "Content-Type": "multipart/form-data" },
-	});
+	var formdata = new FormData();
+	formdata.append("file", data, "[PROXY]");
+	console.log("form data >>", formdata);
+	const token = localStorage.getItem("Token");
+
+	const response = await fetch(
+		"http://103.93.57.36:8008/uploads/excel/document",
+		{
+			method: "POST",
+			body: formdata,
+			redirect: "follow",
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		},
+	);
 	console.log("data >>", response);
 	return response;
 };
@@ -47,9 +54,6 @@ export const downloadFile = () => {
 		url: "/downloads/document/template",
 		responseType: "blob",
 		headers: { "Content-Type": "multipart/form-data" },
-	}).then(res => {
-		// FileDownload(res.data, "template.xlsx")
-		console.log("data download>>>", res.data);
 	});
 };
 

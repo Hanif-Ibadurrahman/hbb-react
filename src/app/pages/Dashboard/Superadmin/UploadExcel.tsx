@@ -9,20 +9,25 @@ import {
 	selectFileUpload,
 } from "store/Selector/DocumentSelector";
 import { UploadDocument, downloadFileExcel } from "actions/DocumentAction";
-import { downloadFile } from "api/documents";
+import { downloadFile, uploadFile } from "api/documents";
 import { saveAs } from "file-saver";
 
 export function UploadExcel(props) {
 	const dispatch = useDispatch();
-	const file: UploadFile = useSelector(selectFileUpload);
+	// const file: UploadFile = useSelector(selectFileUpload);
 	const documents = useSelector(selectDocuemnts);
 	const onClickDownload = () => {
 		saveAs("http://fleedy.id/wp-content/uploads/2022/04/documents.xlsx");
 	};
+	const [fileUpload, setFileUpload] = useState();
 
 	const FetchData = () => {
 		dispatch(downloadFile);
 	};
+
+	function onChangeFile(event: any) {
+		setFileUpload(event.currentTarget.files[0]);
+	}
 
 	useEffect(() => {
 		FetchData();
@@ -31,20 +36,20 @@ export function UploadExcel(props) {
 		<>
 			<Formik
 				validationSchema={false}
-				initialValues={file}
+				initialValues={{}}
 				enableReinitialize={true}
-				onSubmit={async values => {
+				onSubmit={async (values: any) => {
 					try {
-						const res = await UploadDocument(values);
-						await dispatch(res);
-						// setTimeout(function () {
-						// 	window.location.reload();
-						// }, 1000);
-					} catch (e) {
-						console.log("error");
-						// setTimeout(function () {
-						// 	window.location.reload();
-						// }, 1000);
+						const res = await uploadFile(fileUpload);
+						if (res.status === 200) {
+							alert("Upload Sukses");
+						} else {
+							alert("Upload Gagal, File yang di upload tidak sesuai");
+							console.log(res.body);
+						}
+					} catch (err) {
+						alert("Upload Gagal");
+						console.log(err);
 					}
 				}}
 			>
@@ -66,33 +71,16 @@ export function UploadExcel(props) {
 							>
 								Download Template
 							</Button>
-							{/* <Button
-								onClick={onClickDownload}
-								className="bg-success-6 w-100"
-								variant="success"
-							>
-								Download Template
-							</Button> */}
 							<Form.Group>
-								{/* <Form.Control
-									type="file"
-									name="file"
-									value={values.file}
-									onChange={e => {
-										handleChange(e);
-									}}
-								/> */}
-								{/* <input type="file" /> */}
 								<input
 									id="file"
 									name="file"
 									type="file"
-									value={values.file}
 									onChange={e => {
 										console.log("onchange", e);
-
-										handleChange(e);
+										onChangeFile(e);
 									}}
+									accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 									className="form-control"
 								/>
 							</Form.Group>
