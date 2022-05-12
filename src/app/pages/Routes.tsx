@@ -38,6 +38,8 @@ import ApprovalPreview from "./AdminOperation/RequestBox/ApprovePreview";
 import ActivityLog from "./AdminOperation/RequestBox/ActivityLog";
 
 // MASTER
+// # - Indexing
+import IndexingPage from "./Master/IndexingPage";
 // # - BOX
 import BoxPage from "./Master/BoxPage";
 import BoxPageDetail from "./Master/BoxPage/Detail";
@@ -166,6 +168,10 @@ export function Routes() {
 						{/*---------- MASTER ---------*/}
 						<Route path={process.env.PUBLIC_URL + "/Box"} component={BoxPage} />
 						<Route path={process.env.PUBLIC_URL + "/Car"} component={CarPage} />
+						<Route
+							path={process.env.PUBLIC_URL + "/Indexing"}
+							component={IndexingPage}
+						/>
 						<Route
 							path={process.env.PUBLIC_URL + "/Car-Detail/:id"}
 							component={CarPageDetail}

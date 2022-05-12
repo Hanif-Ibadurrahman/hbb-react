@@ -9,6 +9,7 @@ import {
 	MasterData,
 	CustomerMasterData,
 	ApprovalOperation,
+	ArchiverMasterData,
 } from "./SidebarData";
 import IconHome from "assets/images/icon/icon-1.png";
 import IconUI from "assets/images/icon/icon-2.png";
@@ -42,6 +43,9 @@ export function Sidebar() {
 				break;
 			case "csroperation":
 				setRole("csroperation");
+				break;
+			case "archiver":
+				setRole("archiver");
 				break;
 			default:
 				setRole("customer");
@@ -139,6 +143,101 @@ export function Sidebar() {
 				>
 					{""} Riwayat Permintaan
 				</MenuItem>
+			</>
+		);
+	};
+
+	const ArchiverMenu = () => {
+		return (
+			<>
+				<MenuItem
+					id={window.location.pathname === "/Dashboard" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconHome} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Dashboard";
+					}}
+				>
+					{""} Beranda
+				</MenuItem>
+				{/* <MenuItem
+					id={
+						window.location.pathname === "/Customer/Request-Box" ? "active" : ""
+					}
+					className=" pos-r"
+					icon={<img src={IconAdvanced} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Customer/Request-Box";
+					}}
+				>
+					{""} Request Box
+				</MenuItem>
+				<MenuItem
+					id={window.location.pathname === "/Customer/Pick-Up" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconForm} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Customer/Pick-Up";
+					}}
+				>
+					{""} Pick Up
+				</MenuItem>
+				<MenuItem
+					id={
+						window.location.pathname === "/Customer/Borrow-Box" ? "active" : ""
+					}
+					className=" pos-r"
+					icon={<img src={IconForm} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Customer/Borrow-Box";
+					}}
+				>
+					{""} Peminjaman
+				</MenuItem>
+				<MenuItem
+					id={window.location.pathname === "/Customer/Return" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconUI} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Customer/Return";
+					}}
+				>
+					{""} Pengembalian
+				</MenuItem>
+				<MenuItem
+					id={window.location.pathname === "Customer/History" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconTable} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "Customer/History";
+					}}
+				>
+					{""} Riwayat Permintaan
+				</MenuItem> */}
+				<SubMenu
+					className=""
+					icon={<img src={IconAdvanced} className="h-5" alt="awSnap" />}
+					title="Master"
+				>
+					{ArchiverMasterData.map((val, key) => {
+						return (
+							<MenuItem
+								id={
+									window.location.pathname.split(val.link).pop() ? "" : "active"
+								}
+								className="pos-r"
+								icon={<img src={val.icon} className="h-5" alt="awSnap" />}
+								key={key}
+								onClick={() => {
+									window.location.pathname = val.link;
+								}}
+							>
+								{""}
+								{val.title}
+							</MenuItem>
+						);
+					})}
+				</SubMenu>
 			</>
 		);
 	};
@@ -333,6 +432,8 @@ export function Sidebar() {
 			return <CsrAdminMenu />;
 		} else if (role === "csroperation") {
 			return <CsrOperationMenu />;
+		} else if (role === "archiver") {
+			return <ArchiverMenu />;
 		} else {
 			return <CustomerMenu />;
 		}
