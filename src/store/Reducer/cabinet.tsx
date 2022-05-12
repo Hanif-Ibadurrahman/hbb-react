@@ -5,6 +5,7 @@ import {
 	UPDATE_CABINET,
 	RESET_CABINET_LIST,
 	RESET_CABINET_FORM,
+	FILTER_CABINET,
 	SET_CABINET_DATA,
 } from "../../actions/CabinetAction";
 import {
@@ -28,6 +29,7 @@ export const initialState: CabinetsInterfaceState = {
 			id: "",
 			name: "",
 			code_room: "",
+			floor: 0,
 			area: {
 				id: "",
 				name: "",
@@ -81,6 +83,18 @@ export default (
 				},
 				ErrorCabinet: payload.errorMessage,
 			};
+		case FILTER_CABINET:
+			return {
+				...state,
+				Cabinets: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorCabinet: payload.errorMessage,
+			};
 		case GET_CABINET_DETAIL:
 			return {
 				...state,
@@ -119,6 +133,7 @@ export default (
 						id: "",
 						name: "",
 						code_room: "",
+						floor: 0,
 						area: {
 							id: "",
 							name: "",

@@ -1,6 +1,13 @@
 import React from "react";
 import { AreaInterfaceState } from "store/Types/AreaTypes";
-import { create, destroy, getAll, getById, update } from "../api/areas";
+import {
+	create,
+	destroy,
+	getAll,
+	getById,
+	update,
+	filterArea,
+} from "../api/areas";
 export const GET_AREAS_LIST = "GET_AREAS_LIST";
 export const GET_AREA_DETAIL = "GET_AREA_DETAIL";
 export const CREATE_AREA = "CREAT_AREA";
@@ -9,6 +16,7 @@ export const RESET_AREA_FORM = "RESET_AREA_FORM";
 export const RESET_AREA_LIST = "RESET_AREA_LIST";
 export const SET_AREA_DATA = "SET_AREA_DATA";
 export const UPDATE_AREA = "UPDATE_AREA";
+export const FILTER_AREA = "FILTER_AREA";
 
 let limit = 20;
 
@@ -31,6 +39,36 @@ export const getAreasList = page => {
 				payload: {
 					data: false,
 					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const SearchArea = async (data: AreaInterfaceState) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_AREA_DATA,
+				payload: data,
+			});
+			const response = await filterArea(data);
+			dispatch({
+				type: FILTER_AREA,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: FILTER_AREA,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
 				},
 			});
 			console.log(error);

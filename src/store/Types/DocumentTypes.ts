@@ -1,6 +1,6 @@
 import { PaginationState } from "../Types/PaginationTypes";
 import { CompanyInterfaceState } from "./CompanyTypes";
-
+import { DivisionInterfaceState } from "./DivisionTypes";
 interface BoxDocumentInterfaceState {
 	id: string | null;
 	code_box: string;
@@ -32,11 +32,17 @@ export interface DocumentInterfaceState {
 	box: BoxDocumentInterfaceState;
 	folder: FolderDocumentInterfaceState;
 	company: CompanyInterfaceState;
+	division: DivisionInterfaceState;
+}
+
+export interface UploadFile {
+	file: any;
 }
 
 export interface DocumentsInterfaceState {
 	Document: DocumentInterfaceState;
 	Documents: DocumentInterfaceState[];
+	UploadFile: UploadFile;
 	ErrorDocument?: string;
 	Title: string;
 	Meta: PaginationState;

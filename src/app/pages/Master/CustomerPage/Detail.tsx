@@ -2,16 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Card } from "react-bootstrap";
 import { PageWrapper } from "app/components/PageWrapper";
 import Breadcrumb from "app/components/BreadCrumb";
-import QR from "app/components/QRCode";
 import "../master.scoped.scss";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getCompanyDetail } from "actions/CompanyAction";
-import { selectCompanys, selectCompany } from "store/Selector/CompanySelector";
-import { CompanyInterfaceState } from "store/Types/CompanyTypes";
+import { CustomerInterfaceState } from "store/Types/CustomerTypes";
+import { selectCustomer } from "store/Selector/CustomerSelector";
+import { getCustomerDetail } from "actions/CustomerAction";
 
-const CompanyPageDetail = ({ match }) => {
-	const Companys: CompanyInterfaceState = useSelector(selectCompany);
+const CustomerPageDetail = ({ match }) => {
+	const Customer: CustomerInterfaceState = useSelector(selectCustomer);
 	let history = useHistory();
 
 	const goToPreviousPath = e => {
@@ -19,19 +18,19 @@ const CompanyPageDetail = ({ match }) => {
 		history.goBack();
 	};
 
-	const Companys_id = match.params.id;
+	const customer_id = match.params.id;
 
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(getCompanyDetail(Companys_id));
+		dispatch(getCustomerDetail(customer_id));
 	}, []);
 
 	return (
 		<>
 			<PageWrapper className="row w-100%">
 				<Breadcrumb
-					crumbs={["Dashboard", "Company", "Detail"]}
+					crumbs={["Dashboard", "Division", "Detail"]}
 					selected
 					className="mb-4"
 				/>
@@ -39,27 +38,27 @@ const CompanyPageDetail = ({ match }) => {
 					<Card className="ph-5 pv-3 bd-rs-2">
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Name Perusahaan</Form.Label>
+								<Form.Label>Username</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={Companys.name}
+									defaultValue={Customer.username}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Total Maksimal Pengguna</Form.Label>
+								<Form.Label>Nama</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={Companys.amount_access}
+									defaultValue={Customer.name}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Penanggung Jawab</Form.Label>
+								<Form.Label>Email</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={Companys.person_responsible}
+									defaultValue={Customer.email}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -67,7 +66,7 @@ const CompanyPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={Companys.phone}
+									defaultValue={Customer.phone}
 								/>
 							</Form.Group>
 							<div className="d-flex jc-end">
@@ -82,22 +81,9 @@ const CompanyPageDetail = ({ match }) => {
 						</Form>
 					</Card>
 				</div>
-				<div className="col col-3">
-					<Card className="p-4 bd-rs-2 d-flex ai-center jc-center">
-						<QR
-							id="Detail-Company-QR"
-							title="Scan here"
-							value="ID : A12O2O3"
-							className="d-flex jc-center"
-						/>
-						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">{Companys.name}</p>
-						</div>
-					</Card>
-				</div>
 			</PageWrapper>
 		</>
 	);
 };
 
-export default CompanyPageDetail;
+export default CustomerPageDetail;

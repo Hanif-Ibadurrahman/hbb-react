@@ -15,17 +15,27 @@ import moment from "moment";
 import { selectCompanys } from "store/Selector/CompanySelector";
 import { getCompanyList } from "actions/CompanyAction";
 import { Autocomplete, TextField } from "@mui/material";
+import { selectDivisions } from "store/Selector/DivisionSelector";
+import { getDivisionsList } from "actions/DivisionAction";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setAlertMessage] = useState("");
 	const [varianAlert, setVarianAlert] = useState("");
 	const company = useSelector(selectCompanys);
+	const division = useSelector(selectDivisions);
+	const DivisionData = (page = 1) => {
+		dispatch(getDivisionsList(page));
+	};
 	const FetchData = (page = 1) => {
 		dispatch(getCompanyList(page));
 	};
 	useEffect(() => {
 		FetchData();
+	}, []);
+
+	useEffect(() => {
+		DivisionData();
 	}, []);
 	const document: DocumentInterfaceState = useSelector(selectDocument);
 	const dispatch = useDispatch();
@@ -361,6 +371,30 @@ const ModalForm = props => {
 													)}
 												/>
 											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Pilih Divisi</Form.Label>
+												<Autocomplete
+													id="division_id"
+													options={division.Divisions}
+													value={values.division}
+													getOptionLabel={option => option.name}
+													onChange={(e, value) => {
+														console.log(value);
+														setFieldValue(
+															"division",
+															value !== null ? value : values.division,
+														);
+													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															placeholder="Divisi"
+															name="division_id"
+															{...params}
+														/>
+													)}
+												/>
+											</Form.Group>
 										</Col>
 									</Row>
 								</Container>
@@ -371,7 +405,11 @@ const ModalForm = props => {
 								</Button>
 								<Button
 									type="submit"
-									disabled={isSubmitting || values.company.id === ""}
+									disabled={
+										isSubmitting ||
+										values.company.id === "" ||
+										values.division.id === ""
+									}
 									className="bg-success-6"
 									variant="success"
 								>

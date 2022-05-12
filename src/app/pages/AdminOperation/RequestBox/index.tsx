@@ -175,7 +175,10 @@ const ApprovalOperationRequestBox = () => {
 					valueModalSet={false}
 				/>
 				<SearchInput />
-				<DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} />
+				<DataTable
+					tableHeader={header}
+					tableBody={requestBoxes?.RequestBoxes}
+				/>
 				<Pagination
 					pageCount={requestBoxes.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}

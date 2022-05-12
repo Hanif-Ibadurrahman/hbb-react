@@ -8,7 +8,6 @@ import { getRequestBoxesList } from "actions/RequestBoxAction";
 import { useDispatch, useSelector } from "react-redux";
 import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
 import moment from "moment";
-import PageHeader from "app/pages/Master/Components/PageHeader";
 import { Button } from "react-bootstrap";
 
 const BoxPage = () => {
@@ -24,10 +23,6 @@ const BoxPage = () => {
 	useEffect(() => {
 		FetchData();
 	}, []);
-
-	const NewData = moment(requestBoxes.RequestBoxes["Delivered_at"]).format(
-		"d MMMM YYYY",
-	);
 
 	const _onHide = () => {
 		setModalShow(false);
@@ -87,7 +82,10 @@ const BoxPage = () => {
 						Add Data<i className="far fa-plus ml-2"></i>
 					</Button>{" "}
 				</div>
-				<DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} />
+				<DataTable
+					tableHeader={header}
+					tableBody={requestBoxes?.RequestBoxes}
+				/>
 				<Pagination
 					pageCount={requestBoxes.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}

@@ -50,6 +50,45 @@ const DivisionPageDetail = ({ match }) => {
 									defaultValue={Divisions.name}
 								/>
 							</Form.Group>
+							{Divisions.customers.map((data, index) => (
+								<Form.Group className="mb-3" controlId="formBasicEmail">
+									<Form.Label className="mb-3 mt-3">
+										Customer {index + 1}
+									</Form.Label>
+									<Form.Group className="mb-3" controlId="formBasicEmail">
+										<Form.Label>Nama Customer</Form.Label>
+										<Form.Control
+											type="text"
+											disabled
+											defaultValue={data.name}
+										/>
+									</Form.Group>
+									<Form.Group className="mb-3" controlId="formBasicEmail">
+										<Form.Label>Email Customer</Form.Label>
+										<Form.Control
+											type="text"
+											disabled
+											defaultValue={data.email}
+										/>
+									</Form.Group>
+									<Form.Group className="mb-3" controlId="formBasicEmail">
+										<Form.Label>No. HP</Form.Label>
+										<Form.Control
+											type="text"
+											disabled
+											defaultValue={data.phone}
+										/>
+									</Form.Group>
+									<Form.Group className="mb-3" controlId="formBasicEmail">
+										<Form.Label>Asal Perusahaan</Form.Label>
+										<Form.Control
+											type="text"
+											disabled
+											defaultValue={data.company.name}
+										/>
+									</Form.Group>
+								</Form.Group>
+							))}
 							<div className="d-flex jc-end">
 								<Button
 									className="mv-4"

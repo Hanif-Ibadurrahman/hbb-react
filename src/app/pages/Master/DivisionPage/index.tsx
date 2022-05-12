@@ -92,7 +92,7 @@ const DivisionPage = () => {
 	const header = [
 		{
 			title: "Code Division",
-			prop: "code",
+			prop: "code_division",
 			sortable: true,
 			cellProps: {
 				style: { width: "40%" },

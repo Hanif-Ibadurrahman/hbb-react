@@ -9,3 +9,7 @@ export const selectDocument = createSelector(
 	documentDomain,
 	state => state.Document,
 );
+export const selectFileUpload = createSelector(
+	documentDomain,
+	state => state.UploadFile,
+);

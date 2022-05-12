@@ -10,7 +10,11 @@ import { CustomerInterfaceState } from "store/Types/CustomerTypes";
 import { selectDivisions } from "store/Selector/DivisionSelector";
 import { getCompanyList } from "actions/CompanyAction";
 import { getDivisionsList } from "actions/DivisionAction";
-import { CreateCustomer, RESET_CUSTOMER_FORM } from "actions/CustomerAction";
+import {
+	CreateCustomer,
+	RESET_CUSTOMER_FORM,
+	UpdateCustomer,
+} from "actions/CustomerAction";
 import { selectCustomer } from "store/Selector/CustomerSelector";
 
 export const ModalForm = props => {
@@ -43,7 +47,7 @@ export const ModalForm = props => {
 		username: Yup.string().required("*Wajib diisi"),
 		password: Yup.string().required("*Wajib diisi").min(8, "Min 8 Karakter"),
 		name: Yup.string().required("*Wajib diisi"),
-		email: Yup.string().required("*Wajib diisi"),
+		email: Yup.string().email().required("*Wajib diisi"),
 		phone: Yup.string().required("*Wajib diisi"),
 		location: Yup.string().required("*Wajib diisi"),
 	});
@@ -75,7 +79,9 @@ export const ModalForm = props => {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							let action = CreateCustomer(values);
+							let action = customer?.id
+								? UpdateCustomer(values)
+								: CreateCustomer(values);
 							const res = await action;
 							await dispatch(res);
 							action.then(() => {
@@ -83,7 +89,7 @@ export const ModalForm = props => {
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
 								setVarianAlert("success");
-								customer.id
+								customer?.id
 									? setAlertMessage("Data Berhasil di Edit")
 									: setAlertMessage("Data Berhasil di Tambah");
 								setTimeout(function () {

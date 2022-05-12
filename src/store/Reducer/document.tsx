@@ -7,12 +7,17 @@ import {
 	RESET_DOCUMENT_FORM,
 	SET_DOCUMENT_DATA,
 	GET_DOCUMENTS_FILTER,
+	UPLOAD_FILE,
+	DOWNLOAD_FILE,
 } from "../../actions/DocumentAction";
 import {
 	DocumentsInterfaceState,
 	DocumentInterfaceState,
 } from "../Types/DocumentTypes";
 export const initialState: DocumentsInterfaceState = {
+	UploadFile: {
+		file: "",
+	},
 	Documents: [],
 	Document: {
 		id: "",
@@ -31,6 +36,25 @@ export const initialState: DocumentsInterfaceState = {
 		location: "",
 		status: "",
 		sign_code: "",
+		division: {
+			id: "",
+			name: "",
+			customers: [
+				{
+					id: "",
+					name: "",
+					phone: "",
+					email: "",
+					location: "",
+					company: {
+						id: "",
+						name: "",
+						code: 0,
+						location: "",
+					},
+				},
+			],
+		},
 		box: {
 			code_box: "",
 			id: "",
@@ -94,6 +118,18 @@ export default (
 				},
 				ErrorDocument: payload.errorMessage,
 			};
+		case DOWNLOAD_FILE:
+			return {
+				...state,
+				Documents: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorDocument: payload.errorMessage,
+			};
 		case GET_DOCUMENTS_FILTER:
 			return {
 				...state,
@@ -116,6 +152,11 @@ export default (
 			return {
 				...state,
 				Document: payload?.data?.data,
+			};
+		case UPLOAD_FILE:
+			return {
+				...state,
+				UploadFile: payload?.data?.data,
 			};
 		case EDIT_DOCUMENT:
 			return {
@@ -148,6 +189,25 @@ export default (
 					location: "",
 					status: "",
 					sign_code: "",
+					division: {
+						id: "",
+						name: "",
+						customers: [
+							{
+								id: "",
+								name: "",
+								phone: "",
+								email: "",
+								location: "",
+								company: {
+									id: "",
+									name: "",
+									code: 0,
+									location: "",
+								},
+							},
+						],
+					},
 					box: {
 						code_box: "",
 						id: "",

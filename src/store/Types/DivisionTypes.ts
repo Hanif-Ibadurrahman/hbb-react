@@ -1,7 +1,24 @@
 import { PaginationState } from "../Types/PaginationTypes";
+
+interface CompanyInterfaceDivision {
+	id: string | null;
+	name: string;
+	code: number;
+	location: string;
+}
+
+interface CustomerInterfaceDivision {
+	id: string | null;
+	name: string;
+	phone: string;
+	email: string;
+	location: string;
+	company: CompanyInterfaceDivision;
+}
 export interface DivisionInterfaceState {
 	id: string | null;
 	name: string;
+	customers: CustomerInterfaceDivision[];
 }
 
 export interface DivisionsInterfaceState {

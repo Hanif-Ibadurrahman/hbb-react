@@ -25,7 +25,7 @@ export const getById = async (id: String) => {
 
 export const getAll = async params => {
 	return api
-		.get(`/boxes?page=${params}`)
+		.get(`/boxes?is_filled=true&page=${params}`)
 		.then(res => {
 			return res.data;
 		})

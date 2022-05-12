@@ -16,6 +16,7 @@ export const initialState: RoomsInterfaceState = {
 		id: "",
 		name: "",
 		code_room: "",
+		floor: 0,
 		area: {
 			id: "",
 			name: "",
@@ -81,6 +82,7 @@ export default (
 				Room: {
 					id: "",
 					name: "",
+					floor: 0,
 					code_room: "",
 					area: {
 						id: "",

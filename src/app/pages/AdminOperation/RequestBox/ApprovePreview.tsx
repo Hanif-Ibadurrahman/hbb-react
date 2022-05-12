@@ -116,7 +116,7 @@ const ApprovalPreview = () => {
 				<SearchInput />
 				<DataTable
 					tableHeader={header}
-					tableBody={requestBoxes.ApprovalRequest}
+					tableBody={requestBoxes?.ApprovalRequest}
 				/>
 				<Pagination
 					pageCount={requestBoxes.Meta.last_page || 1}

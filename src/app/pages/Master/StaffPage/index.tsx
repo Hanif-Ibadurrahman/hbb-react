@@ -16,6 +16,7 @@ import {
 	SearchStaff,
 } from "actions/StaffAction";
 import { SearchInput } from "./FilterInput";
+import Alert from "app/components/Alerts";
 
 const StaffPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -118,6 +119,12 @@ const StaffPage = () => {
 					content="A React Boilerplate application homepage"
 				/>
 			</Helmet>
+			<Alert
+				text="Data Berhasil Di Hapus"
+				variant="success"
+				show={showAlertSuccess}
+				onHide={() => setShowAlertSuccess(false)}
+			/>
 			<PageWrapper>
 				<ModalForm
 					modal={modalShow}

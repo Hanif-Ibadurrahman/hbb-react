@@ -5,6 +5,7 @@ export const create = async (data: FolderInterfaceState) => {
 	let payload = {
 		no: data.no,
 		company_id: data.company.id,
+		division_id: data.division.id,
 	};
 	return api.post("/folders", payload);
 };
@@ -14,6 +15,7 @@ export const update = async (data: FolderInterfaceState) => {
 	let payload = {
 		no: data.no,
 		company_id: data.company.id,
+		division_id: data.division.id,
 	};
 	return await api.put(`/folders/${id}`, payload);
 };

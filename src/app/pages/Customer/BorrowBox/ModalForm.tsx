@@ -114,7 +114,7 @@ const ModalForm = props => {
 												<Form.Select
 													className="cur-p"
 													name="delivery_method"
-													value={values.delivery_method}
+													value={values?.delivery_method}
 													onChange={e => {
 														handleChange(e);
 													}}

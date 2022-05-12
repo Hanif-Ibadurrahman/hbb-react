@@ -1,10 +1,7 @@
-import { identity } from "lodash";
-import { DocumentInterfaceState } from "store/Types/DocumentTypes";
+import { DocumentInterfaceState, UploadFile } from "store/Types/DocumentTypes";
 import api from "./dox";
-import { useSelector, useDispatch } from "react-redux";
-import { selectDocument } from "store/Selector/DocumentSelector";
-import { getDocumentDetail } from "actions/DocumentAction";
-import { useParams } from "react-router-dom";
+import fs from "fs";
+import FileDownload from "js-file-download";
 
 export const create = async (data: DocumentInterfaceState) => {
 	let payload = {
@@ -24,8 +21,36 @@ export const create = async (data: DocumentInterfaceState) => {
 		status: data.status,
 		sign_code: data.sign_code,
 		company_id: data.company.id,
+		division_id: data.division.id,
 	};
 	return api.post("/documents", payload);
+};
+
+export const uploadFile = async (data: UploadFile) => {
+	console.log("data upload >>", data);
+	var formData = new FormData();
+	formData.append("file", data.file);
+	console.log("form data >>", formData);
+	const response = api({
+		method: "post",
+		url: "/uploads/excel/document",
+		data: formData,
+		headers: { "Content-Type": "multipart/form-data" },
+	});
+	console.log("data >>", response);
+	return response;
+};
+
+export const downloadFile = () => {
+	return api({
+		method: "GET",
+		url: "/downloads/document/template",
+		responseType: "blob",
+		headers: { "Content-Type": "multipart/form-data" },
+	}).then(res => {
+		// FileDownload(res.data, "template.xlsx")
+		console.log("data download>>>", res.data);
+	});
 };
 
 export const update = async (data: DocumentInterfaceState) => {
@@ -47,6 +72,7 @@ export const update = async (data: DocumentInterfaceState) => {
 		status: data.status,
 		sign_code: data.sign_code,
 		company_id: data.company.id,
+		division_id: data.division.id,
 	};
 	return await api.put(`/documents/${id}`, payload);
 };

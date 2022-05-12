@@ -1,4 +1,4 @@
-FROM node:16.13.2-alpine as build-stage
+FROM node:14.19.1-alpine as build-stage
 ARG APP_ENV
 WORKDIR /app
 RUN apk update \

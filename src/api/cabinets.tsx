@@ -43,6 +43,21 @@ export const getAll = async params => {
 		});
 };
 
+export const filterCabinet = async (data: CabinetInterfaceState) => {
+	let filter = {
+		code: data.code_cabinet,
+	};
+
+	return api
+		.get(`/cabinets?code_cabinet=${filter.code}`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
 export const destroy = id => {
 	return api.delete(`/cabinets/${id}`);
 };
