@@ -167,7 +167,7 @@ export function DashboardSuperadmin() {
 			},
 		},
 		{
-			title: "Custome Code Box",
+			title: "Customer Code Box",
 			prop: "custom_code_box",
 			cellProps: {
 				style: { width: "40%" },
@@ -252,7 +252,7 @@ export function DashboardSuperadmin() {
 					<CardHeader
 						icon="truck-loading"
 						total={totalReturn || 0}
-						text={["Box di", <br />, "Pinjam."]}
+						text={["Box di", <br />, "Pinjam"]}
 					/>
 				</div>
 			</div>
@@ -352,7 +352,7 @@ export function DashboardSuperadmin() {
 			<div className="pos-r p-8 bg-primary-5">
 				<h3 className="tc-dark-contrast mb-12 ff-1-bd">
 					<span className="ff-1 username text txtf-c">Selamat Datang,</span>
-					{user}
+					<span className="m-0 username text txtf-c"> {user}</span>
 				</h3>
 				<h6 className="mb-3 tc-dark-contrast">Today Summary</h6>
 				<CardDashboard />
