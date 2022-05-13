@@ -76,6 +76,8 @@ import CustomerPage from "./Master/CustomerPage";
 import CustomerPageDetail from "./Master/CustomerPage/Detail";
 // # -STAFF
 import StaffPage from "./Master/StaffPage";
+// # - INDEXING
+import IndexingPage from "./Master/indexing";
 // -=-=-=-=-=-
 
 // CUSTOMER
@@ -255,6 +257,10 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/StaffPage"}
 							component={StaffPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Indexing"}
+							component={IndexingPage}
 						/>
 						{/*---------- MASTER - - - END ---------*/}
 						{/*--------- ADMIN CSR ---------*/}

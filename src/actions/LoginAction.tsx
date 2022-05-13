@@ -12,16 +12,11 @@ export const Login = async (data: LoginInterfaceState) => {
 				payload: data,
 			});
 			const response = await login(data);
-			// console.log("Data Action", response.data.data.user);
 			localStorage.setItem("Token", response.data.token.token);
-			localStorage.setItem("User", response.data.data.user.username)
+			localStorage.setItem("User", response.data.data.user.username);
 			dispatch({
 				type: LOGIN_DATA,
 				payload: response?.data,
-				// payload: {
-				//     data: response?.data,
-				//     errorMessage: false,
-				// },
 			});
 			return response;
 		} catch (error: any) {

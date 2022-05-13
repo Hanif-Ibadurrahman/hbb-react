@@ -7,6 +7,7 @@ export const login = async (data: LoginInterfaceState) => {
 		password: data.password,
 		token: data.token,
 		data: data.data,
+		roles: data.data.roles,
 	};
 	return api.post("/login", payload);
 };
