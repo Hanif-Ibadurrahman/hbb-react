@@ -1,43 +1,50 @@
 import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
-import React, { useState } from "react";
-import { Formik } from "formik";
+import React, { useEffect, useState } from "react";
+import { Formik, Field } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 import { useDispatch, useSelector } from "react-redux";
-import { CreateBorrowItem, DeleteCart } from "actions/BorrowItemAction";
-import { BorrowItemInterfaceState } from "store/Types/BorrowItemTypes";
+import { Autocomplete, TextField } from "@mui/material";
+import { IndexingInterfaceState } from "store/Types/IndexingTypes";
+import { selectindexing } from "store/Selector/IndexingSelector";
+import { selectAreas } from "store/Selector/AreaSelector";
+import { selectRooms } from "store/Selector/RoomSelector";
+import { getAreasList } from "actions/AreaActions";
+import { getRoomsList } from "actions/RoomAction";
 import {
-	selectBorrowItem,
-	selectBorrowItems,
-} from "store/Selector/BorrowItemSelector";
-import moment from "moment";
+	CreateIndexing,
+	RESET_INDEX_FORM,
+	UpdateIndexing,
+} from "actions/IndexingAction";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setAlertMessage] = useState("");
 	const [varianAlert, setVarianAlert] = useState("");
-	const borrowBox: BorrowItemInterfaceState = useSelector(selectBorrowItem);
-	const cart = useSelector(selectBorrowItems);
-	const cartStash = cart.Cart;
-	function addDays(days) {
-		const result = new Date();
-		result.setDate(result.getDate() + days);
-		return result;
-	}
-
-	const RegularDate = moment(addDays(2)).format("YYYY-MM-DD");
-	const Express = moment(addDays(0)).add(2, "hours").format("YYYY-MM-DDTHH:MM");
-	const Emergency = moment(addDays(0)).format("YYYY-MM-DD");
-
+	const indexing: IndexingInterfaceState = useSelector(selectindexing);
 	const dispatch = useDispatch();
-
-	const validationSchema = Yup.object().shape({
-		delivered_at: Yup.string().required("*Wajib diisi"),
-	});
-
-	const deleteCart = async id => {
-		dispatch(await DeleteCart(id));
+	const area = useSelector(selectAreas);
+	const room = useSelector(selectRooms);
+	const FetchData = (page = 1) => {
+		dispatch(getAreasList(page));
 	};
+	const RoomData = (page = 1) => {
+		dispatch(getRoomsList(page));
+	};
+	useEffect(() => {
+		FetchData();
+	}, []);
+	useEffect(() => {
+		RoomData();
+	}, []);
+	const validationSchema = Yup.object().shape({
+		index: Yup.string().required("*Wajib diisi"),
+		date: Yup.string().required("*Wajib diisi"),
+		type: Yup.string().required("*Wajib diisi"),
+		classification: Yup.string().required("*Wajib diisi"),
+		date_retention: Yup.string().required("*Wajib diisi"),
+		retention_period: Yup.string().required("*Wajib diisi"),
+	});
 
 	return (
 		<>
@@ -49,7 +56,7 @@ const ModalForm = props => {
 					top: 50,
 					position: "fixed",
 					left: "50%",
-					transform: [{ translateX: "-50%" }],
+					transform: [{ translateX: "50%" }],
 				}}
 				onHide={() => setShowAlert(false)}
 			/>
@@ -62,27 +69,30 @@ const ModalForm = props => {
 				{" "}
 				<Formik
 					validationSchema={validationSchema}
-					initialValues={borrowBox}
+					initialValues={indexing}
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							values.box_codes = cartStash;
-							let action = CreateBorrowItem(values);
+							let action = indexing?.id
+								? UpdateIndexing(values)
+								: CreateIndexing(values);
 							const res = await action;
 							await dispatch(res);
 							action.then(() => {
+								dispatch({ type: RESET_INDEX_FORM });
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
-								setAlertMessage("Request Peminjaman Berhasil");
 								setVarianAlert("success");
+								indexing.id
+									? setAlertMessage("Data Berhasil di Edit")
+									: setAlertMessage("Data Berhasil di Tambah");
 								setTimeout(function () {
 									window.location.reload();
 								}, 1000);
 							});
-							props.modalSet(props.valueModalSet);
 						} catch (e) {
 							setShowAlert(true);
-							setAlertMessage("Request Gagal");
+							setAlertMessage("Gagal Update Data");
 							setVarianAlert("danger");
 							setTimeout(function () {
 								setShowAlert(false);
@@ -97,12 +107,14 @@ const ModalForm = props => {
 						handleChange,
 						handleBlur,
 						handleSubmit,
+						setFieldValue,
 						isSubmitting,
 					}) => (
 						<Form onSubmit={handleSubmit}>
+							{console.log("values >>>>", values)}
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									Peminjaman
+									{indexing.id ? <>Edit Data</> : <>Tambah Data</>}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
@@ -110,107 +122,168 @@ const ModalForm = props => {
 									<Row>
 										<Col xs={12}>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Metode Pengiriman</Form.Label>
-												<Form.Select
-													className="cur-p"
-													name="delivery_method"
-													value={values?.delivery_method}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												>
-													<option value="regular">Regular</option>
-													<option value="express">Express</option>
-													<option value="emergency">Emergency</option>
-												</Form.Select>
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Waktu Pengiriman</Form.Label>
-												{values.delivery_method == "regular" ? (
-													<Form.Control
-														type="date"
-														min={RegularDate}
-														name="delivered_at"
-														placeholder="Delivered"
-														value={values.delivered_at}
-														onChange={e => {
-															handleChange(e);
-														}}
-														onBlur={handleBlur}
-													/>
-												) : values.delivery_method == "express" ? (
-													<Form.Control
-														type="text"
-														name="delivered_at"
-														placeholder="Delivered"
-														value={(values.delivered_at = Express)}
-														onChange={e => {
-															handleChange(e);
-														}}
-														onBlur={handleBlur}
-														disabled
-													/>
-												) : values.delivery_method == "emergency" ? (
-													<>
-														<Form.Control
-															type="text"
-															name="delivered_at"
-															placeholder="Delivered"
-															value={(values.delivered_at = Emergency)}
-															onChange={e => {
-																handleChange(e);
-															}}
-															onBlur={handleBlur}
-															disabled
-														/>
-														<p className="tc-danger-5 pos-a p-sm">
-															*Hanya Untuk Hari Libur
-														</p>
-													</>
-												) : null}
-												{touched.delivered_at && errors.delivered_at ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.delivered_at}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Note</Form.Label>
+												<Form.Label>Index</Form.Label>
 												<Form.Control
-													as="textarea"
-													name="note"
-													placeholder="note"
-													value={values.note}
+													type="text"
+													name="index"
+													placeholder="Title Index"
+													value={values.index}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
+												{touched.index && errors.index ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.index}
+													</p>
+												) : null}
 											</Form.Group>
-											<Form.Group>
-												<Form.Label>List Box</Form.Label>
-												{cartStash.map((cart, index) => (
-													<>
-														<div className="d-flex jc-between mb-2">
-															<div className="col-10">
-																<Form.Control
-																	type="text"
-																	value={cart}
-																	readOnly
-																/>
-															</div>
-															<Button
-																variant="danger"
-																onClick={() => deleteCart(cart)}
-																className="d-flex jc-center ai-center"
-															>
-																<i className="far fa-times"></i>
-															</Button>
-														</div>
-													</>
-												))}
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Tanggal</Form.Label>
+												<Form.Control
+													type="date"
+													name="date"
+													placeholder="Pilih Tanggal"
+													value={values.date}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.date && errors.date ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.date}
+													</p>
+												) : null}
 											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Tipe</Form.Label>
+												<Form.Control
+													type="text"
+													name="type"
+													placeholder="Tipe"
+													value={values.type}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.type && errors.type ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.type}
+													</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Klasifikasi</Form.Label>
+												<Form.Control
+													type="text"
+													name="classification"
+													placeholder="Pilih Tanggal"
+													value={values.classification}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.classification && errors.classification ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.classification}
+													</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Pilih Area</Form.Label>
+												<Autocomplete
+													id="company"
+													options={area.Areas}
+													getOptionLabel={option => option.name}
+													value={values.area_id}
+													onChange={(e, value) => {
+														setFieldValue(
+															"area_id",
+															value !== null ? value : values.area_id,
+														);
+													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															placeholder="Area"
+															name="area_id"
+															{...params}
+														/>
+													)}
+												/>
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Pilih Ruangan</Form.Label>
+												<Autocomplete
+													id="company"
+													options={room.Rooms}
+													getOptionLabel={option => option.name}
+													value={values.room_id}
+													onChange={(e, value) => {
+														setFieldValue(
+															"room_id",
+															value !== null ? value : values.room_id,
+														);
+													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															placeholder="Ruangan"
+															name="room_id"
+															{...params}
+														/>
+													)}
+												/>
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Periode Retensi</Form.Label>
+												<Form.Control
+													type="number"
+													min="0"
+													name="retention_period"
+													placeholder="Periode Retensi"
+													value={values.retention_period}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.retention_period && errors.retention_period ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.retention_period}
+													</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Tanggal Retensi</Form.Label>
+												<Form.Control
+													type="date"
+													name="date_retention"
+													placeholder="Pilih Tanggal"
+													value={values.date_retention}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.date_retention && errors.date_retention ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.date_retention}
+													</p>
+												) : null}
+											</Form.Group>
+											<label>
+												<Field
+													type="checkbox"
+													name="is_permanent"
+													value={values.is_permanent}
+												/>
+												Data Permanen
+											</label>
 										</Col>
 									</Row>
 								</Container>

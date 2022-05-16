@@ -309,6 +309,8 @@ export function DashboardSuperadmin() {
 			return <TableCSRAdmin />;
 		} else if (user === "csroperation") {
 			return <TableCSROperation />;
+		} else if (user === "archiver") {
+			return <div></div>;
 		} else {
 			return <TableCustomer />;
 		}
@@ -321,6 +323,8 @@ export function DashboardSuperadmin() {
 			return <CardAdmin />;
 		} else if (user === "csroperation") {
 			return <CardAdmin />;
+		} else if (user === "archiver") {
+			return <div></div>;
 		} else {
 			return <CardCustomer />;
 		}

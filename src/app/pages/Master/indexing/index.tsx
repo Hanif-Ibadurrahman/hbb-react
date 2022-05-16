@@ -2,89 +2,134 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
-import DropdownAction from "app/pages/Master/Components/DropdownAction";
-import { Pagination } from "app/components/Pagination";
-import { AddCart, getBorrowList } from "actions/BorrowItemAction";
-import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import { selectBoxes } from "store/Selector/BoxSelector";
+import PageHeader from "../Components/PageHeader";
+import DropdownAction from "../Components/DropdownAction";
 import ModalForm from "./ModalForm";
-import "./page.scoped.scss";
-import _ from "lodash";
-import { selectBorrowItems } from "store/Selector/BorrowItemSelector";
+import { Pagination } from "app/components/Pagination";
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import Alert from "app/components/Alerts";
+import moment from "moment";
+import { SearchInput } from "./FilterInput";
+import { selectindexings } from "store/Selector/IndexingSelector";
+import {
+	deleteIndexing,
+	getIndexingDetail,
+	getIndexingList,
+	RESET_INDEX_FORM,
+	SearchIndexing,
+} from "actions/IndexingAction";
 
 const IndexingPage = () => {
+	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
-	const [cart, setCart] = useState<Partial<any>>({});
-	const borrowList = useSelector(selectBorrowItems);
-	const cartStash = useSelector((state: RootStateOrAny) => state?.pickUpItems);
-
-	useEffect(() => {
-		setCart(cartStash);
-	}, []);
-
-	useEffect(() => {
-		setCart(cartStash);
-	}, [cartStash]);
-
+	const [showAlert, setShowAlert] = useState(false);
+	const indexings = useSelector(selectindexings);
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		dispatch(getBorrowList(page));
+		if (indexings.Indexing.index === "") {
+			dispatch(getIndexingList(page));
+		} else {
+			dispatch(SearchIndexing);
+		}
 	};
 
 	useEffect(() => {
 		FetchData();
 	}, []);
 
+	const onDelete = (dispatch, id) => {
+		Swal.fire({
+			text: "Apakah anda ingin menghapus data ini?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#d33",
+			confirmButtonText: "Hapus",
+		}).then(willDelete => {
+			if (willDelete.isConfirmed) {
+				dispatch(deleteIndexing(id));
+				setShowAlertSuccess(true);
+				setTimeout(function () {
+					setShowAlertSuccess(false);
+				}, 4000);
+				setTimeout(function () {
+					window.location.reload();
+				}, 1000);
+			}
+		});
+	};
+
 	const _onHide = () => {
 		setModalShow(false);
+		setShowAlert(false);
+		dispatch({ type: RESET_INDEX_FORM });
 	};
 
-	const addCart = async id => {
-		checkCart(id);
-		dispatch(await AddCart(id));
-	};
-
-	const checkCart = id => {
-		if (cart) {
-			const checkCart = cart?.Cart.indexOf(String(id));
-		}
+	const showEditForm = async id => {
+		dispatch(getIndexingDetail(id));
+		setModalShow(true);
 	};
 
 	const action = id => [
 		{
-			icon: "fa-hand-holding-box",
-			title: "Pickup",
+			icon: "fa-search",
+			title: "Detail",
+			url: "IndexingDetail/" + id,
+			type: 1,
+		},
+		{
+			icon: "fa-edit",
+			title: "Edit",
 			onclick: () => {
-				addCart(id);
+				showEditForm(id);
 			},
 			dispatch: dispatch,
 			row: id,
 			type: 2,
 		},
 		{
-			icon: "fa-search",
-			title: "Detail",
-			url: "Box-Detail/" + id,
-			type: 1,
+			icon: "fa-trash-alt",
+			title: "Delete",
+			titleClass: "tc-danger-5",
+			type: 2,
+			onclick: onDelete,
+			dispatch: dispatch,
+			row: id,
 		},
 	];
 
 	const header = [
 		{
-			title: "Code Box",
-			prop: "code_box",
-			sortable: true,
+			title: "Index",
+			prop: "index",
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "30%" },
 			},
 		},
 		{
-			title: "Custome Code Box",
-			prop: "custom_code_box",
+			title: "Periode Retensi",
+			prop: "retention_period",
+			cellProps: {
+				style: { width: "20%" },
+			},
+		},
+		{
+			prop: "date",
 			sortable: true,
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "30%" },
+			},
+			headerCell: () => {
+				return (
+					<div className="cur-p">
+						{`Tanggal Pembuatan`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
+			},
+			cell: row => {
+				return moment(row.created_at).format("DD MMMM YYYY");
 			},
 		},
 		{
@@ -100,61 +145,42 @@ const IndexingPage = () => {
 		},
 	];
 
-	function Cart(): JSX.Element {
-		return (
-			<>
-				<div className="ph-4 pv-4 bg-dark-contrast bd-tl-rs-4 bd-tr-rs-4 d-flex cart-popup">
-					<div className="d-flex ai-center">
-						<span className="h-12 w-12 bd-rs-6 d-flex ai-center jc-center bg-light-shade mr-6">
-							<span
-								className="icon h-9 w-9 bd-rs-6 d-flex ai-center jc-center bg-medium-tint"
-								style={{ marginTop: -3 }}
-							>
-								<i className="fas fa-box-check"></i>
-							</span>
-						</span>
-						<h5 className="text ff-1-bd mr-3">{cart.numberCart}</h5>
-						<p className="p-lg">Box dipilih</p>
-					</div>
-					<span
-						className="ph-2 h-12 bd-rs-6 d-flex ai-center jc-center bg-success-1 ml-a cur-p"
-						onClick={() => setModalShow(true)}
-					>
-						<span className="text p-lg mh-2 tc-success-5">Proses</span>
-						<span
-							className="icon h-9 w-9 bd-rs-6 d-flex ai-center jc-center bg-success-5"
-							style={{ marginTop: -3 }}
-						>
-							<i className="fas fa-chevron-double-right tc-dark-contrast"></i>
-						</span>
-					</span>
-				</div>
-			</>
-		);
-	}
+	console.log(">...", indexings.Indexings);
 
 	return (
 		<>
 			<Helmet>
-				<title>Dox - Borrow Box</title>
+				<title>Dox - Indexing Page</title>
 				<meta
 					name="description"
 					content="A React Boilerplate application homepage"
 				/>
 			</Helmet>
 			<PageWrapper>
+				<Alert
+					text="Data Berhasil Di Hapus"
+					variant="success"
+					show={showAlertSuccess}
+					onHide={() => setShowAlertSuccess(false)}
+				/>
 				<ModalForm
 					modal={modalShow}
 					hide={_onHide}
 					modalSet={setModalShow}
 					valueModalSet={false}
 				/>
-				<DataTable tableHeader={header} tableBody={borrowList.BorrowList} />
+				<PageHeader
+					breadcrumb={["Master", "Indexing"]}
+					modal={setModalShow}
+					valueModalSet={false}
+					value={true}
+					filter={SearchInput}
+				/>
+				<DataTable tableHeader={header} tableBody={indexings.Indexings} />
 				<Pagination
-					pageCount={borrowList.Meta.last_page}
+					pageCount={indexings.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
-				<Cart />
 			</PageWrapper>
 		</>
 	);
