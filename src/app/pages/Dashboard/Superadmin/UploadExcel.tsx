@@ -4,6 +4,7 @@ import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { UploadFile } from "store/Types/DocumentTypes";
+import Alert from "app/components/Alerts";
 import {
 	selectDocuemnts,
 	selectFileUpload,
@@ -13,6 +14,8 @@ import { downloadFile, uploadFile } from "api/documents";
 import { saveAs } from "file-saver";
 
 export function UploadExcel(props) {
+	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
+	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const dispatch = useDispatch();
 	// const file: UploadFile = useSelector(selectFileUpload);
 	const documents = useSelector(selectDocuemnts);
@@ -34,6 +37,30 @@ export function UploadExcel(props) {
 	}, []);
 	return (
 		<>
+			<Alert
+				text="Upload Sukses"
+				variant="success"
+				show={showAlertSuccess}
+				style={{
+					top: 50,
+					position: "fixed",
+					left: "50%",
+					transform: [{ translateX: "-50%" }],
+				}}
+				onHide={() => setShowAlertSuccess(false)}
+			/>
+			<Alert
+				text="Upload Gagal, File yang di upload tidak sesuai"
+				variant="danger"
+				show={showAlertFailed}
+				style={{
+					top: 50,
+					position: "fixed",
+					left: "50%",
+					transform: [{ translateX: "-50%" }],
+				}}
+				onHide={() => setShowAlertFailed(false)}
+			/>
 			<Formik
 				validationSchema={false}
 				initialValues={{}}
@@ -42,13 +69,26 @@ export function UploadExcel(props) {
 					try {
 						const res = await uploadFile(fileUpload);
 						if (res.status === 200) {
-							alert("Upload Sukses");
+							setShowAlertSuccess(true);
+							setTimeout(() => {
+								setShowAlertSuccess(false);
+							}, 1500);
+							setTimeout(() => {
+								window.location.reload();
+							}, 2000);
+							// setValueUpload("");
 						} else {
-							alert("Upload Gagal, File yang di upload tidak sesuai");
+							setShowAlertFailed(true);
+							setTimeout(() => {
+								setShowAlertFailed(false);
+							}, 2000);
 							console.log(res.body);
 						}
 					} catch (err) {
-						alert("Upload Gagal");
+						setShowAlertFailed(true);
+						setTimeout(() => {
+							setShowAlertFailed(false);
+						}, 2000);
 						console.log(err);
 					}
 				}}
@@ -76,8 +116,10 @@ export function UploadExcel(props) {
 									id="file"
 									name="file"
 									type="file"
+									// value={valueUpload}
 									onChange={e => {
 										console.log("onchange", e);
+										// setValueUpload(e.target.value);
 										onChangeFile(e);
 									}}
 									accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
