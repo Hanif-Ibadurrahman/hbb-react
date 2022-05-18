@@ -108,17 +108,10 @@ const ApprovalAdminRequestBox = () => {
 
 	const header = [
 		{
-			title: "Id Request",
-			prop: "id",
-			cellProps: {
-				style: { width: "40%" },
-			},
-		},
-		{
 			prop: "created_at",
 			sortable: true,
 			cellProps: {
-				style: { width: "20%" },
+				style: { width: "30%" },
 			},
 			headerCell: sortedProp => {
 				return (
@@ -136,7 +129,7 @@ const ApprovalAdminRequestBox = () => {
 			title: "Tipe Permintaan",
 			prop: "type",
 			cellProps: {
-				style: { width: "20%" },
+				style: { width: "30%" },
 			},
 			cell: row => {
 				return (
