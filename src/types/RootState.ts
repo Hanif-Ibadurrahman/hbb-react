@@ -18,6 +18,7 @@ import { CustomersInterfaceState } from "store/Types/CustomerTypes";
 import { ReturnItemsInterfaceState } from "store/Types/ReturnItemTypes";
 import { StaffsInterfaceState } from "store/Types/StaffTypes";
 import { RolesInterfaceState } from "store/Types/StaffTypes";
+import { ActivityLogsInterfaceState } from "store/Types/ActivityLogTypes";
 
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
@@ -48,5 +49,6 @@ export interface RootState {
 	returnItems?: ReturnItemsInterfaceState;
 	staffs?: StaffsInterfaceState;
 	roles?: RolesInterfaceState;
+	activityLogs?: ActivityLogsInterfaceState;
 	// [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }
