@@ -3,22 +3,25 @@ import { Button, Col, Row, Container, Form } from "react-bootstrap";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { SearchBoxes } from "actions/BoxActions";
-import { BoxInterfaceState } from "store/Types/BoxTypes";
 import { selectBox } from "store/Selector/BoxSelector";
+import { IndexingInterfaceState } from "store/Types/IndexingTypes";
+import { selectindexing } from "store/Selector/IndexingSelector";
+import IndexingPageDetail from "./Detail";
+import { SearchIndexing } from "actions/IndexingAction";
 
 export function SearchInput(props) {
 	const dispatch = useDispatch();
-	const box: BoxInterfaceState = useSelector(selectBox);
+	const indexing: IndexingInterfaceState = useSelector(selectindexing);
 
 	return (
 		<>
 			<Formik
 				validationSchema={false}
-				initialValues={box}
+				initialValues={indexing}
 				enableReinitialize={true}
 				onSubmit={async values => {
 					try {
-						const res = await SearchBoxes(values);
+						const res = await SearchIndexing(values);
 						await dispatch(res);
 					} catch (e) {
 						console.log("error");
@@ -39,9 +42,9 @@ export function SearchInput(props) {
 							<Form.Group>
 								<Form.Control
 									type="text"
-									name="code_box"
-									placeholder="cari code box"
-									value={values.code_box}
+									name="index"
+									placeholder="cari Index"
+									value={values.index}
 									onChange={e => {
 										handleChange(e);
 									}}

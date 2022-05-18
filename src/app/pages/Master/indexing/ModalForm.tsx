@@ -40,10 +40,7 @@ const ModalForm = props => {
 	const validationSchema = Yup.object().shape({
 		index: Yup.string().required("*Wajib diisi"),
 		date: Yup.string().required("*Wajib diisi"),
-		type: Yup.string().required("*Wajib diisi"),
 		classification: Yup.string().required("*Wajib diisi"),
-		date_retention: Yup.string().required("*Wajib diisi"),
-		retention_period: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
@@ -140,7 +137,7 @@ const ModalForm = props => {
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Tanggal</Form.Label>
+												<Form.Label>Tanggal Pemindahan</Form.Label>
 												<Form.Control
 													type="date"
 													name="date"
@@ -158,22 +155,20 @@ const ModalForm = props => {
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Tipe</Form.Label>
-												<Form.Control
-													type="text"
+												<Form.Label>Tipe Berkas</Form.Label>
+												<Form.Select
+													className="cur-p"
 													name="type"
-													placeholder="Tipe"
-													value={values.type}
+													value={values?.type}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
-												/>
-												{touched.type && errors.type ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.type}
-													</p>
-												) : null}
+												>
+													<option value="">Pilih Tipe</option>
+													<option value="fasilitatif">Fasilitatif</option>
+													<option value="subtantif">Subtantif</option>
+												</Form.Select>
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Klasifikasi</Form.Label>
@@ -252,11 +247,6 @@ const ModalForm = props => {
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.retention_period && errors.retention_period ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.retention_period}
-													</p>
-												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Tanggal Retensi</Form.Label>
@@ -270,17 +260,12 @@ const ModalForm = props => {
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.date_retention && errors.date_retention ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.date_retention}
-													</p>
-												) : null}
 											</Form.Group>
 											<label>
 												<Field
 													type="checkbox"
 													name="is_permanent"
-													value={values.is_permanent}
+													checked={values.is_permanent}
 												/>
 												Data Permanen
 											</label>
