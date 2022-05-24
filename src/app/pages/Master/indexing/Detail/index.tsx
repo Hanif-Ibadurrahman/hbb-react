@@ -46,14 +46,14 @@ const IndexingPageDetail = ({ match }) => {
 									defaultValue={indexing.index}
 								/>
 							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
+							{/* <Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Klasifikasi</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
 									defaultValue={indexing.classification}
 								/>
-							</Form.Group>
+							</Form.Group> */}
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Tipe</Form.Label>
 								<Form.Control

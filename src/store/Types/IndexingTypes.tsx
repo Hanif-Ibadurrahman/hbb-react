@@ -1,6 +1,8 @@
 import { PaginationState } from "../Types/PaginationTypes";
 import { RoomInterfaceState } from "store/Types/RoomTypes";
 import { AreaInterfaceState } from "./AreaTypes";
+import { BoxInterfaceState } from "./BoxTypes";
+import { ClassificationInterfaceState } from "./ClassificationTypes";
 
 interface documentIndexing {
 	id: string;
@@ -14,9 +16,10 @@ export interface IndexingInterfaceState {
 	index: string;
 	date: string;
 	type: string;
-	classification: string;
+	classification_code: ClassificationInterfaceState;
 	area_id: AreaInterfaceState;
 	room_id: RoomInterfaceState;
+	box_id: BoxInterfaceState;
 	retention_period: number;
 	date_retention: string;
 	is_permanent: boolean;
