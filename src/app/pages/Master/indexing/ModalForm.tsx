@@ -52,7 +52,6 @@ const ModalForm = props => {
 	};
 	useEffect(() => {
 		FetchData();
-		console.log(FetchData());
 	}, []);
 	useEffect(() => {
 		RoomData();
@@ -74,19 +73,16 @@ const ModalForm = props => {
 		return result;
 	}
 	function addYears(years) {
-		const result = moment().add(year, "years").format("YYYY-MM-DD");
-		setYear(years);
-
-		setRetentionDate(result);
-
+		const result = new Date();
+		result.setDate(result.getDate() + years);
 		return result;
 	}
-
-	const [retentionDate, setRetentionDate] = useState("");
 
 	// const RegularDate = moment(addDays(2)).format("YYYY-MM-DD");
 	// const Express = moment(addDays(0)).add(2, "hours").format("YYYY-MM-DDTHH:MM");
 	// const Emergency = moment(addDays(0)).format("YYYY-MM-DD");
+
+	const [year, setYear] = useState(0);
 
 	const zeroYear = moment(addYears(0)).add(0, "years").format("YYYY-MM-DD");
 	const oneYear = moment(addYears(0)).add(1, "years").format("YYYY-MM-DD");
@@ -104,18 +100,15 @@ const ModalForm = props => {
 	// 		return zeroYear;
 	// 	};
 	// };
-
 	// useEffect(() => {
 	// 	Years(year);
 	// }, []);
 
-	const [year, setYear] = useState(0);
+	const Years = moment().add(year, "years").format("YYYY-MM-DD");
 
-	// const Years = moment().add((year), "years").format("YYYY-MM-DD");
-
-	// const one = parseInt("1");
-	// const two = parseInt("2");
-	// const three = parseInt("3");
+	const one = parseInt("1");
+	const two = parseInt("2");
+	const three = parseInt("3");
 
 	// ) : values.delivery_method == "years" ? (
 	// 	<Form.Control
@@ -378,11 +371,11 @@ const ModalForm = props => {
 														max="5"
 														name="retention_period"
 														placeholder="Periode Retensi"
-														value={year}
+														value={values.retention_period}
 														onChange={e => {
 															handleChange(e);
 															// setTest(values.retention_period)
-															addYears(values.retention_period);
+															setYear(values.retention_period);
 														}}
 														onBlur={handleBlur}
 													/>
@@ -398,7 +391,7 @@ const ModalForm = props => {
 														onChange={e => {
 															handleChange(e);
 															// setTest(values.retention_period)
-															setYear(e.target.value);
+															setYear(values.retention_period);
 														}}
 														onBlur={handleBlur}
 													/>
@@ -431,7 +424,11 @@ const ModalForm = props => {
 													type="text"
 													name="date_retention"
 													placeholder="Tanggal Retensi"
-													value={retentionDate}
+													value={(values.date_retention = Years)}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
 													disabled
 												/>
 												{/* {values.retention_period == 1 ? 
