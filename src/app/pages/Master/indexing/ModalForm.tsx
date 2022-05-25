@@ -24,7 +24,7 @@ import {
 	UpdateIndexing,
 } from "actions/IndexingAction";
 import moment from "moment";
-import { values } from "lodash";
+import { result, values } from "lodash";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
@@ -67,62 +67,6 @@ const ModalForm = props => {
 		// date: Yup.string().required("*Wajib diisi"),
 		// classification: Yup.string().required("*Wajib diisi"),
 	});
-	function addDays(days) {
-		const result = new Date();
-		result.setDate(result.getDate() + days);
-		return result;
-	}
-	function addYears(years) {
-		const result = new Date();
-		result.setDate(result.getDate() + years);
-		return result;
-	}
-
-	// const RegularDate = moment(addDays(2)).format("YYYY-MM-DD");
-	// const Express = moment(addDays(0)).add(2, "hours").format("YYYY-MM-DDTHH:MM");
-	// const Emergency = moment(addDays(0)).format("YYYY-MM-DD");
-
-	const [year, setYear] = useState(0);
-
-	const zeroYear = moment(addYears(0)).add(0, "years").format("YYYY-MM-DD");
-	const oneYear = moment(addYears(0)).add(1, "years").format("YYYY-MM-DD");
-	const twoYear = moment(addYears(0)).add(2, "years").format("YYYY-MM-DD");
-	const threeYear = moment(addYears(0)).add(3, "years").format("YYYY-MM-DD");
-
-	// function Years(year) {
-	// 	if (year === 3){
-	// 		return threeYear;
-	// 	}	if (year === 1) {
-	// 		return oneYear;
-	// 	}	if (year === 2) {
-	// 		return twoYear;
-	// 	} else {
-	// 		return zeroYear;
-	// 	};
-	// };
-	// useEffect(() => {
-	// 	Years(year);
-	// }, []);
-
-	const Years = moment().add(year, "years").format("YYYY-MM-DD");
-
-	const one = parseInt("1");
-	const two = parseInt("2");
-	const three = parseInt("3");
-
-	// ) : values.delivery_method == "years" ? (
-	// 	<Form.Control
-	// 		type="text"
-	// 		name="delivered_at"
-	// 		placeholder="Delivered"
-	// 		value={(values.delivered_at = Years)}
-	// 		onChange={e => {
-	// 			handleChange(e);
-	// 		}}
-	// 		onBlur={handleBlur}
-	// 		disabled
-	// 	/>
-	// ) : null}
 
 	return (
 		<>
@@ -253,21 +197,6 @@ const ModalForm = props => {
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Klasifikasi</Form.Label>
-												{/* <Form.Control
-													type="text"
-													name="classification"
-													placeholder="Pilih Tanggal"
-													value={values.classification}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>
-												{touched.classification && errors.classification ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.classification}
-													</p>
-												) : null} */}
 												<Autocomplete
 													id="company"
 													options={classification.Classifications}
@@ -368,14 +297,11 @@ const ModalForm = props => {
 													<Form.Control
 														type="number"
 														min="0"
-														max="5"
 														name="retention_period"
 														placeholder="Periode Retensi"
 														value={values.retention_period}
 														onChange={e => {
 															handleChange(e);
-															// setTest(values.retention_period)
-															setYear(values.retention_period);
 														}}
 														onBlur={handleBlur}
 													/>
@@ -383,86 +309,28 @@ const ModalForm = props => {
 													<Form.Control
 														type="number"
 														min="0"
-														max="5"
 														name="retention_period"
 														placeholder="Periode Retensi"
 														value={values.retention_period}
 														disabled
 														onChange={e => {
 															handleChange(e);
-															// setTest(values.retention_period)
-															setYear(values.retention_period);
 														}}
 														onBlur={handleBlur}
 													/>
 												) : null}
-												{/* <Form.Control
-													type="number"
-													name="retention_period"
-													placeholder="Periode Retensi"
-													value={(values.delivered_at = Years)}
-													onChange={e => {
-													handleChange(e);
-													}}
-													onBlur={handleBlur}
-													disabled
-													/> */}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Tanggal Retensi</Form.Label>
-												{/* <Form.Control
-													type="date"
-													name="date_retention"
-													placeholder="Pilih Tanggal"
-													value={values.date_retention}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/> */}
 												<Form.Control
-													type="text"
+													type="date"
 													name="date_retention"
 													placeholder="Tanggal Retensi"
-													value={(values.date_retention = Years)}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
+													value={moment(values.date)
+														.add(values.retention_period, "year")
+														.format("YYYY-MM-DD")}
 													disabled
 												/>
-												{/* {values.retention_period == 1 ? 
-												(<Form.Control
-													type="date"
-													name="date_retention"
-													placeholder="Delivered"
-													value={values.date_retention = oneYear}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>) : values.retention_period == 2 ?
-												(<Form.Control
-													type="date"
-													name="date_retention"
-													placeholder="Delivered"
-													value={values.date_retention = twoYear}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>) : values.retention_period == 3 ?
-												(<Form.Control
-													type="date"
-													name="date_retention"
-													placeholder="Delivered"
-													value={values.date_retention = threeYear}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>)
-												: null }  */}
 											</Form.Group>
 											<label>
 												<Field
@@ -471,8 +339,6 @@ const ModalForm = props => {
 													checked={values.is_permanent}
 													onChange={e => {
 														handleChange(e);
-														// setTest(values.retention_period)
-														// setCheck(values.is_permanent)
 													}}
 												/>
 												Data Permanen
