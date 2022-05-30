@@ -29,7 +29,7 @@ export const initialState: IndexingsInterfaceState = {
 		date_retention: "",
 		index: "",
 		is_permanent: false,
-		retention_period: 0,
+		retention_period: "",
 		type: "",
 		documents: [
 			{
@@ -212,7 +212,7 @@ export default (
 					date_retention: "",
 					index: "",
 					is_permanent: false,
-					retention_period: 0,
+					retention_period: "",
 					type: "",
 					documents: [
 						{

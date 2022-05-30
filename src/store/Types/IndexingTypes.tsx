@@ -20,7 +20,7 @@ export interface IndexingInterfaceState {
 	area_id: AreaInterfaceState;
 	room_id: RoomInterfaceState;
 	box_id: BoxInterfaceState;
-	retention_period: number;
+	retention_period: string;
 	date_retention: string;
 	is_permanent: boolean;
 	documents: documentIndexing[];

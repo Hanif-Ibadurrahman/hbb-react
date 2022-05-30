@@ -21,6 +21,8 @@ const IndexingPageDetail = ({ match }) => {
 
 	const indexing_id = match.params.id;
 
+	console.log("values >>>", indexing);
+
 	const dispatch = useDispatch();
 
 	useEffect(() => {

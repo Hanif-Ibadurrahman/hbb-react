@@ -44,7 +44,7 @@ export function SearchInput(props) {
 									type="text"
 									name="index"
 									placeholder="cari Index"
-									value={values.index}
+									value={values?.index}
 									onChange={e => {
 										handleChange(e);
 									}}

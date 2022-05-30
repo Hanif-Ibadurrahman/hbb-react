@@ -36,8 +36,6 @@ const ModalForm = props => {
 	const room = useSelector(selectRooms);
 	const box = useSelector(selectBoxes);
 	const classification = useSelector(selectClassifications);
-	const type = useSelector(selectindexings);
-	// const [test, setTest] = useState(0)
 	const FetchData = (page = 1) => {
 		dispatch(getAreasList(page));
 	};
@@ -101,11 +99,10 @@ const ModalForm = props => {
 							const res = await action;
 							await dispatch(res);
 							action.then(() => {
-								dispatch({ type: RESET_INDEX_FORM });
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
 								setVarianAlert("success");
-								indexing.id
+								indexing?.id
 									? setAlertMessage("Data Berhasil di Edit")
 									: setAlertMessage("Data Berhasil di Tambah");
 								setTimeout(function () {
@@ -133,10 +130,10 @@ const ModalForm = props => {
 						isSubmitting,
 					}) => (
 						<Form onSubmit={handleSubmit}>
-							{console.log("values >>>>", values)}
+							{console.log("values >>>", values)}
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									{indexing.id ? <>Edit Data</> : <>Tambah Data</>}
+									{indexing?.id ? <>Edit Data</> : <>Tambah Data</>}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
@@ -149,7 +146,7 @@ const ModalForm = props => {
 													type="text"
 													name="index"
 													placeholder="Title Index"
-													value={values.index}
+													value={values?.index}
 													onChange={e => {
 														handleChange(e);
 													}}
@@ -167,7 +164,7 @@ const ModalForm = props => {
 													type="date"
 													name="date"
 													placeholder="Pilih Tanggal"
-													value={values.date}
+													value={moment(values?.date).format("YYYY-MM-DD")}
 													onChange={e => {
 														handleChange(e);
 													}}
@@ -198,12 +195,11 @@ const ModalForm = props => {
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Klasifikasi</Form.Label>
 												<Autocomplete
-													id="company"
+													id="classification"
 													options={classification.Classifications}
 													getOptionLabel={option =>
 														`${option.code}${option.name}`
 													}
-													// getOptionLabel={option => option.code}
 													value={values.classification_code}
 													onChange={(e, value) => {
 														setFieldValue(
@@ -222,12 +218,26 @@ const ModalForm = props => {
 														/>
 													)}
 												/>
-												{touched.classification_code &&
-												errors.classification_code ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.classification_code}
-													</p>
-												) : null}
+												{/* <Autocomplete
+													id="classification"
+													options={classification.Classifications}
+													getOptionLabel={option => option.name}
+													value={values.classification_code}
+													onChange={(e, value) => {
+														setFieldValue(
+															"classification_code",
+															value !== null ? value : values.classification_code
+														);
+													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															placeholder="Pilih Klasifikasi"
+															name="classification_code"
+															{...params}
+														/>
+													)}
+												/> */}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Area</Form.Label>
@@ -235,7 +245,7 @@ const ModalForm = props => {
 													id="company"
 													options={area.Areas}
 													getOptionLabel={option => option.name}
-													value={values.area_id}
+													value={values?.area_id}
 													onChange={(e, value) => {
 														setFieldValue(
 															"area_id",
@@ -263,7 +273,7 @@ const ModalForm = props => {
 													id="company"
 													options={room.Rooms}
 													getOptionLabel={option => option.name}
-													value={values.room_id}
+													value={values?.room_id}
 													onChange={(e, value) => {
 														setFieldValue(
 															"room_id",
@@ -291,7 +301,7 @@ const ModalForm = props => {
 													id="company"
 													options={box.Boxes}
 													getOptionLabel={option => option.code_box}
-													value={values.box_id}
+													value={values?.box_id}
 													onChange={(e, value) => {
 														setFieldValue(
 															"box_id",
@@ -315,32 +325,18 @@ const ModalForm = props => {
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Periode Retensi</Form.Label>
-												{values.is_permanent == false ? (
-													<Form.Control
-														type="number"
-														min="0"
-														name="retention_period"
-														placeholder="Periode Retensi"
-														value={values.retention_period}
-														onChange={e => {
-															handleChange(e);
-														}}
-														onBlur={handleBlur}
-													/>
-												) : values.is_permanent == true ? (
-													<Form.Control
-														type="number"
-														min="0"
-														name="retention_period"
-														placeholder="Periode Retensi"
-														value={values.retention_period}
-														disabled
-														onChange={e => {
-															handleChange(e);
-														}}
-														onBlur={handleBlur}
-													/>
-												) : null}
+												<Form.Control
+													type="number"
+													min="0"
+													disabled={values?.is_permanent}
+													name="retention_period"
+													placeholder="Periode Retensi"
+													value={values?.retention_period}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
 												{touched.retention_period && errors.retention_period ? (
 													<p className="tc-danger-5 pos-a p-sm">
 														{errors.retention_period}
@@ -354,9 +350,11 @@ const ModalForm = props => {
 													name="date_retention"
 													placeholder="Tanggal Retensi"
 													value={
-														(values.date_retention = moment(values.date)
-															.add(values.retention_period, "year")
-															.format("YYYY-MM-DD"))
+														values.date_retention === ""
+															? moment(values.date)
+																	.add(values.retention_period, "year")
+																	.format("YYYY-MM-DD")
+															: values.date_retention
 													}
 													disabled
 													onChange={e => {
@@ -374,7 +372,7 @@ const ModalForm = props => {
 												<Field
 													type="checkbox"
 													name="is_permanent"
-													checked={values.is_permanent}
+													checked={values?.is_permanent}
 													onChange={e => {
 														handleChange(e);
 													}}
