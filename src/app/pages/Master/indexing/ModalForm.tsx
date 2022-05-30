@@ -63,9 +63,9 @@ const ModalForm = props => {
 		ClassificationData();
 	}, []);
 	const validationSchema = Yup.object().shape({
-		// index: Yup.string().required("*Wajib diisi"),
-		// date: Yup.string().required("*Wajib diisi"),
-		// classification: Yup.string().required("*Wajib diisi"),
+		index: Yup.string().required("*Wajib diisi"),
+		date: Yup.string().required("*Wajib diisi"),
+		// classification_code: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
@@ -201,8 +201,9 @@ const ModalForm = props => {
 													id="company"
 													options={classification.Classifications}
 													getOptionLabel={option =>
-														`[${option.code}]${option.name}`
+														`${option.code}${option.name}`
 													}
+													// getOptionLabel={option => option.code}
 													value={values.classification_code}
 													onChange={(e, value) => {
 														setFieldValue(
@@ -221,6 +222,12 @@ const ModalForm = props => {
 														/>
 													)}
 												/>
+												{touched.classification_code &&
+												errors.classification_code ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.classification_code}
+													</p>
+												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Area</Form.Label>
@@ -244,6 +251,11 @@ const ModalForm = props => {
 														/>
 													)}
 												/>
+												{touched.area_id && errors.area_id ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.area_id}
+													</p>
+												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Ruangan</Form.Label>
@@ -267,6 +279,11 @@ const ModalForm = props => {
 														/>
 													)}
 												/>
+												{touched.room_id && errors.room_id ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.room_id}
+													</p>
+												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Box</Form.Label>
@@ -290,6 +307,11 @@ const ModalForm = props => {
 														/>
 													)}
 												/>
+												{touched.box_id && errors.box_id ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.box_id}
+													</p>
+												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Periode Retensi</Form.Label>
@@ -319,6 +341,11 @@ const ModalForm = props => {
 														onBlur={handleBlur}
 													/>
 												) : null}
+												{touched.retention_period && errors.retention_period ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.retention_period}
+													</p>
+												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Tanggal Retensi</Form.Label>
@@ -326,11 +353,22 @@ const ModalForm = props => {
 													type="date"
 													name="date_retention"
 													placeholder="Tanggal Retensi"
-													value={moment(values.date)
-														.add(values.retention_period, "year")
-														.format("YYYY-MM-DD")}
+													value={
+														(values.date_retention = moment(values.date)
+															.add(values.retention_period, "year")
+															.format("YYYY-MM-DD"))
+													}
 													disabled
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
 												/>
+												{touched.date_retention && errors.date_retention ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.date_retention}
+													</p>
+												) : null}
 											</Form.Group>
 											<label>
 												<Field
@@ -343,6 +381,11 @@ const ModalForm = props => {
 												/>
 												Data Permanen
 											</label>
+											{touched.is_permanent && errors.is_permanent ? (
+												<p className="tc-danger-5 pos-a p-sm">
+													{errors.is_permanent}
+												</p>
+											) : null}
 										</Col>
 									</Row>
 								</Container>

@@ -51,7 +51,7 @@ const IndexingPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={indexing.classification}
+									defaultValue={indexing.classification_code}
 								/>
 							</Form.Group> */}
 							<Form.Group className="mb-3" controlId="formBasicEmail">

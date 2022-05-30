@@ -208,7 +208,6 @@ export default (
 						code: "",
 						retention_period: "",
 					},
-
 					date: "",
 					date_retention: "",
 					index: "",

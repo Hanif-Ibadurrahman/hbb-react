@@ -4,7 +4,7 @@ import api from "./dox";
 
 export const getAll = async params => {
 	return api
-		.get("/classifications?type=fasilitatif")
+		.get("/classifications")
 		.then(res => {
 			return res.data;
 		})

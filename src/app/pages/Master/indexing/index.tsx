@@ -68,6 +68,7 @@ const IndexingPage = () => {
 
 	const showEditForm = async id => {
 		dispatch(getIndexingDetail(id));
+		console.log("id>>>>>", id);
 		setModalShow(true);
 	};
 
@@ -83,6 +84,7 @@ const IndexingPage = () => {
 			title: "Edit",
 			onclick: () => {
 				showEditForm(id);
+				console.log("id>>>>>", id);
 			},
 			dispatch: dispatch,
 			row: id,
