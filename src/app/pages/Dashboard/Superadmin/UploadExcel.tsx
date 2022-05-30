@@ -12,6 +12,7 @@ import {
 import { UploadDocument, downloadFileExcel } from "actions/DocumentAction";
 import { downloadFile, uploadFile } from "api/documents";
 import { saveAs } from "file-saver";
+import { getFileDatabase } from "api/downloadDatabase";
 
 export function UploadExcel(props) {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -104,6 +105,9 @@ export function UploadExcel(props) {
 				}) => (
 					<Form onSubmit={handleSubmit} className="right mb-4">
 						<Container className="d-flex jc-end">
+							<Button onClick={getFileDatabase} className="mr-4">
+								Download Database
+							</Button>
 							<Button
 								onClick={onClickDownload}
 								className="bg-success-6 mr-4"
