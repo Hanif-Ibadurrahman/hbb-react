@@ -200,20 +200,18 @@ const ModalForm = props => {
 													getOptionLabel={option =>
 														`${option.code}${option.name}`
 													}
-													value={values.classification_code}
+													value={values?.classification}
 													onChange={(e, value) => {
 														setFieldValue(
-															"classification_code",
-															value !== null
-																? value
-																: values.classification_code,
+															"classification",
+															value !== null ? value : values.classification,
 														);
 													}}
 													renderInput={params => (
 														<TextField
 															margin="normal"
 															placeholder="Classification"
-															name="classification_code"
+															name="classification"
 															{...params}
 														/>
 													)}
@@ -245,25 +243,25 @@ const ModalForm = props => {
 													id="company"
 													options={area.Areas}
 													getOptionLabel={option => option.name}
-													value={values?.area_id}
+													value={values?.area}
 													onChange={(e, value) => {
 														setFieldValue(
-															"area_id",
-															value !== null ? value : values.area_id,
+															"area",
+															value !== null ? value : values.area,
 														);
 													}}
 													renderInput={params => (
 														<TextField
 															margin="normal"
 															placeholder="Area"
-															name="area_id"
+															name="area"
 															{...params}
 														/>
 													)}
 												/>
-												{touched.area_id && errors.area_id ? (
+												{touched.area && errors.area ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.area_id}
+														{errors.area}
 													</p>
 												) : null}
 											</Form.Group>
@@ -273,25 +271,25 @@ const ModalForm = props => {
 													id="company"
 													options={room.Rooms}
 													getOptionLabel={option => option.name}
-													value={values?.room_id}
+													value={values?.room}
 													onChange={(e, value) => {
 														setFieldValue(
-															"room_id",
-															value !== null ? value : values.room_id,
+															"room",
+															value !== null ? value : values.room,
 														);
 													}}
 													renderInput={params => (
 														<TextField
 															margin="normal"
 															placeholder="Ruangan"
-															name="room_id"
+															name="room"
 															{...params}
 														/>
 													)}
 												/>
-												{touched.room_id && errors.room_id ? (
+												{touched.room && errors.room ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.room_id}
+														{errors.room}
 													</p>
 												) : null}
 											</Form.Group>
@@ -301,26 +299,24 @@ const ModalForm = props => {
 													id="company"
 													options={box.Boxes}
 													getOptionLabel={option => option.code_box}
-													value={values?.box_id}
+													value={values?.box}
 													onChange={(e, value) => {
 														setFieldValue(
-															"box_id",
-															value !== null ? value : values.box_id,
+															"box",
+															value !== null ? value : values.box,
 														);
 													}}
 													renderInput={params => (
 														<TextField
 															margin="normal"
 															placeholder="Box"
-															name="box_id"
+															name="box"
 															{...params}
 														/>
 													)}
 												/>
-												{touched.box_id && errors.box_id ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.box_id}
-													</p>
+												{touched.box && errors.box ? (
+													<p className="tc-danger-5 pos-a p-sm">{errors.box}</p>
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
@@ -350,11 +346,15 @@ const ModalForm = props => {
 													name="date_retention"
 													placeholder="Tanggal Retensi"
 													value={
-														values.date_retention === ""
-															? moment(values.date)
-																	.add(values.retention_period, "year")
-																	.format("YYYY-MM-DD")
-															: values.date_retention
+														// values?.date_retention =
+														moment(values?.date)
+															.add(values?.retention_period, "year")
+															.format("YYYY-MM-DD")
+														// values.date_retention === ""
+														// ? moment(values.date)
+														// .add(values.retention_period, "year")
+														// .format("YYYY-MM-DD")
+														// : values.date_retention
 													}
 													disabled
 													onChange={e => {

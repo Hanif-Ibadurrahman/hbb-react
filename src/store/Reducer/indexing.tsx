@@ -17,7 +17,7 @@ export const initialState: IndexingsInterfaceState = {
 	Indexings: [],
 	Indexing: {
 		id: "",
-		classification_code: {
+		classification: {
 			id: "",
 			name: "",
 			type: "",
@@ -39,12 +39,12 @@ export const initialState: IndexingsInterfaceState = {
 				serial_number: "",
 			},
 		],
-		area_id: {
+		area: {
 			code_area: "",
 			id: "",
 			name: "",
 		},
-		room_id: {
+		room: {
 			id: "",
 			name: "",
 			code_room: "",
@@ -55,7 +55,7 @@ export const initialState: IndexingsInterfaceState = {
 				code_area: "",
 			},
 		},
-		box_id: {
+		box: {
 			id: "",
 			code_box: "",
 			sign_code: "",
@@ -201,7 +201,7 @@ export default (
 				...state,
 				Indexing: {
 					id: "",
-					classification_code: {
+					classification: {
 						id: "",
 						name: "",
 						type: "",
@@ -222,12 +222,12 @@ export default (
 							serial_number: "",
 						},
 					],
-					area_id: {
+					area: {
 						code_area: "",
 						id: "",
 						name: "",
 					},
-					room_id: {
+					room: {
 						id: "",
 						name: "",
 						code_room: "",
@@ -238,7 +238,7 @@ export default (
 							code_area: "",
 						},
 					},
-					box_id: {
+					box: {
 						id: "",
 						code_box: "",
 						sign_code: "",

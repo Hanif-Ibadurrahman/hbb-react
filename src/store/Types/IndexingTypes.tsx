@@ -16,10 +16,10 @@ export interface IndexingInterfaceState {
 	index: string;
 	date: string;
 	type: string;
-	classification_code: ClassificationInterfaceState;
-	area_id: AreaInterfaceState;
-	room_id: RoomInterfaceState;
-	box_id: BoxInterfaceState;
+	classification: ClassificationInterfaceState;
+	area: AreaInterfaceState;
+	room: RoomInterfaceState;
+	box: BoxInterfaceState;
 	retention_period: string;
 	date_retention: string;
 	is_permanent: boolean;

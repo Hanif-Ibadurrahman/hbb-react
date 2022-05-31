@@ -132,6 +132,7 @@ const IndexingPage = () => {
 			},
 			cell: row => {
 				return moment(row.created_at).format("DD MMMM YYYY");
+				// return moment(row.date).format("DD MMMM YY");
 			},
 		},
 		{
