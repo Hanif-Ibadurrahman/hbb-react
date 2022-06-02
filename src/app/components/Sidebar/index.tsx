@@ -229,6 +229,16 @@ export function Sidebar() {
 						);
 					})}
 				</SubMenu>
+				<MenuItem
+					id={window.location.pathname === "/Activity-Log" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconForm} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Activity-Log";
+					}}
+				>
+					{""} Activity Log
+				</MenuItem>
 			</>
 		);
 	};

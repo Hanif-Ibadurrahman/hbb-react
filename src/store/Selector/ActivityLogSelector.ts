@@ -1,0 +1,16 @@
+import { createSelector } from "@reduxjs/toolkit";
+import { initialState } from "../Reducer/activityLog";
+import { RootState } from "../../types";
+
+const activityLogDomain = (state: RootState) =>
+	state.activityLogs || initialState;
+
+export const selectActivityLogs = createSelector(
+	activityLogDomain,
+	state => state,
+);
+
+export const selectActivityLog = createSelector(
+	activityLogDomain,
+	state => state.ActivityLog,
+);

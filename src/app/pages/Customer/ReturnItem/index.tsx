@@ -80,7 +80,7 @@ const ReturnItemPage = () => {
 			},
 		},
 		{
-			title: "Custome Code Box",
+			title: "Customer Code Box",
 			prop: "custom_code_box",
 			sortable: true,
 			cellProps: {

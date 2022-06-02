@@ -46,13 +46,6 @@ const ApprovalPreview = () => {
 
 	const header = [
 		{
-			title: "Id Request",
-			prop: "id",
-			cellProps: {
-				style: { width: "40%" },
-			},
-		},
-		{
 			title: "Tanggal Permintaan",
 			sortable: true,
 			prop: "created_at",

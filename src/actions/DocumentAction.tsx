@@ -188,7 +188,7 @@ export const UploadDocument = async (data: UploadFile) => {
 			dispatch({
 				type: UPLOAD_FILE,
 				payload: {
-					data: response.data,
+					data: data,
 					errorMessage: false,
 				},
 			});

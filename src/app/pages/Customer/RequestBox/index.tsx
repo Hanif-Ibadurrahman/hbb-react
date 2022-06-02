@@ -31,14 +31,6 @@ const BoxPage = () => {
 
 	const header = [
 		{
-			title: "Id Request",
-			prop: "id",
-			sortable: true,
-			cellProps: {
-				style: { width: "40%" },
-			},
-		},
-		{
 			title: "Note",
 			prop: "note",
 			sortable: true,
@@ -51,7 +43,7 @@ const BoxPage = () => {
 			prop: "quantity",
 			sortable: true,
 			cellProps: {
-				style: { width: "20%" },
+				style: { width: "30%" },
 			},
 		},
 	];

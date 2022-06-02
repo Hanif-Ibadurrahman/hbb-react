@@ -110,17 +110,10 @@ export function DashboardSuperadmin() {
 
 	const header = [
 		{
-			title: "Id Request",
-			prop: "id",
-			cellProps: {
-				style: { width: "40%" },
-			},
-		},
-		{
 			prop: "created_at",
 			sortable: true,
 			cellProps: {
-				style: { width: "20%" },
+				style: { width: "30%" },
 			},
 			headerCell: sortedProp => {
 				return (
@@ -138,7 +131,7 @@ export function DashboardSuperadmin() {
 			title: "Tipe Permintaan",
 			prop: "type",
 			cellProps: {
-				style: { width: "20%" },
+				style: { width: "30%" },
 			},
 			cell: row => {
 				return (
@@ -167,7 +160,7 @@ export function DashboardSuperadmin() {
 			},
 		},
 		{
-			title: "Custome Code Box",
+			title: "Customer Code Box",
 			prop: "custom_code_box",
 			cellProps: {
 				style: { width: "40%" },
@@ -252,7 +245,7 @@ export function DashboardSuperadmin() {
 					<CardHeader
 						icon="truck-loading"
 						total={totalReturn || 0}
-						text={["Box di", <br />, "Pinjam."]}
+						text={["Box di", <br />, "Pinjam"]}
 					/>
 				</div>
 			</div>
@@ -352,7 +345,7 @@ export function DashboardSuperadmin() {
 			<div className="pos-r p-8 bg-primary-5">
 				<h3 className="tc-dark-contrast mb-12 ff-1-bd">
 					<span className="ff-1 username text txtf-c">Selamat Datang,</span>
-					{user}
+					<span className="m-0 username text txtf-c"> {user}</span>
 				</h3>
 				<h6 className="mb-3 tc-dark-contrast">Today Summary</h6>
 				<CardDashboard />

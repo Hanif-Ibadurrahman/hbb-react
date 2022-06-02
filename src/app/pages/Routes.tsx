@@ -35,6 +35,7 @@ import { ApprovalDetail } from "./Approval/Detail";
 //ADMIN OPERATION
 import ApprovalOperationRequestBox from "./AdminOperation/RequestBox";
 import ApprovalPreview from "./AdminOperation/RequestBox/ApprovePreview";
+import ActivityLog from "./AdminOperation/RequestBox/ActivityLog";
 
 // MASTER
 // # - BOX
@@ -126,6 +127,13 @@ export function Routes() {
 							component={DashboardAdminTransport}
 						/>
 						{/*---------- DASHBOARD - - - END ---------*/}
+
+						{/*---------- ACTIVITY LOG ---------*/}
+						<Route
+							path={process.env.PUBLIC_URL + "/Activity-Log"}
+							component={ActivityLog}
+						/>
+						{/*---------- ACTIVITY LOG - - - END ---------*/}
 
 						{/*---------- APPROVAL ---------*/}
 						<Route
