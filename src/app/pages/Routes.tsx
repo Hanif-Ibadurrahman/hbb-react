@@ -38,8 +38,6 @@ import ApprovalPreview from "./AdminOperation/RequestBox/ApprovePreview";
 import ActivityLog from "./AdminOperation/RequestBox/ActivityLog";
 
 // MASTER
-// # - Indexing
-import IndexingPage from "./Master/IndexingPage";
 // # - BOX
 import BoxPage from "./Master/BoxPage";
 import BoxPageDetail from "./Master/BoxPage/Detail";
