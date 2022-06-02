@@ -1,38 +1,42 @@
 import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 import { useDispatch, useSelector } from "react-redux";
-import { DeleteCart } from "actions/IndexingAction";
+import { DeleteCartAssign } from "actions/IndexingAction";
+import { AssignDocumentToFolderInterfaceState } from "store/Types/IndexingTypes";
 import {
-	IndexingDocumentInterfaceState,
-	IndexingInterfaceState,
-} from "store/Types/IndexingTypes";
-import {
-	selectindexing,
-	selectindexingdocument,
+	selectAssignToFolder,
 	selectindexings,
 } from "store/Selector/IndexingSelector";
-import { indexingDocument } from "api/indexing";
+import { assignToFolder } from "api/indexing";
+import { Autocomplete, TextField } from "@mui/material";
+import { selectFolders } from "store/Selector/FolderSelector";
+import { getFoldersList } from "actions/FolderAction";
 
-const ModalForm = props => {
+const ModalAssign = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setAlertMessage] = useState("");
 	const [varianAlert, setVarianAlert] = useState("");
-	const indexing: IndexingDocumentInterfaceState = useSelector(
-		selectindexingdocument,
-	);
-	const indexingDetail: IndexingInterfaceState = useSelector(selectindexing);
+	const folder = useSelector(selectFolders);
+	const FetchData = (page = 1) => {
+		dispatch(getFoldersList(page));
+	};
+	useEffect(() => {
+		FetchData();
+	}, []);
+	const assignDocumentToFolder: AssignDocumentToFolderInterfaceState =
+		useSelector(selectAssignToFolder);
 	const cart = useSelector(selectindexings);
-	const cartStash = cart.Cart;
+	const cartStash = cart.CartAssign;
 
 	const dispatch = useDispatch();
 
 	const validationSchema = Yup.object().shape({});
 
 	const deleteCart = async id => {
-		dispatch(await DeleteCart(id));
+		dispatch(await DeleteCartAssign(id));
 	};
 
 	return (
@@ -58,13 +62,13 @@ const ModalForm = props => {
 				{" "}
 				<Formik
 					validationSchema={validationSchema}
-					initialValues={indexing}
+					initialValues={assignDocumentToFolder}
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							values.id = indexingDetail.id;
+							values.id = values.id_folder.id;
 							values.document_codes = cartStash;
-							let action = indexingDocument(values);
+							let action = assignToFolder(values);
 							const res = await action;
 							await dispatch(res);
 							action.then(() => {
@@ -82,9 +86,6 @@ const ModalForm = props => {
 							setAlertMessage("Request Gagal");
 							setVarianAlert("danger");
 							setTimeout(function () {
-								window.location.reload();
-							}, 1000);
-							setTimeout(function () {
 								setShowAlert(false);
 							}, 4000);
 						}
@@ -96,13 +97,14 @@ const ModalForm = props => {
 						touched,
 						handleChange,
 						handleBlur,
+						setFieldValue,
 						handleSubmit,
 						isSubmitting,
 					}) => (
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									Indexing Document
+									Assign Document To Folder
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
@@ -132,6 +134,29 @@ const ModalForm = props => {
 													</>
 												))}
 											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Pilih Area</Form.Label>
+												<Autocomplete
+													id="folder"
+													options={folder.Folders}
+													getOptionLabel={option => option.no}
+													value={values?.id_folder}
+													onChange={(e, value) => {
+														setFieldValue(
+															"id_folder",
+															value !== null ? value : values.id_folder,
+														);
+													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															placeholder="Folder"
+															name="id_folder"
+															{...params}
+														/>
+													)}
+												/>
+											</Form.Group>
 										</Col>
 									</Row>
 								</Container>
@@ -157,4 +182,4 @@ const ModalForm = props => {
 	);
 };
 
-export default ModalForm;
+export default ModalAssign;

@@ -1,4 +1,5 @@
 import {
+	AssignDocumentToFolderInterfaceState,
 	IndexingDocumentInterfaceState,
 	IndexingInterfaceState,
 } from "store/Types/IndexingTypes";
@@ -48,6 +49,16 @@ export const indexingDocument = async (
 		document_codes: data.document_codes,
 	};
 	return await api.put(`/indexes/${id}/documents/attach`, payload);
+};
+
+export const assignToFolder = async (
+	data: AssignDocumentToFolderInterfaceState,
+) => {
+	let id = data.id;
+	let payload = {
+		document_codes: data.document_codes,
+	};
+	return await api.put(`/folders/${id}/documents/attach`, payload);
 };
 
 export const getAll = async params => {

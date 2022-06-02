@@ -3,19 +3,15 @@ import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
 import DropdownAction from "app/pages/Master/Components/DropdownAction";
-import { Pagination } from "app/components/Pagination";
-import { AddCart } from "actions/IndexingAction";
+import { AddCartAssign } from "actions/IndexingAction";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import ModalForm from "./ModalForm";
+import ModalForm from "./ModalAssign";
 import "./page.scoped.scss";
 import _ from "lodash";
-import { selectDocuemnts } from "store/Selector/DocumentSelector";
-import { getDocumentsListIndexing } from "actions/DocumentAction";
 
-const TableIndexingPage = () => {
+const AssignTable = props => {
 	const [modalShow, setModalShow] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
-	const documentList = useSelector(selectDocuemnts);
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
 
 	useEffect(() => {
@@ -28,21 +24,13 @@ const TableIndexingPage = () => {
 
 	const dispatch = useDispatch();
 
-	const FetchData = (page = 1) => {
-		dispatch(getDocumentsListIndexing(page));
-	};
-
-	useEffect(() => {
-		FetchData();
-	}, []);
-
 	const _onHide = () => {
 		setModalShow(false);
 	};
 
 	const addCart = async id => {
 		checkCart(id);
-		dispatch(await AddCart(id));
+		dispatch(await AddCartAssign(id));
 	};
 
 	const checkCart = id => {
@@ -78,9 +66,6 @@ const TableIndexingPage = () => {
 			cellProps: {
 				style: { width: "40%" },
 			},
-			cell: row => {
-				return row?.no ? row?.no : "-";
-			},
 		},
 		{
 			title: "No Digital",
@@ -88,9 +73,6 @@ const TableIndexingPage = () => {
 			sortable: true,
 			cellProps: {
 				style: { width: "20%" },
-			},
-			cell: row => {
-				return row?.no_digital ? row?.no_digital : "-";
 			},
 		},
 		{
@@ -135,14 +117,14 @@ const TableIndexingPage = () => {
 								<i className="fas fa-box-check"></i>
 							</span>
 						</span>
-						<h5 className="text ff-1-bd mr-3">{cart.numberCart}</h5>
-						<p className="p-lg">Document dipilih</p>
+						<h5 className="text ff-1-bd mr-3">{cart.NumberCartAssign}</h5>
+						<p className="p-lg">Document Assign to</p>
 					</div>
 					<span
 						className="ph-2 h-12 bd-rs-6 d-flex ai-center jc-center bg-success-1 ml-a cur-p"
 						onClick={() => setModalShow(true)}
 					>
-						<span className="text p-lg mh-2 tc-success-5">Indexing</span>
+						<span className="text p-lg mh-2 tc-success-5">Folder</span>
 						<span
 							className="icon h-9 w-9 bd-rs-6 d-flex ai-center jc-center bg-success-5"
 							style={{ marginTop: -3 }}
@@ -158,7 +140,7 @@ const TableIndexingPage = () => {
 	return (
 		<>
 			<Helmet>
-				<title>Dox - Indexing</title>
+				<title>Dox - Borrow Box</title>
 				<meta
 					name="description"
 					content="A React Boilerplate application homepage"
@@ -172,17 +154,13 @@ const TableIndexingPage = () => {
 					valueModalSet={false}
 				/>
 				<div className="d-flex jc-between w-100% mb-4">
-					<h6>List Document belum terindexing</h6>
+					<h6>List Document sudah terindexing</h6>
 					<Cart />
 				</div>
-				<DataTable tableHeader={header} tableBody={documentList.Documents} />
-				<Pagination
-					pageCount={documentList.Meta.last_page}
-					onPageChange={data => FetchData(data.selected + 1)}
-				/>
+				<DataTable tableHeader={header} tableBody={props.DataTable} />
 			</PageWrapper>
 		</>
 	);
 };
 
-export default TableIndexingPage;
+export default AssignTable;

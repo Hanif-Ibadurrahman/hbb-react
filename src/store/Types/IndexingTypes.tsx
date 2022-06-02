@@ -3,9 +3,10 @@ import { RoomInterfaceState } from "store/Types/RoomTypes";
 import { AreaInterfaceState } from "./AreaTypes";
 import { BoxInterfaceState } from "./BoxTypes";
 import { ClassificationInterfaceState } from "./ClassificationTypes";
+import { FolderInterfaceState } from "./FolderTypes";
 
 interface documentIndexing {
-	id: string;
+	id: string | null;
 	no: string;
 	detail: string;
 	serial_number: string;
@@ -30,13 +31,21 @@ export interface IndexingDocumentInterfaceState {
 	id: string | null;
 	document_codes: any[];
 }
+export interface AssignDocumentToFolderInterfaceState {
+	id: string | null;
+	id_folder: FolderInterfaceState;
+	document_codes: any[];
+}
 
 export interface IndexingsInterfaceState {
 	Indexing: IndexingInterfaceState;
 	Indexings: IndexingInterfaceState[];
 	IndexingDocument: IndexingDocumentInterfaceState;
+	AssignDocumentToFolder: AssignDocumentToFolderInterfaceState;
 	Cart: any[];
 	numberCart: number;
+	CartAssign: any[];
+	NumberCartAssign: number;
 	ErrorIndexing?: string;
 	Title: string;
 	Meta: PaginationState;

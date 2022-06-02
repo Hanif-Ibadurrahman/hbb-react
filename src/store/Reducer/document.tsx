@@ -9,6 +9,7 @@ import {
 	GET_DOCUMENTS_FILTER,
 	UPLOAD_FILE,
 	DOWNLOAD_FILE,
+	GET_DOCUMENTS_LIST_INDEXING,
 } from "../../actions/DocumentAction";
 import {
 	DocumentsInterfaceState,
@@ -107,6 +108,18 @@ export default (
 				Document: payload,
 			};
 		case GET_DOCUMENTS_LIST:
+			return {
+				...state,
+				Documents: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorDocument: payload.errorMessage,
+			};
+		case GET_DOCUMENTS_LIST_INDEXING:
 			return {
 				...state,
 				Documents: payload.data,

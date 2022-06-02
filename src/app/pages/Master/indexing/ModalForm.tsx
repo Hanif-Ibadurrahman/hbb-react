@@ -93,6 +93,9 @@ const ModalForm = props => {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
+							values.date_retention = moment(values?.date)
+								.add(values?.retention_period, "year")
+								.format("YYYY-MM-DD");
 							let action = indexing?.id
 								? UpdateIndexing(values)
 								: CreateIndexing(values);
@@ -130,7 +133,6 @@ const ModalForm = props => {
 						isSubmitting,
 					}) => (
 						<Form onSubmit={handleSubmit}>
-							{console.log("values >>>", values)}
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
 									{indexing?.id ? <>Edit Data</> : <>Tambah Data</>}
@@ -259,11 +261,6 @@ const ModalForm = props => {
 														/>
 													)}
 												/>
-												{touched.area && errors.area ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.area}
-													</p>
-												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Ruangan</Form.Label>
@@ -346,15 +343,15 @@ const ModalForm = props => {
 													name="date_retention"
 													placeholder="Tanggal Retensi"
 													value={
-														// values?.date_retention =
-														moment(values?.date)
-															.add(values?.retention_period, "year")
-															.format("YYYY-MM-DD")
-														// values.date_retention === ""
-														// ? moment(values.date)
-														// .add(values.retention_period, "year")
-														// .format("YYYY-MM-DD")
-														// : values.date_retention
+														// values.date_retention =
+														// moment(values?.date)
+														// 	.add(values?.retention_period, "year")
+														// 	.format("YYYY-MM-DD")
+														values?.date_retention === ""
+															? moment(values?.date)
+																	.add(values?.retention_period, "year")
+																	.format("YYYY-MM-DD")
+															: values?.date_retention
 													}
 													disabled
 													onChange={e => {

@@ -3,7 +3,6 @@ import {
 	GET_INDEXING_LIST,
 	FILTER_INDEXING,
 	GET_INDEX_DETAIL,
-	INDEXING_ERROR,
 	RESET_INDEX_FORM,
 	RESET_INDEX_LIST,
 	SET_INDEX_DATA,
@@ -11,6 +10,11 @@ import {
 	ADD_CART,
 	DELETE_CART,
 	GET_NUMBER_CART,
+	ADD_CART_ASSIGN,
+	DELETE_CART_ASSIGN,
+	GET_NUMBER_CART_ASSIGN,
+	PUT_ASSIGN_DOCUMENT_TO_FOLDER,
+	PUT_INDEXING_DOCUMENT,
 } from "../../actions/IndexingAction";
 import { IndexingsInterfaceState } from "../Types/IndexingTypes";
 export const initialState: IndexingsInterfaceState = {
@@ -113,14 +117,71 @@ export const initialState: IndexingsInterfaceState = {
 		id: "",
 		document_codes: [],
 	},
+	AssignDocumentToFolder: {
+		id: "",
+		document_codes: [],
+		id_folder: {
+			id: "",
+			division: {
+				id: "",
+				name: "",
+				customers: [
+					{
+						id: "",
+						name: "",
+						phone: "",
+						email: "",
+						location: "",
+						company: {
+							id: "",
+							name: "",
+							code: 0,
+							location: "",
+						},
+					},
+				],
+			},
+			box: {
+				id: "",
+				code_box: "",
+				custom_code_box: "",
+				location: "",
+				status: "",
+			},
+			no: "",
+			location: "",
+			status: "",
+			sign_code: "",
+			cabinet_slot: "",
+			company: {
+				id: "",
+				location: "",
+				name: "",
+				phone: "",
+			},
+			documents: [
+				{
+					id: "",
+					condition: "",
+					description: "",
+					detail: "",
+					media_storage: "",
+					status: "",
+					sign_code: "",
+				},
+			],
+		},
+	},
 	Cart: [],
+	numberCart: 0,
+	CartAssign: [],
+	NumberCartAssign: 0,
 	Meta: {
 		total: 0,
 		per_page: 0,
 		current_page: 1,
 		last_page: 1,
 	},
-	numberCart: 0,
 	Title: "INDEXINGS",
 	ErrorIndexing: undefined,
 };
@@ -184,6 +245,40 @@ export default (
 				...state,
 				numberCart: state.numberCart - 1,
 				Cart: state.Cart.filter(Cart => Cart !== payload),
+			};
+		case GET_NUMBER_CART:
+			return {
+				...state,
+			};
+		case ADD_CART_ASSIGN:
+			const checkCartExistAssign = () => {
+				if (state?.CartAssign.indexOf(payload, 0) < 0) return true;
+				return false;
+			};
+			return {
+				...state,
+				CartAssign: checkCartExistAssign()
+					? [...state.CartAssign, payload]
+					: [...state.CartAssign],
+				NumberCartAssign: checkCartExistAssign()
+					? state.NumberCartAssign + 1
+					: state.NumberCartAssign,
+			};
+		case DELETE_CART_ASSIGN:
+			return {
+				...state,
+				NumberCartAssign: state.NumberCartAssign - 1,
+				CartAssign: state.CartAssign.filter(Cart => Cart !== payload),
+			};
+		case GET_NUMBER_CART_ASSIGN:
+			return {
+				...state,
+			};
+		case PUT_INDEXING_DOCUMENT:
+			return {
+				...state,
+				IndexingDocument: payload?.data?.data,
+				ErrorIndexing: payload.errorMessage,
 			};
 		case UPDATE_INDEX:
 			return {

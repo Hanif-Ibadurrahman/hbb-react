@@ -9,6 +9,7 @@ import { IndexingInterfaceState } from "store/Types/IndexingTypes";
 import { selectindexing } from "store/Selector/IndexingSelector";
 import { getIndexingDetail } from "actions/IndexingAction";
 import TableIndexingPage from "./Table";
+import AssignTable from "./AssignTable";
 
 const IndexingPageDetail = ({ match }) => {
 	const indexing: IndexingInterfaceState = useSelector(selectindexing);
@@ -20,8 +21,6 @@ const IndexingPageDetail = ({ match }) => {
 	};
 
 	const indexing_id = match.params.id;
-
-	console.log("values >>>", indexing);
 
 	const dispatch = useDispatch();
 
@@ -48,14 +47,6 @@ const IndexingPageDetail = ({ match }) => {
 									defaultValue={indexing.index}
 								/>
 							</Form.Group>
-							{/* <Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Klasifikasi</Form.Label>
-								<Form.Control
-									type="text"
-									disabled
-									defaultValue={indexing.classification_code}
-								/>
-							</Form.Group> */}
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Tipe</Form.Label>
 								<Form.Control
@@ -72,19 +63,6 @@ const IndexingPageDetail = ({ match }) => {
 									defaultValue={indexing.retention_period}
 								/>
 							</Form.Group>
-							<Form.Group>
-								<h6>List Document</h6>
-								{indexing.documents.map((data, index) => (
-									<>
-										<div className="d-flex ai-center mt-4 mb-2">
-											<div className="col-2">No Document {index + 1}</div>
-											<div className="col-10">
-												<Form.Control type="text" value={data.no} readOnly />
-											</div>
-										</div>
-									</>
-								))}
-							</Form.Group>
 							<div className="d-flex jc-end">
 								<Button
 									className="mv-4"
@@ -95,6 +73,11 @@ const IndexingPageDetail = ({ match }) => {
 								</Button>{" "}
 							</div>
 						</Form>
+					</Card>
+				</div>
+				<div className="col col-12 mt-4">
+					<Card className="ph-5 pv-3 bd-rs-2">
+						<AssignTable DataTable={indexing?.documents} />
 					</Card>
 				</div>
 				<div className="col col-12">

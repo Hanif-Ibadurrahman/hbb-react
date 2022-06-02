@@ -13,3 +13,8 @@ export const selectindexingdocument = createSelector(
 	indexDomain,
 	state => state.IndexingDocument,
 );
+
+export const selectAssignToFolder = createSelector(
+	indexDomain,
+	state => state.AssignDocumentToFolder,
+);
