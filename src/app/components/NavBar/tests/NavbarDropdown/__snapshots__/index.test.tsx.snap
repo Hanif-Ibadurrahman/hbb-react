@@ -20,7 +20,7 @@ exports[`<NavBarDropdown /> should match snapshot 1`] = `
       />
       <Username />
       <i
-        className="dropdown-toggle-indicator fas fa-chevron-down tc-dark op-75%"
+        className="dropdown-toggle-indicator fas fa-chevron-down tc-dark"
       />
     </div>
   </DropdownToggle>

@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 
 const Username = props => {
 	return (
-		<span className="username text txtf-c p-lg tc-dark op-75% pr-12">
+		<span className="username text txtf-c p-lg tc-dark pr-12">
 			{props.username}
 		</span>
 	);
@@ -36,7 +36,7 @@ export function NavBarDropdown(props) {
 					<div className="w-2px h-20 bg-dark-contrast op-25%"></div>
 					<Profile className="d-flex ai-center jc-center h-12 w-12 bd-rs-16 of-h mh-4" />
 					<Username username={props.username} />
-					<i className="dropdown-toggle-indicator fas fa-chevron-down tc-dark op-75%"></i>
+					<i className="dropdown-toggle-indicator fas fa-chevron-down tc-dark"></i>
 				</div>
 			</Dropdown.Toggle>
 
