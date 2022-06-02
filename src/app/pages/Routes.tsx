@@ -74,6 +74,9 @@ import CustomerPage from "./Master/CustomerPage";
 import CustomerPageDetail from "./Master/CustomerPage/Detail";
 // # -STAFF
 import StaffPage from "./Master/StaffPage";
+// # - INDEXING
+import IndexingPage from "./Master/indexing";
+import DetailIndexingPage from "./Master/indexing/Detail";
 // -=-=-=-=-=-
 
 // CUSTOMER
@@ -167,6 +170,10 @@ export function Routes() {
 						<Route path={process.env.PUBLIC_URL + "/Box"} component={BoxPage} />
 						<Route path={process.env.PUBLIC_URL + "/Car"} component={CarPage} />
 						<Route
+							path={process.env.PUBLIC_URL + "/Indexing"}
+							component={IndexingPage}
+						/>
+						<Route
 							path={process.env.PUBLIC_URL + "/Car-Detail/:id"}
 							component={CarPageDetail}
 						/>
@@ -249,6 +256,14 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/StaffPage"}
 							component={StaffPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Indexing"}
+							component={IndexingPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/IndexingDetail/:id"}
+							component={DetailIndexingPage}
 						/>
 						{/*---------- MASTER - - - END ---------*/}
 						{/*--------- ADMIN CSR ---------*/}

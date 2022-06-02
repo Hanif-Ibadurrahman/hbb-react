@@ -170,6 +170,29 @@ export const MasterData = [
 	// },
 ];
 
+export const ArchiverMasterData = [
+	{
+		title: "Dokumen",
+		icon: "",
+		link: "/Document",
+	},
+	{
+		title: "Folder",
+		icon: "",
+		link: "/Folder",
+	},
+	{
+		title: "Box",
+		icon: "",
+		link: "/Box",
+	},
+	{
+		title: "Berkas",
+		icon: "",
+		link: "/Indexing",
+	},
+];
+
 export const CustomerMasterData = [
 	{
 		title: "Box",

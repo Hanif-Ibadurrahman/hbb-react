@@ -3,20 +3,16 @@ import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
 import DropdownAction from "app/pages/Master/Components/DropdownAction";
-import { Pagination } from "app/components/Pagination";
-import { AddCart, getBorrowList } from "actions/BorrowItemAction";
+import { AddCartAssign } from "actions/IndexingAction";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import { selectBoxes } from "store/Selector/BoxSelector";
-import ModalForm from "./ModalForm";
+import ModalForm from "./ModalAssign";
 import "./page.scoped.scss";
 import _ from "lodash";
-import { selectBorrowItems } from "store/Selector/BorrowItemSelector";
 
-const BorrowBoxPage = () => {
+const AssignTable = props => {
 	const [modalShow, setModalShow] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
-	const borrowList = useSelector(selectBorrowItems);
-	const cartStash = useSelector((state: RootStateOrAny) => state?.pickUpItems);
+	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
 
 	useEffect(() => {
 		setCart(cartStash);
@@ -28,21 +24,13 @@ const BorrowBoxPage = () => {
 
 	const dispatch = useDispatch();
 
-	const FetchData = (page = 1) => {
-		dispatch(getBorrowList(page));
-	};
-
-	useEffect(() => {
-		FetchData();
-	}, []);
-
 	const _onHide = () => {
 		setModalShow(false);
 	};
 
 	const addCart = async id => {
 		checkCart(id);
-		dispatch(await AddCart(id));
+		dispatch(await AddCartAssign(id));
 	};
 
 	const checkCart = id => {
@@ -54,7 +42,7 @@ const BorrowBoxPage = () => {
 	const action = id => [
 		{
 			icon: "fa-hand-holding-box",
-			title: "Pickup",
+			title: "Pilih",
 			onclick: () => {
 				addCart(id);
 			},
@@ -65,29 +53,42 @@ const BorrowBoxPage = () => {
 		{
 			icon: "fa-search",
 			title: "Detail",
-			url: "Box-Detail/" + id,
+			url: "Document-Detail/" + id,
 			type: 1,
 		},
 	];
 
 	const header = [
 		{
-			title: "Code Box",
-			prop: "code_box",
+			title: "No Document",
+			prop: "no",
 			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
 			},
 		},
 		{
-			title: "Custome Code Box",
-			prop: "custom_code_box",
+			title: "No Digital",
+			prop: "no_digital",
 			sortable: true,
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "20%" },
 			},
-			cell: row => {
-				return row?.custom_code_box ? row?.custom_code_box : "-";
+		},
+		{
+			title: "Kondisi",
+			prop: "condition",
+			sortable: true,
+			cellProps: {
+				style: { width: "20%" },
+			},
+			headerCell: () => {
+				return (
+					<div className="cur-p">
+						{`Kondisi`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
 			},
 		},
 		{
@@ -106,7 +107,7 @@ const BorrowBoxPage = () => {
 	function Cart(): JSX.Element {
 		return (
 			<>
-				<div className="ph-4 pv-4 bg-dark-contrast bd-tl-rs-4 bd-tr-rs-4 d-flex cart-popup">
+				<div className="ph-4 pv-4 bg-dark-contrast bd-tl-rs-4 bd-tr-rs-4 d-flex cart-indexing">
 					<div className="d-flex ai-center">
 						<span className="h-12 w-12 bd-rs-6 d-flex ai-center jc-center bg-light-shade mr-6">
 							<span
@@ -116,14 +117,14 @@ const BorrowBoxPage = () => {
 								<i className="fas fa-box-check"></i>
 							</span>
 						</span>
-						<h5 className="text ff-1-bd mr-3">{cart.numberCart}</h5>
-						<p className="p-lg">Box dipilih</p>
+						<h5 className="text ff-1-bd mr-3">{cart.NumberCartAssign}</h5>
+						<p className="p-lg">Document Assign to</p>
 					</div>
 					<span
 						className="ph-2 h-12 bd-rs-6 d-flex ai-center jc-center bg-success-1 ml-a cur-p"
 						onClick={() => setModalShow(true)}
 					>
-						<span className="text p-lg mh-2 tc-success-5">Proses</span>
+						<span className="text p-lg mh-2 tc-success-5">Folder</span>
 						<span
 							className="icon h-9 w-9 bd-rs-6 d-flex ai-center jc-center bg-success-5"
 							style={{ marginTop: -3 }}
@@ -152,15 +153,14 @@ const BorrowBoxPage = () => {
 					modalSet={setModalShow}
 					valueModalSet={false}
 				/>
-				<DataTable tableHeader={header} tableBody={borrowList.BorrowList} />
-				<Pagination
-					pageCount={borrowList.Meta.last_page}
-					onPageChange={data => FetchData(data.selected + 1)}
-				/>
-				<Cart />
+				<div className="d-flex jc-between w-100% mb-4">
+					<h6>List Document sudah terindexing</h6>
+					<Cart />
+				</div>
+				<DataTable tableHeader={header} tableBody={props.DataTable} />
 			</PageWrapper>
 		</>
 	);
 };
 
-export default BorrowBoxPage;
+export default AssignTable;

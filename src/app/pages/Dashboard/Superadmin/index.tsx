@@ -201,23 +201,16 @@ export function DashboardSuperadmin() {
 			<div className="row w-100% mh-0 row-summary">
 				<div className="col col-4 ph-0">
 					<CardHeader
-						icon="archive"
-						total={totalCabinets || 0}
-						text={["Total", <br />, "Cabinet."]}
+						icon="boxes"
+						total={totalBox || 0}
+						text={["Jumlah", <br />, "Box."]}
 					/>
 				</div>
 				<div className="col col-4 ph-0 mh-4">
 					<CardHeader
-						icon="truck-loading"
+						icon="archive"
 						total="0"
-						text={["Cabinet", <br />, "Tersedia."]}
-					/>
-				</div>
-				<div className="col col-4 ph-0">
-					<CardHeader
-						icon="boxes"
-						total={totalApprovalAdminCSR || 0}
-						text={["Pending", <br />, "Approval."]}
+						text={["Sisa", <br />, "Box."]}
 					/>
 				</div>
 			</div>
@@ -316,6 +309,8 @@ export function DashboardSuperadmin() {
 			return <TableCSRAdmin />;
 		} else if (user === "csroperation") {
 			return <TableCSROperation />;
+		} else if (user === "archiver") {
+			return <div></div>;
 		} else {
 			return <TableCustomer />;
 		}
@@ -328,6 +323,8 @@ export function DashboardSuperadmin() {
 			return <CardAdmin />;
 		} else if (user === "csroperation") {
 			return <CardAdmin />;
+		} else if (user === "archiver") {
+			return <div></div>;
 		} else {
 			return <CardCustomer />;
 		}

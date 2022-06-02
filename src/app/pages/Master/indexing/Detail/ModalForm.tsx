@@ -3,25 +3,37 @@ import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
-import { selectDivision } from "../../../../store/Selector/DivisionSelector";
 import { useDispatch, useSelector } from "react-redux";
+import { DeleteCart } from "actions/IndexingAction";
 import {
-	CreateDivision,
-	UpdateDivision,
-	RESET_DIVISION_FORM,
-} from "actions/DivisionAction";
-import { DivisionInterfaceState } from "store/Types/DivisionTypes";
+	IndexingDocumentInterfaceState,
+	IndexingInterfaceState,
+} from "store/Types/IndexingTypes";
+import {
+	selectindexing,
+	selectindexingdocument,
+	selectindexings,
+} from "store/Selector/IndexingSelector";
+import { indexingDocument } from "api/indexing";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setAlertMessage] = useState("");
 	const [varianAlert, setVarianAlert] = useState("");
-	const divisions: DivisionInterfaceState = useSelector(selectDivision);
+	const indexing: IndexingDocumentInterfaceState = useSelector(
+		selectindexingdocument,
+	);
+	const indexingDetail: IndexingInterfaceState = useSelector(selectindexing);
+	const cart = useSelector(selectindexings);
+	const cartStash = cart.Cart;
+
 	const dispatch = useDispatch();
 
-	const validationSchema = Yup.object().shape({
-		name: Yup.string().required("*Wajib diisi"),
-	});
+	const validationSchema = Yup.object().shape({});
+
+	const deleteCart = async id => {
+		dispatch(await DeleteCart(id));
+	};
 
 	return (
 		<>
@@ -37,6 +49,7 @@ const ModalForm = props => {
 				}}
 				onHide={() => setShowAlert(false)}
 			/>
+
 			<Modal
 				show={props.modal}
 				onHide={props.hide}
@@ -45,36 +58,35 @@ const ModalForm = props => {
 				{" "}
 				<Formik
 					validationSchema={validationSchema}
-					initialValues={divisions}
+					initialValues={indexing}
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							let action = divisions.id
-								? UpdateDivision(values)
-								: CreateDivision(values);
-							// dispatch(loadingbarTurnOn)
+							values.id = indexingDetail.id;
+							values.document_codes = cartStash;
+							let action = indexingDocument(values);
 							const res = await action;
 							await dispatch(res);
 							action.then(() => {
+								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
+								setAlertMessage("Request Peminjaman Berhasil");
 								setVarianAlert("success");
-								divisions.id
-									? setAlertMessage("Data Berhasil di Edit")
-									: setAlertMessage("Data Berhasil di Tambah");
 								setTimeout(function () {
 									window.location.reload();
 								}, 1000);
-								dispatch({ type: RESET_DIVISION_FORM });
-								props.modalSet(props.valueModalSet);
 							});
+							props.modalSet(props.valueModalSet);
 						} catch (e) {
 							setShowAlert(true);
-							setAlertMessage("Gagal Update Data");
+							setAlertMessage("Request Gagal");
 							setVarianAlert("danger");
+							setTimeout(function () {
+								window.location.reload();
+							}, 1000);
 							setTimeout(function () {
 								setShowAlert(false);
 							}, 4000);
-							dispatch({ type: RESET_DIVISION_FORM });
 						}
 					}}
 				>
@@ -90,30 +102,35 @@ const ModalForm = props => {
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									{divisions.id ? <>Edit Data</> : <>Tambah Data</>}
+									Indexing Document
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
 								<Container>
 									<Row>
 										<Col xs={12}>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Name Divisi</Form.Label>
-												<Form.Control
-													type="text"
-													name="name"
-													placeholder="Name Divisi"
-													value={values.name}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>
-												{touched.name && errors.name ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.name}
-													</p>
-												) : null}
+											<Form.Group>
+												<Form.Label>List Document</Form.Label>
+												{cartStash.map((cart, index) => (
+													<>
+														<div className="d-flex jc-between mb-2">
+															<div className="col-10">
+																<Form.Control
+																	type="text"
+																	value={cart}
+																	readOnly
+																/>
+															</div>
+															<Button
+																variant="danger"
+																onClick={() => deleteCart(cart)}
+																className="d-flex jc-center ai-center"
+															>
+																<i className="far fa-times"></i>
+															</Button>
+														</div>
+													</>
+												))}
 											</Form.Group>
 										</Col>
 									</Row>

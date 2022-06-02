@@ -27,10 +27,8 @@ export const create = async (data: DocumentInterfaceState) => {
 };
 
 export const uploadFile = async data => {
-	console.log("data upload >>", data);
 	var formdata = new FormData();
 	formdata.append("file", data, "[PROXY]");
-	console.log("form data >>", formdata);
 	const token = localStorage.getItem("Token");
 
 	const response = await fetch(
@@ -44,7 +42,6 @@ export const uploadFile = async data => {
 			},
 		},
 	);
-	console.log("data >>", response);
 	return response;
 };
 
@@ -88,6 +85,17 @@ export const getById = async (id: String) => {
 export const getAll = async params => {
 	return api
 		.get(`/documents?page=${params}`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
+export const getAllIndexing = async params => {
+	return api
+		.get(`/documents?page=${params}&is_indexed=false`)
 		.then(res => {
 			return res.data;
 		})

@@ -9,9 +9,11 @@ import {
 	filter,
 	uploadFile,
 	downloadFile,
+	getAllIndexing,
 } from "../api/documents";
 export const GET_DOCUMENTS_FILTER = "GET_DOCUMENT_FILTER";
 export const GET_DOCUMENTS_LIST = "GET_DOCUMENTS_LIST";
+export const GET_DOCUMENTS_LIST_INDEXING = "GET_DOCUMENTS_LIST_INDEXING";
 export const GET_DOCUMENT_DETAIL = "GET_DOCUMENT_DETAIL";
 export const CREATE_DOCUMENT = "CREAT_DOCUMENT";
 export const EDIT_DOCUMENT = "GET_DOCUMENTS_LIST";
@@ -71,6 +73,34 @@ export const getDocumentsList = page => {
 		} catch (error: any) {
 			dispatch({
 				type: GET_DOCUMENTS_LIST,
+				payload: {
+					data: false,
+					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const getDocumentsListIndexing = page => {
+	return async dispatch => {
+		try {
+			const response = await getAllIndexing(page);
+			dispatch({
+				type: GET_DOCUMENTS_LIST,
+				GET_DOCUMENTS_LIST_INDEXING,
+				payload: {
+					data: response.data,
+					meta: response.meta,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: GET_DOCUMENTS_LIST_INDEXING,
 				payload: {
 					data: false,
 					errorMessage: error.message,

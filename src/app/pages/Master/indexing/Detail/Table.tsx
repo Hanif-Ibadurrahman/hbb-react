@@ -4,19 +4,19 @@ import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
 import DropdownAction from "app/pages/Master/Components/DropdownAction";
 import { Pagination } from "app/components/Pagination";
-import { AddCart, getBorrowList } from "actions/BorrowItemAction";
+import { AddCart } from "actions/IndexingAction";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import { selectBoxes } from "store/Selector/BoxSelector";
 import ModalForm from "./ModalForm";
 import "./page.scoped.scss";
 import _ from "lodash";
-import { selectBorrowItems } from "store/Selector/BorrowItemSelector";
+import { selectDocuemnts } from "store/Selector/DocumentSelector";
+import { getDocumentsListIndexing } from "actions/DocumentAction";
 
-const BorrowBoxPage = () => {
+const TableIndexingPage = () => {
 	const [modalShow, setModalShow] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
-	const borrowList = useSelector(selectBorrowItems);
-	const cartStash = useSelector((state: RootStateOrAny) => state?.pickUpItems);
+	const documentList = useSelector(selectDocuemnts);
+	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
 
 	useEffect(() => {
 		setCart(cartStash);
@@ -29,7 +29,7 @@ const BorrowBoxPage = () => {
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		dispatch(getBorrowList(page));
+		dispatch(getDocumentsListIndexing(page));
 	};
 
 	useEffect(() => {
@@ -54,7 +54,7 @@ const BorrowBoxPage = () => {
 	const action = id => [
 		{
 			icon: "fa-hand-holding-box",
-			title: "Pickup",
+			title: "Pilih",
 			onclick: () => {
 				addCart(id);
 			},
@@ -65,29 +65,48 @@ const BorrowBoxPage = () => {
 		{
 			icon: "fa-search",
 			title: "Detail",
-			url: "Box-Detail/" + id,
+			url: "Document-Detail/" + id,
 			type: 1,
 		},
 	];
 
 	const header = [
 		{
-			title: "Code Box",
-			prop: "code_box",
-			sortable: true,
-			cellProps: {
-				style: { width: "40%" },
-			},
-		},
-		{
-			title: "Custome Code Box",
-			prop: "custom_code_box",
+			title: "No Document",
+			prop: "no",
 			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
 			},
 			cell: row => {
-				return row?.custom_code_box ? row?.custom_code_box : "-";
+				return row?.no ? row?.no : "-";
+			},
+		},
+		{
+			title: "No Digital",
+			prop: "no_digital",
+			sortable: true,
+			cellProps: {
+				style: { width: "20%" },
+			},
+			cell: row => {
+				return row?.no_digital ? row?.no_digital : "-";
+			},
+		},
+		{
+			title: "Kondisi",
+			prop: "condition",
+			sortable: true,
+			cellProps: {
+				style: { width: "20%" },
+			},
+			headerCell: () => {
+				return (
+					<div className="cur-p">
+						{`Kondisi`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
 			},
 		},
 		{
@@ -106,7 +125,7 @@ const BorrowBoxPage = () => {
 	function Cart(): JSX.Element {
 		return (
 			<>
-				<div className="ph-4 pv-4 bg-dark-contrast bd-tl-rs-4 bd-tr-rs-4 d-flex cart-popup">
+				<div className="ph-4 pv-4 bg-dark-contrast bd-tl-rs-4 bd-tr-rs-4 d-flex cart-indexing">
 					<div className="d-flex ai-center">
 						<span className="h-12 w-12 bd-rs-6 d-flex ai-center jc-center bg-light-shade mr-6">
 							<span
@@ -117,13 +136,13 @@ const BorrowBoxPage = () => {
 							</span>
 						</span>
 						<h5 className="text ff-1-bd mr-3">{cart.numberCart}</h5>
-						<p className="p-lg">Box dipilih</p>
+						<p className="p-lg">Document dipilih</p>
 					</div>
 					<span
 						className="ph-2 h-12 bd-rs-6 d-flex ai-center jc-center bg-success-1 ml-a cur-p"
 						onClick={() => setModalShow(true)}
 					>
-						<span className="text p-lg mh-2 tc-success-5">Proses</span>
+						<span className="text p-lg mh-2 tc-success-5">Indexing</span>
 						<span
 							className="icon h-9 w-9 bd-rs-6 d-flex ai-center jc-center bg-success-5"
 							style={{ marginTop: -3 }}
@@ -139,7 +158,7 @@ const BorrowBoxPage = () => {
 	return (
 		<>
 			<Helmet>
-				<title>Dox - Borrow Box</title>
+				<title>Dox - Indexing</title>
 				<meta
 					name="description"
 					content="A React Boilerplate application homepage"
@@ -152,15 +171,18 @@ const BorrowBoxPage = () => {
 					modalSet={setModalShow}
 					valueModalSet={false}
 				/>
-				<DataTable tableHeader={header} tableBody={borrowList.BorrowList} />
+				<div className="d-flex jc-between w-100% mb-4">
+					<h6>List Document belum terindexing</h6>
+					<Cart />
+				</div>
+				<DataTable tableHeader={header} tableBody={documentList.Documents} />
 				<Pagination
-					pageCount={borrowList.Meta.last_page}
+					pageCount={documentList.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
-				<Cart />
 			</PageWrapper>
 		</>
 	);
 };
 
-export default BorrowBoxPage;
+export default TableIndexingPage;

@@ -86,6 +86,9 @@ const ReturnItemPage = () => {
 			cellProps: {
 				style: { width: "40%" },
 			},
+			cell: row => {
+				return row?.custom_code_box ? row?.custom_code_box : "-";
+			},
 		},
 		{
 			title: "Action",

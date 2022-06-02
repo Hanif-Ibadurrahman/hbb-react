@@ -24,6 +24,8 @@ import customers from "./Reducer/customer";
 import returnItems from "./Reducer/returnItem";
 import staffs from "./Reducer/staff";
 import activityLogs from "./Reducer/activityLog";
+import indexings from "./Reducer/indexing";
+import classifications from "./Reducer/classification";
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -54,6 +56,8 @@ export function createReducer(injectedReducers: InjectedReducersType = {}) {
 			returnItems,
 			staffs,
 			activityLogs,
+			indexings,
+			classifications,
 		});
 	}
 }

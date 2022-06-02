@@ -9,6 +9,7 @@ import {
 	MasterData,
 	CustomerMasterData,
 	ApprovalOperation,
+	ArchiverMasterData,
 } from "./SidebarData";
 import IconHome from "assets/images/icon/icon-1.png";
 import IconUI from "assets/images/icon/icon-2.png";
@@ -42,6 +43,9 @@ export function Sidebar() {
 				break;
 			case "csroperation":
 				setRole("csroperation");
+				break;
+			case "archiver":
+				setRole("archiver");
 				break;
 			default:
 				setRole("customer");
@@ -326,6 +330,63 @@ export function Sidebar() {
 		);
 	};
 
+	const ArchiverMenu = () => {
+		return (
+			<>
+				<MenuItem
+					id={window.location.pathname === "/Dashboard" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconHome} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Dashboard";
+					}}
+				>
+					{""} Dashboard
+				</MenuItem>
+				<MenuItem
+					id={window.location.pathname === "/Box" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconUI} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Box";
+					}}
+				>
+					{""} Box
+				</MenuItem>
+				<MenuItem
+					id={window.location.pathname === "/Folder" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconUI} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Folder";
+					}}
+				>
+					{""} Folder
+				</MenuItem>
+				<MenuItem
+					id={window.location.pathname === "/Document" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconUI} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Document";
+					}}
+				>
+					{""} Dokumen
+				</MenuItem>
+				<MenuItem
+					id={window.location.pathname === "/Indexing" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconUI} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Indexing";
+					}}
+				>
+					{""} Indexing
+				</MenuItem>
+			</>
+		);
+	};
+
 	const SideBarMenu = () => {
 		if (role === "admin") {
 			return <AdminMenu />;
@@ -333,6 +394,8 @@ export function Sidebar() {
 			return <CsrAdminMenu />;
 		} else if (role === "csroperation") {
 			return <CsrOperationMenu />;
+		} else if (role === "archiver") {
+			return <ArchiverMenu />;
 		} else {
 			return <CustomerMenu />;
 		}
