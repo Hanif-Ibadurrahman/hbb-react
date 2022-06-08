@@ -12,6 +12,7 @@ import {
 	filterIndexing,
 	assignToFolder,
 	indexingDocument,
+	detachDocumentFromFolder,
 } from "../api/indexing";
 export const GET_INDEXING_LIST = "GET_INDEXING_LIST";
 export const GET_INDEX_DETAIL = "GET_INDEX_DETAIL";

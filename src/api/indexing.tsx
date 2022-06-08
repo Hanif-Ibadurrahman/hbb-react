@@ -61,6 +61,16 @@ export const assignToFolder = async (
 	return await api.put(`/folders/${id}/documents/attach`, payload);
 };
 
+export const detachDocumentFromFolder = async (
+	data: AssignDocumentToFolderInterfaceState,
+) => {
+	let id = data.id;
+	let payload = {
+		document_codes: data.document_codes,
+	};
+	return await api.put(`/folders/${id}/documents/detach`, payload);
+};
+
 export const getAll = async params => {
 	return api
 		.get(`/indexes?&page=${params}`)

@@ -207,6 +207,7 @@ export default (
 				},
 				ErrorIndexing: payload.errorMessage,
 			};
+
 		case FILTER_INDEXING:
 			return {
 				...state,

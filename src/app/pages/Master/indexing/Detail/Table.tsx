@@ -9,14 +9,28 @@ import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import ModalForm from "./ModalForm";
 import "./page.scoped.scss";
 import _ from "lodash";
-import { selectDocuemnts } from "store/Selector/DocumentSelector";
-import { getDocumentsListIndexing } from "actions/DocumentAction";
+import {
+	selectDocuemnts,
+	selectDocuemntsAssigned,
+} from "store/Selector/DocumentSelector";
+import {
+	getDocumentsAssigned,
+	getDocumentsListIndexing,
+} from "actions/DocumentAction";
 
 const TableIndexingPage = () => {
 	const [modalShow, setModalShow] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
 	const documentList = useSelector(selectDocuemnts);
+	const documentAssigned = useSelector(selectDocuemntsAssigned);
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
+	const documentNoAssigned = documentAssigned.DocumentAssigned;
+
+	function idExists(id) {
+		return documentNoAssigned.some(function (el) {
+			return el.id === id;
+		});
+	}
 
 	useEffect(() => {
 		setCart(cartStash);
@@ -32,8 +46,16 @@ const TableIndexingPage = () => {
 		dispatch(getDocumentsListIndexing(page));
 	};
 
+	const DocumentAssigned = (page = 1) => {
+		dispatch(getDocumentsAssigned(page));
+	};
+
 	useEffect(() => {
 		FetchData();
+	}, []);
+
+	useEffect(() => {
+		DocumentAssigned();
 	}, []);
 
 	const _onHide = () => {
@@ -55,6 +77,35 @@ const TableIndexingPage = () => {
 		{
 			icon: "fa-hand-holding-box",
 			title: "Pilih",
+			onclick: () => {
+				addCart(id);
+			},
+			dispatch: dispatch,
+			row: id,
+			type: 2,
+		},
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "Document-Detail/" + id,
+			type: 1,
+		},
+	];
+
+	const actionDetach = id => [
+		{
+			icon: "fa-hand-holding-box",
+			title: "Pilih",
+			onclick: () => {
+				addCart(id);
+			},
+			dispatch: dispatch,
+			row: id,
+			type: 2,
+		},
+		{
+			icon: "fa-hand-holding-box",
+			title: "Detach",
 			onclick: () => {
 				addCart(id);
 			},
@@ -117,7 +168,13 @@ const TableIndexingPage = () => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.id)} />;
+				return (
+					<DropdownAction
+						list={
+							idExists(row.id) === true ? action(row.id) : actionDetach(row.id)
+						}
+					/>
+				);
 			},
 		},
 	];
