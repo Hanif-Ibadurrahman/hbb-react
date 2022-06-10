@@ -72,6 +72,17 @@ export const getAll = async params => {
 		});
 };
 
+export const getAllRet = async params => {
+	return api
+		.get("/indexes?start_date_retention=2000-01-01")
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
 export const filterIndexing = async (data: IndexingInterfaceState) => {
 	let filter = {
 		index: data.index,
