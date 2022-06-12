@@ -7,6 +7,7 @@ import { Pagination } from "app/components/Pagination";
 import { AddCart } from "actions/IndexingAction";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import ModalForm from "./ModalForm";
+import ModalDetach from "./ModalDettach";
 import "./page.scoped.scss";
 import _ from "lodash";
 import {
@@ -20,7 +21,9 @@ import {
 
 const TableIndexingPage = () => {
 	const [modalShow, setModalShow] = useState(false);
+	const [modalDettach, setModalShowDettach] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
+	const [folderId, setFolderId] = useState("");
 	const documentList = useSelector(selectDocuemnts);
 	const documentAssigned = useSelector(selectDocuemntsAssigned);
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
@@ -58,8 +61,12 @@ const TableIndexingPage = () => {
 		DocumentAssigned();
 	}, []);
 
-	const _onHide = () => {
+	const onHide = () => {
 		setModalShow(false);
+	};
+
+	const onHideDettach = () => {
+		setModalShowDettach(false);
 	};
 
 	const addCart = async id => {
@@ -105,9 +112,10 @@ const TableIndexingPage = () => {
 		},
 		{
 			icon: "fa-hand-holding-box",
-			title: "Detach",
+			title: "Remove Folder",
 			onclick: () => {
-				addCart(id);
+				setFolderId(id);
+				setModalShowDettach(true);
 			},
 			dispatch: dispatch,
 			row: id,
@@ -224,17 +232,24 @@ const TableIndexingPage = () => {
 			<PageWrapper>
 				<ModalForm
 					modal={modalShow}
-					hide={_onHide}
+					hide={onHide}
 					modalSet={setModalShow}
 					valueModalSet={false}
+				/>
+				<ModalDetach
+					modal={modalDettach}
+					hide={onHideDettach}
+					modalSet={setModalShowDettach}
+					valueModalSet={false}
+					folder_id={folderId}
 				/>
 				<div className="d-flex jc-between w-100% mb-4">
 					<h6>List Document belum terindexing</h6>
 					<Cart />
 				</div>
-				<DataTable tableHeader={header} tableBody={documentList.Documents} />
+				<DataTable tableHeader={header} tableBody={documentList?.Documents} />
 				<Pagination
-					pageCount={documentList.Meta.last_page}
+					pageCount={documentList?.Meta?.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

@@ -1,39 +1,39 @@
 import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 import { useDispatch, useSelector } from "react-redux";
-import { DeleteCart, IndexingDocument } from "actions/IndexingAction";
 import {
-	IndexingDocumentInterfaceState,
-	IndexingInterfaceState,
-} from "store/Types/IndexingTypes";
+	DeleteCartAssign,
+	DettachDocumentToFolder,
+} from "actions/IndexingAction";
+import { AssignDocumentToFolderInterfaceState } from "store/Types/IndexingTypes";
 import {
-	selectindexing,
-	selectindexingdocument,
+	selectAssignToFolder,
 	selectindexings,
 } from "store/Selector/IndexingSelector";
-import { indexingDocument } from "api/indexing";
+import { assignToFolder, detachDocumentFromFolder } from "api/indexing";
+import { getDocumentDetail } from "actions/DocumentAction";
+import { DocumentInterfaceState } from "store/Types/DocumentTypes";
+import { selectDocument } from "store/Selector/DocumentSelector";
 
-const ModalForm = props => {
+const ModalDettach = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setAlertMessage] = useState("");
 	const [varianAlert, setVarianAlert] = useState("");
-	const indexing: IndexingDocumentInterfaceState = useSelector(
-		selectindexingdocument,
-	);
-	const indexingDetail: IndexingInterfaceState = useSelector(selectindexing);
+	const document: DocumentInterfaceState = useSelector(selectDocument);
+	const assignDocumentToFolder: AssignDocumentToFolderInterfaceState =
+		useSelector(selectAssignToFolder);
 	const cart = useSelector(selectindexings);
-	const cartStash = cart.Cart;
 
 	const dispatch = useDispatch();
 
 	const validationSchema = Yup.object().shape({});
 
-	const deleteCart = async id => {
-		dispatch(await DeleteCart(id));
-	};
+	useEffect(() => {
+		dispatch(getDocumentDetail(props.folder_id));
+	}, [props.folder_id]);
 
 	return (
 		<>
@@ -58,15 +58,15 @@ const ModalForm = props => {
 				{" "}
 				<Formik
 					validationSchema={validationSchema}
-					initialValues={indexing}
+					initialValues={assignDocumentToFolder}
 					enableReinitialize={true}
 					onSubmit={async values => {
-						values.id = indexingDetail?.id;
-						values.document_codes = cartStash;
-						indexingDocument(values);
+						values.id = document.folder.id;
+						values.document_codes = props.folder_id;
+						detachDocumentFromFolder(values);
 						props.modalSet(props.valueModalSet);
 						setShowAlert(true);
-						setAlertMessage("Request Indexing Berhasil");
+						setAlertMessage("Request Peminjaman Berhasil");
 						setVarianAlert("success");
 						setTimeout(function () {
 							window.location.reload();
@@ -79,46 +79,16 @@ const ModalForm = props => {
 						touched,
 						handleChange,
 						handleBlur,
+						setFieldValue,
 						handleSubmit,
 						isSubmitting,
 					}) => (
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
-								<Modal.Title id="contained-modal-title-vcenter">
-									Indexing Document
-								</Modal.Title>
+								<div className="p-lg">
+									Apakah anda yakin mengeluarkan document dari folder?
+								</div>
 							</Modal.Header>
-							<Modal.Body className="show-grid">
-								<Container>
-									<Row>
-										<Col xs={12}>
-											<Form.Group>
-												<Form.Label>List Document</Form.Label>
-												{cartStash.map((cart, index) => (
-													<>
-														<div className="d-flex jc-between mb-2">
-															<div className="col-10">
-																<Form.Control
-																	type="text"
-																	value={cart}
-																	readOnly
-																/>
-															</div>
-															<Button
-																variant="danger"
-																onClick={() => deleteCart(cart)}
-																className="d-flex jc-center ai-center"
-															>
-																<i className="far fa-times"></i>
-															</Button>
-														</div>
-													</>
-												))}
-											</Form.Group>
-										</Col>
-									</Row>
-								</Container>
-							</Modal.Body>
 							<Modal.Footer>
 								<Button variant="danger" onClick={props.hide}>
 									Close
@@ -129,7 +99,7 @@ const ModalForm = props => {
 									className="bg-success-6"
 									variant="success"
 								>
-									Request
+									Ya
 								</Button>{" "}
 							</Modal.Footer>
 						</Form>
@@ -140,4 +110,4 @@ const ModalForm = props => {
 	);
 };
 
-export default ModalForm;
+export default ModalDettach;

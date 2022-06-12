@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 import { useDispatch, useSelector } from "react-redux";
-import { DeleteCartAssign } from "actions/IndexingAction";
+import { AssignToFolder, DeleteCartAssign } from "actions/IndexingAction";
 import { AssignDocumentToFolderInterfaceState } from "store/Types/IndexingTypes";
 import {
 	selectAssignToFolder,
@@ -65,30 +65,16 @@ const ModalAssign = props => {
 					initialValues={assignDocumentToFolder}
 					enableReinitialize={true}
 					onSubmit={async values => {
-						try {
-							values.id = values.id_folder.id;
-							values.document_codes = cartStash;
-							let action = assignToFolder(values);
-							const res = await action;
-							await dispatch(res);
-							action.then(() => {
-								props.modalSet(props.valueModalSet);
-								setShowAlert(true);
-								setAlertMessage("Request Peminjaman Berhasil");
-								setVarianAlert("success");
-								setTimeout(function () {
-									window.location.reload();
-								}, 1000);
-							});
-							props.modalSet(props.valueModalSet);
-						} catch (e) {
-							setShowAlert(true);
-							setAlertMessage("Request Gagal");
-							setVarianAlert("danger");
-							setTimeout(function () {
-								setShowAlert(false);
-							}, 4000);
-						}
+						values.id = values.id_folder.id;
+						values.document_codes = cartStash;
+						assignToFolder(values);
+						props.modalSet(props.valueModalSet);
+						setShowAlert(true);
+						setAlertMessage("Pemindahan Folder Berhasil");
+						setVarianAlert("success");
+						setTimeout(function () {
+							window.location.reload();
+						}, 1000);
 					}}
 				>
 					{({
@@ -135,7 +121,7 @@ const ModalAssign = props => {
 												))}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Pilih Area</Form.Label>
+												<Form.Label>Pilih Folder</Form.Label>
 												<Autocomplete
 													id="folder"
 													options={folder.Folders}

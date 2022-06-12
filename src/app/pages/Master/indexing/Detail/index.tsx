@@ -10,9 +10,11 @@ import { selectindexing } from "store/Selector/IndexingSelector";
 import { getIndexingDetail } from "actions/IndexingAction";
 import TableIndexingPage from "./Table";
 import AssignTable from "./AssignTable";
+import moment from "moment";
 
 const IndexingPageDetail = ({ match }) => {
 	const indexing: IndexingInterfaceState = useSelector(selectindexing);
+	const dateRetention = moment(indexing.date_retention).format("YYYY-MM-DD");
 	let history = useHistory();
 
 	const goToPreviousPath = e => {
@@ -61,6 +63,30 @@ const IndexingPageDetail = ({ match }) => {
 									type="text"
 									disabled
 									defaultValue={indexing.retention_period}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Tanggal Retensi</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={dateRetention}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Code Box</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={indexing.box.code_box}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Area</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={indexing.area.name}
 								/>
 							</Form.Group>
 							<div className="d-flex jc-end">
