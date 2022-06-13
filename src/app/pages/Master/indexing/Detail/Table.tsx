@@ -7,16 +7,33 @@ import { Pagination } from "app/components/Pagination";
 import { AddCart } from "actions/IndexingAction";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import ModalForm from "./ModalForm";
+import ModalDetach from "./ModalDettach";
 import "./page.scoped.scss";
 import _ from "lodash";
-import { selectDocuemnts } from "store/Selector/DocumentSelector";
-import { getDocumentsListIndexing } from "actions/DocumentAction";
+import {
+	selectDocuemnts,
+	selectDocuemntsAssigned,
+} from "store/Selector/DocumentSelector";
+import {
+	getDocumentsAssigned,
+	getDocumentsListIndexing,
+} from "actions/DocumentAction";
 
 const TableIndexingPage = () => {
 	const [modalShow, setModalShow] = useState(false);
+	const [modalDettach, setModalShowDettach] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
+	const [folderId, setFolderId] = useState("");
 	const documentList = useSelector(selectDocuemnts);
+	const documentAssigned = useSelector(selectDocuemntsAssigned);
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
+	const documentNoAssigned = documentAssigned.DocumentAssigned;
+
+	function idExists(id) {
+		return documentNoAssigned.some(function (el) {
+			return el.id === id;
+		});
+	}
 
 	useEffect(() => {
 		setCart(cartStash);
@@ -32,12 +49,24 @@ const TableIndexingPage = () => {
 		dispatch(getDocumentsListIndexing(page));
 	};
 
+	const DocumentAssigned = (page = 1) => {
+		dispatch(getDocumentsAssigned(page));
+	};
+
 	useEffect(() => {
 		FetchData();
 	}, []);
 
-	const _onHide = () => {
+	useEffect(() => {
+		DocumentAssigned();
+	}, []);
+
+	const onHide = () => {
 		setModalShow(false);
+	};
+
+	const onHideDettach = () => {
+		setModalShowDettach(false);
 	};
 
 	const addCart = async id => {
@@ -57,6 +86,36 @@ const TableIndexingPage = () => {
 			title: "Pilih",
 			onclick: () => {
 				addCart(id);
+			},
+			dispatch: dispatch,
+			row: id,
+			type: 2,
+		},
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "Document-Detail/" + id,
+			type: 1,
+		},
+	];
+
+	const actionDetach = id => [
+		{
+			icon: "fa-hand-holding-box",
+			title: "Pilih",
+			onclick: () => {
+				addCart(id);
+			},
+			dispatch: dispatch,
+			row: id,
+			type: 2,
+		},
+		{
+			icon: "fa-hand-holding-box",
+			title: "Remove Folder",
+			onclick: () => {
+				setFolderId(id);
+				setModalShowDettach(true);
 			},
 			dispatch: dispatch,
 			row: id,
@@ -117,7 +176,13 @@ const TableIndexingPage = () => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.id)} />;
+				return (
+					<DropdownAction
+						list={
+							idExists(row.id) === true ? action(row.id) : actionDetach(row.id)
+						}
+					/>
+				);
 			},
 		},
 	];
@@ -167,17 +232,24 @@ const TableIndexingPage = () => {
 			<PageWrapper>
 				<ModalForm
 					modal={modalShow}
-					hide={_onHide}
+					hide={onHide}
 					modalSet={setModalShow}
 					valueModalSet={false}
+				/>
+				<ModalDetach
+					modal={modalDettach}
+					hide={onHideDettach}
+					modalSet={setModalShowDettach}
+					valueModalSet={false}
+					folder_id={folderId}
 				/>
 				<div className="d-flex jc-between w-100% mb-4">
 					<h6>List Document belum terindexing</h6>
 					<Cart />
 				</div>
-				<DataTable tableHeader={header} tableBody={documentList.Documents} />
+				<DataTable tableHeader={header} tableBody={documentList?.Documents} />
 				<Pagination
-					pageCount={documentList.Meta.last_page}
+					pageCount={documentList?.Meta?.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

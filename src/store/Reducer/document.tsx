@@ -10,6 +10,7 @@ import {
 	UPLOAD_FILE,
 	DOWNLOAD_FILE,
 	GET_DOCUMENTS_LIST_INDEXING,
+	GET_DOCUMENT_ASSIGNED,
 } from "../../actions/DocumentAction";
 import {
 	DocumentsInterfaceState,
@@ -20,6 +21,7 @@ export const initialState: DocumentsInterfaceState = {
 		file: "",
 	},
 	Documents: [],
+	DocumentAssigned: [],
 	Document: {
 		id: "",
 		no: "",
@@ -111,6 +113,18 @@ export default (
 			return {
 				...state,
 				Documents: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorDocument: payload.errorMessage,
+			};
+		case GET_DOCUMENT_ASSIGNED:
+			return {
+				...state,
+				DocumentAssigned: payload.data,
 				Meta: {
 					last_page: payload?.meta?.last_page,
 					current_page: payload?.meta?.current_page,

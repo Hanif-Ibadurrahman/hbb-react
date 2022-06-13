@@ -44,9 +44,9 @@ export const getById = async (id: String) => {
 export const indexingDocument = async (
 	data: IndexingDocumentInterfaceState,
 ) => {
-	let id = data.id;
+	let id = data?.id;
 	let payload = {
-		document_codes: data.document_codes,
+		document_codes: data?.document_codes,
 	};
 	return await api.put(`/indexes/${id}/documents/attach`, payload);
 };
@@ -59,6 +59,16 @@ export const assignToFolder = async (
 		document_codes: data.document_codes,
 	};
 	return await api.put(`/folders/${id}/documents/attach`, payload);
+};
+
+export const detachDocumentFromFolder = async (
+	data: AssignDocumentToFolderInterfaceState,
+) => {
+	let id = data.id;
+	let payload = {
+		document_codes: [data.document_codes],
+	};
+	return await api.put(`/folders/${id}/documents/detach`, payload);
 };
 
 export const getAll = async params => {

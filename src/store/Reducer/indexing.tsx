@@ -14,6 +14,7 @@ import {
 	DELETE_CART_ASSIGN,
 	GET_NUMBER_CART_ASSIGN,
 	PUT_ASSIGN_DOCUMENT_TO_FOLDER,
+	PUT_DETTACH_DOCUMENT_FROM_FOLDER,
 	PUT_INDEXING_DOCUMENT,
 } from "../../actions/IndexingAction";
 import { IndexingsInterfaceState } from "../Types/IndexingTypes";
@@ -207,6 +208,7 @@ export default (
 				},
 				ErrorIndexing: payload.errorMessage,
 			};
+
 		case FILTER_INDEXING:
 			return {
 				...state,
@@ -278,7 +280,16 @@ export default (
 			return {
 				...state,
 				IndexingDocument: payload?.data?.data,
-				ErrorIndexing: payload.errorMessage,
+			};
+		case PUT_ASSIGN_DOCUMENT_TO_FOLDER:
+			return {
+				...state,
+				AssignDocumentToFolder: payload?.data?.data,
+			};
+		case PUT_DETTACH_DOCUMENT_FROM_FOLDER:
+			return {
+				...state,
+				AssignDocumentToFolder: payload?.data?.data,
 			};
 		case UPDATE_INDEX:
 			return {
