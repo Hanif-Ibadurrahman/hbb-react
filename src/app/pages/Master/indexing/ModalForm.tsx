@@ -199,9 +199,12 @@ const ModalForm = props => {
 												<Autocomplete
 													id="classification"
 													options={classification.Classifications}
-													getOptionLabel={option =>
-														`${option.code}${option.name}`
-													}
+													// getOptionLabel={option =>
+													// 	`${option.code}${option.name}`
+													// }
+													getOptionLabel={option => {
+														return option?.code ?? option;
+													}}
 													value={values?.classification}
 													onChange={(e, value) => {
 														setFieldValue(
