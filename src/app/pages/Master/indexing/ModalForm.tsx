@@ -18,13 +18,8 @@ import { getAreasList } from "actions/AreaActions";
 import { getRoomsList } from "actions/RoomAction";
 import { getBoxesList } from "actions/BoxActions";
 import { getClassificationList } from "actions/ClassificationAction";
-import {
-	CreateIndexing,
-	RESET_INDEX_FORM,
-	UpdateIndexing,
-} from "actions/IndexingAction";
+import { CreateIndexing, UpdateIndexing } from "actions/IndexingAction";
 import moment from "moment";
-import { result, values } from "lodash";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
@@ -218,26 +213,6 @@ const ModalForm = props => {
 														/>
 													)}
 												/>
-												{/* <Autocomplete
-													id="classification"
-													options={classification.Classifications}
-													getOptionLabel={option => option.name}
-													value={values.classification_code}
-													onChange={(e, value) => {
-														setFieldValue(
-															"classification_code",
-															value !== null ? value : values.classification_code
-														);
-													}}
-													renderInput={params => (
-														<TextField
-															margin="normal"
-															placeholder="Pilih Klasifikasi"
-															name="classification_code"
-															{...params}
-														/>
-													)}
-												/> */}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Area</Form.Label>
@@ -336,7 +311,7 @@ const ModalForm = props => {
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
+											{/* <Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Tanggal Retensi</Form.Label>
 												<Form.Control
 													type="date"
@@ -364,7 +339,7 @@ const ModalForm = props => {
 														{errors.date_retention}
 													</p>
 												) : null}
-											</Form.Group>
+											</Form.Group> */}
 											<label>
 												<Field
 													type="checkbox"

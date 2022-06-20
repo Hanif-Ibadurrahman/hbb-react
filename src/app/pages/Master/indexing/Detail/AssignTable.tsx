@@ -8,11 +8,24 @@ import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import ModalForm from "./ModalAssign";
 import "./page.scoped.scss";
 import _ from "lodash";
+import { selectDocuemntsAssigned } from "store/Selector/DocumentSelector";
+import { getDocumentsAssigned } from "actions/DocumentAction";
 
 const AssignTable = props => {
 	const [modalShow, setModalShow] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
+	const documentAssigned = useSelector(selectDocuemntsAssigned);
+	const documentNoAssigned = documentAssigned.DocumentAssigned;
+	function idExists(id) {
+		return documentNoAssigned.some(function (el) {
+			return el.id === id;
+		});
+	}
+
+	const DocumentAssigned = (page = 1) => {
+		dispatch(getDocumentsAssigned(page));
+	};
 
 	useEffect(() => {
 		setCart(cartStash);
@@ -58,6 +71,15 @@ const AssignTable = props => {
 		},
 	];
 
+	const actionNoAssign = id => [
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "Document-Detail/" + id,
+			type: 1,
+		},
+	];
+
 	const header = [
 		{
 			title: "No Document",
@@ -66,6 +88,9 @@ const AssignTable = props => {
 			cellProps: {
 				style: { width: "40%" },
 			},
+			cell: row => {
+				return row?.no ? row?.no : "-";
+			},
 		},
 		{
 			title: "No Digital",
@@ -73,6 +98,9 @@ const AssignTable = props => {
 			sortable: true,
 			cellProps: {
 				style: { width: "20%" },
+			},
+			cell: row => {
+				return row?.no_digital ? row?.no_digital : "-";
 			},
 		},
 		{
@@ -99,7 +127,15 @@ const AssignTable = props => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.id)} />;
+				return (
+					<DropdownAction
+						list={
+							idExists(row.id) === true
+								? action(row.id)
+								: actionNoAssign(row.id)
+						}
+					/>
+				);
 			},
 		},
 	];
@@ -157,7 +193,7 @@ const AssignTable = props => {
 					<h6>List Document sudah terindexing</h6>
 					<Cart />
 				</div>
-				<DataTable tableHeader={header} tableBody={props.DataTable} />
+				<DataTable tableHeader={header} tableBody={props?.DataTable} />
 			</PageWrapper>
 		</>
 	);

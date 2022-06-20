@@ -42,6 +42,7 @@ export interface UploadFile {
 export interface DocumentsInterfaceState {
 	Document: DocumentInterfaceState;
 	Documents: DocumentInterfaceState[];
+	DocumentAssigned: DocumentInterfaceState[];
 	UploadFile: UploadFile;
 	ErrorDocument?: string;
 	Title: string;

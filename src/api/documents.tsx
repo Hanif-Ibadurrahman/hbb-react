@@ -1,7 +1,5 @@
 import { DocumentInterfaceState, UploadFile } from "store/Types/DocumentTypes";
 import api from "./dox";
-import fs from "fs";
-import FileDownload from "js-file-download";
 
 export const create = async (data: DocumentInterfaceState) => {
 	let payload = {
@@ -96,6 +94,17 @@ export const getAll = async params => {
 export const getAllIndexing = async params => {
 	return api
 		.get(`/documents?page=${params}&is_indexed=false`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
+export const getAllDocumentAssigned = async params => {
+	return api
+		.get(`/documents?page=${params}&is_assigned=false`)
 		.then(res => {
 			return res.data;
 		})

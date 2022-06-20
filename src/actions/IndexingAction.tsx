@@ -1,5 +1,6 @@
 import React from "react";
 import {
+	AssignDocumentToFolderInterfaceState,
 	IndexingDocumentInterfaceState,
 	IndexingInterfaceState,
 } from "store/Types/IndexingTypes";
@@ -13,6 +14,7 @@ import {
 	filterIndexing,
 	assignToFolder,
 	indexingDocument,
+	detachDocumentFromFolder,
 } from "../api/indexing";
 export const GET_INDEXING_LIST = "GET_INDEXING_LIST";
 export const GET_INDEX_DETAIL = "GET_INDEX_DETAIL";
@@ -31,6 +33,8 @@ export const DELETE_CART_ASSIGN = "DELETE_CART_ASSIGN";
 export const PUT_INDEXING_DOCUMENT = "PUT_INDEXING_DOCUMENT";
 export const PUT_ASSIGN_DOCUMENT_TO_FOLDER = "PUT_ASSIGN_DOCUMENT_TO_FOLDER";
 export const GET_INDEXING_RETENTION = "GET_INDEXING_RETENTION";
+export const PUT_DETTACH_DOCUMENT_FROM_FOLDER =
+	"PUT_DETTACH_DOCUMENT_FROM_FOLDER";
 
 export const getIndexingList = page => {
 	return async dispatch => {
@@ -322,6 +326,70 @@ export const DeleteCartAssign = async (data: IndexingInterfaceState) => {
 				payload: data,
 			});
 		} catch (error: any) {
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const AssignToFolder = async (
+	data: AssignDocumentToFolderInterfaceState,
+) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_INDEX_DATA,
+				payload: data,
+			});
+			const response = await assignToFolder(data);
+			dispatch({
+				type: PUT_ASSIGN_DOCUMENT_TO_FOLDER,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: PUT_ASSIGN_DOCUMENT_TO_FOLDER,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const DettachDocumentToFolder = async (
+	data: AssignDocumentToFolderInterfaceState,
+) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_INDEX_DATA,
+				payload: data,
+			});
+			const response = await detachDocumentFromFolder(data);
+			dispatch({
+				type: PUT_DETTACH_DOCUMENT_FROM_FOLDER,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: PUT_DETTACH_DOCUMENT_FROM_FOLDER,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
+				},
+			});
 			console.log(error);
 			throw error;
 		}
