@@ -9,6 +9,7 @@ import {
 	destroy,
 	getAll,
 	getById,
+	getAllRet,
 	update,
 	filterIndexing,
 	assignToFolder,
@@ -31,6 +32,7 @@ export const ADD_CART_ASSIGN = "ADD_CART_ASSIGN";
 export const DELETE_CART_ASSIGN = "DELETE_CART_ASSIGN";
 export const PUT_INDEXING_DOCUMENT = "PUT_INDEXING_DOCUMENT";
 export const PUT_ASSIGN_DOCUMENT_TO_FOLDER = "PUT_ASSIGN_DOCUMENT_TO_FOLDER";
+export const GET_INDEXING_RETENTION = "GET_INDEXING_RETENTION";
 export const PUT_DETTACH_DOCUMENT_FROM_FOLDER =
 	"PUT_DETTACH_DOCUMENT_FROM_FOLDER";
 
@@ -50,6 +52,33 @@ export const getIndexingList = page => {
 		} catch (error: any) {
 			dispatch({
 				type: GET_INDEXING_LIST,
+				payload: {
+					data: false,
+					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const getIndexingRetention = page => {
+	return async dispatch => {
+		try {
+			const response = await getAllRet(page);
+			dispatch({
+				type: GET_INDEXING_RETENTION,
+				payload: {
+					data: response?.data,
+					meta: response?.meta,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: GET_INDEXING_RETENTION,
 				payload: {
 					data: false,
 					errorMessage: error.message,

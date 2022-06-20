@@ -243,6 +243,16 @@ export function Sidebar() {
 				>
 					{""} Activity Log
 				</MenuItem>
+				<MenuItem
+					id={window.location.pathname === "/Indexing-Delete" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconForm} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Indexing-Delete";
+					}}
+				>
+					{""} Indexing Delete
+				</MenuItem>
 			</>
 		);
 	};

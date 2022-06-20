@@ -36,6 +36,7 @@ import { ApprovalDetail } from "./Approval/Detail";
 import ApprovalOperationRequestBox from "./AdminOperation/RequestBox";
 import ApprovalPreview from "./AdminOperation/RequestBox/ApprovePreview";
 import ActivityLog from "./AdminOperation/RequestBox/ActivityLog";
+import IndexingDelete from "./AdminOperation/RequestBox/IndexingDelete";
 
 // MASTER
 // # - BOX
@@ -137,6 +138,13 @@ export function Routes() {
 							component={ActivityLog}
 						/>
 						{/*---------- ACTIVITY LOG - - - END ---------*/}
+
+						{/*---------- INDEXING DELETE ---------*/}
+						<Route
+							path={process.env.PUBLIC_URL + "/Indexing-Delete"}
+							component={IndexingDelete}
+						/>
+						{/*---------- INDEXING DELETE - - - END ---------*/}
 
 						{/*---------- APPROVAL ---------*/}
 						<Route

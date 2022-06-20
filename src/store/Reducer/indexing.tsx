@@ -16,6 +16,7 @@ import {
 	PUT_ASSIGN_DOCUMENT_TO_FOLDER,
 	PUT_DETTACH_DOCUMENT_FROM_FOLDER,
 	PUT_INDEXING_DOCUMENT,
+	GET_INDEXING_RETENTION,
 } from "../../actions/IndexingAction";
 import { IndexingsInterfaceState } from "../Types/IndexingTypes";
 export const initialState: IndexingsInterfaceState = {
@@ -398,6 +399,18 @@ export default (
 						},
 					},
 				},
+			};
+		case GET_INDEXING_RETENTION:
+			return {
+				...state,
+				Indexings: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorIndexing: payload.errorMessage,
 			};
 		default:
 			return state;
