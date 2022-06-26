@@ -14,7 +14,7 @@ import moment from "moment";
 
 const IndexingPageDetail = ({ match }) => {
 	const indexing: IndexingInterfaceState = useSelector(selectindexing);
-	const dateRetention = moment(indexing.date_retention).format("YYYY-MM-DD");
+	const dateRetention = moment(indexing?.date_retention).format("YYYY-MM-DD");
 	let history = useHistory();
 
 	const goToPreviousPath = e => {
@@ -67,11 +67,7 @@ const IndexingPageDetail = ({ match }) => {
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Tanggal Retensi</Form.Label>
-								<Form.Control
-									type="text"
-									disabled
-									defaultValue={dateRetention}
-								/>
+								<Form.Control type="text" disabled value={dateRetention} />
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Code Box</Form.Label>

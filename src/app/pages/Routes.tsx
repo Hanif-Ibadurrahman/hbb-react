@@ -91,6 +91,8 @@ import PickUpPage from "./Customer/PickUpBox";
 import ReturnItemPage from "./Customer/ReturnItem";
 //5 - History of Request
 import RequestHistory from "./Customer/RequestHistory";
+//6 - Delivery Note
+import DeliveryNote from "./Customer/RequestHistory/deliveryNote";
 
 // -=-=-=-=-=-
 // ALL USER

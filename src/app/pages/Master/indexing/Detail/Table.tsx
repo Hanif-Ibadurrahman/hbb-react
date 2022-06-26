@@ -29,12 +29,6 @@ const TableIndexingPage = () => {
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
 	const documentNoAssigned = documentAssigned.DocumentAssigned;
 
-	function idExists(id) {
-		return documentNoAssigned.some(function (el) {
-			return el.id === id;
-		});
-	}
-
 	useEffect(() => {
 		setCart(cartStash);
 	}, []);
@@ -60,6 +54,12 @@ const TableIndexingPage = () => {
 	useEffect(() => {
 		DocumentAssigned();
 	}, []);
+
+	function idExists(id) {
+		return documentNoAssigned.some(function (el) {
+			return el.id === id;
+		});
+	}
 
 	const onHide = () => {
 		setModalShow(false);
@@ -100,16 +100,16 @@ const TableIndexingPage = () => {
 	];
 
 	const actionDetach = id => [
-		{
-			icon: "fa-hand-holding-box",
-			title: "Pilih",
-			onclick: () => {
-				addCart(id);
-			},
-			dispatch: dispatch,
-			row: id,
-			type: 2,
-		},
+		// {
+		// 	icon: "fa-hand-holding-box",
+		// 	title: "Pilih",
+		// 	onclick: () => {
+		// 		addCart(id);
+		// 	},
+		// 	dispatch: dispatch,
+		// 	row: id,
+		// 	type: 2,
+		// },
 		{
 			icon: "fa-hand-holding-box",
 			title: "Remove Folder",
@@ -133,7 +133,6 @@ const TableIndexingPage = () => {
 		{
 			title: "No Document",
 			prop: "no",
-			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
 			},
@@ -144,7 +143,6 @@ const TableIndexingPage = () => {
 		{
 			title: "No Digital",
 			prop: "no_digital",
-			sortable: true,
 			cellProps: {
 				style: { width: "20%" },
 			},

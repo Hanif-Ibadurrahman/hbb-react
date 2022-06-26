@@ -34,6 +34,17 @@ export const getAll = async params => {
 		});
 };
 
+export const getAllNotPage = async params => {
+	return api
+		.get(`/boxes?per_page=999999999`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
 export const filterBoxes = async (data: BoxInterfaceState) => {
 	let filter = {
 		code: data.code_box,

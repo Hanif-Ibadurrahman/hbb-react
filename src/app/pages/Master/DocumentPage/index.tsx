@@ -18,11 +18,13 @@ import {
 	RESET_DOCUMENT_FORM,
 } from "actions/DocumentAction";
 import { ModalFilter } from "./ModalFilter";
+import ModalAddReference from "./ModalAddReference";
 
 const DocumentPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
-	const [showAlert, setShowAlert] = useState(false);
+	const [modalShowReference, setModalShowReference] = useState(false);
+	const [folderId, setFolderId] = useState("");
 	const documents = useSelector(selectDocuemnts);
 	const dispatch = useDispatch();
 
@@ -70,11 +72,19 @@ const DocumentPage = () => {
 
 	const _onHide = () => {
 		setModalShow(false);
-		setShowAlert(false);
 		dispatch({ type: RESET_DOCUMENT_FORM });
 	};
 
+	const onHideReference = () => {
+		setModalShowReference(false);
+	};
+
 	const showEditForm = async id => {
+		dispatch(getDocumentDetail(id));
+		setModalShow(true);
+	};
+
+	const showAddReference = async id => {
 		dispatch(getDocumentDetail(id));
 		setModalShow(true);
 	};
@@ -95,6 +105,17 @@ const DocumentPage = () => {
 			dispatch: dispatch,
 			row: id,
 			type: 2,
+		},
+		{
+			icon: "fa-trash-alt",
+			title: "Tambah File",
+			type: 2,
+			onclick: () => {
+				setFolderId(id);
+				setModalShowReference(true);
+			},
+			dispatch: dispatch,
+			row: id,
 		},
 		{
 			icon: "fa-trash-alt",
@@ -185,11 +206,13 @@ const DocumentPage = () => {
 					show={showAlertSuccess}
 					onHide={() => setShowAlertSuccess(false)}
 				/>
-				<ModalForm
-					modal={modalShow}
-					hide={_onHide}
-					modalSet={setModalShow}
+				<ModalForm modal={modalShow} hide={_onHide} modalSet={setModalShow} />
+				<ModalAddReference
+					modal={modalShowReference}
+					hide={onHideReference}
+					modalSet={setModalShowReference}
 					valueModalSet={false}
+					folder_id={folderId}
 				/>
 				<PageHeader
 					breadcrumb={["Master", "Document"]}
