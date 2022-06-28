@@ -84,11 +84,6 @@ const DocumentPage = () => {
 		setModalShow(true);
 	};
 
-	const showAddReference = async id => {
-		dispatch(getDocumentDetail(id));
-		setModalShow(true);
-	};
-
 	const action = id => [
 		{
 			icon: "fa-search",
@@ -136,13 +131,8 @@ const DocumentPage = () => {
 			cellProps: {
 				style: { width: "40%" },
 			},
-			headerCell: () => {
-				return (
-					<div className="cur-p">
-						{`No Document`}
-						<i className="fas fa-sort-alt ml-2"></i>
-					</div>
-				);
+			cell: row => {
+				return row?.no ? row?.no : "-";
 			},
 		},
 		{
@@ -160,6 +150,9 @@ const DocumentPage = () => {
 					</div>
 				);
 			},
+			cell: row => {
+				return row?.no_digital ? row?.no_digital : "-";
+			},
 		},
 		{
 			title: "Kondisi",
@@ -175,6 +168,9 @@ const DocumentPage = () => {
 						<i className="fas fa-sort-alt ml-2"></i>
 					</div>
 				);
+			},
+			cell: row => {
+				return row?.condition ? row?.condition : "-";
 			},
 		},
 		{

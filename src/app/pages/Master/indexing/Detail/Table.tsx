@@ -20,6 +20,7 @@ import {
 } from "actions/DocumentAction";
 import PageHeader from "../../Components/PageHeader";
 import { ModalFilter } from "../../DocumentPage/ModalFilter";
+import ModalAddReference from "../../DocumentPage/ModalAddReference";
 
 const TableIndexingPage = () => {
 	const [modalShow, setModalShow] = useState(false);
@@ -30,6 +31,7 @@ const TableIndexingPage = () => {
 	const documentAssigned = useSelector(selectDocuemntsAssigned);
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
 	const documentNoAssigned = documentAssigned.DocumentAssigned;
+	const [modalShowReference, setModalShowReference] = useState(false);
 
 	useEffect(() => {
 		setCart(cartStash);
@@ -82,6 +84,10 @@ const TableIndexingPage = () => {
 		}
 	};
 
+	const onHideReference = () => {
+		setModalShowReference(false);
+	};
+
 	const action = id => [
 		{
 			icon: "fa-hand-holding-box",
@@ -98,6 +104,17 @@ const TableIndexingPage = () => {
 			title: "Detail",
 			url: "Document-Detail/" + id,
 			type: 1,
+		},
+		{
+			icon: "fa-edit",
+			title: "Lampirkan File",
+			type: 2,
+			onclick: () => {
+				setFolderId(id);
+				setModalShowReference(true);
+			},
+			dispatch: dispatch,
+			row: id,
 		},
 	];
 
@@ -118,6 +135,17 @@ const TableIndexingPage = () => {
 			title: "Detail",
 			url: "Document-Detail/" + id,
 			type: 1,
+		},
+		{
+			icon: "fa-edit",
+			title: "Lampirkan File",
+			type: 2,
+			onclick: () => {
+				setFolderId(id);
+				setModalShowReference(true);
+			},
+			dispatch: dispatch,
+			row: id,
 		},
 	];
 
@@ -227,6 +255,13 @@ const TableIndexingPage = () => {
 					modal={modalDettach}
 					hide={onHideDettach}
 					modalSet={setModalShowDettach}
+					valueModalSet={false}
+					folder_id={folderId}
+				/>
+				<ModalAddReference
+					modal={modalShowReference}
+					hide={onHideReference}
+					modalSet={setModalShowReference}
 					valueModalSet={false}
 					folder_id={folderId}
 				/>

@@ -195,7 +195,7 @@ const ModalForm = props => {
 								</Button>
 								<Button
 									type="submit"
-									disabled={isSubmitting || values.area.id === ""}
+									disabled={isSubmitting || values?.area?.id === ""}
 									className="bg-success-6"
 									variant="success"
 								>

@@ -407,8 +407,8 @@ const ModalForm = props => {
 									type="submit"
 									disabled={
 										isSubmitting ||
-										values.company.id === "" ||
-										values.division.id === ""
+										values?.company?.id === "" ||
+										values?.division?.id === ""
 									}
 									className="bg-success-6"
 									variant="success"

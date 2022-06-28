@@ -152,7 +152,7 @@ const ModalForm = props => {
 								</Button>
 								<Button
 									type="submit"
-									disabled={isSubmitting || values.company.id === ""}
+									disabled={isSubmitting || values?.company?.id === ""}
 									className="bg-success-6"
 									variant="success"
 								>

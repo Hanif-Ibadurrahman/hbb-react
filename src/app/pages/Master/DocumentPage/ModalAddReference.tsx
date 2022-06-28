@@ -34,8 +34,6 @@ const ModalAddReference = props => {
 		setFileUpload(event.currentTarget.files[0]);
 	}
 
-	console.log("id >>>", document.id);
-
 	const uploadDocumentFile = async data => {
 		var formdata = new FormData();
 		formdata.append("document_file", data, "[PROXY]");
