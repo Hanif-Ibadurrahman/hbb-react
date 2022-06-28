@@ -7,6 +7,7 @@ import {
 	getById,
 	update,
 	filterFolders,
+	getAllNotPage,
 } from "../api/folder";
 export const GET_FOLDERS_LIST = "GET_FOLDERS_LIST";
 export const GET_FOLDER_DETAIL = "GET_FOLDER_DETAIL";
@@ -17,6 +18,7 @@ export const RESET_FOLDER_LIST = "RESET_FOLDER_LIST";
 export const SET_FOLDER_DATA = "SET_FOLDER_DATA";
 export const UPDATE_FOLDER = "UPDATE_FOLDER";
 export const FILTER_FOLDER = "FILTER_FOLDER";
+export const GET_FOLDERS_NOT_PAGE = "GET_FOLDERS_NOT_PAGE";
 
 export const getFoldersList = page => {
 	return async dispatch => {
@@ -34,6 +36,33 @@ export const getFoldersList = page => {
 		} catch (error: any) {
 			dispatch({
 				type: GET_FOLDERS_LIST,
+				payload: {
+					data: false,
+					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const getFoldersNotPage = page => {
+	return async dispatch => {
+		try {
+			const response = await getAllNotPage(page);
+			dispatch({
+				type: GET_FOLDERS_NOT_PAGE,
+				payload: {
+					data: response.data,
+					meta: response.meta,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: GET_FOLDERS_NOT_PAGE,
 				payload: {
 					data: false,
 					errorMessage: error.message,
@@ -114,7 +143,6 @@ export const deleteFolder = id => {
 };
 
 export const CreateFolder = async (data: FolderInterfaceState) => {
-	console.log(data);
 	return async dispatch => {
 		try {
 			dispatch({

@@ -7,6 +7,7 @@ import {
 	RESET_FOLDER_FORM,
 	SET_FOLDER_DATA,
 	FILTER_FOLDER,
+	GET_FOLDERS_NOT_PAGE,
 } from "../../actions/FolderAction";
 import { FoldersInterfaceState } from "../Types/FolderTypes";
 export const initialState: FoldersInterfaceState = {
@@ -82,6 +83,18 @@ export default (
 				Folder: payload,
 			};
 		case GET_FOLDERS_LIST:
+			return {
+				...state,
+				Folders: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorFolder: payload.errorMessage,
+			};
+		case GET_FOLDERS_NOT_PAGE:
 			return {
 				...state,
 				Folders: payload.data,

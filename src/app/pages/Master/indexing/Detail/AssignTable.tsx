@@ -10,22 +10,24 @@ import "./page.scoped.scss";
 import _ from "lodash";
 import { selectDocuemntsAssigned } from "store/Selector/DocumentSelector";
 import { getDocumentsAssigned } from "actions/DocumentAction";
+import ModalDetach from "./ModalDettach";
 
 const AssignTable = props => {
 	const [modalShow, setModalShow] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
 	const documentAssigned = useSelector(selectDocuemntsAssigned);
-	const documentNoAssigned = documentAssigned.DocumentAssigned;
-	function idExists(id) {
-		return documentNoAssigned.some(function (el) {
-			return el.id === id;
-		});
-	}
+	const documentNotAssignedFolder = documentAssigned.DocumentAssigned;
+	const [folderId, setFolderId] = useState("");
+	const [modalDettach, setModalShowDettach] = useState(false);
 
 	const DocumentAssigned = (page = 1) => {
 		dispatch(getDocumentsAssigned(page));
 	};
+
+	useEffect(() => {
+		DocumentAssigned();
+	}, []);
 
 	useEffect(() => {
 		setCart(cartStash);
@@ -35,10 +37,18 @@ const AssignTable = props => {
 		setCart(cartStash);
 	}, [cartStash]);
 
+	function idExists(id) {
+		return documentNotAssignedFolder.some(function (el) {
+			return el.id === id;
+		});
+	}
 	const dispatch = useDispatch();
 
 	const _onHide = () => {
 		setModalShow(false);
+	};
+	const onHideDettach = () => {
+		setModalShowDettach(false);
 	};
 
 	const addCart = async id => {
@@ -71,7 +81,18 @@ const AssignTable = props => {
 		},
 	];
 
-	const actionNoAssign = id => [
+	const actionDetach = id => [
+		{
+			icon: "fa-hand-holding-box",
+			title: "Remove Folder",
+			onclick: () => {
+				setFolderId(id);
+				setModalShowDettach(true);
+			},
+			dispatch: dispatch,
+			row: id,
+			type: 2,
+		},
 		{
 			icon: "fa-search",
 			title: "Detail",
@@ -84,7 +105,6 @@ const AssignTable = props => {
 		{
 			title: "No Document",
 			prop: "no",
-			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
 			},
@@ -95,7 +115,6 @@ const AssignTable = props => {
 		{
 			title: "No Digital",
 			prop: "no_digital",
-			sortable: true,
 			cellProps: {
 				style: { width: "20%" },
 			},
@@ -130,9 +149,7 @@ const AssignTable = props => {
 				return (
 					<DropdownAction
 						list={
-							idExists(row.id) === true
-								? action(row.id)
-								: actionNoAssign(row.id)
+							idExists(row.id) === true ? action(row.id) : actionDetach(row.id)
 						}
 					/>
 				);
@@ -177,10 +194,7 @@ const AssignTable = props => {
 		<>
 			<Helmet>
 				<title>Dox - Borrow Box</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<ModalForm
@@ -188,6 +202,13 @@ const AssignTable = props => {
 					hide={_onHide}
 					modalSet={setModalShow}
 					valueModalSet={false}
+				/>
+				<ModalDetach
+					modal={modalDettach}
+					hide={onHideDettach}
+					modalSet={setModalShowDettach}
+					valueModalSet={false}
+					folder_id={folderId}
 				/>
 				<div className="d-flex jc-between w-100% mb-4">
 					<h6>List Document sudah terindexing</h6>

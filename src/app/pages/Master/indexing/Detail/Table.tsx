@@ -18,6 +18,8 @@ import {
 	getDocumentsAssigned,
 	getDocumentsListIndexing,
 } from "actions/DocumentAction";
+import PageHeader from "../../Components/PageHeader";
+import { ModalFilter } from "../../DocumentPage/ModalFilter";
 
 const TableIndexingPage = () => {
 	const [modalShow, setModalShow] = useState(false);
@@ -28,12 +30,6 @@ const TableIndexingPage = () => {
 	const documentAssigned = useSelector(selectDocuemntsAssigned);
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
 	const documentNoAssigned = documentAssigned.DocumentAssigned;
-
-	function idExists(id) {
-		return documentNoAssigned.some(function (el) {
-			return el.id === id;
-		});
-	}
 
 	useEffect(() => {
 		setCart(cartStash);
@@ -60,6 +56,12 @@ const TableIndexingPage = () => {
 	useEffect(() => {
 		DocumentAssigned();
 	}, []);
+
+	function idExists(id) {
+		return documentNoAssigned.some(function (el) {
+			return el.id === id;
+		});
+	}
 
 	const onHide = () => {
 		setModalShow(false);
@@ -102,16 +104,6 @@ const TableIndexingPage = () => {
 	const actionDetach = id => [
 		{
 			icon: "fa-hand-holding-box",
-			title: "Pilih",
-			onclick: () => {
-				addCart(id);
-			},
-			dispatch: dispatch,
-			row: id,
-			type: 2,
-		},
-		{
-			icon: "fa-hand-holding-box",
 			title: "Remove Folder",
 			onclick: () => {
 				setFolderId(id);
@@ -133,7 +125,6 @@ const TableIndexingPage = () => {
 		{
 			title: "No Document",
 			prop: "no",
-			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
 			},
@@ -144,7 +135,6 @@ const TableIndexingPage = () => {
 		{
 			title: "No Digital",
 			prop: "no_digital",
-			sortable: true,
 			cellProps: {
 				style: { width: "20%" },
 			},
@@ -224,10 +214,7 @@ const TableIndexingPage = () => {
 		<>
 			<Helmet>
 				<title>Dox - Indexing</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<ModalForm
@@ -246,6 +233,9 @@ const TableIndexingPage = () => {
 				<div className="d-flex jc-between w-100% mb-4">
 					<h6>List Document belum terindexing</h6>
 					<Cart />
+				</div>
+				<div style={{ marginBottom: 20 }}>
+					<ModalFilter />
 				</div>
 				<DataTable tableHeader={header} tableBody={documentList?.Documents} />
 				<Pagination

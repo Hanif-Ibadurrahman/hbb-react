@@ -4,28 +4,23 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 import { useDispatch, useSelector } from "react-redux";
-import {
-	DeleteCartAssign,
-	DettachDocumentToFolder,
-} from "actions/IndexingAction";
 import { AssignDocumentToFolderInterfaceState } from "store/Types/IndexingTypes";
 import {
 	selectAssignToFolder,
 	selectindexings,
 } from "store/Selector/IndexingSelector";
-import { assignToFolder, detachDocumentFromFolder } from "api/indexing";
 import { getDocumentDetail } from "actions/DocumentAction";
 import { DocumentInterfaceState } from "store/Types/DocumentTypes";
 import { selectDocument } from "store/Selector/DocumentSelector";
 
-const ModalDettach = props => {
+const ModalAddReference = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setAlertMessage] = useState("");
 	const [varianAlert, setVarianAlert] = useState("");
+	const [fileUpload, setFileUpload] = useState();
 	const document: DocumentInterfaceState = useSelector(selectDocument);
 	const assignDocumentToFolder: AssignDocumentToFolderInterfaceState =
 		useSelector(selectAssignToFolder);
-	const cart = useSelector(selectindexings);
 
 	const dispatch = useDispatch();
 
@@ -34,6 +29,31 @@ const ModalDettach = props => {
 	useEffect(() => {
 		dispatch(getDocumentDetail(props.folder_id));
 	}, [props.folder_id]);
+
+	function onChangeFile(event: any) {
+		setFileUpload(event.currentTarget.files[0]);
+	}
+
+	console.log("id >>>", document.id);
+
+	const uploadDocumentFile = async data => {
+		var formdata = new FormData();
+		formdata.append("document_file", data, "[PROXY]");
+		const token = localStorage.getItem("Token");
+
+		const response = await fetch(
+			`http://103.93.57.36:8008/documents/${document.id}`,
+			{
+				method: "PUT",
+				body: formdata,
+				redirect: "follow",
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		);
+		return response;
+	};
 
 	return (
 		<>
@@ -60,30 +80,39 @@ const ModalDettach = props => {
 					validationSchema={validationSchema}
 					initialValues={assignDocumentToFolder}
 					enableReinitialize={true}
-					onSubmit={async values => {
+					onSubmit={async (values: any) => {
 						try {
-							values.id = document.folder.id;
-							values.document_codes = props.folder_id;
-							const res = await detachDocumentFromFolder(values);
+							const res = await uploadDocumentFile(fileUpload);
 							if (res.status === 200) {
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
-								setAlertMessage("Mengeluarkan Document Berhasil");
+								setAlertMessage("Request Berhasil");
 								setVarianAlert("success");
-								setTimeout(function () {
+								setTimeout(() => {
+									setShowAlert(false);
+								}, 1500);
+								setTimeout(() => {
 									window.location.reload();
-								}, 1000);
+								}, 2000);
+								// setValueUpload("");
 							} else {
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
-								setAlertMessage("Mengeluarkan Document Gagal");
+								setAlertMessage("Request Gagal");
 								setVarianAlert("danger");
+								setTimeout(() => {
+									setShowAlert(false);
+								}, 2000);
+								console.log(res.body);
 							}
 						} catch (err) {
 							props.modalSet(props.valueModalSet);
 							setShowAlert(true);
-							setAlertMessage("Mengeluarkan Document Gagal");
+							setAlertMessage("Request Gagal");
 							setVarianAlert("danger");
+							setTimeout(() => {
+								setShowAlert(false);
+							}, 2000);
 							console.log(err);
 						}
 					}}
@@ -100,10 +129,25 @@ const ModalDettach = props => {
 					}) => (
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
-								<div className="p-lg">
-									Apakah anda yakin mengeluarkan document dari folder?
-								</div>
+								<div className="p-lg">Pilih File</div>
 							</Modal.Header>
+							<Modal.Body>
+								<Form.Group>
+									<input
+										id="file"
+										name="file"
+										type="file"
+										// value={valueUpload}
+										onChange={e => {
+											console.log("onchange", e);
+											// setValueUpload(e.target.value);
+											onChangeFile(e);
+										}}
+										accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+										className="form-control"
+									/>
+								</Form.Group>
+							</Modal.Body>
 							<Modal.Footer>
 								<Button variant="danger" onClick={props.hide}>
 									Close
@@ -125,4 +169,4 @@ const ModalDettach = props => {
 	);
 };
 
-export default ModalDettach;
+export default ModalAddReference;

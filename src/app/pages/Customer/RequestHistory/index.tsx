@@ -28,6 +28,12 @@ const RequestHistory = () => {
 			url: "DetailRequestBox/" + id,
 			type: 1,
 		},
+		{
+			icon: "fa-edit",
+			title: "Surat Jalan",
+			url: "/Customer/DeliveryNote/",
+			type: 1,
+		},
 	];
 
 	const header = [
@@ -35,7 +41,7 @@ const RequestHistory = () => {
 			prop: "created_at",
 			sortable: true,
 			cellProps: {
-				style: { width: "30%" },
+				style: { width: "40%" },
 			},
 			headerCell: sortedProp => {
 				return (
@@ -53,7 +59,7 @@ const RequestHistory = () => {
 			title: "Tipe Permintaan",
 			prop: "type",
 			cellProps: {
-				style: { width: "30%" },
+				style: { width: "40%" },
 			},
 			cell: row => {
 				return (
@@ -88,10 +94,7 @@ const RequestHistory = () => {
 		<>
 			<Helmet>
 				<title>Dox - Request Box</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<DataTable
