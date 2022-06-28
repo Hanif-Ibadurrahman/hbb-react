@@ -11,6 +11,7 @@ import _ from "lodash";
 import { selectDocuemntsAssigned } from "store/Selector/DocumentSelector";
 import { getDocumentsAssigned } from "actions/DocumentAction";
 import ModalDetach from "./ModalDettach";
+import ModalAddReference from "../../DocumentPage/ModalAddReference";
 
 const AssignTable = props => {
 	const [modalShow, setModalShow] = useState(false);
@@ -20,6 +21,7 @@ const AssignTable = props => {
 	const documentNotAssignedFolder = documentAssigned.DocumentAssigned;
 	const [folderId, setFolderId] = useState("");
 	const [modalDettach, setModalShowDettach] = useState(false);
+	const [modalShowReference, setModalShowReference] = useState(false);
 
 	const DocumentAssigned = (page = 1) => {
 		dispatch(getDocumentsAssigned(page));
@@ -62,6 +64,10 @@ const AssignTable = props => {
 		}
 	};
 
+	const onHideReference = () => {
+		setModalShowReference(false);
+	};
+
 	const action = id => [
 		{
 			icon: "fa-hand-holding-box",
@@ -78,6 +84,17 @@ const AssignTable = props => {
 			title: "Detail",
 			url: "Document-Detail/" + id,
 			type: 1,
+		},
+		{
+			icon: "fa-edit",
+			title: "Lampirkan File",
+			type: 2,
+			onclick: () => {
+				setFolderId(id);
+				setModalShowReference(true);
+			},
+			dispatch: dispatch,
+			row: id,
 		},
 	];
 
@@ -98,6 +115,17 @@ const AssignTable = props => {
 			title: "Detail",
 			url: "Document-Detail/" + id,
 			type: 1,
+		},
+		{
+			icon: "fa-edit",
+			title: "Lampirkan File",
+			type: 2,
+			onclick: () => {
+				setFolderId(id);
+				setModalShowReference(true);
+			},
+			dispatch: dispatch,
+			row: id,
 		},
 	];
 
@@ -202,6 +230,13 @@ const AssignTable = props => {
 					hide={_onHide}
 					modalSet={setModalShow}
 					valueModalSet={false}
+				/>
+				<ModalAddReference
+					modal={modalShowReference}
+					hide={onHideReference}
+					modalSet={setModalShowReference}
+					valueModalSet={false}
+					folder_id={folderId}
 				/>
 				<ModalDetach
 					modal={modalDettach}
