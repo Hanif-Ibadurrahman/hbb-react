@@ -17,14 +17,9 @@ const AssignTable = props => {
 	const [cart, setCart] = useState<Partial<any>>({});
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
 	const documentAssigned = useSelector(selectDocuemntsAssigned);
-	const documentNoAssigned = documentAssigned.DocumentAssigned;
+	const documentNotAssignedFolder = documentAssigned.DocumentAssigned;
 	const [folderId, setFolderId] = useState("");
 	const [modalDettach, setModalShowDettach] = useState(false);
-	function idExists(id) {
-		return documentNoAssigned.some(function (el) {
-			return el.id === id;
-		});
-	}
 
 	const DocumentAssigned = (page = 1) => {
 		dispatch(getDocumentsAssigned(page));
@@ -42,6 +37,11 @@ const AssignTable = props => {
 		setCart(cartStash);
 	}, [cartStash]);
 
+	function idExists(id) {
+		return documentNotAssignedFolder.some(function (el) {
+			return el.id === id;
+		});
+	}
 	const dispatch = useDispatch();
 
 	const _onHide = () => {
@@ -81,24 +81,24 @@ const AssignTable = props => {
 		},
 	];
 
-	const actionNoAssign = id => [
+	const actionDetach = id => [
+		{
+			icon: "fa-hand-holding-box",
+			title: "Remove Folder",
+			onclick: () => {
+				setFolderId(id);
+				setModalShowDettach(true);
+			},
+			dispatch: dispatch,
+			row: id,
+			type: 2,
+		},
 		{
 			icon: "fa-search",
 			title: "Detail",
 			url: "Document-Detail/" + id,
 			type: 1,
 		},
-		// {
-		// 	icon: "fa-hand-holding-box",
-		// 	title: "Remove Folder",
-		// 	onclick: () => {
-		// 		setFolderId(id);
-		// 		setModalShowDettach(true);
-		// 	},
-		// 	dispatch: dispatch,
-		// 	row: id,
-		// 	type: 2,
-		// },
 	];
 
 	const header = [
@@ -146,7 +146,13 @@ const AssignTable = props => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.id)} />;
+				return (
+					<DropdownAction
+						list={
+							idExists(row.id) === true ? action(row.id) : actionDetach(row.id)
+						}
+					/>
+				);
 			},
 		},
 	];
@@ -188,10 +194,7 @@ const AssignTable = props => {
 		<>
 			<Helmet>
 				<title>Dox - Borrow Box</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<ModalForm

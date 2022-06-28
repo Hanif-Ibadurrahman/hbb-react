@@ -61,16 +61,31 @@ const ModalDettach = props => {
 					initialValues={assignDocumentToFolder}
 					enableReinitialize={true}
 					onSubmit={async values => {
-						values.id = document.folder.id;
-						values.document_codes = props.folder_id;
-						detachDocumentFromFolder(values);
-						props.modalSet(props.valueModalSet);
-						setShowAlert(true);
-						setAlertMessage("Request Berhasil");
-						setVarianAlert("success");
-						setTimeout(function () {
-							window.location.reload();
-						}, 1000);
+						try {
+							values.id = document.folder.id;
+							values.document_codes = props.folder_id;
+							const res = await detachDocumentFromFolder(values);
+							if (res.status === 200) {
+								props.modalSet(props.valueModalSet);
+								setShowAlert(true);
+								setAlertMessage("Mengeluarkan Document Berhasil");
+								setVarianAlert("success");
+								setTimeout(function () {
+									window.location.reload();
+								}, 1000);
+							} else {
+								props.modalSet(props.valueModalSet);
+								setShowAlert(true);
+								setAlertMessage("Mengeluarkan Document Gagal");
+								setVarianAlert("danger");
+							}
+						} catch (err) {
+							props.modalSet(props.valueModalSet);
+							setShowAlert(true);
+							setAlertMessage("Mengeluarkan Document Gagal");
+							setVarianAlert("danger");
+							console.log(err);
+						}
 					}}
 				>
 					{({

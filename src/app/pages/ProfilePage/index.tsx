@@ -24,10 +24,7 @@ export function UserProfile() {
 		<BrowserRouter>
 			<Helmet>
 				<title>Dox - Login</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<div className="pos-r d-flex" style={{ minHeight: "calc(100% - 80px" }}>
 				<div

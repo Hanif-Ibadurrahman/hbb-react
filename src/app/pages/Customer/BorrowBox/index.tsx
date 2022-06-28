@@ -140,10 +140,7 @@ const BorrowBoxPage = () => {
 		<>
 			<Helmet>
 				<title>Dox - Borrow Box</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<ModalForm

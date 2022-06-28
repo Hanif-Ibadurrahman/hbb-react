@@ -51,10 +51,7 @@ const ActivityLog = () => {
 		<>
 			<Helmet>
 				<title>Dox - Activity Log</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<DataTable tableHeader={header} tableBody={activityLog?.ActivityLogs} />

@@ -334,10 +334,7 @@ export function DashboardSuperadmin() {
 		<>
 			<Helmet>
 				<title>Dox - Dashboard Superadmin</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<div className="pos-r p-8 bg-primary-5">
 				<h3 className="tc-dark-contrast mb-12 ff-1-bd">

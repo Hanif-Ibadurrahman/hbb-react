@@ -91,8 +91,6 @@ import PickUpPage from "./Customer/PickUpBox";
 import ReturnItemPage from "./Customer/ReturnItem";
 //5 - History of Request
 import RequestHistory from "./Customer/RequestHistory";
-//6 - Delivery Note
-import DeliveryNote from "./Customer/RequestHistory/deliveryNote";
 
 // -=-=-=-=-=-
 // ALL USER
@@ -103,11 +101,11 @@ export function Routes() {
 	return (
 		<BrowserRouter>
 			<Helmet
-				titleTemplate="%s - React Boilerplate"
-				defaultTitle="React Boilerplate"
+				titleTemplate="%s"
+				defaultTitle="DOX"
 				htmlAttributes={{ lang: i18n.language }}
 			>
-				<meta name="description" content="A React Boilerplate application" />
+				<meta name="description" content="A DOX application" />
 			</Helmet>
 			<div className="d-flex all-wrapper">
 				<Sidebar />

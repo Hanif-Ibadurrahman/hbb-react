@@ -68,10 +68,7 @@ export function DashboardAdminRC() {
 		<>
 			<Helmet>
 				<title>Dox - Dashboard RC</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 
 			<div className="pos-r p-8 bg-primary-5">

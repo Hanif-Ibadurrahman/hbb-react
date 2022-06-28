@@ -107,8 +107,8 @@ const DocumentPage = () => {
 			type: 2,
 		},
 		{
-			icon: "fa-trash-alt",
-			title: "Tambah File",
+			icon: "fa-edit",
+			title: "Lampirkan File",
 			type: 2,
 			onclick: () => {
 				setFolderId(id);
@@ -194,10 +194,7 @@ const DocumentPage = () => {
 		<>
 			<Helmet>
 				<title>Document</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<Alert

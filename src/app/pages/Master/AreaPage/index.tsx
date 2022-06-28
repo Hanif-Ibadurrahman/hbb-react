@@ -129,10 +129,7 @@ const AreaPage = () => {
 		<>
 			<Helmet>
 				<title>Dox - Master Area</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<Alert
 				text="Data Berhasil Di Hapus"

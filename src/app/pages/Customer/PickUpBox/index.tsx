@@ -128,10 +128,7 @@ const PickUpPage = () => {
 		<>
 			<Helmet>
 				<title>Dox - Pick Up Box</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<ModalForm

@@ -25,7 +25,7 @@ export function LoginPage() {
 		const validationSchema = Yup.object().shape({
 			username: Yup.string().required("*Wajib diisi"),
 			password: Yup.string().required("*Wajib diisi"),
-		})
+		});
 		return (
 			<>
 				<div>
@@ -41,21 +41,21 @@ export function LoginPage() {
 								const res = await action;
 								await dispatch(res);
 								action.then(() => {
-									setShowAlert(true)
-									setAlertMessage("Anda Berhasil Login")
-									setVarianAlert("success")
+									setShowAlert(true);
+									setAlertMessage("Anda Berhasil Login");
+									setVarianAlert("success");
 									setTimeout(function () {
-										setShowAlert(false)
+										setShowAlert(false);
 									}, 4000);
 									history.push("/Dashboard");
 									window.location.reload();
 								});
 							} catch (e) {
-								setShowAlert(true)
-								setAlertMessage("Username atau Password salah")
-								setVarianAlert("danger")
+								setShowAlert(true);
+								setAlertMessage("Username atau Password salah");
+								setVarianAlert("danger");
 								setTimeout(function () {
-									setShowAlert(false)
+									setShowAlert(false);
 								}, 4000);
 							}
 						}}
@@ -178,10 +178,7 @@ export function LoginPage() {
 		<>
 			<Helmet>
 				<title>Dox - Login</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<Alert
 				text={alertMessage}

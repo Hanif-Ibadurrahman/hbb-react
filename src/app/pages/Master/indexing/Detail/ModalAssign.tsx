@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 import { useDispatch, useSelector } from "react-redux";
-import { AssignToFolder, DeleteCartAssign } from "actions/IndexingAction";
+import { DeleteCartAssign } from "actions/IndexingAction";
 import { AssignDocumentToFolderInterfaceState } from "store/Types/IndexingTypes";
 import {
 	selectAssignToFolder,
@@ -13,19 +13,36 @@ import {
 import { assignToFolder } from "api/indexing";
 import { Autocomplete, TextField } from "@mui/material";
 import { selectFolders } from "store/Selector/FolderSelector";
-import { getFoldersList } from "actions/FolderAction";
+import { getFoldersNotPage } from "actions/FolderAction";
+import { getDocumentsAssigned } from "actions/DocumentAction";
+import { selectDocuemntsAssigned } from "store/Selector/DocumentSelector";
 
 const ModalAssign = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setAlertMessage] = useState("");
 	const [varianAlert, setVarianAlert] = useState("");
 	const folder = useSelector(selectFolders);
+	const documentAssigned = useSelector(selectDocuemntsAssigned);
+	const documentNotAssignedFolder = documentAssigned.DocumentAssigned;
 	const FetchData = (page = 1) => {
-		dispatch(getFoldersList(page));
+		dispatch(getFoldersNotPage(page));
 	};
 	useEffect(() => {
 		FetchData();
 	}, []);
+	const DocumentAssigned = (page = 1) => {
+		dispatch(getDocumentsAssigned(page));
+	};
+
+	useEffect(() => {
+		DocumentAssigned();
+	}, []);
+	function idExists(id) {
+		return documentNotAssignedFolder.some(function (el) {
+			return el.id === id;
+		});
+	}
+
 	const assignDocumentToFolder: AssignDocumentToFolderInterfaceState =
 		useSelector(selectAssignToFolder);
 	const cart = useSelector(selectindexings);
@@ -65,16 +82,31 @@ const ModalAssign = props => {
 					initialValues={assignDocumentToFolder}
 					enableReinitialize={true}
 					onSubmit={async values => {
-						values.id = values.id_folder.id;
-						values.document_codes = cartStash;
-						assignToFolder(values);
-						props.modalSet(props.valueModalSet);
-						setShowAlert(true);
-						setAlertMessage("Pemindahan Folder Berhasil");
-						setVarianAlert("success");
-						setTimeout(function () {
-							window.location.reload();
-						}, 1000);
+						try {
+							values.id = values.id_folder.id;
+							values.document_codes = cartStash;
+							const res = await assignToFolder(values);
+							if (res.status === 200) {
+								props.modalSet(props.valueModalSet);
+								setShowAlert(true);
+								setAlertMessage("Pemindahan Folder Berhasil");
+								setVarianAlert("success");
+								setTimeout(function () {
+									window.location.reload();
+								}, 1000);
+							} else {
+								props.modalSet(props.valueModalSet);
+								setShowAlert(true);
+								setAlertMessage("Pemindahan Folder Gagal");
+								setVarianAlert("danger");
+							}
+						} catch (err) {
+							props.modalSet(props.valueModalSet);
+							setShowAlert(true);
+							setAlertMessage("Pemindahan Folder Gagal");
+							setVarianAlert("danger");
+							console.log(err);
+						}
 					}}
 				>
 					{({

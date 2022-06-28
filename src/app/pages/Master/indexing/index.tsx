@@ -132,7 +132,6 @@ const IndexingPage = () => {
 			},
 			cell: row => {
 				return moment(row.created_at).format("DD MMMM YYYY");
-				// return moment(row.date).format("DD MMMM YY");
 			},
 		},
 		{
@@ -148,16 +147,11 @@ const IndexingPage = () => {
 		},
 	];
 
-	console.log(">...", indexings.Indexings);
-
 	return (
 		<>
 			<Helmet>
 				<title>Dox - Indexing Page</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<Alert

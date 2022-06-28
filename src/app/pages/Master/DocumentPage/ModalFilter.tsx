@@ -34,10 +34,9 @@ export function ModalFilter(props) {
 						try {
 							const res = await filterData(values);
 							await dispatch(res);
-							props.modalSet(props.valueModalSet);
+							setModalShow(false);
 						} catch (e) {
-							dispatch({ type: RESET_DOCUMENT_FORM });
-							console.log("error");
+							setModalShow(false);
 						}
 					}}
 				>
@@ -191,7 +190,14 @@ export function ModalFilter(props) {
 								>
 									Filter
 								</Button>{" "}
-								<Button variant="danger">Reset</Button>
+								<Button
+									variant="danger"
+									onClick={() => {
+										dispatch({ type: RESET_DOCUMENT_FORM });
+									}}
+								>
+									Reset
+								</Button>
 							</Modal.Footer>
 						</Form>
 					)}
