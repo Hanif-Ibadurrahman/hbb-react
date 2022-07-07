@@ -264,7 +264,10 @@ export function DashboardSuperadmin() {
 	const TableCSRAdmin = () => {
 		return (
 			<div style={{ width: "100%" }}>
-				<DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} />
+				<DataTable
+					tableHeader={header}
+					tableBody={requestBoxes.RequestBoxes ? requestBoxes.RequestBoxes : []}
+				/>
 				<Pagination
 					pageCount={requestBoxes?.Meta?.last_page}
 					onPageChange={data => ApprovalDataCSRAdmin(data.selected + 1)}
@@ -277,7 +280,11 @@ export function DashboardSuperadmin() {
 			<div style={{ width: "100%" }}>
 				<DataTable
 					tableHeader={header}
-					tableBody={approvalOperationList.RequestBoxes}
+					tableBody={
+						approvalOperationList.RequestBoxes
+							? approvalOperationList.RequestBoxes
+							: []
+					}
 				/>
 				<Pagination
 					pageCount={requestBoxes?.Meta?.last_page}
@@ -292,7 +299,7 @@ export function DashboardSuperadmin() {
 				<UploadExcel />
 				<DataTable
 					tableHeader={headerCustomer}
-					tableBody={returnItems?.ReturnList}
+					tableBody={returnItems?.ReturnList ? returnItems?.ReturnList : []}
 				/>
 				<Pagination
 					pageCount={returnItems.Meta.last_page}
