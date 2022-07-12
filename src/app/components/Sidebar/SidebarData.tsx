@@ -118,11 +118,11 @@ export const MasterData = [
 	// 	icon: "",
 	// 	link: "/Record-Center",
 	// },
-	// {
-	// 	title: "Mobil",
-	// 	icon: "",
-	// 	link: "/Car",
-	// },
+	{
+		title: "Kendaraan",
+		icon: "",
+		link: "/Car",
+	},
 	{
 		title: "Customer",
 		icon: "",
@@ -172,24 +172,14 @@ export const MasterData = [
 
 export const ArchiverMasterData = [
 	{
-		title: "Dokumen",
-		icon: "",
-		link: "/Document",
-	},
-	{
-		title: "Folder",
-		icon: "",
-		link: "/Folder",
-	},
-	{
-		title: "Box",
-		icon: "",
-		link: "/Box",
-	},
-	{
-		title: "Berkas",
+		title: "Indexing Dokumen",
 		icon: "",
 		link: "/Indexing",
+	},
+	{
+		title: "Document - Folder",
+		icon: "",
+		link: "/AssignDocToFolder",
 	},
 ];
 

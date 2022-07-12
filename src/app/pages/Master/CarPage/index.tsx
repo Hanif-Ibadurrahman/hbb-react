@@ -10,7 +10,14 @@ import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import Alert from "app/components/Alerts";
 import { selectCars } from "store/Selector/CarSelector";
-import { getCarsList, getCarDetail, deleteCar } from "actions/CarAction";
+import {
+	getCarsList,
+	getCarDetail,
+	deleteCar,
+	SearchCar,
+} from "actions/CarAction";
+import { SearchInput } from "./FilterInput";
+import { CarInterfaceState } from "store/Types/CarTypes";
 
 const CarPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -24,6 +31,8 @@ const CarPage = () => {
 	const FetchData = (page = 1) => {
 		dispatch(getCarsList(page));
 	};
+
+	console.log(cars.Meta.last_page, "last apge >>>>");
 
 	useEffect(() => {
 		FetchData();
@@ -73,11 +82,6 @@ const CarPage = () => {
 			type: 1,
 		},
 		{
-			icon: "fa-copy ",
-			title: "Duplicate",
-			type: 2,
-		},
-		{
 			icon: "fa-edit",
 			title: "Edit",
 			onclick: () => {
@@ -102,7 +106,6 @@ const CarPage = () => {
 		{
 			title: "Brand",
 			prop: "brand",
-			sortable: true,
 			cellProps: {
 				style: { width: "30%" },
 			},
@@ -110,18 +113,10 @@ const CarPage = () => {
 		{
 			title: "Nomor Plat",
 			prop: "license_plate",
-			sortable: true,
-			cellProps: {
-				style: { width: "30%" },
-			},
 		},
 		{
 			title: "Kapasitas",
 			prop: "capacity",
-			sortable: true,
-			cellProps: {
-				style: { width: "20%" },
-			},
 		},
 		{
 			title: "Action",
@@ -162,14 +157,15 @@ const CarPage = () => {
 					valueModalSet={false}
 				/>
 				<PageHeader
-					breadcrumb={["Master", "Car"]}
+					breadcrumb={["Master", "Box"]}
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
+					filter={SearchInput}
 				/>
 				<DataTable tableHeader={header} tableBody={cars?.Cars} />
 				<Pagination
-					pageCount={cars.Meta.last_page}
+					pageCount={cars?.Cars.length / 20}
 					onPageChange={data => FetchData(data?.selected + 1)}
 				/>
 			</PageWrapper>

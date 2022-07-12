@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { Helmet } from "react-helmet-async";
 import { useHistory } from "react-router-dom";
-import LoginBg from "assets/images/login.jpg";
+import LoginBg from "assets/images/login.png";
 import { useDispatch, useSelector } from "react-redux";
 import "./LoginPage.scoped.scss";
 import { LoginInterfaceState } from "store/Types/LoginTypes";

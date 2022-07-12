@@ -46,7 +46,7 @@ const IndexingPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={indexing.index}
+									defaultValue={indexing?.index}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -54,7 +54,7 @@ const IndexingPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={indexing.type}
+									defaultValue={indexing?.type}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -62,7 +62,7 @@ const IndexingPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={indexing.retention_period}
+									defaultValue={indexing?.retention_period}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -74,7 +74,7 @@ const IndexingPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={indexing.box.code_box}
+									defaultValue={indexing?.box?.code_box}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -82,7 +82,7 @@ const IndexingPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={indexing.area.name}
+									defaultValue={indexing?.area?.name}
 								/>
 							</Form.Group>
 							<div className="d-flex jc-end">

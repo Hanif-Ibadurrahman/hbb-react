@@ -37,11 +37,6 @@ const ModalAssign = props => {
 	useEffect(() => {
 		DocumentAssigned();
 	}, []);
-	function idExists(id) {
-		return documentNotAssignedFolder.some(function (el) {
-			return el.id === id;
-		});
-	}
 
 	const assignDocumentToFolder: AssignDocumentToFolderInterfaceState =
 		useSelector(selectAssignToFolder);
