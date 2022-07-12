@@ -5,41 +5,30 @@ import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 import { useDispatch, useSelector } from "react-redux";
 import { DeleteCartAssign } from "actions/IndexingAction";
-import { AssignDocumentToFolderInterfaceState } from "store/Types/IndexingTypes";
+import { AssignFolderToBoxInterfaceState } from "store/Types/IndexingTypes";
 import {
-	selectAssignToFolder,
+	selectAssignToBox,
 	selectindexings,
 } from "store/Selector/IndexingSelector";
-import { assignToFolder } from "api/indexing";
+import { assignToBox } from "api/indexing";
 import { Autocomplete, TextField } from "@mui/material";
-import { selectFolders } from "store/Selector/FolderSelector";
-import { getFoldersNotPage } from "actions/FolderAction";
-import { getDocumentsAssigned } from "actions/DocumentAction";
-import { selectDocuemntsAssigned } from "store/Selector/DocumentSelector";
+import { selectBoxes } from "store/Selector/BoxSelector";
+import { getBoxesNotPage } from "actions/BoxActions";
 
 const ModalAssign = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setAlertMessage] = useState("");
 	const [varianAlert, setVarianAlert] = useState("");
-	const folder = useSelector(selectFolders);
-	const documentAssigned = useSelector(selectDocuemntsAssigned);
-	const documentNotAssignedFolder = documentAssigned.DocumentAssigned;
+	const boxes = useSelector(selectBoxes);
 	const FetchData = (page = 1) => {
-		dispatch(getFoldersNotPage(page));
+		dispatch(getBoxesNotPage(page));
 	};
 	useEffect(() => {
 		FetchData();
 	}, []);
-	const DocumentAssigned = (page = 1) => {
-		dispatch(getDocumentsAssigned(page));
-	};
 
-	useEffect(() => {
-		DocumentAssigned();
-	}, []);
-
-	const assignDocumentToFolder: AssignDocumentToFolderInterfaceState =
-		useSelector(selectAssignToFolder);
+	const assignDocumentToBox: AssignFolderToBoxInterfaceState =
+		useSelector(selectAssignToBox);
 	const cart = useSelector(selectindexings);
 	const cartStash = cart.CartAssign;
 
@@ -74,13 +63,13 @@ const ModalAssign = props => {
 				{" "}
 				<Formik
 					validationSchema={validationSchema}
-					initialValues={assignDocumentToFolder}
+					initialValues={assignDocumentToBox}
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							values.id = values.id_folder.id;
-							values.document_codes = cartStash;
-							const res = await assignToFolder(values);
+							values.id = values.id_box.id;
+							values.folder_codes = cartStash;
+							const res = await assignToBox(values);
 							if (res.status === 200) {
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
@@ -117,7 +106,7 @@ const ModalAssign = props => {
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									Assign Document To Folder
+									Assign Folder To Box
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
@@ -125,7 +114,7 @@ const ModalAssign = props => {
 									<Row>
 										<Col xs={12}>
 											<Form.Group>
-												<Form.Label>List Document</Form.Label>
+												<Form.Label>List Folder</Form.Label>
 												{cartStash.map((cart, index) => (
 													<>
 														<div className="d-flex jc-between mb-2">
@@ -148,16 +137,16 @@ const ModalAssign = props => {
 												))}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Pilih Folder</Form.Label>
+												<Form.Label>Pilih Box</Form.Label>
 												<Autocomplete
 													id="folder"
-													options={folder.Folders}
-													getOptionLabel={option => option.no}
-													value={values?.id_folder}
+													options={boxes.Boxes}
+													getOptionLabel={option => option.code_box}
+													value={values?.id_box}
 													onChange={(e, value) => {
 														setFieldValue(
 															"id_folder",
-															value !== null ? value : values.id_folder,
+															value !== null ? value : values.id_box,
 														);
 													}}
 													renderInput={params => (

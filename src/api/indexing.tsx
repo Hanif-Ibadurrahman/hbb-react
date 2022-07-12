@@ -1,5 +1,6 @@
 import {
 	AssignDocumentToFolderInterfaceState,
+	AssignFolderToBoxInterfaceState,
 	IndexingDocumentInterfaceState,
 	IndexingInterfaceState,
 } from "store/Types/IndexingTypes";
@@ -110,4 +111,22 @@ export const filterIndexing = async (data: IndexingInterfaceState) => {
 
 export const destroy = id => {
 	return api.delete(`/indexes/${id}`);
+};
+
+export const assignToBox = async (data: AssignFolderToBoxInterfaceState) => {
+	let id = data.id;
+	let payload = {
+		folder_codes: data.folder_codes,
+	};
+	return await api.put(`/boxes/${id}/folders/attach`, payload);
+};
+
+export const detachFolderFromBox = async (
+	data: AssignFolderToBoxInterfaceState,
+) => {
+	let id = data.id;
+	let payload = {
+		folder_codes: [data.folder_codes],
+	};
+	return await api.put(`/boxes/${id}/folders/detach`, payload);
 };

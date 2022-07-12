@@ -1,6 +1,7 @@
 import React from "react";
 import {
 	AssignDocumentToFolderInterfaceState,
+	AssignFolderToBoxInterfaceState,
 	IndexingDocumentInterfaceState,
 	IndexingInterfaceState,
 } from "store/Types/IndexingTypes";
@@ -15,6 +16,8 @@ import {
 	assignToFolder,
 	indexingDocument,
 	detachDocumentFromFolder,
+	assignToBox,
+	detachFolderFromBox,
 } from "../api/indexing";
 export const GET_INDEXING_LIST = "GET_INDEXING_LIST";
 export const GET_INDEX_DETAIL = "GET_INDEX_DETAIL";
@@ -35,6 +38,8 @@ export const PUT_ASSIGN_DOCUMENT_TO_FOLDER = "PUT_ASSIGN_DOCUMENT_TO_FOLDER";
 export const GET_INDEXING_RETENTION = "GET_INDEXING_RETENTION";
 export const PUT_DETTACH_DOCUMENT_FROM_FOLDER =
 	"PUT_DETTACH_DOCUMENT_FROM_FOLDER";
+export const PUT_ASSIGN_FOLDER_TO_BOX = "PUT_ASSIGN_FOLDER_TO_BOX";
+export const PUT_DETTACH_FOLDER_FROM_BOX = "PUT_DETTACH_FOLDER_FROM_BOX";
 
 export const getIndexingList = page => {
 	return async dispatch => {
@@ -385,6 +390,68 @@ export const DettachDocumentToFolder = async (
 		} catch (error: any) {
 			dispatch({
 				type: PUT_DETTACH_DOCUMENT_FROM_FOLDER,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const AssignToBox = async (data: AssignFolderToBoxInterfaceState) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_INDEX_DATA,
+				payload: data,
+			});
+			const response = await assignToBox(data);
+			dispatch({
+				type: PUT_ASSIGN_FOLDER_TO_BOX,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: PUT_ASSIGN_FOLDER_TO_BOX,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const DettachFolderFromBox = async (
+	data: AssignFolderToBoxInterfaceState,
+) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_INDEX_DATA,
+				payload: data,
+			});
+			const response = await detachFolderFromBox(data);
+			dispatch({
+				type: PUT_DETTACH_FOLDER_FROM_BOX,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: PUT_DETTACH_FOLDER_FROM_BOX,
 				payload: {
 					data: false,
 					errorMessage: error?.message,

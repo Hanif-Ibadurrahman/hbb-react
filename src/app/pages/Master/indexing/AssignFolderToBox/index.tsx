@@ -7,10 +7,7 @@ import { AddCartAssign } from "actions/IndexingAction";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import ModalForm from "./ModalAssign";
 import _ from "lodash";
-import {
-	selectDocuemnts,
-	selectDocuemntsAssigned,
-} from "store/Selector/DocumentSelector";
+import { selectDocuemnts } from "store/Selector/DocumentSelector";
 import {
 	filterData,
 	getDocumentsAssigned,
@@ -18,16 +15,16 @@ import {
 } from "actions/DocumentAction";
 import ModalDetach from "./ModalDettach";
 import ModalAddReference from "../../DocumentPage/ModalAddReference";
-import { getDocumentFile } from "api/downloadDatabase";
 import { ModalFilter } from "../../DocumentPage/ModalFilter";
 import { Pagination } from "app/components/Pagination";
+import { selectFoldersAssigned } from "store/Selector/FolderSelector";
 
-const AssignDocToFolder = props => {
+const AssignFolderToBox = props => {
 	const [modalShow, setModalShow] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
-	const documentAssigned = useSelector(selectDocuemntsAssigned);
-	const documentNotAssignedFolder = documentAssigned.DocumentAssigned;
+	const folderNotAssigned = useSelector(selectFoldersAssigned);
+	const folderNotAssignedtoBox = folderNotAssigned.FolderAssigned;
 	const [folderId, setFolderId] = useState("");
 	const [modalDettach, setModalShowDettach] = useState(false);
 	const [modalShowReference, setModalShowReference] = useState(false);
@@ -71,7 +68,7 @@ const AssignDocToFolder = props => {
 	}, [cartStash]);
 
 	function idExists(id) {
-		return documentNotAssignedFolder.some(function (el) {
+		return folderNotAssignedtoBox.some(function (el) {
 			return el.id === id;
 		});
 	}
@@ -162,46 +159,26 @@ const AssignDocToFolder = props => {
 
 	const header = [
 		{
-			title: "No Document",
+			title: "No Folder",
 			prop: "no",
+			sortable: true,
 			cellProps: {
-				style: { width: "20%" },
+				style: { width: "40%" },
 			},
-			cell: row => {
-				return row?.no ? row?.no : "-";
-			},
-		},
-		{
-			title: "No Digital",
-			prop: "no_digital",
-			cellProps: {
-				style: { width: "15%" },
-			},
-			cell: row => {
-				return row?.no_digital ? row?.no_digital : "-";
-			},
-		},
-		{
-			title: "Detail",
-			prop: "detail",
-			cellProps: {
-				style: { width: "35%" },
-			},
-		},
-		{
-			title: "Lampiran",
-			prop: "document_file",
-			cellProps: {
-				style: { width: "10%" },
-			},
-			cell: row => {
-				return row?.document_file ? (
-					<div onClick={() => getDocumentFile(row.id)}>
-						<i className="fas fa-download"></i>
+			headerCell: () => {
+				return (
+					<div className="cur-p">
+						{`No Folder`}
+						<i className="fas fa-sort-alt ml-2"></i>
 					</div>
-				) : (
-					"-"
 				);
+			},
+		},
+		{
+			title: "Status Folder",
+			prop: "status",
+			cellProps: {
+				style: { width: "40%" },
 			},
 		},
 		{
@@ -237,7 +214,7 @@ const AssignDocToFolder = props => {
 							</span>
 						</span>
 						<h5 className="text ff-1-bd mr-3">{cart.numberCart}</h5>
-						<p className="p-lg">Box dipilih</p>
+						<p className="p-lg">Folder dipilih</p>
 					</div>
 					<span
 						className="ph-2 h-12 bd-rs-6 d-flex ai-center jc-center bg-success-1 ml-a cur-p"
@@ -306,4 +283,4 @@ const AssignDocToFolder = props => {
 	);
 };
 
-export default AssignDocToFolder;
+export default AssignFolderToBox;

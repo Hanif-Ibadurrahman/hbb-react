@@ -15,6 +15,7 @@ import {
 	filterData,
 	getDocumentsAssigned,
 	getDocumentsList,
+	getDocumentsListIndexing,
 } from "actions/DocumentAction";
 import ModalDetach from "./ModalDettach";
 import ModalAddReference from "../../DocumentPage/ModalAddReference";
@@ -32,6 +33,27 @@ const AssignDocToFolder = props => {
 	const [modalDettach, setModalShowDettach] = useState(false);
 	const [modalShowReference, setModalShowReference] = useState(false);
 	const documents = useSelector(selectDocuemnts);
+
+	console.log("cart >>>", cartStash);
+
+	const addCart = async id => {
+		checkCart(id);
+		dispatch(await AddCartAssign(id));
+	};
+
+	const checkCart = id => {
+		if (cart) {
+			const checkCart = cart?.Cart.indexOf(String(id));
+		}
+	};
+
+	useEffect(() => {
+		setCart(cartStash);
+	}, []);
+
+	useEffect(() => {
+		setCart(cartStash);
+	}, [cartStash]);
 
 	const FetchData = (page = 1) => {
 		if (
@@ -62,14 +84,6 @@ const AssignDocToFolder = props => {
 		DocumentAssigned();
 	}, []);
 
-	useEffect(() => {
-		setCart(cartStash);
-	}, []);
-
-	useEffect(() => {
-		setCart(cartStash);
-	}, [cartStash]);
-
 	function idExists(id) {
 		return documentNotAssignedFolder.some(function (el) {
 			return el.id === id;
@@ -82,17 +96,6 @@ const AssignDocToFolder = props => {
 	};
 	const onHideDettach = () => {
 		setModalShowDettach(false);
-	};
-
-	const addCart = async id => {
-		checkCart(id);
-		dispatch(await AddCartAssign(id));
-	};
-
-	const checkCart = id => {
-		if (cart) {
-			const checkCart = cart?.Cart.indexOf(String(id));
-		}
 	};
 
 	const onHideReference = () => {
@@ -165,7 +168,7 @@ const AssignDocToFolder = props => {
 			title: "No Document",
 			prop: "no",
 			cellProps: {
-				style: { width: "20%" },
+				style: { width: "30%" },
 			},
 			cell: row => {
 				return row?.no ? row?.no : "-";
@@ -175,7 +178,7 @@ const AssignDocToFolder = props => {
 			title: "No Digital",
 			prop: "no_digital",
 			cellProps: {
-				style: { width: "15%" },
+				style: { width: "10%" },
 			},
 			cell: row => {
 				return row?.no_digital ? row?.no_digital : "-";
@@ -236,8 +239,8 @@ const AssignDocToFolder = props => {
 								<i className="fas fa-box-check"></i>
 							</span>
 						</span>
-						<h5 className="text ff-1-bd mr-3">{cart.numberCart}</h5>
-						<p className="p-lg">Box dipilih</p>
+						<h5 className="text ff-1-bd mr-3">{cartStash.NumberCartAssign}</h5>
+						<p className="p-lg">Document dipilih</p>
 					</div>
 					<span
 						className="ph-2 h-12 bd-rs-6 d-flex ai-center jc-center bg-success-1 ml-a cur-p"

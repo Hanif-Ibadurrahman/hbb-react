@@ -1,19 +1,15 @@
-import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
+import { Form, Modal, Button } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 import { useDispatch, useSelector } from "react-redux";
-import {
-	DeleteCartAssign,
-	DettachDocumentToFolder,
-} from "actions/IndexingAction";
 import { AssignDocumentToFolderInterfaceState } from "store/Types/IndexingTypes";
 import {
 	selectAssignToFolder,
 	selectindexings,
 } from "store/Selector/IndexingSelector";
-import { assignToFolder, detachDocumentFromFolder } from "api/indexing";
+import { detachDocumentFromFolder } from "api/indexing";
 import { getDocumentDetail } from "actions/DocumentAction";
 import { DocumentInterfaceState } from "store/Types/DocumentTypes";
 import { selectDocument } from "store/Selector/DocumentSelector";

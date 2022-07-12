@@ -22,8 +22,6 @@ const ModalAssign = props => {
 	const [alertMessage, setAlertMessage] = useState("");
 	const [varianAlert, setVarianAlert] = useState("");
 	const folder = useSelector(selectFolders);
-	const documentAssigned = useSelector(selectDocuemntsAssigned);
-	const documentNotAssignedFolder = documentAssigned.DocumentAssigned;
 	const FetchData = (page = 1) => {
 		dispatch(getFoldersNotPage(page));
 	};

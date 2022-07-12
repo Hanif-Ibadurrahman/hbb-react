@@ -46,6 +46,17 @@ export const getAllNotPage = async params => {
 		});
 };
 
+export const getAllFolderNotAssigned = async params => {
+	return api
+		.get(`/folders?per_page=999999999&is_assigned=false`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
 export const filterFolders = async (data: FolderInterfaceState) => {
 	let filter = {
 		no: data.no,

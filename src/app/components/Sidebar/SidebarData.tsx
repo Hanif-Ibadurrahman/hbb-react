@@ -181,6 +181,11 @@ export const ArchiverMasterData = [
 		icon: "",
 		link: "/AssignDocToFolder",
 	},
+	{
+		title: "Folder - Box",
+		icon: "",
+		link: "/AssignFolderToBox",
+	},
 ];
 
 export const CustomerMasterData = [

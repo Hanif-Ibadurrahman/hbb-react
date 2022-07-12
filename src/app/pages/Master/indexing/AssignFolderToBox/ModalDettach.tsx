@@ -1,31 +1,23 @@
-import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
+import { Form, Modal, Button } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 import { useDispatch, useSelector } from "react-redux";
-import {
-	DeleteCartAssign,
-	DettachDocumentToFolder,
-} from "actions/IndexingAction";
-import { AssignDocumentToFolderInterfaceState } from "store/Types/IndexingTypes";
-import {
-	selectAssignToFolder,
-	selectindexings,
-} from "store/Selector/IndexingSelector";
-import { assignToFolder, detachDocumentFromFolder } from "api/indexing";
+import { AssignFolderToBoxInterfaceState } from "store/Types/IndexingTypes";
+import { selectAssignToBox } from "store/Selector/IndexingSelector";
+import { detachFolderFromBox } from "api/indexing";
 import { getDocumentDetail } from "actions/DocumentAction";
-import { DocumentInterfaceState } from "store/Types/DocumentTypes";
-import { selectDocument } from "store/Selector/DocumentSelector";
+import { FolderInterfaceState } from "store/Types/FolderTypes";
+import { selectFolder } from "store/Selector/FolderSelector";
 
 const ModalDettach = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setAlertMessage] = useState("");
 	const [varianAlert, setVarianAlert] = useState("");
-	const document: DocumentInterfaceState = useSelector(selectDocument);
-	const assignDocumentToFolder: AssignDocumentToFolderInterfaceState =
-		useSelector(selectAssignToFolder);
-	const cart = useSelector(selectindexings);
+	const folder: FolderInterfaceState = useSelector(selectFolder);
+	const assignDocumentToBox: AssignFolderToBoxInterfaceState =
+		useSelector(selectAssignToBox);
 
 	const dispatch = useDispatch();
 
@@ -58,13 +50,13 @@ const ModalDettach = props => {
 				{" "}
 				<Formik
 					validationSchema={validationSchema}
-					initialValues={assignDocumentToFolder}
+					initialValues={assignDocumentToBox}
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							values.id = document.folder.id;
-							values.document_codes = props.folder_id;
-							const res = await detachDocumentFromFolder(values);
+							values.id = folder.box.id;
+							values.folder_codes = props.box_id;
+							const res = await detachFolderFromBox(values);
 							if (res.status === 200) {
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);

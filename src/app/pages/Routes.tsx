@@ -79,6 +79,7 @@ import StaffPage from "./Master/StaffPage";
 import IndexingPage from "./Master/indexing";
 import DetailIndexingPage from "./Master/indexing/Detail";
 import AssignDocToFolder from "./Master/indexing/AssignDocToFolder";
+import AssignFolderToBox from "./Master/indexing/AssignFolderToBox";
 // -=-=-=-=-=-
 
 // CUSTOMER
@@ -156,6 +157,10 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/AssignDocToFolder"}
 							component={AssignDocToFolder}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/AssignFolderToBox"}
+							component={AssignFolderToBox}
 						/>
 						{/*---------- INDEXING - - - END ---------*/}
 
