@@ -39,6 +39,7 @@ export interface FolderInterfaceState {
 export interface FoldersInterfaceState {
 	Folder: FolderInterfaceState;
 	Folders: FolderInterfaceState[];
+	FolderAssigned: FolderInterfaceState[];
 	ErrorFolder?: string;
 	Title: string;
 	Meta: PaginationState;

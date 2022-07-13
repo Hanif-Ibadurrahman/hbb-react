@@ -383,16 +383,30 @@ export function Sidebar() {
 				>
 					{""} Dokumen
 				</MenuItem>
-				<MenuItem
-					id={window.location.pathname === "/Indexing" ? "active" : ""}
-					className=" pos-r"
-					icon={<img src={IconUI} className="h-5" alt="awSnap" />}
-					onClick={() => {
-						window.location.pathname = "/Indexing";
-					}}
+				<SubMenu
+					className=""
+					icon={<img src={IconAdvanced} className="h-5" alt="awSnap" />}
+					title="Berkas"
 				>
-					{""} Indexing
-				</MenuItem>
+					{ArchiverMasterData.map((val, key) => {
+						return (
+							<MenuItem
+								id={
+									window.location.pathname.split(val.link).pop() ? "" : "active"
+								}
+								className="pos-r"
+								icon={<img src={val.icon} className="h-5" alt="awSnap" />}
+								key={key}
+								onClick={() => {
+									window.location.pathname = val.link;
+								}}
+							>
+								{""}
+								{val.title}
+							</MenuItem>
+						);
+					})}
+				</SubMenu>
 			</>
 		);
 	};

@@ -78,6 +78,8 @@ import StaffPage from "./Master/StaffPage";
 // # - INDEXING
 import IndexingPage from "./Master/indexing";
 import DetailIndexingPage from "./Master/indexing/Detail";
+import AssignDocToFolder from "./Master/indexing/AssignDocToFolder";
+import AssignFolderToBox from "./Master/indexing/AssignFolderToBox";
 // -=-=-=-=-=-
 
 // CUSTOMER
@@ -139,12 +141,28 @@ export function Routes() {
 						/>
 						{/*---------- ACTIVITY LOG - - - END ---------*/}
 
-						{/*---------- INDEXING DELETE ---------*/}
+						{/*---------- INDEXING ---------*/}
+						<Route
+							path={process.env.PUBLIC_URL + "/Indexing"}
+							component={IndexingPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/IndexingDetail/:id"}
+							component={DetailIndexingPage}
+						/>
 						<Route
 							path={process.env.PUBLIC_URL + "/Indexing-Delete"}
 							component={IndexingDelete}
 						/>
-						{/*---------- INDEXING DELETE - - - END ---------*/}
+						<Route
+							path={process.env.PUBLIC_URL + "/AssignDocToFolder"}
+							component={AssignDocToFolder}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/AssignFolderToBox"}
+							component={AssignFolderToBox}
+						/>
+						{/*---------- INDEXING - - - END ---------*/}
 
 						{/*---------- APPROVAL ---------*/}
 						<Route
@@ -177,10 +195,6 @@ export function Routes() {
 						{/*---------- MASTER ---------*/}
 						<Route path={process.env.PUBLIC_URL + "/Box"} component={BoxPage} />
 						<Route path={process.env.PUBLIC_URL + "/Car"} component={CarPage} />
-						<Route
-							path={process.env.PUBLIC_URL + "/Indexing"}
-							component={IndexingPage}
-						/>
 						<Route
 							path={process.env.PUBLIC_URL + "/Car-Detail/:id"}
 							component={CarPageDetail}
@@ -264,14 +278,6 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/StaffPage"}
 							component={StaffPage}
-						/>
-						<Route
-							path={process.env.PUBLIC_URL + "/Indexing"}
-							component={IndexingPage}
-						/>
-						<Route
-							path={process.env.PUBLIC_URL + "/IndexingDetail/:id"}
-							component={DetailIndexingPage}
 						/>
 						{/*---------- MASTER - - - END ---------*/}
 						{/*--------- ADMIN CSR ---------*/}

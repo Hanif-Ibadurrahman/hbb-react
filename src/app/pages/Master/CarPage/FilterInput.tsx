@@ -2,38 +2,46 @@ import React from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { FolderInterfaceState } from "store/Types/FolderTypes";
-import { SearchFolders } from "actions/FolderAction";
-import { selectFolder } from "store/Selector/FolderSelector";
+import { selectCar } from "store/Selector/CarSelector";
+import { CarInterfaceState } from "store/Types/CarTypes";
+import { SearchCar } from "actions/CarAction";
 
-export function SearchInput() {
+export function SearchInput(props) {
 	const dispatch = useDispatch();
-	const folder: FolderInterfaceState = useSelector(selectFolder);
+	const car: CarInterfaceState = useSelector(selectCar);
 
 	return (
 		<>
 			<Formik
 				validationSchema={false}
-				initialValues={folder}
+				initialValues={car}
 				enableReinitialize={true}
 				onSubmit={async values => {
 					try {
-						const res = await SearchFolders(values);
+						const res = await SearchCar(values);
 						await dispatch(res);
 					} catch (e) {
 						console.log("error");
 					}
 				}}
 			>
-				{({ values, handleChange, handleSubmit, isSubmitting }) => (
+				{({
+					values,
+					errors,
+					touched,
+					handleChange,
+					handleBlur,
+					handleSubmit,
+					isSubmitting,
+				}) => (
 					<Form onSubmit={handleSubmit} className="right">
 						<Container className="d-flex">
 							<Form.Group>
 								<Form.Control
 									type="text"
-									name="no"
-									placeholder="cari no folder"
-									value={values.no}
+									name="license_plate"
+									placeholder="cari kode kendaraan"
+									value={values.license_plate}
 									onChange={e => {
 										handleChange(e);
 									}}

@@ -17,6 +17,8 @@ import {
 	PUT_DETTACH_DOCUMENT_FROM_FOLDER,
 	PUT_INDEXING_DOCUMENT,
 	GET_INDEXING_RETENTION,
+	PUT_ASSIGN_FOLDER_TO_BOX,
+	PUT_DETTACH_FOLDER_FROM_BOX,
 } from "../../actions/IndexingAction";
 import { IndexingsInterfaceState } from "../Types/IndexingTypes";
 export const initialState: IndexingsInterfaceState = {
@@ -174,6 +176,63 @@ export const initialState: IndexingsInterfaceState = {
 			],
 		},
 	},
+	AssignFolderToBox: {
+		id: "",
+		folder_codes: [],
+		id_box: {
+			id: "",
+			code_box: "",
+			sign_code: "",
+			status: "",
+			location: "",
+			created_at: "",
+			custom_code_box: "",
+			division: {
+				id: "",
+				code: "",
+				name: "",
+			},
+			folders: [
+				{
+					id: "",
+					no: "",
+					sign_code: "",
+					status: "",
+					location: "",
+				},
+			],
+			cabinet_slot: {
+				id: "",
+				capacity: 0,
+				code: "",
+				column: "",
+				name: "",
+				row: 0,
+				sign_code: "",
+			},
+			company: {
+				id: "",
+				code: "",
+				name: "",
+				location: "",
+				longitude: "",
+				latitude: "",
+				person_responsible: "",
+				npwp: "",
+				email: "",
+				phone: "",
+				address: "",
+				amount_access: "",
+				service_type: [
+					{
+						type: "box",
+						value: true,
+					},
+				],
+				is_agree: true,
+			},
+		},
+	},
 	Cart: [],
 	numberCart: 0,
 	CartAssign: [],
@@ -291,6 +350,16 @@ export default (
 			return {
 				...state,
 				AssignDocumentToFolder: payload?.data?.data,
+			};
+		case PUT_ASSIGN_FOLDER_TO_BOX:
+			return {
+				...state,
+				AssignFolderToBox: payload?.data?.data,
+			};
+		case PUT_DETTACH_FOLDER_FROM_BOX:
+			return {
+				...state,
+				AssignFolderToBox: payload?.data?.data,
 			};
 		case UPDATE_INDEX:
 			return {

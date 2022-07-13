@@ -3,35 +3,58 @@ import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
 import DropdownAction from "app/pages/Master/Components/DropdownAction";
-import { Pagination } from "app/components/Pagination";
-import { AddCart } from "actions/IndexingAction";
+import { AddCartAssign } from "actions/IndexingAction";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import ModalForm from "./ModalForm";
-import ModalDetach from "../AssignDocToFolder/ModalDettach";
-import "./page.scoped.scss";
-import _ from "lodash";
+import ModalForm from "./ModalAssign";
+import { selectDocuemnts } from "store/Selector/DocumentSelector";
 import {
-	selectDocuemnts,
-	selectDocuemntsAssigned,
-} from "store/Selector/DocumentSelector";
-import {
+	filterData,
 	getDocumentsAssigned,
-	getDocumentsListIndexing,
+	getDocumentsList,
 } from "actions/DocumentAction";
-import PageHeader from "../../Components/PageHeader";
-import { ModalFilter } from "../../DocumentPage/ModalFilter";
-import ModalAddReference from "../../DocumentPage/ModalAddReference";
+import ModalDetach from "./ModalDettach";
+import { Pagination } from "app/components/Pagination";
+import { selectFoldersAssigned } from "store/Selector/FolderSelector";
+import { SearchInput } from "../../FolderPage/FilterInput";
 
-const TableIndexingPage = () => {
+const AssignFolderToBox = () => {
 	const [modalShow, setModalShow] = useState(false);
-	const [modalDettach, setModalShowDettach] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
-	const [folderId, setFolderId] = useState("");
-	const documentList = useSelector(selectDocuemnts);
-	const documentAssigned = useSelector(selectDocuemntsAssigned);
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
-	const documentNoAssigned = documentAssigned.DocumentAssigned;
-	const [modalShowReference, setModalShowReference] = useState(false);
+	const folderNotAssigned = useSelector(selectFoldersAssigned);
+	const folderNotAssignedtoBox = folderNotAssigned.FolderAssigned;
+	const [boxId, setBoxId] = useState("");
+	const [modalDettach, setModalShowDettach] = useState(false);
+	const documents = useSelector(selectDocuemnts);
+
+	const FetchData = (page = 1) => {
+		if (
+			documents.Document.no === "" ||
+			documents.Document.detail === "" ||
+			documents.Document.active_year_for === 0 ||
+			documents.Document.level_progress === "" ||
+			documents.Document.media_storage === "" ||
+			documents.Document.condition === "" ||
+			documents.Document.description === "" ||
+			documents.Document.status === ""
+		) {
+			dispatch(getDocumentsList(page));
+		} else {
+			dispatch(filterData);
+		}
+	};
+
+	useEffect(() => {
+		FetchData();
+	}, []);
+
+	const DocumentAssigned = (page = 1) => {
+		dispatch(getDocumentsAssigned(page));
+	};
+
+	useEffect(() => {
+		DocumentAssigned();
+	}, []);
 
 	useEffect(() => {
 		setCart(cartStash);
@@ -41,54 +64,38 @@ const TableIndexingPage = () => {
 		setCart(cartStash);
 	}, [cartStash]);
 
-	const dispatch = useDispatch();
-
-	const FetchData = (page = 1) => {
-		dispatch(getDocumentsListIndexing(page));
-	};
-
-	const DocumentAssigned = (page = 1) => {
-		dispatch(getDocumentsAssigned(page));
-	};
-
-	useEffect(() => {
-		FetchData();
-	}, []);
-
-	useEffect(() => {
-		DocumentAssigned();
-	}, []);
-
 	function idExists(id) {
-		return documentNoAssigned.some(function (el) {
+		return folderNotAssignedtoBox.some(function (el) {
 			return el.id === id;
 		});
 	}
+	const dispatch = useDispatch();
 
-	const onHide = () => {
+	const _onHide = () => {
 		setModalShow(false);
 	};
-
 	const onHideDettach = () => {
 		setModalShowDettach(false);
 	};
 
 	const addCart = async id => {
 		checkCart(id);
-		dispatch(await AddCart(id));
+		dispatch(await AddCartAssign(id));
 	};
 
 	const checkCart = id => {
 		if (cart) {
-			const checkCart = cart?.Cart.indexOf(String(id));
+			return cart?.Cart.indexOf(String(id));
 		}
 	};
 
-	const onHideReference = () => {
-		setModalShowReference(false);
-	};
-
 	const action = id => [
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "Document-Detail/" + id,
+			type: 1,
+		},
 		{
 			icon: "fa-hand-holding-box",
 			title: "Pilih",
@@ -99,6 +106,9 @@ const TableIndexingPage = () => {
 			row: id,
 			type: 2,
 		},
+	];
+
+	const actionDetach = id => [
 		{
 			icon: "fa-search",
 			title: "Detail",
@@ -106,84 +116,40 @@ const TableIndexingPage = () => {
 			type: 1,
 		},
 		{
-			icon: "fa-edit",
-			title: "Lampirkan File",
-			type: 2,
-			onclick: () => {
-				setFolderId(id);
-				setModalShowReference(true);
-			},
-			dispatch: dispatch,
-			row: id,
-		},
-	];
-
-	const actionDetach = id => [
-		{
 			icon: "fa-hand-holding-box",
 			title: "Remove Folder",
 			onclick: () => {
-				setFolderId(id);
+				setBoxId(id);
 				setModalShowDettach(true);
 			},
 			dispatch: dispatch,
 			row: id,
 			type: 2,
 		},
-		{
-			icon: "fa-search",
-			title: "Detail",
-			url: "Document-Detail/" + id,
-			type: 1,
-		},
-		{
-			icon: "fa-edit",
-			title: "Lampirkan File",
-			type: 2,
-			onclick: () => {
-				setFolderId(id);
-				setModalShowReference(true);
-			},
-			dispatch: dispatch,
-			row: id,
-		},
 	];
 
 	const header = [
 		{
-			title: "No Document",
+			title: "No Folder",
 			prop: "no",
-			cellProps: {
-				style: { width: "40%" },
-			},
-			cell: row => {
-				return row?.no ? row?.no : "-";
-			},
-		},
-		{
-			title: "No Digital",
-			prop: "no_digital",
-			cellProps: {
-				style: { width: "20%" },
-			},
-			cell: row => {
-				return row?.no_digital ? row?.no_digital : "-";
-			},
-		},
-		{
-			title: "Kondisi",
-			prop: "condition",
 			sortable: true,
 			cellProps: {
-				style: { width: "20%" },
+				style: { width: "40%" },
 			},
 			headerCell: () => {
 				return (
 					<div className="cur-p">
-						{`Kondisi`}
+						{`No Folder`}
 						<i className="fas fa-sort-alt ml-2"></i>
 					</div>
 				);
+			},
+		},
+		{
+			title: "Status Folder",
+			prop: "status",
+			cellProps: {
+				style: { width: "40%" },
 			},
 		},
 		{
@@ -208,7 +174,7 @@ const TableIndexingPage = () => {
 	function Cart(): JSX.Element {
 		return (
 			<>
-				<div className="ph-4 pv-4 bg-dark-contrast bd-tl-rs-4 bd-tr-rs-4 d-flex cart-indexing">
+				<div className="ph-4 pv-4 bg-dark-contrast bd-tl-rs-4 bd-tr-rs-4 d-flex cart-popup">
 					<div className="d-flex ai-center">
 						<span className="h-12 w-12 bd-rs-6 d-flex ai-center jc-center bg-light-shade mr-6">
 							<span
@@ -219,13 +185,13 @@ const TableIndexingPage = () => {
 							</span>
 						</span>
 						<h5 className="text ff-1-bd mr-3">{cart.numberCart}</h5>
-						<p className="p-lg">Document dipilih</p>
+						<p className="p-lg">Folder dipilih</p>
 					</div>
 					<span
 						className="ph-2 h-12 bd-rs-6 d-flex ai-center jc-center bg-success-1 ml-a cur-p"
 						onClick={() => setModalShow(true)}
 					>
-						<span className="text p-lg mh-2 tc-success-5">Indexing</span>
+						<span className="text p-lg mh-2 tc-success-5">Proses</span>
 						<span
 							className="icon h-9 w-9 bd-rs-6 d-flex ai-center jc-center bg-success-5"
 							style={{ marginTop: -3 }}
@@ -241,13 +207,13 @@ const TableIndexingPage = () => {
 	return (
 		<>
 			<Helmet>
-				<title>Dox - Indexing</title>
+				<title>Dox - Assign Document To Folder</title>
 				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<ModalForm
 					modal={modalShow}
-					hide={onHide}
+					hide={_onHide}
 					modalSet={setModalShow}
 					valueModalSet={false}
 				/>
@@ -256,30 +222,29 @@ const TableIndexingPage = () => {
 					hide={onHideDettach}
 					modalSet={setModalShowDettach}
 					valueModalSet={false}
-					folder_id={folderId}
+					box_id={boxId}
 				/>
-				<ModalAddReference
-					modal={modalShowReference}
-					hide={onHideReference}
-					modalSet={setModalShowReference}
-					valueModalSet={false}
-					folder_id={folderId}
+				<div
+					style={{
+						marginBottom: 20,
+						display: "flex",
+						justifyContent: "flex-end",
+					}}
+				>
+					<SearchInput />
+				</div>
+				<DataTable
+					tableHeader={header}
+					tableBody={documents.Documents ? documents.Documents : []}
 				/>
-				<div className="d-flex jc-between w-100% mb-4">
-					<h6>List Document belum terindexing</h6>
-					<Cart />
-				</div>
-				<div style={{ marginBottom: 20 }}>
-					<ModalFilter />
-				</div>
-				<DataTable tableHeader={header} tableBody={documentList?.Documents} />
 				<Pagination
-					pageCount={documentList?.Meta?.last_page}
+					pageCount={documents.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
+				<Cart />
 			</PageWrapper>
 		</>
 	);
 };
 
-export default TableIndexingPage;
+export default AssignFolderToBox;
