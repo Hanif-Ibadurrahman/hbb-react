@@ -31,7 +31,7 @@ const RequestHistory = () => {
 		{
 			icon: "fa-edit",
 			title: "Surat Jalan",
-			url: "/Customer/DeliveryNote/",
+			url: "/Customer/DeliveryNote/" + id,
 			type: 1,
 		},
 	];

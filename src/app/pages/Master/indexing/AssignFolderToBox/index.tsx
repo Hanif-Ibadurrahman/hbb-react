@@ -117,7 +117,7 @@ const AssignFolderToBox = () => {
 		},
 		{
 			icon: "fa-hand-holding-box",
-			title: "Remove Folder",
+			title: "Remove Box",
 			onclick: () => {
 				setBoxId(id);
 				setModalShowDettach(true);
