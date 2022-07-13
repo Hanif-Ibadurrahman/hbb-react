@@ -6,54 +6,35 @@ import DropdownAction from "app/pages/Master/Components/DropdownAction";
 import { AddCartAssign } from "actions/IndexingAction";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import ModalForm from "./ModalAssign";
-import { selectDocuemnts } from "store/Selector/DocumentSelector";
-import {
-	filterData,
-	getDocumentsAssigned,
-	getDocumentsList,
-} from "actions/DocumentAction";
 import ModalDetach from "./ModalDettach";
 import { Pagination } from "app/components/Pagination";
-import { selectFoldersAssigned } from "store/Selector/FolderSelector";
+import {
+	selectFolders,
+	selectFoldersAssigned,
+} from "store/Selector/FolderSelector";
 import { SearchInput } from "../../FolderPage/FilterInput";
+import {
+	getFoldersList,
+	getFoldersListNotAssign,
+	SearchFolders,
+} from "actions/FolderAction";
 
 const AssignFolderToBox = () => {
 	const [modalShow, setModalShow] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
 	const folderNotAssigned = useSelector(selectFoldersAssigned);
-	const folderNotAssignedtoBox = folderNotAssigned.FolderAssigned;
+	const folderNotAssignedtoBox = folderNotAssigned?.FolderAssigned;
 	const [boxId, setBoxId] = useState("");
 	const [modalDettach, setModalShowDettach] = useState(false);
-	const documents = useSelector(selectDocuemnts);
+	const folders = useSelector(selectFolders);
 
-	const FetchData = (page = 1) => {
-		if (
-			documents.Document.no === "" ||
-			documents.Document.detail === "" ||
-			documents.Document.active_year_for === 0 ||
-			documents.Document.level_progress === "" ||
-			documents.Document.media_storage === "" ||
-			documents.Document.condition === "" ||
-			documents.Document.description === "" ||
-			documents.Document.status === ""
-		) {
-			dispatch(getDocumentsList(page));
-		} else {
-			dispatch(filterData);
-		}
+	const FolderNoAssigned = (page = 1) => {
+		dispatch(getFoldersListNotAssign(page));
 	};
 
 	useEffect(() => {
-		FetchData();
-	}, []);
-
-	const DocumentAssigned = (page = 1) => {
-		dispatch(getDocumentsAssigned(page));
-	};
-
-	useEffect(() => {
-		DocumentAssigned();
+		FolderNoAssigned();
 	}, []);
 
 	useEffect(() => {
@@ -63,6 +44,14 @@ const AssignFolderToBox = () => {
 	useEffect(() => {
 		setCart(cartStash);
 	}, [cartStash]);
+
+	const FetchData = (page = 1) => {
+		dispatch(getFoldersList(page));
+	};
+
+	useEffect(() => {
+		FetchData();
+	}, []);
 
 	function idExists(id) {
 		return folderNotAssignedtoBox.some(function (el) {
@@ -93,7 +82,7 @@ const AssignFolderToBox = () => {
 		{
 			icon: "fa-search",
 			title: "Detail",
-			url: "Document-Detail/" + id,
+			url: "Folder-Detail/" + id,
 			type: 1,
 		},
 		{
@@ -112,7 +101,7 @@ const AssignFolderToBox = () => {
 		{
 			icon: "fa-search",
 			title: "Detail",
-			url: "Document-Detail/" + id,
+			url: "Folder-Detail/" + id,
 			type: 1,
 		},
 		{
@@ -132,17 +121,8 @@ const AssignFolderToBox = () => {
 		{
 			title: "No Folder",
 			prop: "no",
-			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
-			},
-			headerCell: () => {
-				return (
-					<div className="cur-p">
-						{`No Folder`}
-						<i className="fas fa-sort-alt ml-2"></i>
-					</div>
-				);
 			},
 		},
 		{
@@ -184,7 +164,7 @@ const AssignFolderToBox = () => {
 								<i className="fas fa-box-check"></i>
 							</span>
 						</span>
-						<h5 className="text ff-1-bd mr-3">{cart.numberCart}</h5>
+						<h5 className="text ff-1-bd mr-3">{cartStash.NumberCartAssign}</h5>
 						<p className="p-lg">Folder dipilih</p>
 					</div>
 					<span
@@ -203,6 +183,8 @@ const AssignFolderToBox = () => {
 			</>
 		);
 	}
+
+	console.log("paginaation >>>", folders?.Meta);
 
 	return (
 		<>
@@ -235,10 +217,10 @@ const AssignFolderToBox = () => {
 				</div>
 				<DataTable
 					tableHeader={header}
-					tableBody={documents.Documents ? documents.Documents : []}
+					tableBody={folders.Folders ? folders.Folders : []}
 				/>
 				<Pagination
-					pageCount={documents.Meta.last_page || 1}
+					pageCount={folders?.Meta?.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 				<Cart />
