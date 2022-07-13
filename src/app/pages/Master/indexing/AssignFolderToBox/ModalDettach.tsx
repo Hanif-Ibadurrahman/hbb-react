@@ -7,9 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { AssignFolderToBoxInterfaceState } from "store/Types/IndexingTypes";
 import { selectAssignToBox } from "store/Selector/IndexingSelector";
 import { detachFolderFromBox } from "api/indexing";
-import { getDocumentDetail } from "actions/DocumentAction";
 import { FolderInterfaceState } from "store/Types/FolderTypes";
 import { selectFolder } from "store/Selector/FolderSelector";
+import { getFolderDetail } from "actions/FolderAction";
 
 const ModalDettach = props => {
 	const [showAlert, setShowAlert] = useState(false);
@@ -24,8 +24,8 @@ const ModalDettach = props => {
 	const validationSchema = Yup.object().shape({});
 
 	useEffect(() => {
-		dispatch(getDocumentDetail(props.folder_id));
-	}, [props.folder_id]);
+		dispatch(getFolderDetail(props.box_id));
+	}, [props.box_id]);
 
 	return (
 		<>
@@ -54,8 +54,8 @@ const ModalDettach = props => {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							values.id = folder.box.id;
-							values.folder_codes = props.box_id;
+							values.id = folder?.box?.id;
+							values.folder_codes = props?.box_id;
 							const res = await detachFolderFromBox(values);
 							if (res.status === 200) {
 								props.modalSet(props.valueModalSet);
@@ -80,20 +80,11 @@ const ModalDettach = props => {
 						}
 					}}
 				>
-					{({
-						values,
-						errors,
-						touched,
-						handleChange,
-						handleBlur,
-						setFieldValue,
-						handleSubmit,
-						isSubmitting,
-					}) => (
+					{({ handleSubmit, isSubmitting }) => (
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<div className="p-lg">
-									Apakah anda yakin mengeluarkan document dari folder?
+									Apakah anda yakin mengeluarkan Folder dari Box?
 								</div>
 							</Modal.Header>
 							<Modal.Footer>

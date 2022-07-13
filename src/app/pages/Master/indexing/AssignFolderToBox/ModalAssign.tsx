@@ -139,21 +139,21 @@ const ModalAssign = props => {
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Box</Form.Label>
 												<Autocomplete
-													id="folder"
+													id="box"
 													options={boxes.Boxes}
 													getOptionLabel={option => option.code_box}
 													value={values?.id_box}
 													onChange={(e, value) => {
 														setFieldValue(
-															"id_folder",
+															"id_box",
 															value !== null ? value : values.id_box,
 														);
 													}}
 													renderInput={params => (
 														<TextField
 															margin="normal"
-															placeholder="Folder"
-															name="id_folder"
+															placeholder="Box"
+															name="id_box"
 															{...params}
 														/>
 													)}

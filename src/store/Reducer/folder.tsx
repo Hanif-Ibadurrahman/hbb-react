@@ -85,9 +85,10 @@ export default (
 				Folder: payload,
 			};
 		case GET_FOLDERS_LIST:
+			console.log("payload >>>", payload);
 			return {
 				...state,
-				Folders: payload.data,
+				Folders: payload?.data,
 				Meta: {
 					last_page: payload?.meta?.last_page,
 					current_page: payload?.meta?.current_page,
@@ -99,7 +100,7 @@ export default (
 		case GET_FOLDERS_NOT_ASSIGNED:
 			return {
 				...state,
-				Folders: payload.data,
+				FolderAssigned: payload?.data,
 				Meta: {
 					last_page: payload?.meta?.last_page,
 					current_page: payload?.meta?.current_page,

@@ -59,7 +59,7 @@ export function App() {
 							component={PrintBoxPerpage}
 						/>
 						<Route
-							path={process.env.PUBLIC_URL + "/Customer/DeliveryNote"}
+							path={process.env.PUBLIC_URL + "/Customer/DeliveryNote/:id"}
 							component={DeliveryNote}
 						/>
 						<Route

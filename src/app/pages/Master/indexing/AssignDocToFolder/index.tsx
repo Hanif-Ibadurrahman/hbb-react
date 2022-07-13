@@ -33,8 +33,6 @@ const AssignDocToFolder = () => {
 	const [modalShowReference, setModalShowReference] = useState(false);
 	const documents = useSelector(selectDocuemnts);
 
-	console.log("cart >>>", cartStash);
-
 	const addCart = async id => {
 		checkCart(id);
 		dispatch(await AddCartAssign(id));

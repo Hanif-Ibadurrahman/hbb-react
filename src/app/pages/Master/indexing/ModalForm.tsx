@@ -265,7 +265,7 @@ const ModalForm = props => {
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
+											{/* <Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Box</Form.Label>
 												<Autocomplete
 													id="company"
@@ -290,7 +290,7 @@ const ModalForm = props => {
 												{touched.box && errors.box ? (
 													<p className="tc-danger-5 pos-a p-sm">{errors.box}</p>
 												) : null}
-											</Form.Group>
+											</Form.Group> */}
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Periode Retensi</Form.Label>
 												<Form.Control
