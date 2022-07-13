@@ -15,7 +15,6 @@ import {
 	filterData,
 	getDocumentsAssigned,
 	getDocumentsList,
-	getDocumentsListIndexing,
 } from "actions/DocumentAction";
 import ModalDetach from "./ModalDettach";
 import ModalAddReference from "../../DocumentPage/ModalAddReference";
@@ -23,7 +22,7 @@ import { getDocumentFile } from "api/downloadDatabase";
 import { ModalFilter } from "../../DocumentPage/ModalFilter";
 import { Pagination } from "app/components/Pagination";
 
-const AssignDocToFolder = props => {
+const AssignDocToFolder = () => {
 	const [modalShow, setModalShow] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
@@ -43,7 +42,7 @@ const AssignDocToFolder = props => {
 
 	const checkCart = id => {
 		if (cart) {
-			const checkCart = cart?.Cart.indexOf(String(id));
+			return cart?.Cart.indexOf(String(id));
 		}
 	};
 

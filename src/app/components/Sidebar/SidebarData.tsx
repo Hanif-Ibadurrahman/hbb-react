@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
 import { useDispatch, useSelector } from "react-redux";
 import { getRequestBoxesList } from "actions/RequestBoxAction";

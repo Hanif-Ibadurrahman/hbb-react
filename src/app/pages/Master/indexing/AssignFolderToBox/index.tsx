@@ -6,7 +6,6 @@ import DropdownAction from "app/pages/Master/Components/DropdownAction";
 import { AddCartAssign } from "actions/IndexingAction";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import ModalForm from "./ModalAssign";
-import _ from "lodash";
 import { selectDocuemnts } from "store/Selector/DocumentSelector";
 import {
 	filterData,
@@ -14,20 +13,18 @@ import {
 	getDocumentsList,
 } from "actions/DocumentAction";
 import ModalDetach from "./ModalDettach";
-import ModalAddReference from "../../DocumentPage/ModalAddReference";
-import { ModalFilter } from "../../DocumentPage/ModalFilter";
 import { Pagination } from "app/components/Pagination";
 import { selectFoldersAssigned } from "store/Selector/FolderSelector";
+import { SearchInput } from "../../FolderPage/FilterInput";
 
-const AssignFolderToBox = props => {
+const AssignFolderToBox = () => {
 	const [modalShow, setModalShow] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
 	const folderNotAssigned = useSelector(selectFoldersAssigned);
 	const folderNotAssignedtoBox = folderNotAssigned.FolderAssigned;
-	const [folderId, setFolderId] = useState("");
+	const [boxId, setBoxId] = useState("");
 	const [modalDettach, setModalShowDettach] = useState(false);
-	const [modalShowReference, setModalShowReference] = useState(false);
 	const documents = useSelector(selectDocuemnts);
 
 	const FetchData = (page = 1) => {
@@ -88,12 +85,8 @@ const AssignFolderToBox = props => {
 
 	const checkCart = id => {
 		if (cart) {
-			const checkCart = cart?.Cart.indexOf(String(id));
+			return cart?.Cart.indexOf(String(id));
 		}
-	};
-
-	const onHideReference = () => {
-		setModalShowReference(false);
 	};
 
 	const action = id => [
@@ -113,17 +106,6 @@ const AssignFolderToBox = props => {
 			row: id,
 			type: 2,
 		},
-		{
-			icon: "fa-edit",
-			title: "Lampirkan File",
-			type: 2,
-			onclick: () => {
-				setFolderId(id);
-				setModalShowReference(true);
-			},
-			dispatch: dispatch,
-			row: id,
-		},
 	];
 
 	const actionDetach = id => [
@@ -137,23 +119,12 @@ const AssignFolderToBox = props => {
 			icon: "fa-hand-holding-box",
 			title: "Remove Folder",
 			onclick: () => {
-				setFolderId(id);
+				setBoxId(id);
 				setModalShowDettach(true);
 			},
 			dispatch: dispatch,
 			row: id,
 			type: 2,
-		},
-		{
-			icon: "fa-edit",
-			title: "Lampirkan File",
-			type: 2,
-			onclick: () => {
-				setFolderId(id);
-				setModalShowReference(true);
-			},
-			dispatch: dispatch,
-			row: id,
 		},
 	];
 
@@ -246,19 +217,12 @@ const AssignFolderToBox = props => {
 					modalSet={setModalShow}
 					valueModalSet={false}
 				/>
-				<ModalAddReference
-					modal={modalShowReference}
-					hide={onHideReference}
-					modalSet={setModalShowReference}
-					valueModalSet={false}
-					folder_id={folderId}
-				/>
 				<ModalDetach
 					modal={modalDettach}
 					hide={onHideDettach}
 					modalSet={setModalShowDettach}
 					valueModalSet={false}
-					folder_id={folderId}
+					box_id={boxId}
 				/>
 				<div
 					style={{
@@ -267,7 +231,7 @@ const AssignFolderToBox = props => {
 						justifyContent: "flex-end",
 					}}
 				>
-					<ModalFilter />
+					<SearchInput />
 				</div>
 				<DataTable
 					tableHeader={header}

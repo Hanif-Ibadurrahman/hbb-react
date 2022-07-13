@@ -1,12 +1,12 @@
 import React from "react";
-import { Button, Col, Row, Container, Form } from "react-bootstrap";
+import { Button, Container, Form } from "react-bootstrap";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { FolderInterfaceState } from "store/Types/FolderTypes";
 import { SearchFolders } from "actions/FolderAction";
 import { selectFolder } from "store/Selector/FolderSelector";
 
-export function SearchInput(props) {
+export function SearchInput() {
 	const dispatch = useDispatch();
 	const folder: FolderInterfaceState = useSelector(selectFolder);
 
@@ -25,15 +25,7 @@ export function SearchInput(props) {
 					}
 				}}
 			>
-				{({
-					values,
-					errors,
-					touched,
-					handleChange,
-					handleBlur,
-					handleSubmit,
-					isSubmitting,
-				}) => (
+				{({ values, handleChange, handleSubmit, isSubmitting }) => (
 					<Form onSubmit={handleSubmit} className="right">
 						<Container className="d-flex">
 							<Form.Group>
