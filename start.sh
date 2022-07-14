@@ -8,14 +8,17 @@ echo "Running container in \"$env\" environment. "
 
 if [ "$env" = "production" ]; then
 
+    echo "Running production environment"
     npm run build:production
 
 elif [ "$env" = "local" ]; then
 
+    echo "Running local environment"
     npm run build:local
 
 elif [ "$env" = "development" ]; then
 
+    echo "Running development environment"
     npm run build:development
 
 else
