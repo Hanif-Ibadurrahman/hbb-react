@@ -7,7 +7,10 @@ export const login = async (data: LoginInterfaceState) => {
 		password: data.password,
 		token: data.token,
 		data: data.data,
-		roles: data.data.roles,
+		roles: data.data.roles[0] ? data.data.roles[0] : "",
+		user: data?.data?.user?.staff
+			? data?.data?.user?.staff?.name
+			: data?.data?.user?.username,
 	};
 	return api.post("/login", payload);
 };

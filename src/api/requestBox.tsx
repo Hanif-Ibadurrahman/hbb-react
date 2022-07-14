@@ -129,6 +129,7 @@ export const approval_operation = async (
 		delivery_date: data?.delivery_date,
 		archiver_id: data?.archiver_id?.staff?.id,
 		transporter_id: data?.transporter_id?.staff?.id,
+		car_id: data?.car_id?.id,
 	};
 	console.log("Api Kambing", payload);
 

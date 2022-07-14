@@ -134,11 +134,11 @@ export function Sidebar() {
 					{""} Pengembalian
 				</MenuItem>
 				<MenuItem
-					id={window.location.pathname === "Customer/History" ? "active" : ""}
+					id={window.location.pathname === "/Customer/History" ? "active" : ""}
 					className=" pos-r"
 					icon={<img src={IconTable} className="h-5" alt="awSnap" />}
 					onClick={() => {
-						window.location.pathname = "Customer/History";
+						window.location.pathname = "/Customer/History";
 					}}
 				>
 					{""} Riwayat Permintaan

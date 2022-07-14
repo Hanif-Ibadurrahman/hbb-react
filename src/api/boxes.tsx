@@ -51,7 +51,7 @@ export const filterBoxes = async (data: BoxInterfaceState) => {
 	};
 
 	return api
-		.get(`/boxes?code=${filter.code}`)
+		.get(`/boxes?code_box=${filter.code}`)
 		.then(res => {
 			return res.data;
 		})

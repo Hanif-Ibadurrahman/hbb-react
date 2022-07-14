@@ -1,3 +1,14 @@
+export interface StaffInterface {
+	email: string;
+	firebase_token: string;
+	firebase_token_expired: string;
+	firebase_token_updated: string;
+	id: string;
+	name: string;
+	nik: string;
+	room: string;
+}
+
 export interface LoginInterfaceState {
 	username: string;
 	password: string;
@@ -6,22 +17,17 @@ export interface LoginInterfaceState {
 		type: string;
 	};
 	data: {
-		roles: [];
+		roles: [""];
 		user: {
 			id: string;
 			username: string;
-		}
-	}
+			staff: StaffInterface;
+		};
+	};
 }
-
-// export interface TokenInterface {
-// 	token: []
-// }
-
 export interface LoginsInterfaceState {
 	Login: LoginInterfaceState;
 	user: [];
-	// Token: TokenInterface;
 	ErrorLogin?: string;
 	Title: string;
 }

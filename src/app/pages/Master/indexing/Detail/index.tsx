@@ -70,14 +70,6 @@ const IndexingPageDetail = ({ match }) => {
 								<Form.Control type="text" disabled value={dateRetention} />
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Code Box</Form.Label>
-								<Form.Control
-									type="text"
-									disabled
-									defaultValue={indexing?.box?.code_box}
-								/>
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Area</Form.Label>
 								<Form.Control
 									type="text"

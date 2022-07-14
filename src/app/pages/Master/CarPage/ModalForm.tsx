@@ -137,7 +137,7 @@ const ModalForm = props => {
 												<Form.Control
 													type="text"
 													name="license_plate"
-													placeholder="Kapasitas"
+													placeholder="Nomor Plat"
 													value={values.license_plate}
 													onChange={e => {
 														handleChange(e);

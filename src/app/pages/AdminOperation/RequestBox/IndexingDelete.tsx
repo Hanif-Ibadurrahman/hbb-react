@@ -110,33 +110,43 @@ const IndexingPage = () => {
 				style: { width: "30%" },
 			},
 		},
-		// {
-		// 	title: "Periode Retensi",
-		// 	prop: "retention_period",
-		// 	cellProps: {
-		// 		style: { width: "20%" },
-		// 	},
-		// },
 		{
-			prop: "date_retention",
-			sortable: true,
+			title: "Klasifikasi",
+			prop: "classification",
 			cellProps: {
-				style: { width: "30%" },
-			},
-			filter: moment().format("DD MMMM YY"),
-			headerCell: () => {
-				return (
-					<div className="cur-p">
-						{`Tanggal Retensi`}
-						<i className="fas fa-sort-alt ml-2"></i>
-					</div>
-				);
-			},
-			cell: row => {
-				// return moment(row.created_at).format("DD MMMM YYYY");
-				return moment(row.date_retention).format("DD MMMM YY");
+				style: { width: "20%" },
 			},
 		},
+		{
+			title: "Record Center",
+			prop: "recordCenter",
+			cellProps: {
+				style: { width: "20%" },
+			},
+			cell: row => {
+				return "-";
+			},
+		},
+		// {
+		// 	prop: "date_retention",
+		// 	sortable: true,
+		// 	cellProps: {
+		// 		style: { width: "30%" },
+		// 	},
+		// 	filter: moment().format("DD MMMM YY"),
+		// 	headerCell: () => {
+		// 		return (
+		// 			<div className="cur-p">
+		// 				{`Tanggal Retensi`}
+		// 				<i className="fas fa-sort-alt ml-2"></i>
+		// 			</div>
+		// 		);
+		// 	},
+		// 	cell: row => {
+		// 		// return moment(row.created_at).format("DD MMMM YYYY");
+		// 		return moment(row.date_retention).format("DD MMMM YY");
+		// 	},
+		// },
 		{
 			title: "Action",
 			prop: "Action",

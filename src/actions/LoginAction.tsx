@@ -12,8 +12,17 @@ export const Login = async (data: LoginInterfaceState) => {
 				payload: data,
 			});
 			const response = await login(data);
-			localStorage.setItem("Token", response.data.token.token);
-			localStorage.setItem("User", response.data.data.user.username);
+			localStorage.setItem("Token", response?.data?.token?.token);
+			localStorage.setItem(
+				"User",
+				response?.data?.data?.roles[0] ? response?.data?.data?.roles[0] : "",
+			);
+			localStorage.setItem(
+				"UserName",
+				response?.data?.data?.user?.staff
+					? response?.data?.data?.user?.staff?.name
+					: response?.data?.data?.user?.username,
+			);
 			dispatch({
 				type: LOGIN_DATA,
 				payload: response?.data,

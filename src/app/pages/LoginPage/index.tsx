@@ -36,7 +36,6 @@ export function LoginPage() {
 						enableReinitialize={true}
 						onSubmit={async values => {
 							try {
-								console.log("data", values);
 								let action = Login(values);
 								const res = await action;
 								await dispatch(res);

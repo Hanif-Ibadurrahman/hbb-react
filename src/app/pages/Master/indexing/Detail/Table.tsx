@@ -18,7 +18,6 @@ import {
 	getDocumentsAssigned,
 	getDocumentsListIndexing,
 } from "actions/DocumentAction";
-import PageHeader from "../../Components/PageHeader";
 import { ModalFilter } from "../../DocumentPage/ModalFilter";
 import ModalAddReference from "../../DocumentPage/ModalAddReference";
 
@@ -28,9 +27,7 @@ const TableIndexingPage = () => {
 	const [cart, setCart] = useState<Partial<any>>({});
 	const [folderId, setFolderId] = useState("");
 	const documentList = useSelector(selectDocuemnts);
-	const documentAssigned = useSelector(selectDocuemntsAssigned);
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
-	const documentNoAssigned = documentAssigned.DocumentAssigned;
 	const [modalShowReference, setModalShowReference] = useState(false);
 
 	useEffect(() => {
@@ -58,12 +55,6 @@ const TableIndexingPage = () => {
 	useEffect(() => {
 		DocumentAssigned();
 	}, []);
-
-	function idExists(id) {
-		return documentNoAssigned.some(function (el) {
-			return el.id === id;
-		});
-	}
 
 	const onHide = () => {
 		setModalShow(false);
@@ -94,37 +85,6 @@ const TableIndexingPage = () => {
 			title: "Pilih",
 			onclick: () => {
 				addCart(id);
-			},
-			dispatch: dispatch,
-			row: id,
-			type: 2,
-		},
-		{
-			icon: "fa-search",
-			title: "Detail",
-			url: "Document-Detail/" + id,
-			type: 1,
-		},
-		{
-			icon: "fa-edit",
-			title: "Lampirkan File",
-			type: 2,
-			onclick: () => {
-				setFolderId(id);
-				setModalShowReference(true);
-			},
-			dispatch: dispatch,
-			row: id,
-		},
-	];
-
-	const actionDetach = id => [
-		{
-			icon: "fa-hand-holding-box",
-			title: "Remove Folder",
-			onclick: () => {
-				setFolderId(id);
-				setModalShowDettach(true);
 			},
 			dispatch: dispatch,
 			row: id,
@@ -194,13 +154,7 @@ const TableIndexingPage = () => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return (
-					<DropdownAction
-						list={
-							idExists(row.id) === true ? action(row.id) : actionDetach(row.id)
-						}
-					/>
-				);
+				return <DropdownAction list={action(row.id)} />;
 			},
 		},
 	];

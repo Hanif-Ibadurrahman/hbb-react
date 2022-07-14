@@ -308,10 +308,9 @@ const ModalForm = props => {
 													handleChange(e);
 												}}
 												onBlur={handleBlur}
+												disabled
 											>
 												<option value="regular">Regular</option>
-												<option value="express">Express</option>
-												<option value="emergency">Emergency</option>
 											</Form.Select>
 										</Form.Group>
 										<Form.Group className="mb-4" controlId="formBasicEmail">

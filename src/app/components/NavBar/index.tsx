@@ -3,7 +3,7 @@ import { NavBarDropdown } from "./NavBarDropdown/index";
 import Profile from "assets/images/profile.png";
 import "./navbar.scoped.scss";
 
-const user = localStorage.getItem("User");
+const user = localStorage.getItem("UserName");
 
 export function NavBar() {
 	return (

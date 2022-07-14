@@ -184,8 +184,6 @@ const AssignFolderToBox = () => {
 		);
 	}
 
-	console.log("paginaation >>>", folders?.Meta);
-
 	return (
 		<>
 			<Helmet>
