@@ -21,6 +21,11 @@ elif [ "$env" = "development" ]; then
     echo "Running development environment"
     npm run build:development
 
+elif [ "$env" = "staging" ]; then
+
+    echo "Running staging environment"
+    npm run build:staging
+
 else
 
     echo "Could not match the container environment \"$env\""
