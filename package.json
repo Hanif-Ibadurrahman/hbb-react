@@ -99,6 +99,7 @@
 		"build": "react-scripts build",
 		"build:local": "env-cmd -f .env.local react-scripts build",
 		"build:development": "env-cmd -f .env.development react-scripts build",
+		"build:staging": "env-cmd -f .env.staging react-scripts build",
 		"build:production": "env-cmd -f .env.production react-scripts build",
 		"test": "cross-env CI=true react-scripts test --color",
 		"eject": "react-scripts eject",
