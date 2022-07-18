@@ -1,4 +1,12 @@
-import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
+import {
+	Form,
+	Modal,
+	Container,
+	Row,
+	Col,
+	Button,
+	Spinner,
+} from "react-bootstrap";
 import React, { useState } from "react";
 import { Formik, FieldArray } from "formik";
 import * as Yup from "yup";
@@ -18,6 +26,7 @@ const ModalForm = props => {
 	const [alertMessage, setAlertMessage] = useState("");
 	const [varianAlert, setVarianAlert] = useState("");
 	const requestBox: RequestBoxInterfaceState = useSelector(selectRequestBox);
+	const [isLoading, setLoading] = useState(false);
 	const dispatch = useDispatch();
 	const validationSchema = Yup.object().shape({
 		quantity: Yup.number().min(10, "Minimal 10 Box").required("*Wajib diisi"),
@@ -31,8 +40,6 @@ const ModalForm = props => {
 		return result;
 	}
 	const RegularDate = moment(addDays(0)).format("YYYY-MM-DD");
-	const Express = moment(addDays(0)).add(2, "hours").format("YYYY-MM-DDTHH:MM");
-	const Emergency = moment(addDays(0)).format("YYYY-MM-DD");
 
 	return (
 		<>
@@ -65,9 +72,11 @@ const ModalForm = props => {
 								: CreateRequestBox(values);
 							const res = await action;
 							await dispatch(res);
+							setLoading(true);
 							action.then(() => {
 								dispatch({ type: RESET_REQUEST_BOX_FORM });
 								props.modalSet(props.valueModalSet);
+								setLoading(false);
 								setShowAlert(true);
 								setAlertMessage("Request Berhasil Di Input");
 								setVarianAlert("success");
@@ -235,11 +244,21 @@ const ModalForm = props => {
 								</Button>
 								<Button
 									type="submit"
-									disabled={isSubmitting}
+									disabled={isSubmitting || isLoading}
 									className="bg-success-6"
 									variant="success"
 								>
 									Request
+									{isSubmitting && (
+										<Spinner
+											as="span"
+											animation="border"
+											size="sm"
+											role="status"
+											aria-hidden="true"
+											className="ml-2"
+										/>
+									)}
 								</Button>{" "}
 							</Modal.Footer>
 						</Form>

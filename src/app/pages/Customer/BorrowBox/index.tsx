@@ -159,7 +159,10 @@ const BorrowBoxPage = () => {
 				>
 					<SearchInput />
 				</div>
-				<DataTable tableHeader={header} tableBody={borrowList.BorrowList} />
+				<DataTable
+					tableHeader={header}
+					tableBody={borrowList?.BorrowList ? borrowList.BorrowList : []}
+				/>
 				<Pagination
 					pageCount={borrowList.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}

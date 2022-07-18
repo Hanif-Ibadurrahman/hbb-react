@@ -1,4 +1,4 @@
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Spinner } from "react-bootstrap";
 import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -117,6 +117,16 @@ export function LoginPage() {
 											className="pv-3 ph-4"
 										>
 											Submit
+											{isSubmitting && (
+												<Spinner
+													as="span"
+													animation="border"
+													size="sm"
+													role="status"
+													aria-hidden="true"
+													className="ml-2"
+												/>
+											)}
 										</Button>{" "}
 									</div>
 									<div className="d-flex jc-center">
