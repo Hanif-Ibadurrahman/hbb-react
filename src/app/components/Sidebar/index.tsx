@@ -141,7 +141,7 @@ export function Sidebar() {
 						window.location.pathname = "/Customer/History";
 					}}
 				>
-					{""} Riwayat Permintaan
+					{""} Riwayat Transaksi
 				</MenuItem>
 			</>
 		);
@@ -288,6 +288,16 @@ export function Sidebar() {
 						</div>
 					</div>
 				</MenuItem>
+				<MenuItem
+					id={window.location.pathname === "/Customer/History" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconTable} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Customer/History";
+					}}
+				>
+					{""} Riwayat Transaksi
+				</MenuItem>
 			</>
 		);
 	};
@@ -335,6 +345,16 @@ export function Sidebar() {
 					}}
 				>
 					{""} Riwayat Approval
+				</MenuItem>
+				<MenuItem
+					id={window.location.pathname === "/Customer/History" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconTable} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Customer/History";
+					}}
+				>
+					{""} Riwayat Transaksi
 				</MenuItem>
 			</>
 		);

@@ -1,5 +1,6 @@
 import { identity } from "lodash";
 import { BorrowItemInterfaceState } from "store/Types/BorrowItemTypes";
+import { BoxInterfaceState } from "store/Types/BoxTypes";
 import api from "./dox";
 
 export const create = async (data: BorrowItemInterfaceState) => {
@@ -15,6 +16,21 @@ export const create = async (data: BorrowItemInterfaceState) => {
 export const getAll = async params => {
 	return api
 		.get(`/boxes?status=stored-on-cabinet-slot&page=${params}`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
+export const filterBoxes = async (data: BoxInterfaceState) => {
+	let filter = {
+		code: data.code_box,
+	};
+
+	return api
+		.get(`boxes?status=stored-on-cabinet-slot&code_box=${filter.code}`)
 		.then(res => {
 			return res.data;
 		})

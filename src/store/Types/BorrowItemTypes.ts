@@ -6,6 +6,7 @@ export interface BorrowItemInterfaceState {
 	note: string;
 	delivery_method: string;
 	box_codes: any[];
+	code_box: string;
 }
 
 export interface BorrowItemsInterfaceState {

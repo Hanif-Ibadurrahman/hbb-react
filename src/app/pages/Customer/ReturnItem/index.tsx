@@ -54,7 +54,7 @@ const ReturnItemPage = () => {
 	const action = id => [
 		{
 			icon: "fa-hand-holding-box",
-			title: "Pickup",
+			title: "Pilih",
 			onclick: () => {
 				addCart(id);
 			},

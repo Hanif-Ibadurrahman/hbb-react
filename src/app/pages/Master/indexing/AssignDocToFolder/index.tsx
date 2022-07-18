@@ -21,6 +21,7 @@ import ModalAddReference from "../../DocumentPage/ModalAddReference";
 import { getDocumentFile } from "api/downloadDatabase";
 import { ModalFilter } from "../../DocumentPage/ModalFilter";
 import { Pagination } from "app/components/Pagination";
+import "./page.scoped.scss";
 
 const AssignDocToFolder = () => {
 	const [modalShow, setModalShow] = useState(false);
@@ -236,12 +237,13 @@ const AssignDocToFolder = () => {
 								<i className="fas fa-box-check"></i>
 							</span>
 						</span>
-						<h5 className="text ff-1-bd mr-3">{cartStash.NumberCartAssign}</h5>
+						<h5 className="text ff-1-bd mr-3">{cartStash?.NumberCartAssign}</h5>
 						<p className="p-lg">Document dipilih</p>
 					</div>
-					<span
+					<button
 						className="ph-2 h-12 bd-rs-6 d-flex ai-center jc-center bg-success-1 ml-a cur-p"
 						onClick={() => setModalShow(true)}
+						disabled={cartStash?.NumberCartAssign === 0}
 					>
 						<span className="text p-lg mh-2 tc-success-5">Proses</span>
 						<span
@@ -250,7 +252,7 @@ const AssignDocToFolder = () => {
 						>
 							<i className="fas fa-chevron-double-right tc-dark-contrast"></i>
 						</span>
-					</span>
+					</button>
 				</div>
 			</>
 		);

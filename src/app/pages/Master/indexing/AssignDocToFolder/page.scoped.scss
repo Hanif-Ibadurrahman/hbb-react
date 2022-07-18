@@ -1,13 +1,6 @@
-@import '../../../../styles/core/variables';
+@import '../../../../../styles/core/variables';
 
 .cart-popup {
-  position: fixed;
-  left: calc(20% + 2rem);
-  // transform: translateX(-50%);
-  bottom: 0;
-  width: 100%;
-  max-width: calc(475px - 1rem * 2);
-  box-shadow: 0 -4px 12px rgba(109, 79, 79, 0.1);
 
   button {
     border: none;

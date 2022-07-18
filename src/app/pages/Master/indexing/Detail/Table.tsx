@@ -10,10 +10,7 @@ import ModalForm from "./ModalForm";
 import ModalDetach from "../AssignDocToFolder/ModalDettach";
 import "./page.scoped.scss";
 import _ from "lodash";
-import {
-	selectDocuemnts,
-	selectDocuemntsAssigned,
-} from "store/Selector/DocumentSelector";
+import { selectDocuemnts } from "store/Selector/DocumentSelector";
 import {
 	getDocumentsAssigned,
 	getDocumentsListIndexing,
@@ -175,9 +172,10 @@ const TableIndexingPage = () => {
 						<h5 className="text ff-1-bd mr-3">{cart.numberCart}</h5>
 						<p className="p-lg">Document dipilih</p>
 					</div>
-					<span
+					<button
 						className="ph-2 h-12 bd-rs-6 d-flex ai-center jc-center bg-success-1 ml-a cur-p"
 						onClick={() => setModalShow(true)}
+						disabled={cart.numberCart === 0}
 					>
 						<span className="text p-lg mh-2 tc-success-5">Indexing</span>
 						<span
@@ -186,7 +184,7 @@ const TableIndexingPage = () => {
 						>
 							<i className="fas fa-chevron-double-right tc-dark-contrast"></i>
 						</span>
-					</span>
+					</button>
 				</div>
 			</>
 		);

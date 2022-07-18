@@ -108,20 +108,15 @@ export const MasterData = [
 		icon: "",
 		link: "/Room",
 	},
-	// {
-	// 	title: "Transportasi",
-	// 	icon: "",
-	// 	link: "/Car",
-	// },
-	// {
-	// 	title: "Record Center",
-	// 	icon: "",
-	// 	link: "/Record-Center",
-	// },
 	{
 		title: "Kendaraan",
 		icon: "",
 		link: "/Car",
+	},
+	{
+		title: "Company",
+		icon: "",
+		link: "/Company",
 	},
 	{
 		title: "Customer",
@@ -134,40 +129,10 @@ export const MasterData = [
 		link: "/StaffPage",
 	},
 	{
-		title: "Company",
-		icon: "",
-		link: "/Company",
-	},
-	// {
-	// 	title: "Transporter",
-	// 	icon: "",
-	// 	link: "/Trasnporter",
-	// },
-	// {
-	// 	title: "Archiver",
-	// 	icon: "",
-	// 	link: "/Archiver",
-	// },
-	{
 		title: "Divisi",
 		icon: "",
 		link: "/DivisionPage",
 	},
-	// {
-	// 	title: "Duplikat Dokumen",
-	// 	icon: "",
-	// 	link: "/Duplikat-Dokumen",
-	// },
-	// {
-	// 	title: "Daftar Musnah",
-	// 	icon: "",
-	// 	link: "/Daftar-Musnah",
-	// },
-	// {
-	// 	title: "Masa Retensi",
-	// 	icon: "",
-	// 	link: "/Masa-Retensi",
-	// },
 ];
 
 export const ArchiverMasterData = [

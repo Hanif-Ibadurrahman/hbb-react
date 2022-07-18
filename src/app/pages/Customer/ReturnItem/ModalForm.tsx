@@ -5,9 +5,7 @@ import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 import { useDispatch, useSelector } from "react-redux";
 import { DeleteCart } from "actions/BorrowItemAction";
-import {
-	selectBorrowItems,
-} from "store/Selector/BorrowItemSelector";
+import { selectBorrowItems } from "store/Selector/BorrowItemSelector";
 import moment from "moment";
 import { CreateReturnItem } from "actions/ReturnAction";
 import { ReturnItemInterfaceState } from "store/Types/ReturnItemTypes";
@@ -27,8 +25,6 @@ const ModalForm = props => {
 	}
 
 	const RegularDate = moment(addDays(2)).format("YYYY-MM-DD");
-	const Express = moment(addDays(0)).add(2, "hours").format("YYYY-MM-DDTHH:MM");
-	const Emergency = moment(addDays(0)).format("YYYY-MM-DD");
 
 	const dispatch = useDispatch();
 
@@ -121,56 +117,24 @@ const ModalForm = props => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
+													disabled
 												>
 													<option value="regular">Regular</option>
-													<option value="express">Express</option>
-													<option value="emergency">Emergency</option>
 												</Form.Select>
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Waktu Pengiriman</Form.Label>
-												{values.delivery_method == "regular" ? (
-													<Form.Control
-														type="date"
-														min={RegularDate}
-														name="delivered_at"
-														placeholder="Delivered"
-														value={values.delivered_at}
-														onChange={e => {
-															handleChange(e);
-														}}
-														onBlur={handleBlur}
-													/>
-												) : values.delivery_method == "express" ? (
-													<Form.Control
-														type="text"
-														name="delivered_at"
-														placeholder="Delivered"
-														value={(values.delivered_at = Express)}
-														onChange={e => {
-															handleChange(e);
-														}}
-														onBlur={handleBlur}
-														disabled
-													/>
-												) : values.delivery_method == "emergency" ? (
-													<>
-														<Form.Control
-															type="text"
-															name="delivered_at"
-															placeholder="Delivered"
-															value={(values.delivered_at = Emergency)}
-															onChange={e => {
-																handleChange(e);
-															}}
-															onBlur={handleBlur}
-															disabled
-														/>
-														<p className="tc-danger-5 pos-a p-sm">
-															*Hanya Untuk Hari Libur
-														</p>
-													</>
-												) : null}
+												<Form.Control
+													type="date"
+													min={RegularDate}
+													name="delivered_at"
+													placeholder="Delivered"
+													value={values.delivered_at}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
 												{touched.delivered_at && errors.delivered_at ? (
 													<p className="tc-danger-5 pos-a p-sm">
 														{errors.delivered_at}
@@ -178,7 +142,7 @@ const ModalForm = props => {
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Note</Form.Label>
+												<Form.Label>Catatan</Form.Label>
 												<Form.Control
 													as="textarea"
 													name="note"
