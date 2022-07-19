@@ -1,5 +1,6 @@
 import {
 	AssignDocumentToFolderInterfaceState,
+	AssignFolderToBoxInterfaceState,
 	IndexingDocumentInterfaceState,
 	IndexingInterfaceState,
 } from "store/Types/IndexingTypes";
@@ -44,9 +45,9 @@ export const getById = async (id: String) => {
 export const indexingDocument = async (
 	data: IndexingDocumentInterfaceState,
 ) => {
-	let id = data.id;
+	let id = data?.id;
 	let payload = {
-		document_codes: data.document_codes,
+		document_codes: data?.document_codes,
 	};
 	return await api.put(`/indexes/${id}/documents/attach`, payload);
 };
@@ -61,9 +62,30 @@ export const assignToFolder = async (
 	return await api.put(`/folders/${id}/documents/attach`, payload);
 };
 
+export const detachDocumentFromFolder = async (
+	data: AssignDocumentToFolderInterfaceState,
+) => {
+	let id = data.id;
+	let payload = {
+		document_codes: [data.document_codes],
+	};
+	return await api.put(`/folders/${id}/documents/detach`, payload);
+};
+
 export const getAll = async params => {
 	return api
 		.get(`/indexes?&page=${params}`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
+export const getAllRet = async params => {
+	return api
+		.get("/indexes?start_date_retention=2000-01-01")
 		.then(res => {
 			return res.data;
 		})
@@ -89,4 +111,22 @@ export const filterIndexing = async (data: IndexingInterfaceState) => {
 
 export const destroy = id => {
 	return api.delete(`/indexes/${id}`);
+};
+
+export const assignToBox = async (data: AssignFolderToBoxInterfaceState) => {
+	let id = data.id;
+	let payload = {
+		folder_codes: data.folder_codes,
+	};
+	return await api.put(`/boxes/${id}/folders/attach`, payload);
+};
+
+export const detachFolderFromBox = async (
+	data: AssignFolderToBoxInterfaceState,
+) => {
+	let id = data.id;
+	let payload = {
+		folder_codes: [data.folder_codes],
+	};
+	return await api.put(`/boxes/${id}/folders/detach`, payload);
 };

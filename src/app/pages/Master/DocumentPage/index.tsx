@@ -18,11 +18,13 @@ import {
 	RESET_DOCUMENT_FORM,
 } from "actions/DocumentAction";
 import { ModalFilter } from "./ModalFilter";
+import ModalAddReference from "./ModalAddReference";
 
 const DocumentPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
-	const [showAlert, setShowAlert] = useState(false);
+	const [modalShowReference, setModalShowReference] = useState(false);
+	const [folderId, setFolderId] = useState("");
 	const documents = useSelector(selectDocuemnts);
 	const dispatch = useDispatch();
 
@@ -70,8 +72,11 @@ const DocumentPage = () => {
 
 	const _onHide = () => {
 		setModalShow(false);
-		setShowAlert(false);
 		dispatch({ type: RESET_DOCUMENT_FORM });
+	};
+
+	const onHideReference = () => {
+		setModalShowReference(false);
 	};
 
 	const showEditForm = async id => {
@@ -97,6 +102,17 @@ const DocumentPage = () => {
 			type: 2,
 		},
 		{
+			icon: "fa-edit",
+			title: "Lampirkan File",
+			type: 2,
+			onclick: () => {
+				setFolderId(id);
+				setModalShowReference(true);
+			},
+			dispatch: dispatch,
+			row: id,
+		},
+		{
 			icon: "fa-trash-alt",
 			title: "Delete",
 			titleClass: "tc-danger-5",
@@ -115,13 +131,8 @@ const DocumentPage = () => {
 			cellProps: {
 				style: { width: "40%" },
 			},
-			headerCell: () => {
-				return (
-					<div className="cur-p">
-						{`No Document`}
-						<i className="fas fa-sort-alt ml-2"></i>
-					</div>
-				);
+			cell: row => {
+				return row?.no ? row?.no : "-";
 			},
 		},
 		{
@@ -139,6 +150,9 @@ const DocumentPage = () => {
 					</div>
 				);
 			},
+			cell: row => {
+				return row?.no_digital ? row?.no_digital : "-";
+			},
 		},
 		{
 			title: "Kondisi",
@@ -154,6 +168,9 @@ const DocumentPage = () => {
 						<i className="fas fa-sort-alt ml-2"></i>
 					</div>
 				);
+			},
+			cell: row => {
+				return row?.condition ? row?.condition : "-";
 			},
 		},
 		{
@@ -173,10 +190,7 @@ const DocumentPage = () => {
 		<>
 			<Helmet>
 				<title>Document</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<Alert
@@ -185,11 +199,13 @@ const DocumentPage = () => {
 					show={showAlertSuccess}
 					onHide={() => setShowAlertSuccess(false)}
 				/>
-				<ModalForm
-					modal={modalShow}
-					hide={_onHide}
-					modalSet={setModalShow}
+				<ModalForm modal={modalShow} hide={_onHide} modalSet={setModalShow} />
+				<ModalAddReference
+					modal={modalShowReference}
+					hide={onHideReference}
+					modalSet={setModalShowReference}
 					valueModalSet={false}
+					folder_id={folderId}
 				/>
 				<PageHeader
 					breadcrumb={["Master", "Document"]}

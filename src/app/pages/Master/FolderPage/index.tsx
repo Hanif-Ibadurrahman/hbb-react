@@ -139,10 +139,7 @@ const DocumentPage = () => {
 		<>
 			<Helmet>
 				<title>Dox - Master Data</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<Alert

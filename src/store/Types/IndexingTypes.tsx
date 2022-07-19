@@ -37,11 +37,17 @@ export interface AssignDocumentToFolderInterfaceState {
 	document_codes: any[];
 }
 
+export interface AssignFolderToBoxInterfaceState {
+	id: string | null;
+	id_box: BoxInterfaceState;
+	folder_codes: any[];
+}
 export interface IndexingsInterfaceState {
 	Indexing: IndexingInterfaceState;
 	Indexings: IndexingInterfaceState[];
 	IndexingDocument: IndexingDocumentInterfaceState;
 	AssignDocumentToFolder: AssignDocumentToFolderInterfaceState;
+	AssignFolderToBox: AssignFolderToBoxInterfaceState;
 	Cart: any[];
 	numberCart: number;
 	CartAssign: any[];

@@ -1,4 +1,12 @@
-import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
+import {
+	Form,
+	Modal,
+	Container,
+	Row,
+	Col,
+	Button,
+	Spinner,
+} from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -296,6 +304,16 @@ export const ModalForm = props => {
 									variant="success"
 								>
 									Kirim
+									{isSubmitting && (
+										<Spinner
+											as="span"
+											animation="border"
+											size="sm"
+											role="status"
+											aria-hidden="true"
+											className="ml-2"
+										/>
+									)}
 								</Button>{" "}
 							</Modal.Footer>
 						</Form>

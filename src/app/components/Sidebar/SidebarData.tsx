@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
 import { useDispatch, useSelector } from "react-redux";
 import { getRequestBoxesList } from "actions/RequestBoxAction";
@@ -108,21 +108,16 @@ export const MasterData = [
 		icon: "",
 		link: "/Room",
 	},
-	// {
-	// 	title: "Transportasi",
-	// 	icon: "",
-	// 	link: "/Car",
-	// },
-	// {
-	// 	title: "Record Center",
-	// 	icon: "",
-	// 	link: "/Record-Center",
-	// },
-	// {
-	// 	title: "Mobil",
-	// 	icon: "",
-	// 	link: "/Car",
-	// },
+	{
+		title: "Kendaraan",
+		icon: "",
+		link: "/Car",
+	},
+	{
+		title: "Company",
+		icon: "",
+		link: "/Company",
+	},
 	{
 		title: "Customer",
 		icon: "",
@@ -134,62 +129,27 @@ export const MasterData = [
 		link: "/StaffPage",
 	},
 	{
-		title: "Company",
-		icon: "",
-		link: "/Company",
-	},
-	// {
-	// 	title: "Transporter",
-	// 	icon: "",
-	// 	link: "/Trasnporter",
-	// },
-	// {
-	// 	title: "Archiver",
-	// 	icon: "",
-	// 	link: "/Archiver",
-	// },
-	{
 		title: "Divisi",
 		icon: "",
 		link: "/DivisionPage",
 	},
-	// {
-	// 	title: "Duplikat Dokumen",
-	// 	icon: "",
-	// 	link: "/Duplikat-Dokumen",
-	// },
-	// {
-	// 	title: "Daftar Musnah",
-	// 	icon: "",
-	// 	link: "/Daftar-Musnah",
-	// },
-	// {
-	// 	title: "Masa Retensi",
-	// 	icon: "",
-	// 	link: "/Masa-Retensi",
-	// },
 ];
 
 export const ArchiverMasterData = [
 	{
-		title: "Dokumen",
-		icon: "",
-		link: "/Document",
-	},
-	{
-		title: "Folder",
-		icon: "",
-		link: "/Folder",
-	},
-	{
-		title: "Box",
-		icon: "",
-		link: "/Box",
-	},
-	{
-		title: "Berkas",
+		title: "Indexing Dokumen",
 		icon: "",
 		link: "/Indexing",
+	},
+	{
+		title: "Document - Folder",
+		icon: "",
+		link: "/AssignDocToFolder",
+	},
+	{
+		title: "Folder - Box",
+		icon: "",
+		link: "/AssignFolderToBox",
 	},
 ];
 

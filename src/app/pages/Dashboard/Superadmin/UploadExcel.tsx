@@ -1,28 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Row, Container, Form } from "react-bootstrap";
+import { Button, Container, Form } from "react-bootstrap";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { UploadFile } from "store/Types/DocumentTypes";
 import Alert from "app/components/Alerts";
-import {
-	selectDocuemnts,
-	selectFileUpload,
-} from "store/Selector/DocumentSelector";
-import { UploadDocument, downloadFileExcel } from "actions/DocumentAction";
+import { selectDocuemnts } from "store/Selector/DocumentSelector";
 import { downloadFile, uploadFile } from "api/documents";
 import { saveAs } from "file-saver";
 import { getFileDatabase } from "api/downloadDatabase";
+import { getTemplateUpload } from "api/downloadDatabase";
 
 export function UploadExcel(props) {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const dispatch = useDispatch();
-	// const file: UploadFile = useSelector(selectFileUpload);
-	const documents = useSelector(selectDocuemnts);
-	const onClickDownload = () => {
-		saveAs("http://fleedy.id/wp-content/uploads/2022/04/documents.xlsx");
-	};
 	const [fileUpload, setFileUpload] = useState();
 
 	const FetchData = () => {
@@ -109,7 +99,7 @@ export function UploadExcel(props) {
 								Download Database
 							</Button>
 							<Button
-								onClick={onClickDownload}
+								onClick={getTemplateUpload}
 								className="bg-success-6 mr-4"
 								variant="success"
 							>

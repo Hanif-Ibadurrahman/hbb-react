@@ -21,11 +21,6 @@ const FolderPageDetail = ({ match }) => {
 		history.goBack();
 	};
 
-	const gotoDetailDocument = e => {
-		e.preventDefault();
-		history.push("/Profile/Edit");
-	};
-
 	const documents = folder?.documents;
 
 	const folder_id = match.params.id;
@@ -88,7 +83,7 @@ const FolderPageDetail = ({ match }) => {
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>No Folder</Form.Label>
-								<Form.Control type="text" disabled defaultValue={folder.no} />
+								<Form.Control type="text" disabled defaultValue={folder?.no} />
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Code Box</Form.Label>

@@ -76,7 +76,9 @@ const BoxPage = () => {
 				</div>
 				<DataTable
 					tableHeader={header}
-					tableBody={requestBoxes?.RequestBoxes}
+					tableBody={
+						requestBoxes?.RequestBoxes ? requestBoxes?.RequestBoxes : []
+					}
 				/>
 				<Pagination
 					pageCount={requestBoxes.Meta.last_page}

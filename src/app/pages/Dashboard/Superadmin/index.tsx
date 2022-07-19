@@ -26,9 +26,11 @@ import { getBorrowList } from "actions/BorrowItemAction";
 import { UploadExcel } from "./UploadExcel";
 import { selectTransporters } from "store/Selector/TransporterSelector";
 import { getBoxesListNoAsign } from "actions/TransporterAction";
+import { Form } from "react-bootstrap";
 
 export function DashboardSuperadmin() {
 	const user = localStorage.getItem("User");
+	const userName = localStorage.getItem("UserName");
 	const requestBoxes = useSelector(selectRequestBoxes);
 	const dispatch = useDispatch();
 	const cabinets = useSelector(selectCabinets);
@@ -91,7 +93,7 @@ export function DashboardSuperadmin() {
 	}, []);
 	useEffect(() => {
 		if (user === "superadmin") {
-			return setTitle("Detail Total Box");
+			return setTitle("");
 		} else if (user === "csradmin") {
 			return setTitle("List Pending Approval");
 		} else if (user === "csroperation") {
@@ -246,25 +248,67 @@ export function DashboardSuperadmin() {
 	};
 
 	const data = [
-		{ company: "Jakpro", totalBox: totalBox },
-		{ company: "Company 2", totalBox: 0 },
-		{ company: "Company 3", totalBox: 0 },
+		{ company: "Kiki Sadikin", totalBox: 20 },
+		{ company: "Adriansyah", totalBox: 20 },
+		{ company: "Arif Rahman", totalBox: 20 },
+		{ company: "Sony Maulana", totalBox: 20 },
+		{ company: "Irman Sahidin", totalBox: 20 },
+		{ company: "Tri Slamet", totalBox: 24 },
 	];
 
 	const ContentSuperAdmin = (
-		<BarChart width={600} height={300} data={data}>
-			<XAxis dataKey="company" stroke="#000" />
-			<YAxis />
-			<Tooltip />
-			<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-			<Bar dataKey="totalBox" fill="#198754" barSize={30} />
-		</BarChart>
+		<>
+			<div className="row w-100% mb-8">
+				<div className="col col-4 ph-0">
+					<CardHeader
+						icon="chalkboard"
+						total={124}
+						text={["Total Data", <br />, "Entry Per Hari"]}
+					/>
+				</div>
+				<div className="col col-4">
+					<div
+						className="card p-4 bd-rs-2 bx-sh-4 dashboard-card"
+						style={{ height: 115 }}
+					>
+						<Form.Group className="mb-4" controlId="formBasicEmail">
+							<Form.Label className="mb-4">Record Center</Form.Label>
+							<Form.Select
+								className="cur-p"
+								name="record_center"
+								value={"record_center"}
+								onChange={e => {
+									console.log(e);
+								}}
+							>
+								<option value="regular">RC Bandung</option>
+								<option value="express">RC Medan</option>
+								<option value="emergency">RC Surabaya</option>
+								<option value="regular">RC Bogor</option>
+								<option value="express">RC Klender</option>
+								<option value="emergency">RC Ketapang</option>
+							</Form.Select>
+						</Form.Group>
+					</div>
+				</div>
+			</div>
+			<BarChart width={900} height={300} data={data} className="Bar-chatxxi">
+				<XAxis dataKey="company" stroke="#000" />
+				<YAxis />
+				<Tooltip />
+				<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+				<Bar dataKey="totalBox" fill="#198754" barSize={30} />
+			</BarChart>
+		</>
 	);
 
 	const TableCSRAdmin = () => {
 		return (
 			<div style={{ width: "100%" }}>
-				<DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} />
+				<DataTable
+					tableHeader={header}
+					tableBody={requestBoxes.RequestBoxes ? requestBoxes.RequestBoxes : []}
+				/>
 				<Pagination
 					pageCount={requestBoxes?.Meta?.last_page}
 					onPageChange={data => ApprovalDataCSRAdmin(data.selected + 1)}
@@ -277,7 +321,11 @@ export function DashboardSuperadmin() {
 			<div style={{ width: "100%" }}>
 				<DataTable
 					tableHeader={header}
-					tableBody={approvalOperationList.RequestBoxes}
+					tableBody={
+						approvalOperationList.RequestBoxes
+							? approvalOperationList.RequestBoxes
+							: []
+					}
 				/>
 				<Pagination
 					pageCount={requestBoxes?.Meta?.last_page}
@@ -292,7 +340,7 @@ export function DashboardSuperadmin() {
 				<UploadExcel />
 				<DataTable
 					tableHeader={headerCustomer}
-					tableBody={returnItems?.ReturnList}
+					tableBody={returnItems?.ReturnList ? returnItems?.ReturnList : []}
 				/>
 				<Pagination
 					pageCount={returnItems.Meta.last_page}
@@ -334,15 +382,12 @@ export function DashboardSuperadmin() {
 		<>
 			<Helmet>
 				<title>Dox - Dashboard Superadmin</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<div className="pos-r p-8 bg-primary-5">
 				<h3 className="tc-dark-contrast mb-12 ff-1-bd">
 					<span className="ff-1 username text txtf-c">Selamat Datang,</span>
-					<span className="m-0 username text txtf-c"> {user}</span>
+					<span className="m-0 username text txtf-c"> {userName}</span>
 				</h3>
 				<h6 className="mb-3 tc-dark-contrast">Today Summary</h6>
 				<CardDashboard />

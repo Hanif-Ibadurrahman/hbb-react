@@ -1,4 +1,12 @@
-import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
+import {
+	Form,
+	Modal,
+	Container,
+	Row,
+	Col,
+	Button,
+	Spinner,
+} from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -152,11 +160,21 @@ const ModalForm = props => {
 								</Button>
 								<Button
 									type="submit"
-									disabled={isSubmitting || values.company.id === ""}
+									disabled={isSubmitting || values?.company?.id === ""}
 									className="bg-success-6"
 									variant="success"
 								>
 									Request
+									{isSubmitting && (
+										<Spinner
+											as="span"
+											animation="border"
+											size="sm"
+											role="status"
+											aria-hidden="true"
+											className="ml-2"
+										/>
+									)}
 								</Button>{" "}
 							</Modal.Footer>
 						</Form>

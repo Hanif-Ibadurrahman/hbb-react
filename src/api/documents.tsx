@@ -1,7 +1,5 @@
 import { DocumentInterfaceState, UploadFile } from "store/Types/DocumentTypes";
 import api from "./dox";
-import fs from "fs";
-import FileDownload from "js-file-download";
 
 export const create = async (data: DocumentInterfaceState) => {
 	let payload = {
@@ -104,6 +102,17 @@ export const getAllIndexing = async params => {
 		});
 };
 
+export const getAllDocumentAssigned = async params => {
+	return api
+		.get(`/documents?per_page=999999999&is_assigned=false`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
 export const destroy = id => {
 	return api.delete(`/documents/${id}`);
 };
@@ -112,7 +121,7 @@ export const filter = async (data: DocumentInterfaceState) => {
 	let filter = {
 		no: data.no,
 		detail: data.detail,
-		active_year_for: data.active_year_for > 0 ? data.active_year_for : "",
+		active_year_for: data.active_year_for,
 		level_progress: data.level_progress,
 		media_storage: data.media_storage,
 		condition: data.condition,
@@ -120,7 +129,32 @@ export const filter = async (data: DocumentInterfaceState) => {
 		status: data.status,
 	};
 
-	return api.get(
-		`/documents?no=${filter.no}&detail=${filter.detail}&active_year_for=${filter.active_year_for}&level_progress=${filter.level_progress}&media_storage=${filter.media_storage}&condition=${filter.condition}&description=${filter.description}&status=${filter.status}`,
-	);
+	if (filter.status !== undefined && filter.status !== "") {
+		return api.get(`/documents?status=${filter.status}`);
+	} else if (filter.description !== undefined && filter.description !== "") {
+		return api.get(`/documents?description=${filter.description}`);
+	} else if (filter.condition !== undefined && filter.condition !== "") {
+		return api.get(`/documents?condition=${filter.condition}`);
+	} else if (
+		filter.media_storage !== undefined &&
+		filter.media_storage !== ""
+	) {
+		return api.get(`/documents?media_storage=${filter.media_storage}`);
+	} else if (
+		filter.level_progress !== undefined &&
+		filter.level_progress !== ""
+	) {
+		return api.get(`/documents?level_progress=${filter.level_progress}`);
+	} else if (
+		filter.active_year_for !== undefined &&
+		filter.active_year_for !== 0
+	) {
+		return api.get(`/documents?active_year_for=${filter.active_year_for}`);
+	} else if (filter.detail !== undefined && filter.detail !== "") {
+		return api.get(`/documents?detail=${filter.detail}`);
+	} else if (filter.no !== undefined && filter.no !== "") {
+		return api.get(`/documents?no=${filter.no}`);
+	} else {
+		return api.get(`/documents`);
+	}
 };

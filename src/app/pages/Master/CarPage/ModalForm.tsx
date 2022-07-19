@@ -3,18 +3,15 @@ import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
-import { selectBoxes, selectBox } from "../../../../store/Selector/BoxSelector";
 import { useDispatch, useSelector } from "react-redux";
-import { CreateBox, UpdateBox, RESET_BOX_FORM } from "actions/BoxActions";
 import { CreateCar, UpdateCar, RESET_CAR_FORM } from "actions/CarAction";
-import { BoxInterfaceState } from "store/Types/BoxTypes";
 import { CarInterfaceState } from "store/Types/CarTypes";
 import { selectCar } from "store/Selector/CarSelector";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
-	const [alertMessage, setalertMessage] = useState("");
-	// const box: BoxInterfaceState = useSelector(selectBox);
+	const [alertMessage, setAlertMessage] = useState("");
+	const [varianAlert, setVarianAlert] = useState("");
 	const car: CarInterfaceState = useSelector(selectCar);
 	const dispatch = useDispatch();
 	const validationSchema = Yup.object().shape({
@@ -27,13 +24,13 @@ const ModalForm = props => {
 		<>
 			<Alert
 				text={alertMessage}
-				variant="success"
+				variant={varianAlert}
 				show={showAlert}
 				style={{
 					top: 50,
 					position: "fixed",
 					left: "50%",
-					transform: [{ translateX: "-50%" }],
+					transform: [{ translateX: "50%" }],
 				}}
 				onHide={() => setShowAlert(false)}
 			/>
@@ -57,17 +54,26 @@ const ModalForm = props => {
 							action.then(() => {
 								dispatch({ type: RESET_CAR_FORM });
 								props.modalSet(props.valueModalSet);
+								setShowAlert(true);
+								setVarianAlert("success");
+								car.id
+									? setAlertMessage("Data Berhasil di Edit")
+									: setAlertMessage("Data Berhasil di Tambah");
+								setTimeout(function () {
+									window.location.reload();
+								}, 1000);
 							});
 							dispatch({ type: RESET_CAR_FORM });
-							props.modalSet(props.valueModalSet);
-							car.id ? (
-								<>Data Berhasil di Edit</>
-							) : (
-								<>Data Berhasil di Tambah</>
-							);
-							console.log(action);
 						} catch (e) {
-							console.log("ini error di depan");
+							props.modalSet(props.valueModalSet);
+							setShowAlert(true);
+							setVarianAlert("danger");
+							car.id
+								? setAlertMessage("Data Gagal di Edit")
+								: setAlertMessage("Data Gagal di Tambah");
+							setTimeout(function () {
+								window.location.reload();
+							}, 1000);
 						}
 					}}
 				>
@@ -131,7 +137,7 @@ const ModalForm = props => {
 												<Form.Control
 													type="text"
 													name="license_plate"
-													placeholder="Kapasitas"
+													placeholder="Nomor Plat"
 													value={values.license_plate}
 													onChange={e => {
 														handleChange(e);

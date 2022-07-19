@@ -18,3 +18,8 @@ export const selectAssignToFolder = createSelector(
 	indexDomain,
 	state => state.AssignDocumentToFolder,
 );
+
+export const selectAssignToBox = createSelector(
+	indexDomain,
+	state => state.AssignFolderToBox,
+);

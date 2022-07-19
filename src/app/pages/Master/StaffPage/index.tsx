@@ -114,10 +114,7 @@ const StaffPage = () => {
 		<>
 			<Helmet>
 				<title>Dox - Master Room</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<Alert
 				text="Data Berhasil Di Hapus"

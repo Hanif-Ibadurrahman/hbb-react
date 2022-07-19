@@ -16,15 +16,10 @@ import { selectBoxes } from "store/Selector/BoxSelector";
 import { selectClassifications } from "store/Selector/ClassificationSelector";
 import { getAreasList } from "actions/AreaActions";
 import { getRoomsList } from "actions/RoomAction";
-import { getBoxesList } from "actions/BoxActions";
+import { getBoxesList, getBoxesNotPage } from "actions/BoxActions";
 import { getClassificationList } from "actions/ClassificationAction";
-import {
-	CreateIndexing,
-	RESET_INDEX_FORM,
-	UpdateIndexing,
-} from "actions/IndexingAction";
+import { CreateIndexing, UpdateIndexing } from "actions/IndexingAction";
 import moment from "moment";
-import { result, values } from "lodash";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
@@ -43,7 +38,7 @@ const ModalForm = props => {
 		dispatch(getRoomsList(page));
 	};
 	const BoxData = (page = 1) => {
-		dispatch(getBoxesList(page));
+		dispatch(getBoxesNotPage(page));
 	};
 	const ClassificationData = (page = 1) => {
 		dispatch(getClassificationList(page));
@@ -221,26 +216,6 @@ const ModalForm = props => {
 														/>
 													)}
 												/>
-												{/* <Autocomplete
-													id="classification"
-													options={classification.Classifications}
-													getOptionLabel={option => option.name}
-													value={values.classification_code}
-													onChange={(e, value) => {
-														setFieldValue(
-															"classification_code",
-															value !== null ? value : values.classification_code
-														);
-													}}
-													renderInput={params => (
-														<TextField
-															margin="normal"
-															placeholder="Pilih Klasifikasi"
-															name="classification_code"
-															{...params}
-														/>
-													)}
-												/> */}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Area</Form.Label>
@@ -293,7 +268,7 @@ const ModalForm = props => {
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
+											{/* <Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Box</Form.Label>
 												<Autocomplete
 													id="company"
@@ -318,7 +293,7 @@ const ModalForm = props => {
 												{touched.box && errors.box ? (
 													<p className="tc-danger-5 pos-a p-sm">{errors.box}</p>
 												) : null}
-											</Form.Group>
+											</Form.Group> */}
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Periode Retensi</Form.Label>
 												<Form.Control
@@ -339,7 +314,7 @@ const ModalForm = props => {
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
+											{/* <Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Tanggal Retensi</Form.Label>
 												<Form.Control
 													type="date"
@@ -367,7 +342,7 @@ const ModalForm = props => {
 														{errors.date_retention}
 													</p>
 												) : null}
-											</Form.Group>
+											</Form.Group> */}
 											<label>
 												<Field
 													type="checkbox"

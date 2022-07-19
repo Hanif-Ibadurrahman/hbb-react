@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
 import { useDispatch, useSelector } from "react-redux";
-import { DeleteCart } from "actions/IndexingAction";
+import { DeleteCart, IndexingDocument } from "actions/IndexingAction";
 import {
 	IndexingDocumentInterfaceState,
 	IndexingInterfaceState,
@@ -61,33 +61,16 @@ const ModalForm = props => {
 					initialValues={indexing}
 					enableReinitialize={true}
 					onSubmit={async values => {
-						try {
-							values.id = indexingDetail.id;
-							values.document_codes = cartStash;
-							let action = indexingDocument(values);
-							const res = await action;
-							await dispatch(res);
-							action.then(() => {
-								props.modalSet(props.valueModalSet);
-								setShowAlert(true);
-								setAlertMessage("Request Peminjaman Berhasil");
-								setVarianAlert("success");
-								setTimeout(function () {
-									window.location.reload();
-								}, 1000);
-							});
-							props.modalSet(props.valueModalSet);
-						} catch (e) {
-							setShowAlert(true);
-							setAlertMessage("Request Gagal");
-							setVarianAlert("danger");
-							setTimeout(function () {
-								window.location.reload();
-							}, 1000);
-							setTimeout(function () {
-								setShowAlert(false);
-							}, 4000);
-						}
+						values.id = indexingDetail?.id;
+						values.document_codes = cartStash;
+						indexingDocument(values);
+						props.modalSet(props.valueModalSet);
+						setShowAlert(true);
+						setAlertMessage("Request Indexing Berhasil");
+						setVarianAlert("success");
+						setTimeout(function () {
+							window.location.reload();
+						}, 1000);
 					}}
 				>
 					{({

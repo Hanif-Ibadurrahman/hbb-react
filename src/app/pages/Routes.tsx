@@ -36,6 +36,7 @@ import { ApprovalDetail } from "./Approval/Detail";
 import ApprovalOperationRequestBox from "./AdminOperation/RequestBox";
 import ApprovalPreview from "./AdminOperation/RequestBox/ApprovePreview";
 import ActivityLog from "./AdminOperation/RequestBox/ActivityLog";
+import IndexingDelete from "./AdminOperation/RequestBox/IndexingDelete";
 
 // MASTER
 // # - BOX
@@ -77,6 +78,8 @@ import StaffPage from "./Master/StaffPage";
 // # - INDEXING
 import IndexingPage from "./Master/indexing";
 import DetailIndexingPage from "./Master/indexing/Detail";
+import AssignDocToFolder from "./Master/indexing/AssignDocToFolder";
+import AssignFolderToBox from "./Master/indexing/AssignFolderToBox";
 // -=-=-=-=-=-
 
 // CUSTOMER
@@ -100,11 +103,11 @@ export function Routes() {
 	return (
 		<BrowserRouter>
 			<Helmet
-				titleTemplate="%s - React Boilerplate"
-				defaultTitle="React Boilerplate"
+				titleTemplate="%s"
+				defaultTitle="DOX"
 				htmlAttributes={{ lang: i18n.language }}
 			>
-				<meta name="description" content="A React Boilerplate application" />
+				<meta name="description" content="A DOX application" />
 			</Helmet>
 			<div className="d-flex all-wrapper">
 				<Sidebar />
@@ -138,6 +141,29 @@ export function Routes() {
 						/>
 						{/*---------- ACTIVITY LOG - - - END ---------*/}
 
+						{/*---------- INDEXING ---------*/}
+						<Route
+							path={process.env.PUBLIC_URL + "/Indexing"}
+							component={IndexingPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/IndexingDetail/:id"}
+							component={DetailIndexingPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Indexing-Delete"}
+							component={IndexingDelete}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/AssignDocToFolder"}
+							component={AssignDocToFolder}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/AssignFolderToBox"}
+							component={AssignFolderToBox}
+						/>
+						{/*---------- INDEXING - - - END ---------*/}
+
 						{/*---------- APPROVAL ---------*/}
 						<Route
 							path={process.env.PUBLIC_URL + "/Approval-Admin"}
@@ -169,10 +195,6 @@ export function Routes() {
 						{/*---------- MASTER ---------*/}
 						<Route path={process.env.PUBLIC_URL + "/Box"} component={BoxPage} />
 						<Route path={process.env.PUBLIC_URL + "/Car"} component={CarPage} />
-						<Route
-							path={process.env.PUBLIC_URL + "/Indexing"}
-							component={IndexingPage}
-						/>
 						<Route
 							path={process.env.PUBLIC_URL + "/Car-Detail/:id"}
 							component={CarPageDetail}
@@ -256,14 +278,6 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/StaffPage"}
 							component={StaffPage}
-						/>
-						<Route
-							path={process.env.PUBLIC_URL + "/Indexing"}
-							component={IndexingPage}
-						/>
-						<Route
-							path={process.env.PUBLIC_URL + "/IndexingDetail/:id"}
-							component={DetailIndexingPage}
 						/>
 						{/*---------- MASTER - - - END ---------*/}
 						{/*--------- ADMIN CSR ---------*/}

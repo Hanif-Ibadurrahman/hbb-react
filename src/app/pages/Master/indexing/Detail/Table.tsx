@@ -7,16 +7,25 @@ import { Pagination } from "app/components/Pagination";
 import { AddCart } from "actions/IndexingAction";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import ModalForm from "./ModalForm";
+import ModalDetach from "../AssignDocToFolder/ModalDettach";
 import "./page.scoped.scss";
 import _ from "lodash";
 import { selectDocuemnts } from "store/Selector/DocumentSelector";
-import { getDocumentsListIndexing } from "actions/DocumentAction";
+import {
+	getDocumentsAssigned,
+	getDocumentsListIndexing,
+} from "actions/DocumentAction";
+import { ModalFilter } from "../../DocumentPage/ModalFilter";
+import ModalAddReference from "../../DocumentPage/ModalAddReference";
 
 const TableIndexingPage = () => {
 	const [modalShow, setModalShow] = useState(false);
+	const [modalDettach, setModalShowDettach] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
+	const [folderId, setFolderId] = useState("");
 	const documentList = useSelector(selectDocuemnts);
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
+	const [modalShowReference, setModalShowReference] = useState(false);
 
 	useEffect(() => {
 		setCart(cartStash);
@@ -32,12 +41,24 @@ const TableIndexingPage = () => {
 		dispatch(getDocumentsListIndexing(page));
 	};
 
+	const DocumentAssigned = (page = 1) => {
+		dispatch(getDocumentsAssigned(page));
+	};
+
 	useEffect(() => {
 		FetchData();
 	}, []);
 
-	const _onHide = () => {
+	useEffect(() => {
+		DocumentAssigned();
+	}, []);
+
+	const onHide = () => {
 		setModalShow(false);
+	};
+
+	const onHideDettach = () => {
+		setModalShowDettach(false);
 	};
 
 	const addCart = async id => {
@@ -49,6 +70,10 @@ const TableIndexingPage = () => {
 		if (cart) {
 			const checkCart = cart?.Cart.indexOf(String(id));
 		}
+	};
+
+	const onHideReference = () => {
+		setModalShowReference(false);
 	};
 
 	const action = id => [
@@ -68,13 +93,23 @@ const TableIndexingPage = () => {
 			url: "Document-Detail/" + id,
 			type: 1,
 		},
+		{
+			icon: "fa-edit",
+			title: "Lampirkan File",
+			type: 2,
+			onclick: () => {
+				setFolderId(id);
+				setModalShowReference(true);
+			},
+			dispatch: dispatch,
+			row: id,
+		},
 	];
 
 	const header = [
 		{
 			title: "No Document",
 			prop: "no",
-			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
 			},
@@ -85,7 +120,6 @@ const TableIndexingPage = () => {
 		{
 			title: "No Digital",
 			prop: "no_digital",
-			sortable: true,
 			cellProps: {
 				style: { width: "20%" },
 			},
@@ -138,9 +172,10 @@ const TableIndexingPage = () => {
 						<h5 className="text ff-1-bd mr-3">{cart.numberCart}</h5>
 						<p className="p-lg">Document dipilih</p>
 					</div>
-					<span
+					<button
 						className="ph-2 h-12 bd-rs-6 d-flex ai-center jc-center bg-success-1 ml-a cur-p"
 						onClick={() => setModalShow(true)}
+						disabled={cart.numberCart === 0}
 					>
 						<span className="text p-lg mh-2 tc-success-5">Indexing</span>
 						<span
@@ -149,7 +184,7 @@ const TableIndexingPage = () => {
 						>
 							<i className="fas fa-chevron-double-right tc-dark-contrast"></i>
 						</span>
-					</span>
+					</button>
 				</div>
 			</>
 		);
@@ -159,25 +194,39 @@ const TableIndexingPage = () => {
 		<>
 			<Helmet>
 				<title>Dox - Indexing</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<ModalForm
 					modal={modalShow}
-					hide={_onHide}
+					hide={onHide}
 					modalSet={setModalShow}
 					valueModalSet={false}
+				/>
+				<ModalDetach
+					modal={modalDettach}
+					hide={onHideDettach}
+					modalSet={setModalShowDettach}
+					valueModalSet={false}
+					folder_id={folderId}
+				/>
+				<ModalAddReference
+					modal={modalShowReference}
+					hide={onHideReference}
+					modalSet={setModalShowReference}
+					valueModalSet={false}
+					folder_id={folderId}
 				/>
 				<div className="d-flex jc-between w-100% mb-4">
 					<h6>List Document belum terindexing</h6>
 					<Cart />
 				</div>
-				<DataTable tableHeader={header} tableBody={documentList.Documents} />
+				<div style={{ marginBottom: 20 }}>
+					<ModalFilter />
+				</div>
+				<DataTable tableHeader={header} tableBody={documentList?.Documents} />
 				<Pagination
-					pageCount={documentList.Meta.last_page}
+					pageCount={documentList?.Meta?.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

@@ -9,11 +9,21 @@ export const initialState: LoginsInterfaceState = {
 			type: "",
 		},
 		data: {
-			roles: [],
+			roles: [""],
 			user: {
 				id: "",
 				username: "",
-			}
+				staff: {
+					email: "",
+					firebase_token: "",
+					firebase_token_expired: "",
+					firebase_token_updated: "",
+					id: "",
+					name: "",
+					nik: "",
+					room: "",
+				},
+			},
 		},
 	},
 	user: [],

@@ -129,10 +129,7 @@ const CompanyPage = () => {
 		<>
 			<Helmet>
 				<title>Dox - Request Company</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<Alert

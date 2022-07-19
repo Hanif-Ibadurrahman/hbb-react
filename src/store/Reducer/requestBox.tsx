@@ -31,6 +31,12 @@ export const initialState: RequestBoxesInterfaceState = {
 		id: "",
 		is_approved: false,
 		delivery_date: "",
+		car_id: {
+			id: "",
+			brand: "",
+			capacity: "",
+			license_plate: "",
+		},
 		archiver_id: {
 			id: "",
 			username: "",
@@ -73,6 +79,21 @@ export const initialState: RequestBoxesInterfaceState = {
 		delivery_method: "regular",
 		code_boxes: [],
 		type: "",
+		delivery_date: "",
+		transporter: {
+			id: "",
+			email: "",
+			firebase_token: "",
+			firebase_token_expired: "",
+			name: "",
+			nik: "",
+		},
+		car: {
+			id: "",
+			brand: "",
+			capacity: "",
+			license_plate: "",
+		},
 		request_logs: [
 			{
 				time: "",
@@ -387,6 +408,21 @@ export default (
 					type: "",
 					code_boxes: [],
 					created_at: "",
+					delivery_date: "",
+					transporter: {
+						id: "",
+						email: "",
+						firebase_token: "",
+						firebase_token_expired: "",
+						name: "",
+						nik: "",
+					},
+					car: {
+						id: "",
+						brand: "",
+						capacity: "",
+						license_plate: "",
+					},
 					request_items: [
 						{
 							box: {

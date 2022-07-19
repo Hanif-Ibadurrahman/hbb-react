@@ -13,7 +13,9 @@ import {
 import { assignToFolder } from "api/indexing";
 import { Autocomplete, TextField } from "@mui/material";
 import { selectFolders } from "store/Selector/FolderSelector";
-import { getFoldersList } from "actions/FolderAction";
+import { getFoldersNotPage } from "actions/FolderAction";
+import { getDocumentsAssigned } from "actions/DocumentAction";
+import { selectDocuemntsAssigned } from "store/Selector/DocumentSelector";
 
 const ModalAssign = props => {
 	const [showAlert, setShowAlert] = useState(false);
@@ -21,11 +23,19 @@ const ModalAssign = props => {
 	const [varianAlert, setVarianAlert] = useState("");
 	const folder = useSelector(selectFolders);
 	const FetchData = (page = 1) => {
-		dispatch(getFoldersList(page));
+		dispatch(getFoldersNotPage(page));
 	};
 	useEffect(() => {
 		FetchData();
 	}, []);
+	const DocumentAssigned = (page = 1) => {
+		dispatch(getDocumentsAssigned(page));
+	};
+
+	useEffect(() => {
+		DocumentAssigned();
+	}, []);
+
 	const assignDocumentToFolder: AssignDocumentToFolderInterfaceState =
 		useSelector(selectAssignToFolder);
 	const cart = useSelector(selectindexings);
@@ -68,26 +78,27 @@ const ModalAssign = props => {
 						try {
 							values.id = values.id_folder.id;
 							values.document_codes = cartStash;
-							let action = assignToFolder(values);
-							const res = await action;
-							await dispatch(res);
-							action.then(() => {
+							const res = await assignToFolder(values);
+							if (res.status === 200) {
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
-								setAlertMessage("Request Peminjaman Berhasil");
+								setAlertMessage("Pemindahan Folder Berhasil");
 								setVarianAlert("success");
 								setTimeout(function () {
 									window.location.reload();
 								}, 1000);
-							});
+							} else {
+								props.modalSet(props.valueModalSet);
+								setShowAlert(true);
+								setAlertMessage("Pemindahan Folder Gagal");
+								setVarianAlert("danger");
+							}
+						} catch (err) {
 							props.modalSet(props.valueModalSet);
-						} catch (e) {
 							setShowAlert(true);
-							setAlertMessage("Request Gagal");
+							setAlertMessage("Pemindahan Folder Gagal");
 							setVarianAlert("danger");
-							setTimeout(function () {
-								setShowAlert(false);
-							}, 4000);
+							console.log(err);
 						}
 					}}
 				>
@@ -135,7 +146,7 @@ const ModalAssign = props => {
 												))}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Pilih Area</Form.Label>
+												<Form.Label>Pilih Folder</Form.Label>
 												<Autocomplete
 													id="folder"
 													options={folder.Folders}

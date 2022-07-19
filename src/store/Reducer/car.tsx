@@ -6,6 +6,7 @@ import {
 	RESET_CAR_LIST,
 	RESET_CAR_FORM,
 	SET_CAR_DATA,
+	FILTER_CAR,
 } from "../../actions/CarAction";
 import { CarsInterfaceState, CarInterfaceState } from "../Types/CarTypes";
 export const initialState: CarsInterfaceState = {
@@ -36,6 +37,18 @@ export default (
 				Car: payload,
 			};
 		case GET_CARS_LIST:
+			return {
+				...state,
+				Cars: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorCar: payload.errorMessage,
+			};
+		case FILTER_CAR:
 			return {
 				...state,
 				Cars: payload.data,

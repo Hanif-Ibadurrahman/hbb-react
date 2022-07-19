@@ -25,8 +25,6 @@ export const getById = async (id: String) => {
 };
 
 export const getAll = async params => {
-	console.log("page3", params);
-
 	return api
 		.get(`/cars?page=${params}`)
 		.then(res => {
@@ -39,4 +37,19 @@ export const getAll = async params => {
 
 export const destroy = id => {
 	return api.delete(`/cars/${id}`);
+};
+
+export const filterCar = async (data: CarInterfaceState) => {
+	let filter = {
+		license_plate: data.license_plate,
+	};
+
+	return api
+		.get(`/cars?license_plate=${filter.license_plate}`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
 };

@@ -54,7 +54,7 @@ const ReturnItemPage = () => {
 	const action = id => [
 		{
 			icon: "fa-hand-holding-box",
-			title: "Pickup",
+			title: "Pilih",
 			onclick: () => {
 				addCart(id);
 			},
@@ -140,10 +140,7 @@ const ReturnItemPage = () => {
 		<>
 			<Helmet>
 				<title>Dox - Request Box</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<ModalForm

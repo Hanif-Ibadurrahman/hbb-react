@@ -19,6 +19,7 @@ import {
 	RESET_INDEX_FORM,
 	SearchIndexing,
 } from "actions/IndexingAction";
+import ModalAddReference from "../DocumentPage/ModalAddReference";
 
 const IndexingPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -68,7 +69,6 @@ const IndexingPage = () => {
 
 	const showEditForm = async id => {
 		dispatch(getIndexingDetail(id));
-		console.log("id>>>>>", id);
 		setModalShow(true);
 	};
 
@@ -84,7 +84,6 @@ const IndexingPage = () => {
 			title: "Edit",
 			onclick: () => {
 				showEditForm(id);
-				console.log("id>>>>>", id);
 			},
 			dispatch: dispatch,
 			row: id,
@@ -132,7 +131,6 @@ const IndexingPage = () => {
 			},
 			cell: row => {
 				return moment(row.created_at).format("DD MMMM YYYY");
-				// return moment(row.date).format("DD MMMM YY");
 			},
 		},
 		{
@@ -148,16 +146,11 @@ const IndexingPage = () => {
 		},
 	];
 
-	console.log(">...", indexings.Indexings);
-
 	return (
 		<>
 			<Helmet>
 				<title>Dox - Indexing Page</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<Alert

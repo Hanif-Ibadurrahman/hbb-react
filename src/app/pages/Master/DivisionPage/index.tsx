@@ -130,10 +130,7 @@ const DivisionPage = () => {
 		<>
 			<Helmet>
 				<title>Dox - Division</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<Alert

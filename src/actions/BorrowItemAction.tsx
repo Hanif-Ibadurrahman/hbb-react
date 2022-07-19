@@ -13,6 +13,7 @@ export const GET_NUMBER_CART = "GET_NUMBER_CART";
 export const ADD_CART = "ADD_CART";
 export const DELETE_CART = "DELETE_CART";
 export const GET_BORROW_LIST = "GET_BORROW_LIST";
+export const FILTER_BOXES = "GET_FILTER_BOXES";
 
 export const getBorrowList = page => {
 	return async dispatch => {

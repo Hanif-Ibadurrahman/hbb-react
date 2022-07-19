@@ -26,6 +26,8 @@ import { getTransporterList } from "actions/TransporterAction";
 import { selectArchivers } from "store/Selector/ArchiverSelector";
 import { getArchiverList } from "actions/ArchiverAction";
 import "./autocomplete.scoped.scss";
+import { selectCars } from "store/Selector/CarSelector";
+import { getCarsList } from "actions/CarAction";
 
 export const ModalFormReject = props => {
 	const [showAlert, setShowAlert] = useState(false);
@@ -166,6 +168,7 @@ export const ModalFormApprove = props => {
 
 	const transporter = useSelector(selectTransporters);
 	const archiver = useSelector(selectArchivers);
+	const car = useSelector(selectCars);
 
 	const FetchData = (page = 1) => {
 		dispatch(getTransporterList(page));
@@ -175,12 +178,20 @@ export const ModalFormApprove = props => {
 		dispatch(getArchiverList(page));
 	};
 
+	const CarData = (page = 1) => {
+		dispatch(getCarsList(page));
+	};
+
 	useEffect(() => {
 		ArchiverData();
 	}, []);
 
 	useEffect(() => {
 		FetchData();
+	}, []);
+
+	useEffect(() => {
+		CarData();
 	}, []);
 
 	function addDays(days) {
@@ -339,6 +350,28 @@ export const ModalFormApprove = props => {
 																margin="normal"
 																placeholder="Transporter"
 																name="transporter_id"
+																{...params}
+															/>
+														)}
+													/>
+												</Form.Group>
+												<Form.Group className="mb-4" controlId="formBasicEmail">
+													<Form.Label>Pilih Kendaraan</Form.Label>
+													<Autocomplete
+														id="car_id"
+														options={car.Cars}
+														getOptionLabel={option => option.license_plate}
+														onChange={(e, value) => {
+															setFieldValue(
+																"car_id",
+																value !== null ? value : values.car_id,
+															);
+														}}
+														renderInput={params => (
+															<TextField
+																margin="normal"
+																placeholder="Transporter"
+																name="car_id"
 																{...params}
 															/>
 														)}
