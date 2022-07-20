@@ -18,7 +18,7 @@ export interface StaffInterfaceState {
 	id: string | null;
 	username: string;
 	password: string;
-	nik: string;
+	nip: string;
 	name: string;
 	role_id: RolesInterfaceState;
 	room_id: RoomInterfaceState;

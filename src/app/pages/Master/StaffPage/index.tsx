@@ -45,7 +45,6 @@ const StaffPage = () => {
 	};
 
 	const showEditForm = async id => {
-		// dispatch(getRoomDetail(id));
 		setModalShow(true);
 	};
 

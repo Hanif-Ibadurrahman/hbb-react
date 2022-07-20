@@ -3,7 +3,7 @@ import {
 	BorrowItemInterfaceState,
 	BorrowItemsInterfaceState,
 } from "store/Types/BorrowItemTypes";
-import { create, getAll } from "../api/borrowItem";
+import { create, filterBoxesBorrow, getAll } from "../api/borrowItem";
 export const CREATE_BORROW_ITEM = "CREATE_BORROW_ITEM";
 export const BORROW_ITEM_ERROR = "BORROW_ITEM_ERROR";
 export const RESET_BORROW_FORM = "RESET_BORROW_FORM";
@@ -13,7 +13,7 @@ export const GET_NUMBER_CART = "GET_NUMBER_CART";
 export const ADD_CART = "ADD_CART";
 export const DELETE_CART = "DELETE_CART";
 export const GET_BORROW_LIST = "GET_BORROW_LIST";
-export const FILTER_BOXES = "GET_FILTER_BOXES";
+export const FILTER_BOXES_BORROW = "FILTER_BOXES_BORROW";
 
 export const getBorrowList = page => {
 	return async dispatch => {
@@ -34,6 +34,36 @@ export const getBorrowList = page => {
 				payload: {
 					data: false,
 					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const SearchBoxesBorrow = async (data: BorrowItemInterfaceState) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_BORROW_DATA,
+				payload: data,
+			});
+			const response = await filterBoxesBorrow(data);
+			dispatch({
+				type: FILTER_BOXES_BORROW,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: FILTER_BOXES_BORROW,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
 				},
 			});
 			console.log(error);

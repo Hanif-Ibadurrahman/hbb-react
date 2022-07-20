@@ -116,12 +116,13 @@ const ReturnItemPage = () => {
 								<i className="fas fa-box-check"></i>
 							</span>
 						</span>
-						<h5 className="text ff-1-bd mr-3">{cart.numberCart}</h5>
+						<h5 className="text ff-1-bd mr-3">{cart?.numberCart}</h5>
 						<p className="p-lg">Box dipilih</p>
 					</div>
-					<span
+					<button
 						className="ph-2 h-12 bd-rs-6 d-flex ai-center jc-center bg-success-1 ml-a cur-p"
 						onClick={() => setModalShow(true)}
+						disabled={cart?.numberCart === 0}
 					>
 						<span className="text p-lg mh-2 tc-success-5">Proses</span>
 						<span
@@ -130,7 +131,7 @@ const ReturnItemPage = () => {
 						>
 							<i className="fas fa-chevron-double-right tc-dark-contrast"></i>
 						</span>
-					</span>
+					</button>
 				</div>
 			</>
 		);

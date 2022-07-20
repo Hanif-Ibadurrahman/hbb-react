@@ -5,7 +5,7 @@ export const create = async (data: StaffInterfaceState) => {
 	let payload = {
 		username: data?.username,
 		password: data?.password,
-		nik: data?.nik,
+		nip: data?.nip,
 		name: data?.name,
 		role_id: data?.role_id?.id,
 		room_id: data?.room_id?.id,

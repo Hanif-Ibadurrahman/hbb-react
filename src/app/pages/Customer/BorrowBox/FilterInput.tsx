@@ -2,13 +2,14 @@ import React from "react";
 import { Button, Col, Row, Container, Form } from "react-bootstrap";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { SearchBoxes } from "actions/BoxActions";
-import { BoxInterfaceState } from "store/Types/BoxTypes";
 import { selectBox } from "store/Selector/BoxSelector";
+import { SearchBoxesBorrow } from "actions/BorrowItemAction";
+import { selectBorrowItem } from "store/Selector/BorrowItemSelector";
+import { BorrowItemInterfaceState } from "store/Types/BorrowItemTypes";
 
 export function SearchInput(props) {
 	const dispatch = useDispatch();
-	const box: BoxInterfaceState = useSelector(selectBox);
+	const box: BorrowItemInterfaceState = useSelector(selectBorrowItem);
 
 	return (
 		<>
@@ -18,7 +19,7 @@ export function SearchInput(props) {
 				enableReinitialize={true}
 				onSubmit={async values => {
 					try {
-						const res = await SearchBoxes(values);
+						const res = await SearchBoxesBorrow(values);
 						await dispatch(res);
 					} catch (e) {
 						console.log("error");

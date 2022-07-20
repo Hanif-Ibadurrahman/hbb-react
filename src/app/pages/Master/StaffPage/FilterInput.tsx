@@ -41,7 +41,7 @@ export function SearchInput(props) {
 									type="text"
 									name="username"
 									placeholder="cari username"
-									value={values.username}
+									value={values?.username}
 									onChange={e => {
 										handleChange(e);
 									}}

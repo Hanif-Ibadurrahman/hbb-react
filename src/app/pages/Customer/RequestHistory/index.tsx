@@ -12,6 +12,7 @@ import moment from "moment";
 const RequestHistory = () => {
 	const requestBoxes = useSelector(selectRequestBoxes);
 	const dispatch = useDispatch();
+	const user = localStorage.getItem("User");
 
 	const FetchData = (page = 1) => {
 		dispatch(getAllRequestList(page));
@@ -62,19 +63,63 @@ const RequestHistory = () => {
 				style: { width: "40%" },
 			},
 			cell: row => {
-				return (
-					<>
-						{row.type == "request-box"
-							? "Request Box"
-							: row.type == "pickup-box"
-							? "Pick Up Box"
-							: row.type == "borrow-item"
-							? "Peminjaman"
-							: row.type == "return-item"
-							? "Pengembalian"
-							: null}
-					</>
-				);
+				const text = row?.type?.toUpperCase();
+				return <>{text.replaceAll("-", " ")}</>;
+			},
+		},
+		{
+			title: "Action",
+			prop: "Action",
+			cellProps: {
+				style: { flex: 1 },
+				className: "realname-class",
+			},
+			cell: row => {
+				return <DropdownAction list={action(row.id)} />;
+			},
+		},
+	];
+
+	const headerAdmin = [
+		{
+			title: "Perusahaan",
+			prop: "company",
+			cellProps: {
+				style: { width: "20%" },
+			},
+			cell: row => {
+				return row?.customer?.company?.name;
+			},
+		},
+		{
+			title: "Customer",
+			prop: "customer",
+			cellProps: {
+				style: { width: "20%" },
+			},
+			cell: row => {
+				return row?.customer?.name;
+			},
+		},
+		{
+			title: "Tanggal Permintaan",
+			prop: "created_at",
+			cellProps: {
+				style: { width: "20%" },
+			},
+			cell: row => {
+				return moment(row?.created_at).format("DD MMMM YYYY");
+			},
+		},
+		{
+			title: "Tipe Permintaan",
+			prop: "type",
+			cellProps: {
+				style: { width: "20%" },
+			},
+			cell: row => {
+				const text = row?.type?.toUpperCase();
+				return <>{text.replaceAll("-", " ")}</>;
 			},
 		},
 		{
@@ -98,7 +143,11 @@ const RequestHistory = () => {
 			</Helmet>
 			<PageWrapper>
 				<DataTable
-					tableHeader={header}
+					tableHeader={
+						user === "csroperation" || user === "csradmin"
+							? headerAdmin
+							: header
+					}
 					tableBody={
 						requestBoxes?.RequestBoxes ? requestBoxes?.RequestBoxes : []
 					}

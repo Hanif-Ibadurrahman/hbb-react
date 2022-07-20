@@ -56,7 +56,7 @@ export const ModalForm = props => {
 		username: Yup.string().required("*Wajib diisi"),
 		password: Yup.string().required("*Wajib diisi").min(8, "Min 8 Karakter"),
 		name: Yup.string().required("*Wajib diisi"),
-		nik: Yup.string().required("*Wajib diisi"),
+		nip: Yup.string().required("*Wajib diisi").max(18, "Maksimal 18 Karakter"),
 	});
 
 	return (
@@ -187,19 +187,19 @@ export const ModalForm = props => {
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>NIK</Form.Label>
+												<Form.Label>NIP</Form.Label>
 												<Form.Control
 													type="text"
-													name="nik"
-													placeholder="NIK"
-													value={values?.nik}
+													name="nip"
+													placeholder="NIP"
+													value={values?.nip}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.nik && errors.nik ? (
-													<p className="tc-danger-5 pos-a p-sm">{errors.nik}</p>
+												{touched.nip && errors.nip ? (
+													<p className="tc-danger-5 pos-a p-sm">{errors.nip}</p>
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
