@@ -104,7 +104,7 @@ const CarPage = () => {
 
 	const header = [
 		{
-			title: "Brand",
+			title: "Merk Mobil",
 			prop: "brand",
 			cellProps: {
 				style: { width: "30%" },
