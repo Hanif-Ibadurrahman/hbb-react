@@ -98,6 +98,8 @@ export function DashboardSuperadmin() {
 			return setTitle("List Pending Approval");
 		} else if (user === "csroperation") {
 			return setTitle("List Pending Approval");
+		} else if (user === "archiver") {
+			return setTitle("Input Hari Ini");
 		} else {
 			return setTitle("List Box Di Pinjam");
 		}
@@ -171,6 +173,34 @@ export function DashboardSuperadmin() {
 	];
 
 	const CardSuperAdmin = () => {
+		return (
+			<div className="row w-100% mh-0 row-summary">
+				<div className="col col-4 ph-0">
+					<CardHeader
+						icon="archive"
+						total={totalCabinets || 0}
+						text={["Total", <br />, "Cabinet."]}
+					/>
+				</div>
+				<div className="col col-4 ph-0 mh-4">
+					<CardHeader
+						icon="truck-loading"
+						total={totalBoxNoAsign || 0}
+						text={["Total Box", <br />, "Tidak terdaftar"]}
+					/>
+				</div>
+				<div className="col col-4 ph-0">
+					<CardHeader
+						icon="boxes"
+						total={totalBox || 0}
+						text={["Total Box", <br />, "terdaftar."]}
+					/>
+				</div>
+			</div>
+		);
+	};
+
+	const CardArchiver = () => {
 		return (
 			<div className="row w-100% mh-0 row-summary">
 				<div className="col col-4 ph-0">
@@ -349,6 +379,28 @@ export function DashboardSuperadmin() {
 			</div>
 		);
 	};
+	const TableArchiver = () => {
+		return (
+			<>
+				<div className="row w-100% mb-8">
+					<div className="col col-4 ph-0">
+						<CardHeader
+							icon="chalkboard"
+							total={124}
+							text={["Total Data", <br />, "Entry Hari Ini"]}
+						/>
+					</div>
+				</div>
+				<BarChart width={900} height={300} data={data} className="Bar-chatxxi">
+					<XAxis dataKey="company" stroke="#000" />
+					<YAxis />
+					<Tooltip />
+					<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+					<Bar dataKey="totalBox" fill="#198754" barSize={30} />
+				</BarChart>
+			</>
+		);
+	};
 
 	const Table = () => {
 		if (user === "superadmin") {
@@ -358,7 +410,7 @@ export function DashboardSuperadmin() {
 		} else if (user === "csroperation") {
 			return <TableCSROperation />;
 		} else if (user === "archiver") {
-			return <div></div>;
+			return <TableArchiver />;
 		} else {
 			return <TableCustomer />;
 		}
@@ -372,7 +424,7 @@ export function DashboardSuperadmin() {
 		} else if (user === "csroperation") {
 			return <CardAdmin />;
 		} else if (user === "archiver") {
-			return <div></div>;
+			return <CardArchiver />;
 		} else {
 			return <CardCustomer />;
 		}
