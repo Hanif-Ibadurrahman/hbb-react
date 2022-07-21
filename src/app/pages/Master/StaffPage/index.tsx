@@ -21,10 +21,8 @@ import Alert from "app/components/Alerts";
 
 const StaffPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
-	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
-	const [dataStaff, setDataStaff] = useState("");
 	const staffs = useSelector(selectStaffs);
 	const dispatch = useDispatch();
 
@@ -35,11 +33,6 @@ const StaffPage = () => {
 			dispatch(SearchStaff);
 		}
 	};
-	// const id = staffs.Staffs.map((item, index) => {
-	// 	return item.staff.id;
-	// });
-	// console.log(id, "shetdah");
-
 	useEffect(() => {
 		FetchData();
 	}, []);

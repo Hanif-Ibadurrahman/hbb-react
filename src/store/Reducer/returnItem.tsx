@@ -7,6 +7,7 @@ import {
 	ADD_CART,
 	DELETE_CART,
 	GET_RETURN_LIST,
+	ADD_CART_ALL,
 } from "../../actions/ReturnAction";
 import { ReturnItemsInterfaceState } from "../Types/ReturnItemTypes";
 import _ from "lodash";
@@ -73,11 +74,13 @@ export default (
 				Cart: checkCartExist() ? [...state.Cart, payload] : [...state.Cart],
 				numberCart: checkCartExist() ? state.numberCart + 1 : state.numberCart,
 			};
+		case ADD_CART_ALL:
+			return {
+				...state,
+				Cart: payload,
+				numberCart: state.numberCart + state.Cart.length,
+			};
 		case DELETE_CART:
-			// const cartStash = [...state.Cart]
-			// const deleteSelectedCart = _.remove(cartStash, function (n) {
-			// 	return n === payload;
-			// })
 			return {
 				...state,
 				numberCart: state.numberCart - 1,

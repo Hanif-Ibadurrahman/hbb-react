@@ -8,6 +8,7 @@ import {
 	DELETE_CART,
 	GET_BORROW_LIST,
 	FILTER_BOXES_BORROW,
+	ADD_CART_ALL,
 } from "../../actions/BorrowItemAction";
 import { BorrowItemsInterfaceState } from "../Types/BorrowItemTypes";
 import _ from "lodash";
@@ -86,6 +87,12 @@ export default (
 				...state,
 				Cart: checkCartExist() ? [...state.Cart, payload] : [...state.Cart],
 				numberCart: checkCartExist() ? state.numberCart + 1 : state.numberCart,
+			};
+		case ADD_CART_ALL:
+			return {
+				...state,
+				Cart: payload,
+				numberCart: state.numberCart + state.Cart.length,
 			};
 		case DELETE_CART:
 			return {

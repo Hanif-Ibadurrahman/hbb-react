@@ -30,8 +30,8 @@ export interface StaffInterfaceState {
 	nip: string;
 	name: string;
 	email: string;
-	role_id: RolesInterfaceState;
-	room_id: RoomInterfaceState;
+	roles: RolesInterfaceState;
+	room: RoomInterfaceState;
 	staff: StaffIdInterfaceState;
 }
 

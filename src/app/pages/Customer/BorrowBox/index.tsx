@@ -4,7 +4,7 @@ import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
 import DropdownAction from "app/pages/Master/Components/DropdownAction";
 import { Pagination } from "app/components/Pagination";
-import { AddCart, getBorrowList } from "actions/BorrowItemAction";
+import { AddCart, AddCartAll, getBorrowList } from "actions/BorrowItemAction";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { SearchInput } from "./FilterInput";
 import ModalForm from "./ModalForm";
@@ -17,7 +17,6 @@ const BorrowBoxPage = () => {
 	const [cart, setCart] = useState<Partial<any>>({});
 	const borrowList = useSelector(selectBorrowItems);
 	const cartStash = useSelector((state: RootStateOrAny) => state?.pickUpItems);
-
 	useEffect(() => {
 		setCart(cartStash);
 	}, []);
@@ -43,6 +42,13 @@ const BorrowBoxPage = () => {
 	const addCart = async id => {
 		checkCart(id);
 		dispatch(await AddCart(id));
+	};
+
+	const allData = async () => {
+		const newData = borrowList?.BorrowList.map(item => {
+			return item?.id;
+		});
+		dispatch(await AddCartAll(newData));
 	};
 
 	const checkCart = id => {
@@ -109,20 +115,21 @@ const BorrowBoxPage = () => {
 				<div className="ph-4 pv-4 bg-dark-contrast bd-tl-rs-4 bd-tr-rs-4 d-flex cart-popup">
 					<div className="d-flex ai-center">
 						<span className="h-12 w-12 bd-rs-6 d-flex ai-center jc-center bg-light-shade mr-6">
-							<span
-								className="icon h-9 w-9 bd-rs-6 d-flex ai-center jc-center bg-medium-tint"
-								style={{ marginTop: -3 }}
+							<button
+								className="icon h-9 w-9 bd-rs-6 d-flex ai-center jc-center bg-success"
+								style={{ marginTop: -3, color: "#fff" }}
+								onClick={allData}
 							>
 								<i className="fas fa-box-check"></i>
-							</span>
+							</button>
 						</span>
-						<h5 className="text ff-1-bd mr-3">{cart?.numberCart}</h5>
+						<h5 className="text ff-1-bd mr-3">{borrowList?.Cart?.length}</h5>
 						<p className="p-lg">Box dipilih</p>
 					</div>
 					<button
 						className="ph-2 h-12 bd-rs-6 d-flex ai-center jc-center bg-success-1 ml-a cur-p"
 						onClick={() => setModalShow(true)}
-						disabled={cart?.numberCart === 0}
+						disabled={borrowList?.Cart?.length <= 0}
 					>
 						<span className="text p-lg mh-2 tc-success-5">Proses</span>
 						<span

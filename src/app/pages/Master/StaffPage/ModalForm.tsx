@@ -248,49 +248,57 @@ export const ModalForm = props => {
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Ruangan</Form.Label>
 												<Autocomplete
-													id="room_id"
+													id="room"
 													options={rooms.Rooms}
-													value={values?.room_id}
+													value={values?.room}
 													getOptionLabel={option => option.name}
 													onChange={(e, value) => {
 														setFieldValue(
-															"room_id",
-															value !== null ? value : values?.room_id,
+															"room",
+															value !== null ? value : values?.room,
 														);
 													}}
 													renderInput={params => (
 														<TextField
 															margin="normal"
-															placeholder="Company"
-															name="room_id"
+															placeholder="Ruangan"
+															name="room"
 															{...params}
 														/>
 													)}
 												/>
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Jenis Pekerjaan</Form.Label>
-												<Autocomplete
-													id="role_id"
-													options={roles.Roles}
-													value={values?.role_id}
-													getOptionLabel={option => option.name}
-													onChange={(e, value) => {
-														setFieldValue(
-															"role_id",
-															value !== null ? value : values.role_id?.name,
-														);
-													}}
-													renderInput={params => (
-														<TextField
-															margin="normal"
-															placeholder="Jenis Pekerjaan"
-															name="role_id"
-															{...params}
+											{staff?.id === null ||
+												(staff?.id === "" && (
+													<Form.Group
+														className="mb-4"
+														controlId="formBasicEmail"
+													>
+														<Form.Label>Jenis Pekerjaan</Form.Label>
+														<Autocomplete
+															id="roles"
+															options={roles.Roles}
+															value={values[0]?.roles}
+															getOptionLabel={option => option.name}
+															onChange={(e, value) => {
+																setFieldValue(
+																	"roles",
+																	value !== null
+																		? value
+																		: values[0].roles?.name,
+																);
+															}}
+															renderInput={params => (
+																<TextField
+																	margin="normal"
+																	placeholder="Jenis Pekerjaan"
+																	name="roles"
+																	{...params}
+																/>
+															)}
 														/>
-													)}
-												/>
-											</Form.Group>
+													</Form.Group>
+												))}
 										</Col>
 									</Row>
 								</Container>

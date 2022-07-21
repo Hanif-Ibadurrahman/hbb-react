@@ -20,7 +20,7 @@ export const initialState: StaffsInterfaceState = {
 		nip: "",
 		name: "",
 		email: "",
-		role_id: {
+		roles: {
 			id: "",
 			display_name: "",
 			name: "",
@@ -32,7 +32,7 @@ export const initialState: StaffsInterfaceState = {
 				},
 			],
 		},
-		room_id: {
+		room: {
 			id: "",
 			name: "",
 			floor: 0,
@@ -140,7 +140,7 @@ export default (
 					nip: "",
 					name: "",
 					email: "",
-					role_id: {
+					roles: {
 						id: "",
 						display_name: "",
 						name: "",
@@ -152,7 +152,7 @@ export default (
 							},
 						],
 					},
-					room_id: {
+					room: {
 						id: "",
 						name: "",
 						floor: 0,

@@ -8,8 +8,8 @@ export const create = async (data: StaffInterfaceState) => {
 		nip: data?.nip,
 		name: data?.name,
 		email: data?.email,
-		role_id: data?.role_id?.id,
-		room_id: data?.room_id?.id,
+		role_id: data?.roles?.id,
+		room_id: data?.room?.id,
 	};
 	return api.post("/users/staff", payload);
 };
@@ -20,8 +20,8 @@ export const update = async (data: StaffInterfaceState) => {
 		nip: data?.nip,
 		name: data?.name,
 		email: data?.email,
-		role_id: data?.role_id?.id,
-		room_id: data?.room_id?.id,
+		role_id: data?.roles?.id,
+		room_id: data?.room?.id,
 	};
 	return api.put(`/users/staff/${id}`, payload);
 };
