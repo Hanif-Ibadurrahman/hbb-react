@@ -20,6 +20,7 @@ import {
 	CreateStaff,
 	RESET_STAFF_FORM,
 	getRoleList,
+	UpdateStaff,
 } from "actions/StaffAction";
 import {
 	selectStaff,
@@ -33,7 +34,6 @@ export const ModalForm = props => {
 	const [varianAlert, setVarianAlert] = useState("");
 	const staff: StaffInterfaceState = useSelector(selectStaff);
 	const dispatch = useDispatch();
-
 	const rooms = useSelector(selectRooms);
 	const roles = useSelector(selectStaffs);
 	const FetchData = () => {
@@ -45,19 +45,24 @@ export const ModalForm = props => {
 	};
 
 	useEffect(() => {
+		FetchData();
 		DivisionData();
 	}, []);
 
-	useEffect(() => {
-		FetchData();
-	}, []);
-
-	const validationSchema = Yup.object().shape({
+	const addStaffSchema = Yup.object().shape({
 		username: Yup.string().required("*Wajib diisi"),
 		password: Yup.string().required("*Wajib diisi").min(8, "Min 8 Karakter"),
 		name: Yup.string().required("*Wajib diisi"),
 		nip: Yup.string().required("*Wajib diisi").max(18, "Maksimal 18 Karakter"),
 	});
+
+	const editStaffSchema = Yup.object().shape({
+		name: Yup.string().required("*Wajib diisi"),
+		nip: Yup.string().required("*Wajib diisi").max(18, "Maksimal 18 Karakter"),
+		email: Yup.string().required("*Wajib diisi"),
+	});
+
+	const validationSchema = staff?.id ? editStaffSchema : addStaffSchema;
 
 	return (
 		<>
@@ -86,7 +91,9 @@ export const ModalForm = props => {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							let action = CreateStaff(values);
+							let action = !staff?.id
+								? CreateStaff(values)
+								: UpdateStaff(values);
 							const res = await action;
 							await dispatch(res);
 							action.then(() => {
@@ -101,9 +108,13 @@ export const ModalForm = props => {
 									window.location.reload();
 								}, 1000);
 							});
-						} catch (e) {
+						} catch (e: any) {
 							setShowAlert(true);
-							setAlertMessage("Gagal Update Data");
+							if (e?.response?.status === 422) {
+								setAlertMessage("Gagal. Data Duplikat");
+							} else {
+								setAlertMessage("Gagal Update Data");
+							}
 							setVarianAlert("danger");
 							setTimeout(function () {
 								setShowAlert(false);
@@ -125,14 +136,21 @@ export const ModalForm = props => {
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									Tambah Staff
+									{staff?.id ? <>Edit Staff</> : <>Tambah Staff</>}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
 								<Container>
 									<Row>
 										<Col xs={12}>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
+											<Form.Group
+												className="mb-4"
+												controlId="formBasicEmail"
+												style={{
+													display: staff?.id ? "none" : "block",
+													flexDirection: "column",
+												}}
+											>
 												<Form.Label>Username</Form.Label>
 												<Form.Control
 													type="text"
@@ -150,7 +168,14 @@ export const ModalForm = props => {
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
+											<Form.Group
+												className="mb-4"
+												controlId="formBasicEmail"
+												style={{
+													display: staff?.id ? "none" : "block",
+													flexDirection: "column",
+												}}
+											>
 												<Form.Label>Password</Form.Label>
 												<Form.Control
 													type="text"
@@ -203,23 +228,41 @@ export const ModalForm = props => {
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Email</Form.Label>
+												<Form.Control
+													type="text"
+													name="email"
+													placeholder="Email"
+													value={values?.email}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.email && errors.email ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.email}
+													</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Ruangan</Form.Label>
 												<Autocomplete
 													id="room_id"
 													options={rooms.Rooms}
+													value={values?.room_id}
 													getOptionLabel={option => option.name}
 													onChange={(e, value) => {
-														console.log(value);
 														setFieldValue(
 															"room_id",
-															value !== null ? value : values.room_id,
+															value !== null ? value : values?.room_id,
 														);
 													}}
 													renderInput={params => (
 														<TextField
 															margin="normal"
 															placeholder="Company"
-															name="comapany_id"
+															name="room_id"
 															{...params}
 														/>
 													)}
@@ -230,11 +273,12 @@ export const ModalForm = props => {
 												<Autocomplete
 													id="role_id"
 													options={roles.Roles}
+													value={values?.role_id}
 													getOptionLabel={option => option.name}
 													onChange={(e, value) => {
 														setFieldValue(
 															"role_id",
-															value !== null ? value : values.role_id,
+															value !== null ? value : values.role_id?.name,
 														);
 													}}
 													renderInput={params => (
@@ -272,7 +316,7 @@ export const ModalForm = props => {
 											className="ml-2"
 										/>
 									)}
-								</Button>{" "}
+								</Button>
 							</Modal.Footer>
 						</Form>
 					)}

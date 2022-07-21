@@ -1,6 +1,14 @@
 import React from "react";
 import { StaffInterfaceState } from "store/Types/StaffTypes";
-import { create, destroy, getAll, getAllRole, filterStaff } from "../api/staff";
+import {
+	create,
+	update,
+	destroy,
+	getAll,
+	getDetail,
+	getAllRole,
+	filterStaff,
+} from "../api/staff";
 export const GET_STAFFS_LIST = "GET_STAFF_LIST";
 export const GET_ROLE_LIST = "GET_ROLE_LIST";
 export const GET_STAFF_DETAIL = "GET_STAFF_DETAIL";
@@ -134,8 +142,64 @@ export const CreateStaff = async (data: StaffInterfaceState) => {
 					errorMessage: error?.message,
 				},
 			});
+			throw error;
+		}
+	};
+};
+
+export const UpdateStaff = async (data: StaffInterfaceState) => {
+	console.log(data);
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_STAFF_DATA,
+				payload: data,
+			});
+			const response = await update(data);
+			dispatch({
+				type: UPDATE_STAFF,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: UPDATE_STAFF,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
+				},
+			});
 			console.log(error);
 			throw error;
 		}
+	};
+};
+
+export const getStaffDetail = (id: String) => {
+	return dispatch => {
+		return getDetail(id)
+			.then(function (response) {
+				dispatch({
+					type: GET_STAFF_DETAIL,
+					payload: {
+						data: response.data,
+						errorMessage: false,
+					},
+				});
+				return response;
+			})
+			.catch(function (error) {
+				dispatch({
+					type: GET_STAFF_DETAIL,
+					payload: {
+						data: false,
+						errorMessage: error.message,
+					},
+				});
+				return error;
+			});
 	};
 };
