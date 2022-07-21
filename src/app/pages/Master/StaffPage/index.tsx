@@ -14,6 +14,7 @@ import {
 	getstaffsList,
 	RESET_STAFF_FORM,
 	SearchStaff,
+	getStaffDetail,
 } from "actions/StaffAction";
 import { SearchInput } from "./FilterInput";
 import Alert from "app/components/Alerts";
@@ -23,6 +24,7 @@ const StaffPage = () => {
 	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
+	const [dataStaff, setDataStaff] = useState("");
 	const staffs = useSelector(selectStaffs);
 	const dispatch = useDispatch();
 
@@ -33,6 +35,10 @@ const StaffPage = () => {
 			dispatch(SearchStaff);
 		}
 	};
+	// const id = staffs.Staffs.map((item, index) => {
+	// 	return item.staff.id;
+	// });
+	// console.log(id, "shetdah");
 
 	useEffect(() => {
 		FetchData();
@@ -45,6 +51,7 @@ const StaffPage = () => {
 	};
 
 	const showEditForm = async id => {
+		dispatch(getStaffDetail(id));
 		setModalShow(true);
 	};
 
@@ -70,6 +77,16 @@ const StaffPage = () => {
 	};
 
 	const action = id => [
+		{
+			icon: "fa-edit",
+			title: "Edit",
+			type: 2,
+			onclick: () => {
+				showEditForm(id);
+			},
+			dispatch: dispatch,
+			row: id,
+		},
 		{
 			icon: "fa-trash-alt",
 			title: "Delete",
@@ -104,7 +121,7 @@ const StaffPage = () => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.id)} />;
+				return <DropdownAction list={action(row.staff.id)} />;
 			},
 		},
 	];

@@ -19,6 +19,7 @@ export const initialState: StaffsInterfaceState = {
 		password: "",
 		nip: "",
 		name: "",
+		email: "",
 		role_id: {
 			id: "",
 			display_name: "",
@@ -41,6 +42,14 @@ export const initialState: StaffsInterfaceState = {
 				name: "",
 			},
 			code_room: "",
+		},
+		staff: {
+			id: "",
+			name: "",
+			nip: "",
+			email: "",
+			room: "",
+			firebase_token: "",
 		},
 	},
 	Roles: [],
@@ -130,6 +139,7 @@ export default (
 					password: "",
 					nip: "",
 					name: "",
+					email: "",
 					role_id: {
 						id: "",
 						display_name: "",
@@ -152,6 +162,14 @@ export default (
 							name: "",
 						},
 						code_room: "",
+					},
+					staff: {
+						id: "",
+						name: "",
+						nip: "",
+						email: "",
+						room: "",
+						firebase_token: "",
 					},
 				},
 			};
