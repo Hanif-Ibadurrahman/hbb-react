@@ -17,7 +17,7 @@ import { selectClassifications } from "store/Selector/ClassificationSelector";
 import { getAreasList } from "actions/AreaActions";
 import { getRoomsList } from "actions/RoomAction";
 import { getBoxesList, getBoxesNotPage } from "actions/BoxActions";
-import { getClassificationList } from "actions/ClassificationAction";
+import { getClassificationsList } from "actions/ClassificationAction";
 import { CreateIndexing, UpdateIndexing } from "actions/IndexingAction";
 import moment from "moment";
 
@@ -41,7 +41,7 @@ const ModalForm = props => {
 		dispatch(getBoxesNotPage(page));
 	};
 	const ClassificationData = (page = 1) => {
-		dispatch(getClassificationList(page));
+		dispatch(getClassificationsList(page));
 	};
 	useEffect(() => {
 		FetchData();
