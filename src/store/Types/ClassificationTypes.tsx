@@ -1,4 +1,5 @@
 import { PaginationState } from "../Types/PaginationTypes";
+import { CompanyInterfaceState } from "./CompanyTypes";
 
 export interface ClassificationInterfaceState {
 	id: string;
@@ -6,6 +7,8 @@ export interface ClassificationInterfaceState {
 	type: string;
 	code: string;
 	retention_period: string;
+	code_classification: string;
+	company: CompanyInterfaceState;
 }
 
 export interface ClassificationsInterfaceState {
@@ -13,6 +16,7 @@ export interface ClassificationsInterfaceState {
 	Classifications: ClassificationInterfaceState[];
 	Title: string;
 	Meta: PaginationState;
+	ErrorClassification?: string;
 }
 
 export type ClassificationContainerState = ClassificationsInterfaceState;

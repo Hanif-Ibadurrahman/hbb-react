@@ -133,6 +133,11 @@ export const MasterData = [
 		icon: "",
 		link: "/DivisionPage",
 	},
+	{
+		title: "Klasifikasi",
+		icon: "",
+		link: "/ClassificationPage",
+	},
 ];
 
 export const ArchiverMasterData = [

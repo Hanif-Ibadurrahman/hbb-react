@@ -80,6 +80,9 @@ import IndexingPage from "./Master/indexing";
 import DetailIndexingPage from "./Master/indexing/Detail";
 import AssignDocToFolder from "./Master/indexing/AssignDocToFolder";
 import AssignFolderToBox from "./Master/indexing/AssignFolderToBox";
+// # - CLASSIFICATION
+import ClassificationPage from "./Master/ClassificationPage";
+import DetailClassificationPage from "./Master/ClassificationPage/Detail";
 // -=-=-=-=-=-
 
 // CUSTOMER
@@ -97,6 +100,7 @@ import RequestHistory from "./Customer/RequestHistory";
 // -=-=-=-=-=-
 // ALL USER
 import { UserProfile } from "./ProfilePage/Loadable";
+import ClassificationPageDetail from "./Master/ClassificationPage/Detail";
 
 export function Routes() {
 	const { i18n } = useTranslation();
@@ -278,6 +282,14 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/StaffPage"}
 							component={StaffPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/ClassificationPage"}
+							component={ClassificationPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Classification-Detail/:id"}
+							component={ClassificationPageDetail}
 						/>
 						{/*---------- MASTER - - - END ---------*/}
 						{/*--------- ADMIN CSR ---------*/}
