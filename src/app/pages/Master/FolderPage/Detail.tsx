@@ -21,8 +21,6 @@ const FolderPageDetail = ({ match }) => {
 		history.goBack();
 	};
 
-	const documents = folder?.documents;
-
 	const folder_id = match.params.id;
 
 	const dispatch = useDispatch();
@@ -30,6 +28,35 @@ const FolderPageDetail = ({ match }) => {
 	useEffect(() => {
 		dispatch(getFolderDetail(folder_id));
 	}, []);
+
+	const documents = folder?.documents;
+
+	const [name, setName] = useState("");
+	const [foundDocument, setFoundDocument] = useState(documents as any);
+
+	useEffect(() => {
+		if (documents.length > 1 && name === "") {
+			setFoundDocument(documents);
+		}
+	}, [documents]);
+
+	const filter = e => {
+		const keyword = e.target.value;
+
+		if (keyword !== "") {
+			const results = documents?.filter(test => {
+				return (
+					test?.detail?.toLowerCase().startsWith(keyword.toLowerCase()) ||
+					test?.no?.toLowerCase().startsWith(keyword.toLowerCase())
+				);
+			});
+			setFoundDocument(results);
+		} else {
+			setFoundDocument(documents);
+		}
+
+		setName(keyword);
+	};
 
 	const action = id => [
 		{
@@ -135,8 +162,18 @@ const FolderPageDetail = ({ match }) => {
 					</Card>
 				</div>
 				<div>
-					<h6 className="mb-4 mt-4">List Document</h6>
-					<DataTable tableHeader={header} tableBody={documents} />
+					<div className="d-flex jc-between ai-center">
+						<h6 className="mb-4 mt-4">List Document</h6>
+						<Form.Control
+							type="search"
+							value={name}
+							onChange={filter}
+							className="input"
+							placeholder="Cari Dokumen"
+							style={{ width: 200 }}
+						/>
+					</div>
+					<DataTable tableHeader={header} tableBody={foundDocument} />
 				</div>
 			</PageWrapper>
 		</>

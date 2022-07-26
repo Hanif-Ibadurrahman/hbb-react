@@ -194,6 +194,7 @@ export const initialState: IndexingsInterfaceState = {
 					media_storage: "",
 					status: "",
 					sign_code: "",
+					no: "",
 				},
 			],
 		},

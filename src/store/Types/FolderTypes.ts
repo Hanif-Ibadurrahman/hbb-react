@@ -17,6 +17,7 @@ interface CompanyFolderInterface {
 interface DocumentFolderInterface {
 	id: string | null;
 	description: string;
+	no: string;
 	detail: string;
 	media_storage: string;
 	status: string;
