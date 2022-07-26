@@ -13,10 +13,23 @@ export interface ActivityLogInterfaceState {
 	updated_at: string;
 }
 
+interface LogArchiver {
+	name: string;
+	count: number;
+}
+
+export interface ActivitiLogsArchiver {
+	date: string;
+	data: LogArchiver[];
+	area_id: string;
+}
+
 export interface ActivityLogsInterfaceState {
 	ActivityLog: ActivityLogInterfaceState;
 	ActivityLogs: ActivityLogInterfaceState[];
-	ErrorRequestBox?: string;
+	ActivityLogsSuperadmin: [ActivitiLogsArchiver];
+	ActivityLogsArchiver: [ActivitiLogsArchiver];
+	ErrorActivityLogs?: string;
 	Title: string;
 	Meta: PaginationState;
 }

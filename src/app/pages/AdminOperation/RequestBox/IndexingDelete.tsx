@@ -61,18 +61,6 @@ const IndexingPage = () => {
 		});
 	};
 
-	const _onHide = () => {
-		setModalShow(false);
-		setShowAlert(false);
-		dispatch({ type: RESET_INDEX_FORM });
-	};
-
-	const showEditForm = async id => {
-		dispatch(getIndexingDetail(id));
-		console.log("id>>>>>", id);
-		setModalShow(true);
-	};
-
 	const action = id => [
 		{
 			icon: "fa-search",
@@ -80,17 +68,6 @@ const IndexingPage = () => {
 			url: "IndexingDetail/" + id,
 			type: 1,
 		},
-		// {
-		// 	icon: "fa-edit",
-		// 	title: "Edit",
-		// 	onclick: () => {
-		// 		showEditForm(id);
-		// 		console.log("id>>>>>", id);
-		// 	},
-		// 	dispatch: dispatch,
-		// 	row: id,
-		// 	type: 2,
-		// },
 		{
 			icon: "fa-trash-alt",
 			title: "Delete",
@@ -124,29 +101,9 @@ const IndexingPage = () => {
 				style: { width: "20%" },
 			},
 			cell: row => {
-				return "-";
+				return row?.room?.name;
 			},
 		},
-		// {
-		// 	prop: "date_retention",
-		// 	sortable: true,
-		// 	cellProps: {
-		// 		style: { width: "30%" },
-		// 	},
-		// 	filter: moment().format("DD MMMM YY"),
-		// 	headerCell: () => {
-		// 		return (
-		// 			<div className="cur-p">
-		// 				{`Tanggal Retensi`}
-		// 				<i className="fas fa-sort-alt ml-2"></i>
-		// 			</div>
-		// 		);
-		// 	},
-		// 	cell: row => {
-		// 		// return moment(row.created_at).format("DD MMMM YYYY");
-		// 		return moment(row.date_retention).format("DD MMMM YY");
-		// 	},
-		// },
 		{
 			title: "Action",
 			prop: "Action",
@@ -159,8 +116,6 @@ const IndexingPage = () => {
 			},
 		},
 	];
-
-	console.log(">...", indexings.Indexings);
 
 	return (
 		<>
@@ -175,19 +130,6 @@ const IndexingPage = () => {
 					show={showAlertSuccess}
 					onHide={() => setShowAlertSuccess(false)}
 				/>
-				{/* <ModalForm
-					modal={modalShow}
-					hide={_onHide}
-					modalSet={setModalShow}
-					valueModalSet={false}
-				/> */}
-				{/* <PageHeader
-					breadcrumb={["Master", "Indexing"]}
-					modal={setModalShow}
-					valueModalSet={false}
-					value={true}
-					filter={SearchInput}
-				/> */}
 				<DataTable tableHeader={header} tableBody={indexings.Indexings} />
 				<Pagination
 					pageCount={indexings.Meta.last_page || 1}

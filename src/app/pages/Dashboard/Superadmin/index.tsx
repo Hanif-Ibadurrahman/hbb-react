@@ -26,7 +26,17 @@ import { getBorrowList } from "actions/BorrowItemAction";
 import { UploadExcel } from "./UploadExcel";
 import { selectTransporters } from "store/Selector/TransporterSelector";
 import { getBoxesListNoAsign } from "actions/TransporterAction";
-import { Form } from "react-bootstrap";
+import { Dropdown, Form } from "react-bootstrap";
+import { selectAreas } from "store/Selector/AreaSelector";
+import { getAreasList } from "actions/AreaActions";
+import {
+	selectActivityLogs,
+	selectActivityLogsArchiver,
+} from "store/Selector/ActivityLogSelector";
+import {
+	GetActivityLogsArchiver,
+	GetActivityLogsSuperAdmin,
+} from "actions/ActivityLogAction";
 
 export function DashboardSuperadmin() {
 	const user = localStorage.getItem("User");
@@ -39,6 +49,12 @@ export function DashboardSuperadmin() {
 	const returnItems = useSelector(selectReturnItems);
 	const approvalOperationList = useSelector(selectApprovalList);
 	const borrowList = useSelector(selectBorrowItems);
+	const activityLogs = useSelector(selectActivityLogs);
+	const activityLogsSuperAdmin = activityLogs?.ActivityLogsSuperadmin;
+	const activityLogsArchiver = useSelector(selectActivityLogsArchiver);
+	console.log("activityLogsArchiver >>>", activityLogsArchiver);
+	const areas = useSelector(selectAreas);
+	const areaList = areas?.Areas;
 	const [title, setTitle] = useState("");
 
 	const BoxData = (page = 1) => {
@@ -62,6 +78,18 @@ export function DashboardSuperadmin() {
 	const BorrowList = (page = 1) => {
 		dispatch(getBorrowList(page));
 	};
+	const AreaList = (page = 1) => {
+		dispatch(getAreasList(page));
+	};
+	const ArchiverLog = () => {
+		dispatch(GetActivityLogsArchiver());
+	};
+	useEffect(() => {
+		ArchiverLog();
+	}, []);
+	useEffect(() => {
+		AreaList();
+	}, []);
 	useEffect(() => {
 		BorrowList();
 	}, []);
@@ -98,6 +126,8 @@ export function DashboardSuperadmin() {
 			return setTitle("List Pending Approval");
 		} else if (user === "csroperation") {
 			return setTitle("List Pending Approval");
+		} else if (user === "archiver") {
+			return setTitle("Detail Data Input");
 		} else {
 			return setTitle("List Box Di Pinjam");
 		}
@@ -247,14 +277,25 @@ export function DashboardSuperadmin() {
 		);
 	};
 
-	const data = [
-		{ company: "Kiki Sadikin", totalBox: 20 },
-		{ company: "Adriansyah", totalBox: 20 },
-		{ company: "Arif Rahman", totalBox: 20 },
-		{ company: "Sony Maulana", totalBox: 20 },
-		{ company: "Irman Sahidin", totalBox: 20 },
-		{ company: "Tri Slamet", totalBox: 24 },
-	];
+	const CardArchiver = () => {
+		return (
+			<div className="row w-100% mh-0 row-summary">
+				<div className="col col-4 ph-0">
+					<CardHeader
+						icon="chalkboard"
+						total={dataLogArchiver.length}
+						text={["Total Data", <br />, "Entry Per Hari"]}
+					/>
+				</div>
+			</div>
+		);
+	};
+
+	const [selectedItem, setSelectedItem] = useState("");
+
+	useEffect(() => {
+		dispatch(GetActivityLogsSuperAdmin(selectedItem));
+	}, [selectedItem]);
 
 	const ContentSuperAdmin = (
 		<>
@@ -268,36 +309,69 @@ export function DashboardSuperadmin() {
 				</div>
 				<div className="col col-4">
 					<div
-						className="card p-4 bd-rs-2 bx-sh-4 dashboard-card"
-						style={{ height: 115 }}
+						className=" p-4 bd-rs-2 bx-sh-4 dashboard-card"
+						style={{ height: 115, overflowY: "auto" }}
 					>
 						<Form.Group className="mb-4" controlId="formBasicEmail">
 							<Form.Label className="mb-4">Record Center</Form.Label>
-							<Form.Select
-								className="cur-p"
-								name="record_center"
-								value={"record_center"}
-								onChange={e => {
-									console.log(e);
-								}}
-							>
-								<option value="regular">RC Bandung</option>
-								<option value="express">RC Medan</option>
-								<option value="emergency">RC Surabaya</option>
-								<option value="regular">RC Bogor</option>
-								<option value="express">RC Klender</option>
-								<option value="emergency">RC Ketapang</option>
-							</Form.Select>
+							<Dropdown>
+								<Dropdown.Toggle variant="success">
+									Dropdown Button
+								</Dropdown.Toggle>
+								<Dropdown.Menu>
+									{areaList.map((item, i) => (
+										<Dropdown.Item
+											key={i}
+											as="button"
+											onClick={() =>
+												setSelectedItem(item?.id !== null ? item?.id : "")
+											}
+										>
+											{item.name}
+										</Dropdown.Item>
+									))}
+								</Dropdown.Menu>
+							</Dropdown>
 						</Form.Group>
 					</div>
 				</div>
 			</div>
-			<BarChart width={900} height={300} data={data} className="Bar-chatxxi">
-				<XAxis dataKey="company" stroke="#000" />
+			<BarChart
+				width={900}
+				height={300}
+				data={activityLogsSuperAdmin}
+				className="Bar-chatxxi"
+			>
+				<XAxis dataKey="date" stroke="#000" />
 				<YAxis />
 				<Tooltip />
 				<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-				<Bar dataKey="totalBox" fill="#198754" barSize={30} />
+				<Bar dataKey="data.count" fill="#198754" barSize={30} />
+			</BarChart>
+		</>
+	);
+
+	let dataLogArchiver: any[] = [];
+	activityLogsArchiver?.map(item => {
+		dataLogArchiver.push({
+			date: item.date,
+			count: item.data.length,
+		});
+	});
+
+	const ContentArchiver = (
+		<>
+			<BarChart
+				width={900}
+				height={300}
+				data={dataLogArchiver}
+				className="Bar-chatxxi"
+			>
+				<XAxis dataKey="date" stroke="#000" />
+				<YAxis />
+				<Tooltip />
+				<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+				<Bar dataKey="count" fill="#198754" barSize={30} />
 			</BarChart>
 		</>
 	);
@@ -358,7 +432,7 @@ export function DashboardSuperadmin() {
 		} else if (user === "csroperation") {
 			return <TableCSROperation />;
 		} else if (user === "archiver") {
-			return <div></div>;
+			return ContentArchiver;
 		} else {
 			return <TableCustomer />;
 		}
@@ -372,7 +446,7 @@ export function DashboardSuperadmin() {
 		} else if (user === "csroperation") {
 			return <CardAdmin />;
 		} else if (user === "archiver") {
-			return <div></div>;
+			return <CardArchiver />;
 		} else {
 			return <CardCustomer />;
 		}

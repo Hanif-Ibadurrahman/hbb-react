@@ -17,6 +17,7 @@ export const Login = async (data: LoginInterfaceState) => {
 				"User",
 				response?.data?.data?.roles[0] ? response?.data?.data?.roles[0] : "",
 			);
+			localStorage.setItem("IdUser", response?.data?.data?.user.id);
 			localStorage.setItem(
 				"UserName",
 				response?.data?.data?.user?.staff

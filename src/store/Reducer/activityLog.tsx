@@ -1,4 +1,8 @@
-import { GET_ACTIVITY_LOG_LIST } from "../../actions/ActivityLogAction";
+import {
+	GET_ACTIVITY_LOG_LIST,
+	GET_ACTIVITY_LOG_SUPERADMIN,
+	GET_ACTIVITY_LOG_ARCHIVER,
+} from "../../actions/ActivityLogAction";
 
 import { ActivityLogsInterfaceState } from "store/Types/ActivityLogTypes";
 
@@ -16,6 +20,30 @@ export const initialState: ActivityLogsInterfaceState = {
 		created_at: "",
 		updated_at: "",
 	},
+	ActivityLogsSuperadmin: [
+		{
+			area_id: "",
+			data: [
+				{
+					count: 0,
+					name: "",
+				},
+			],
+			date: "",
+		},
+	],
+	ActivityLogsArchiver: [
+		{
+			area_id: "",
+			data: [
+				{
+					count: 0,
+					name: "",
+				},
+			],
+			date: "",
+		},
+	],
 	Title: "",
 	Meta: {
 		total: 0,
@@ -24,7 +52,7 @@ export const initialState: ActivityLogsInterfaceState = {
 		last_page: 1,
 	},
 
-	ErrorRequestBox: undefined,
+	ErrorActivityLogs: undefined,
 };
 
 export default (
@@ -42,7 +70,19 @@ export default (
 					total: payload?.meta?.total,
 					per_page: payload?.meta?.per_page,
 				},
-				ErrorRequestBox: payload.errorMessage,
+				ErrorActivityLogs: payload.errorMessage,
+			};
+		case GET_ACTIVITY_LOG_SUPERADMIN:
+			return {
+				...state,
+				ActivityLogsSuperadmin: payload?.data,
+				ErrorActivityLogs: payload.errorMessage,
+			};
+		case GET_ACTIVITY_LOG_ARCHIVER:
+			return {
+				...state,
+				ActivityLogsArchiver: payload?.data,
+				ErrorActivityLogs: payload.errorMessage,
 			};
 		default:
 			return state;
