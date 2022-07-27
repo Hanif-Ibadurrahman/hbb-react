@@ -153,24 +153,6 @@ const ModalForm = props => {
 													</p>
 												) : null}
 											</Form.Group>
-											{/* <Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Kode Klasifikasi</Form.Label>
-												<Form.Control
-													type="text"
-													name="code_classification"
-													placeholder="Kode Klasifikasi"
-													value={values.code}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>
-												{touched.code && errors.code ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.code}
-													</p>
-												) : null}
-											</Form.Group> */}
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Tipe Klasifikasi</Form.Label>
 												<Form.Control
@@ -222,7 +204,7 @@ const ModalForm = props => {
 								</Button>
 								<Button
 									type="submit"
-									disabled={isSubmitting}
+									disabled={isSubmitting || values?.company?.id === ""}
 									className="bg-success-6"
 									variant="success"
 								>

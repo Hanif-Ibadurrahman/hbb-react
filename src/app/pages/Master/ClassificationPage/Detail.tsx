@@ -68,6 +68,14 @@ const ClassificationPageDetail = ({ match }) => {
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Tipe Klasifikasi</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={classification.type}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Company</Form.Label>
 								<Form.Control
 									type="text"
