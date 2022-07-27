@@ -84,7 +84,6 @@ export const ModalForm = props => {
 				onHide={props.hide}
 				aria-labelledby="contained-modal-title-vcenter"
 			>
-				{" "}
 				<Formik
 					validationSchema={validationSchema}
 					initialValues={staff}
@@ -160,6 +159,7 @@ export const ModalForm = props => {
 													onChange={e => {
 														handleChange(e);
 													}}
+													disabled={staff?.id ? true : false}
 													onBlur={handleBlur}
 												/>
 												{touched.username && errors.username ? (
@@ -185,6 +185,7 @@ export const ModalForm = props => {
 													onChange={e => {
 														handleChange(e);
 													}}
+													disabled={staff?.id ? true : false}
 													onBlur={handleBlur}
 												/>
 												{touched.password && errors.password ? (
@@ -268,37 +269,29 @@ export const ModalForm = props => {
 													)}
 												/>
 											</Form.Group>
-											{staff?.id === null ||
-												(staff?.id === "" && (
-													<Form.Group
-														className="mb-4"
-														controlId="formBasicEmail"
-													>
-														<Form.Label>Jenis Pekerjaan</Form.Label>
-														<Autocomplete
-															id="roles"
-															options={roles.Roles}
-															value={values[0]?.roles}
-															getOptionLabel={option => option.name}
-															onChange={(e, value) => {
-																setFieldValue(
-																	"roles",
-																	value !== null
-																		? value
-																		: values[0].roles?.name,
-																);
-															}}
-															renderInput={params => (
-																<TextField
-																	margin="normal"
-																	placeholder="Jenis Pekerjaan"
-																	name="roles"
-																	{...params}
-																/>
-															)}
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Jenis Pekerjaan</Form.Label>
+												<Autocomplete
+													id="roles"
+													options={roles.Roles}
+													value={values?.roles ?? values?.user?.roles[0]}
+													getOptionLabel={option => option.name}
+													onChange={(e, value) => {
+														setFieldValue(
+															"roles",
+															value !== null ? value : values?.roles,
+														);
+													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															placeholder="Jenis Pekerjaan"
+															name="roles"
+															{...params}
 														/>
-													</Form.Group>
-												))}
+													)}
+												/>
+											</Form.Group>
 										</Col>
 									</Row>
 								</Container>

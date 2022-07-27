@@ -20,6 +20,23 @@ export const initialState: StaffsInterfaceState = {
 		nip: "",
 		name: "",
 		email: "",
+		user: {
+			username: "",
+			roles: [
+				{
+					id: "",
+					display_name: "",
+					name: "",
+					permissions: [
+						{
+							id: "",
+							display_name: "",
+							name: "",
+						},
+					],
+				},
+			],
+		},
 		roles: {
 			id: "",
 			display_name: "",
@@ -140,6 +157,23 @@ export default (
 					nip: "",
 					name: "",
 					email: "",
+					user: {
+						username: "",
+						roles: [
+							{
+								id: "",
+								display_name: "",
+								name: "",
+								permissions: [
+									{
+										id: "",
+										display_name: "",
+										name: "",
+									},
+								],
+							},
+						],
+					},
 					roles: {
 						id: "",
 						display_name: "",

@@ -23,6 +23,11 @@ export interface StaffIdInterfaceState {
 	firebase_token: string;
 }
 
+export interface RoleInterfaceState {
+	username: string;
+	roles: RolesInterfaceState[];
+}
+
 export interface StaffInterfaceState {
 	id: string | null;
 	username: string;
@@ -30,6 +35,7 @@ export interface StaffInterfaceState {
 	nip: string;
 	name: string;
 	email: string;
+	user: RoleInterfaceState;
 	roles: RolesInterfaceState;
 	room: RoomInterfaceState;
 	staff: StaffIdInterfaceState;

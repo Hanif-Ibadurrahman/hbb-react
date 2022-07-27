@@ -17,10 +17,11 @@ export const create = async (data: StaffInterfaceState) => {
 export const update = async (data: StaffInterfaceState) => {
 	let id = data?.id;
 	let payload = {
+		username: data?.user?.username,
 		nip: data?.nip,
 		name: data?.name,
 		email: data?.email,
-		role_id: data?.roles?.id,
+		role_id: data?.roles.id,
 		room_id: data?.room?.id,
 	};
 	return api.put(`/users/staff/${id}`, payload);
@@ -41,7 +42,6 @@ export const getDetail = async params => {
 	return api
 		.get(`/users/staff/${params}`)
 		.then(res => {
-			console.log(res, "res resan");
 			return res;
 		})
 		.catch(error => {
