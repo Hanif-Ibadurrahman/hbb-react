@@ -42,7 +42,7 @@ const CustomerPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={Customer.username}
+									defaultValue={Customer?.username}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -50,7 +50,7 @@ const CustomerPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={Customer.name}
+									defaultValue={Customer?.name}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -58,7 +58,7 @@ const CustomerPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={Customer.email}
+									defaultValue={Customer?.email}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -66,7 +66,7 @@ const CustomerPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={Customer.phone}
+									defaultValue={Customer?.phone}
 								/>
 							</Form.Group>
 							<div className="d-flex jc-end">

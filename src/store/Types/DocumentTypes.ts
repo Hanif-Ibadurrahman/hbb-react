@@ -17,6 +17,7 @@ export interface DocumentInterfaceState {
 	no: string;
 	date: string;
 	detail: string;
+	document_file: string;
 	nominal: number;
 	active_year_for: number;
 	level_progress: string;

@@ -27,6 +27,7 @@ export const initialState: DocumentsInterfaceState = {
 		no: "",
 		date: "",
 		detail: "",
+		document_file: "",
 		nominal: 0,
 		active_year_for: 0,
 		level_progress: "",
@@ -201,6 +202,7 @@ export default (
 				...state,
 				Document: {
 					id: "",
+					document_file: "",
 					no: "",
 					date: "",
 					detail: "",

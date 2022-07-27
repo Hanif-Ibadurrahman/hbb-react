@@ -10,6 +10,7 @@ import { DocumentInterfaceState } from "store/Types/DocumentTypes";
 import { selectDocument } from "store/Selector/DocumentSelector";
 import { getDocumentDetail } from "actions/DocumentAction";
 import moment from "moment";
+import { getDocumentFile } from "api/downloadDatabase";
 
 const DocumentPageDetail = ({ match }) => {
 	const document: DocumentInterfaceState = useSelector(selectDocument);
@@ -47,7 +48,7 @@ const DocumentPageDetail = ({ match }) => {
 							</Form.Group>
 							<Form.Group className="mb-3">
 								<Form.Label>Tanggal</Form.Label>
-								<Form.Control type="text" disabled defaultValue={NewDate} />
+								<Form.Control type="text" disabled value={NewDate} />
 							</Form.Group>
 							<Form.Group className="mb-3">
 								<Form.Label>Detail</Form.Label>
@@ -106,13 +107,25 @@ const DocumentPageDetail = ({ match }) => {
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
-								<Form.Label>No Folder</Form.Label>
+								<Form.Label>No Digital</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document?.folder?.no}
+									defaultValue={document.no_digital}
 								/>
 							</Form.Group>
+							<div
+								className="mb-3"
+								onClick={() => getDocumentFile(document?.id)}
+							>
+								<Form.Label>Lampiran File</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document?.document_file?.slice(29)}
+									style={{ color: "blue", cursor: "pointer" }}
+								/>
+							</div>
 							<Form.Group className="mb-3">
 								<Form.Label>No Box</Form.Label>
 								<Form.Control

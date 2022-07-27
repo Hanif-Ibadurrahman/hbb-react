@@ -186,23 +186,7 @@ const AssignDocToFolder = () => {
 			title: "Detail",
 			prop: "detail",
 			cellProps: {
-				style: { width: "35%" },
-			},
-		},
-		{
-			title: "Lampiran",
-			prop: "document_file",
-			cellProps: {
-				style: { width: "10%" },
-			},
-			cell: row => {
-				return row?.document_file ? (
-					<div onClick={() => getDocumentFile(row.id)}>
-						<i className="fas fa-download"></i>
-					</div>
-				) : (
-					"-"
-				);
+				style: { width: "40%" },
 			},
 		},
 		{
