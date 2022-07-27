@@ -96,7 +96,6 @@ import RequestHistory from "./Customer/RequestHistory";
 // -=-=-=-=-=-
 // ALL USER
 import { UserProfile } from "./ProfilePage/Loadable";
-import ClassificationPageDetail from "./Master/ClassificationPage/Detail";
 
 export function Routes() {
 	const { i18n } = useTranslation();
@@ -277,7 +276,7 @@ export function Routes() {
 						/>
 						<Route
 							path={process.env.PUBLIC_URL + "/Classification-Detail/:id"}
-							component={ClassificationPageDetail}
+							component={DetailClassificationPage}
 						/>
 						{/*---------- MASTER - - - END ---------*/}
 						{/*--------- ADMIN CSR ---------*/}

@@ -26,25 +26,13 @@ export const update = async (data: ClassificationInterfaceState) => {
 	return await api.put(`/classifications/${id}`, payload);
 };
 
-// export const update = async (data: ClassificationInterfaceState) => {
-// 	let id = data.id;
-// 	let payload = {
-// 		name: data.name,
-// 		code: data.code,
-// 		type: data.type,
-// 		retention_period: data.retention_period,
-// 	};
-// 	console.log(payload);
-// 	return await api.put(`/classifications/${id}`, payload);
-// };
-
 export const getById = async (id: String) => {
 	return api.get(`/classifications/${id}`);
 };
 
 export const getAll = async params => {
 	return api
-		.get("/classifications")
+		.get(`/classifications?page=${params}`)
 		.then(res => {
 			return res.data;
 		})

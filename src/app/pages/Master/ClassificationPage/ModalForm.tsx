@@ -35,8 +35,9 @@ const ModalForm = props => {
 	}, []);
 
 	const validationSchema = Yup.object().shape({
-		// name: Yup.string().required("*Wajib diisi"),
-		// code_area: Yup.string().required("*Wajib diisi"),
+		name: Yup.string().required("*Wajib diisi"),
+		code_classification: Yup.string().required("*Wajib diisi"),
+		type: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
@@ -105,6 +106,7 @@ const ModalForm = props => {
 						isSubmitting,
 					}) => (
 						<Form onSubmit={handleSubmit}>
+							{console.log("values >>>>", values)}
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
 									{classification.id ? <>Edit Data</> : <>Tambah Data</>}
