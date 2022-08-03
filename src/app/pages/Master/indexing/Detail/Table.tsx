@@ -161,14 +161,6 @@ const TableIndexingPage = () => {
 			<>
 				<div className="ph-4 pv-4 bg-dark-contrast bd-tl-rs-4 bd-tr-rs-4 d-flex cart-indexing">
 					<div className="d-flex ai-center">
-						<span className="h-12 w-12 bd-rs-6 d-flex ai-center jc-center bg-light-shade mr-6">
-							<span
-								className="icon h-9 w-9 bd-rs-6 d-flex ai-center jc-center bg-medium-tint"
-								style={{ marginTop: -3 }}
-							>
-								<i className="fas fa-box-check"></i>
-							</span>
-						</span>
 						<h5 className="text ff-1-bd mr-3">{cart.numberCart}</h5>
 						<p className="p-lg">Document dipilih</p>
 					</div>

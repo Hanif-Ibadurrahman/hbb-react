@@ -56,8 +56,6 @@ export const ModalForm = props => {
 		password: Yup.string().required("*Wajib diisi").min(8, "Min 8 Karakter"),
 		name: Yup.string().required("*Wajib diisi"),
 		email: Yup.string().email().required("*Wajib diisi"),
-		phone: Yup.string().required("*Wajib diisi"),
-		location: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
@@ -153,24 +151,26 @@ export const ModalForm = props => {
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Password</Form.Label>
-												<Form.Control
-													type="text"
-													name="password"
-													placeholder="password"
-													value={values?.password}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>
-												{touched.password && errors.password ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.password}
-													</p>
-												) : null}
-											</Form.Group>
+											{values.id == null && (
+												<Form.Group className="mb-4" controlId="formBasicEmail">
+													<Form.Label>Password</Form.Label>
+													<Form.Control
+														type="text"
+														name="password"
+														placeholder="password"
+														value={values?.password}
+														onChange={e => {
+															handleChange(e);
+														}}
+														onBlur={handleBlur}
+													/>
+													{touched.password && errors.password ? (
+														<p className="tc-danger-5 pos-a p-sm">
+															{errors.password}
+														</p>
+													) : null}
+												</Form.Group>
+											)}
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Nama</Form.Label>
 												<Form.Control
@@ -190,7 +190,12 @@ export const ModalForm = props => {
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Email</Form.Label>
+												<Form.Label>
+													Email{" "}
+													<span className="tc-danger-5 p-sm">
+														(Mohon diisi email perusahaan)
+													</span>
+												</Form.Label>
 												<Form.Control
 													type="text"
 													name="email"
@@ -219,11 +224,6 @@ export const ModalForm = props => {
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.phone && errors.phone ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.phone}
-													</p>
-												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Location</Form.Label>
@@ -237,17 +237,12 @@ export const ModalForm = props => {
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.location && errors.location ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.location}
-													</p>
-												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Perusahaan</Form.Label>
 												<Autocomplete
 													id="company"
-													options={company.Companys}
+													options={company?.Companys}
 													getOptionLabel={option => option.name}
 													onChange={(e, value) => {
 														console.log(value);
@@ -267,10 +262,10 @@ export const ModalForm = props => {
 												/>
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Pilih Divisi</Form.Label>
+												<Form.Label>Pilih Satuan Kerja</Form.Label>
 												<Autocomplete
 													id="division_id"
-													options={division.Divisions}
+													options={division?.Divisions}
 													getOptionLabel={option => option.name}
 													onChange={(e, value) => {
 														console.log(value);

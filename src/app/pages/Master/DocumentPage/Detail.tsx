@@ -122,16 +122,32 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document?.document_file?.slice(29)}
+									defaultValue={document?.document_file?.slice(30)}
 									style={{ color: "blue", cursor: "pointer" }}
 								/>
 							</div>
+							<Form.Group className="mb-3">
+								<Form.Label>No Folder</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document?.folder?.no}
+								/>
+							</Form.Group>
 							<Form.Group className="mb-3">
 								<Form.Label>No Box</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document?.box?.code_box}
+									value={document?.box?.code_box}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>No Lemari</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document?.cabinet?.code_cabinet}
 								/>
 							</Form.Group>
 							<div className="d-flex jc-end">

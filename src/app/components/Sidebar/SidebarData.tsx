@@ -129,7 +129,7 @@ export const MasterData = [
 		link: "/StaffPage",
 	},
 	{
-		title: "Divisi",
+		title: "Satuan Kerja",
 		icon: "",
 		link: "/DivisionPage",
 	},

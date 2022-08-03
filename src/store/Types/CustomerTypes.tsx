@@ -3,6 +3,10 @@ import { PaginationState } from "./PaginationTypes";
 import { CompanyInterfaceState } from "./CompanyTypes";
 import { DivisionInterfaceState } from "./DivisionTypes";
 
+interface userInterface {
+	id: string;
+}
+
 export interface CustomerInterfaceState {
 	id: string | null;
 	username: string;

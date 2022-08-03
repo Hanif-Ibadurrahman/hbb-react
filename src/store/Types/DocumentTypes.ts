@@ -12,12 +12,18 @@ interface FolderDocumentInterfaceState {
 	no: string;
 	sign_code: string;
 }
+
+interface CabinetDocumentInterfaceState {
+	id: string | null;
+	code_cabinet: string;
+}
 export interface DocumentInterfaceState {
 	id: string | null;
 	no: string;
 	date: string;
 	detail: string;
 	document_file: string;
+	cabinet?: CabinetDocumentInterfaceState;
 	nominal: number;
 	active_year_for: number;
 	level_progress: string;

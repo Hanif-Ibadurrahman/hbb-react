@@ -353,7 +353,7 @@ export function DashboardSuperadmin() {
 
 	let dataLogArchiver: any[] = [];
 	activityLogsArchiver?.map(item => {
-		dataLogArchiver.push({
+		dataLogArchiver?.push({
 			date: item.date,
 			count: item.data.length,
 		});

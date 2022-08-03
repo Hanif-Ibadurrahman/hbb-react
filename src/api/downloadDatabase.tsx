@@ -5,7 +5,7 @@ export const getFileDatabase = () => {
 		method: "GET",
 		url: "/downloads/document-customer/excel",
 	}).then(res => {
-		window.location.replace(`http://103.93.57.36:8008${res.data}`);
+		window.location.replace(`${res.data}`);
 	});
 };
 
@@ -14,7 +14,7 @@ export const getTemplateUpload = () => {
 		method: "GET",
 		url: "/downloads/document/template",
 	}).then(res => {
-		window.location.replace(`http://103.93.57.36:8008${res.data}`);
+		window.location.replace(`${res.data}`);
 	});
 };
 
@@ -23,10 +23,6 @@ export const getDocumentFile = id => {
 		method: "GET",
 		url: `/downloads/document/${id}/document-file`,
 	}).then(async res => {
-		window.open(
-			`http://103.93.57.36:8008${res.data}`,
-			"_blank",
-			"popup",
-		) as Window;
+		window.open(`${res.data}`, "_blank", "popup") as Window;
 	});
 };

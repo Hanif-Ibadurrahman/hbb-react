@@ -19,7 +19,7 @@ export const update = async (data: CustomerInterfaceState) => {
 	let id = data.id;
 	let payload = {
 		username: data?.username,
-		password: data?.password,
+		// password: data?.password,
 		name: data?.name,
 		email: data?.email,
 		phone: data?.phone,

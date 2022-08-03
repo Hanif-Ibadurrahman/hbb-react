@@ -27,6 +27,10 @@ export const initialState: DocumentsInterfaceState = {
 		no: "",
 		date: "",
 		detail: "",
+		cabinet: {
+			id: "",
+			code_cabinet: "",
+		},
 		document_file: "",
 		nominal: 0,
 		active_year_for: 0,
@@ -208,6 +212,10 @@ export default (
 					detail: "",
 					nominal: 0,
 					active_year_for: 0,
+					cabinet: {
+						id: "",
+						code_cabinet: "",
+					},
 					level_progress: "",
 					media_storage: "",
 					condition: "",

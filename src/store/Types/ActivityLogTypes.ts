@@ -27,8 +27,8 @@ export interface ActivitiLogsArchiver {
 export interface ActivityLogsInterfaceState {
 	ActivityLog: ActivityLogInterfaceState;
 	ActivityLogs: ActivityLogInterfaceState[];
-	ActivityLogsSuperadmin: [ActivitiLogsArchiver];
-	ActivityLogsArchiver: [ActivitiLogsArchiver];
+	ActivityLogsSuperadmin: ActivitiLogsArchiver[];
+	ActivityLogsArchiver: ActivitiLogsArchiver[];
 	ErrorActivityLogs?: string;
 	Title: string;
 	Meta: PaginationState;

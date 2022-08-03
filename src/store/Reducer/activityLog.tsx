@@ -20,30 +20,8 @@ export const initialState: ActivityLogsInterfaceState = {
 		created_at: "",
 		updated_at: "",
 	},
-	ActivityLogsSuperadmin: [
-		{
-			area_id: "",
-			data: [
-				{
-					count: 0,
-					name: "",
-				},
-			],
-			date: "",
-		},
-	],
-	ActivityLogsArchiver: [
-		{
-			area_id: "",
-			data: [
-				{
-					count: 0,
-					name: "",
-				},
-			],
-			date: "",
-		},
-	],
+	ActivityLogsSuperadmin: [],
+	ActivityLogsArchiver: [],
 	Title: "",
 	Meta: {
 		total: 0,
@@ -75,13 +53,13 @@ export default (
 		case GET_ACTIVITY_LOG_SUPERADMIN:
 			return {
 				...state,
-				ActivityLogsSuperadmin: payload?.data,
+				ActivityLogsSuperadmin: payload?.data?.data,
 				ErrorActivityLogs: payload.errorMessage,
 			};
 		case GET_ACTIVITY_LOG_ARCHIVER:
 			return {
 				...state,
-				ActivityLogsArchiver: payload?.data,
+				ActivityLogsArchiver: payload?.data?.data,
 				ErrorActivityLogs: payload.errorMessage,
 			};
 		default:

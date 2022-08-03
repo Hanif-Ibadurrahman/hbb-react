@@ -119,7 +119,7 @@ const CustomerPage = () => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.id)} />;
+				return <DropdownAction list={action(row.customer.id)} />;
 			},
 		},
 	];
@@ -160,9 +160,12 @@ const CustomerPage = () => {
 					value={true}
 					filter={Filter}
 				/>
-				<DataTable tableHeader={header} tableBody={customers.Customers} />
+				<DataTable
+					tableHeader={header}
+					tableBody={customers?.Customers ? customers?.Customers : []}
+				/>
 				<Pagination
-					pageCount={customers.Meta.last_page}
+					pageCount={customers?.Meta?.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

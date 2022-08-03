@@ -298,6 +298,26 @@ export function Sidebar() {
 				>
 					{""} Riwayat Transaksi
 				</MenuItem>
+				<MenuItem
+					id={window.location.pathname === "/Company" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconAdvanced} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Company";
+					}}
+				>
+					{""} Company
+				</MenuItem>
+				<MenuItem
+					id={window.location.pathname === "/CustomerPage" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconAdvanced} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/CustomerPage";
+					}}
+				>
+					{""} Customer
+				</MenuItem>
 			</>
 		);
 	};
