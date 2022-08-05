@@ -14,3 +14,8 @@ export const selectClassification = createSelector(
 	classificationDomain,
 	state => state.Classification,
 );
+
+export const selectClassificatoinTreeView = createSelector(
+	classificationDomain,
+	state => state.ClassificationTreeView,
+);

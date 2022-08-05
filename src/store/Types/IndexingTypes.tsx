@@ -17,7 +17,7 @@ export interface IndexingInterfaceState {
 	index: string;
 	date: string;
 	type: string;
-	classification: ClassificationInterfaceState;
+	classification: string;
 	area: AreaInterfaceState;
 	room: RoomInterfaceState;
 	box: BoxInterfaceState;

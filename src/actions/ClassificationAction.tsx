@@ -5,9 +5,11 @@ import {
 	getById,
 	update,
 	filterClassification,
+	getTreeView,
 } from "../api/classification";
 import { ClassificationInterfaceState } from "store/Types/ClassificationTypes";
 export const GET_CLASSIFICATIONS_LIST = "GET_CLASSIFICATIONS_LIST";
+export const GET_CLASSIFICATIONS_TREEVIEW = "GET_CLASSIFICATIONS_TREEVIEW";
 export const GET_CLASSIFICATION_DETAIL = "GET_CLASSIFICATION_DETAIL";
 export const CREATE_CLASSIFICATION = "CREATE_CLASSIFICATION";
 export const CLASSIFICATIONS_ERROR = "CLASSIFICATIONS_ERROR";
@@ -35,6 +37,33 @@ export const getClassificationsList = page => {
 		} catch (error: any) {
 			dispatch({
 				type: GET_CLASSIFICATIONS_LIST,
+				payload: {
+					data: false,
+					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const getClassificationTreeView = () => {
+	return async dispatch => {
+		try {
+			const response = await getTreeView();
+			dispatch({
+				type: GET_CLASSIFICATIONS_TREEVIEW,
+				payload: {
+					data: response?.data,
+					meta: response?.meta,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: GET_CLASSIFICATIONS_TREEVIEW,
 				payload: {
 					data: false,
 					errorMessage: error.message,

@@ -22,7 +22,6 @@ export const update = async (data: ClassificationInterfaceState) => {
 		retention_period: data.retention_period,
 		company_id: data.company.id,
 	};
-	console.log(payload);
 	return await api.put(`/classifications/${id}`, payload);
 };
 
@@ -33,6 +32,17 @@ export const getById = async (id: String) => {
 export const getAll = async params => {
 	return api
 		.get(`/classifications?page=${params}`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
+export const getTreeView = () => {
+	return api
+		.get(`/classifications/format/tree`)
 		.then(res => {
 			return res.data;
 		})

@@ -11,9 +11,15 @@ export interface ClassificationInterfaceState {
 	company: CompanyInterfaceState;
 }
 
+export interface ClassificationTreeViewInterfaceState {
+	code: string;
+	text: string;
+	nodes?: readonly ClassificationTreeViewInterfaceState[];
+}
 export interface ClassificationsInterfaceState {
 	Classification: ClassificationInterfaceState;
 	Classifications: ClassificationInterfaceState[];
+	ClassificationTreeView: ClassificationTreeViewInterfaceState[];
 	Title: string;
 	Meta: PaginationState;
 	ErrorClassification?: string;

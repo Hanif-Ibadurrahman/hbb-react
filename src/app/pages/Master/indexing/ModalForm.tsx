@@ -13,13 +13,24 @@ import {
 import { selectAreas } from "store/Selector/AreaSelector";
 import { selectRooms } from "store/Selector/RoomSelector";
 import { selectBoxes } from "store/Selector/BoxSelector";
-import { selectClassifications } from "store/Selector/ClassificationSelector";
+import {
+	selectClassifications,
+	selectClassificatoinTreeView,
+} from "store/Selector/ClassificationSelector";
 import { getAreasList } from "actions/AreaActions";
 import { getRoomsList } from "actions/RoomAction";
 import { getBoxesList, getBoxesNotPage } from "actions/BoxActions";
-import { getClassificationsList } from "actions/ClassificationAction";
+import {
+	getClassificationsList,
+	getClassificationTreeView,
+} from "actions/ClassificationAction";
 import { CreateIndexing, UpdateIndexing } from "actions/IndexingAction";
 import moment from "moment";
+import TreeView from "@mui/lab/TreeView";
+// import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+// import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import TreeItem from "@mui/lab/TreeItem";
+import { ClassificationTreeViewInterfaceState } from "store/Types/ClassificationTypes";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
@@ -31,6 +42,7 @@ const ModalForm = props => {
 	const room = useSelector(selectRooms);
 	const box = useSelector(selectBoxes);
 	const classification = useSelector(selectClassifications);
+	console.log("classification >>>", classification);
 	const FetchData = (page = 1) => {
 		dispatch(getAreasList(page));
 	};
@@ -40,8 +52,8 @@ const ModalForm = props => {
 	const BoxData = (page = 1) => {
 		dispatch(getBoxesNotPage(page));
 	};
-	const ClassificationData = (page = 1) => {
-		dispatch(getClassificationsList(page));
+	const ClassificationData = () => {
+		dispatch(getClassificationTreeView());
 	};
 	useEffect(() => {
 		FetchData();
@@ -60,6 +72,35 @@ const ModalForm = props => {
 		date: Yup.string().required("*Wajib diisi"),
 		// classification_code: Yup.string().required("*Wajib diisi"),
 	});
+
+	const handleToggle = (event: React.SyntheticEvent, nodeIds: string[]) => {
+		console.log("node IDS >>>>", nodeIds);
+		console.log("eventt toogle >>>", event);
+	};
+
+	const handleSelect = (event: React.SyntheticEvent, nodeIds: string[]) => {
+		console.log("node IDS Handle Select >>>", nodeIds);
+		console.log("event handle >>>", event);
+	};
+
+	const getTreeItemsFromData = treeItems => {
+		return treeItems?.map(treeItemData => {
+			let children = undefined;
+			if (treeItemData?.nodes && treeItemData?.nodes.length > 0) {
+				children = getTreeItemsFromData(treeItemData?.nodes);
+			}
+			return (
+				<TreeItem
+					key={treeItemData?.code}
+					nodeId={treeItemData?.code}
+					label={treeItemData?.text}
+					children={children}
+					// onNodeToggle={handleToggle}
+					// onNodeSelect={handleSelect}
+				/>
+			);
+		});
+	};
 
 	return (
 		<>
@@ -189,31 +230,7 @@ const ModalForm = props => {
 													<option value="subtantif">Subtantif</option>
 												</Form.Select>
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Klasifikasi</Form.Label>
-												<Autocomplete
-													id="classification"
-													options={classification.Classifications}
-													getOptionLabel={option =>
-														`${option.code}${option.name}`
-													}
-													value={values?.classification}
-													onChange={(e, value) => {
-														setFieldValue(
-															"classification",
-															value !== null ? value : values.classification,
-														);
-													}}
-													renderInput={params => (
-														<TextField
-															margin="normal"
-															placeholder="Classification"
-															name="classification"
-															{...params}
-														/>
-													)}
-												/>
-											</Form.Group>
+
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Area</Form.Label>
 												<Autocomplete
@@ -265,32 +282,34 @@ const ModalForm = props => {
 													</p>
 												) : null}
 											</Form.Group>
-											{/* <Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Pilih Box</Form.Label>
-												<Autocomplete
-													id="company"
-													options={box.Boxes}
-													getOptionLabel={option => option.code_box}
-													value={values?.box}
-													onChange={(e, value) => {
-														setFieldValue(
-															"box",
-															value !== null ? value : values.box,
-														);
-													}}
-													renderInput={params => (
-														<TextField
-															margin="normal"
-															placeholder="Box"
-															name="box"
-															{...params}
-														/>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<TreeView
+													defaultCollapseIcon={
+														<i className="fas fa-angle-down" />
+													}
+													defaultExpandIcon={<i className="fas fa-angle-up" />}
+												>
+													{getTreeItemsFromData(
+														classification?.ClassificationTreeView,
 													)}
+												</TreeView>
+												<Form.Label>Klasifikasi</Form.Label>
+												<Form.Control
+													type="text"
+													name="classification"
+													placeholder="Title classification"
+													value={values?.classification}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
 												/>
-												{touched.box && errors.box ? (
-													<p className="tc-danger-5 pos-a p-sm">{errors.box}</p>
+												{touched.classification && errors.classification ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.classification}
+													</p>
 												) : null}
-											</Form.Group> */}
+											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Periode Retensi</Form.Label>
 												<Form.Control
@@ -311,35 +330,6 @@ const ModalForm = props => {
 													</p>
 												) : null}
 											</Form.Group>
-											{/* <Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Tanggal Retensi</Form.Label>
-												<Form.Control
-													type="date"
-													name="date_retention"
-													placeholder="Tanggal Retensi"
-													value={
-														// values.date_retention =
-														// moment(values?.date)
-														// 	.add(values?.retention_period, "year")
-														// 	.format("YYYY-MM-DD")
-														values?.date_retention === ""
-															? moment(values?.date)
-																	.add(values?.retention_period, "year")
-																	.format("YYYY-MM-DD")
-															: values?.date_retention
-													}
-													disabled
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>
-												{touched.date_retention && errors.date_retention ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.date_retention}
-													</p>
-												) : null}
-											</Form.Group> */}
 											<label>
 												<Field
 													type="checkbox"

@@ -5,7 +5,10 @@ export const getFileDatabase = () => {
 		method: "GET",
 		url: "/downloads/document-customer/excel",
 	}).then(res => {
-		window.location.replace(`${res.data}`);
+		const response = res.data as string;
+		window.location.replace(
+			`${process.env.REACT_APP_API_URL}${response.slice(1)}`,
+		);
 	});
 };
 
@@ -14,7 +17,10 @@ export const getTemplateUpload = () => {
 		method: "GET",
 		url: "/downloads/document/template",
 	}).then(res => {
-		window.location.replace(`${res.data}`);
+		const response = res.data as string;
+		window.location.replace(
+			`${process.env.REACT_APP_API_URL}${response.slice(1)}`,
+		);
 	});
 };
 
@@ -23,6 +29,7 @@ export const getDocumentFile = id => {
 		method: "GET",
 		url: `/downloads/document/${id}/document-file`,
 	}).then(async res => {
-		window.open(`${res.data}`, "_blank", "popup") as Window;
+		const response = res.data as string;
+		window.open(`${response}`, "_blank", "popup") as Window;
 	});
 };

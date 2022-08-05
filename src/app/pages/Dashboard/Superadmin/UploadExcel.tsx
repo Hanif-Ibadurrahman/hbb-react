@@ -110,10 +110,7 @@ export function UploadExcel(props) {
 									id="file"
 									name="file"
 									type="file"
-									// value={valueUpload}
 									onChange={e => {
-										console.log("onchange", e);
-										// setValueUpload(e.target.value);
 										onChangeFile(e);
 									}}
 									accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"

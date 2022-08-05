@@ -7,6 +7,7 @@ import {
 	RESET_CLASSIFICATION_FORM,
 	SET_CLASSIFICATION_DATA,
 	FILTER_CLASSIFICATION,
+	GET_CLASSIFICATIONS_TREEVIEW,
 } from "../../actions/ClassificationAction";
 import {
 	ClassificationsInterfaceState,
@@ -44,6 +45,7 @@ export const initialState: ClassificationsInterfaceState = {
 			is_agree: true,
 		},
 	},
+	ClassificationTreeView: [],
 	Meta: {
 		total: 0,
 		per_page: 0,
@@ -74,6 +76,11 @@ export default (
 					total: payload?.meta?.total,
 					per_page: payload?.meta?.per_page,
 				},
+			};
+		case GET_CLASSIFICATIONS_TREEVIEW:
+			return {
+				...state,
+				ClassificationTreeView: payload?.data,
 			};
 		case FILTER_CLASSIFICATION:
 			return {
