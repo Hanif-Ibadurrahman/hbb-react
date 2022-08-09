@@ -44,7 +44,11 @@ const DocumentPageDetail = ({ match }) => {
 						<Form className="mt-3">
 							<Form.Group className="mb-3">
 								<Form.Label>No Document</Form.Label>
-								<Form.Control type="text" disabled defaultValue={document.no} />
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document?.no}
+								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
 								<Form.Label>Tanggal</Form.Label>
@@ -55,7 +59,7 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									as="textarea"
 									disabled
-									defaultValue={document.detail}
+									defaultValue={document?.detail}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
@@ -63,7 +67,7 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document.nominal}
+									defaultValue={document?.nominal}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
@@ -71,7 +75,7 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document.active_year_for}
+									defaultValue={document?.active_year_for}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
@@ -79,7 +83,7 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document.media_storage}
+									defaultValue={document?.media_storage}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
@@ -87,7 +91,7 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document.condition}
+									defaultValue={document?.condition}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
@@ -95,7 +99,7 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									as="textarea"
 									disabled
-									defaultValue={document.description}
+									defaultValue={document?.description}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
@@ -103,15 +107,15 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document.no_digital}
+									defaultValue={document?.no_digital}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
-								<Form.Label>No Digital</Form.Label>
+								<Form.Label>Level Progress</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document.no_digital}
+									value={document?.level_progress}
 								/>
 							</Form.Group>
 							<div

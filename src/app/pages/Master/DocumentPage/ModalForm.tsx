@@ -157,7 +157,7 @@ const ModalForm = props => {
 													name="date"
 													max={MaxDate}
 													placeholder="Date Document"
-													value={values?.date}
+													value={moment(values?.date).format("YYYY-MM-DD")}
 													onChange={e => {
 														handleChange(e);
 													}}

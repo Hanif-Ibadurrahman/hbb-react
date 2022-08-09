@@ -13,7 +13,6 @@ export const create = async (data: IndexingInterfaceState) => {
 		classification: data.classification,
 		area_id: data.area.id,
 		room_id: data.room.id,
-		box_id: data.box.id,
 		retention_period: data.retention_period,
 		date_retention: data.date_retention,
 		is_permanent: data.is_permanent,
@@ -24,16 +23,15 @@ export const create = async (data: IndexingInterfaceState) => {
 export const update = async (data: IndexingInterfaceState) => {
 	let id = data.id;
 	let payload = {
-		index: data.index,
-		date: data.date,
-		type: data.type,
-		classification: data.classification,
-		area_id: data.area.id,
-		room_id: data.room.id,
-		box_id: data.box.id,
-		retention_period: data.retention_period,
-		date_retention: data.date_retention,
-		is_permanent: data.is_permanent,
+		index: data?.index,
+		date: data?.date,
+		type: data?.type,
+		classification: data?.classification,
+		area_id: data?.area?.id,
+		room_id: data?.room?.id,
+		retention_period: data?.retention_period,
+		date_retention: data?.date_retention,
+		is_permanent: data?.is_permanent,
 	};
 	return await api.put(`/indexes/${id}`, payload);
 };

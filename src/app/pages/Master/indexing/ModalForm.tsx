@@ -73,16 +73,6 @@ const ModalForm = props => {
 		// classification_code: Yup.string().required("*Wajib diisi"),
 	});
 
-	const handleToggle = (event: React.SyntheticEvent, nodeIds: string[]) => {
-		console.log("node IDS >>>>", nodeIds);
-		console.log("eventt toogle >>>", event);
-	};
-
-	const handleSelect = (event: React.SyntheticEvent, nodeIds: string[]) => {
-		console.log("node IDS Handle Select >>>", nodeIds);
-		console.log("event handle >>>", event);
-	};
-
 	const getTreeItemsFromData = treeItems => {
 		return treeItems?.map(treeItemData => {
 			let children = undefined;
@@ -95,8 +85,6 @@ const ModalForm = props => {
 					nodeId={treeItemData?.code}
 					label={treeItemData?.text}
 					children={children}
-					// onNodeToggle={handleToggle}
-					// onNodeSelect={handleSelect}
 				/>
 			);
 		});
@@ -235,13 +223,13 @@ const ModalForm = props => {
 												<Form.Label>Pilih Area</Form.Label>
 												<Autocomplete
 													id="company"
-													options={area.Areas}
-													getOptionLabel={option => option.name}
+													options={area?.Areas}
+													getOptionLabel={option => option?.name}
 													value={values?.area}
 													onChange={(e, value) => {
 														setFieldValue(
 															"area",
-															value !== null ? value : values.area,
+															value !== null ? value : values?.area,
 														);
 													}}
 													renderInput={params => (
@@ -258,13 +246,13 @@ const ModalForm = props => {
 												<Form.Label>Pilih Ruangan</Form.Label>
 												<Autocomplete
 													id="company"
-													options={room.Rooms}
-													getOptionLabel={option => option.name}
+													options={room?.Rooms}
+													getOptionLabel={option => option?.name}
 													value={values?.room}
 													onChange={(e, value) => {
 														setFieldValue(
 															"room",
-															value !== null ? value : values.room,
+															value !== null ? value : values?.room,
 														);
 													}}
 													renderInput={params => (
@@ -276,11 +264,6 @@ const ModalForm = props => {
 														/>
 													)}
 												/>
-												{touched.room && errors.room ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.room}
-													</p>
-												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<TreeView
@@ -288,12 +271,15 @@ const ModalForm = props => {
 														<i className="fas fa-angle-down" />
 													}
 													defaultExpandIcon={<i className="fas fa-angle-up" />}
+													onNodeSelect={(event, nodeIds) => {
+														setFieldValue("classification", nodeIds);
+													}}
 												>
 													{getTreeItemsFromData(
 														classification?.ClassificationTreeView,
 													)}
 												</TreeView>
-												<Form.Label>Klasifikasi</Form.Label>
+												<Form.Label className="mt-4">Klasifikasi</Form.Label>
 												<Form.Control
 													type="text"
 													name="classification"
@@ -304,11 +290,6 @@ const ModalForm = props => {
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.classification && errors.classification ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.classification}
-													</p>
-												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Periode Retensi</Form.Label>
@@ -324,11 +305,6 @@ const ModalForm = props => {
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.retention_period && errors.retention_period ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.retention_period}
-													</p>
-												) : null}
 											</Form.Group>
 											<label>
 												<Field
@@ -341,11 +317,6 @@ const ModalForm = props => {
 												/>
 												Data Permanen
 											</label>
-											{touched.is_permanent && errors.is_permanent ? (
-												<p className="tc-danger-5 pos-a p-sm">
-													{errors.is_permanent}
-												</p>
-											) : null}
 										</Col>
 									</Row>
 								</Container>

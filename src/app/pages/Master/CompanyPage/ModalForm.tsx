@@ -256,7 +256,12 @@ const ModalForm = props => {
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Persetujuan</Form.Label>
 												<div className="d-flex">
-													<Form.Check type="checkbox" label="box" />
+													<Form.Check
+														type="checkbox"
+														label="box"
+														name="service_type"
+														value={values?.service_type[0]?.value as any}
+													/>
 													<Form.Check type="checkbox" label="folder" />
 													<Form.Check type="checkbox" label="document" />
 												</div>
