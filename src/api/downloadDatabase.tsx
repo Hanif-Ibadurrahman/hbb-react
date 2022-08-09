@@ -30,10 +30,6 @@ export const getDocumentFile = id => {
 		url: `/downloads/document/${id}/document-file`,
 	}).then(async res => {
 		const response = res.data as string;
-		window.open(
-			`${process.env.REACT_APP_API_URL}${response.slice(1)}`,
-			"_blank",
-			"popup",
-		) as Window;
+		window.open(`${response}`, "_blank", "popup") as Window;
 	});
 };

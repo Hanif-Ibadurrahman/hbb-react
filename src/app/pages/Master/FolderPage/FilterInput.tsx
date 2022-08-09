@@ -6,7 +6,7 @@ import { FolderInterfaceState } from "store/Types/FolderTypes";
 import { SearchFolders } from "actions/FolderAction";
 import { selectFolder } from "store/Selector/FolderSelector";
 
-export function SearchInput() {
+export function SearchFolder() {
 	const dispatch = useDispatch();
 	const folder: FolderInterfaceState = useSelector(selectFolder);
 

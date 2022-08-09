@@ -52,7 +52,6 @@ export function DashboardSuperadmin() {
 	const activityLogs = useSelector(selectActivityLogs);
 	const activityLogsSuperAdmin = activityLogs?.ActivityLogsSuperadmin;
 	const activityLogsArchiver = useSelector(selectActivityLogsArchiver);
-	console.log("activityLogsArchiver >>>", activityLogsArchiver);
 	const areas = useSelector(selectAreas);
 	const areaList = areas?.Areas;
 	const [title, setTitle] = useState("");

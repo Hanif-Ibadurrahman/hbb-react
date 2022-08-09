@@ -12,7 +12,7 @@ import {
 	selectFolders,
 	selectFoldersAssigned,
 } from "store/Selector/FolderSelector";
-import { SearchInput } from "../../FolderPage/FilterInput";
+import { SearchFolder } from "../../FolderPage/FilterInput";
 import {
 	getFoldersList,
 	getFoldersListNotAssign,
@@ -205,7 +205,7 @@ const AssignFolderToBox = () => {
 						justifyContent: "flex-end",
 					}}
 				>
-					<SearchInput />
+					<SearchFolder />
 				</div>
 				<DataTable
 					tableHeader={header}

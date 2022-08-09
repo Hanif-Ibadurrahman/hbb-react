@@ -11,11 +11,22 @@ import ModalForm from "./ModalForm";
 import "./page.scoped.scss";
 import _ from "lodash";
 import { selectBorrowItems } from "store/Selector/BorrowItemSelector";
+import Tab from "react-bootstrap/Tab";
+import Tabs from "react-bootstrap/Tabs";
+import { getFoldersList, SearchFolders } from "actions/FolderAction";
+import { selectFolders } from "store/Selector/FolderSelector";
+import { SearchFolder } from "app/pages/Master/FolderPage/FilterInput";
+import { selectDocuemnts } from "store/Selector/DocumentSelector";
+import { filterData, getDocumentsList } from "actions/DocumentAction";
+import { ModalFilter } from "app/pages/Master/DocumentPage/ModalFilter";
 
 const BorrowBoxPage = () => {
 	const [modalShow, setModalShow] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
+	const [key, setKey] = useState("box");
 	const borrowList = useSelector(selectBorrowItems);
+	const folders = useSelector(selectFolders);
+	const documents = useSelector(selectDocuemnts);
 	const cartStash = useSelector((state: RootStateOrAny) => state?.pickUpItems);
 	useEffect(() => {
 		setCart(cartStash);
@@ -31,9 +42,40 @@ const BorrowBoxPage = () => {
 		dispatch(getBorrowList(page));
 	};
 
+	const FolderList = (page = 1) => {
+		if (folders.Folder.no === "") {
+			dispatch(getFoldersList(page));
+		} else {
+			dispatch(SearchFolders);
+		}
+	};
+
+	const DocumentList = (page = 1) => {
+		if (
+			documents.Document.no === "" ||
+			documents.Document.detail === "" ||
+			documents.Document.active_year_for === 0 ||
+			documents.Document.level_progress === "" ||
+			documents.Document.media_storage === "" ||
+			documents.Document.condition === "" ||
+			documents.Document.description === "" ||
+			documents.Document.status === ""
+		) {
+			dispatch(getDocumentsList(page));
+		} else {
+			dispatch(filterData);
+		}
+	};
+
 	useEffect(() => {
-		FetchData();
-	}, []);
+		if (key === "box") {
+			FetchData();
+		} else if (key === "folder") {
+			FolderList();
+		} else if (key === "document") {
+			DocumentList();
+		}
+	}, [key]);
 
 	const _onHide = () => {
 		setModalShow(false);
@@ -76,6 +118,44 @@ const BorrowBoxPage = () => {
 		},
 	];
 
+	const actionFolder = (id, box_id) => [
+		{
+			icon: "fa-hand-holding-box",
+			title: "Pickup",
+			onclick: () => {
+				addCart(box_id);
+			},
+			dispatch: dispatch,
+			row: id,
+			type: 2,
+		},
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "Folder-Detail/" + id,
+			type: 1,
+		},
+	];
+
+	const actionDocument = (id, box_id) => [
+		{
+			icon: "fa-hand-holding-box",
+			title: "Pickup",
+			onclick: () => {
+				addCart(box_id);
+			},
+			dispatch: dispatch,
+			row: id,
+			type: 2,
+		},
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "Document-Detail/" + id,
+			type: 1,
+		},
+	];
+
 	const header = [
 		{
 			title: "Code Box",
@@ -105,6 +185,106 @@ const BorrowBoxPage = () => {
 			},
 			cell: row => {
 				return <DropdownAction list={action(row.id)} />;
+			},
+		},
+	];
+
+	const headerFolder = [
+		{
+			title: "No Folder",
+			prop: "no",
+			sortable: true,
+			cellProps: {
+				style: { width: "40%" },
+			},
+			headerCell: () => {
+				return (
+					<div className="cur-p">
+						{`No Folder`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
+			},
+		},
+		{
+			title: "Status Folder",
+			prop: "status",
+			cellProps: {
+				style: { width: "40%" },
+			},
+		},
+		{
+			title: "Action",
+			prop: "Action",
+			cellProps: {
+				style: { flex: 1 },
+				className: "realname-class",
+			},
+			cell: row => {
+				return <DropdownAction list={actionFolder(row?.id, row?.box?.id)} />;
+			},
+		},
+	];
+
+	const headerDocument = [
+		{
+			title: "No Document",
+			prop: "no",
+			sortable: true,
+			cellProps: {
+				style: { width: "40%" },
+			},
+			cell: row => {
+				return row?.no ? row?.no : "-";
+			},
+		},
+		{
+			title: "No Digital",
+			prop: "no_digital",
+			sortable: true,
+			cellProps: {
+				style: { width: "20%" },
+			},
+			headerCell: () => {
+				return (
+					<div className="cur-p">
+						{`No Digital`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
+			},
+			cell: row => {
+				return row?.no_digital ? row?.no_digital : "-";
+			},
+		},
+		{
+			title: "Kondisi",
+			prop: "condition",
+			sortable: true,
+			cellProps: {
+				style: { width: "20%" },
+			},
+			headerCell: () => {
+				return (
+					<div className="cur-p">
+						{`Kondisi`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
+			},
+			cell: row => {
+				return row?.condition ? row?.condition : "-";
+			},
+		},
+		{
+			title: "Action",
+			prop: "Action",
+			cellProps: {
+				style: { flex: 1 },
+				className: "realname-class",
+			},
+			cell: row => {
+				return <DropdownAction list={actionDocument(row?.id, row?.box?.id)} />;
 			},
 		},
 	];
@@ -157,23 +337,67 @@ const BorrowBoxPage = () => {
 					modalSet={setModalShow}
 					valueModalSet={false}
 				/>
-				<div
-					style={{
-						marginBottom: 20,
-						display: "flex",
-						justifyContent: "flex-end",
-					}}
+				<Tabs
+					id="controlled-tab-example"
+					activeKey={key}
+					onSelect={k => setKey(k as string)}
+					className="mb-3"
 				>
-					<SearchInput />
-				</div>
-				<DataTable
-					tableHeader={header}
-					tableBody={borrowList?.BorrowList ? borrowList.BorrowList : []}
-				/>
-				<Pagination
-					pageCount={borrowList?.Meta?.last_page || 1}
-					onPageChange={data => FetchData(data.selected + 1)}
-				/>
+					<Tab eventKey="box" title="Box">
+						<div
+							style={{
+								marginBottom: 20,
+								display: "flex",
+								justifyContent: "flex-end",
+							}}
+						>
+							<SearchInput />
+						</div>
+						<DataTable
+							tableHeader={header}
+							tableBody={borrowList?.BorrowList ? borrowList.BorrowList : []}
+						/>
+						<Pagination
+							pageCount={borrowList?.Meta?.last_page || 1}
+							onPageChange={data => FetchData(data.selected + 1)}
+						/>
+					</Tab>
+					<Tab eventKey="folder" title="Folder">
+						<div
+							style={{
+								marginBottom: 20,
+								display: "flex",
+								justifyContent: "flex-end",
+							}}
+						>
+							<SearchFolder />
+						</div>
+						<DataTable tableHeader={headerFolder} tableBody={folders.Folders} />
+						<Pagination
+							pageCount={folders.Meta.last_page || 1}
+							onPageChange={data => FetchData(data.selected + 1)}
+						/>
+					</Tab>
+					<Tab eventKey="document" title="Document">
+						<div
+							style={{
+								marginBottom: 20,
+								display: "flex",
+								justifyContent: "flex-end",
+							}}
+						>
+							<ModalFilter />
+						</div>
+						<DataTable
+							tableHeader={headerDocument}
+							tableBody={documents.Documents}
+						/>
+						<Pagination
+							pageCount={documents.Meta.last_page || 1}
+							onPageChange={data => FetchData(data.selected + 1)}
+						/>
+					</Tab>
+				</Tabs>
 				<Cart />
 			</PageWrapper>
 		</>

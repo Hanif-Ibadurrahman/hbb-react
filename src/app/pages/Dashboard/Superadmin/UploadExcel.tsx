@@ -67,7 +67,6 @@ export function UploadExcel(props) {
 							setTimeout(() => {
 								window.location.reload();
 							}, 2000);
-							// setValueUpload("");
 						} else {
 							setShowAlertFailed(true);
 							setTimeout(() => {

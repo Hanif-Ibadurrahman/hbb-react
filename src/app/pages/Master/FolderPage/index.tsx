@@ -17,7 +17,7 @@ import {
 	RESET_FOLDER_FORM,
 } from "actions/FolderAction";
 import { selectFolders } from "store/Selector/FolderSelector";
-import { SearchInput } from "./FilterInput";
+import { SearchFolder } from "./FilterInput";
 
 const DocumentPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -159,7 +159,7 @@ const DocumentPage = () => {
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
-					filter={SearchInput}
+					filter={SearchFolder}
 				/>
 				<DataTable tableHeader={header} tableBody={folders.Folders} />
 				<Pagination
