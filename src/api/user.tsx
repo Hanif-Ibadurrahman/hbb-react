@@ -33,3 +33,9 @@ export const getAllBoxNoAsign = async params => {
 			return error;
 		});
 };
+
+export const resetPassword = async (payload: any) => {
+	// return payload;
+
+	return api.patch(`/change-password`, payload);
+};
