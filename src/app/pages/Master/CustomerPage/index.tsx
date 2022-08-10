@@ -15,6 +15,7 @@ import {
 	deleteCustomer,
 	getCustomerDetail,
 	getCustomersList,
+	RESET_CUSTOMER_FORM,
 } from "actions/CustomerAction";
 
 const CustomerPage = () => {
@@ -37,7 +38,7 @@ const CustomerPage = () => {
 	const _onHide = () => {
 		setModalShow(false);
 		setShowAlert(false);
-		dispatch({ type: RESET_ROOM_FORM });
+		dispatch({ type: RESET_CUSTOMER_FORM });
 	};
 
 	const showEditForm = async id => {

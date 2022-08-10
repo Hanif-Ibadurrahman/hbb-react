@@ -151,26 +151,30 @@ export const ModalForm = props => {
 													</p>
 												) : null}
 											</Form.Group>
-											{values.id == null && (
-												<Form.Group className="mb-4" controlId="formBasicEmail">
-													<Form.Label>Password</Form.Label>
-													<Form.Control
-														type="text"
-														name="password"
-														placeholder="password"
-														value={values?.password}
-														onChange={e => {
-															handleChange(e);
-														}}
-														onBlur={handleBlur}
-													/>
-													{touched.password && errors.password ? (
-														<p className="tc-danger-5 pos-a p-sm">
-															{errors.password}
-														</p>
-													) : null}
-												</Form.Group>
-											)}
+											{values?.id == null ||
+												(values?.id == "" && (
+													<Form.Group
+														className="mb-4"
+														controlId="formBasicEmail"
+													>
+														<Form.Label>Password</Form.Label>
+														<Form.Control
+															type="text"
+															name="password"
+															placeholder="password"
+															value={values?.password}
+															onChange={e => {
+																handleChange(e);
+															}}
+															onBlur={handleBlur}
+														/>
+														{touched.password && errors.password ? (
+															<p className="tc-danger-5 pos-a p-sm">
+																{errors.password}
+															</p>
+														) : null}
+													</Form.Group>
+												))}
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Nama</Form.Label>
 												<Form.Control
