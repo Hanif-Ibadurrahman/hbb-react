@@ -375,7 +375,7 @@ const BorrowBoxPage = () => {
 						<DataTable tableHeader={headerFolder} tableBody={folders.Folders} />
 						<Pagination
 							pageCount={folders.Meta.last_page || 1}
-							onPageChange={data => FetchData(data.selected + 1)}
+							onPageChange={data => FolderList(data.selected + 1)}
 						/>
 					</Tab>
 					<Tab eventKey="document" title="Document">
@@ -394,7 +394,7 @@ const BorrowBoxPage = () => {
 						/>
 						<Pagination
 							pageCount={documents.Meta.last_page || 1}
-							onPageChange={data => FetchData(data.selected + 1)}
+							onPageChange={data => DocumentList(data.selected + 1)}
 						/>
 					</Tab>
 				</Tabs>
