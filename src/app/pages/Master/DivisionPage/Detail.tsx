@@ -15,6 +15,8 @@ import { DivisionInterfaceState } from "store/Types/DivisionTypes";
 
 const DivisionPageDetail = ({ match }) => {
 	const Divisions: DivisionInterfaceState = useSelector(selectDivision);
+	const divisions = useSelector(selectDivisions);
+
 	let history = useHistory();
 
 	const goToPreviousPath = e => {
@@ -42,15 +44,15 @@ const DivisionPageDetail = ({ match }) => {
 					<Card className="ph-5 pv-3 bd-rs-2">
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Nama Divisi</Form.Label>
+								<Form.Label>Nama Satuan Kerja</Form.Label>
 
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={Divisions.name}
+									defaultValue={Divisions?.name}
 								/>
 							</Form.Group>
-							{Divisions.customers.map((data, index) => (
+							{/* {Divisions?.customers.map((data, index) => (
 								<Form.Group className="mb-3" controlId="formBasicEmail">
 									<Form.Label className="mb-3 mt-3">
 										Customer {index + 1}
@@ -60,7 +62,7 @@ const DivisionPageDetail = ({ match }) => {
 										<Form.Control
 											type="text"
 											disabled
-											defaultValue={data.name}
+											defaultValue={data?.name}
 										/>
 									</Form.Group>
 									<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -68,7 +70,7 @@ const DivisionPageDetail = ({ match }) => {
 										<Form.Control
 											type="text"
 											disabled
-											defaultValue={data.email}
+											defaultValue={data?.email}
 										/>
 									</Form.Group>
 									<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -76,7 +78,7 @@ const DivisionPageDetail = ({ match }) => {
 										<Form.Control
 											type="text"
 											disabled
-											defaultValue={data.phone}
+											defaultValue={data?.phone}
 										/>
 									</Form.Group>
 									<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -84,11 +86,11 @@ const DivisionPageDetail = ({ match }) => {
 										<Form.Control
 											type="text"
 											disabled
-											defaultValue={data.company.name}
+											defaultValue={data?.company?.name}
 										/>
 									</Form.Group>
 								</Form.Group>
-							))}
+							))} */}
 							<div className="d-flex jc-end">
 								<Button
 									className="mv-4"
