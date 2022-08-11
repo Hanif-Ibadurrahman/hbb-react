@@ -16,7 +16,9 @@ const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setAlertMessage] = useState("");
 	const [varianAlert, setVarianAlert] = useState("");
+	// const divisions: DivisionInterfaceState = useSelector(selectDivision);
 	const divisions: DivisionInterfaceState = useSelector(selectDivision);
+
 	const dispatch = useDispatch();
 
 	const validationSchema = Yup.object().shape({
@@ -98,11 +100,11 @@ const ModalForm = props => {
 									<Row>
 										<Col xs={12}>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Name Divisi</Form.Label>
+												<Form.Label>Nama Satuan Kerja</Form.Label>
 												<Form.Control
 													type="text"
 													name="name"
-													placeholder="Name Divisi"
+													placeholder="Nama Satuan Kerja"
 													value={values.name}
 													onChange={e => {
 														handleChange(e);

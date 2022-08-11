@@ -91,7 +91,7 @@ const DivisionPage = () => {
 
 	const header = [
 		{
-			title: "Code Division",
+			title: "Kode Satuan Kerja",
 			prop: "code_division",
 			sortable: true,
 			cellProps: {
@@ -100,14 +100,14 @@ const DivisionPage = () => {
 			headerCell: () => {
 				return (
 					<div className="cur-p">
-						{`Kode Divisi`}
+						{`Kode Satuan Kerja`}
 						<i className="fas fa-sort-alt ml-2"></i>
 					</div>
 				);
 			},
 		},
 		{
-			title: "Nama Divisi",
+			title: "Nama Satuan Kerja",
 			prop: "name",
 			cellProps: {
 				style: { width: "40%" },

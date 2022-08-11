@@ -375,7 +375,7 @@ const ModalForm = props => {
 												/>
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Pilih Divisi</Form.Label>
+												<Form.Label>Pilih Satuan Kerja</Form.Label>
 												<Autocomplete
 													id="division_id"
 													options={division?.Divisions}
@@ -391,7 +391,7 @@ const ModalForm = props => {
 													renderInput={params => (
 														<TextField
 															margin="normal"
-															placeholder="Divisi"
+															placeholder="Satuan Kerja"
 															name="division_id"
 															{...params}
 														/>
