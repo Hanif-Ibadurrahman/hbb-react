@@ -191,11 +191,21 @@ const BorrowBoxPage = () => {
 
 	const headerFolder = [
 		{
+			title: "No Box",
+			prop: "no",
+			cellProps: {
+				style: { width: "20%" },
+			},
+			cell: row => {
+				return row?.box?.code_box ? row?.box?.code_box : "-";
+			},
+		},
+		{
 			title: "No Folder",
 			prop: "no",
 			sortable: true,
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "25%" },
 			},
 			headerCell: () => {
 				return (
@@ -210,7 +220,7 @@ const BorrowBoxPage = () => {
 			title: "Status Folder",
 			prop: "status",
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "25%" },
 			},
 		},
 		{
@@ -228,52 +238,30 @@ const BorrowBoxPage = () => {
 
 	const headerDocument = [
 		{
-			title: "No Document",
+			title: "No Box",
 			prop: "no",
-			sortable: true,
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "20%" },
+			},
+			cell: row => {
+				return row?.box?.code_box ? row?.box?.code_box : "-";
+			},
+		},
+		{
+			title: "No Dokumen",
+			prop: "no",
+			cellProps: {
+				style: { width: "20%" },
 			},
 			cell: row => {
 				return row?.no ? row?.no : "-";
 			},
 		},
 		{
-			title: "No Digital",
-			prop: "no_digital",
-			sortable: true,
-			cellProps: {
-				style: { width: "20%" },
-			},
-			headerCell: () => {
-				return (
-					<div className="cur-p">
-						{`No Digital`}
-						<i className="fas fa-sort-alt ml-2"></i>
-					</div>
-				);
-			},
+			title: "Detail Dokumen",
+			prop: "detail",
 			cell: row => {
-				return row?.no_digital ? row?.no_digital : "-";
-			},
-		},
-		{
-			title: "Kondisi",
-			prop: "condition",
-			sortable: true,
-			cellProps: {
-				style: { width: "20%" },
-			},
-			headerCell: () => {
-				return (
-					<div className="cur-p">
-						{`Kondisi`}
-						<i className="fas fa-sort-alt ml-2"></i>
-					</div>
-				);
-			},
-			cell: row => {
-				return row?.condition ? row?.condition : "-";
+				return row?.detail ? row?.detail : "-";
 			},
 		},
 		{
