@@ -148,7 +148,7 @@ export const CreateStaff = async (data: StaffInterfaceState) => {
 };
 
 export const UpdateStaff = async (data: StaffInterfaceState) => {
-	console.log(data);
+	console.log(data, "datadistaffaction");
 	return async dispatch => {
 		try {
 			dispatch({

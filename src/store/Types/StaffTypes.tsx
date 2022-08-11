@@ -24,6 +24,7 @@ export interface StaffIdInterfaceState {
 }
 
 export interface RoleInterfaceState {
+	id: string | null;
 	username: string;
 	roles: RolesInterfaceState[];
 }
