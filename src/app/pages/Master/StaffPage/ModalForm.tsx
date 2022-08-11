@@ -109,6 +109,7 @@ export const ModalForm = props => {
 							});
 						} catch (e: any) {
 							setShowAlert(true);
+							console.log(e, "error");
 							if (e?.response?.status === 422) {
 								setAlertMessage("Gagal. Data Duplikat");
 							} else {

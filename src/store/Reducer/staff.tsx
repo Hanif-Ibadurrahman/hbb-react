@@ -21,6 +21,7 @@ export const initialState: StaffsInterfaceState = {
 		name: "",
 		email: "",
 		user: {
+			id: "",
 			username: "",
 			roles: [
 				{
@@ -158,6 +159,7 @@ export default (
 					name: "",
 					email: "",
 					user: {
+						id: "",
 						username: "",
 						roles: [
 							{
