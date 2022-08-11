@@ -61,46 +61,10 @@ const AssignTable = props => {
 
 	const header = [
 		{
-			title: "No Document",
-			prop: "no",
-			cellProps: {
-				style: { width: "20%" },
-			},
-			cell: row => {
-				return row?.no ? row?.no : "-";
-			},
-		},
-		{
-			title: "No Digital",
-			prop: "no_digital",
-			cellProps: {
-				style: { width: "15%" },
-			},
-			cell: row => {
-				return row?.no_digital ? row?.no_digital : "-";
-			},
-		},
-		{
 			title: "Detail",
 			prop: "detail",
 			cellProps: {
-				style: { width: "35%" },
-			},
-		},
-		{
-			title: "Lampiran",
-			prop: "document_file",
-			cellProps: {
-				style: { width: "10%" },
-			},
-			cell: row => {
-				return row?.document_file ? (
-					<div onClick={() => getDocumentFile(row.id)}>
-						<i className="fas fa-download"></i>
-					</div>
-				) : (
-					"-"
-				);
+				style: { width: "80%" },
 			},
 		},
 		{

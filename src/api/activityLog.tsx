@@ -14,18 +14,10 @@ export const getAll = async params => {
 };
 
 export const getActivityLogsSuperAdmin = async (data: String) => {
-	var now = moment().format("YYYY-MM-DD");
-	var previous = moment().subtract(5, "days").format("YYYY-MM-DD");
-	return api.get(
-		`/activity-logs/summary/input-document?area_id=${data}&start_date=2022-07-12&end_date=2022-07-16`,
-	);
+	return api.get(`/activity-logs/summary/input-document?area_id=${data}`);
 };
 
 export const getActivityLogsArchiver = () => {
 	const id_user = localStorage.getItem("IdUser");
-	var now = moment().format("YYYY-MM-DD");
-	var prev = moment().subtract(5, "days").format("YYYY-MM-DD");
-	return api.get(
-		`/activity-logs/summary/input-document/user?id=${id_user}&start_date=${prev}&end_date=${now}`,
-	);
+	return api.get(`/activity-logs/summary/input-document/user?id=${id_user}`);
 };

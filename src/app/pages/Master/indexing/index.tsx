@@ -105,7 +105,7 @@ const IndexingPage = () => {
 			title: "Index",
 			prop: "index",
 			cellProps: {
-				style: { width: "30%" },
+				style: { width: "40%" },
 			},
 		},
 		{
@@ -116,19 +116,20 @@ const IndexingPage = () => {
 			},
 		},
 		{
+			title: "Tanggal Pembuatan",
 			prop: "date",
 			sortable: true,
 			cellProps: {
-				style: { width: "30%" },
+				style: { width: "20%" },
 			},
-			headerCell: () => {
-				return (
-					<div className="cur-p">
-						{`Tanggal Pembuatan`}
-						<i className="fas fa-sort-alt ml-2"></i>
-					</div>
-				);
-			},
+			// headerCell: () => {
+			// 	return (
+			// 		<div className="cur-p">
+			// 			{`Tanggal Pembuatan`}
+			// 			<i className="fas fa-sort-alt ml-2"></i>
+			// 		</div>
+			// 	);
+			// },
 			cell: row => {
 				return moment(row.created_at).format("DD MMMM YYYY");
 			},

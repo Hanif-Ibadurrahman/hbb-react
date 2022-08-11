@@ -37,6 +37,10 @@ import {
 	GetActivityLogsArchiver,
 	GetActivityLogsSuperAdmin,
 } from "actions/ActivityLogAction";
+import { getDocumentsList } from "actions/DocumentAction";
+import { selectDocuemnts } from "store/Selector/DocumentSelector";
+import { selectCompanys } from "store/Selector/CompanySelector";
+import { getCompanyList } from "actions/CompanyAction";
 
 export function DashboardSuperadmin() {
 	const user = localStorage.getItem("User");
@@ -54,6 +58,8 @@ export function DashboardSuperadmin() {
 	const activityLogsArchiver = useSelector(selectActivityLogsArchiver);
 	const areas = useSelector(selectAreas);
 	const areaList = areas?.Areas;
+	const documents = useSelector(selectDocuemnts);
+	const Companys = useSelector(selectCompanys);
 	const [title, setTitle] = useState("");
 
 	const BoxData = (page = 1) => {
@@ -83,6 +89,18 @@ export function DashboardSuperadmin() {
 	const ArchiverLog = () => {
 		dispatch(GetActivityLogsArchiver());
 	};
+	const DocumentList = (page = 1) => {
+		dispatch(getDocumentsList(page));
+	};
+	const CompanyList = (page = 1) => {
+		dispatch(getCompanyList(page));
+	};
+	useEffect(() => {
+		CompanyList();
+	}, []);
+	useEffect(() => {
+		DocumentList();
+	}, []);
 	useEffect(() => {
 		ArchiverLog();
 	}, []);
@@ -126,18 +144,19 @@ export function DashboardSuperadmin() {
 		} else if (user === "csroperation") {
 			return setTitle("List Pending Approval");
 		} else if (user === "archiver") {
-			return setTitle("Detail Data Input");
+			return setTitle("");
 		} else {
 			return setTitle("List Box Di Pinjam");
 		}
 	}, []);
 
-	const totalCabinets = cabinets.Meta.total;
-	const totalBox = boxes.Meta.total;
-	const totalBoxNoAsign = boxesNoAsign.Meta.total;
-	const totalReturn = returnItems.Meta.total;
-	const totalApprovalAdminCSR = requestBoxes.Meta.total;
-	const boxCustomer = borrowList.Meta.total;
+	const totalCabinets = cabinets?.Meta?.total;
+	const totalBox = boxes?.Meta?.total;
+	const totalBoxNoAsign = boxesNoAsign?.Meta?.total;
+	const totalReturn = returnItems?.Meta?.total;
+	const boxCustomer = borrowList?.Meta?.total;
+	const totalDoc = documents?.Meta?.total;
+	const totalCompany = Companys?.Meta?.total;
 
 	const header = [
 		{
@@ -201,29 +220,48 @@ export function DashboardSuperadmin() {
 
 	const CardSuperAdmin = () => {
 		return (
-			<div className="row w-100% mh-0 row-summary">
-				<div className="col col-4 ph-0">
-					<CardHeader
-						icon="archive"
-						total={totalCabinets || 0}
-						text={["Total", <br />, "Cabinet."]}
-					/>
+			<>
+				<div className="row w-100% mh-0">
+					<div className="col col-4 ph-0">
+						<CardHeader
+							icon="archive"
+							total={totalCabinets || 0}
+							text={["Total", <br />, "Lemari."]}
+						/>
+					</div>
+					<div className="col col-4 ph-0 mh-4">
+						<CardHeader
+							icon="truck-loading"
+							total={totalBoxNoAsign || 0}
+							text={["Box tidak ", <br />, "Terdaftar."]}
+						/>
+					</div>
+					<div className="col col-4 ph-0">
+						<CardHeader
+							icon="boxes"
+							total={totalBox || 0}
+							text={["Box", <br />, "Terdaftar."]}
+						/>
+					</div>
 				</div>
-				<div className="col col-4 ph-0 mh-4">
-					<CardHeader
-						icon="truck-loading"
-						total={totalBoxNoAsign || 0}
-						text={["Total Box", <br />, "Tidak terdaftar"]}
-					/>
+				<div className="row w-100% mh-0 mt-4">
+					<div className="col col-4 ph-0">
+						<CardHeader
+							icon="clone"
+							total={totalDoc || 0}
+							text={["Total", <br />, "Dokumen."]}
+						/>
+					</div>
+					<div className="col col-4 ph-0 mh-4">
+						<CardHeader
+							icon="user-alt"
+							total={totalCompany || 0}
+							text={["Perusahaan", <br />, "Pengguna."]}
+						/>
+					</div>
+					<div className="col col-4 ph-0 mh-4"></div>
 				</div>
-				<div className="col col-4 ph-0">
-					<CardHeader
-						icon="boxes"
-						total={totalBox || 0}
-						text={["Total Box", <br />, "terdaftar."]}
-					/>
-				</div>
-			</div>
+			</>
 		);
 	};
 
@@ -276,14 +314,22 @@ export function DashboardSuperadmin() {
 		);
 	};
 
+	let dataLogArchiver: any[] = [];
+	activityLogsArchiver?.map(item => {
+		dataLogArchiver?.push({
+			date: item.date,
+			count: item.data.length,
+		});
+	});
+
 	const CardArchiver = () => {
 		return (
 			<div className="row w-100% mh-0 row-summary">
 				<div className="col col-4 ph-0">
 					<CardHeader
 						icon="chalkboard"
-						total={dataLogArchiver.length}
-						text={["Total Data", <br />, "Entry Per Hari"]}
+						total={activityLogsArchiver?.length}
+						text={["Total", <br />, "Entry Data"]}
 					/>
 				</div>
 			</div>
@@ -296,84 +342,39 @@ export function DashboardSuperadmin() {
 		dispatch(GetActivityLogsSuperAdmin(selectedItem));
 	}, [selectedItem]);
 
+	const onChangeRC = e => {
+		setSelectedItem(e.target.value);
+	};
+
 	const ContentSuperAdmin = (
 		<>
 			<div className="row w-100% mb-8">
+				<div className="col col-4">
+					<Form.Group className="mb-4" controlId="formBasicEmail">
+						<Form.Label className="mb-4">Record Center</Form.Label>
+						<Form.Select
+							aria-label="Default select example"
+							onChange={e => onChangeRC(e)}
+							value={selectedItem}
+						>
+							<option>Pilih Record Center</option>
+							{areaList?.map((item, i) => (
+								<option value={item?.id}>{item?.name}</option>
+							))}
+						</Form.Select>
+					</Form.Group>
+				</div>
 				<div className="col col-4 ph-0">
 					<CardHeader
 						icon="chalkboard"
-						total={124}
-						text={["Total Data", <br />, "Entry Per Hari"]}
+						total={activityLogsSuperAdmin?.length || 0}
+						text={["Total", <br />, "Entry Data."]}
 					/>
 				</div>
-				<div className="col col-4">
-					<div
-						className=" p-4 bd-rs-2 bx-sh-4 dashboard-card"
-						style={{ height: 115, overflowY: "auto" }}
-					>
-						<Form.Group className="mb-4" controlId="formBasicEmail">
-							<Form.Label className="mb-4">Record Center</Form.Label>
-							<Dropdown>
-								<Dropdown.Toggle variant="success">
-									Dropdown Button
-								</Dropdown.Toggle>
-								<Dropdown.Menu>
-									{areaList.map((item, i) => (
-										<Dropdown.Item
-											key={i}
-											as="button"
-											onClick={() =>
-												setSelectedItem(item?.id !== null ? item?.id : "")
-											}
-										>
-											{item.name}
-										</Dropdown.Item>
-									))}
-								</Dropdown.Menu>
-							</Dropdown>
-						</Form.Group>
-					</div>
-				</div>
 			</div>
-			<BarChart
-				width={900}
-				height={300}
-				data={activityLogsSuperAdmin}
-				className="Bar-chatxxi"
-			>
-				<XAxis dataKey="date" stroke="#000" />
-				<YAxis />
-				<Tooltip />
-				<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-				<Bar dataKey="data.count" fill="#198754" barSize={30} />
-			</BarChart>
 		</>
 	);
-
-	let dataLogArchiver: any[] = [];
-	activityLogsArchiver?.map(item => {
-		dataLogArchiver?.push({
-			date: item.date,
-			count: item.data.length,
-		});
-	});
-
-	const ContentArchiver = (
-		<>
-			<BarChart
-				width={900}
-				height={300}
-				data={dataLogArchiver}
-				className="Bar-chatxxi"
-			>
-				<XAxis dataKey="date" stroke="#000" />
-				<YAxis />
-				<Tooltip />
-				<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-				<Bar dataKey="count" fill="#198754" barSize={30} />
-			</BarChart>
-		</>
-	);
+	const ContentArchiver = <></>;
 
 	const TableCSRAdmin = () => {
 		return (
@@ -423,7 +424,7 @@ export function DashboardSuperadmin() {
 		);
 	};
 
-	const Table = () => {
+	const ContentDashboard = () => {
 		if (user === "superadmin") {
 			return ContentSuperAdmin;
 		} else if (user === "csradmin") {
@@ -465,16 +466,11 @@ export function DashboardSuperadmin() {
 				<h6 className="mb-3 tc-dark-contrast">Today Summary</h6>
 				<CardDashboard />
 			</div>
-			<div className="pos-r p-8 pt-0 mt-20">
+			<div className="pos-r p-8 pt-0 mt-4">
 				<h6 className="mb-3 pt-3">{title}</h6>
 				<div className="row w-100% mh-0">
 					<div className="col col-12 ph-0 mr-2">
-						<Card
-							className="d-flex ai-center"
-							style={{ border: "1px solid rgba(0,0,0,.1)" }}
-						>
-							<Table />
-						</Card>
+						<ContentDashboard />
 					</div>
 				</div>
 			</div>
