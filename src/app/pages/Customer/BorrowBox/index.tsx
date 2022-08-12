@@ -19,6 +19,10 @@ import { SearchFolder } from "app/pages/Master/FolderPage/FilterInput";
 import { selectDocuemnts } from "store/Selector/DocumentSelector";
 import { filterData, getDocumentsList } from "actions/DocumentAction";
 import { ModalFilter } from "app/pages/Master/DocumentPage/ModalFilter";
+import { selectindexings } from "store/Selector/IndexingSelector";
+import moment from "moment";
+import { getIndexingList, SearchIndexing } from "actions/IndexingAction";
+import { SearchIndex } from "app/pages/Master/indexing/FilterInput";
 
 const BorrowBoxPage = () => {
 	const [modalShow, setModalShow] = useState(false);
@@ -27,6 +31,7 @@ const BorrowBoxPage = () => {
 	const borrowList = useSelector(selectBorrowItems);
 	const folders = useSelector(selectFolders);
 	const documents = useSelector(selectDocuemnts);
+	const indexings = useSelector(selectindexings);
 	const cartStash = useSelector((state: RootStateOrAny) => state?.pickUpItems);
 	useEffect(() => {
 		setCart(cartStash);
@@ -67,6 +72,14 @@ const BorrowBoxPage = () => {
 		}
 	};
 
+	const IndexingList = (page = 1) => {
+		if (indexings.Indexing.index === "") {
+			dispatch(getIndexingList(page));
+		} else {
+			dispatch(SearchIndexing);
+		}
+	};
+
 	useEffect(() => {
 		if (key === "box") {
 			FetchData();
@@ -74,6 +87,8 @@ const BorrowBoxPage = () => {
 			FolderList();
 		} else if (key === "document") {
 			DocumentList();
+		} else if (key === "indexing") {
+			IndexingList();
 		}
 	}, [key]);
 
@@ -152,6 +167,25 @@ const BorrowBoxPage = () => {
 			icon: "fa-search",
 			title: "Detail",
 			url: "Document-Detail/" + id,
+			type: 1,
+		},
+	];
+
+	const actionIndexing = (id, box_id) => [
+		{
+			icon: "fa-hand-holding-box",
+			title: "Pickup",
+			onclick: () => {
+				addCart(box_id);
+			},
+			dispatch: dispatch,
+			row: id,
+			type: 2,
+		},
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "Indexing-Detail/" + id,
 			type: 1,
 		},
 	];
@@ -248,18 +282,11 @@ const BorrowBoxPage = () => {
 			},
 		},
 		{
-			title: "No Dokumen",
-			prop: "no",
-			cellProps: {
-				style: { width: "20%" },
-			},
-			cell: row => {
-				return row?.no ? row?.no : "-";
-			},
-		},
-		{
 			title: "Detail Dokumen",
 			prop: "detail",
+			cellProps: {
+				style: { width: "60%" },
+			},
 			cell: row => {
 				return row?.detail ? row?.detail : "-";
 			},
@@ -273,6 +300,45 @@ const BorrowBoxPage = () => {
 			},
 			cell: row => {
 				return <DropdownAction list={actionDocument(row?.id, row?.box?.id)} />;
+			},
+		},
+	];
+
+	const headerIndexing = [
+		{
+			title: "Index",
+			prop: "index",
+			cellProps: {
+				style: { width: "40%" },
+			},
+		},
+		{
+			title: "Periode Retensi",
+			prop: "retention_period",
+			cellProps: {
+				style: { width: "20%" },
+			},
+		},
+		{
+			title: "Tanggal Pembuatan",
+			prop: "date",
+			sortable: true,
+			cellProps: {
+				style: { width: "20%" },
+			},
+			cell: row => {
+				return moment(row.created_at).format("DD MMMM YYYY");
+			},
+		},
+		{
+			title: "Action",
+			prop: "Action",
+			cellProps: {
+				style: { flex: 1 },
+				className: "realname-class",
+			},
+			cell: row => {
+				return <DropdownAction list={actionIndexing(row?.id, row?.box?.id)} />;
 			},
 		},
 	];
@@ -360,7 +426,10 @@ const BorrowBoxPage = () => {
 						>
 							<SearchFolder />
 						</div>
-						<DataTable tableHeader={headerFolder} tableBody={folders.Folders} />
+						<DataTable
+							tableHeader={headerFolder}
+							tableBody={folders?.Folders ? folders?.Folders : []}
+						/>
 						<Pagination
 							pageCount={folders.Meta.last_page || 1}
 							onPageChange={data => FolderList(data.selected + 1)}
@@ -378,11 +447,30 @@ const BorrowBoxPage = () => {
 						</div>
 						<DataTable
 							tableHeader={headerDocument}
-							tableBody={documents.Documents}
+							tableBody={documents?.Documents ? documents?.Documents : []}
 						/>
 						<Pagination
 							pageCount={documents.Meta.last_page || 1}
 							onPageChange={data => DocumentList(data.selected + 1)}
+						/>
+					</Tab>
+					<Tab eventKey="indexing" title="Indexing">
+						<div
+							style={{
+								marginBottom: 20,
+								display: "flex",
+								justifyContent: "flex-end",
+							}}
+						>
+							<SearchIndex />
+						</div>
+						<DataTable
+							tableHeader={headerIndexing}
+							tableBody={indexings?.Indexings ? indexings?.Indexings : []}
+						/>
+						<Pagination
+							pageCount={indexings.Meta.last_page || 1}
+							onPageChange={data => IndexingList(data.selected + 1)}
 						/>
 					</Tab>
 				</Tabs>

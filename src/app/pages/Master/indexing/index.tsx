@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import Alert from "app/components/Alerts";
 import moment from "moment";
-import { SearchInput } from "./FilterInput";
+import { SearchIndex } from "./FilterInput";
 import { selectindexings } from "store/Selector/IndexingSelector";
 import {
 	deleteIndexing,
@@ -171,7 +171,7 @@ const IndexingPage = () => {
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
-					filter={SearchInput}
+					filter={SearchIndex}
 				/>
 				<DataTable tableHeader={header} tableBody={indexings.Indexings} />
 				<Pagination

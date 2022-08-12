@@ -76,6 +76,7 @@ import IndexingPage from "./Master/indexing";
 import DetailIndexingPage from "./Master/indexing/Detail";
 import AssignDocToFolder from "./Master/indexing/AssignDocToFolder";
 import AssignFolderToBox from "./Master/indexing/AssignFolderToBox";
+import DetailIndexingNotAssign from "./Master/indexing/Detail/DetailNoAssign";
 // # - CLASSIFICATION
 import ClassificationPage from "./Master/ClassificationPage";
 import DetailClassificationPage from "./Master/ClassificationPage/Detail";
@@ -160,6 +161,10 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/AssignFolderToBox"}
 							component={AssignFolderToBox}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/DetailIndexing/:id"}
+							component={DetailIndexingNotAssign}
 						/>
 						{/*---------- INDEXING - - - END ---------*/}
 

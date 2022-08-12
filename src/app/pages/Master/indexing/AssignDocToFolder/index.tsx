@@ -163,30 +163,10 @@ const AssignDocToFolder = () => {
 
 	const header = [
 		{
-			title: "No Document",
-			prop: "no",
-			cellProps: {
-				style: { width: "30%" },
-			},
-			cell: row => {
-				return row?.no ? row?.no : "-";
-			},
-		},
-		{
-			title: "No Digital",
-			prop: "no_digital",
-			cellProps: {
-				style: { width: "10%" },
-			},
-			cell: row => {
-				return row?.no_digital ? row?.no_digital : "-";
-			},
-		},
-		{
-			title: "Detail",
+			title: "Detail Dokumen",
 			prop: "detail",
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "80%" },
 			},
 		},
 		{

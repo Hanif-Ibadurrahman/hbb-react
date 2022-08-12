@@ -1,6 +1,12 @@
 import { PaginationState } from "../Types/PaginationTypes";
 import { CompanyInterfaceState } from "./CompanyTypes";
 import { DivisionInterfaceState } from "./DivisionTypes";
+
+interface IndexingInterfaceState {
+	id: string;
+	index: string;
+	classification: string;
+}
 interface BoxDocumentInterfaceState {
 	id: string | null;
 	code_box: string;
@@ -30,6 +36,7 @@ export interface DocumentInterfaceState {
 	media_storage: string;
 	condition: string;
 	amount: number;
+	index?: IndexingInterfaceState;
 	cross_point: string;
 	description: string;
 	no_digital: string;

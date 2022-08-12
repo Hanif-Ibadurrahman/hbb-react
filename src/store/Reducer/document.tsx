@@ -42,6 +42,11 @@ export const initialState: DocumentsInterfaceState = {
 		description: "",
 		no_digital: "",
 		location: "",
+		index: {
+			classification: "",
+			id: "",
+			index: "",
+		},
 		status: "",
 		sign_code: "",
 		division: {

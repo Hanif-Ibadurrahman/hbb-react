@@ -11,6 +11,7 @@ import { getIndexingDetail } from "actions/IndexingAction";
 import TableIndexingPage from "./Table";
 import AssignTable from "./AssignTable";
 import moment from "moment";
+import TableNoAssign from "./TableNoAssign";
 
 const IndexingPageDetail = ({ match }) => {
 	const indexing: IndexingInterfaceState = useSelector(selectindexing);
@@ -22,7 +23,7 @@ const IndexingPageDetail = ({ match }) => {
 		history.goBack();
 	};
 
-	const indexing_id = match.params.id;
+	const indexing_id = match?.params?.id;
 
 	const dispatch = useDispatch();
 
@@ -100,13 +101,10 @@ const IndexingPageDetail = ({ match }) => {
 				</div>
 				<div className="col col-12 mt-4">
 					<Card className="ph-5 pv-3 bd-rs-2">
-						<AssignTable DataTable={indexing?.documents} />
+						<TableNoAssign
+							DataTable={indexing?.documents ? indexing?.documents : []}
+						/>
 					</Card>
-				</div>
-				<div className="col col-12">
-					<div className="mt-4 card">
-						<TableIndexingPage />
-					</div>
 				</div>
 			</PageWrapper>
 		</>

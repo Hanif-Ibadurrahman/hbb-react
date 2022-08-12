@@ -288,26 +288,26 @@ export function DashboardSuperadmin() {
 
 	const CardCustomer = () => {
 		return (
-			<div className="row w-100% mh-0 row-summary">
+			<div className="row w-100% mh-0">
 				<div className="col col-4 ph-0">
 					<CardHeader
 						icon="archive"
 						total={boxCustomer || 0}
-						text={["Total", <br />, "Box Terdaftar"]}
+						text={["Box", <br />, "Terdaftar."]}
 					/>
 				</div>
 				<div className="col col-4 ph-0 mh-4">
 					<CardHeader
 						icon="truck-loading"
 						total={totalBoxNoAsign || 0}
-						text={["Total Box", <br />, "Tidak terdaftar"]}
+						text={["Box Tidak ", <br />, "Terdaftar."]}
 					/>
 				</div>
 				<div className="col col-4 ph-0 mh-4">
 					<CardHeader
 						icon="truck-loading"
 						total={totalReturn || 0}
-						text={["Box di", <br />, "Pinjam"]}
+						text={["Box di", <br />, "Pinjam."]}
 					/>
 				</div>
 			</div>

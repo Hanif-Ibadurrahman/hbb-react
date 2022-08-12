@@ -2,14 +2,11 @@ import React from "react";
 import { Button, Col, Row, Container, Form } from "react-bootstrap";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { SearchBoxes } from "actions/BoxActions";
-import { selectBox } from "store/Selector/BoxSelector";
 import { IndexingInterfaceState } from "store/Types/IndexingTypes";
 import { selectindexing } from "store/Selector/IndexingSelector";
-import IndexingPageDetail from "./Detail";
 import { SearchIndexing } from "actions/IndexingAction";
 
-export function SearchInput(props) {
+export function SearchIndex(props) {
 	const dispatch = useDispatch();
 	const indexing: IndexingInterfaceState = useSelector(selectindexing);
 
