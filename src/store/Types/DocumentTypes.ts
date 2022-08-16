@@ -25,7 +25,7 @@ export interface DocumentInterfaceState {
 	document_file: string;
 	cabinet?: CabinetDocumentInterfaceState;
 	nominal: number;
-	active_year_for: number;
+	active_year_for: string;
 	level_progress: string;
 	media_storage: string;
 	condition: string;

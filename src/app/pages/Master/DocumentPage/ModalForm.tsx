@@ -85,6 +85,7 @@ const ModalForm = props => {
 					initialValues={document}
 					enableReinitialize={true}
 					onSubmit={async values => {
+						console.log("values >>>", values);
 						try {
 							let action = document?.id
 								? UpdateDcoument(values)
@@ -157,7 +158,11 @@ const ModalForm = props => {
 													name="date"
 													max={MaxDate}
 													placeholder="Date Document"
-													value={moment(values?.date).format("YYYY-MM-DD")}
+													value={
+														values?.id
+															? moment(values?.date).format("YYYY-MM-DD")
+															: values?.date
+													}
 													onChange={e => {
 														handleChange(e);
 													}}

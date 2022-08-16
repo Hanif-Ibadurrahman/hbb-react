@@ -57,7 +57,7 @@ const AssignDocToFolder = () => {
 		if (
 			documents.Document.no === "" ||
 			documents.Document.detail === "" ||
-			documents.Document.active_year_for === 0 ||
+			documents.Document.active_year_for === "" ||
 			documents.Document.level_progress === "" ||
 			documents.Document.media_storage === "" ||
 			documents.Document.condition === "" ||

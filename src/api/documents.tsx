@@ -147,7 +147,7 @@ export const filter = async (data: DocumentInterfaceState) => {
 		return api.get(`/documents?level_progress=${filter.level_progress}`);
 	} else if (
 		filter.active_year_for !== undefined &&
-		filter.active_year_for !== 0
+		filter.active_year_for !== ""
 	) {
 		return api.get(`/documents?active_year_for=${filter.active_year_for}`);
 	} else if (filter.detail !== undefined && filter.detail !== "") {
