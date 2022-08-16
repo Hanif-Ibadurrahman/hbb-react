@@ -42,7 +42,7 @@ const CustomerPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={Customer?.username}
+									defaultValue={Customer?.user?.username}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -73,7 +73,8 @@ const CustomerPageDetail = ({ match }) => {
 								<Button
 									className="mv-4"
 									variant="outline-secondary"
-									onClick={goToPreviousPath}
+									// onClick={goToPreviousPath}
+									onClick={() => console.log(Customer, "Customer")}
 								>
 									Kembali
 								</Button>{" "}
