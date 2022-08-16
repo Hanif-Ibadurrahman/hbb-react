@@ -135,52 +135,14 @@ const DocumentPage = () => {
 
 	const header = [
 		{
-			title: "No Document",
-			prop: "no",
+			title: "Detail Document",
+			prop: "detail",
 			sortable: true,
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "80%" },
 			},
 			cell: row => {
-				return row?.no ? row?.no : "-";
-			},
-		},
-		{
-			title: "No Digital",
-			prop: "no_digital",
-			sortable: true,
-			cellProps: {
-				style: { width: "20%" },
-			},
-			headerCell: () => {
-				return (
-					<div className="cur-p">
-						{`No Digital`}
-						<i className="fas fa-sort-alt ml-2"></i>
-					</div>
-				);
-			},
-			cell: row => {
-				return row?.no_digital ? row?.no_digital : "-";
-			},
-		},
-		{
-			title: "Kondisi",
-			prop: "condition",
-			sortable: true,
-			cellProps: {
-				style: { width: "20%" },
-			},
-			headerCell: () => {
-				return (
-					<div className="cur-p">
-						{`Kondisi`}
-						<i className="fas fa-sort-alt ml-2"></i>
-					</div>
-				);
-			},
-			cell: row => {
-				return row?.condition ? row?.condition : "-";
+				return row?.detail ? row?.detail : "-";
 			},
 		},
 		{
@@ -191,7 +153,7 @@ const DocumentPage = () => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.id)} />;
+				return <DropdownAction list={action(row?.id)} />;
 			},
 		},
 	];

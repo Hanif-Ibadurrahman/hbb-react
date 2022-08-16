@@ -151,6 +151,14 @@ const DocumentPageDetail = ({ match }) => {
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
+								<Form.Label>Index</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									value={document?.index?.index}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3">
 								<Form.Label>No Lemari</Form.Label>
 								<Form.Control
 									type="text"
