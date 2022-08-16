@@ -30,7 +30,7 @@ const CustomerPageDetail = ({ match }) => {
 		<>
 			<PageWrapper className="row w-100%">
 				<Breadcrumb
-					crumbs={["Dashboard", "Division", "Detail"]}
+					crumbs={["Dashboard", "Customer", "Detail"]}
 					selected
 					className="mb-4"
 				/>
@@ -73,8 +73,7 @@ const CustomerPageDetail = ({ match }) => {
 								<Button
 									className="mv-4"
 									variant="outline-secondary"
-									// onClick={goToPreviousPath}
-									onClick={() => console.log(Customer, "Customer")}
+									onClick={goToPreviousPath}
 								>
 									Kembali
 								</Button>{" "}
