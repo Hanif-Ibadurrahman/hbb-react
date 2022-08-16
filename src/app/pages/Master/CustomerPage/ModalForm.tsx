@@ -43,6 +43,28 @@ export const ModalForm = props => {
 		dispatch(getDivisionsList(page));
 	};
 
+	const ShowAlertError = () => {
+		setShowAlert(true);
+		setAlertMessage("Gagal Update Data");
+		setVarianAlert("danger");
+		setTimeout(function () {
+			setShowAlert(false);
+		}, 4000);
+		dispatch({ type: RESET_CUSTOMER_FORM });
+	};
+
+	const ShowAlertSuccess = () => {
+		dispatch({ type: RESET_CUSTOMER_FORM });
+		setShowAlert(true);
+		setVarianAlert("success");
+		customer?.id
+			? setAlertMessage("Data Berhasil di Edit")
+			: setAlertMessage("Data Berhasil di Tambah");
+		setTimeout(function () {
+			window.location.reload();
+		}, 1000);
+	};
+
 	useEffect(() => {
 		DivisionData();
 	}, []);
@@ -94,34 +116,16 @@ export const ModalForm = props => {
 					initialValues={customer}
 					enableReinitialize={true}
 					onSubmit={async values => {
-						console.log(values, "valuess");
 						try {
 							let action = customer?.id
 								? UpdateCustomer(values)
 								: CreateCustomer(values);
 							const res = await action;
 							await dispatch(res);
-							action.then(() => {
-								dispatch({ type: RESET_CUSTOMER_FORM });
-								props.modalSet(props.valueModalSet);
-								setShowAlert(true);
-								setVarianAlert("success");
-								customer?.id
-									? setAlertMessage("Data Berhasil di Edit")
-									: setAlertMessage("Data Berhasil di Tambah");
-								setTimeout(function () {
-									window.location.reload();
-								}, 1000);
-							});
-						} catch (e: any) {
-							setShowAlert(true);
-							console.log(e, "error");
-							setAlertMessage("Gagal Update Data");
-							setVarianAlert("danger");
-							setTimeout(function () {
-								setShowAlert(false);
-							}, 4000);
-							dispatch({ type: RESET_CUSTOMER_FORM });
+							props.modalSet(props.valueModalSet);
+							ShowAlertSuccess();
+						} catch (e) {
+							ShowAlertError();
 						}
 					}}
 				>
@@ -321,13 +325,7 @@ export const ModalForm = props => {
 								</Container>
 							</Modal.Body>
 							<Modal.Footer>
-								<Button
-									variant="danger"
-									onClick={() => {
-										console.log(values, "values");
-									}}
-								>
-									{/* <Button variant="danger" onClick={props.hide}> */}
+								<Button variant="danger" onClick={props.hide}>
 									Close
 								</Button>
 								<Button
