@@ -18,16 +18,16 @@ export const create = async (data: CustomerInterfaceState) => {
 export const update = async (data: CustomerInterfaceState) => {
 	let id = data.id;
 	let payload = {
-		username: data?.username,
+		// username: data?.username,
 		// password: data?.password,
 		name: data?.name,
 		email: data?.email,
 		phone: data?.phone,
 		location: data?.location,
 		company_id: data?.company?.id,
-		division_id: data?.division_id?.id,
+		division_id: data?.division_id?.id ?? data?.division?.id,
 	};
-	return api.post(`/users/customer/${id}`, payload);
+	return api.put(`/users/customer/${id}`, payload);
 };
 
 export const getById = async (id: String) => {

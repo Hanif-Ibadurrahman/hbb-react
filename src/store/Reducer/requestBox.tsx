@@ -207,6 +207,15 @@ export const initialState: RequestBoxesInterfaceState = {
 					},
 				],
 			},
+			user: {
+				id: "",
+				username: "",
+			},
+			division: {
+				id: "",
+				name: "",
+				code_division: "",
+			},
 		},
 	},
 
@@ -534,6 +543,15 @@ export default (
 									},
 								},
 							],
+						},
+						user: {
+							id: "",
+							username: "",
+						},
+						division: {
+							id: "",
+							name: "",
+							code_division: "",
 						},
 					},
 				},

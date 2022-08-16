@@ -51,12 +51,23 @@ export const ModalForm = props => {
 		FetchData();
 	}, []);
 
-	const validationSchema = Yup.object().shape({
+	const addCustomerSchema = Yup.object().shape({
 		username: Yup.string().required("*Wajib diisi"),
 		password: Yup.string().required("*Wajib diisi").min(8, "Min 8 Karakter"),
 		name: Yup.string().required("*Wajib diisi"),
 		email: Yup.string().email().required("*Wajib diisi"),
 	});
+
+	const editCustomerSchema = Yup.object().shape({
+		name: Yup.string().required("*Wajib diisi"),
+		phone: Yup.string().required("*Wajib diisi"),
+		location: Yup.string().required("*Wajib diisi"),
+		email: Yup.string().email().required("*Wajib diisi"),
+	});
+
+	const validationSchema = customer?.id
+		? editCustomerSchema
+		: addCustomerSchema;
 
 	return (
 		<>
@@ -78,12 +89,12 @@ export const ModalForm = props => {
 				onHide={props.hide}
 				aria-labelledby="contained-modal-title-vcenter"
 			>
-				{" "}
 				<Formik
 					validationSchema={validationSchema}
 					initialValues={customer}
 					enableReinitialize={true}
 					onSubmit={async values => {
+						console.log(values, "valuess");
 						try {
 							let action = customer?.id
 								? UpdateCustomer(values)
@@ -102,8 +113,9 @@ export const ModalForm = props => {
 									window.location.reload();
 								}, 1000);
 							});
-						} catch (e) {
+						} catch (e: any) {
 							setShowAlert(true);
+							console.log(e, "error");
 							setAlertMessage("Gagal Update Data");
 							setVarianAlert("danger");
 							setTimeout(function () {
@@ -126,24 +138,33 @@ export const ModalForm = props => {
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									Tambah Customer
+									{customer?.id ? <>Edit Customer</> : <>Tambah Customer</>}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
 								<Container>
 									<Row>
 										<Col xs={12}>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
+											<Form.Group
+												className="mb-4"
+												controlId="formBasicEmail"
+												style={{
+													display: customer?.id ? "none" : "block",
+													flexDirection: "column",
+												}}
+											>
 												<Form.Label>Username</Form.Label>
 												<Form.Control
 													type="text"
 													name="username"
 													placeholder="Username"
-													value={values?.username}
+													// value={values?.username}
+													value={values?.username ?? values?.user?.username}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
+													disabled={customer?.id ? true : false}
 												/>
 												{touched.username && errors.username ? (
 													<p className="tc-danger-5 pos-a p-sm">
@@ -156,6 +177,10 @@ export const ModalForm = props => {
 													<Form.Group
 														className="mb-4"
 														controlId="formBasicEmail"
+														style={{
+															display: customer?.id ? "none" : "block",
+															flexDirection: "column",
+														}}
 													>
 														<Form.Label>Password</Form.Label>
 														<Form.Control
@@ -167,6 +192,7 @@ export const ModalForm = props => {
 																handleChange(e);
 															}}
 															onBlur={handleBlur}
+															disabled={customer?.id ? true : false}
 														/>
 														{touched.password && errors.password ? (
 															<p className="tc-danger-5 pos-a p-sm">
@@ -247,19 +273,20 @@ export const ModalForm = props => {
 												<Autocomplete
 													id="company"
 													options={company?.Companys}
+													value={values?.company}
 													getOptionLabel={option => option.name}
 													onChange={(e, value) => {
 														console.log(value);
 														setFieldValue(
 															"company",
-															value !== null ? value : values.company,
+															value !== null ? value : values?.company,
 														);
 													}}
 													renderInput={params => (
 														<TextField
 															margin="normal"
 															placeholder="Company"
-															name="comapany_id"
+															name="company"
 															{...params}
 														/>
 													)}
@@ -269,13 +296,14 @@ export const ModalForm = props => {
 												<Form.Label>Pilih Satuan Kerja</Form.Label>
 												<Autocomplete
 													id="division_id"
+													value={values?.division_id ?? values?.division}
 													options={division?.Divisions}
 													getOptionLabel={option => option.name}
 													onChange={(e, value) => {
 														console.log(value);
 														setFieldValue(
 															"division_id",
-															value !== null ? value : values.division_id,
+															value !== null ? value : values?.division_id,
 														);
 													}}
 													renderInput={params => (
@@ -293,7 +321,13 @@ export const ModalForm = props => {
 								</Container>
 							</Modal.Body>
 							<Modal.Footer>
-								<Button variant="danger" onClick={props.hide}>
+								<Button
+									variant="danger"
+									onClick={() => {
+										console.log(values, "values");
+									}}
+								>
+									{/* <Button variant="danger" onClick={props.hide}> */}
 									Close
 								</Button>
 								<Button

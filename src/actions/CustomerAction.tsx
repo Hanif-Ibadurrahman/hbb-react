@@ -106,6 +106,7 @@ export const CreateCustomer = async (data: CustomerInterfaceState) => {
 };
 
 export const UpdateCustomer = async (data: CustomerInterfaceState) => {
+	console.log(data, "datadistaffaction");
 	return async dispatch => {
 		try {
 			dispatch({

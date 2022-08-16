@@ -5,6 +5,13 @@ import { DivisionInterfaceState } from "./DivisionTypes";
 
 interface userInterface {
 	id: string;
+	username: string;
+}
+
+interface divisionInterface {
+	id: string;
+	name: string;
+	code_division: string;
 }
 
 export interface CustomerInterfaceState {
@@ -17,6 +24,8 @@ export interface CustomerInterfaceState {
 	location: string;
 	company: CompanyInterfaceState;
 	division_id: DivisionInterfaceState;
+	user: userInterface;
+	division: divisionInterface;
 }
 
 export interface CustomersInterfaceState {
