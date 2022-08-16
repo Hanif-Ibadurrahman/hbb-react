@@ -189,10 +189,13 @@ const BoxPage = () => {
 						Print All Box<i className="fas fa-print ml-2"></i>
 					</Button>{" "}
 				</div>
-				<DataTable tableHeader={header} tableBody={boxes.Boxes} />
+				<DataTable
+					tableHeader={header}
+					tableBody={boxes?.Boxes ? boxes?.Boxes : []}
+				/>
 				<Pagination
-					pageCount={boxes.Meta.last_page || 1}
-					onPageChange={data => FetchData(data.selected + 1)}
+					pageCount={boxes?.Meta?.last_page || 1}
+					onPageChange={data => FetchData(data?.selected + 1)}
 				/>
 			</PageWrapper>
 		</>

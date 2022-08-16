@@ -19,6 +19,7 @@ import {
 } from "actions/DocumentAction";
 import { ModalFilter } from "./ModalFilter";
 import ModalAddReference from "./ModalAddReference";
+import { UploadFileDoc } from "./UploadFiile";
 
 const DocumentPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -28,17 +29,26 @@ const DocumentPage = () => {
 	const documents = useSelector(selectDocuemnts);
 	const dispatch = useDispatch();
 
+	const validation =
+		documents?.Document?.no === "" ||
+		documents?.Document?.no === undefined ||
+		documents?.Document?.detail === "" ||
+		documents?.Document?.detail === undefined ||
+		documents?.Document?.active_year_for === "" ||
+		documents?.Document?.active_year_for === undefined ||
+		documents?.Document?.level_progress === "" ||
+		documents?.Document?.level_progress === undefined ||
+		documents?.Document?.media_storage === "" ||
+		documents?.Document?.media_storage === undefined ||
+		documents?.Document?.condition === "" ||
+		documents?.Document?.condition === undefined ||
+		documents?.Document?.description === "" ||
+		documents?.Document?.description === undefined ||
+		documents?.Document?.status === "" ||
+		documents?.Document?.status === undefined;
+
 	const FetchData = (page = 1) => {
-		if (
-			documents.Document.no === "" ||
-			documents.Document.detail === "" ||
-			documents.Document.active_year_for === 0 ||
-			documents.Document.level_progress === "" ||
-			documents.Document.media_storage === "" ||
-			documents.Document.condition === "" ||
-			documents.Document.description === "" ||
-			documents.Document.status === ""
-		) {
+		if (validation) {
 			dispatch(getDocumentsList(page));
 		} else {
 			dispatch(filterData);
@@ -207,17 +217,25 @@ const DocumentPage = () => {
 					valueModalSet={false}
 					folder_id={folderId}
 				/>
-				<PageHeader
-					breadcrumb={["Master", "Document"]}
-					modal={setModalShow}
-					valueModalSet={false}
-					value={true}
-					filter={ModalFilter}
+				<div className="d-flex jc-between">
+					<div style={{ width: "58%" }}>
+						<PageHeader
+							breadcrumb={["Master", "Document"]}
+							modal={setModalShow}
+							valueModalSet={false}
+							value={true}
+							filter={ModalFilter}
+						/>
+					</div>
+					<UploadFileDoc />
+				</div>
+				<DataTable
+					tableHeader={header}
+					tableBody={documents?.Documents ? documents?.Documents : []}
 				/>
-				<DataTable tableHeader={header} tableBody={documents.Documents} />
 				<Pagination
-					pageCount={documents.Meta.last_page || 1}
-					onPageChange={data => FetchData(data.selected + 1)}
+					pageCount={documents?.Meta.last_page || 1}
+					onPageChange={data => FetchData(data?.selected + 1)}
 				/>
 			</PageWrapper>
 		</>

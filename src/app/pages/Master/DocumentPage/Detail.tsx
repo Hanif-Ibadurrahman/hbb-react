@@ -29,7 +29,7 @@ const DocumentPageDetail = ({ match }) => {
 		dispatch(getDocumentDetail(document_id));
 	}, []);
 
-	const NewDate = moment(document.date).format("d MMMM YYYY");
+	const newDate = moment(document?.date).format("d MMMM YYYY");
 
 	return (
 		<>
@@ -52,7 +52,11 @@ const DocumentPageDetail = ({ match }) => {
 							</Form.Group>
 							<Form.Group className="mb-3">
 								<Form.Label>Tanggal</Form.Label>
-								<Form.Control type="text" disabled value={NewDate} />
+								<Form.Control
+									type="text"
+									disabled
+									value={document?.date ? newDate : "-"}
+								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
 								<Form.Label>Detail</Form.Label>
@@ -152,6 +156,22 @@ const DocumentPageDetail = ({ match }) => {
 									type="text"
 									disabled
 									defaultValue={document?.cabinet?.code_cabinet}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>Divisi</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document?.division?.name}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>Perusahaan</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document?.company?.name}
 								/>
 							</Form.Group>
 							<div className="d-flex jc-end">

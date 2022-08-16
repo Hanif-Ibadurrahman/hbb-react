@@ -90,6 +90,16 @@ export function Sidebar() {
 					{""} Beranda
 				</MenuItem>
 				<MenuItem
+					id={window.location.pathname === "/Document" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconAdvanced} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Document";
+					}}
+				>
+					{""} Master Dokumen
+				</MenuItem>
+				<MenuItem
 					id={
 						window.location.pathname === "/Customer/Request-Box" ? "active" : ""
 					}
