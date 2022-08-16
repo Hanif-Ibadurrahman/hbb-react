@@ -59,6 +59,15 @@ export const initialState: CustomersInterfaceState = {
 				},
 			],
 		},
+		user: {
+			id: "",
+			username: "",
+		},
+		division: {
+			id: "",
+			name: "",
+			code_division: "",
+		},
 	},
 	Meta: {
 		total: 0,
@@ -163,6 +172,15 @@ export default (
 								},
 							},
 						],
+					},
+					user: {
+						id: "",
+						username: "",
+					},
+					division: {
+						id: "",
+						name: "",
+						code_division: "",
 					},
 				},
 			};

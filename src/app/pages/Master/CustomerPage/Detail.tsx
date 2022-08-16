@@ -30,7 +30,7 @@ const CustomerPageDetail = ({ match }) => {
 		<>
 			<PageWrapper className="row w-100%">
 				<Breadcrumb
-					crumbs={["Dashboard", "Division", "Detail"]}
+					crumbs={["Dashboard", "Customer", "Detail"]}
 					selected
 					className="mb-4"
 				/>
@@ -42,7 +42,7 @@ const CustomerPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={Customer?.username}
+									defaultValue={Customer?.user?.username}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
