@@ -73,11 +73,6 @@ export const MasterData = [
 		icon: "",
 		link: "/Box",
 	},
-	// {
-	// 	title: "Berkas",
-	// 	icon: "",
-	// 	link: "/Berkas",
-	// },
 	{
 		title: "Folder",
 		icon: "",
@@ -93,11 +88,6 @@ export const MasterData = [
 		icon: "",
 		link: "/Cabinet",
 	},
-	// {
-	// 	title: "Ruangan",
-	// 	icon: "",
-	// 	link: "/Room",
-	// },
 	{
 		title: "Area",
 		icon: "",
@@ -173,5 +163,23 @@ export const CustomerMasterData = [
 		title: "Dokumen",
 		icon: "",
 		link: "/document",
+	},
+];
+
+export const MasterCustomer = [
+	{
+		title: "Box",
+		icon: "",
+		link: "/Box",
+	},
+	{
+		title: "Folder",
+		icon: "",
+		link: "/Folder",
+	},
+	{
+		title: "Dokumen",
+		icon: "",
+		link: "/Document",
 	},
 ];

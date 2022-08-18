@@ -19,7 +19,8 @@ import {
 import { selectFolders } from "store/Selector/FolderSelector";
 import { SearchFolder } from "./FilterInput";
 
-const DocumentPage = () => {
+const FolderPage = () => {
+	const user = localStorage.getItem("User");
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
@@ -98,6 +99,15 @@ const DocumentPage = () => {
 		},
 	];
 
+	const actionCustomer = id => [
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "Folder-Detail/" + id,
+			type: 1,
+		},
+	];
+
 	const header = [
 		{
 			title: "No Folder",
@@ -130,10 +140,42 @@ const DocumentPage = () => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.id)} />;
+				return (
+					<DropdownAction
+						list={
+							user === "superadmin" ? action(row.id) : actionCustomer(row.id)
+						}
+					/>
+				);
 			},
 		},
 	];
+
+	const HeaderAction = () => {
+		if (user === "superadmin") {
+			return (
+				<PageHeader
+					breadcrumb={["Master", "Folder"]}
+					modal={setModalShow}
+					valueModalSet={false}
+					value={true}
+					filter={SearchFolder}
+				/>
+			);
+		} else {
+			return (
+				<div
+					style={{
+						marginBottom: 20,
+						display: "flex",
+						justifyContent: "flex-end",
+					}}
+				>
+					<SearchFolder />
+				</div>
+			);
+		}
+	};
 
 	return (
 		<>
@@ -154,13 +196,7 @@ const DocumentPage = () => {
 					modalSet={setModalShow}
 					valueModalSet={false}
 				/>
-				<PageHeader
-					breadcrumb={["Master", "Folder"]}
-					modal={setModalShow}
-					valueModalSet={false}
-					value={true}
-					filter={SearchFolder}
-				/>
+				<HeaderAction />
 				<DataTable tableHeader={header} tableBody={folders.Folders} />
 				<Pagination
 					pageCount={folders.Meta.last_page || 1}
@@ -171,4 +207,4 @@ const DocumentPage = () => {
 	);
 };
 
-export default DocumentPage;
+export default FolderPage;

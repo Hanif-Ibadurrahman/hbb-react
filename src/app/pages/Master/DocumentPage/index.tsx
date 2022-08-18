@@ -137,7 +137,6 @@ const DocumentPage = () => {
 		{
 			title: "Detail Document",
 			prop: "detail",
-			sortable: true,
 			cellProps: {
 				style: { width: "80%" },
 			},

@@ -23,6 +23,7 @@ import { useHistory } from "react-router-dom";
 import { SearchInput } from "./FilterInput";
 
 const BoxPage = () => {
+	const user = localStorage.getItem("User");
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
@@ -115,6 +116,15 @@ const BoxPage = () => {
 		},
 	];
 
+	const actionCustomer = id => [
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "Box-Detail/" + id,
+			type: 1,
+		},
+	];
+
 	const header = [
 		{
 			title: "Code Box",
@@ -149,10 +159,52 @@ const BoxPage = () => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.id)} />;
+				return (
+					<DropdownAction
+						list={
+							user === "superadmin" ? action(row.id) : actionCustomer(row.id)
+						}
+					/>
+				);
 			},
 		},
 	];
+	const HeaderAction = () => {
+		if (user === "superadmin") {
+			return (
+				<>
+					<PageHeader
+						breadcrumb={["Master", "Box"]}
+						modal={setModalShow}
+						valueModalSet={false}
+						value={true}
+						filter={SearchInput}
+					/>
+					<div className="d-flex mb-6">
+						<Button
+							className="d-flex ai-center mr-2 bg-warning-5"
+							variant="warning"
+							onClick={handlePrint}
+						>
+							Print All Box<i className="fas fa-print ml-2"></i>
+						</Button>{" "}
+					</div>
+				</>
+			);
+		} else {
+			return (
+				<div
+					style={{
+						marginBottom: 20,
+						display: "flex",
+						justifyContent: "flex-end",
+					}}
+				>
+					<SearchInput />
+				</div>
+			);
+		}
+	};
 
 	return (
 		<>
@@ -173,22 +225,7 @@ const BoxPage = () => {
 					modalSet={setModalShow}
 					valueModalSet={false}
 				/>
-				<PageHeader
-					breadcrumb={["Master", "Box"]}
-					modal={setModalShow}
-					valueModalSet={false}
-					value={true}
-					filter={SearchInput}
-				/>
-				<div className="d-flex mb-6">
-					<Button
-						className="d-flex ai-center mr-2 bg-warning-5"
-						variant="warning"
-						onClick={handlePrint}
-					>
-						Print All Box<i className="fas fa-print ml-2"></i>
-					</Button>{" "}
-				</div>
+				<HeaderAction />
 				<DataTable
 					tableHeader={header}
 					tableBody={boxes?.Boxes ? boxes?.Boxes : []}

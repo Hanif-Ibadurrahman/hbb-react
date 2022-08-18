@@ -22,9 +22,6 @@ import { useTranslation } from "react-i18next";
 
 // DASHBOARD
 import { DashboardSuperadmin } from "./Dashboard/Superadmin";
-import { DashboardAdminCSR } from "./Dashboard/AdminCSR";
-import { DashboardAdminRC } from "./Dashboard/AdminRC";
-import { DashboardAdminTransport } from "./Dashboard/AdminTransport";
 // -=-=-=-=-=-
 // APPROVAL
 import ApprovalAdminRequestBox from "./Approval/RequestBox";
@@ -119,18 +116,6 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/Dashboard"}
 							component={DashboardSuperadmin}
-						/>
-						<Route
-							path={process.env.PUBLIC_URL + "/Dashboard/CSR"}
-							component={DashboardAdminCSR}
-						/>
-						<Route
-							path={process.env.PUBLIC_URL + "/Dashboard/RC"}
-							component={DashboardAdminRC}
-						/>
-						<Route
-							path={process.env.PUBLIC_URL + "/Dashboard/Transport"}
-							component={DashboardAdminTransport}
 						/>
 						{/*---------- DASHBOARD - - - END ---------*/}
 

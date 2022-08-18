@@ -31,19 +31,21 @@ const FolderPageDetail = ({ match }) => {
 
 	const documents = folder?.documents;
 
-	const [name, setName] = useState("");
+	const [search, setSearch] = useState("");
 	const [foundDocument, setFoundDocument] = useState(documents as any);
 
 	useEffect(() => {
-		if (documents.length > 1 && name === "") {
+		if (documents?.length > 1 && search === "") {
 			setFoundDocument(documents);
+		} else {
+			setFoundDocument([]);
 		}
 	}, [documents]);
 
 	const filter = e => {
 		const keyword = e.target.value;
 
-		if (keyword !== "") {
+		if (keyword !== "" && folder?.documents?.length > 1) {
 			const results = documents?.filter(test => {
 				return (
 					test?.detail?.toLowerCase().startsWith(keyword.toLowerCase()) ||
@@ -55,7 +57,7 @@ const FolderPageDetail = ({ match }) => {
 			setFoundDocument(documents);
 		}
 
-		setName(keyword);
+		setSearch(keyword);
 	};
 
 	const action = id => [
@@ -166,7 +168,7 @@ const FolderPageDetail = ({ match }) => {
 						<h6 className="mb-4 mt-4">List Document</h6>
 						<Form.Control
 							type="search"
-							value={name}
+							value={search}
 							onChange={filter}
 							className="input"
 							placeholder="Cari Dokumen"

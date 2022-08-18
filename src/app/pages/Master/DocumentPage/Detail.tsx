@@ -130,7 +130,7 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document?.document_file?.slice(30)}
+									defaultValue={document?.document_file?.slice(52)}
 									style={{ color: "blue", cursor: "pointer" }}
 								/>
 							</div>
