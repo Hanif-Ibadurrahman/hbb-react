@@ -10,7 +10,6 @@ import { DocumentInterfaceState } from "store/Types/DocumentTypes";
 import { selectDocument } from "store/Selector/DocumentSelector";
 import { getDocumentDetail } from "actions/DocumentAction";
 import moment from "moment";
-import { getDocumentFile } from "api/downloadDatabase";
 
 const DocumentPageDetail = ({ match }) => {
 	const document: DocumentInterfaceState = useSelector(selectDocument);
@@ -124,7 +123,9 @@ const DocumentPageDetail = ({ match }) => {
 							</Form.Group>
 							<div
 								className="mb-3"
-								onClick={() => getDocumentFile(document?.id)}
+								onClick={() =>
+									window.open(`${document.document_file}`, "_blank")
+								}
 							>
 								<Form.Label>Lampiran File</Form.Label>
 								<Form.Control

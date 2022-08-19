@@ -30,6 +30,6 @@ export const getDocumentFile = id => {
 		url: `/downloads/document/${id}/document-file`,
 	}).then(async res => {
 		const response = res.data as string;
-		window.open(`${response}`, "_blank", "popup") as Window;
+		window.open(response, "_blank");
 	});
 };

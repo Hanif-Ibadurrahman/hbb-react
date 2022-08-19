@@ -40,7 +40,7 @@ const ModalAddReference = props => {
 		const token = localStorage.getItem("Token");
 
 		const response = await fetch(
-			`http://103.93.57.36:8008/documents/${document.id}`,
+			`${process.env.REACT_APP_API_URL}documents/${document.id}`,
 			{
 				method: "PUT",
 				body: formdata,
@@ -135,13 +135,10 @@ const ModalAddReference = props => {
 										id="file"
 										name="file"
 										type="file"
-										// value={valueUpload}
 										onChange={e => {
 											console.log("onchange", e);
-											// setValueUpload(e.target.value);
 											onChangeFile(e);
 										}}
-										accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 										className="form-control"
 									/>
 								</Form.Group>
