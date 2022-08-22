@@ -22,6 +22,7 @@ import {
 import ModalAddReference from "../DocumentPage/ModalAddReference";
 
 const IndexingPage = () => {
+	const user = localStorage.getItem("User");
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
@@ -147,6 +148,34 @@ const IndexingPage = () => {
 		},
 	];
 
+	const HeaderAction = () => {
+		if (user === "superadmin") {
+			return (
+				<>
+					<PageHeader
+						breadcrumb={["Master", "Indexing"]}
+						modal={setModalShow}
+						valueModalSet={false}
+						value={true}
+						filter={SearchIndex}
+					/>
+				</>
+			);
+		} else {
+			return (
+				<div
+					style={{
+						marginBottom: 20,
+						display: "flex",
+						justifyContent: "flex-end",
+					}}
+				>
+					<SearchIndex />
+				</div>
+			);
+		}
+	};
+
 	return (
 		<>
 			<Helmet>
@@ -166,13 +195,7 @@ const IndexingPage = () => {
 					modalSet={setModalShow}
 					valueModalSet={false}
 				/>
-				<PageHeader
-					breadcrumb={["Master", "Indexing"]}
-					modal={setModalShow}
-					valueModalSet={false}
-					value={true}
-					filter={SearchIndex}
-				/>
+				<HeaderAction />
 				<DataTable tableHeader={header} tableBody={indexings.Indexings} />
 				<Pagination
 					pageCount={indexings.Meta.last_page || 1}
