@@ -237,6 +237,30 @@ export function Sidebar() {
 				<SubMenu
 					className=""
 					icon={<img src={IconAdvanced} className="h-5" alt="awSnap" />}
+					title="Berkas"
+				>
+					{ArchiverMasterData.map((val, key) => {
+						return (
+							<MenuItem
+								id={
+									window.location.pathname.split(val.link).pop() ? "" : "active"
+								}
+								className="pos-r"
+								icon={<img src={val.icon} className="h-5" alt="awSnap" />}
+								key={key}
+								onClick={() => {
+									window.location.pathname = val.link;
+								}}
+							>
+								{""}
+								{val.title}
+							</MenuItem>
+						);
+					})}
+				</SubMenu>
+				<SubMenu
+					className=""
+					icon={<img src={IconAdvanced} className="h-5" alt="awSnap" />}
 					title="Master"
 				>
 					{MasterData.map((val, key) => {

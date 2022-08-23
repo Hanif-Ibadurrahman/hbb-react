@@ -14,6 +14,7 @@ import {
 	RESET_COMPANY_FORM,
 } from "actions/CompanyAction";
 import { CompanyInterfaceState } from "store/Types/CompanyTypes";
+import MaskedFormControl from "react-bootstrap-maskedinput";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
@@ -164,15 +165,15 @@ const ModalForm = props => {
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>NPWP</Form.Label>
-												<Form.Control
+												<MaskedFormControl
 													type="text"
 													name="npwp"
-													placeholder="NPWP"
 													value={values?.npwp}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
+													mask="11.111.111.1-111.111"
 												/>
 												{touched.npwp && errors.npwp ? (
 													<p className="tc-danger-5 pos-a p-sm">

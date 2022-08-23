@@ -63,10 +63,22 @@ const CustomerPageDetail = ({ match }) => {
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>No. Hp</Form.Label>
+								<Form.Control type="text" disabled value={Customer?.phone} />
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Asal Perusahaan</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={Customer?.phone}
+									defaultValue={Customer?.company?.name}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Asal Divisi</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={Customer?.division?.name}
 								/>
 							</Form.Group>
 							<div className="d-flex jc-end">

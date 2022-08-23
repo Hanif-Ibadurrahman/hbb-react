@@ -172,9 +172,9 @@ export const getDocumentDetail = (id: String) => {
 		return getById(id)
 			.then(function (response) {
 				dispatch({
-					type: GET_DOCUMENT_DETAIL,
+					type: id ? GET_DOCUMENT_DETAIL : "",
 					payload: {
-						data: response.data,
+						data: response?.data,
 						errorMessage: false,
 					},
 				});
@@ -206,7 +206,6 @@ export const deleteDocument = id => {
 };
 
 export const CreateDocument = async (data: DocumentInterfaceState) => {
-	console.log(data);
 	return async dispatch => {
 		try {
 			dispatch({
