@@ -23,9 +23,15 @@ export const getById = async (id: String) => {
 	return api.get(`/boxes/${id}`);
 };
 
-export const getAll = async params => {
+export const getAll = async (page, area_id: String | null = null) => {
 	return api
-		.get(`/boxes?is_filled=true&page=${params}`)
+		.get(`/boxes`, {
+			params: {
+				is_filled: true,
+				page: page,
+				area_id: area_id,
+			},
+		})
 		.then(res => {
 			return res.data;
 		})
