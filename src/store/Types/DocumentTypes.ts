@@ -30,7 +30,7 @@ export interface DocumentInterfaceState {
 	detail: string;
 	document_file: string;
 	cabinet?: CabinetDocumentInterfaceState;
-	nominal: number;
+	nominal: string;
 	active_year_for: string;
 	level_progress: string;
 	media_storage: string;

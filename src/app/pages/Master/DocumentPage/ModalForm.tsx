@@ -85,7 +85,6 @@ const ModalForm = props => {
 					initialValues={document}
 					enableReinitialize={true}
 					onSubmit={async values => {
-						console.log("values >>>", values);
 						try {
 							let action = document?.id
 								? UpdateDcoument(values)
