@@ -185,7 +185,7 @@ const BorrowBoxPage = () => {
 		{
 			icon: "fa-search",
 			title: "Detail",
-			url: "Indexing-Detail/" + id,
+			url: "IndexingDetail/" + id,
 			type: 1,
 		},
 	];
