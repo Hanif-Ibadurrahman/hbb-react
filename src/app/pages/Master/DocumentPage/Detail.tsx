@@ -67,11 +67,7 @@ const DocumentPageDetail = ({ match }) => {
 							</Form.Group>
 							<Form.Group className="mb-3">
 								<Form.Label>Nominal</Form.Label>
-								<Form.Control
-									type="text"
-									disabled
-									defaultValue={document?.nominal}
-								/>
+								<Form.Control type="text" disabled value={document?.nominal} />
 							</Form.Group>
 							<Form.Group className="mb-3">
 								<Form.Label>Masa Aktif Dokument</Form.Label>

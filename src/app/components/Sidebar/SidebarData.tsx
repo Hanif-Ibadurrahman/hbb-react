@@ -182,4 +182,9 @@ export const MasterCustomer = [
 		icon: "",
 		link: "/Document",
 	},
+	{
+		title: "Indexing",
+		icon: "",
+		link: "/Indexing",
+	},
 ];
