@@ -53,7 +53,7 @@ const PrintCabinet = ({ match }) => {
 					</div>
 				</div>
 			</div> */}
-			{cabinetSlot.map((item, index) => {
+			{cabinetSlot?.map((item, index) => {
 				return (
 					<div style={{ marginBottom: 7.5, marginLeft: 27 }}>
 						<div style={Width} className="d-flex ai-center jc-center">
@@ -61,7 +61,7 @@ const PrintCabinet = ({ match }) => {
 								<QR
 									id="QR Box"
 									title="Scan here"
-									value={item.sign_code}
+									value={item?.sign_code}
 									className="d-flex jc-center"
 								/>
 							</Card>
@@ -70,7 +70,7 @@ const PrintCabinet = ({ match }) => {
 									Cabinet
 								</p>
 								<p style={font} className="ff-1-bd ta-center">
-									{item.name}
+									{item?.name}
 								</p>
 							</div>
 						</div>

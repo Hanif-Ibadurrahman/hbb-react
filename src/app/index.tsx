@@ -20,6 +20,7 @@ import PrintBox from "../app/pages/Master/BoxPage/print";
 import PrintCabinet from "./pages/Master/CabinetPage/print";
 import ApprovalPrint from "./pages/AdminOperation/RequestBox/PrintBarcode";
 import PrintBoxPerpage from "./pages/Master/BoxPage/PrintPerPage";
+import DeliveryNote from "./pages/Customer/RequestHistory/deliveryNote";
 
 export function App() {
 	const { i18n } = useTranslation();
@@ -28,11 +29,11 @@ export function App() {
 	return (
 		<BrowserRouter>
 			<Helmet
-				titleTemplate="%s - React Boilerplate"
-				defaultTitle="React Boilerplate"
+				titleTemplate="%s"
+				defaultTitle="Dox"
 				htmlAttributes={{ lang: i18n.language }}
 			>
-				<meta name="description" content="A React Boilerplate application" />
+				<meta name="description" content="Dox application" />
 			</Helmet>
 			<div className="d-flex all-wrapper">
 				<div className="content-wrapper w-100%">
@@ -56,6 +57,10 @@ export function App() {
 						<Route
 							path={process.env.PUBLIC_URL + "/Print-PerPage"}
 							component={PrintBoxPerpage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Customer/DeliveryNote/:id"}
+							component={DeliveryNote}
 						/>
 						<Route
 							path={process.env.PUBLIC_URL + "/"}

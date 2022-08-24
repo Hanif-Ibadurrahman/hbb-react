@@ -3,6 +3,17 @@ import { PaginationState } from "./PaginationTypes";
 import { CompanyInterfaceState } from "./CompanyTypes";
 import { DivisionInterfaceState } from "./DivisionTypes";
 
+interface userInterface {
+	id: string;
+	username: string;
+}
+
+interface divisionInterface {
+	id: string;
+	name: string;
+	code_division: string;
+}
+
 export interface CustomerInterfaceState {
 	id: string | null;
 	username: string;
@@ -13,6 +24,8 @@ export interface CustomerInterfaceState {
 	location: string;
 	company: CompanyInterfaceState;
 	division_id: DivisionInterfaceState;
+	user: userInterface;
+	division: divisionInterface;
 }
 
 export interface CustomersInterfaceState {

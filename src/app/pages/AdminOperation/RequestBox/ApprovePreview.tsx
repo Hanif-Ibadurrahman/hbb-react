@@ -46,13 +46,6 @@ const ApprovalPreview = () => {
 
 	const header = [
 		{
-			title: "Id Request",
-			prop: "id",
-			cellProps: {
-				style: { width: "40%" },
-			},
-		},
-		{
 			title: "Tanggal Permintaan",
 			sortable: true,
 			prop: "created_at",
@@ -107,16 +100,13 @@ const ApprovalPreview = () => {
 		<>
 			<Helmet>
 				<title>Dox - Request Box</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<SearchInput />
 				<DataTable
 					tableHeader={header}
-					tableBody={requestBoxes.ApprovalRequest}
+					tableBody={requestBoxes?.ApprovalRequest}
 				/>
 				<Pagination
 					pageCount={requestBoxes.Meta.last_page || 1}

@@ -7,12 +7,34 @@ import {
 	RESET_FOLDER_FORM,
 	SET_FOLDER_DATA,
 	FILTER_FOLDER,
+	GET_FOLDERS_NOT_PAGE,
+	GET_FOLDERS_NOT_ASSIGNED,
 } from "../../actions/FolderAction";
 import { FoldersInterfaceState } from "../Types/FolderTypes";
 export const initialState: FoldersInterfaceState = {
 	Folders: [],
+	FolderAssigned: [],
 	Folder: {
 		id: "",
+		division: {
+			id: "",
+			name: "",
+			customers: [
+				{
+					id: "",
+					name: "",
+					phone: "",
+					email: "",
+					location: "",
+					company: {
+						id: "",
+						name: "",
+						code: 0,
+						location: "",
+					},
+				},
+			],
+		},
 		box: {
 			id: "",
 			code_box: "",
@@ -36,6 +58,7 @@ export const initialState: FoldersInterfaceState = {
 				id: "",
 				condition: "",
 				description: "",
+				no: "",
 				detail: "",
 				media_storage: "",
 				status: "",
@@ -63,6 +86,31 @@ export default (
 				Folder: payload,
 			};
 		case GET_FOLDERS_LIST:
+			console.log("payload >>>", payload);
+			return {
+				...state,
+				Folders: payload?.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorFolder: payload.errorMessage,
+			};
+		case GET_FOLDERS_NOT_ASSIGNED:
+			return {
+				...state,
+				FolderAssigned: payload?.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorFolder: payload.errorMessage,
+			};
+		case GET_FOLDERS_NOT_PAGE:
 			return {
 				...state,
 				Folders: payload.data,
@@ -113,6 +161,25 @@ export default (
 				...state,
 				Folder: {
 					id: "",
+					division: {
+						id: "",
+						name: "",
+						customers: [
+							{
+								id: "",
+								name: "",
+								phone: "",
+								email: "",
+								location: "",
+								company: {
+									id: "",
+									name: "",
+									code: 0,
+									location: "",
+								},
+							},
+						],
+					},
 					box: {
 						id: "",
 						code_box: "",
@@ -140,6 +207,7 @@ export default (
 							media_storage: "",
 							status: "",
 							sign_code: "",
+							no: "",
 						},
 					],
 				},

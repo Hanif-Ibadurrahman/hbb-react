@@ -5,7 +5,6 @@ import { DataTable } from "../../../components/Datatables";
 import { Card, CardHeader } from "../Components/CardDashboard";
 import { Pagination } from "app/components/Pagination";
 import {
-	getAllApprovedList,
 	getAllConfirmedAdmin,
 	getRequestBoxesList,
 } from "actions/RequestBoxAction";
@@ -22,19 +21,52 @@ import { getBoxesList } from "actions/BoxActions";
 import { selectReturnItems } from "store/Selector/ReturnItemSelector";
 import { getReturnList } from "actions/ReturnAction";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+import { selectBorrowItems } from "store/Selector/BorrowItemSelector";
+import { getBorrowList } from "actions/BorrowItemAction";
+import { UploadExcel } from "./UploadExcel";
+import { selectTransporters } from "store/Selector/TransporterSelector";
+import { getBoxesListNoAsign } from "actions/TransporterAction";
+import { Dropdown, Form } from "react-bootstrap";
+import { selectAreas } from "store/Selector/AreaSelector";
+import { getAreasList } from "actions/AreaActions";
+import {
+	selectActivityLogs,
+	selectActivityLogsArchiver,
+} from "store/Selector/ActivityLogSelector";
+import {
+	GetActivityLogsArchiver,
+	GetActivityLogsSuperAdmin,
+} from "actions/ActivityLogAction";
+import { getDocumentsList } from "actions/DocumentAction";
+import { selectDocuemnts } from "store/Selector/DocumentSelector";
+import { selectCompanys } from "store/Selector/CompanySelector";
+import { getCompanyList } from "actions/CompanyAction";
 
 export function DashboardSuperadmin() {
 	const user = localStorage.getItem("User");
+	const userName = localStorage.getItem("UserName");
 	const requestBoxes = useSelector(selectRequestBoxes);
 	const dispatch = useDispatch();
 	const cabinets = useSelector(selectCabinets);
 	const boxes = useSelector(selectBoxes);
+	const boxesNoAsign = useSelector(selectTransporters);
 	const returnItems = useSelector(selectReturnItems);
 	const approvalOperationList = useSelector(selectApprovalList);
+	const borrowList = useSelector(selectBorrowItems);
+	const activityLogs = useSelector(selectActivityLogs);
+	const activityLogsSuperAdmin = activityLogs?.ActivityLogsSuperadmin;
+	const activityLogsArchiver = useSelector(selectActivityLogsArchiver);
+	const areas = useSelector(selectAreas);
+	const areaList = areas?.Areas;
+	const documents = useSelector(selectDocuemnts);
+	const Companys = useSelector(selectCompanys);
 	const [title, setTitle] = useState("");
 
 	const BoxData = (page = 1) => {
 		dispatch(getBoxesList(page));
+	};
+	const BoxNoAsign = (page = 1) => {
+		dispatch(getBoxesListNoAsign(page));
 	};
 	const CabinetData = (page = 1) => {
 		dispatch(getCabinetsList(page));
@@ -48,12 +80,47 @@ export function DashboardSuperadmin() {
 	const FetchData = (page = 1) => {
 		dispatch(getAllConfirmedAdmin(page));
 	};
+	const BorrowList = (page = 1) => {
+		dispatch(getBorrowList(page));
+	};
+	const AreaList = (page = 1) => {
+		dispatch(getAreasList(page));
+	};
+	const ArchiverLog = () => {
+		dispatch(GetActivityLogsArchiver());
+	};
+	const DocumentList = (page = 1) => {
+		dispatch(getDocumentsList(page));
+	};
+	const CompanyList = (page = 1) => {
+		dispatch(getCompanyList(page));
+	};
+	useEffect(() => {
+		CompanyList();
+	}, []);
+	useEffect(() => {
+		DocumentList();
+	}, []);
+	useEffect(() => {
+		ArchiverLog();
+	}, []);
+	useEffect(() => {
+		AreaList();
+	}, []);
+	useEffect(() => {
+		BorrowList();
+	}, []);
 	useEffect(() => {
 		CabinetData();
 	}, []);
 	useEffect(() => {
 		if (user === "superadmin") {
 			BoxData();
+		}
+	}, []);
+	useEffect(() => {
+		if (user === "superadmin") {
+			BoxNoAsign();
 		}
 	}, []);
 	useEffect(() => {
@@ -71,34 +138,32 @@ export function DashboardSuperadmin() {
 	}, []);
 	useEffect(() => {
 		if (user === "superadmin") {
-			return setTitle("Detail Total Box");
+			return setTitle("");
 		} else if (user === "csradmin") {
 			return setTitle("List Pending Approval");
 		} else if (user === "csroperation") {
 			return setTitle("List Pending Approval");
+		} else if (user === "archiver") {
+			return setTitle("");
 		} else {
 			return setTitle("List Box Di Pinjam");
 		}
 	}, []);
 
-	const totalCabinets = cabinets.Meta.total;
-	const totalBox = boxes.Meta.total;
-	const totalReturn = returnItems.Meta.total;
-	const totalApprovalAdminCSR = requestBoxes.Meta.total;
+	const totalCabinets = cabinets?.Meta?.total;
+	const totalBox = boxes?.Meta?.total;
+	const totalBoxNoAsign = boxesNoAsign?.Meta?.total;
+	const totalReturn = returnItems?.Meta?.total;
+	const boxCustomer = borrowList?.Meta?.total;
+	const totalDoc = documents?.Meta?.total;
+	const totalCompany = Companys?.Meta?.total;
 
 	const header = [
-		{
-			title: "Id Request",
-			prop: "id",
-			cellProps: {
-				style: { width: "40%" },
-			},
-		},
 		{
 			prop: "created_at",
 			sortable: true,
 			cellProps: {
-				style: { width: "20%" },
+				style: { width: "30%" },
 			},
 			headerCell: sortedProp => {
 				return (
@@ -116,7 +181,7 @@ export function DashboardSuperadmin() {
 			title: "Tipe Permintaan",
 			prop: "type",
 			cellProps: {
-				style: { width: "20%" },
+				style: { width: "30%" },
 			},
 			cell: row => {
 				return (
@@ -145,7 +210,7 @@ export function DashboardSuperadmin() {
 			},
 		},
 		{
-			title: "Custome Code Box",
+			title: "Customer Code Box",
 			prop: "custom_code_box",
 			cellProps: {
 				style: { width: "40%" },
@@ -155,29 +220,48 @@ export function DashboardSuperadmin() {
 
 	const CardSuperAdmin = () => {
 		return (
-			<div className="row w-100% mh-0 row-summary">
-				<div className="col col-4 ph-0">
-					<CardHeader
-						icon="archive"
-						total={totalCabinets || 0}
-						text={["Total", <br />, "Cabinet."]}
-					/>
+			<>
+				<div className="row w-100% mh-0">
+					<div className="col col-4 ph-0">
+						<CardHeader
+							icon="archive"
+							total={totalCabinets || 0}
+							text={["Total", <br />, "Lemari."]}
+						/>
+					</div>
+					<div className="col col-4 ph-0 mh-4">
+						<CardHeader
+							icon="truck-loading"
+							total={totalBoxNoAsign || 0}
+							text={["Box tidak ", <br />, "Terdaftar."]}
+						/>
+					</div>
+					<div className="col col-4 ph-0">
+						<CardHeader
+							icon="boxes"
+							total={totalBox || 0}
+							text={["Box", <br />, "Terdaftar."]}
+						/>
+					</div>
 				</div>
-				<div className="col col-4 ph-0 mh-4">
-					<CardHeader
-						icon="truck-loading"
-						total="0"
-						text={["Cabinet", <br />, "Tersedia."]}
-					/>
+				<div className="row w-100% mh-0 mt-4">
+					<div className="col col-4 ph-0">
+						<CardHeader
+							icon="clone"
+							total={totalDoc || 0}
+							text={["Total", <br />, "Dokumen."]}
+						/>
+					</div>
+					<div className="col col-4 ph-0 mh-4">
+						<CardHeader
+							icon="user-alt"
+							total={totalCompany || 0}
+							text={["Perusahaan", <br />, "Pengguna."]}
+						/>
+					</div>
+					<div className="col col-4 ph-0 mh-4"></div>
 				</div>
-				<div className="col col-4 ph-0">
-					<CardHeader
-						icon="boxes"
-						total={totalBox || 0}
-						text={["Total", <br />, "Box."]}
-					/>
-				</div>
-			</div>
+			</>
 		);
 	};
 
@@ -186,23 +270,16 @@ export function DashboardSuperadmin() {
 			<div className="row w-100% mh-0 row-summary">
 				<div className="col col-4 ph-0">
 					<CardHeader
-						icon="archive"
-						total={totalCabinets || 0}
-						text={["Total", <br />, "Cabinet."]}
+						icon="boxes"
+						total={totalBox || 0}
+						text={["Jumlah", <br />, "Box."]}
 					/>
 				</div>
 				<div className="col col-4 ph-0 mh-4">
 					<CardHeader
-						icon="truck-loading"
+						icon="archive"
 						total="0"
-						text={["Cabinet", <br />, "Tersedia."]}
-					/>
-				</div>
-				<div className="col col-4 ph-0">
-					<CardHeader
-						icon="boxes"
-						total={totalApprovalAdminCSR || 0}
-						text={["Pending", <br />, "Approval."]}
+						text={["Sisa", <br />, "Box."]}
 					/>
 				</div>
 			</div>
@@ -211,12 +288,19 @@ export function DashboardSuperadmin() {
 
 	const CardCustomer = () => {
 		return (
-			<div className="row w-100% mh-0 row-summary">
+			<div className="row w-100% mh-0">
 				<div className="col col-4 ph-0">
 					<CardHeader
 						icon="archive"
-						total={totalBox || 0}
-						text={["Total", <br />, "Box."]}
+						total={boxCustomer || 0}
+						text={["Box", <br />, "Terdaftar."]}
+					/>
+				</div>
+				<div className="col col-4 ph-0 mh-4">
+					<CardHeader
+						icon="truck-loading"
+						total={totalBoxNoAsign || 0}
+						text={["Box Tidak ", <br />, "Terdaftar."]}
 					/>
 				</div>
 				<div className="col col-4 ph-0 mh-4">
@@ -230,26 +314,75 @@ export function DashboardSuperadmin() {
 		);
 	};
 
-	const data = [
-		{ company: "Jakpro", totalBox: totalBox },
-		{ company: "Company 2", totalBox: 0 },
-		{ company: "Company 3", totalBox: 0 },
-	];
+	let dataLogArchiver: any[] = [];
+	activityLogsArchiver?.map(item => {
+		dataLogArchiver?.push({
+			date: item.date,
+			count: item.data.length,
+		});
+	});
+
+	const CardArchiver = () => {
+		return (
+			<div className="row w-100% mh-0 row-summary">
+				<div className="col col-4 ph-0">
+					<CardHeader
+						icon="chalkboard"
+						total={activityLogsArchiver?.length}
+						text={["Total", <br />, "Entry Data"]}
+					/>
+				</div>
+			</div>
+		);
+	};
+
+	const [selectedItem, setSelectedItem] = useState("");
+
+	useEffect(() => {
+		dispatch(GetActivityLogsSuperAdmin(selectedItem));
+	}, [selectedItem]);
+
+	const onChangeRC = e => {
+		setSelectedItem(e.target.value);
+	};
 
 	const ContentSuperAdmin = (
-		<BarChart width={600} height={300} data={data}>
-			<XAxis dataKey="company" stroke="#000" />
-			<YAxis />
-			<Tooltip />
-			<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-			<Bar dataKey="totalBox" fill="#198754" barSize={30} />
-		</BarChart>
+		<>
+			<div className="row w-100% mb-8">
+				<div className="col col-4">
+					<Form.Group className="mb-4" controlId="formBasicEmail">
+						<Form.Label className="mb-4">Record Center</Form.Label>
+						<Form.Select
+							aria-label="Default select example"
+							onChange={e => onChangeRC(e)}
+							value={selectedItem}
+						>
+							<option>Pilih Record Center</option>
+							{areaList?.map((item, i) => (
+								<option value={item?.id}>{item?.name}</option>
+							))}
+						</Form.Select>
+					</Form.Group>
+				</div>
+				<div className="col col-4 ph-0">
+					<CardHeader
+						icon="chalkboard"
+						total={activityLogsSuperAdmin?.length || 0}
+						text={["Total", <br />, "Entry Data."]}
+					/>
+				</div>
+			</div>
+		</>
 	);
+	const ContentArchiver = <></>;
 
 	const TableCSRAdmin = () => {
 		return (
 			<div style={{ width: "100%" }}>
-				<DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} />
+				<DataTable
+					tableHeader={header}
+					tableBody={requestBoxes.RequestBoxes ? requestBoxes.RequestBoxes : []}
+				/>
 				<Pagination
 					pageCount={requestBoxes?.Meta?.last_page}
 					onPageChange={data => ApprovalDataCSRAdmin(data.selected + 1)}
@@ -262,7 +395,11 @@ export function DashboardSuperadmin() {
 			<div style={{ width: "100%" }}>
 				<DataTable
 					tableHeader={header}
-					tableBody={approvalOperationList.RequestBoxes}
+					tableBody={
+						approvalOperationList.RequestBoxes
+							? approvalOperationList.RequestBoxes
+							: []
+					}
 				/>
 				<Pagination
 					pageCount={requestBoxes?.Meta?.last_page}
@@ -274,9 +411,10 @@ export function DashboardSuperadmin() {
 	const TableCustomer = () => {
 		return (
 			<div style={{ width: "100%" }}>
+				<UploadExcel />
 				<DataTable
 					tableHeader={headerCustomer}
-					tableBody={returnItems?.ReturnList}
+					tableBody={returnItems?.ReturnList ? returnItems?.ReturnList : []}
 				/>
 				<Pagination
 					pageCount={returnItems.Meta.last_page}
@@ -286,13 +424,15 @@ export function DashboardSuperadmin() {
 		);
 	};
 
-	const Table = () => {
+	const ContentDashboard = () => {
 		if (user === "superadmin") {
 			return ContentSuperAdmin;
 		} else if (user === "csradmin") {
 			return <TableCSRAdmin />;
 		} else if (user === "csroperation") {
 			return <TableCSROperation />;
+		} else if (user === "archiver") {
+			return ContentArchiver;
 		} else {
 			return <TableCustomer />;
 		}
@@ -305,6 +445,8 @@ export function DashboardSuperadmin() {
 			return <CardAdmin />;
 		} else if (user === "csroperation") {
 			return <CardAdmin />;
+		} else if (user === "archiver") {
+			return <CardArchiver />;
 		} else {
 			return <CardCustomer />;
 		}
@@ -314,29 +456,21 @@ export function DashboardSuperadmin() {
 		<>
 			<Helmet>
 				<title>Dox - Dashboard Superadmin</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<div className="pos-r p-8 bg-primary-5">
 				<h3 className="tc-dark-contrast mb-12 ff-1-bd">
 					<span className="ff-1 username text txtf-c">Selamat Datang,</span>
-					{user}
+					<span className="m-0 username text txtf-c"> {userName}</span>
 				</h3>
 				<h6 className="mb-3 tc-dark-contrast">Today Summary</h6>
 				<CardDashboard />
 			</div>
-			<div className="pos-r p-8 pt-0 mt-20">
+			<div className="pos-r p-8 pt-0 mt-4">
 				<h6 className="mb-3 pt-3">{title}</h6>
 				<div className="row w-100% mh-0">
 					<div className="col col-12 ph-0 mr-2">
-						<Card
-							className="d-flex ai-center"
-							style={{ border: "1px solid rgba(0,0,0,.1)" }}
-						>
-							<Table />
-						</Card>
+						<ContentDashboard />
 					</div>
 				</div>
 			</div>

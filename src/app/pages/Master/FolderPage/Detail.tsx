@@ -21,13 +21,6 @@ const FolderPageDetail = ({ match }) => {
 		history.goBack();
 	};
 
-	const gotoDetailDocument = e => {
-		e.preventDefault();
-		history.push("/Profile/Edit");
-	};
-
-	const documents = folder?.documents;
-
 	const folder_id = match.params.id;
 
 	const dispatch = useDispatch();
@@ -35,6 +28,37 @@ const FolderPageDetail = ({ match }) => {
 	useEffect(() => {
 		dispatch(getFolderDetail(folder_id));
 	}, []);
+
+	const documents = folder?.documents;
+
+	const [search, setSearch] = useState("");
+	const [foundDocument, setFoundDocument] = useState(documents as any);
+
+	useEffect(() => {
+		if (documents?.length > 1 && search === "") {
+			setFoundDocument(documents);
+		} else {
+			setFoundDocument([]);
+		}
+	}, [documents]);
+
+	const filter = e => {
+		const keyword = e.target.value;
+
+		if (keyword !== "" && folder?.documents?.length > 1) {
+			const results = documents?.filter(test => {
+				return (
+					test?.detail?.toLowerCase().startsWith(keyword.toLowerCase()) ||
+					test?.no?.toLowerCase().startsWith(keyword.toLowerCase())
+				);
+			});
+			setFoundDocument(results);
+		} else {
+			setFoundDocument(documents);
+		}
+
+		setSearch(keyword);
+	};
 
 	const action = id => [
 		{
@@ -88,7 +112,7 @@ const FolderPageDetail = ({ match }) => {
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>No Folder</Form.Label>
-								<Form.Control type="text" disabled defaultValue={folder.no} />
+								<Form.Control type="text" disabled defaultValue={folder?.no} />
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Code Box</Form.Label>
@@ -140,8 +164,18 @@ const FolderPageDetail = ({ match }) => {
 					</Card>
 				</div>
 				<div>
-					<h6 className="mb-4 mt-4">List Document</h6>
-					<DataTable tableHeader={header} tableBody={documents} />
+					<div className="d-flex jc-between ai-center">
+						<h6 className="mb-4 mt-4">List Document</h6>
+						<Form.Control
+							type="search"
+							value={search}
+							onChange={filter}
+							className="input"
+							placeholder="Cari Dokumen"
+							style={{ width: 200 }}
+						/>
+					</div>
+					<DataTable tableHeader={header} tableBody={foundDocument} />
 				</div>
 			</PageWrapper>
 		</>

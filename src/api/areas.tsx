@@ -34,6 +34,21 @@ export const getAll = async params => {
 		});
 };
 
+export const filterArea = async (data: AreaInterfaceState) => {
+	let filter = {
+		code: data.code_area,
+	};
+
+	return api
+		.get(`/areas?code_area=${filter.code}`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
 export const destroy = id => {
 	return api.delete(`/areas/${id}`);
 };

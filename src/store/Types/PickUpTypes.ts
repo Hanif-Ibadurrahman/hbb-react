@@ -2,6 +2,7 @@ import { PaginationState } from "./PaginationTypes";
 import { BoxInterfaceState } from "./BoxTypes";
 export interface PickUpItemInterfaceState {
 	id: string | null;
+	quantity?: number;
 	delivered_at: string;
 	delivery_method: string;
 	box_codes: any[];

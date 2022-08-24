@@ -39,7 +39,7 @@ const CompanyPageDetail = ({ match }) => {
 					<Card className="ph-5 pv-3 bd-rs-2">
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Name Company</Form.Label>
+								<Form.Label>Name Perusahaan</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
@@ -47,27 +47,27 @@ const CompanyPageDetail = ({ match }) => {
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Location</Form.Label>
+								<Form.Label>Total Maksimal Pengguna</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={Companys.location}
+									defaultValue={Companys.amount_access}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Latitude</Form.Label>
+								<Form.Label>Penanggung Jawab</Form.Label>
 								<Form.Control
-									type="number"
+									type="text"
 									disabled
-									defaultValue={Companys.latitude}
+									defaultValue={Companys.person_responsible}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Longitude</Form.Label>
+								<Form.Label>No. Hp</Form.Label>
 								<Form.Control
-									type="number"
+									type="text"
 									disabled
-									defaultValue={Companys.longitude}
+									defaultValue={Companys.phone}
 								/>
 							</Form.Group>
 							<div className="d-flex jc-end">

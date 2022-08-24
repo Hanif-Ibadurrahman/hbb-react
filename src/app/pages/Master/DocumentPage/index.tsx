@@ -18,25 +18,37 @@ import {
 	RESET_DOCUMENT_FORM,
 } from "actions/DocumentAction";
 import { ModalFilter } from "./ModalFilter";
+import ModalAddReference from "./ModalAddReference";
+import { UploadFileDoc } from "./UploadFiile";
 
 const DocumentPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
-	const [showAlert, setShowAlert] = useState(false);
+	const [modalShowReference, setModalShowReference] = useState(false);
+	const [folderId, setFolderId] = useState("");
 	const documents = useSelector(selectDocuemnts);
 	const dispatch = useDispatch();
 
+	const validation =
+		documents?.Document?.no === "" ||
+		documents?.Document?.no === undefined ||
+		documents?.Document?.detail === "" ||
+		documents?.Document?.detail === undefined ||
+		documents?.Document?.active_year_for === "" ||
+		documents?.Document?.active_year_for === undefined ||
+		documents?.Document?.level_progress === "" ||
+		documents?.Document?.level_progress === undefined ||
+		documents?.Document?.media_storage === "" ||
+		documents?.Document?.media_storage === undefined ||
+		documents?.Document?.condition === "" ||
+		documents?.Document?.condition === undefined ||
+		documents?.Document?.description === "" ||
+		documents?.Document?.description === undefined ||
+		documents?.Document?.status === "" ||
+		documents?.Document?.status === undefined;
+
 	const FetchData = (page = 1) => {
-		if (
-			documents.Document.no === "" ||
-			documents.Document.detail === "" ||
-			documents.Document.active_year_for === 0 ||
-			documents.Document.level_progress === "" ||
-			documents.Document.media_storage === "" ||
-			documents.Document.condition === "" ||
-			documents.Document.description === "" ||
-			documents.Document.status === ""
-		) {
+		if (validation) {
 			dispatch(getDocumentsList(page));
 		} else {
 			dispatch(filterData);
@@ -70,8 +82,11 @@ const DocumentPage = () => {
 
 	const _onHide = () => {
 		setModalShow(false);
-		setShowAlert(false);
 		dispatch({ type: RESET_DOCUMENT_FORM });
+	};
+
+	const onHideReference = () => {
+		setModalShowReference(false);
 	};
 
 	const showEditForm = async id => {
@@ -97,6 +112,17 @@ const DocumentPage = () => {
 			type: 2,
 		},
 		{
+			icon: "fa-edit",
+			title: "Lampirkan File",
+			type: 2,
+			onclick: () => {
+				setFolderId(id);
+				setModalShowReference(true);
+			},
+			dispatch: dispatch,
+			row: id,
+		},
+		{
 			icon: "fa-trash-alt",
 			title: "Delete",
 			titleClass: "tc-danger-5",
@@ -109,51 +135,13 @@ const DocumentPage = () => {
 
 	const header = [
 		{
-			title: "No Document",
-			prop: "no",
-			sortable: true,
+			title: "Detail Document",
+			prop: "detail",
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "80%" },
 			},
-			headerCell: () => {
-				return (
-					<div className="cur-p">
-						{`No Document`}
-						<i className="fas fa-sort-alt ml-2"></i>
-					</div>
-				);
-			},
-		},
-		{
-			title: "No Digital",
-			prop: "no_digital",
-			sortable: true,
-			cellProps: {
-				style: { width: "20%" },
-			},
-			headerCell: () => {
-				return (
-					<div className="cur-p">
-						{`No Digital`}
-						<i className="fas fa-sort-alt ml-2"></i>
-					</div>
-				);
-			},
-		},
-		{
-			title: "Kondisi",
-			prop: "condition",
-			sortable: true,
-			cellProps: {
-				style: { width: "20%" },
-			},
-			headerCell: () => {
-				return (
-					<div className="cur-p">
-						{`Kondisi`}
-						<i className="fas fa-sort-alt ml-2"></i>
-					</div>
-				);
+			cell: row => {
+				return row?.detail ? row?.detail : "-";
 			},
 		},
 		{
@@ -164,7 +152,7 @@ const DocumentPage = () => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.id)} />;
+				return <DropdownAction list={action(row?.id)} />;
 			},
 		},
 	];
@@ -173,10 +161,7 @@ const DocumentPage = () => {
 		<>
 			<Helmet>
 				<title>Document</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<Alert
@@ -185,23 +170,33 @@ const DocumentPage = () => {
 					show={showAlertSuccess}
 					onHide={() => setShowAlertSuccess(false)}
 				/>
-				<ModalForm
-					modal={modalShow}
-					hide={_onHide}
-					modalSet={setModalShow}
+				<ModalForm modal={modalShow} hide={_onHide} modalSet={setModalShow} />
+				<ModalAddReference
+					modal={modalShowReference}
+					hide={onHideReference}
+					modalSet={setModalShowReference}
 					valueModalSet={false}
+					folder_id={folderId}
 				/>
-				<PageHeader
-					breadcrumb={["Master", "Document"]}
-					modal={setModalShow}
-					valueModalSet={false}
-					value={true}
-					filter={ModalFilter}
+				<div className="d-flex jc-between">
+					<div style={{ width: "58%" }}>
+						<PageHeader
+							breadcrumb={["Master", "Document"]}
+							modal={setModalShow}
+							valueModalSet={false}
+							value={true}
+							filter={ModalFilter}
+						/>
+					</div>
+					<UploadFileDoc />
+				</div>
+				<DataTable
+					tableHeader={header}
+					tableBody={documents?.Documents ? documents?.Documents : []}
 				/>
-				<DataTable tableHeader={header} tableBody={documents.Documents} />
 				<Pagination
-					pageCount={documents.Meta.last_page || 1}
-					onPageChange={data => FetchData(data.selected + 1)}
+					pageCount={documents?.Meta.last_page || 1}
+					onPageChange={data => FetchData(data?.selected + 1)}
 				/>
 			</PageWrapper>
 		</>

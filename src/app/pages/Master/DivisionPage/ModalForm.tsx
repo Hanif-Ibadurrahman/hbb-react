@@ -1,8 +1,5 @@
 import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
 import React, { useState } from "react";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import TextField from "@mui/material/TextField";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
@@ -19,7 +16,9 @@ const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setAlertMessage] = useState("");
 	const [varianAlert, setVarianAlert] = useState("");
+	// const divisions: DivisionInterfaceState = useSelector(selectDivision);
 	const divisions: DivisionInterfaceState = useSelector(selectDivision);
+
 	const dispatch = useDispatch();
 
 	const validationSchema = Yup.object().shape({
@@ -101,11 +100,11 @@ const ModalForm = props => {
 									<Row>
 										<Col xs={12}>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Name Divisi</Form.Label>
+												<Form.Label>Nama Satuan Kerja</Form.Label>
 												<Form.Control
 													type="text"
 													name="name"
-													placeholder="Name Divisi"
+													placeholder="Nama Satuan Kerja"
 													value={values.name}
 													onChange={e => {
 														handleChange(e);

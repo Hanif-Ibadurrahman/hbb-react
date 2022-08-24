@@ -1,3 +1,4 @@
+import { BoxInterfaceState } from "./BoxTypes";
 import { PaginationState } from "./PaginationTypes";
 export interface TransporterInterfaceState {
 	id: string | null;
@@ -22,6 +23,7 @@ export interface StaffInterfaceState {
 export interface TransportersInterfaceState {
 	Transporter: TransporterInterfaceState;
 	Transporters: TransporterInterfaceState[];
+	BoxNoAsign: BoxInterfaceState[];
 	ErrorTransporter?: string;
 	Title: string;
 	Meta: PaginationState;

@@ -4,9 +4,10 @@ import api from "./dox";
 
 export const create = async (data: PickUpItemInterfaceState) => {
 	let payload = {
+		quantity: data.quantity,
 		delivered_at: data.delivered_at,
 		delivery_method: data.delivery_method,
-		box_codes: data.box_codes,
+		// box_codes: data.box_codes,
 	};
 	return api.post("/pickup", payload);
 };

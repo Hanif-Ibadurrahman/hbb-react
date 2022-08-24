@@ -108,17 +108,10 @@ const ApprovalAdminRequestBox = () => {
 
 	const header = [
 		{
-			title: "Id Request",
-			prop: "id",
-			cellProps: {
-				style: { width: "40%" },
-			},
-		},
-		{
 			prop: "created_at",
 			sortable: true,
 			cellProps: {
-				style: { width: "20%" },
+				style: { width: "30%" },
 			},
 			headerCell: sortedProp => {
 				return (
@@ -136,7 +129,7 @@ const ApprovalAdminRequestBox = () => {
 			title: "Tipe Permintaan",
 			prop: "type",
 			cellProps: {
-				style: { width: "20%" },
+				style: { width: "30%" },
 			},
 			cell: row => {
 				return (
@@ -176,10 +169,7 @@ const ApprovalAdminRequestBox = () => {
 		<>
 			<Helmet>
 				<title>Dox - Request Box</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<Alert
@@ -203,11 +193,11 @@ const ApprovalAdminRequestBox = () => {
 				<SearchInput />
 				<DataTable
 					tableHeader={header}
-					tableBody={requestBoxes.RequestBoxes}
+					tableBody={requestBoxes?.RequestBoxes}
 					initialSort={{ prop: "created_at", isAscending: true }}
 				/>
 				<Pagination
-					pageCount={requestBoxes.Meta.last_page || 1}
+					pageCount={requestBoxes?.Meta?.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

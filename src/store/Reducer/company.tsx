@@ -31,6 +31,14 @@ export const initialState: CompanysInterfaceState = {
 				type: "box",
 				value: true,
 			},
+			{
+				type: "folder",
+				value: false,
+			},
+			{
+				type: "document",
+				value: false,
+			},
 		],
 		is_agree: true,
 	},

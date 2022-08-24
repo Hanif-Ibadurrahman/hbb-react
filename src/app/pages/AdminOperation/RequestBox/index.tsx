@@ -93,17 +93,10 @@ const ApprovalOperationRequestBox = () => {
 
 	const header = [
 		{
-			title: "Id Request",
-			prop: "id",
-			cellProps: {
-				style: { width: "40%" },
-			},
-		},
-		{
 			prop: "created_at",
 			sortable: true,
 			cellProps: {
-				style: { width: "20%" },
+				style: { width: "30%" },
 			},
 			headerCell: sortedProp => {
 				return (
@@ -121,7 +114,7 @@ const ApprovalOperationRequestBox = () => {
 			title: "Tipe Permintaan",
 			prop: "type",
 			cellProps: {
-				style: { width: "20%" },
+				style: { width: "30%" },
 			},
 			cell: row => {
 				return (
@@ -156,10 +149,7 @@ const ApprovalOperationRequestBox = () => {
 		<>
 			<Helmet>
 				<title>Dox - Request Box</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<ModalFormReject
@@ -175,7 +165,10 @@ const ApprovalOperationRequestBox = () => {
 					valueModalSet={false}
 				/>
 				<SearchInput />
-				<DataTable tableHeader={header} tableBody={requestBoxes.RequestBoxes} />
+				<DataTable
+					tableHeader={header}
+					tableBody={requestBoxes?.RequestBoxes}
+				/>
 				<Pagination
 					pageCount={requestBoxes.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}

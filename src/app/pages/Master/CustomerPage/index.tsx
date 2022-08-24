@@ -6,19 +6,17 @@ import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
 import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import {
-	getRoomsList,
-	getRoomDetail,
-	deleteRoom,
-	RESET_ROOM_FORM,
-} from "actions/RoomAction";
+import { getRoomDetail, RESET_ROOM_FORM } from "actions/RoomAction";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import Alert from "app/components/Alerts";
-import { selectRooms } from "store/Selector/RoomSelector";
 import { selectCustomers } from "store/Selector/CustomerSelector";
-import { deleteCustomer, getCustomersList } from "actions/CustomerAction";
-import { ModalFilter } from "./ModalFilter";
+import {
+	deleteCustomer,
+	getCustomerDetail,
+	getCustomersList,
+	RESET_CUSTOMER_FORM,
+} from "actions/CustomerAction";
 
 const CustomerPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -40,11 +38,11 @@ const CustomerPage = () => {
 	const _onHide = () => {
 		setModalShow(false);
 		setShowAlert(false);
-		dispatch({ type: RESET_ROOM_FORM });
+		dispatch({ type: RESET_CUSTOMER_FORM });
 	};
 
 	const showEditForm = async id => {
-		dispatch(getRoomDetail(id));
+		dispatch(getCustomerDetail(id));
 		setModalShow(true);
 	};
 
@@ -70,6 +68,22 @@ const CustomerPage = () => {
 	};
 
 	const action = id => [
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "Customer-Detail/" + id,
+			type: 1,
+		},
+		{
+			icon: "fa-edit",
+			title: "Edit",
+			onclick: () => {
+				showEditForm(id);
+			},
+			dispatch: dispatch,
+			row: id,
+			type: 2,
+		},
 		{
 			icon: "fa-trash-alt",
 			title: "Delete",
@@ -106,19 +120,20 @@ const CustomerPage = () => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.id)} />;
+				return <DropdownAction list={action(row.customer.id)} />;
 			},
 		},
 	];
+
+	const Filter = () => {
+		return <div></div>;
+	};
 
 	return (
 		<>
 			<Helmet>
 				<title>Dox - Master Room</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<Alert
@@ -144,11 +159,14 @@ const CustomerPage = () => {
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
-					filter={ModalFilter}
+					filter={Filter}
 				/>
-				<DataTable tableHeader={header} tableBody={customers.Customers} />
+				<DataTable
+					tableHeader={header}
+					tableBody={customers?.Customers ? customers?.Customers : []}
+				/>
 				<Pagination
-					pageCount={customers.Meta.last_page}
+					pageCount={customers?.Meta?.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

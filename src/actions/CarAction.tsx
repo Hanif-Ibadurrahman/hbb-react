@@ -1,6 +1,13 @@
 import React from "react";
 import { CarInterfaceState } from "store/Types/CarTypes";
-import { create, destroy, getAll, getById, update } from "../api/cars";
+import {
+	create,
+	destroy,
+	filterCar,
+	getAll,
+	getById,
+	update,
+} from "../api/cars";
 export const GET_CARS_LIST = "GET_CARS_LIST";
 export const GET_CAR_DETAIL = "GET_CAR_DETAIL";
 export const CREATE_CAR = "CREAT_CAR";
@@ -10,12 +17,11 @@ export const RESET_CAR_FORM = "RESET_CAR_FORM";
 export const RESET_CAR_LIST = "RESET_CAR_LIST";
 export const SET_CAR_DATA = "SET_CAR_DATA";
 export const UPDATE_CAR = "UPDATE_CAR";
+export const FILTER_CAR = "FILTER_CAR";
 
 export const getCarsList = page => {
 	return async dispatch => {
 		try {
-			console.log("page2", page);
-
 			const response = await getAll(page);
 			dispatch({
 				type: GET_CARS_LIST,
@@ -32,6 +38,36 @@ export const getCarsList = page => {
 				payload: {
 					data: false,
 					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const SearchCar = async (data: CarInterfaceState) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_CAR_DATA,
+				payload: data,
+			});
+			const response = await filterCar(data);
+			dispatch({
+				type: FILTER_CAR,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: FILTER_CAR,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
 				},
 			});
 			console.log(error);

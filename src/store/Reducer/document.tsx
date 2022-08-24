@@ -7,20 +7,33 @@ import {
 	RESET_DOCUMENT_FORM,
 	SET_DOCUMENT_DATA,
 	GET_DOCUMENTS_FILTER,
+	UPLOAD_FILE,
+	DOWNLOAD_FILE,
+	GET_DOCUMENTS_LIST_INDEXING,
+	GET_DOCUMENT_ASSIGNED,
 } from "../../actions/DocumentAction";
 import {
 	DocumentsInterfaceState,
 	DocumentInterfaceState,
 } from "../Types/DocumentTypes";
 export const initialState: DocumentsInterfaceState = {
+	UploadFile: {
+		file: "",
+	},
 	Documents: [],
+	DocumentAssigned: [],
 	Document: {
 		id: "",
 		no: "",
 		date: "",
 		detail: "",
-		nominal: 0,
-		active_year_for: 0,
+		cabinet: {
+			id: "",
+			code_cabinet: "",
+		},
+		document_file: "",
+		nominal: "",
+		active_year_for: "",
 		level_progress: "",
 		media_storage: "",
 		condition: "",
@@ -29,8 +42,32 @@ export const initialState: DocumentsInterfaceState = {
 		description: "",
 		no_digital: "",
 		location: "",
+		index: {
+			classification: "",
+			id: "",
+			index: "",
+		},
 		status: "",
 		sign_code: "",
+		division: {
+			id: "",
+			name: "",
+			customers: [
+				{
+					id: "",
+					name: "",
+					phone: "",
+					email: "",
+					location: "",
+					company: {
+						id: "",
+						name: "",
+						code: 0,
+						location: "",
+					},
+				},
+			],
+		},
 		box: {
 			code_box: "",
 			id: "",
@@ -94,6 +131,42 @@ export default (
 				},
 				ErrorDocument: payload.errorMessage,
 			};
+		case GET_DOCUMENT_ASSIGNED:
+			return {
+				...state,
+				DocumentAssigned: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorDocument: payload.errorMessage,
+			};
+		case GET_DOCUMENTS_LIST_INDEXING:
+			return {
+				...state,
+				Documents: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorDocument: payload.errorMessage,
+			};
+		case DOWNLOAD_FILE:
+			return {
+				...state,
+				Documents: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorDocument: payload.errorMessage,
+			};
 		case GET_DOCUMENTS_FILTER:
 			return {
 				...state,
@@ -117,6 +190,11 @@ export default (
 				...state,
 				Document: payload?.data?.data,
 			};
+		case UPLOAD_FILE:
+			return {
+				...state,
+				UploadFile: payload?.data?.data,
+			};
 		case EDIT_DOCUMENT:
 			return {
 				...state,
@@ -133,11 +211,16 @@ export default (
 				...state,
 				Document: {
 					id: "",
+					document_file: "",
 					no: "",
 					date: "",
 					detail: "",
-					nominal: 0,
-					active_year_for: 0,
+					nominal: "",
+					active_year_for: "",
+					cabinet: {
+						id: "",
+						code_cabinet: "",
+					},
 					level_progress: "",
 					media_storage: "",
 					condition: "",
@@ -148,6 +231,25 @@ export default (
 					location: "",
 					status: "",
 					sign_code: "",
+					division: {
+						id: "",
+						name: "",
+						customers: [
+							{
+								id: "",
+								name: "",
+								phone: "",
+								email: "",
+								location: "",
+								company: {
+									id: "",
+									name: "",
+									code: 0,
+									location: "",
+								},
+							},
+						],
+					},
 					box: {
 						code_box: "",
 						id: "",

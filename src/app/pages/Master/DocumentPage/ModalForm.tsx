@@ -15,17 +15,27 @@ import moment from "moment";
 import { selectCompanys } from "store/Selector/CompanySelector";
 import { getCompanyList } from "actions/CompanyAction";
 import { Autocomplete, TextField } from "@mui/material";
+import { selectDivisions } from "store/Selector/DivisionSelector";
+import { getDivisionsList } from "actions/DivisionAction";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setAlertMessage] = useState("");
 	const [varianAlert, setVarianAlert] = useState("");
 	const company = useSelector(selectCompanys);
+	const division = useSelector(selectDivisions);
+	const DivisionData = (page = 1) => {
+		dispatch(getDivisionsList(page));
+	};
 	const FetchData = (page = 1) => {
 		dispatch(getCompanyList(page));
 	};
 	useEffect(() => {
 		FetchData();
+	}, []);
+
+	useEffect(() => {
+		DivisionData();
 	}, []);
 	const document: DocumentInterfaceState = useSelector(selectDocument);
 	const dispatch = useDispatch();
@@ -37,21 +47,17 @@ const ModalForm = props => {
 	}
 
 	const Year = moment(addDays(2)).format("YYYY");
-	const MinDate = moment(addDays(0)).format("YYYY-MM-DD");
+	const MaxDate = moment(addDays(0)).format("YYYY-MM-DD");
 
 	const validationSchema = Yup.object().shape({
 		no: Yup.string().required("*Wajib diisi"),
 		date: Yup.string().required("*Wajib diisi"),
 		detail: Yup.string().required("*Wajib diisi"),
-		nominal: Yup.number().required("*Wajib diisi"),
 		active_year_for: Yup.number().required("*Wajib diisi"),
 		level_progress: Yup.string().required("*Wajib diisi"),
 		media_storage: Yup.string().required("*Wajib diisi"),
 		condition: Yup.string().required("*Wajib diisi"),
 		amount: Yup.number().required("*Wajib diisi"),
-		cross_point: Yup.string().required("*Wajib diisi"),
-		description: Yup.string().required("*Wajib diisi"),
-		no_digital: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
@@ -121,7 +127,7 @@ const ModalForm = props => {
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									{document.id ? <>Edit Data</> : <>Tambah Data</>}
+									{document?.id ? <>Edit Data</> : <>Tambah Data</>}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
@@ -129,19 +135,19 @@ const ModalForm = props => {
 									<Row>
 										<Col xs={12}>
 											<Form.Group className="mb-4">
-												<Form.Label>Nomor Dokumen</Form.Label>
+												<Form.Label>No Dokumen</Form.Label>
 												<Form.Control
 													type="text"
 													name="no"
 													placeholder="No Dokument"
-													value={values.no}
+													value={values?.no}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.no && errors.no ? (
-													<p className="tc-danger-5 pos-a p-sm">{errors.no}</p>
+												{touched?.no && errors?.no ? (
+													<p className="tc-danger-5 pos-a p-sm">{errors?.no}</p>
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4">
@@ -149,15 +155,19 @@ const ModalForm = props => {
 												<Form.Control
 													type="date"
 													name="date"
-													min={MinDate}
+													max={MaxDate}
 													placeholder="Date Document"
-													value={values.date}
+													value={
+														values?.id
+															? moment(values?.date).format("YYYY-MM-DD")
+															: values?.date
+													}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.date && errors.date ? (
+												{touched?.date && errors?.date ? (
 													<p className="tc-danger-5 pos-a p-sm">
 														{errors.date}
 													</p>
@@ -169,15 +179,15 @@ const ModalForm = props => {
 													as="textarea"
 													name="detail"
 													placeholder="Detail"
-													value={values.detail}
+													value={values?.detail}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.detail && errors.detail ? (
+												{touched?.detail && errors?.detail ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.detail}
+														{errors?.detail}
 													</p>
 												) : null}
 											</Form.Group>
@@ -188,15 +198,15 @@ const ModalForm = props => {
 													name="nominal"
 													placeholder="Nominal"
 													min="1"
-													value={values.nominal}
+													value={values?.nominal}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.nominal && errors.nominal ? (
+												{touched?.nominal && errors?.nominal ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.nominal}
+														{errors?.nominal}
 													</p>
 												) : null}
 											</Form.Group>
@@ -205,16 +215,17 @@ const ModalForm = props => {
 												<Form.Control
 													type="number"
 													name="active_year_for"
+													placeholder="Masa Aktif"
 													min={Year}
-													value={values.active_year_for}
+													value={values?.active_year_for}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.active_year_for && errors.active_year_for ? (
+												{touched?.active_year_for && errors?.active_year_for ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.active_year_for}
+														{errors?.active_year_for}
 													</p>
 												) : null}
 											</Form.Group>
@@ -223,15 +234,16 @@ const ModalForm = props => {
 												<Form.Control
 													type="text"
 													name="level_progress"
-													value={values.level_progress}
+													placeholder="Level Progress"
+													value={values?.level_progress}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.level_progress && errors.level_progress ? (
+												{touched?.level_progress && errors?.level_progress ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.level_progress}
+														{errors?.level_progress}
 													</p>
 												) : null}
 											</Form.Group>
@@ -240,15 +252,16 @@ const ModalForm = props => {
 												<Form.Control
 													type="text"
 													name="media_storage"
-													value={values.media_storage}
+													placeholder="Media Storage"
+													value={values?.media_storage}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.media_storage && errors.media_storage ? (
+												{touched?.media_storage && errors?.media_storage ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.media_storage}
+														{errors?.media_storage}
 													</p>
 												) : null}
 											</Form.Group>
@@ -257,15 +270,15 @@ const ModalForm = props => {
 												<Form.Control
 													type="text"
 													name="condition"
-													value={values.condition}
+													value={values?.condition}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.condition && errors.condition ? (
+												{touched?.condition && errors?.condition ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.condition}
+														{errors?.condition}
 													</p>
 												) : null}
 											</Form.Group>
@@ -275,15 +288,16 @@ const ModalForm = props => {
 													type="number"
 													min="1"
 													name="amount"
-													value={values.amount}
+													placeholder="Jumlah"
+													value={values?.amount}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.amount && errors.amount ? (
+												{touched?.amount && errors?.amount ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.amount}
+														{errors?.amount}
 													</p>
 												) : null}
 											</Form.Group>
@@ -292,15 +306,16 @@ const ModalForm = props => {
 												<Form.Control
 													type="text"
 													name="cross_point"
-													value={values.cross_point}
+													placeholder="Cross Point"
+													value={values?.cross_point}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.cross_point && errors.cross_point ? (
+												{touched?.cross_point && errors?.cross_point ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.cross_point}
+														{errors?.cross_point}
 													</p>
 												) : null}
 											</Form.Group>
@@ -309,15 +324,16 @@ const ModalForm = props => {
 												<Form.Control
 													as="textarea"
 													name="description"
-													value={values.description}
+													placeholder="Deskripsi"
+													value={values?.description}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.description && errors.description ? (
+												{touched?.description && errors?.description ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.description}
+														{errors?.description}
 													</p>
 												) : null}
 											</Form.Group>
@@ -326,15 +342,16 @@ const ModalForm = props => {
 												<Form.Control
 													type="text"
 													name="no_digital"
-													value={values.no_digital}
+													placeholder="No Digital"
+													value={values?.no_digital}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.no_digital && errors.no_digital ? (
+												{touched?.no_digital && errors?.no_digital ? (
 													<p className="tc-danger-5 pos-a p-sm">
-														{errors.no_digital}
+														{errors?.no_digital}
 													</p>
 												) : null}
 											</Form.Group>
@@ -342,13 +359,13 @@ const ModalForm = props => {
 												<Form.Label>Pilih Perusahaan</Form.Label>
 												<Autocomplete
 													id="company"
-													options={company.Companys}
+													options={company?.Companys}
 													getOptionLabel={option => option.name}
-													value={values.company}
+													value={values?.company}
 													onChange={(e, value) => {
 														setFieldValue(
 															"company",
-															value !== null ? value : values.company,
+															value !== null ? value : values?.company,
 														);
 													}}
 													renderInput={params => (
@@ -356,6 +373,30 @@ const ModalForm = props => {
 															margin="normal"
 															placeholder="Company"
 															name="comapany_id"
+															{...params}
+														/>
+													)}
+												/>
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Pilih Satuan Kerja</Form.Label>
+												<Autocomplete
+													id="division_id"
+													options={division?.Divisions}
+													value={values?.division}
+													getOptionLabel={option => option?.name}
+													onChange={(e, value) => {
+														console.log(value);
+														setFieldValue(
+															"division",
+															value !== null ? value : values.division,
+														);
+													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															placeholder="Satuan Kerja"
+															name="division_id"
 															{...params}
 														/>
 													)}
@@ -371,7 +412,11 @@ const ModalForm = props => {
 								</Button>
 								<Button
 									type="submit"
-									disabled={isSubmitting || values.company.id === ""}
+									disabled={
+										isSubmitting ||
+										values?.company?.id === "" ||
+										values?.division?.id === ""
+									}
 									className="bg-success-6"
 									variant="success"
 								>

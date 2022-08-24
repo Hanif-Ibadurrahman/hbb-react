@@ -1,6 +1,13 @@
 import React from "react";
 import { CabinetInterfaceState } from "store/Types/CabinetTypes";
-import { create, destroy, getAll, getById, update } from "../api/cabinets";
+import {
+	create,
+	destroy,
+	filterCabinet,
+	getAll,
+	getById,
+	update,
+} from "../api/cabinets";
 export const GET_CABINETS_LIST = "GET_CABINETS_LIST";
 export const GET_CABINET_DETAIL = "GET_CABINET_DETAIL";
 export const CREATE_CABINET = "CREAT_CABINET";
@@ -9,6 +16,7 @@ export const RESET_CABINET_FORM = "RESET_CABINET_FORM";
 export const RESET_CABINET_LIST = "RESET_CABINET_LIST";
 export const SET_CABINET_DATA = "SET_CABINET_DATA";
 export const UPDATE_CABINET = "UPDATE_CABINET";
+export const FILTER_CABINET = "FILTER_CABINET";
 
 let limit = 20;
 
@@ -31,6 +39,36 @@ export const getCabinetsList = page => {
 				payload: {
 					data: false,
 					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const SearchCabinet = async (data: CabinetInterfaceState) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_CABINET_DATA,
+				payload: data,
+			});
+			const response = await filterCabinet(data);
+			dispatch({
+				type: FILTER_CABINET,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: FILTER_CABINET,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
 				},
 			});
 			console.log(error);
@@ -78,7 +116,6 @@ export const deleteCabinet = id => {
 };
 
 export const CreateCabinet = async (data: CabinetInterfaceState) => {
-	console.log(data);
 	return async dispatch => {
 		try {
 			dispatch({

@@ -2,8 +2,6 @@ import { identity } from "lodash";
 import { CompanyInterfaceState } from "store/Types/CompanyTypes";
 import api from "./dox";
 export const create = async (data: CompanyInterfaceState) => {
-	// console.log("create api", data);
-
 	let payload = {
 		name: data.name,
 		location: data.location,
@@ -18,7 +16,6 @@ export const create = async (data: CompanyInterfaceState) => {
 		amount_access: data.amount_access,
 		is_agree: data.is_agree,
 	};
-	console.log("payload", payload);
 
 	return await api.post("/companies", payload);
 };
@@ -35,10 +32,15 @@ export const update = async (data: CompanyInterfaceState) => {
 		email: data.email,
 		phone: data.phone,
 		address: data.address,
-		service_type: data.service_type,
-		is_agree: data.is_agree,
+		service_type: [
+			{
+				type: "box",
+				value: "true",
+			},
+		],
+		amount_access: data.amount_access,
+		is_agree: true,
 	};
-	console.log(payload);
 	return await api.put(`/companies/${id}`, payload);
 };
 

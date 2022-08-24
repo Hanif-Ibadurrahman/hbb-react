@@ -11,7 +11,8 @@ import { AreaInterfaceState } from "store/Types/AreaTypes";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
-	const [alertMessage, setalertMessage] = useState("");
+	const [alertMessage, setAlertMessage] = useState("");
+	const [varianAlert, setVarianAlert] = useState("");
 	const area: AreaInterfaceState = useSelector(selectArea);
 	const dispatch = useDispatch();
 	const validationSchema = Yup.object().shape({
@@ -23,13 +24,13 @@ const ModalForm = props => {
 		<>
 			<Alert
 				text={alertMessage}
-				variant="success"
+				variant={varianAlert}
 				show={showAlert}
 				style={{
 					top: 50,
 					position: "fixed",
 					left: "50%",
-					transform: [{ translateX: "-50%" }],
+					transform: [{ translateX: "50%" }],
 				}}
 				onHide={() => setShowAlert(false)}
 			/>
@@ -53,17 +54,22 @@ const ModalForm = props => {
 							action.then(() => {
 								dispatch({ type: RESET_AREA_FORM });
 								props.modalSet(props.valueModalSet);
+								setShowAlert(true);
+								setVarianAlert("success");
+								area?.id
+									? setAlertMessage("Data Berhasil di Edit")
+									: setAlertMessage("Data Berhasil di Tambah");
+								setTimeout(function () {
+									window.location.reload();
+								}, 1000);
 							});
-							dispatch({ type: RESET_AREA_FORM });
-							props.modalSet(props.valueModalSet);
-							area.id ? (
-								<>Data Berhasil di Edit</>
-							) : (
-								<>Data Berhasil di Tambah</>
-							);
-							console.log(action);
 						} catch (e) {
-							console.log("ini error di depan");
+							setShowAlert(true);
+							setAlertMessage("Gagal Update Data");
+							setVarianAlert("danger");
+							setTimeout(function () {
+								setShowAlert(false);
+							}, 4000);
 						}
 					}}
 				>

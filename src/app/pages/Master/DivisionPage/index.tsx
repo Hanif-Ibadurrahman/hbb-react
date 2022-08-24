@@ -91,8 +91,8 @@ const DivisionPage = () => {
 
 	const header = [
 		{
-			title: "Code Division",
-			prop: "code",
+			title: "Kode Satuan Kerja",
+			prop: "code_division",
 			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
@@ -100,14 +100,14 @@ const DivisionPage = () => {
 			headerCell: () => {
 				return (
 					<div className="cur-p">
-						{`Kode Divisi`}
+						{`Kode Satuan Kerja`}
 						<i className="fas fa-sort-alt ml-2"></i>
 					</div>
 				);
 			},
 		},
 		{
-			title: "Nama Divisi",
+			title: "Nama Satuan Kerja",
 			prop: "name",
 			cellProps: {
 				style: { width: "40%" },
@@ -130,10 +130,7 @@ const DivisionPage = () => {
 		<>
 			<Helmet>
 				<title>Dox - Division</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<Alert

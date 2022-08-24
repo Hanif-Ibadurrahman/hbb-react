@@ -1,4 +1,12 @@
-import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
+import {
+	Form,
+	Modal,
+	Container,
+	Row,
+	Col,
+	Button,
+	Spinner,
+} from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -12,6 +20,7 @@ import {
 	CreateStaff,
 	RESET_STAFF_FORM,
 	getRoleList,
+	UpdateStaff,
 } from "actions/StaffAction";
 import {
 	selectStaff,
@@ -25,7 +34,6 @@ export const ModalForm = props => {
 	const [varianAlert, setVarianAlert] = useState("");
 	const staff: StaffInterfaceState = useSelector(selectStaff);
 	const dispatch = useDispatch();
-
 	const rooms = useSelector(selectRooms);
 	const roles = useSelector(selectStaffs);
 	const FetchData = () => {
@@ -37,19 +45,24 @@ export const ModalForm = props => {
 	};
 
 	useEffect(() => {
+		FetchData();
 		DivisionData();
 	}, []);
 
-	useEffect(() => {
-		FetchData();
-	}, []);
-
-	const validationSchema = Yup.object().shape({
+	const addStaffSchema = Yup.object().shape({
 		username: Yup.string().required("*Wajib diisi"),
 		password: Yup.string().required("*Wajib diisi").min(8, "Min 8 Karakter"),
 		name: Yup.string().required("*Wajib diisi"),
-		nik: Yup.string().required("*Wajib diisi"),
+		nip: Yup.string().required("*Wajib diisi").max(18, "Maksimal 18 Karakter"),
 	});
+
+	const editStaffSchema = Yup.object().shape({
+		name: Yup.string().required("*Wajib diisi"),
+		nip: Yup.string().required("*Wajib diisi").max(18, "Maksimal 18 Karakter"),
+		email: Yup.string().required("*Wajib diisi"),
+	});
+
+	const validationSchema = staff?.id ? editStaffSchema : addStaffSchema;
 
 	return (
 		<>
@@ -71,14 +84,15 @@ export const ModalForm = props => {
 				onHide={props.hide}
 				aria-labelledby="contained-modal-title-vcenter"
 			>
-				{" "}
 				<Formik
 					validationSchema={validationSchema}
 					initialValues={staff}
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							let action = CreateStaff(values);
+							let action = !staff?.id
+								? CreateStaff(values)
+								: UpdateStaff(values);
 							const res = await action;
 							await dispatch(res);
 							action.then(() => {
@@ -93,9 +107,14 @@ export const ModalForm = props => {
 									window.location.reload();
 								}, 1000);
 							});
-						} catch (e) {
+						} catch (e: any) {
 							setShowAlert(true);
-							setAlertMessage("Gagal Update Data");
+							console.log(e, "error");
+							if (e?.response?.status === 422) {
+								setAlertMessage("Gagal. Data Duplikat");
+							} else {
+								setAlertMessage("Gagal Update Data");
+							}
 							setVarianAlert("danger");
 							setTimeout(function () {
 								setShowAlert(false);
@@ -117,14 +136,21 @@ export const ModalForm = props => {
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									Tambah Customer
+									{staff?.id ? <>Edit Staff</> : <>Tambah Staff</>}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
 								<Container>
 									<Row>
 										<Col xs={12}>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
+											<Form.Group
+												className="mb-4"
+												controlId="formBasicEmail"
+												style={{
+													display: staff?.id ? "none" : "block",
+													flexDirection: "column",
+												}}
+											>
 												<Form.Label>Username</Form.Label>
 												<Form.Control
 													type="text"
@@ -134,6 +160,7 @@ export const ModalForm = props => {
 													onChange={e => {
 														handleChange(e);
 													}}
+													disabled={staff?.id ? true : false}
 													onBlur={handleBlur}
 												/>
 												{touched.username && errors.username ? (
@@ -142,7 +169,14 @@ export const ModalForm = props => {
 													</p>
 												) : null}
 											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
+											<Form.Group
+												className="mb-4"
+												controlId="formBasicEmail"
+												style={{
+													display: staff?.id ? "none" : "block",
+													flexDirection: "column",
+												}}
+											>
 												<Form.Label>Password</Form.Label>
 												<Form.Control
 													type="text"
@@ -152,6 +186,7 @@ export const ModalForm = props => {
 													onChange={e => {
 														handleChange(e);
 													}}
+													disabled={staff?.id ? true : false}
 													onBlur={handleBlur}
 												/>
 												{touched.password && errors.password ? (
@@ -179,39 +214,57 @@ export const ModalForm = props => {
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>NIK</Form.Label>
+												<Form.Label>NIP</Form.Label>
 												<Form.Control
 													type="text"
-													name="nik"
-													placeholder="NIK"
-													value={values?.nik}
+													name="nip"
+													placeholder="NIP"
+													value={values?.nip}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
-												{touched.nik && errors.nik ? (
-													<p className="tc-danger-5 pos-a p-sm">{errors.nik}</p>
+												{touched.nip && errors.nip ? (
+													<p className="tc-danger-5 pos-a p-sm">{errors.nip}</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Email</Form.Label>
+												<Form.Control
+													type="text"
+													name="email"
+													placeholder="Email"
+													value={values?.email}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.email && errors.email ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.email}
+													</p>
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Ruangan</Form.Label>
 												<Autocomplete
-													id="room_id"
+													id="room"
 													options={rooms.Rooms}
+													value={values?.room}
 													getOptionLabel={option => option.name}
 													onChange={(e, value) => {
-														console.log(value);
 														setFieldValue(
-															"room_id",
-															value !== null ? value : values.room_id,
+															"room",
+															value !== null ? value : values?.room,
 														);
 													}}
 													renderInput={params => (
 														<TextField
 															margin="normal"
-															placeholder="Company"
-															name="comapany_id"
+															placeholder="Ruangan"
+															name="room"
 															{...params}
 														/>
 													)}
@@ -220,20 +273,21 @@ export const ModalForm = props => {
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Jenis Pekerjaan</Form.Label>
 												<Autocomplete
-													id="role_id"
+													id="roles"
 													options={roles.Roles}
+													value={values?.roles ?? values?.user?.roles[0]}
 													getOptionLabel={option => option.name}
 													onChange={(e, value) => {
 														setFieldValue(
-															"role_id",
-															value !== null ? value : values.role_id,
+															"roles",
+															value !== null ? value : values?.roles,
 														);
 													}}
 													renderInput={params => (
 														<TextField
 															margin="normal"
 															placeholder="Jenis Pekerjaan"
-															name="role_id"
+															name="roles"
 															{...params}
 														/>
 													)}
@@ -254,7 +308,17 @@ export const ModalForm = props => {
 									variant="success"
 								>
 									Kirim
-								</Button>{" "}
+									{isSubmitting && (
+										<Spinner
+											as="span"
+											animation="border"
+											size="sm"
+											role="status"
+											aria-hidden="true"
+											className="ml-2"
+										/>
+									)}
+								</Button>
 							</Modal.Footer>
 						</Form>
 					)}

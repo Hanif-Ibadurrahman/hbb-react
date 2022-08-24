@@ -128,10 +128,7 @@ const PickUpPage = () => {
 		<>
 			<Helmet>
 				<title>Dox - Pick Up Box</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<ModalForm
@@ -140,12 +137,12 @@ const PickUpPage = () => {
 					modalSet={setModalShow}
 					valueModalSet={false}
 				/>
-				<DataTable tableHeader={header} tableBody={pickUpList.PickUpItemList} />
+				{/* <DataTable tableHeader={header} tableBody={pickUpList.PickUpItemList} />
 				<Pagination
 					pageCount={pickUpList.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
-				/>
-				<Cart />
+				/> */}
+				{/* <Cart /> */}
 			</PageWrapper>
 		</>
 	);

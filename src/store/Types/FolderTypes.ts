@@ -1,4 +1,5 @@
 import { PaginationState } from "../Types/PaginationTypes";
+import { DivisionInterfaceState } from "./DivisionTypes";
 interface BoxFolderInterface {
 	id: string | null;
 	code_box: string;
@@ -16,6 +17,7 @@ interface CompanyFolderInterface {
 interface DocumentFolderInterface {
 	id: string | null;
 	description: string;
+	no: string;
 	detail: string;
 	media_storage: string;
 	status: string;
@@ -28,6 +30,7 @@ export interface FolderInterfaceState {
 	cabinet_slot: string;
 	company: CompanyFolderInterface;
 	documents: [DocumentFolderInterface];
+	division: DivisionInterfaceState;
 	location: string;
 	no: string;
 	sign_code: string;
@@ -37,6 +40,7 @@ export interface FolderInterfaceState {
 export interface FoldersInterfaceState {
 	Folder: FolderInterfaceState;
 	Folders: FolderInterfaceState[];
+	FolderAssigned: FolderInterfaceState[];
 	ErrorFolder?: string;
 	Title: string;
 	Meta: PaginationState;

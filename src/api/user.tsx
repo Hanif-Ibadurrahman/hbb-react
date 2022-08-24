@@ -22,3 +22,20 @@ export const getAllArchiver = async params => {
 			return error;
 		});
 };
+
+export const getAllBoxNoAsign = async params => {
+	return api
+		.get(`/boxes?is_filled=false&page=${params}`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
+export const resetPassword = async (payload: any) => {
+	// return payload;
+
+	return api.patch(`/change-password`, payload);
+};

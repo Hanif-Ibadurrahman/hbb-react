@@ -8,9 +8,15 @@ import DropdownAction from "../Components/DropdownAction";
 import { Pagination } from "app/components/Pagination";
 import { selectAreas } from "store/Selector/AreaSelector";
 import { useDispatch, useSelector } from "react-redux";
-import { getAreasList, getAreaDetail, deleteArea } from "actions/AreaActions";
+import {
+	getAreasList,
+	getAreaDetail,
+	deleteArea,
+	SearchArea,
+} from "actions/AreaActions";
 import Swal from "sweetalert2";
-import { ModalFilter } from "./ModalFilter";
+import Alert from "app/components/Alerts";
+import { SearchInput } from "./FilterInput";
 
 const AreaPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -21,7 +27,11 @@ const AreaPage = () => {
 	const dispatch = useDispatch();
 
 	const FetchData = (page = 1) => {
-		dispatch(getAreasList(page));
+		if (areas.Area.code_area === "") {
+			dispatch(getAreasList(page));
+		} else {
+			dispatch(SearchArea);
+		}
 	};
 
 	useEffect(() => {
@@ -46,17 +56,15 @@ const AreaPage = () => {
 			confirmButtonColor: "#d33",
 			confirmButtonText: "Hapus",
 		}).then(willDelete => {
-			if (willDelete) {
+			if (willDelete.isConfirmed) {
 				dispatch(deleteArea(id));
 				setShowAlertSuccess(true);
 				setTimeout(function () {
 					setShowAlertSuccess(false);
 				}, 4000);
-			} else {
-				setShowAlertFailed(true);
 				setTimeout(function () {
-					setShowAlertFailed(false);
-				}, 4000);
+					window.location.reload();
+				}, 1000);
 			}
 		});
 	};
@@ -67,11 +75,6 @@ const AreaPage = () => {
 			title: "Detail",
 			url: "Area-Detail/" + id,
 			type: 1,
-		},
-		{
-			icon: "fa-copy ",
-			title: "Duplicate",
-			type: 2,
 		},
 		{
 			icon: "fa-edit",
@@ -98,7 +101,6 @@ const AreaPage = () => {
 		{
 			title: "Nama Area",
 			prop: "name",
-			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
 			},
@@ -106,7 +108,6 @@ const AreaPage = () => {
 		{
 			title: "Code Area",
 			prop: "code_area",
-			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
 			},
@@ -128,11 +129,14 @@ const AreaPage = () => {
 		<>
 			<Helmet>
 				<title>Dox - Master Area</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
+			<Alert
+				text="Data Berhasil Di Hapus"
+				variant="success"
+				show={showAlertSuccess}
+				onHide={() => setShowAlertSuccess(false)}
+			/>
 			<PageWrapper>
 				<ModalForm
 					modal={modalShow}
@@ -145,11 +149,11 @@ const AreaPage = () => {
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
-					filter={ModalFilter}
+					filter={SearchInput}
 				/>
 				<DataTable tableHeader={header} tableBody={areas.Areas} />
 				<Pagination
-					pageCount={areas.Meta.last_page}
+					pageCount={areas.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

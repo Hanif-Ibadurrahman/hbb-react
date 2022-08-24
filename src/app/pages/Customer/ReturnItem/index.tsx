@@ -10,7 +10,7 @@ import ModalForm from "./ModalForm";
 import "../BorrowBox/page.scoped.scss";
 import _ from "lodash";
 import { selectReturnItems } from "store/Selector/ReturnItemSelector";
-import { getReturnList } from "actions/ReturnAction";
+import { AddCartAll, getReturnList } from "actions/ReturnAction";
 
 const ReturnItemPage = () => {
 	const [modalShow, setModalShow] = useState(false);
@@ -45,6 +45,13 @@ const ReturnItemPage = () => {
 		dispatch(await AddCart(id));
 	};
 
+	const allData = async () => {
+		const newData = returnList?.ReturnList.map(item => {
+			return item?.id;
+		});
+		dispatch(await AddCartAll(newData));
+	};
+
 	const checkCart = id => {
 		if (cart) {
 			const checkCart = cart?.Cart.indexOf(String(id));
@@ -54,7 +61,7 @@ const ReturnItemPage = () => {
 	const action = id => [
 		{
 			icon: "fa-hand-holding-box",
-			title: "Pickup",
+			title: "Pilih",
 			onclick: () => {
 				addCart(id);
 			},
@@ -80,11 +87,14 @@ const ReturnItemPage = () => {
 			},
 		},
 		{
-			title: "Custome Code Box",
+			title: "Customer Code Box",
 			prop: "custom_code_box",
 			sortable: true,
 			cellProps: {
 				style: { width: "40%" },
+			},
+			cell: row => {
+				return row?.custom_code_box ? row?.custom_code_box : "-";
 			},
 		},
 		{
@@ -107,18 +117,20 @@ const ReturnItemPage = () => {
 					<div className="d-flex ai-center">
 						<span className="h-12 w-12 bd-rs-6 d-flex ai-center jc-center bg-light-shade mr-6">
 							<span
-								className="icon h-9 w-9 bd-rs-6 d-flex ai-center jc-center bg-medium-tint"
-								style={{ marginTop: -3 }}
+								className="icon h-9 w-9 bd-rs-6 d-flex ai-center jc-center bg-medium-tint bg-success cr-p"
+								style={{ marginTop: -3, color: "#fff" }}
+								onClick={allData}
 							>
 								<i className="fas fa-box-check"></i>
 							</span>
 						</span>
-						<h5 className="text ff-1-bd mr-3">{cart.numberCart}</h5>
+						<h5 className="text ff-1-bd mr-3">{returnList?.Cart?.length}</h5>
 						<p className="p-lg">Box dipilih</p>
 					</div>
-					<span
+					<button
 						className="ph-2 h-12 bd-rs-6 d-flex ai-center jc-center bg-success-1 ml-a cur-p"
 						onClick={() => setModalShow(true)}
+						disabled={returnList?.Cart?.length <= 0}
 					>
 						<span className="text p-lg mh-2 tc-success-5">Proses</span>
 						<span
@@ -127,7 +139,7 @@ const ReturnItemPage = () => {
 						>
 							<i className="fas fa-chevron-double-right tc-dark-contrast"></i>
 						</span>
-					</span>
+					</button>
 				</div>
 			</>
 		);
@@ -137,10 +149,7 @@ const ReturnItemPage = () => {
 		<>
 			<Helmet>
 				<title>Dox - Request Box</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<ModalForm

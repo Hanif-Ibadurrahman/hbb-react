@@ -7,6 +7,8 @@ import {
 	ADD_CART,
 	DELETE_CART,
 	GET_BORROW_LIST,
+	FILTER_BOXES_BORROW,
+	ADD_CART_ALL,
 } from "../../actions/BorrowItemAction";
 import { BorrowItemsInterfaceState } from "../Types/BorrowItemTypes";
 import _ from "lodash";
@@ -18,6 +20,7 @@ export const initialState: BorrowItemsInterfaceState = {
 		note: "",
 		delivery_method: "regular",
 		box_codes: [],
+		code_box: "",
 	},
 	BorrowList: [],
 	Cart: [],
@@ -47,8 +50,20 @@ export default (
 				...state,
 				BorrowList: payload.data,
 				Meta: {
-					last_page: payload.meta.last_page,
-					current_page: payload.meta.current_page,
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorBorrowItem: payload.errorMessage,
+			};
+		case FILTER_BOXES_BORROW:
+			return {
+				...state,
+				BorrowList: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
 					total: payload?.meta?.total,
 					per_page: payload?.meta?.per_page,
 				},
@@ -73,6 +88,12 @@ export default (
 				Cart: checkCartExist() ? [...state.Cart, payload] : [...state.Cart],
 				numberCart: checkCartExist() ? state.numberCart + 1 : state.numberCart,
 			};
+		case ADD_CART_ALL:
+			return {
+				...state,
+				Cart: payload,
+				numberCart: state.numberCart + state.Cart.length,
+			};
 		case DELETE_CART:
 			return {
 				...state,
@@ -93,6 +114,7 @@ export default (
 					id: "",
 					note: "",
 					box_codes: [],
+					code_box: "",
 				},
 			};
 		default:

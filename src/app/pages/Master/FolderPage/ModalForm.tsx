@@ -1,4 +1,12 @@
-import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
+import {
+	Form,
+	Modal,
+	Container,
+	Row,
+	Col,
+	Button,
+	Spinner,
+} from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import { Autocomplete, TextField } from "@mui/material";
@@ -15,6 +23,8 @@ import {
 } from "actions/FolderAction";
 import { getCompanyList } from "actions/CompanyAction";
 import { selectCompanys } from "store/Selector/CompanySelector";
+import { selectDivisions } from "store/Selector/DivisionSelector";
+import { getDivisionsList } from "actions/DivisionAction";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
@@ -22,6 +32,11 @@ const ModalForm = props => {
 	const [varianAlert, setVarianAlert] = useState("");
 	const company = useSelector(selectCompanys);
 	const folder: FolderInterfaceState = useSelector(selectFolder);
+	const division = useSelector(selectDivisions);
+
+	const DivisionData = (page = 1) => {
+		dispatch(getDivisionsList(page));
+	};
 
 	const FetchData = (page = 1) => {
 		dispatch(getCompanyList(page));
@@ -29,7 +44,10 @@ const ModalForm = props => {
 
 	useEffect(() => {
 		FetchData();
-	});
+	}, []);
+	useEffect(() => {
+		DivisionData();
+	}, []);
 	const dispatch = useDispatch();
 	const validationSchema = Yup.object().shape({
 		no: Yup.string().required("*Wajib diisi"),
@@ -115,7 +133,7 @@ const ModalForm = props => {
 													type="text"
 													name="no"
 													placeholder="No Dokument"
-													value={values.no}
+													value={values?.no}
 													onChange={e => {
 														handleChange(e);
 													}}
@@ -149,6 +167,30 @@ const ModalForm = props => {
 													)}
 												/>
 											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Pilih Divisi</Form.Label>
+												<Autocomplete
+													id="division_id"
+													options={division.Divisions}
+													value={values.division}
+													getOptionLabel={option => option.name}
+													onChange={(e, value) => {
+														console.log(value);
+														setFieldValue(
+															"division",
+															value !== null ? value : values.division,
+														);
+													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															placeholder="Transporter"
+															name="division_id"
+															{...params}
+														/>
+													)}
+												/>
+											</Form.Group>
 										</Col>
 									</Row>
 								</Container>
@@ -159,11 +201,25 @@ const ModalForm = props => {
 								</Button>
 								<Button
 									type="submit"
-									disabled={isSubmitting || values.company.id === ""}
+									disabled={
+										isSubmitting ||
+										values?.company?.id === "" ||
+										values?.division?.id === ""
+									}
 									className="bg-success-6"
 									variant="success"
 								>
 									Request
+									{isSubmitting && (
+										<Spinner
+											as="span"
+											animation="border"
+											size="sm"
+											role="status"
+											aria-hidden="true"
+											className="ml-2"
+										/>
+									)}
 								</Button>{" "}
 							</Modal.Footer>
 						</Form>

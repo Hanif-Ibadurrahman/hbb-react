@@ -22,9 +22,6 @@ import { useTranslation } from "react-i18next";
 
 // DASHBOARD
 import { DashboardSuperadmin } from "./Dashboard/Superadmin";
-import { DashboardAdminCSR } from "./Dashboard/AdminCSR";
-import { DashboardAdminRC } from "./Dashboard/AdminRC";
-import { DashboardAdminTransport } from "./Dashboard/AdminTransport";
 // -=-=-=-=-=-
 // APPROVAL
 import ApprovalAdminRequestBox from "./Approval/RequestBox";
@@ -35,6 +32,8 @@ import { ApprovalDetail } from "./Approval/Detail";
 //ADMIN OPERATION
 import ApprovalOperationRequestBox from "./AdminOperation/RequestBox";
 import ApprovalPreview from "./AdminOperation/RequestBox/ApprovePreview";
+import ActivityLog from "./AdminOperation/RequestBox/ActivityLog";
+import IndexingDelete from "./AdminOperation/RequestBox/IndexingDelete";
 
 // MASTER
 // # - BOX
@@ -64,14 +63,20 @@ import CarPageDetail from "./Master/CarPage/Detail";
 // # - DIVISI
 import DivisionPage from "./Master/DivisionPage";
 import DivisionPageDetail from "./Master/DivisionPage/Detail";
-// # - USER TRANSPORTER
-import TransporterPage from "./Master/Staff/TransporterPage";
-// # - USER ARCHIVER
-import ArchiverPage from "./Master/Staff/ArchiverPage";
 // # - CUSTOMER
 import CustomerPage from "./Master/CustomerPage";
+import CustomerPageDetail from "./Master/CustomerPage/Detail";
 // # -STAFF
 import StaffPage from "./Master/StaffPage";
+// # - INDEXING
+import IndexingPage from "./Master/indexing";
+import DetailIndexingPage from "./Master/indexing/Detail";
+import AssignDocToFolder from "./Master/indexing/AssignDocToFolder";
+import AssignFolderToBox from "./Master/indexing/AssignFolderToBox";
+import DetailIndexingNotAssign from "./Master/indexing/Detail/DetailNoAssign";
+// # - CLASSIFICATION
+import ClassificationPage from "./Master/ClassificationPage";
+import DetailClassificationPage from "./Master/ClassificationPage/Detail";
 // -=-=-=-=-=-
 
 // CUSTOMER
@@ -95,11 +100,11 @@ export function Routes() {
 	return (
 		<BrowserRouter>
 			<Helmet
-				titleTemplate="%s - React Boilerplate"
-				defaultTitle="React Boilerplate"
+				titleTemplate="%s"
+				defaultTitle="DOX"
 				htmlAttributes={{ lang: i18n.language }}
 			>
-				<meta name="description" content="A React Boilerplate application" />
+				<meta name="description" content="A DOX application" />
 			</Helmet>
 			<div className="d-flex all-wrapper">
 				<Sidebar />
@@ -112,19 +117,41 @@ export function Routes() {
 							path={process.env.PUBLIC_URL + "/Dashboard"}
 							component={DashboardSuperadmin}
 						/>
-						<Route
-							path={process.env.PUBLIC_URL + "/Dashboard/CSR"}
-							component={DashboardAdminCSR}
-						/>
-						<Route
-							path={process.env.PUBLIC_URL + "/Dashboard/RC"}
-							component={DashboardAdminRC}
-						/>
-						<Route
-							path={process.env.PUBLIC_URL + "/Dashboard/Transport"}
-							component={DashboardAdminTransport}
-						/>
 						{/*---------- DASHBOARD - - - END ---------*/}
+
+						{/*---------- ACTIVITY LOG ---------*/}
+						<Route
+							path={process.env.PUBLIC_URL + "/Activity-Log"}
+							component={ActivityLog}
+						/>
+						{/*---------- ACTIVITY LOG - - - END ---------*/}
+
+						{/*---------- INDEXING ---------*/}
+						<Route
+							path={process.env.PUBLIC_URL + "/Indexing"}
+							component={IndexingPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/IndexingDetail/:id"}
+							component={DetailIndexingPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Indexing-Delete"}
+							component={IndexingDelete}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/AssignDocToFolder"}
+							component={AssignDocToFolder}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/AssignFolderToBox"}
+							component={AssignFolderToBox}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/DetailIndexing/:id"}
+							component={DetailIndexingNotAssign}
+						/>
+						{/*---------- INDEXING - - - END ---------*/}
 
 						{/*---------- APPROVAL ---------*/}
 						<Route
@@ -222,20 +249,24 @@ export function Routes() {
 							component={CompanyPageDetail}
 						/>
 						<Route
-							path={process.env.PUBLIC_URL + "/Trasnporter"}
-							component={TransporterPage}
-						/>
-						<Route
-							path={process.env.PUBLIC_URL + "/Archiver"}
-							component={ArchiverPage}
-						/>
-						<Route
 							path={process.env.PUBLIC_URL + "/CustomerPage"}
 							component={CustomerPage}
 						/>
 						<Route
+							path={process.env.PUBLIC_URL + "/Customer-Detail/:id"}
+							component={CustomerPageDetail}
+						/>
+						<Route
 							path={process.env.PUBLIC_URL + "/StaffPage"}
 							component={StaffPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/ClassificationPage"}
+							component={ClassificationPage}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Classification-Detail/:id"}
+							component={DetailClassificationPage}
 						/>
 						{/*---------- MASTER - - - END ---------*/}
 						{/*--------- ADMIN CSR ---------*/}

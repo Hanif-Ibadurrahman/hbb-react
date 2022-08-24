@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import Alert from "app/components/Alerts";
 import { selectRooms } from "store/Selector/RoomSelector";
-import { ModalFilter } from "./ModalFilter";
 
 const RoomPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -113,7 +112,7 @@ const RoomPage = () => {
 			prop: "code_room",
 			sortable: true,
 			cellProps: {
-				style: { width: "80%" },
+				style: { width: "40%" },
 			},
 		},
 		{
@@ -129,14 +128,15 @@ const RoomPage = () => {
 		},
 	];
 
+	const Filter = () => {
+		return <div></div>;
+	};
+
 	return (
 		<>
 			<Helmet>
 				<title>Dox - Master Room</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<Alert
@@ -156,7 +156,7 @@ const RoomPage = () => {
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
-					filter={ModalFilter}
+					filter={Filter}
 				/>
 				<DataTable tableHeader={header} tableBody={rooms.Rooms} />
 				<Pagination

@@ -14,12 +14,13 @@ import {
 	getstaffsList,
 	RESET_STAFF_FORM,
 	SearchStaff,
+	getStaffDetail,
 } from "actions/StaffAction";
 import { SearchInput } from "./FilterInput";
+import Alert from "app/components/Alerts";
 
 const StaffPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
-	const [showAlertFailed, setShowAlertFailed] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
 	const staffs = useSelector(selectStaffs);
@@ -32,7 +33,6 @@ const StaffPage = () => {
 			dispatch(SearchStaff);
 		}
 	};
-
 	useEffect(() => {
 		FetchData();
 	}, []);
@@ -44,7 +44,7 @@ const StaffPage = () => {
 	};
 
 	const showEditForm = async id => {
-		// dispatch(getRoomDetail(id));
+		dispatch(getStaffDetail(id));
 		setModalShow(true);
 	};
 
@@ -70,6 +70,16 @@ const StaffPage = () => {
 	};
 
 	const action = id => [
+		{
+			icon: "fa-edit",
+			title: "Edit",
+			type: 2,
+			onclick: () => {
+				showEditForm(id);
+			},
+			dispatch: dispatch,
+			row: id,
+		},
 		{
 			icon: "fa-trash-alt",
 			title: "Delete",
@@ -104,7 +114,7 @@ const StaffPage = () => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.id)} />;
+				return <DropdownAction list={action(row.staff.id)} />;
 			},
 		},
 	];
@@ -113,11 +123,14 @@ const StaffPage = () => {
 		<>
 			<Helmet>
 				<title>Dox - Master Room</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
+			<Alert
+				text="Data Berhasil Di Hapus"
+				variant="success"
+				show={showAlertSuccess}
+				onHide={() => setShowAlertSuccess(false)}
+			/>
 			<PageWrapper>
 				<ModalForm
 					modal={modalShow}

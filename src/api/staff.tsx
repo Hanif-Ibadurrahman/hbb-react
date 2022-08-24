@@ -5,12 +5,26 @@ export const create = async (data: StaffInterfaceState) => {
 	let payload = {
 		username: data?.username,
 		password: data?.password,
-		nik: data?.nik,
+		nip: data?.nip,
 		name: data?.name,
-		role_id: data?.role_id?.id,
-		room_id: data?.room_id?.id,
+		email: data?.email,
+		role_id: data?.roles?.id,
+		room_id: data?.room?.id,
 	};
 	return api.post("/users/staff", payload);
+};
+
+export const update = async (data: StaffInterfaceState) => {
+	let id = data?.id;
+	let payload = {
+		username: data?.user?.username,
+		nip: data?.nip,
+		name: data?.name,
+		email: data?.email,
+		role_id: data?.roles?.id,
+		room_id: data?.room?.id,
+	};
+	return api.put(`/users/staff/${id}`, payload);
 };
 
 export const getAll = async params => {
@@ -18,6 +32,17 @@ export const getAll = async params => {
 		.get(`/users?role=staff&page=${params}`)
 		.then(res => {
 			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
+export const getDetail = async params => {
+	return api
+		.get(`/users/staff/${params}`)
+		.then(res => {
+			return res;
 		})
 		.catch(error => {
 			return error;

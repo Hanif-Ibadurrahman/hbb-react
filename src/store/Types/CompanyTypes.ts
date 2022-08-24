@@ -1,4 +1,9 @@
 import { PaginationState } from "../Types/PaginationTypes";
+
+export interface ServiceTypeInterfaceState {
+	type: string;
+	value: boolean;
+}
 export interface CompanyInterfaceState {
 	id: string | null;
 	code: string;
@@ -13,12 +18,7 @@ export interface CompanyInterfaceState {
 	phone: string;
 	address: string;
 	amount_access: string;
-	service_type: [
-		{
-			type: string;
-			value: boolean;
-		},
-	];
+	service_type: ServiceTypeInterfaceState[];
 }
 
 export interface CompanysInterfaceState {

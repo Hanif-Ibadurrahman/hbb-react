@@ -104,19 +104,11 @@ const ApprovalAdminPickupBox = () => {
 
 	const header = [
 		{
-			title: "Id Request",
-			prop: "id",
-			sortable: true,
-			cellProps: {
-				style: { width: "40%" },
-			},
-		},
-		{
 			title: "Tanggal Kirim",
 			prop: "delivered_at",
 			sortable: true,
 			cellProps: {
-				style: { width: "20%" },
+				style: { width: "30%" },
 			},
 			cell: row => {
 				return NewDate(row.delivered_at);
@@ -127,7 +119,7 @@ const ApprovalAdminPickupBox = () => {
 			prop: "location",
 			sortable: true,
 			cellProps: {
-				style: { width: "20%" },
+				style: { width: "30%" },
 			},
 		},
 		{
@@ -147,10 +139,7 @@ const ApprovalAdminPickupBox = () => {
 		<>
 			<Helmet>
 				<title>Dox - Request Box</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<Alert

@@ -25,7 +25,18 @@ export const getById = async (id: String) => {
 
 export const getAll = async params => {
 	return api
-		.get(`/boxes?page=${params}`)
+		.get(`/boxes?is_filled=true&page=${params}`)
+		.then(res => {
+			return res.data;
+		})
+		.catch(error => {
+			return error;
+		});
+};
+
+export const getAllNotPage = async params => {
+	return api
+		.get(`/boxes?per_page=999999999`)
 		.then(res => {
 			return res.data;
 		})
@@ -40,7 +51,7 @@ export const filterBoxes = async (data: BoxInterfaceState) => {
 	};
 
 	return api
-		.get(`/boxes?code=${filter.code}`)
+		.get(`/boxes?code_box=${filter.code}`)
 		.then(res => {
 			return res.data;
 		})

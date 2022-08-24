@@ -14,6 +14,7 @@ import {
 	RESET_COMPANY_FORM,
 } from "actions/CompanyAction";
 import { CompanyInterfaceState } from "store/Types/CompanyTypes";
+import MaskedFormControl from "react-bootstrap-maskedinput";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
@@ -25,8 +26,12 @@ const ModalForm = props => {
 	const validationSchema = Yup.object().shape({
 		name: Yup.string().required("*Wajib diisi"),
 		location: Yup.string().required("*Wajib diisi"),
-		latitude: Yup.string().required("*Wajib diisi"),
-		longitude: Yup.string().required("*Wajib diisi"),
+		person_responsible: Yup.string().required("*Wajib diisi"),
+		npwp: Yup.string().required("*Wajib diisi"),
+		email: Yup.string().email().required("*Wajib diisi"),
+		phone: Yup.string().required("*Wajib diisi"),
+		address: Yup.string().required("*Wajib diisi"),
+		amount_access: Yup.string().required("*Wajib diisi"),
 	});
 
 	return (
@@ -140,42 +145,6 @@ const ModalForm = props => {
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Latitude</Form.Label>
-												<Form.Control
-													type="text"
-													name="latitude"
-													placeholder="Latitude"
-													value={values?.latitude}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>
-												{touched.latitude && errors.latitude ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.latitude}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Longitude</Form.Label>
-												<Form.Control
-													type="text"
-													name="longitude"
-													placeholder="Longitude"
-													value={values?.longitude}
-													onChange={e => {
-														handleChange(e);
-													}}
-													onBlur={handleBlur}
-												/>
-												{touched.longitude && errors.longitude ? (
-													<p className="tc-danger-5 pos-a p-sm">
-														{errors.longitude}
-													</p>
-												) : null}
-											</Form.Group>
-											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Penanggung Jawab</Form.Label>
 												<Form.Control
 													type="text"
@@ -187,19 +156,30 @@ const ModalForm = props => {
 													}}
 													onBlur={handleBlur}
 												/>
+												{touched.person_responsible &&
+												errors.person_responsible ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.person_responsible}
+													</p>
+												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>NPWP</Form.Label>
-												<Form.Control
+												<MaskedFormControl
 													type="text"
 													name="npwp"
-													placeholder="NPWP"
 													value={values?.npwp}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
+													mask="11.111.111.1-111.111"
 												/>
+												{touched.npwp && errors.npwp ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.npwp}
+													</p>
+												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Email</Form.Label>
@@ -213,6 +193,11 @@ const ModalForm = props => {
 													}}
 													onBlur={handleBlur}
 												/>
+												{touched.email && errors.email ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.email}
+													</p>
+												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Phone</Form.Label>
@@ -226,6 +211,11 @@ const ModalForm = props => {
 													}}
 													onBlur={handleBlur}
 												/>
+												{touched.phone && errors.phone ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.phone}
+													</p>
+												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Alamat</Form.Label>
@@ -239,24 +229,40 @@ const ModalForm = props => {
 													}}
 													onBlur={handleBlur}
 												/>
+												{touched.address && errors.address ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.address}
+													</p>
+												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Jumlah Pengguna</Form.Label>
 												<Form.Control
 													type="number"
+													min="1"
 													name="amount_access"
-													placeholder="Alamat"
+													placeholder="Jumlah Pengguna"
 													value={values?.amount_access}
 													onChange={e => {
 														handleChange(e);
 													}}
 													onBlur={handleBlur}
 												/>
+												{touched.amount_access && errors.amount_access ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.amount_access}
+													</p>
+												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Persetujuan</Form.Label>
 												<div className="d-flex">
-													<Form.Check type="checkbox" label="box" />
+													<Form.Check
+														type="checkbox"
+														label="box"
+														name="service_type"
+														value={values?.service_type[0]?.value as any}
+													/>
 													<Form.Check type="checkbox" label="folder" />
 													<Form.Check type="checkbox" label="document" />
 												</div>

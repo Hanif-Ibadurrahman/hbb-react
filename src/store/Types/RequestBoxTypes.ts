@@ -3,6 +3,16 @@ import { TransporterInterfaceState } from "./TransporterTypes";
 import { ArchiverInterfaceState } from "./ArchiverTypes";
 import { CustomerInterfaceState } from "./CustomerTypes";
 import { BoxInterfaceState } from "./BoxTypes";
+import { CarInterfaceState, CarsInterfaceState } from "./CarTypes";
+
+export interface TransporterInterfaceForRequestInterface {
+	id: string;
+	email: string;
+	firebase_token?: string;
+	firebase_token_expired?: string;
+	name: string;
+	nik: string;
+}
 export interface RequestBoxInterfaceState {
 	id: string | null;
 	quantity: string;
@@ -10,8 +20,11 @@ export interface RequestBoxInterfaceState {
 	status: string;
 	delivered_at: string;
 	delivery_method: string;
+	delivery_date: string;
 	type: string;
 	code_boxes: [];
+	transporter: TransporterInterfaceForRequestInterface;
+	car: CarInterfaceState;
 	request_logs: [
 		{
 			time: string;
@@ -40,6 +53,7 @@ export interface ApprovalOperationInterfaceState {
 	delivery_date: string;
 	archiver_id: ArchiverInterfaceState;
 	transporter_id: TransporterInterfaceState;
+	car_id: CarInterfaceState;
 }
 
 export interface RequestBoxesInterfaceState {

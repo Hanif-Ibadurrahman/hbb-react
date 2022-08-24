@@ -17,9 +17,28 @@ export const initialState: StaffsInterfaceState = {
 		id: "",
 		username: "",
 		password: "",
-		nik: "",
+		nip: "",
 		name: "",
-		role_id: {
+		email: "",
+		user: {
+			id: "",
+			username: "",
+			roles: [
+				{
+					id: "",
+					display_name: "",
+					name: "",
+					permissions: [
+						{
+							id: "",
+							display_name: "",
+							name: "",
+						},
+					],
+				},
+			],
+		},
+		roles: {
 			id: "",
 			display_name: "",
 			name: "",
@@ -31,15 +50,24 @@ export const initialState: StaffsInterfaceState = {
 				},
 			],
 		},
-		room_id: {
+		room: {
 			id: "",
 			name: "",
+			floor: 0,
 			area: {
 				id: "",
 				code_area: "",
 				name: "",
 			},
 			code_room: "",
+		},
+		staff: {
+			id: "",
+			name: "",
+			nip: "",
+			email: "",
+			room: "",
+			firebase_token: "",
 		},
 	},
 	Roles: [],
@@ -127,9 +155,28 @@ export default (
 					id: "",
 					username: "",
 					password: "",
-					nik: "",
+					nip: "",
 					name: "",
-					role_id: {
+					email: "",
+					user: {
+						id: "",
+						username: "",
+						roles: [
+							{
+								id: "",
+								display_name: "",
+								name: "",
+								permissions: [
+									{
+										id: "",
+										display_name: "",
+										name: "",
+									},
+								],
+							},
+						],
+					},
+					roles: {
 						id: "",
 						display_name: "",
 						name: "",
@@ -141,15 +188,24 @@ export default (
 							},
 						],
 					},
-					room_id: {
+					room: {
 						id: "",
 						name: "",
+						floor: 0,
 						area: {
 							id: "",
 							code_area: "",
 							name: "",
 						},
 						code_room: "",
+					},
+					staff: {
+						id: "",
+						name: "",
+						nip: "",
+						email: "",
+						room: "",
+						firebase_token: "",
 					},
 				},
 			};

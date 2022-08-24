@@ -7,6 +7,7 @@ import {
 	RESET_BOX_FORM,
 	SET_BOX_DATA,
 	FILTER_BOXES,
+	GET_BOXES_NOT_PAGE,
 } from "../../actions/BoxActions";
 import { BoxesInterfaceState, BoxInterfaceState } from "../Types/BoxTypes";
 export const initialState: BoxesInterfaceState = {
@@ -84,6 +85,18 @@ export default (
 				Box: payload,
 			};
 		case GET_BOXES_LIST:
+			return {
+				...state,
+				Boxes: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorBox: payload.errorMessage,
+			};
+		case GET_BOXES_NOT_PAGE:
 			return {
 				...state,
 				Boxes: payload.data,

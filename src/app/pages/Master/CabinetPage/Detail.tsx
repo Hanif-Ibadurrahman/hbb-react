@@ -46,7 +46,7 @@ const CabinetPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={cabinet.code_cabinet}
+									defaultValue={cabinet?.code_cabinet}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
@@ -54,7 +54,7 @@ const CabinetPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={cabinet.total_bays}
+									defaultValue={cabinet?.total_bays}
 								/>
 							</Form.Group>
 
@@ -63,7 +63,7 @@ const CabinetPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={cabinet.room.area.code_area}
+									defaultValue={cabinet?.room?.area?.code_area}
 								></Form.Control>
 							</Form.Group>
 							<div className="d-flex jc-end">
@@ -79,7 +79,7 @@ const CabinetPageDetail = ({ match }) => {
 					</Card>
 					<Card className="ph-5 pv-3 bd-rs-2 mt-3">
 						<h6 className="mb-4 mt-4">Cabinet Slot</h6>
-						{cabinetSlot.map((item, index) => {
+						{cabinetSlot?.map((item, index) => {
 							return (
 								<div>
 									<p className="mb-1 p-lg">Slot {index + 1}</p>
@@ -91,7 +91,7 @@ const CabinetPageDetail = ({ match }) => {
 												<Form.Control
 													type="text"
 													disabled
-													defaultValue={item.name}
+													defaultValue={item?.name}
 												/>
 											</Form.Group>
 											<Form.Group className="mt-2">
@@ -99,7 +99,7 @@ const CabinetPageDetail = ({ match }) => {
 												<Form.Control
 													type="text"
 													disabled
-													defaultValue={item.code}
+													defaultValue={item?.code}
 												/>
 											</Form.Group>
 											<Form.Group className="mt-2">
@@ -107,7 +107,7 @@ const CabinetPageDetail = ({ match }) => {
 												<Form.Control
 													type="text"
 													disabled
-													defaultValue={item.capacity}
+													defaultValue={item?.capacity}
 												/>
 											</Form.Group>
 										</div>
@@ -130,11 +130,11 @@ const CabinetPageDetail = ({ match }) => {
 						<QR
 							id="Cabinet-QR"
 							title="Scan here"
-							value={cabinet.sign_code}
+							value={cabinet?.sign_code}
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">{cabinet.id}</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">{cabinet?.id}</p>
 						</div>
 					</Card>
 				</div>

@@ -28,7 +28,7 @@ const DocumentPageDetail = ({ match }) => {
 		dispatch(getDocumentDetail(document_id));
 	}, []);
 
-	const NewDate = moment(document.date).format("d MMMM YYYY");
+	const newDate = moment(document?.date).format("d MMMM YYYY");
 
 	return (
 		<>
@@ -43,34 +43,38 @@ const DocumentPageDetail = ({ match }) => {
 						<Form className="mt-3">
 							<Form.Group className="mb-3">
 								<Form.Label>No Document</Form.Label>
-								<Form.Control type="text" disabled defaultValue={document.no} />
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document?.no}
+								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
 								<Form.Label>Tanggal</Form.Label>
-								<Form.Control type="text" disabled defaultValue={NewDate} />
+								<Form.Control
+									type="text"
+									disabled
+									value={document?.date ? newDate : "-"}
+								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
 								<Form.Label>Detail</Form.Label>
 								<Form.Control
 									as="textarea"
 									disabled
-									defaultValue={document.detail}
+									defaultValue={document?.detail}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
 								<Form.Label>Nominal</Form.Label>
-								<Form.Control
-									type="text"
-									disabled
-									defaultValue={document.nominal}
-								/>
+								<Form.Control type="text" disabled value={document?.nominal} />
 							</Form.Group>
 							<Form.Group className="mb-3">
 								<Form.Label>Masa Aktif Dokument</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document.active_year_for}
+									defaultValue={document?.active_year_for}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
@@ -78,7 +82,7 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document.media_storage}
+									defaultValue={document?.media_storage}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
@@ -86,7 +90,7 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document.condition}
+									defaultValue={document?.condition}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
@@ -94,7 +98,7 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									as="textarea"
 									disabled
-									defaultValue={document.description}
+									defaultValue={document?.description}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
@@ -102,9 +106,31 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document.no_digital}
+									defaultValue={document?.no_digital}
 								/>
 							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>Level Progress</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									value={document?.level_progress}
+								/>
+							</Form.Group>
+							<div
+								className="mb-3"
+								onClick={() =>
+									window.open(`${document.document_file}`, "_blank")
+								}
+							>
+								<Form.Label>Lampiran File</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document?.document_file?.slice(52)}
+									style={{ color: "blue", cursor: "pointer" }}
+								/>
+							</div>
 							<Form.Group className="mb-3">
 								<Form.Label>No Folder</Form.Label>
 								<Form.Control
@@ -118,7 +144,39 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document?.box?.code_box}
+									value={document?.box?.code_box}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>Index</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									value={document?.index?.index}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>No Lemari</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document?.cabinet?.code_cabinet}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>Divisi</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document?.division?.name}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3">
+								<Form.Label>Perusahaan</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									defaultValue={document?.company?.name}
 								/>
 							</Form.Group>
 							<div className="d-flex jc-end">

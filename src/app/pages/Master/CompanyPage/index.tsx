@@ -129,10 +129,7 @@ const CompanyPage = () => {
 		<>
 			<Helmet>
 				<title>Dox - Request Company</title>
-				<meta
-					name="description"
-					content="A React Boilerplate application homepage"
-				/>
+				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
 				<Alert
@@ -160,9 +157,12 @@ const CompanyPage = () => {
 					value={true}
 					filter={Filter}
 				/>
-				<DataTable tableHeader={header} tableBody={Companys.Companys} />
+				<DataTable
+					tableHeader={header}
+					tableBody={Companys?.Companys ? Companys?.Companys : []}
+				/>
 				<Pagination
-					pageCount={Companys.Meta.last_page}
+					pageCount={Companys?.Meta?.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
 				/>
 			</PageWrapper>

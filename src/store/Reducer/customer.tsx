@@ -43,6 +43,30 @@ export const initialState: CustomersInterfaceState = {
 		division_id: {
 			id: "",
 			name: "",
+			customers: [
+				{
+					id: "",
+					name: "",
+					phone: "",
+					email: "",
+					location: "",
+					company: {
+						id: "",
+						name: "",
+						code: 0,
+						location: "",
+					},
+				},
+			],
+		},
+		user: {
+			id: "",
+			username: "",
+		},
+		division: {
+			id: "",
+			name: "",
+			code_division: "",
 		},
 	},
 	Meta: {
@@ -133,6 +157,30 @@ export default (
 					division_id: {
 						id: "",
 						name: "",
+						customers: [
+							{
+								id: "",
+								name: "",
+								phone: "",
+								email: "",
+								location: "",
+								company: {
+									id: "",
+									name: "",
+									code: 0,
+									location: "",
+								},
+							},
+						],
+					},
+					user: {
+						id: "",
+						username: "",
+					},
+					division: {
+						id: "",
+						name: "",
+						code_division: "",
 					},
 				},
 			};
