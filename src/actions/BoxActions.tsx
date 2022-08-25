@@ -22,10 +22,10 @@ export const GET_BOXES_NOT_PAGE = "GET_BOXES_NOT_PAGE";
 
 let limit = 20;
 
-export const getBoxesList = (page, area_id: String | null = null) => {
+export const getBoxesList = page => {
 	return async dispatch => {
 		try {
-			const response = await getAll(page, area_id);
+			const response = await getAll(page);
 			dispatch({
 				type: GET_BOXES_LIST,
 				payload: {

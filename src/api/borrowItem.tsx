@@ -11,9 +11,14 @@ export const create = async (data: BorrowItemInterfaceState) => {
 	return api.post("/borrow", payload);
 };
 
-export const getAll = async params => {
+export const getAll = async (page, area_id: String | null = null) => {
 	return api
-		.get(`/boxes?status=stored-on-cabinet-slot&page=${params}`)
+		.get(`/boxes?status=stored-on-cabinet-slot`, {
+			params: {
+				page: page,
+				area_id: area_id,
+			},
+		})
 		.then(res => {
 			return res.data;
 		})

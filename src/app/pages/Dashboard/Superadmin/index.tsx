@@ -61,6 +61,7 @@ export function DashboardSuperadmin() {
 	const documents = useSelector(selectDocuemnts);
 	const Companys = useSelector(selectCompanys);
 	const [title, setTitle] = useState("");
+	const [selectedItem, setSelectedItem] = useState("");
 
 	const BoxData = (page = 1) => {
 		dispatch(getBoxesList(page));
@@ -336,11 +337,9 @@ export function DashboardSuperadmin() {
 		);
 	};
 
-	const [selectedItem, setSelectedItem] = useState("");
-
 	useEffect(() => {
 		dispatch(GetActivityLogsSuperAdmin(selectedItem));
-		dispatch(getBoxesList(1, selectedItem));
+		dispatch(getBorrowList(1, selectedItem));
 	}, [selectedItem]);
 
 	const onChangeRC = e => {
@@ -466,7 +465,7 @@ export function DashboardSuperadmin() {
 				</h3>
 				<h6 className="mb-3 tc-dark-contrast">Today Summary</h6>
 				{user === "" && (
-					<div className="col col-4">
+					<div className="col col-4" style={{ paddingRight: "24px" }}>
 						<Form.Group className="mb-4" controlId="formBasicEmail">
 							<Form.Label className="mb-4">Record Center</Form.Label>
 							<Form.Select
