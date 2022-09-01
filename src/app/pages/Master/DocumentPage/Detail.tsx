@@ -117,16 +117,14 @@ const DocumentPageDetail = ({ match }) => {
 									value={document?.level_progress}
 								/>
 							</Form.Group>
-							<div
-								className="mb-3"
-								onClick={() =>
-									window.open(`${document.document_file}`, "_blank")
-								}
-							>
-								<Form.Label>Lampiran File</Form.Label>
-								{document?.document_file?.map((data, index) => (
+							<Form.Label>Lampiran File</Form.Label>
+							{document?.document_file?.map((data, index) => (
+								<div
+									className="mb-3"
+									onClick={() => window.open(`${data}`, "_blank")}
+								>
 									<div className="d-flex jc-center ai-center mt-3">
-										<div style={{ marginRight: "20px" }}>
+										<div style={{ minWidth: "30px" }}>
 											<div>{index + 1}</div>
 										</div>
 										<Form.Control
@@ -136,8 +134,8 @@ const DocumentPageDetail = ({ match }) => {
 											style={{ color: "blue", cursor: "pointer" }}
 										/>
 									</div>
-								))}
-							</div>
+								</div>
+							))}
 							<Form.Group className="mb-3">
 								<Form.Label>No Folder</Form.Label>
 								<Form.Control
