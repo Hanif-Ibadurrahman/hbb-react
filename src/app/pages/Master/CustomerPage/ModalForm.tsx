@@ -29,6 +29,7 @@ export const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setAlertMessage] = useState("");
 	const [varianAlert, setVarianAlert] = useState("");
+	const [companyId, setCompanyId] = useState<any>("");
 	const customer: CustomerInterfaceState = useSelector(selectCustomer);
 	const dispatch = useDispatch();
 
@@ -40,7 +41,7 @@ export const ModalForm = props => {
 	};
 
 	const DivisionData = (page = 1) => {
-		dispatch(getDivisionsList(page));
+		dispatch(getDivisionsList(page, companyId));
 	};
 
 	const ShowAlertError = () => {
@@ -67,7 +68,7 @@ export const ModalForm = props => {
 
 	useEffect(() => {
 		DivisionData();
-	}, []);
+	}, [companyId]);
 
 	useEffect(() => {
 		FetchData();
@@ -280,7 +281,7 @@ export const ModalForm = props => {
 													value={values?.company}
 													getOptionLabel={option => option.name}
 													onChange={(e, value) => {
-														console.log(value);
+														setCompanyId(value?.id);
 														setFieldValue(
 															"company",
 															value !== null ? value : values?.company,
@@ -304,7 +305,6 @@ export const ModalForm = props => {
 													options={division?.Divisions}
 													getOptionLabel={option => option.name}
 													onChange={(e, value) => {
-														console.log(value);
 														setFieldValue(
 															"division_id",
 															value !== null ? value : values?.division_id,

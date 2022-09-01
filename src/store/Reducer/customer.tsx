@@ -32,7 +32,7 @@ export const initialState: CustomersInterfaceState = {
 			phone: "",
 			address: "",
 			amount_access: "",
-			service_type: [
+			service_types: [
 				{
 					type: "box",
 					value: true,
@@ -146,7 +146,7 @@ export default (
 						phone: "",
 						address: "",
 						amount_access: "",
-						service_type: [
+						service_types: [
 							{
 								type: "box",
 								value: true,

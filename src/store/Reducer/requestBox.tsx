@@ -146,7 +146,7 @@ export const initialState: RequestBoxesInterfaceState = {
 						phone: "",
 						address: "",
 						amount_access: "",
-						service_type: [
+						service_types: [
 							{
 								type: "box",
 								value: true,
@@ -180,7 +180,7 @@ export const initialState: RequestBoxesInterfaceState = {
 				phone: "",
 				address: "",
 				amount_access: "",
-				service_type: [
+				service_types: [
 					{
 						type: "box",
 						value: true,
@@ -478,7 +478,7 @@ export default (
 									phone: "",
 									address: "",
 									amount_access: "",
-									service_type: [
+									service_types: [
 										{
 											type: "box",
 											value: true,
@@ -517,7 +517,7 @@ export default (
 							phone: "",
 							address: "",
 							amount_access: "",
-							service_type: [
+							service_types: [
 								{
 									type: "box",
 									value: true,

@@ -31,7 +31,7 @@ export const initialState: DocumentsInterfaceState = {
 			id: "",
 			code_cabinet: "",
 		},
-		document_file: "",
+		document_file: [""],
 		nominal: "",
 		active_year_for: "",
 		level_progress: "",
@@ -91,7 +91,7 @@ export const initialState: DocumentsInterfaceState = {
 			phone: "",
 			address: "",
 			amount_access: "",
-			service_type: [
+			service_types: [
 				{
 					type: "box",
 					value: true,
@@ -211,7 +211,7 @@ export default (
 				...state,
 				Document: {
 					id: "",
-					document_file: "",
+					document_file: [""],
 					no: "",
 					date: "",
 					detail: "",
@@ -273,7 +273,7 @@ export default (
 						phone: "",
 						address: "",
 						amount_access: "",
-						service_type: [
+						service_types: [
 							{
 								type: "box",
 								value: true,

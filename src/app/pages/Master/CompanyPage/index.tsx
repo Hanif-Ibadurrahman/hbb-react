@@ -6,7 +6,11 @@ import PageHeader from "../Components/PageHeader";
 import DropdownAction from "../Components/DropdownAction";
 import ModalForm from "./ModalForm";
 import { Pagination } from "app/components/Pagination";
-import { getCompanyList, getCompanyDetail } from "actions/CompanyAction";
+import {
+	getCompanyList,
+	getCompanyDetail,
+	RESET_COMPANY_FORM,
+} from "actions/CompanyAction";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { deleteCompany } from "actions/CompanyAction";
@@ -58,6 +62,7 @@ const CompanyPage = () => {
 	const _onHide = () => {
 		setModalShow(false);
 		setShowAlert(false);
+		dispatch({ type: RESET_COMPANY_FORM });
 	};
 
 	const showEditForm = async id => {

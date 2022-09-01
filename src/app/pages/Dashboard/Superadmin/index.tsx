@@ -303,7 +303,7 @@ export function DashboardSuperadmin() {
 						text={["Box Tidak ", <br />, "Terdaftar."]}
 					/>
 				</div>
-				<div className="col col-4 ph-0 mh-4">
+				<div className="col col-4 ph-0">
 					<CardHeader
 						icon="truck-loading"
 						total={totalReturn || 0}

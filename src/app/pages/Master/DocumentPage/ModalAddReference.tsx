@@ -89,10 +89,9 @@ const ModalAddReference = props => {
 								setTimeout(() => {
 									setShowAlert(false);
 								}, 1500);
-								setTimeout(() => {
-									window.location.reload();
-								}, 2000);
-								// setValueUpload("");
+								// setTimeout(() => {
+								// 	window.location.reload();
+								// }, 2000);
 							} else {
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
@@ -136,7 +135,6 @@ const ModalAddReference = props => {
 										name="file"
 										type="file"
 										onChange={e => {
-											console.log("onchange", e);
 											onChangeFile(e);
 										}}
 										className="form-control"

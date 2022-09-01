@@ -30,7 +30,7 @@ export const uploadFile = async data => {
 	const token = localStorage.getItem("Token");
 
 	const response = await fetch(
-		"http://103.93.57.36:8008/uploads/excel/document",
+		`${process.env.REACT_APP_API_URL}uploads/excel/document`,
 		{
 			method: "POST",
 			body: formdata,

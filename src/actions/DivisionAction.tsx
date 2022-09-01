@@ -12,10 +12,10 @@ export const UPDATE_DIVISION = "UPDATE_DIVISION";
 
 let limit = 20;
 
-export const getDivisionsList = page => {
+export const getDivisionsList = (page, company_id: String | null = null) => {
 	return async dispatch => {
 		try {
-			const response = await getAll(page);
+			const response = await getAll(page, company_id);
 			dispatch({
 				type: GET_DIVISIONS_LIST,
 				payload: {

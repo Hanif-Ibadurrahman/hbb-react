@@ -12,7 +12,7 @@ export const create = async (data: CompanyInterfaceState) => {
 		email: data.email,
 		phone: data.phone,
 		address: data.address,
-		service_type: data.service_type,
+		service_type: data.service_types,
 		amount_access: data.amount_access,
 		is_agree: data.is_agree,
 	};
@@ -35,7 +35,15 @@ export const update = async (data: CompanyInterfaceState) => {
 		service_type: [
 			{
 				type: "box",
-				value: "true",
+				value: data.service_types[0].value,
+			},
+			{
+				type: "folder",
+				value: data.service_types[1].value,
+			},
+			{
+				type: "document",
+				value: data.service_types[2].value,
 			},
 		],
 		amount_access: data.amount_access,

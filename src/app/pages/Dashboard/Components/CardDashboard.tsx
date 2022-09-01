@@ -32,7 +32,7 @@ export const CardHeader = props => {
 						<div
 							style={{
 								height: "100%",
-								width: "120px",
+								width: "100%",
 								whiteSpace: "nowrap",
 								overflow: "hidden",
 								textOverflow: "ellipsis",
