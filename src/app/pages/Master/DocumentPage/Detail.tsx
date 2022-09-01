@@ -124,12 +124,19 @@ const DocumentPageDetail = ({ match }) => {
 								}
 							>
 								<Form.Label>Lampiran File</Form.Label>
-								<Form.Control
-									type="text"
-									disabled
-									defaultValue={document?.document_file?.slice(52)}
-									style={{ color: "blue", cursor: "pointer" }}
-								/>
+								{document?.document_file?.map((data, index) => (
+									<div className="d-flex jc-center ai-center mt-3">
+										<div style={{ marginRight: "20px" }}>
+											<div>{index + 1}</div>
+										</div>
+										<Form.Control
+											type="text"
+											disabled
+											value={data.slice(51)}
+											style={{ color: "blue", cursor: "pointer" }}
+										/>
+									</div>
+								))}
 							</div>
 							<Form.Group className="mb-3">
 								<Form.Label>No Folder</Form.Label>

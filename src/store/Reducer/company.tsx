@@ -26,10 +26,10 @@ export const initialState: CompanysInterfaceState = {
 		phone: "",
 		address: "",
 		amount_access: "",
-		service_type: [
+		service_types: [
 			{
 				type: "box",
-				value: true,
+				value: false,
 			},
 			{
 				type: "folder",
@@ -111,10 +111,18 @@ export default (
 					phone: "",
 					address: "",
 					amount_access: "",
-					service_type: [
+					service_types: [
 						{
 							type: "box",
-							value: true,
+							value: false,
+						},
+						{
+							type: "folder",
+							value: false,
+						},
+						{
+							type: "document",
+							value: false,
 						},
 					],
 					is_agree: true,

@@ -18,7 +18,7 @@ export interface CompanyInterfaceState {
 	phone: string;
 	address: string;
 	amount_access: string;
-	service_type: ServiceTypeInterfaceState[];
+	service_types: ServiceTypeInterfaceState[];
 }
 
 export interface CompanysInterfaceState {

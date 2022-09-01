@@ -4,6 +4,7 @@ export const initialState: LoginsInterfaceState = {
 	Login: {
 		username: "",
 		password: "",
+		email: "",
 		token: {
 			token: "",
 			type: "",

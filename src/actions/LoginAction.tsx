@@ -1,7 +1,8 @@
 import { LoginInterfaceState } from "store/Types/LoginTypes";
-import { login } from "api/login";
+import { login, reset } from "api/login";
 export const SET_LOGIN_DATA = "SET_LOGIN_DATA";
 export const LOGIN_DATA = "LOGIN_DATA";
+export const RESET_ACCOUNT = "RESET_ACCOUNT";
 
 export const Login = async (data: LoginInterfaceState) => {
 	console.log(data);
@@ -32,6 +33,36 @@ export const Login = async (data: LoginInterfaceState) => {
 		} catch (error: any) {
 			dispatch({
 				type: LOGIN_DATA,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const ResetPassword = async (data: LoginInterfaceState) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_LOGIN_DATA,
+				payload: data,
+			});
+			const response = await reset(data);
+			dispatch({
+				type: RESET_ACCOUNT,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: RESET_ACCOUNT,
 				payload: {
 					data: false,
 					errorMessage: error?.message,

@@ -12,6 +12,7 @@ export interface StaffInterface {
 export interface LoginInterfaceState {
 	username: string;
 	password: string;
+	email?: string;
 	token: {
 		token: string;
 		type: string;

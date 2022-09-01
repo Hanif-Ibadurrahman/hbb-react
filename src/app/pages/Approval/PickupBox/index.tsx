@@ -25,8 +25,6 @@ const ApprovalAdminPickupBox = () => {
 	// const requestBoxes = useSelector(selectRequestBoxes);
 	const pickUpList = useSelector(selectPickUpItems);
 
-	console.log("Kambing Data", pickUpList.PickUpItemList);
-
 	// const boxes = useSelector(selectBoxes);
 	const dispatch = useDispatch();
 
@@ -50,7 +48,6 @@ const ApprovalAdminPickupBox = () => {
 	};
 
 	const RejectForm = async id => {
-		console.log("Reject Id", id);
 		dispatch(getRequestBoxDetail(id));
 		setModalShow(true);
 	};
