@@ -40,16 +40,16 @@ export function NavBarDropdown(props) {
 				</div>
 			</Dropdown.Toggle>
 
-			<Dropdown.Menu className="pos-r">
-				<Dropdown.Item className="ph-6" onClick={gotoProfile}>
+			<Dropdown.Menu className="pos-r" style={{ width: "100%" }}>
+				{/* <Dropdown.Item className="ph-6" onClick={gotoProfile}>
 					<div className="d-flex ai-center p-lg">
 						<span className="icon mr-4 d-flex ai-center">
 							<i className="far fa-user"></i>
 						</span>
 						<span className="text">Profile</span>
 					</div>
-				</Dropdown.Item>
-				<span className="d-block h-1px w-100% bg-medium-tint op-50% mv-2"></span>
+				</Dropdown.Item> */}
+				{/* <span className="d-block h-1px w-100% bg-medium-tint op-50% mv-2"></span> */}
 				{/* separator */}
 				<Dropdown.Item className="ph-6" onClick={logout}>
 					<div className="d-flex ai-center p-lg tc-danger-5">
