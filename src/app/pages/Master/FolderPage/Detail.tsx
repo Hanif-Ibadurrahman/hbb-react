@@ -35,7 +35,7 @@ const FolderPageDetail = ({ match }) => {
 	const [foundDocument, setFoundDocument] = useState(documents as any);
 
 	useEffect(() => {
-		if (documents?.length > 1 && search === "") {
+		if (documents?.length > 0 && search === "") {
 			setFoundDocument(documents);
 		} else {
 			setFoundDocument([]);
@@ -45,7 +45,7 @@ const FolderPageDetail = ({ match }) => {
 	const filter = e => {
 		const keyword = e.target.value;
 
-		if (keyword !== "" && folder?.documents?.length > 1) {
+		if (keyword !== "" && folder?.documents?.length > 0) {
 			const results = documents?.filter(test => {
 				return (
 					test?.detail?.toLowerCase().startsWith(keyword.toLowerCase()) ||
