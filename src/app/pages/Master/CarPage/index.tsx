@@ -32,8 +32,6 @@ const CarPage = () => {
 		dispatch(getCarsList(page));
 	};
 
-	console.log(cars.Meta.last_page, "last apge >>>>");
-
 	useEffect(() => {
 		FetchData();
 	}, []);

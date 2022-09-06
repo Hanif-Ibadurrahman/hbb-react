@@ -24,7 +24,6 @@ export const update = async (data: CabinetInterfaceState) => {
 		room_id: data?.room?.id,
 		depth: data?.depth,
 	};
-	console.log(payload);
 	return await api.put(`/cabinets/${id}`, payload);
 };
 
@@ -36,7 +35,11 @@ export const getAll = async params => {
 	return api
 		.get(`/cabinets?page=${params}`)
 		.then(res => {
-			return res.data;
+			if (res.status === 401) {
+				return localStorage.clear();
+			} else {
+				return res.data;
+			}
 		})
 		.catch(error => {
 			return error;

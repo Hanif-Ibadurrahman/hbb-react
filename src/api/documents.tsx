@@ -84,7 +84,11 @@ export const getAll = async params => {
 	return api
 		.get(`/documents?page=${params}`)
 		.then(res => {
-			return res.data;
+			if (res.status === 401) {
+				return localStorage.clear();
+			} else {
+				return res.data;
+			}
 		})
 		.catch(error => {
 			return error;
@@ -95,7 +99,11 @@ export const getAllIndexing = async params => {
 	return api
 		.get(`/documents?page=${params}&is_indexed=false`)
 		.then(res => {
-			return res.data;
+			if (res.status === 401) {
+				return localStorage.clear();
+			} else {
+				return res.data;
+			}
 		})
 		.catch(error => {
 			return error;
@@ -106,7 +114,11 @@ export const getAllDocumentAssigned = async params => {
 	return api
 		.get(`/documents?per_page=999999999&is_assigned=false`)
 		.then(res => {
-			return res.data;
+			if (res.status === 401) {
+				return localStorage.clear();
+			} else {
+				return res.data;
+			}
 		})
 		.catch(error => {
 			return error;

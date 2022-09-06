@@ -1,5 +1,5 @@
 import { Form, Modal, Container, Row, Col, Button } from "react-bootstrap";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Alert from "app/components/Alerts";
@@ -11,13 +11,24 @@ import {
 	RESET_DIVISION_FORM,
 } from "actions/DivisionAction";
 import { DivisionInterfaceState } from "store/Types/DivisionTypes";
+import { selectCompanys } from "store/Selector/CompanySelector";
+import { getCompanyList } from "actions/CompanyAction";
+import { Autocomplete, TextField } from "@mui/material";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
 	const [alertMessage, setAlertMessage] = useState("");
 	const [varianAlert, setVarianAlert] = useState("");
-	// const divisions: DivisionInterfaceState = useSelector(selectDivision);
 	const divisions: DivisionInterfaceState = useSelector(selectDivision);
+	const company = useSelector(selectCompanys);
+
+	const FetchData = (page = 1) => {
+		dispatch(getCompanyList(page));
+	};
+
+	useEffect(() => {
+		FetchData();
+	}, []);
 
 	const dispatch = useDispatch();
 
@@ -87,6 +98,7 @@ const ModalForm = props => {
 						handleChange,
 						handleBlur,
 						handleSubmit,
+						setFieldValue,
 						isSubmitting,
 					}) => (
 						<Form onSubmit={handleSubmit}>
@@ -117,6 +129,29 @@ const ModalForm = props => {
 													</p>
 												) : null}
 											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Pilih Perusahaan</Form.Label>
+												<Autocomplete
+													id="company"
+													options={company?.Companys}
+													getOptionLabel={option => option.name}
+													value={values?.company}
+													onChange={(e, value) => {
+														setFieldValue(
+															"company",
+															value !== null ? value : values?.company,
+														);
+													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															placeholder="Company"
+															name="comapany_id"
+															{...params}
+														/>
+													)}
+												/>
+											</Form.Group>
 										</Col>
 									</Row>
 								</Container>
@@ -127,7 +162,7 @@ const ModalForm = props => {
 								</Button>
 								<Button
 									type="submit"
-									disabled={isSubmitting}
+									disabled={isSubmitting || values?.company?.id === ""}
 									className="bg-success-6"
 									variant="success"
 								>
