@@ -42,7 +42,6 @@ const ModalForm = props => {
 	const room = useSelector(selectRooms);
 	const box = useSelector(selectBoxes);
 	const classification = useSelector(selectClassifications);
-	console.log("classification >>>", classification);
 	const FetchData = (page = 1) => {
 		dispatch(getAreasList(page));
 	};

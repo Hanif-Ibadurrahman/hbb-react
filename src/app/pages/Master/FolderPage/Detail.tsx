@@ -35,7 +35,7 @@ const FolderPageDetail = ({ match }) => {
 	const [foundDocument, setFoundDocument] = useState(documents as any);
 
 	useEffect(() => {
-		if (documents?.length > 0 && search === "") {
+		if (documents?.length > 0 && search === "" && documents[0].id !== "") {
 			setFoundDocument(documents);
 		} else {
 			setFoundDocument([]);

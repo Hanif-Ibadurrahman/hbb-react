@@ -7,6 +7,7 @@ import { Pagination } from "app/components/Pagination";
 import { getAllRequestList } from "actions/RequestBoxAction";
 import { useDispatch, useSelector } from "react-redux";
 import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
+import Badge from "react-bootstrap/Badge";
 import moment from "moment";
 
 const RequestHistory = () => {
@@ -42,7 +43,7 @@ const RequestHistory = () => {
 			prop: "created_at",
 			sortable: true,
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "25%" },
 			},
 			headerCell: sortedProp => {
 				return (
@@ -60,11 +61,30 @@ const RequestHistory = () => {
 			title: "Tipe Permintaan",
 			prop: "type",
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "20%" },
 			},
 			cell: row => {
 				const text = row?.type?.toUpperCase();
 				return <>{text.replaceAll("-", " ")}</>;
+			},
+		},
+		{
+			title: "Keterangan",
+			prop: "note",
+			cellProps: {
+				style: { width: "25%" },
+			},
+		},
+		{
+			title: "Status",
+			prop: "status",
+			cellProps: {
+				style: { width: "10%" },
+			},
+			cell: row => {
+				const text = row?.status?.toUpperCase();
+				const badge = row?.status === "rejected" ? "danger" : "success";
+				return <Badge bg={badge}>{text}</Badge>;
 			},
 		},
 		{

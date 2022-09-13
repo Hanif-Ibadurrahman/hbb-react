@@ -99,7 +99,6 @@ const ModalForm = props => {
 						isSubmitting,
 					}) => (
 						<Form onSubmit={handleSubmit}>
-							{console.log("values >>>>", values)}
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
 									{Companys?.id ? <>Edit Data</> : <>Tambah Data</>}

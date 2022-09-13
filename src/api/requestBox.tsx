@@ -39,7 +39,11 @@ export const getAll = async params => {
 	return api
 		.get(`/requests?status=created&page=${params}`)
 		.then(res => {
-			return res.data;
+			if (res.status === 401) {
+				return localStorage.clear();
+			} else {
+				return res.data;
+			}
 		})
 		.catch(error => {
 			return error;

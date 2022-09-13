@@ -16,6 +16,27 @@ export const initialState: DivisionsInterfaceState = {
 	Division: {
 		id: "",
 		name: "",
+		company: {
+			id: "",
+			code: "",
+			name: "",
+			location: "",
+			longitude: "",
+			latitude: "",
+			person_responsible: "",
+			npwp: "",
+			email: "",
+			phone: "",
+			address: "",
+			amount_access: "",
+			service_types: [
+				{
+					type: "box",
+					value: false,
+				},
+			],
+			is_agree: true,
+		},
 		customers: [
 			{
 				id: "",

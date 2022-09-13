@@ -86,7 +86,6 @@ export default (
 				Folder: payload,
 			};
 		case GET_FOLDERS_LIST:
-			console.log("payload >>>", payload);
 			return {
 				...state,
 				Folders: payload?.data,
