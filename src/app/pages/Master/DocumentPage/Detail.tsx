@@ -122,10 +122,16 @@ const DocumentPageDetail = ({ match }) => {
 								{document?.document_file?.length > 0 ? (
 									<>
 										{document?.document_file?.map((data, index) => (
-											<div className="d-flex jc-between">
+											<div className="d-flex ai-center">
 												<div
-													className="mb-3"
-													onClick={() => window.open(`${data}`, "_blank")}
+													className="mb-3 w-50%"
+													onClick={() =>
+														window.open(
+															`${data}`,
+															"popup",
+															"width=1200,height=1200",
+														)
+													}
 												>
 													<div className="d-flex jc-center ai-center mt-3">
 														<div style={{ minWidth: "30px" }}>
@@ -134,15 +140,19 @@ const DocumentPageDetail = ({ match }) => {
 														<Form.Control
 															type="text"
 															disabled
-															value={data.slice(51)}
+															value={`Lampiran ${index + 1}`}
 															style={{ color: "blue", cursor: "pointer" }}
 														/>
 													</div>
 												</div>
 												<Button
 													variant="danger"
-													// onClick={() => deleteCart(cart)}
 													className="d-flex jc-center ai-center"
+													style={{
+														height: "38px",
+														width: "38px",
+														marginLeft: "24px",
+													}}
 												>
 													<i className="far fa-times"></i>
 												</Button>
