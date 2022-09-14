@@ -10,10 +10,41 @@ import { DocumentInterfaceState } from "store/Types/DocumentTypes";
 import { selectDocument } from "store/Selector/DocumentSelector";
 import { getDocumentDetail } from "actions/DocumentAction";
 import moment from "moment";
+import Swal from "sweetalert2";
+import Alert from "app/components/Alerts";
+import { deleteAttachmentDoc } from "api/documents";
 
 const DocumentPageDetail = ({ match }) => {
 	const document: DocumentInterfaceState = useSelector(selectDocument);
 	let history = useHistory();
+	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
+
+	const onDelete = id => {
+		const newData = document?.document_file?.filter(data => data !== id);
+		const payload = newData.map(data => {
+			const delBefore = data.substring(data.indexOf("attachment"));
+			const url = delBefore.substring(0, delBefore.indexOf("?"));
+			return url;
+		});
+		Swal.fire({
+			text: "Apakah anda ingin menghapus data ini?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#d33",
+			confirmButtonText: "Hapus",
+		}).then(willDelete => {
+			if (willDelete.isConfirmed) {
+				deleteAttachmentDoc(document.id, payload);
+				setShowAlertSuccess(true);
+				setTimeout(function () {
+					setShowAlertSuccess(false);
+				}, 4000);
+				setTimeout(function () {
+					window.location.reload();
+				}, 1000);
+			}
+		});
+	};
 
 	const goToPreviousPath = e => {
 		e.preventDefault();
@@ -32,6 +63,12 @@ const DocumentPageDetail = ({ match }) => {
 
 	return (
 		<>
+			<Alert
+				text="Data Berhasil Di Hapus"
+				variant="success"
+				show={showAlertSuccess}
+				onHide={() => setShowAlertSuccess(false)}
+			/>
 			<PageWrapper className="row w-100%">
 				<Breadcrumb
 					crumbs={["Dashboard", "Document", "Detail"]}
@@ -148,6 +185,7 @@ const DocumentPageDetail = ({ match }) => {
 												<Button
 													variant="danger"
 													className="d-flex jc-center ai-center"
+													onClick={() => onDelete(data)}
 													style={{
 														height: "38px",
 														width: "38px",
@@ -230,7 +268,7 @@ const DocumentPageDetail = ({ match }) => {
 						<QR
 							id="Detail-Box-QR"
 							title="Scan here"
-							value={document.sign_code}
+							value={document?.sign_code || "-"}
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
