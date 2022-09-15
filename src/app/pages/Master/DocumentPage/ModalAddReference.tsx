@@ -89,9 +89,9 @@ const ModalAddReference = props => {
 								setTimeout(() => {
 									setShowAlert(false);
 								}, 1500);
-								// setTimeout(() => {
-								// 	window.location.reload();
-								// }, 2000);
+								setTimeout(() => {
+									window.location.reload();
+								}, 2000);
 							} else {
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);

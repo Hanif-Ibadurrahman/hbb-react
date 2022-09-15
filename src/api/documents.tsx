@@ -170,3 +170,10 @@ export const filter = async (data: DocumentInterfaceState) => {
 		return api.get(`/documents`);
 	}
 };
+
+export const deleteAttachmentDoc = async (id, document_file: string[]) => {
+	let payload = {
+		document_file: document_file,
+	};
+	return await api.put(`/documents/${id}/destroy/document-file`, payload);
+};
