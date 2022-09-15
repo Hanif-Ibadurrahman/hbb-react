@@ -34,7 +34,7 @@ export function SearchInput(props) {
 					handleSubmit,
 					isSubmitting,
 				}) => (
-					<Form onSubmit={handleSubmit} className="right">
+					<Form onSubmit={handleSubmit} className="right d-flex">
 						<Container className="d-flex">
 							<Form.Group>
 								<Form.Control
@@ -42,6 +42,27 @@ export function SearchInput(props) {
 									name="code_box"
 									placeholder="cari code box"
 									value={values.code_box}
+									onChange={e => {
+										handleChange(e);
+									}}
+								/>
+							</Form.Group>
+							<Button
+								type="submit"
+								disabled={isSubmitting}
+								className="bg-success-6 w-20 ml-4"
+								variant="success"
+							>
+								Cari
+							</Button>
+						</Container>
+						<Container className="d-flex">
+							<Form.Group>
+								<Form.Control
+									type="text"
+									name="custom_code_box"
+									placeholder="Alternative Code"
+									value={values.custom_code_box}
 									onChange={e => {
 										handleChange(e);
 									}}
