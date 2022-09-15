@@ -52,16 +52,37 @@ export const getAllNotPage = async params => {
 export const filterBoxes = async (data: BoxInterfaceState) => {
 	let filter = {
 		code: data.code_box,
+		altCode: data.custom_code_box,
 	};
 
-	return api
-		.get(`/boxes?code_box=${filter.code}`)
-		.then(res => {
-			return res.data;
-		})
-		.catch(error => {
-			return error;
-		});
+	if (filter.code !== undefined && filter.code !== "") {
+		return api
+			.get(`/boxes?code_box=${filter.code}`)
+			.then(res => {
+				return res.data;
+			})
+			.catch(error => {
+				return error;
+			});
+	} else if (filter.altCode !== undefined && filter.altCode !== "") {
+		return api
+			.get(`/boxes?custom_code_box=${filter.altCode}`)
+			.then(res => {
+				return res.data;
+			})
+			.catch(error => {
+				return error;
+			});
+	} else {
+		return api
+			.get(`/boxes`)
+			.then(res => {
+				return res.data;
+			})
+			.catch(error => {
+				return error;
+			});
+	}
 };
 
 export const destroy = id => {
