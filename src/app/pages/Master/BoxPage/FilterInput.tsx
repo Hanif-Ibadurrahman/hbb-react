@@ -61,7 +61,7 @@ export function SearchInput(props) {
 								<Form.Control
 									type="text"
 									name="custom_code_box"
-									placeholder="Custome Code Box"
+									placeholder="Alternative Code"
 									value={values.custom_code_box}
 									onChange={e => {
 										handleChange(e);
