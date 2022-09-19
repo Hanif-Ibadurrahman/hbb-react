@@ -131,7 +131,7 @@ const BoxPageDetail = ({ match }) => {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">Box Barcode</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">Box QR</p>
 						</div>
 					</Card>
 				</div>

@@ -216,7 +216,7 @@ const ModalForm = props => {
 													type="number"
 													name="active_year_for"
 													placeholder="Masa Aktif"
-													min={Year}
+													// min={Year}
 													value={values?.active_year_for}
 													onChange={e => {
 														handleChange(e);
