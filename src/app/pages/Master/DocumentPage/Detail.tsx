@@ -16,7 +16,6 @@ import { deleteAttachmentDoc } from "api/documents";
 
 const DocumentPageDetail = ({ match }) => {
 	const user = localStorage.getItem("User");
-	console.log("user >>>", user);
 	const document: DocumentInterfaceState = useSelector(selectDocument);
 	let history = useHistory();
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
