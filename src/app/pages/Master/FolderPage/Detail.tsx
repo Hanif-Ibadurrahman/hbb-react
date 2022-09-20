@@ -159,7 +159,7 @@ const FolderPageDetail = ({ match }) => {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">Folder Barcode</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">Folder QR</p>
 						</div>
 					</Card>
 				</div>
