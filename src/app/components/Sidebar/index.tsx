@@ -24,6 +24,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
 	getAllConfirmedAdmin,
+	getNotificationList,
 	getRequestBoxesList,
 	SearchApprovalAdmin,
 } from "actions/RequestBoxAction";
@@ -65,7 +66,7 @@ export function Sidebar() {
 
 	const csrAdmin = (page = 1) => {
 		if (requestBoxes.RequestBoxes.length === 0) {
-			dispatch(getRequestBoxesList(page));
+			dispatch(getNotificationList(page));
 		} else {
 			dispatch(SearchApprovalAdmin);
 		}
