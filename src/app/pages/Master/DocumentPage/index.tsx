@@ -20,6 +20,8 @@ import {
 import { ModalFilter } from "./ModalFilter";
 import ModalAddReference from "./ModalAddReference";
 import { UploadFileDoc } from "./UploadFiile";
+import { Button } from "react-bootstrap";
+import Breadcrumb from "app/components/BreadCrumb";
 
 const DocumentPage = () => {
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -179,16 +181,23 @@ const DocumentPage = () => {
 					folder_id={folderId}
 				/>
 				<div className="d-flex jc-between">
-					<div style={{ width: "58%" }}>
-						<PageHeader
-							breadcrumb={["Master", "Document"]}
-							modal={setModalShow}
-							valueModalSet={false}
-							value={true}
-							filter={ModalFilter}
-						/>
+					<div style={{ width: "20%" }}>
+						<Breadcrumb crumbs={["Master", "Document"]} selected />
 					</div>
-					<UploadFileDoc />
+					<div className="d-flex">
+						<UploadFileDoc />
+						<div style={{ marginLeft: "12px", marginRight: "4px" }}>
+							<ModalFilter />
+						</div>
+						<Button
+							className="d-flex ai-center bg-success-6"
+							variant="success"
+							onClick={() => setModalShow(true)}
+							style={{ height: "38px" }}
+						>
+							Add Data<i className="far fa-plus ml-2"></i>
+						</Button>{" "}
+					</div>
 				</div>
 				<DataTable
 					tableHeader={header}

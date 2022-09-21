@@ -35,6 +35,7 @@ export const GET_ALL_APPROVED = "GET_ALL_APPROVED";
 export const SEARCH_APPROVAL_ADMIN = "SEARCH_APPROVAL_ADMIN";
 export const SEARCH_APPROVAL_OPERATION = "SEARCH_APPROVAL_OPERATION";
 export const SEARCH_ALL_APPROVAL = "SEARCH_ALL_APPROVAL";
+export const GET_NOTIFICATION = "GET_NOTIFICATION";
 
 export const getRequestBoxesList = page => {
 	return async dispatch => {
@@ -52,6 +53,33 @@ export const getRequestBoxesList = page => {
 		} catch (error: any) {
 			dispatch({
 				type: GET_REQUEST_BOXES_LIST,
+				payload: {
+					data: false,
+					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const getNotificationList = page => {
+	return async dispatch => {
+		try {
+			const response = await getAll(page);
+			dispatch({
+				type: GET_NOTIFICATION,
+				payload: {
+					data: response.data,
+					meta: response.meta,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: GET_NOTIFICATION,
 				payload: {
 					data: false,
 					errorMessage: error.message,

@@ -16,6 +16,7 @@ export function ModalFilter(props) {
 				className="d-flex ai-center mr-2"
 				variant="secondary"
 				onClick={() => setModalShow(true)}
+				style={{ height: "38px" }}
 			>
 				Filter<i className="fas fa-sort-alt ml-2"></i>
 			</Button>{" "}

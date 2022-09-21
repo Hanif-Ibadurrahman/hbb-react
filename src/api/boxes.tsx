@@ -55,18 +55,12 @@ export const filterBoxes = async (data: BoxInterfaceState) => {
 		altCode: data.custom_code_box,
 	};
 
-	if (filter.code !== undefined && filter.code !== "") {
+	if (
+		(filter.code !== undefined && filter.code !== "") ||
+		(filter.altCode !== undefined && filter.altCode !== "")
+	) {
 		return api
-			.get(`/boxes?code_box=${filter.code}`)
-			.then(res => {
-				return res.data;
-			})
-			.catch(error => {
-				return error;
-			});
-	} else if (filter.altCode !== undefined && filter.altCode !== "") {
-		return api
-			.get(`/boxes?custom_code_box=${filter.altCode}`)
+			.get(`/boxes?code_box=${filter.code}&custom_code_box=${filter.altCode}`)
 			.then(res => {
 				return res.data;
 			})
