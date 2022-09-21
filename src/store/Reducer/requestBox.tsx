@@ -15,6 +15,7 @@ import {
 	SEARCH_APPROVAL_ADMIN,
 	SEARCH_APPROVAL_OPERATION,
 	SEARCH_ALL_APPROVAL,
+	GET_NOTIFICATION,
 } from "../../actions/RequestBoxAction";
 
 import { RequestBoxesInterfaceState } from "../Types/RequestBoxTypes";
@@ -146,7 +147,7 @@ export const initialState: RequestBoxesInterfaceState = {
 						phone: "",
 						address: "",
 						amount_access: "",
-						service_type: [
+						service_types: [
 							{
 								type: "box",
 								value: true,
@@ -180,7 +181,7 @@ export const initialState: RequestBoxesInterfaceState = {
 				phone: "",
 				address: "",
 				amount_access: "",
-				service_type: [
+				service_types: [
 					{
 						type: "box",
 						value: true,
@@ -261,6 +262,11 @@ export default (
 					total: payload?.meta?.total,
 					per_page: payload?.meta?.per_page,
 				},
+				ErrorRequestBox: payload.errorMessage,
+			};
+		case GET_NOTIFICATION:
+			return {
+				...state,
 				CSRAdminNotif: {
 					last_page: payload?.meta?.last_page,
 					current_page: payload?.meta?.current_page,
@@ -478,7 +484,7 @@ export default (
 									phone: "",
 									address: "",
 									amount_access: "",
-									service_type: [
+									service_types: [
 										{
 											type: "box",
 											value: true,
@@ -517,7 +523,7 @@ export default (
 							phone: "",
 							address: "",
 							amount_access: "",
-							service_type: [
+							service_types: [
 								{
 									type: "box",
 									value: true,

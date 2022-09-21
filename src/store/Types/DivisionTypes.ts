@@ -1,4 +1,5 @@
 import { PaginationState } from "../Types/PaginationTypes";
+import { CompanyInterfaceState } from "./CompanyTypes";
 
 interface CompanyInterfaceDivision {
 	id: string | null;
@@ -18,6 +19,7 @@ interface CustomerInterfaceDivision {
 export interface DivisionInterfaceState {
 	id: string | null;
 	name: string;
+	company?: CompanyInterfaceState;
 	customers: CustomerInterfaceDivision[];
 }
 

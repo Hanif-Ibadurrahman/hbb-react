@@ -79,15 +79,7 @@ export function UploadFileDoc(props) {
 					}
 				}}
 			>
-				{({
-					values,
-					errors,
-					touched,
-					handleChange,
-					handleBlur,
-					handleSubmit,
-					isSubmitting,
-				}) => (
+				{({ handleSubmit, isSubmitting }) => (
 					<Form onSubmit={handleSubmit} className="right mb-4 ml-4">
 						<div className="d-flex">
 							<Form.Group>

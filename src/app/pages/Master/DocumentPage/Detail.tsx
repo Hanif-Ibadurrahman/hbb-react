@@ -10,10 +10,41 @@ import { DocumentInterfaceState } from "store/Types/DocumentTypes";
 import { selectDocument } from "store/Selector/DocumentSelector";
 import { getDocumentDetail } from "actions/DocumentAction";
 import moment from "moment";
+import Swal from "sweetalert2";
+import Alert from "app/components/Alerts";
+import { deleteAttachmentDoc } from "api/documents";
 
 const DocumentPageDetail = ({ match }) => {
 	const document: DocumentInterfaceState = useSelector(selectDocument);
 	let history = useHistory();
+	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
+
+	const onDelete = id => {
+		const newData = document?.document_file?.filter(data => data !== id);
+		const payload = newData.map(data => {
+			const delBefore = data.substring(data.indexOf("attachment"));
+			const url = delBefore.substring(0, delBefore.indexOf("?"));
+			return url;
+		});
+		Swal.fire({
+			text: "Apakah anda ingin menghapus data ini?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#d33",
+			confirmButtonText: "Hapus",
+		}).then(willDelete => {
+			if (willDelete.isConfirmed) {
+				deleteAttachmentDoc(document.id, payload);
+				setShowAlertSuccess(true);
+				setTimeout(function () {
+					setShowAlertSuccess(false);
+				}, 4000);
+				setTimeout(function () {
+					window.location.reload();
+				}, 1000);
+			}
+		});
+	};
 
 	const goToPreviousPath = e => {
 		e.preventDefault();
@@ -32,6 +63,12 @@ const DocumentPageDetail = ({ match }) => {
 
 	return (
 		<>
+			<Alert
+				text="Data Berhasil Di Hapus"
+				variant="success"
+				show={showAlertSuccess}
+				onHide={() => setShowAlertSuccess(false)}
+			/>
 			<PageWrapper className="row w-100%">
 				<Breadcrumb
 					crumbs={["Dashboard", "Document", "Detail"]}
@@ -117,20 +154,55 @@ const DocumentPageDetail = ({ match }) => {
 									value={document?.level_progress}
 								/>
 							</Form.Group>
-							<div
-								className="mb-3"
-								onClick={() =>
-									window.open(`${document.document_file}`, "_blank")
-								}
-							>
+							<Form.Group className="mb-3">
 								<Form.Label>Lampiran File</Form.Label>
-								<Form.Control
-									type="text"
-									disabled
-									defaultValue={document?.document_file?.slice(52)}
-									style={{ color: "blue", cursor: "pointer" }}
-								/>
-							</div>
+								{document?.document_file?.length > 0 ? (
+									<>
+										{document?.document_file?.map((data, index) => (
+											<div className="d-flex ai-center">
+												<div
+													className="mb-3 w-50%"
+													onClick={() =>
+														window.open(
+															`${data}`,
+															"popup",
+															"width=1200,height=1200",
+														)
+													}
+												>
+													<div className="d-flex jc-center ai-center mt-3">
+														<div style={{ minWidth: "30px" }}>
+															<div>{index + 1}</div>
+														</div>
+														<Form.Control
+															type="text"
+															disabled
+															value={`Lampiran ${index + 1}`}
+															style={{ color: "blue", cursor: "pointer" }}
+														/>
+													</div>
+												</div>
+												<Button
+													variant="danger"
+													className="d-flex jc-center ai-center"
+													onClick={() => onDelete(data)}
+													style={{
+														height: "38px",
+														width: "38px",
+														marginLeft: "24px",
+													}}
+												>
+													<i className="far fa-times"></i>
+												</Button>
+											</div>
+										))}
+									</>
+								) : (
+									<>
+										<Form.Control type="text" disabled defaultValue="-" />
+									</>
+								)}
+							</Form.Group>
 							<Form.Group className="mb-3">
 								<Form.Label>No Folder</Form.Label>
 								<Form.Control
@@ -196,7 +268,7 @@ const DocumentPageDetail = ({ match }) => {
 						<QR
 							id="Detail-Box-QR"
 							title="Scan here"
-							value={document.sign_code}
+							value={document?.sign_code || "-"}
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">

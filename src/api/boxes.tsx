@@ -1,4 +1,5 @@
 import { identity } from "lodash";
+import { useHistory } from "react-router-dom";
 import { BoxInterfaceState } from "store/Types/BoxTypes";
 import api from "./dox";
 export const create = async (data: BoxInterfaceState) => {
@@ -15,7 +16,6 @@ export const update = async (data: BoxInterfaceState) => {
 		code_box: data.code_box,
 		company_id: data.company.id,
 	};
-	console.log(payload);
 	return await api.put(`/boxes/${id}`, payload);
 };
 
@@ -27,7 +27,11 @@ export const getAll = async params => {
 	return api
 		.get(`/boxes?is_filled=true&page=${params}`)
 		.then(res => {
-			return res.data;
+			if (res.status === 401) {
+				return localStorage.clear();
+			} else {
+				return res.data;
+			}
 		})
 		.catch(error => {
 			return error;
@@ -48,16 +52,31 @@ export const getAllNotPage = async params => {
 export const filterBoxes = async (data: BoxInterfaceState) => {
 	let filter = {
 		code: data.code_box,
+		altCode: data.custom_code_box,
 	};
 
-	return api
-		.get(`/boxes?code_box=${filter.code}`)
-		.then(res => {
-			return res.data;
-		})
-		.catch(error => {
-			return error;
-		});
+	if (
+		(filter.code !== undefined && filter.code !== "") ||
+		(filter.altCode !== undefined && filter.altCode !== "")
+	) {
+		return api
+			.get(`/boxes?code_box=${filter.code}&custom_code_box=${filter.altCode}`)
+			.then(res => {
+				return res.data;
+			})
+			.catch(error => {
+				return error;
+			});
+	} else {
+		return api
+			.get(`/boxes`)
+			.then(res => {
+				return res.data;
+			})
+			.catch(error => {
+				return error;
+			});
+	}
 };
 
 export const destroy = id => {

@@ -74,7 +74,7 @@ const BoxPageDetail = ({ match }) => {
 		<>
 			<PageWrapper className="row w-100%">
 				<Breadcrumb
-					crumbs={["Dashboard", "Folder", "Detail"]}
+					crumbs={["Dashboard", "Box", "Detail"]}
 					selected
 					className="mb-4"
 				/>

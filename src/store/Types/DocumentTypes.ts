@@ -28,7 +28,7 @@ export interface DocumentInterfaceState {
 	no: string;
 	date: string;
 	detail: string;
-	document_file: string;
+	document_file: [""];
 	cabinet?: CabinetDocumentInterfaceState;
 	nominal: string;
 	active_year_for: string;

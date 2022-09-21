@@ -61,6 +61,7 @@ export function DashboardSuperadmin() {
 	const documents = useSelector(selectDocuemnts);
 	const Companys = useSelector(selectCompanys);
 	const [title, setTitle] = useState("");
+	const [selectedItem, setSelectedItem] = useState("");
 
 	const BoxData = (page = 1) => {
 		dispatch(getBoxesList(page));
@@ -303,7 +304,7 @@ export function DashboardSuperadmin() {
 						text={["Box Tidak ", <br />, "Terdaftar."]}
 					/>
 				</div>
-				<div className="col col-4 ph-0 mh-4">
+				<div className="col col-4 ph-0">
 					<CardHeader
 						icon="truck-loading"
 						total={totalReturn || 0}
@@ -336,10 +337,9 @@ export function DashboardSuperadmin() {
 		);
 	};
 
-	const [selectedItem, setSelectedItem] = useState("");
-
 	useEffect(() => {
 		dispatch(GetActivityLogsSuperAdmin(selectedItem));
+		dispatch(getBorrowList(1, selectedItem));
 	}, [selectedItem]);
 
 	const onChangeRC = e => {
@@ -464,6 +464,24 @@ export function DashboardSuperadmin() {
 					<span className="m-0 username text txtf-c"> {userName}</span>
 				</h3>
 				<h6 className="mb-3 tc-dark-contrast">Today Summary</h6>
+				{user === "" && (
+					<div className="col col-4" style={{ paddingRight: "24px" }}>
+						<Form.Group className="mb-4" controlId="formBasicEmail">
+							<Form.Label className="mb-4">Record Center</Form.Label>
+							<Form.Select
+								aria-label="Default select example"
+								onChange={e => onChangeRC(e)}
+								value={selectedItem}
+							>
+								<option>Pilih Record Center</option>
+								{areaList?.map((item, i) => (
+									<option value={item?.id}>{item?.name}</option>
+								))}
+							</Form.Select>
+						</Form.Group>
+					</div>
+				)}
+
 				<CardDashboard />
 			</div>
 			<div className="pos-r p-8 pt-0 mt-4">

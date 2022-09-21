@@ -27,31 +27,12 @@ exports[`<NavBarDropdown /> should match snapshot 1`] = `
   <DropdownMenu
     className="pos-r"
     flip={true}
+    style={
+      Object {
+        "width": "100%",
+      }
+    }
   >
-    <DropdownItem
-      className="ph-6"
-      onClick={[Function]}
-    >
-      <div
-        className="d-flex ai-center p-lg"
-      >
-        <span
-          className="icon mr-4 d-flex ai-center"
-        >
-          <i
-            className="far fa-user"
-          />
-        </span>
-        <span
-          className="text"
-        >
-          Profile
-        </span>
-      </div>
-    </DropdownItem>
-    <span
-      className="d-block h-1px w-100% bg-medium-tint op-50% mv-2"
-    />
     <DropdownItem
       className="ph-6"
       onClick={[Function]}

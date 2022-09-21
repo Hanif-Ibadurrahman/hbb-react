@@ -36,10 +36,18 @@ export const initialState: ClassificationsInterfaceState = {
 			phone: "",
 			address: "",
 			amount_access: "",
-			service_type: [
+			service_types: [
 				{
 					type: "box",
-					value: true,
+					value: false,
+				},
+				{
+					type: "folder",
+					value: false,
+				},
+				{
+					type: "document",
+					value: false,
 				},
 			],
 			is_agree: true,
@@ -139,10 +147,18 @@ export default (
 						phone: "",
 						address: "",
 						amount_access: "",
-						service_type: [
+						service_types: [
 							{
 								type: "box",
-								value: true,
+								value: false,
+							},
+							{
+								type: "folder",
+								value: false,
+							},
+							{
+								type: "document",
+								value: false,
 							},
 						],
 						is_agree: true,

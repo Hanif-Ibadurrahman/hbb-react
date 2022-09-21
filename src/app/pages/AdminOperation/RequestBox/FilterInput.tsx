@@ -49,6 +49,7 @@ export function SearchInput(props) {
 								>
 									<option>Pilih Tipe Permintaan</option>
 									<option value="request-box">Request Box</option>
+									<option value="pickup-box">Pick Up</option>
 									<option value="borrow-item">Peminjaman</option>
 									<option value="return-item">Pengembalian</option>
 								</Form.Select>

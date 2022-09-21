@@ -92,7 +92,6 @@ const ModalAddReference = props => {
 								setTimeout(() => {
 									window.location.reload();
 								}, 2000);
-								// setValueUpload("");
 							} else {
 								props.modalSet(props.valueModalSet);
 								setShowAlert(true);
@@ -136,7 +135,6 @@ const ModalAddReference = props => {
 										name="file"
 										type="file"
 										onChange={e => {
-											console.log("onchange", e);
 											onChangeFile(e);
 										}}
 										className="form-control"

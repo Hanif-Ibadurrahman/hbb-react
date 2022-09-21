@@ -17,10 +17,10 @@ export const DELETE_CART = "DELETE_CART";
 export const GET_BORROW_LIST = "GET_BORROW_LIST";
 export const FILTER_BOXES_BORROW = "FILTER_BOXES_BORROW";
 
-export const getBorrowList = page => {
+export const getBorrowList = (page, area_id: String | null = null) => {
 	return async dispatch => {
 		try {
-			const response = await getAll(page);
+			const response = await getAll(page, area_id);
 			dispatch({
 				type: GET_BORROW_LIST,
 				payload: {

@@ -11,6 +11,7 @@ import {
 	downloadFile,
 	getAllIndexing,
 	getAllDocumentAssigned,
+	deleteAttachmentDoc,
 } from "../api/documents";
 export const GET_DOCUMENTS_FILTER = "GET_DOCUMENT_FILTER";
 export const GET_DOCUMENTS_LIST = "GET_DOCUMENTS_LIST";
@@ -26,6 +27,7 @@ export const UPDATE_DOCUMENT = "UPDATE_DOCUMENT";
 export const UPLOAD_FILE = "UPLOAD_FILE";
 export const DOWNLOAD_FILE = "DOWNLOAD_FILE";
 export const GET_DOCUMENT_ASSIGNED = "GET_DOCUMENT_ASSIGNED";
+export const DELETE_ATTACHMENT = "DELETE_ATTACHMENT";
 
 let limit = 20;
 
@@ -284,6 +286,36 @@ export const UpdateDcoument = async (data: DocumentInterfaceState) => {
 		} catch (error: any) {
 			dispatch({
 				type: UPDATE_DOCUMENT,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const DeleteAttachment = async (id, document_file: any) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: SET_DOCUMENT_DATA,
+				payload: document_file,
+			});
+			const response = await deleteAttachmentDoc(id, document_file);
+			dispatch({
+				type: DELETE_ATTACHMENT,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: DELETE_ATTACHMENT,
 				payload: {
 					data: false,
 					errorMessage: error?.message,

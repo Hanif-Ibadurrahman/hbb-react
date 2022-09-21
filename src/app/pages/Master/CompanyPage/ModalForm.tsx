@@ -256,15 +256,37 @@ const ModalForm = props => {
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Persetujuan</Form.Label>
-												<div className="d-flex">
+												<div className="d-flex jc-between w-80%">
 													<Form.Check
 														type="checkbox"
-														label="box"
-														name="service_type"
-														value={values?.service_type[0]?.value as any}
+														label="Box"
+														name="service_types[0].value"
+														onChange={e => {
+															handleChange(e);
+														}}
+														checked={values?.service_types[0]?.value}
+														onBlur={handleBlur}
 													/>
-													<Form.Check type="checkbox" label="folder" />
-													<Form.Check type="checkbox" label="document" />
+													<Form.Check
+														type="checkbox"
+														label="Folder"
+														name="service_types[1].value"
+														onChange={e => {
+															handleChange(e);
+														}}
+														checked={values?.service_types[1]?.value}
+														onBlur={handleBlur}
+													/>
+													<Form.Check
+														type="checkbox"
+														label="Document"
+														name="service_types[2].value"
+														onChange={e => {
+															handleChange(e);
+														}}
+														checked={values?.service_types[2]?.value}
+														onBlur={handleBlur}
+													/>
 												</div>
 											</Form.Group>
 										</Col>

@@ -14,3 +14,10 @@ export const login = async (data: LoginInterfaceState) => {
 	};
 	return api.post("/login", payload);
 };
+
+export const reset = async (data: LoginInterfaceState) => {
+	let payload = {
+		email: data.email,
+	};
+	return api.post("/reset-password", payload);
+};
