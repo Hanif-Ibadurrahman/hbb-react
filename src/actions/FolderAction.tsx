@@ -1,4 +1,5 @@
 import React from "react";
+import { DocumentInterfaceState } from "store/Types/DocumentTypes";
 import { FolderInterfaceState } from "store/Types/FolderTypes";
 import {
 	create,
@@ -9,6 +10,7 @@ import {
 	filterFolders,
 	getAllNotPage,
 	getAllFolderNotAssigned,
+	filterDocuemntFolder,
 } from "../api/folder";
 export const GET_FOLDERS_LIST = "GET_FOLDERS_LIST";
 export const GET_FOLDER_DETAIL = "GET_FOLDER_DETAIL";
@@ -21,6 +23,37 @@ export const UPDATE_FOLDER = "UPDATE_FOLDER";
 export const FILTER_FOLDER = "FILTER_FOLDER";
 export const GET_FOLDERS_NOT_PAGE = "GET_FOLDERS_NOT_PAGE";
 export const GET_FOLDERS_NOT_ASSIGNED = "GET_FOLDERS_NOT_ASSIGNED";
+export const GET_FILTER_DOCUMENT = "GET_FILTER_DOCUMENT";
+
+export const filterDataDocument = async (data: DocumentInterfaceState, id) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: GET_FILTER_DOCUMENT,
+				payload: data,
+			});
+			const response = await filterDocuemntFolder(data, id);
+			dispatch({
+				type: GET_FILTER_DOCUMENT,
+				payload: {
+					data: response.data,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: GET_FILTER_DOCUMENT,
+				payload: {
+					data: false,
+					errorMessage: error?.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
 
 export const getFoldersList = page => {
 	return async dispatch => {

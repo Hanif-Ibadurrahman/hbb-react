@@ -9,6 +9,7 @@ import {
 	FILTER_FOLDER,
 	GET_FOLDERS_NOT_PAGE,
 	GET_FOLDERS_NOT_ASSIGNED,
+	GET_FILTER_DOCUMENT,
 } from "../../actions/FolderAction";
 import { FoldersInterfaceState } from "../Types/FolderTypes";
 export const initialState: FoldersInterfaceState = {
@@ -96,6 +97,17 @@ export default (
 					per_page: payload?.meta?.per_page,
 				},
 				ErrorFolder: payload.errorMessage,
+			};
+		case GET_FILTER_DOCUMENT:
+			return {
+				...state,
+				Folder: payload?.data?.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
 			};
 		case GET_FOLDERS_NOT_ASSIGNED:
 			return {
