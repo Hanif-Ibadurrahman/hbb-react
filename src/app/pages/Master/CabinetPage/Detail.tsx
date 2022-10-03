@@ -54,7 +54,7 @@ const CabinetPageDetail = ({ match }) => {
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={cabinet?.total_bays}
+									value={cabinet?.total_bays}
 								/>
 							</Form.Group>
 
@@ -107,7 +107,7 @@ const CabinetPageDetail = ({ match }) => {
 												<Form.Control
 													type="text"
 													disabled
-													defaultValue={item?.capacity}
+													value={item?.capacity}
 												/>
 											</Form.Group>
 										</div>
