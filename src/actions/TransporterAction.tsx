@@ -31,10 +31,10 @@ export const getTransporterList = page => {
 	};
 };
 
-export const getBoxesListNoAsign = page => {
+export const getBoxesListNoAsign = (page, company_id: String | null = null) => {
 	return async dispatch => {
 		try {
-			const response = await getAllBoxNoAsign(page);
+			const response = await getAllBoxNoAsign(page, company_id);
 			dispatch({
 				type: GET_BOX_NO_ASIGN,
 				payload: {
