@@ -10,6 +10,7 @@ export const create = async (data: StaffInterfaceState) => {
 		email: data?.email,
 		role_id: data?.roles?.id,
 		room_id: data?.room?.id,
+		implementer_code: data?.implementer_code,
 	};
 	return api.post("/users/staff", payload);
 };
@@ -23,6 +24,7 @@ export const update = async (data: StaffInterfaceState) => {
 		email: data?.email,
 		role_id: data?.roles?.id,
 		room_id: data?.room?.id,
+		implementer_code: data?.implementer_code,
 	};
 	return api.put(`/users/staff/${id}`, payload);
 };

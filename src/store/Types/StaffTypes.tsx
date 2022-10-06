@@ -39,6 +39,7 @@ export interface StaffInterfaceState {
 	user: RoleInterfaceState;
 	roles: RolesInterfaceState;
 	room: RoomInterfaceState;
+	implementer_code?: string;
 	staff: StaffIdInterfaceState;
 }
 
