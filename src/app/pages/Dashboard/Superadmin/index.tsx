@@ -60,17 +60,19 @@ export function DashboardSuperadmin() {
 	const areaList = areas?.Areas;
 	const documents = useSelector(selectDocuemnts);
 	const Companys = useSelector(selectCompanys);
+	const companyList = Companys.Companys as any;
 	const [title, setTitle] = useState("");
 	const [selectedItem, setSelectedItem] = useState("");
+	const [selectedCompany, setSelectedCompany] = useState("");
 
 	const BoxData = (page = 1) => {
-		dispatch(getBoxesList(page));
+		dispatch(getBoxesList(page, selectedCompany));
 	};
 	const BoxNoAsign = (page = 1) => {
-		dispatch(getBoxesListNoAsign(page));
+		dispatch(getBoxesListNoAsign(page, selectedCompany));
 	};
 	const CabinetData = (page = 1) => {
-		dispatch(getCabinetsList(page));
+		dispatch(getCabinetsList(page, selectedCompany));
 	};
 	const ReturnData = (page = 1) => {
 		dispatch(getReturnList(page));
@@ -91,7 +93,7 @@ export function DashboardSuperadmin() {
 		dispatch(GetActivityLogsArchiver());
 	};
 	const DocumentList = (page = 1) => {
-		dispatch(getDocumentsList(page));
+		dispatch(getDocumentsList(page, selectedCompany));
 	};
 	const CompanyList = (page = 1) => {
 		dispatch(getCompanyList(page));
@@ -101,7 +103,7 @@ export function DashboardSuperadmin() {
 	}, []);
 	useEffect(() => {
 		DocumentList();
-	}, []);
+	}, [selectedCompany]);
 	useEffect(() => {
 		ArchiverLog();
 	}, []);
@@ -113,17 +115,17 @@ export function DashboardSuperadmin() {
 	}, []);
 	useEffect(() => {
 		CabinetData();
-	}, []);
+	}, [selectedCompany]);
 	useEffect(() => {
 		if (user === "superadmin") {
 			BoxData();
 		}
-	}, []);
+	}, [selectedCompany]);
 	useEffect(() => {
 		if (user === "superadmin") {
 			BoxNoAsign();
 		}
-	}, []);
+	}, [selectedCompany]);
 	useEffect(() => {
 		ReturnData();
 	}, []);
@@ -346,6 +348,10 @@ export function DashboardSuperadmin() {
 		setSelectedItem(e.target.value);
 	};
 
+	const onChangeCompany = e => {
+		setSelectedCompany(e.target.value);
+	};
+
 	const ContentSuperAdmin = (
 		<>
 			<div className="row w-100% mb-8">
@@ -357,7 +363,7 @@ export function DashboardSuperadmin() {
 							onChange={e => onChangeRC(e)}
 							value={selectedItem}
 						>
-							<option>Pilih Record Center</option>
+							<option value={""}>Pilih Record Center</option>
 							{areaList?.map((item, i) => (
 								<option value={item?.id}>{item?.name}</option>
 							))}
@@ -473,7 +479,7 @@ export function DashboardSuperadmin() {
 								onChange={e => onChangeRC(e)}
 								value={selectedItem}
 							>
-								<option>Pilih Record Center</option>
+								<option value={""}>Pilih Record Center</option>
 								{areaList?.map((item, i) => (
 									<option value={item?.id}>{item?.name}</option>
 								))}
@@ -481,7 +487,23 @@ export function DashboardSuperadmin() {
 						</Form.Group>
 					</div>
 				)}
-
+				{user === "superadmin" && (
+					<div className="col col-4" style={{ paddingRight: "24px" }}>
+						<Form.Group className="mb-4" controlId="formBasicEmail">
+							<Form.Label className="mb-4">Perusahaan</Form.Label>
+							<Form.Select
+								aria-label="Default select example"
+								onChange={e => onChangeCompany(e)}
+								value={selectedCompany}
+							>
+								<option value={""}>Pilih Perusahaan</option>
+								{companyList?.map((item, i) => (
+									<option value={item?.id}>{item?.name}</option>
+								))}
+							</Form.Select>
+						</Form.Group>
+					</div>
+				)}
 				<CardDashboard />
 			</div>
 			<div className="pos-r p-8 pt-0 mt-4">

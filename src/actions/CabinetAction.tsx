@@ -20,10 +20,10 @@ export const FILTER_CABINET = "FILTER_CABINET";
 
 let limit = 20;
 
-export const getCabinetsList = page => {
+export const getCabinetsList = (page, company_id: String | null = null) => {
 	return async dispatch => {
 		try {
-			const response = await getAll(page);
+			const response = await getAll(page, company_id);
 			dispatch({
 				type: GET_CABINETS_LIST,
 				payload: {

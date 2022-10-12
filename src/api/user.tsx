@@ -31,9 +31,17 @@ export const getAllArchiver = async params => {
 		});
 };
 
-export const getAllBoxNoAsign = async params => {
+export const getAllBoxNoAsign = async (
+	page,
+	company_id: String | null = null,
+) => {
 	return api
-		.get(`/boxes?is_filled=false&page=${params}`)
+		.get(`/boxes?is_filled=false`, {
+			params: {
+				page: page,
+				company_id: company_id,
+			},
+		})
 		.then(res => {
 			if (res.status === 401) {
 				return localStorage.clear();

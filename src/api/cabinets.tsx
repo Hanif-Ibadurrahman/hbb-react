@@ -31,9 +31,14 @@ export const getById = async (id: String) => {
 	return api.get(`/cabinets/${id}`);
 };
 
-export const getAll = async params => {
+export const getAll = async (page, company_id: String | null = null) => {
 	return api
-		.get(`/cabinets?page=${params}`)
+		.get(`/cabinets?`, {
+			params: {
+				page: page,
+				company_id: company_id,
+			},
+		})
 		.then(res => {
 			if (res.status === 401) {
 				return localStorage.clear();
