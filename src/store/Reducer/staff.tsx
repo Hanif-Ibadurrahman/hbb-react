@@ -20,6 +20,7 @@ export const initialState: StaffsInterfaceState = {
 		nip: "",
 		name: "",
 		email: "",
+		implementer_code: "",
 		user: {
 			id: "",
 			username: "",
@@ -158,6 +159,7 @@ export default (
 					nip: "",
 					name: "",
 					email: "",
+					implementer_code: "",
 					user: {
 						id: "",
 						username: "",

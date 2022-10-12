@@ -90,7 +90,7 @@ const BoxPageDetail = ({ match }) => {
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Custome Code</Form.Label>
+								<Form.Label>Alternative Code</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
