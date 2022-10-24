@@ -39,6 +39,15 @@ const PrintBoxPerPage = () => {
 	return (
 		<>
 			<div className="no-print">
+				<h4
+					style={{
+						marginTop: "20px",
+						marginBottom: "20px",
+						marginLeft: "12px",
+					}}
+				>
+					Print Barcode
+				</h4>
 				{/* <Pagination
 					pageCount={boxes.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
