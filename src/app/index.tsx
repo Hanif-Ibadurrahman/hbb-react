@@ -30,7 +30,7 @@ export function App() {
 		<BrowserRouter>
 			<Helmet
 				titleTemplate="%s"
-				defaultTitle="Dox"
+				defaultTitle="Test"
 				htmlAttributes={{ lang: i18n.language }}
 			>
 				<meta name="description" content="Dox application" />
@@ -54,10 +54,10 @@ export function App() {
 							path={process.env.PUBLIC_URL + "/Login"}
 							component={LoginPage}
 						/>
-						<Route
+						{/* <Route
 							path={process.env.PUBLIC_URL + "/Print-PerPage"}
 							component={PrintBoxPerpage}
-						/>
+						/> */}
 						<Route
 							path={process.env.PUBLIC_URL + "/Customer/DeliveryNote/:id"}
 							component={DeliveryNote}

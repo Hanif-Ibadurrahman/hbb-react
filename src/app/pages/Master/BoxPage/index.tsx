@@ -33,9 +33,9 @@ const BoxPage = () => {
 	let history = useHistory();
 	const handlePrint = () => {
 		history.push("/Print-PerPage");
-		setTimeout(function () {
-			window.location.reload();
-		}, 1000);
+		// setTimeout(function () {
+		// 	window.location.reload();
+		// }, 1000);
 	};
 
 	const FetchData = (page = 1) => {
@@ -130,7 +130,14 @@ const BoxPage = () => {
 			title: "Code Box",
 			prop: "code_box",
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "20%" },
+			},
+		},
+		{
+			title: "Alternate Code",
+			prop: "custom_code_box",
+			cellProps: {
+				style: { width: "20%" },
 			},
 		},
 		{
@@ -169,6 +176,7 @@ const BoxPage = () => {
 			},
 		},
 	];
+
 	const HeaderAction = () => {
 		if (user === "superadmin") {
 			return (
