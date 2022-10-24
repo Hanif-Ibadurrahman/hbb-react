@@ -197,7 +197,10 @@ const FolderPage = () => {
 					valueModalSet={false}
 				/>
 				<HeaderAction />
-				<DataTable tableHeader={header} tableBody={folders.Folders} />
+				<DataTable
+					tableHeader={header}
+					tableBody={folders?.Folders ? folders?.Folders : []}
+				/>
 				<Pagination
 					pageCount={folders.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}

@@ -516,7 +516,11 @@ export function Sidebar() {
 	};
 
 	return (
-		<div className={`sidebar bg-medium-tint w-20% ${isActive ? "" : "icon"}`}>
+		<div
+			className={`sidebar bg-medium-tint w-20% no-print ${
+				isActive ? "" : "icon"
+			}`}
+		>
 			<div className="sidebar-header">
 				<div className="ph-4 h-20 bg-dark-contrast d-flex ai-center">
 					<img src={Logo} alt="Logo" className="h-16" />

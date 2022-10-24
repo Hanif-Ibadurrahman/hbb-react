@@ -94,6 +94,7 @@ import RequestHistory from "./Customer/RequestHistory";
 // -=-=-=-=-=-
 // ALL USER
 import { UserProfile } from "./ProfilePage/Loadable";
+import PrintBoxPerPage from "./Master/BoxPage/PrintPerPage";
 
 export function Routes() {
 	const { i18n } = useTranslation();
@@ -297,6 +298,10 @@ export function Routes() {
 						<Route
 							path={process.env.PUBLIC_URL + "/Profile/"}
 							component={UserProfile}
+						/>
+						<Route
+							path={process.env.PUBLIC_URL + "/Print-PerPage"}
+							component={PrintBoxPerPage}
 						/>
 						{/*--------- ADMIN RC ---------*/}
 

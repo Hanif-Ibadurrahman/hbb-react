@@ -158,7 +158,10 @@ const DivisionPage = () => {
 					value={true}
 					filter={ModalFilter}
 				/>
-				<DataTable tableHeader={header} tableBody={divisions.Divisions} />
+				<DataTable
+					tableHeader={header}
+					tableBody={divisions?.Divisions ? divisions?.Divisions : []}
+				/>
 				<Pagination
 					pageCount={divisions.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
