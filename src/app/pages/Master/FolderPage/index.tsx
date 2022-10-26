@@ -114,7 +114,7 @@ const FolderPage = () => {
 			prop: "no",
 			sortable: true,
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "30%" },
 			},
 			headerCell: () => {
 				return (
@@ -129,7 +129,17 @@ const FolderPage = () => {
 			title: "Status Folder",
 			prop: "status",
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "30%" },
+			},
+		},
+		{
+			title: "Kode Pelaksana",
+			prop: "implementer_code",
+			cellProps: {
+				style: { width: "20%" },
+			},
+			cell: row => {
+				return <div>{row?.implementer_by?.implementer_code || "-"}</div>;
 			},
 		},
 		{

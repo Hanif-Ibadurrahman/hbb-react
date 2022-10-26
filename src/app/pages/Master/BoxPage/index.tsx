@@ -16,11 +16,12 @@ import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { deleteBox } from "actions/BoxActions";
 import Alert from "app/components/Alerts";
-import { selectBoxes } from "store/Selector/BoxSelector";
+import { selectBox, selectBoxes } from "store/Selector/BoxSelector";
 import moment from "moment";
 import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { SearchInput } from "./FilterInput";
+import { BoxInterfaceState } from "store/Types/BoxTypes";
 
 const BoxPage = () => {
 	const user = localStorage.getItem("User");
@@ -29,26 +30,19 @@ const BoxPage = () => {
 	const [showAlert, setShowAlert] = useState(false);
 	const boxes = useSelector(selectBoxes);
 	const dispatch = useDispatch();
-
+	const box: BoxInterfaceState = useSelector(selectBox);
 	let history = useHistory();
 	const handlePrint = () => {
 		history.push("/Print-PerPage");
-		// setTimeout(function () {
-		// 	window.location.reload();
-		// }, 1000);
 	};
 
 	const FetchData = (page = 1) => {
-		if (boxes.Box.code_box === "") {
-			dispatch(getBoxesList(page));
-		} else {
-			dispatch(SearchBoxes);
-		}
+		dispatch(getBoxesList(page, null, box));
 	};
 
 	useEffect(() => {
 		FetchData();
-	}, []);
+	}, [box]);
 
 	const onDelete = (dispatch, id) => {
 		Swal.fire({

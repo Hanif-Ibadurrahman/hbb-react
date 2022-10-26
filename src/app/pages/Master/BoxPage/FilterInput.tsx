@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { Button, Col, Row, Container, Form, Modal } from "react-bootstrap";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { RESET_BOX_FORM, SearchBoxes } from "actions/BoxActions";
+import {
+	AddValueFilter,
+	getBoxesList,
+	RESET_BOX_FORM,
+	SearchBoxes,
+} from "actions/BoxActions";
 import { BoxInterfaceState } from "store/Types/BoxTypes";
 import { selectBox } from "store/Selector/BoxSelector";
 
@@ -32,8 +37,9 @@ export function SearchInput(props) {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							const res = await SearchBoxes(values);
-							await dispatch(res);
+							// const res = await getBoxesList(1, null, values);
+							dispatch(await AddValueFilter(values));
+							// await dispatch(res);
 							setModalShow(false);
 						} catch (e) {
 							setModalShow(false);

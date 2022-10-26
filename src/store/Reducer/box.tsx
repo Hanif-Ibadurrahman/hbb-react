@@ -8,6 +8,7 @@ import {
 	SET_BOX_DATA,
 	FILTER_BOXES,
 	GET_BOXES_NOT_PAGE,
+	ADD_VALUES_FILTER,
 } from "../../actions/BoxActions";
 import { BoxesInterfaceState, BoxInterfaceState } from "../Types/BoxTypes";
 export const initialState: BoxesInterfaceState = {
@@ -103,6 +104,11 @@ export default (
 					per_page: payload?.meta?.per_page,
 				},
 				ErrorBox: payload.errorMessage,
+			};
+		case ADD_VALUES_FILTER:
+			return {
+				...state,
+				Box: payload,
 			};
 		case GET_BOXES_NOT_PAGE:
 			return {

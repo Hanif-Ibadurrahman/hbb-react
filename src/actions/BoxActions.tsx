@@ -19,13 +19,18 @@ export const SET_BOX_DATA = "SET_BOX_DATA";
 export const UPDATE_BOX = "UPDATE_BOX";
 export const FILTER_BOXES = "FILTER_BOXES";
 export const GET_BOXES_NOT_PAGE = "GET_BOXES_NOT_PAGE";
+export const ADD_VALUES_FILTER = "ADD_VALUES_FILTER";
 
 let limit = 20;
 
-export const getBoxesList = (page, company_id: String | null = null) => {
+export const getBoxesList = (
+	page,
+	company_id: String | null = null,
+	data: BoxInterfaceState | null = null,
+) => {
 	return async dispatch => {
 		try {
-			const response = await getAll(page, company_id);
+			const response = await getAll(page, company_id, data);
 			dispatch({
 				type: GET_BOXES_LIST,
 				payload: {
@@ -43,6 +48,20 @@ export const getBoxesList = (page, company_id: String | null = null) => {
 					errorMessage: error.message,
 				},
 			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const AddValueFilter = async (data: BoxInterfaceState) => {
+	return async dispatch => {
+		try {
+			dispatch({
+				type: "ADD_VALUES_FILTER",
+				payload: data,
+			});
+		} catch (error: any) {
 			console.log(error);
 			throw error;
 		}
