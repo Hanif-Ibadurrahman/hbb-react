@@ -35,7 +35,6 @@ const PrintBox = ({ match }) => {
 		lineHeight: "12px",
 	};
 
-
 	return (
 		<>
 			<PageWrapper className="row row w-100%">
@@ -53,7 +52,12 @@ const PrintBox = ({ match }) => {
 							Box
 						</p>
 						<p style={font} className="ff-1-bd ta-center">
-							{box.sign_code}
+							{/* {box.sign_code} */}
+							{box?.code_box}
+							{box?.company?.code} - {box?.division?.code_division} -{" "}
+							{box?.implementer_by?.implementer_code}
+							<br />
+							{box?.custom_code_box}
 						</p>
 					</div>
 				</div>

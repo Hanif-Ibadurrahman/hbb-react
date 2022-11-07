@@ -32,8 +32,8 @@ const PrintBoxPerPage = () => {
 	};
 
 	const content = {
-		fontSize: "16px",
-		lineHeight: "16px",
+		fontSize: "14px",
+		lineHeight: "14px",
 	};
 
 	return (
@@ -73,8 +73,10 @@ const PrintBoxPerPage = () => {
 									{/* <p style={content} className="ff-1-bd ta-center">{item.custom_code_box} - {item.division.code}</p> */}
 									<p style={content} className="ff-1-bd ta-center">
 										{item?.code_box}
-										{/* {item?.company?.code} - {item?.division?.code} -{" "}
-										{item?.custom_code_box} */}
+										{item?.company?.code} - {item?.division?.code} -{" "}
+										{item?.implementer_by?.implementer_code}
+										<br />
+										{item?.custom_code_box}
 									</p>
 								</div>
 							</div>

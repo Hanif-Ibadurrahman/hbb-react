@@ -5,6 +5,7 @@ import { CompanyInterfaceState } from "./CompanyTypes";
 interface DivisionBoxInterfaceState {
 	id: string | null;
 	code: string;
+	code_division?: string;
 	name: string;
 }
 
@@ -14,6 +15,10 @@ interface FolderBoxInterfaceState {
 	location: string;
 	no: string;
 	sign_code: string;
+}
+interface ImplementerBoxInterfaceState {
+	id: string | null;
+	implementer_code: string;
 }
 export interface BoxInterfaceState {
 	id: string | null;
@@ -27,6 +32,8 @@ export interface BoxInterfaceState {
 	company: CompanyInterfaceState;
 	division: DivisionBoxInterfaceState;
 	folders: [FolderBoxInterfaceState];
+	implementer_code?: string;
+	implementer_by?: ImplementerBoxInterfaceState;
 }
 
 export interface BoxesInterfaceState {

@@ -21,10 +21,16 @@ export const initialState: BoxesInterfaceState = {
 		location: "",
 		created_at: "",
 		custom_code_box: "",
+		implementer_code: "",
+		implementer_by: {
+			id: "",
+			implementer_code: "",
+		},
 		division: {
 			id: "",
 			code: "",
 			name: "",
+			code_division: "",
 		},
 		folders: [
 			{
@@ -167,9 +173,15 @@ export default (
 					location: "",
 					created_at: "",
 					custom_code_box: "",
+					implementer_code: "",
+					implementer_by: {
+						id: "",
+						implementer_code: "",
+					},
 					division: {
 						id: "",
 						code: "",
+						code_division: "",
 						name: "",
 					},
 					folders: [
