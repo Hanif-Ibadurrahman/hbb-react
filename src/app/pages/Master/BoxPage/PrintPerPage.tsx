@@ -32,8 +32,8 @@ const PrintBoxPerPage = () => {
 	};
 
 	const content = {
-		fontSize: "14px",
-		lineHeight: "14px",
+		fontSize: "11px",
+		lineHeight: "12px",
 	};
 
 	return (
@@ -66,16 +66,16 @@ const PrintBoxPerPage = () => {
 										className="d-flex jc-center"
 									/>
 								</Card>
-								<div className="ml-6 col-6">
+								<div className="ml-4 col-6">
 									<p style={title} className="ff-1-bd ta-center ">
 										Box
 									</p>
 									{/* <p style={content} className="ff-1-bd ta-center">{item.custom_code_box} - {item.division.code}</p> */}
 									<p style={content} className="ff-1-bd ta-center">
-										{item?.code_box}
-										{item?.company?.code} - {item?.division?.code} -{" "}
-										{item?.implementer_by?.implementer_code}
+										{item?.code_box} {item?.company?.name}{" "}
+										{item?.division?.name ? item?.division?.name : " "}
 										<br />
+										{item?.implementer_by?.implementer_code}
 										{item?.custom_code_box}
 									</p>
 								</div>
