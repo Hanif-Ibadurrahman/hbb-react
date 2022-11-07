@@ -172,7 +172,7 @@ const BoxPage = () => {
 	];
 
 	const HeaderAction = () => {
-		if (user === "superadmin") {
+		if (user === "superadmin" || user === "archiver") {
 			return (
 				<>
 					<PageHeader

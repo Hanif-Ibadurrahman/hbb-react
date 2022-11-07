@@ -32,9 +32,11 @@ export const getAll = async (
 		.get(`/boxes?is_filled=true`, {
 			params: {
 				page: page,
-				company_id: company_id,
+				company_id: company_id || data?.company?.id,
 				code_box: data?.code_box,
 				custom_code_box: data?.custom_code_box,
+				division_id: data?.division?.id,
+				implementer_code: data?.implementer_code,
 			},
 		})
 		.then(res => {
