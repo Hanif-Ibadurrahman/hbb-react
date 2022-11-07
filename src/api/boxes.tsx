@@ -23,12 +23,18 @@ export const getById = async (id: String) => {
 	return api.get(`/boxes/${id}`);
 };
 
-export const getAll = async (page, company_id: String | null = null) => {
+export const getAll = async (
+	page,
+	company_id: String | null = null,
+	data: BoxInterfaceState | null = null,
+) => {
 	return api
 		.get(`/boxes?is_filled=true`, {
 			params: {
 				page: page,
 				company_id: company_id,
+				code_box: data?.code_box,
+				custom_code_box: data?.custom_code_box,
 			},
 		})
 		.then(res => {
