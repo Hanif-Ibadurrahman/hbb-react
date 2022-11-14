@@ -52,11 +52,10 @@ const PrintBox = ({ match }) => {
 							Box
 						</p>
 						<p style={font} className="ff-1-bd ta-center">
-							{/* {box.sign_code} */}
-							{box?.code_box}
-							{box?.company?.code} - {box?.division?.code_division} -{" "}
-							{box?.implementer_by?.implementer_code}
+							{box?.code_box} {box?.company?.name}{" "}
+							{box?.division?.name ? box?.division?.name : " "}
 							<br />
+							{box?.implementer_by?.implementer_code}
 							{box?.custom_code_box}
 						</p>
 					</div>

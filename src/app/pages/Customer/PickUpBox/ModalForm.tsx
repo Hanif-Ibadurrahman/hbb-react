@@ -119,7 +119,7 @@ const ModalForm = props => {
 									<div className="w-100% mb-8  h-2px bg-primary-contrast"></div>
 									<Col xs={12}>
 										<Row>
-											<Col xs={10}>
+											<Col xs={3}>
 												<Form.Group className="mb-4">
 													<Form.Label>Quantity</Form.Label>
 													<Form.Control
@@ -140,7 +140,7 @@ const ModalForm = props => {
 													) : null}
 												</Form.Group>
 											</Col>
-											<Col xs={2}>
+											<Col xs={3}>
 												<Button
 													className="bg-success-6 mt-6 w-100%"
 													variant="success"

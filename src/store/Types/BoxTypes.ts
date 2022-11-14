@@ -34,6 +34,7 @@ export interface BoxInterfaceState {
 	folders: [FolderBoxInterfaceState];
 	implementer_code?: string;
 	implementer_by?: ImplementerBoxInterfaceState;
+	is_filled?: boolean;
 }
 
 export interface BoxesInterfaceState {

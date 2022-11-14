@@ -135,10 +135,20 @@ const BoxPage = () => {
 			},
 		},
 		{
+			title: "Nama Divisi",
+			prop: "division",
+			cellProps: {
+				style: { width: "20%" },
+			},
+			cell: row => {
+				return row?.division?.name;
+			},
+		},
+		{
 			prop: "created_at",
 			sortable: true,
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "20%" },
 			},
 			headerCell: () => {
 				return (

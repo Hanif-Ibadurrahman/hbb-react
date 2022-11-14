@@ -193,7 +193,9 @@ const ApprovalAdminRequestBox = () => {
 				<SearchInput />
 				<DataTable
 					tableHeader={header}
-					tableBody={requestBoxes?.RequestBoxes}
+					tableBody={
+						requestBoxes?.RequestBoxes ? requestBoxes?.RequestBoxes : []
+					}
 					initialSort={{ prop: "created_at", isAscending: true }}
 				/>
 				<Pagination

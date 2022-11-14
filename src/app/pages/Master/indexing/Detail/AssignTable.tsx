@@ -110,7 +110,10 @@ const AssignTable = props => {
 				<div className="d-flex jc-between w-100% mb-4">
 					<h6>List Document sudah terindexing</h6>
 				</div>
-				<DataTable tableHeader={header} tableBody={props?.DataTable} />
+				<DataTable
+					tableHeader={header}
+					tableBody={props?.DataTable ? props?.DataTable : []}
+				/>
 			</PageWrapper>
 		</>
 	);

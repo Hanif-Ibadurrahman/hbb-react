@@ -15,6 +15,9 @@ export interface CabinetInterfaceState {
 	code_cabinet: string;
 	block_number: number;
 	total_bays: number;
+	free_cabinet_slot?: number;
+	total_capacity?: number;
+	used_cabinet_slot?: number;
 	total_rows: number;
 	total_columns: number;
 	depth: number;

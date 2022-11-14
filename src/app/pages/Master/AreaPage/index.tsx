@@ -151,7 +151,10 @@ const AreaPage = () => {
 					value={true}
 					filter={SearchInput}
 				/>
-				<DataTable tableHeader={header} tableBody={areas.Areas} />
+				<DataTable
+					tableHeader={header}
+					tableBody={areas?.Areas ? areas?.Areas : []}
+				/>
 				<Pagination
 					pageCount={areas.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}

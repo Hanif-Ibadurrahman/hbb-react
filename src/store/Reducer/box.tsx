@@ -22,6 +22,7 @@ export const initialState: BoxesInterfaceState = {
 		created_at: "",
 		custom_code_box: "",
 		implementer_code: "",
+		is_filled: false,
 		implementer_by: {
 			id: "",
 			implementer_code: "",
@@ -174,6 +175,7 @@ export default (
 					created_at: "",
 					custom_code_box: "",
 					implementer_code: "",
+					is_filled: false,
 					implementer_by: {
 						id: "",
 						implementer_code: "",

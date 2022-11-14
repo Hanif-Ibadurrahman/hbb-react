@@ -25,6 +25,9 @@ export const initialState: CabinetsInterfaceState = {
 		total_columns: 0,
 		total_rows: 0,
 		sign_code: "",
+		free_cabinet_slot: 0,
+		total_capacity: 0,
+		used_cabinet_slot: 0,
 		room: {
 			id: "",
 			name: "",
@@ -129,6 +132,9 @@ export default (
 					total_columns: 0,
 					total_rows: 0,
 					sign_code: "",
+					free_cabinet_slot: 0,
+					total_capacity: 0,
+					used_cabinet_slot: 0,
 					room: {
 						id: "",
 						name: "",
