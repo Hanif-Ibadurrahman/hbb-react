@@ -29,8 +29,9 @@ export const getAll = async (
 	data: BoxInterfaceState | null = null,
 ) => {
 	return api
-		.get(`/boxes?is_filled=true`, {
+		.get(`/boxes?`, {
 			params: {
+				is_filled: data?.is_filled ? data?.is_filled : undefined,
 				page: page,
 				company_id: company_id || data?.company?.id,
 				code_box: data?.code_box,

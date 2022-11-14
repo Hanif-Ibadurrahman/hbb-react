@@ -137,7 +137,7 @@ const BoxPageDetail = ({ match }) => {
 				</div>
 				<div>
 					<h6 className="mb-4 mt-4">Folder</h6>
-					<DataTable tableHeader={header} tableBody={folders} />
+					<DataTable tableHeader={header} tableBody={folders ? folders : []} />
 				</div>
 			</PageWrapper>
 		</>

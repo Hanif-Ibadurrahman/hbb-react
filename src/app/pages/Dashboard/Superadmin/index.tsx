@@ -72,7 +72,7 @@ export function DashboardSuperadmin() {
 		dispatch(getBoxesListNoAsign(page, selectedCompany));
 	};
 	const CabinetData = (page = 1) => {
-		dispatch(getCabinetsList(page, selectedCompany));
+		dispatch(getCabinetsList(page, selectedCompany, selectedItem));
 	};
 	const ReturnData = (page = 1) => {
 		dispatch(getReturnList(page));
@@ -115,7 +115,7 @@ export function DashboardSuperadmin() {
 	}, []);
 	useEffect(() => {
 		CabinetData();
-	}, [selectedCompany]);
+	}, [selectedCompany, selectedItem]);
 	useEffect(() => {
 		if (user === "superadmin") {
 			BoxData();
@@ -351,6 +351,15 @@ export function DashboardSuperadmin() {
 	const onChangeCompany = e => {
 		setSelectedCompany(e.target.value);
 	};
+	const mapFreeCabinet = cabinets.Cabinets.map(item => {
+		return item?.free_cabinet_slot;
+	});
+
+	let freeCabinetSlot = 0;
+	mapFreeCabinet.forEach(item => {
+		var newDataFree = item !== undefined && item !== null ? item : 0;
+		freeCabinetSlot += newDataFree;
+	});
 
 	const ContentSuperAdmin = (
 		<>
@@ -372,9 +381,9 @@ export function DashboardSuperadmin() {
 				</div>
 				<div className="col col-4 ph-0">
 					<CardHeader
-						icon="chalkboard"
-						total={activityLogsSuperAdmin?.length || 0}
-						text={["Total", <br />, "Entry Data."]}
+						icon="cabinet-filing"
+						total={freeCabinetSlot || 0}
+						text={["Total Slot ", <br />, "Lemari Kosong"]}
 					/>
 				</div>
 			</div>

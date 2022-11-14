@@ -31,12 +31,17 @@ export const getById = async (id: String) => {
 	return api.get(`/cabinets/${id}`);
 };
 
-export const getAll = async (page, company_id: String | null = null) => {
+export const getAll = async (
+	page,
+	company_id: String | null = null,
+	area_id: String | null = null,
+) => {
 	return api
 		.get(`/cabinets?`, {
 			params: {
 				page: page,
 				company_id: company_id,
+				area_id: area_id,
 			},
 		})
 		.then(res => {

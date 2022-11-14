@@ -57,7 +57,22 @@ const CabinetPageDetail = ({ match }) => {
 									value={cabinet?.total_bays}
 								/>
 							</Form.Group>
-
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Slot sudah terisi</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									value={cabinet?.used_cabinet_slot}
+								/>
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Slot belum terisi</Form.Label>
+								<Form.Control
+									type="text"
+									disabled
+									value={cabinet?.free_cabinet_slot}
+								/>
+							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
 								<Form.Label>Ruangan</Form.Label>
 								<Form.Control

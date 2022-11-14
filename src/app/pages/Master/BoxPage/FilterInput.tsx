@@ -176,6 +176,21 @@ export function SearchInput(props) {
 												/>
 											</Form.Group>
 										</Col>
+										<Col>
+											<Form.Group className="mb-4">
+												{/* <Form.Label>Box Terdaftar</Form.Label> */}
+												<Form.Check
+													type="checkbox"
+													label="Box Terdaftar"
+													name="is_filled"
+													onChange={e => {
+														handleChange(e);
+													}}
+													checked={values?.is_filled}
+													onBlur={handleBlur}
+												/>
+											</Form.Group>
+										</Col>
 									</Row>
 								</Container>
 							</Modal.Body>

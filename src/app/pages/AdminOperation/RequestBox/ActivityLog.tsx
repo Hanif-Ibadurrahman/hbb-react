@@ -54,7 +54,10 @@ const ActivityLog = () => {
 				<meta name="description" content="DOX" />
 			</Helmet>
 			<PageWrapper>
-				<DataTable tableHeader={header} tableBody={activityLog?.ActivityLogs} />
+				<DataTable
+					tableHeader={header}
+					tableBody={activityLog?.ActivityLogs ? activityLog?.ActivityLogs : []}
+				/>
 				<Pagination
 					pageCount={activityLog.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}
