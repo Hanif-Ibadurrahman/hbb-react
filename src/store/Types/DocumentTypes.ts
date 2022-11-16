@@ -23,6 +23,13 @@ interface CabinetDocumentInterfaceState {
 	id: string | null;
 	code_cabinet: string;
 }
+
+interface CabinetSlotInterfaceState {
+	id: string | null;
+	capacity: number;
+	code: string;
+	name: string;
+}
 export interface DocumentInterfaceState {
 	id: string | null;
 	no: string;
@@ -30,6 +37,7 @@ export interface DocumentInterfaceState {
 	detail: string;
 	document_file: [""];
 	cabinet?: CabinetDocumentInterfaceState;
+	cabinetSlot?: CabinetSlotInterfaceState;
 	nominal: string;
 	active_year_for: string;
 	level_progress: string;
