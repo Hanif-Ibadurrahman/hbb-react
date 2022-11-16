@@ -21,6 +21,7 @@ export interface StaffIdInterfaceState {
 	email: string;
 	room: string;
 	firebase_token: string;
+	implementer_code?: string;
 }
 
 export interface RoleInterfaceState {
@@ -29,6 +30,10 @@ export interface RoleInterfaceState {
 	roles: RolesInterfaceState[];
 }
 
+interface ImplementerBoxInterfaceState {
+	id: string | null;
+	implementer_code: string;
+}
 export interface StaffInterfaceState {
 	id: string | null;
 	username: string;
@@ -40,6 +45,7 @@ export interface StaffInterfaceState {
 	roles: RolesInterfaceState;
 	room: RoomInterfaceState;
 	implementer_code?: string;
+	implementer_by?: ImplementerBoxInterfaceState;
 	staff: StaffIdInterfaceState;
 }
 

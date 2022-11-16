@@ -232,7 +232,7 @@ const DocumentPageDetail = ({ match }) => {
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
-								<Form.Label>Cabinet Slot</Form.Label>
+								<Form.Label>Kode Lemari</Form.Label>
 								<Form.Control
 									type="text"
 									disabled

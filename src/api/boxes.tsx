@@ -6,6 +6,10 @@ export const create = async (data: BoxInterfaceState) => {
 	let payload = {
 		code_box: data.code_box,
 		company_id: data.company.id,
+		custom_code_box: data.custom_code_box,
+		room_id: data.room?.id,
+		division_id: data.division.id,
+		implementer_code: data.staff?.staff?.implementer_code,
 	};
 	return api.post("/boxes", payload);
 };

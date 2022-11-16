@@ -23,6 +23,24 @@ export const initialState: BoxesInterfaceState = {
 		custom_code_box: "",
 		implementer_code: "",
 		is_filled: false,
+		room: {
+			code_room: "",
+			floor: 0,
+			id: "",
+			name: "",
+		},
+		staff: {
+			id: "",
+			staff: {
+				email: "",
+				firebase_token: "",
+				id: "",
+				name: "",
+				nip: "",
+				room: "",
+				implementer_code: "",
+			},
+		},
 		implementer_by: {
 			id: "",
 			implementer_code: "",
@@ -176,6 +194,24 @@ export default (
 					custom_code_box: "",
 					implementer_code: "",
 					is_filled: false,
+					staff: {
+						id: "",
+						staff: {
+							email: "",
+							firebase_token: "",
+							id: "",
+							name: "",
+							nip: "",
+							room: "",
+							implementer_code: "",
+						},
+					},
+					room: {
+						code_room: "",
+						floor: 0,
+						id: "",
+						name: "",
+					},
 					implementer_by: {
 						id: "",
 						implementer_code: "",

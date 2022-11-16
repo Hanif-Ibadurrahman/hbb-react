@@ -18,6 +18,12 @@ import { BoxInterfaceState } from "store/Types/BoxTypes";
 import { Autocomplete, TextField } from "@mui/material";
 import { selectCompanys } from "store/Selector/CompanySelector";
 import { getCompanyList } from "actions/CompanyAction";
+import { getDivisionsList } from "actions/DivisionAction";
+import { selectDivisions } from "store/Selector/DivisionSelector";
+import { selectRooms } from "store/Selector/RoomSelector";
+import { getRoomsList } from "actions/RoomAction";
+import { selectStaffs } from "store/Selector/StaffSelector";
+import { getstaffsList } from "actions/StaffAction";
 
 const ModalForm = props => {
 	const [showAlert, setShowAlert] = useState(false);
@@ -26,11 +32,26 @@ const ModalForm = props => {
 	const box: BoxInterfaceState = useSelector(selectBox);
 	const dispatch = useDispatch();
 	const company = useSelector(selectCompanys);
+	const division = useSelector(selectDivisions);
+	const rooms = useSelector(selectRooms);
+	const staffs = useSelector(selectStaffs);
+	const DivisionData = (page = 1) => {
+		dispatch(getDivisionsList(page));
+	};
 	const FetchData = (page = 1) => {
 		dispatch(getCompanyList(page));
 	};
+	const RoomsData = (page = 1) => {
+		dispatch(getRoomsList(page));
+	};
+	const StaffData = (page = 1) => {
+		dispatch(getstaffsList(page));
+	};
 	useEffect(() => {
 		FetchData();
+		DivisionData();
+		RoomsData();
+		StaffData();
 	}, []);
 	const validationSchema = Yup.object().shape({
 		code_box: Yup.string().required("*Wajib diisi"),
@@ -101,7 +122,7 @@ const ModalForm = props => {
 						<Form onSubmit={handleSubmit}>
 							<Modal.Header closeButton className="bg-primary-5">
 								<Modal.Title id="contained-modal-title-vcenter">
-									{box.id ? <>Edit Data</> : <>Tambah Data</>}
+									{box?.id ? <>Edit Data</> : <>Tambah Data</>}
 								</Modal.Title>
 							</Modal.Header>
 							<Modal.Body className="show-grid">
@@ -114,7 +135,7 @@ const ModalForm = props => {
 													type="text"
 													name="code_box"
 													placeholder="Code"
-													value={values.code_box}
+													value={values?.code_box}
 													onChange={e => {
 														handleChange(e);
 													}}
@@ -127,12 +148,30 @@ const ModalForm = props => {
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Alternative Code</Form.Label>
+												<Form.Control
+													type="text"
+													name="custom_code_box"
+													placeholder="Code"
+													value={values?.custom_code_box}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.custom_code_box && errors?.custom_code_box ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors?.custom_code_box}
+													</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
 												<Form.Label>Pilih Perusahaan</Form.Label>
 												<Autocomplete
 													id="company"
 													options={company.Companys}
-													getOptionLabel={option => option.name}
-													value={values.company}
+													getOptionLabel={option => option?.name}
+													value={values?.company}
 													onChange={(e, value) => {
 														setFieldValue(
 															"company",
@@ -144,6 +183,78 @@ const ModalForm = props => {
 															margin="normal"
 															placeholder="Company"
 															name="comapany_id"
+															{...params}
+														/>
+													)}
+												/>
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Pilih Divisi</Form.Label>
+												<Autocomplete
+													id="division_id"
+													options={division?.Divisions}
+													value={values?.division}
+													getOptionLabel={option => option.name}
+													onChange={(e, value) => {
+														console.log(value);
+														setFieldValue(
+															"division",
+															value !== null ? value : values.division,
+														);
+													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															placeholder="Transporter"
+															name="division_id"
+															{...params}
+														/>
+													)}
+												/>
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Pilih Ruangan</Form.Label>
+												<Autocomplete
+													id="room"
+													options={rooms.Rooms}
+													value={values?.room}
+													getOptionLabel={option => option.name}
+													onChange={(e, value) => {
+														setFieldValue(
+															"room",
+															value !== null ? value : values?.room,
+														);
+													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															placeholder="Ruangan"
+															name="room"
+															{...params}
+														/>
+													)}
+												/>
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Kode Pelaksana</Form.Label>
+												<Autocomplete
+													id="staff"
+													options={staffs.Staffs}
+													value={values?.staff}
+													getOptionLabel={option =>
+														option?.staff?.implementer_code as any
+													}
+													onChange={(e, value) => {
+														setFieldValue(
+															"staff",
+															value !== null ? value : values?.staff,
+														);
+													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															placeholder="Kode Pelaksana"
+															name="staff"
 															{...params}
 														/>
 													)}
