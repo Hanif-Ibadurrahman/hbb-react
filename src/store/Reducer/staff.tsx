@@ -21,6 +21,10 @@ export const initialState: StaffsInterfaceState = {
 		name: "",
 		email: "",
 		implementer_code: "",
+		implementer_by: {
+			id: "",
+			implementer_code: "",
+		},
 		user: {
 			id: "",
 			username: "",
@@ -69,6 +73,7 @@ export const initialState: StaffsInterfaceState = {
 			email: "",
 			room: "",
 			firebase_token: "",
+			implementer_code: "",
 		},
 	},
 	Roles: [],
@@ -201,6 +206,10 @@ export default (
 						},
 						code_room: "",
 					},
+					implementer_by: {
+						id: "",
+						implementer_code: "",
+					},
 					staff: {
 						id: "",
 						name: "",
@@ -208,6 +217,7 @@ export default (
 						email: "",
 						room: "",
 						firebase_token: "",
+						implementer_code: "",
 					},
 				},
 			};
