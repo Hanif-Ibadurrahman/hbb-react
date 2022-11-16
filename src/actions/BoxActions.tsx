@@ -27,10 +27,11 @@ export const getBoxesList = (
 	page,
 	company_id: String | null = null,
 	data: BoxInterfaceState | null = null,
+	order: String | null = null,
 ) => {
 	return async dispatch => {
 		try {
-			const response = await getAll(page, company_id, data);
+			const response = await getAll(page, company_id, data, order);
 			dispatch({
 				type: GET_BOXES_LIST,
 				payload: {

@@ -27,6 +27,7 @@ export const getAll = async (
 	page,
 	company_id: String | null = null,
 	data: BoxInterfaceState | null = null,
+	order: String | null = null,
 ) => {
 	return api
 		.get(`/boxes?`, {
@@ -38,6 +39,9 @@ export const getAll = async (
 				custom_code_box: data?.custom_code_box,
 				division_id: data?.division?.id,
 				implementer_code: data?.implementer_code,
+				order_by:
+					order !== undefined && order !== null ? "alt_code" : undefined,
+				order_direction: order,
 			},
 		})
 		.then(res => {

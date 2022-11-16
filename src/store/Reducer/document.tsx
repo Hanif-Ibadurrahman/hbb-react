@@ -31,6 +31,12 @@ export const initialState: DocumentsInterfaceState = {
 			id: "",
 			code_cabinet: "",
 		},
+		cabinetSlot: {
+			capacity: 0,
+			code: "",
+			id: "",
+			name: "",
+		},
 		document_file: [""],
 		nominal: "",
 		active_year_for: "",
@@ -220,6 +226,12 @@ export default (
 					cabinet: {
 						id: "",
 						code_cabinet: "",
+					},
+					cabinetSlot: {
+						capacity: 0,
+						code: "",
+						id: "",
+						name: "",
 					},
 					level_progress: "",
 					media_storage: "",

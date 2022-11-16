@@ -232,11 +232,11 @@ const DocumentPageDetail = ({ match }) => {
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
-								<Form.Label>No Lemari</Form.Label>
+								<Form.Label>Cabinet Slot</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document?.cabinet?.code_cabinet}
+									defaultValue={document?.cabinetSlot?.name}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
