@@ -27,8 +27,6 @@ const AssignDocToFolder = () => {
 	const [modalShow, setModalShow] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
-	const documentAssigned = useSelector(selectDocuemntsAssigned);
-	const documentNotAssignedFolder = documentAssigned.DocumentAssigned;
 	const [folderId, setFolderId] = useState("");
 	const [modalDettach, setModalShowDettach] = useState(false);
 	const [modalShowReference, setModalShowReference] = useState(false);
@@ -74,19 +72,6 @@ const AssignDocToFolder = () => {
 		FetchData();
 	}, []);
 
-	const DocumentAssigned = (page = 1) => {
-		dispatch(getDocumentsAssigned(page));
-	};
-
-	useEffect(() => {
-		DocumentAssigned();
-	}, []);
-
-	function idExists(id) {
-		return documentNotAssignedFolder.some(function (el) {
-			return el.id === id;
-		});
-	}
 	const dispatch = useDispatch();
 
 	const _onHide = () => {
@@ -180,7 +165,9 @@ const AssignDocToFolder = () => {
 				return (
 					<DropdownAction
 						list={
-							idExists(row.id) === true ? action(row.id) : actionDetach(row.id)
+							row?.folder !== null && row?.folder !== undefined
+								? actionDetach(row.id)
+								: action(row.id)
 						}
 					/>
 				);
