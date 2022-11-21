@@ -24,6 +24,8 @@ import { Button } from "react-bootstrap";
 import Breadcrumb from "app/components/BreadCrumb";
 
 const DocumentPage = () => {
+	const user = localStorage.getItem("User");
+	console.log("user >>>", user);
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [modalShowReference, setModalShowReference] = useState(false);
@@ -135,6 +137,15 @@ const DocumentPage = () => {
 		},
 	];
 
+	const actionCustomer = id => [
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "Document-Detail/" + id,
+			type: 1,
+		},
+	];
+
 	const header = [
 		{
 			title: "Detail Document",
@@ -154,10 +165,57 @@ const DocumentPage = () => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row?.id)} />;
+				return (
+					<DropdownAction
+						list={
+							user === "superadmin" || user === "archiver"
+								? action(row?.id)
+								: actionCustomer(row?.id)
+						}
+					/>
+				);
 			},
 		},
 	];
+
+	const HeaderAction = () => {
+		if (user === "superadmin" || user === "archiver") {
+			return (
+				<div className="d-flex jc-between">
+					<div style={{ width: "20%" }}>
+						<Breadcrumb crumbs={["Master", "Document"]} selected />
+					</div>
+					<div className="d-flex">
+						<UploadFileDoc />
+						<div style={{ marginLeft: "12px", marginRight: "4px" }}>
+							<ModalFilter />
+						</div>
+						<Button
+							className="d-flex ai-center bg-success-6"
+							variant="success"
+							onClick={() => setModalShow(true)}
+							style={{ height: "38px" }}
+						>
+							Add Data<i className="far fa-plus ml-2"></i>
+						</Button>{" "}
+					</div>
+				</div>
+			);
+		} else {
+			return (
+				<div className="d-flex jc-between mb-4">
+					<div style={{ width: "20%" }}>
+						<Breadcrumb crumbs={["Master", "Document"]} selected />
+					</div>
+					<div className="d-flex">
+						<div style={{ marginLeft: "12px", marginRight: "4px" }}>
+							<ModalFilter />
+						</div>
+					</div>
+				</div>
+			);
+		}
+	};
 
 	return (
 		<>
@@ -180,25 +238,7 @@ const DocumentPage = () => {
 					valueModalSet={false}
 					folder_id={folderId}
 				/>
-				<div className="d-flex jc-between">
-					<div style={{ width: "20%" }}>
-						<Breadcrumb crumbs={["Master", "Document"]} selected />
-					</div>
-					<div className="d-flex">
-						<UploadFileDoc />
-						<div style={{ marginLeft: "12px", marginRight: "4px" }}>
-							<ModalFilter />
-						</div>
-						<Button
-							className="d-flex ai-center bg-success-6"
-							variant="success"
-							onClick={() => setModalShow(true)}
-							style={{ height: "38px" }}
-						>
-							Add Data<i className="far fa-plus ml-2"></i>
-						</Button>{" "}
-					</div>
-				</div>
+				<HeaderAction />
 				<DataTable
 					tableHeader={header}
 					tableBody={documents?.Documents ? documents?.Documents : []}

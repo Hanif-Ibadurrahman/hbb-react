@@ -249,6 +249,7 @@ export const ModalForm = props => {
 													<Form.Control
 														type="number"
 														name="depth"
+														min={1}
 														placeholder="Depth"
 														value={values.depth}
 														onChange={e => {

@@ -101,6 +101,15 @@ const IndexingPage = () => {
 		},
 	];
 
+	const actionCustomer = id => [
+		{
+			icon: "fa-search",
+			title: "Detail",
+			url: "IndexingDetail/" + id,
+			type: 1,
+		},
+	];
+
 	const header = [
 		{
 			title: "Index",
@@ -123,14 +132,6 @@ const IndexingPage = () => {
 			cellProps: {
 				style: { width: "20%" },
 			},
-			// headerCell: () => {
-			// 	return (
-			// 		<div className="cur-p">
-			// 			{`Tanggal Pembuatan`}
-			// 			<i className="fas fa-sort-alt ml-2"></i>
-			// 		</div>
-			// 	);
-			// },
 			cell: row => {
 				return moment(row.created_at).format("DD MMMM YYYY");
 			},
@@ -143,7 +144,15 @@ const IndexingPage = () => {
 				className: "realname-class",
 			},
 			cell: row => {
-				return <DropdownAction list={action(row.id)} />;
+				return (
+					<DropdownAction
+						list={
+							user === "superadmin" || user === "archiver"
+								? action(row?.id)
+								: actionCustomer(row?.id)
+						}
+					/>
+				);
 			},
 		},
 	];
