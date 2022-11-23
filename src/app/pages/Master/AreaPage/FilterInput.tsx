@@ -41,7 +41,7 @@ export function SearchInput(props) {
 								<Form.Control
 									type="text"
 									name="code_area"
-									placeholder="cari code cabinet"
+									placeholder="cari code area"
 									value={values.code_area}
 									onChange={e => {
 										handleChange(e);
