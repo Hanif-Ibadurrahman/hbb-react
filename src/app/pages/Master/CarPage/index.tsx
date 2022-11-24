@@ -155,7 +155,7 @@ const CarPage = () => {
 					valueModalSet={false}
 				/>
 				<PageHeader
-					breadcrumb={["Master", "Box"]}
+					breadcrumb={["Master", "Kendaraan"]}
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
