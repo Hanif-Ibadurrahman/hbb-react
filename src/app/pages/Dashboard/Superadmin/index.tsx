@@ -41,6 +41,7 @@ import { getDocumentsList } from "actions/DocumentAction";
 import { selectDocuemnts } from "store/Selector/DocumentSelector";
 import { selectCompanys } from "store/Selector/CompanySelector";
 import { getCompanyList } from "actions/CompanyAction";
+import { getAllSummarySlot } from "api/cabinets";
 
 export function DashboardSuperadmin() {
 	const user = localStorage.getItem("User");
@@ -54,7 +55,6 @@ export function DashboardSuperadmin() {
 	const approvalOperationList = useSelector(selectApprovalList);
 	const borrowList = useSelector(selectBorrowItems);
 	const activityLogs = useSelector(selectActivityLogs);
-	const activityLogsSuperAdmin = activityLogs?.ActivityLogsSuperadmin;
 	const activityLogsArchiver = useSelector(selectActivityLogsArchiver);
 	const areas = useSelector(selectAreas);
 	const areaList = areas?.Areas;
@@ -64,6 +64,7 @@ export function DashboardSuperadmin() {
 	const [title, setTitle] = useState("");
 	const [selectedItem, setSelectedItem] = useState("");
 	const [selectedCompany, setSelectedCompany] = useState("");
+	const [summaryCabinetSlot, setSummaryCabinetSlot] = useState(0);
 
 	const BoxData = (page = 1) => {
 		dispatch(getBoxesList(page, selectedCompany));
@@ -152,6 +153,19 @@ export function DashboardSuperadmin() {
 			return setTitle("List Box Di Pinjam");
 		}
 	}, []);
+
+	const SummarySlot = async () => {
+		try {
+			const res = await getAllSummarySlot(selectedItem);
+			setSummaryCabinetSlot(res?.data?.free_cabinet_slot);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	useEffect(() => {
+		SummarySlot();
+	}, [selectedItem]);
 
 	const totalCabinets = cabinets?.Meta?.total;
 	const totalBox = boxes?.Meta?.total;
@@ -382,8 +396,8 @@ export function DashboardSuperadmin() {
 				<div className="col col-4 ph-0">
 					<CardHeader
 						icon="cabinet-filing"
-						total={freeCabinetSlot || 0}
-						text={["Total Slot ", <br />, "Lemari Kosong"]}
+						total={summaryCabinetSlot || 0}
+						text={["Slot Lemari", <br />, "Kosong"]}
 					/>
 				</div>
 			</div>
