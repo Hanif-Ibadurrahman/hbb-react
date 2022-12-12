@@ -13,30 +13,16 @@ import {
 	selectFoldersAssigned,
 } from "store/Selector/FolderSelector";
 import { SearchFolder } from "../../FolderPage/FilterInput";
-import {
-	getFoldersList,
-	getFoldersListNotAssign,
-	SearchFolders,
-} from "actions/FolderAction";
+import { getFoldersList } from "actions/FolderAction";
 import "../AssignDocToFolder/page.scoped.scss";
 
 const AssignFolderToBox = () => {
 	const [modalShow, setModalShow] = useState(false);
 	const [cart, setCart] = useState<Partial<any>>({});
 	const cartStash = useSelector((state: RootStateOrAny) => state?.indexings);
-	const folderNotAssigned = useSelector(selectFoldersAssigned);
-	const folderNotAssignedtoBox = folderNotAssigned?.FolderAssigned;
 	const [boxId, setBoxId] = useState("");
 	const [modalDettach, setModalShowDettach] = useState(false);
 	const folders = useSelector(selectFolders);
-
-	const FolderNoAssigned = (page = 1) => {
-		dispatch(getFoldersListNotAssign(page));
-	};
-
-	useEffect(() => {
-		FolderNoAssigned();
-	}, []);
 
 	useEffect(() => {
 		setCart(cartStash);
@@ -54,11 +40,6 @@ const AssignFolderToBox = () => {
 		FetchData();
 	}, []);
 
-	function idExists(id) {
-		return folderNotAssignedtoBox.some(function (el) {
-			return el.id === id;
-		});
-	}
 	const dispatch = useDispatch();
 
 	const _onHide = () => {
@@ -144,7 +125,9 @@ const AssignFolderToBox = () => {
 				return (
 					<DropdownAction
 						list={
-							idExists(row.id) === true ? action(row.id) : actionDetach(row.id)
+							row?.box !== null && row?.box !== undefined
+								? actionDetach(row.id)
+								: action(row.id)
 						}
 					/>
 				);
