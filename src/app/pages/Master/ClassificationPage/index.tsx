@@ -153,7 +153,11 @@ const ClassificationPage = () => {
 				/>
 				<DataTable
 					tableHeader={header}
-					tableBody={classifications.Classifications}
+					tableBody={
+						classifications.Classifications
+							? classifications.Classifications
+							: []
+					}
 				/>
 				<Pagination
 					pageCount={classifications.Meta.last_page || 1}

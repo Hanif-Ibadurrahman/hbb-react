@@ -155,13 +155,16 @@ const CarPage = () => {
 					valueModalSet={false}
 				/>
 				<PageHeader
-					breadcrumb={["Master", "Box"]}
+					breadcrumb={["Master", "Kendaraan"]}
 					modal={setModalShow}
 					valueModalSet={false}
 					value={true}
 					filter={SearchInput}
 				/>
-				<DataTable tableHeader={header} tableBody={cars?.Cars} />
+				<DataTable
+					tableHeader={header}
+					tableBody={cars?.Cars ? cars?.Cars : []}
+				/>
 				<Pagination
 					pageCount={cars?.Cars.length / 20}
 					onPageChange={data => FetchData(data?.selected + 1)}

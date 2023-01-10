@@ -6,6 +6,10 @@ export const create = async (data: BoxInterfaceState) => {
 	let payload = {
 		code_box: data.code_box,
 		company_id: data.company.id,
+		custom_code_box: data.custom_code_box,
+		room_id: data.room?.id,
+		division_id: data.division.id,
+		implementer_code: data.staff?.staff?.implementer_code,
 	};
 	return api.post("/boxes", payload);
 };
@@ -23,9 +27,29 @@ export const getById = async (id: String) => {
 	return api.get(`/boxes/${id}`);
 };
 
-export const getAll = async params => {
+export const getAll = async (
+	page,
+	company_id: String | null = null,
+	data: BoxInterfaceState | null = null,
+	order: String | null = null,
+	area_id: String | null = null,
+) => {
 	return api
-		.get(`/boxes?is_filled=true&page=${params}`)
+		.get(`/boxes?`, {
+			params: {
+				is_filled: data?.is_filled ? data?.is_filled : undefined,
+				page: page,
+				company_id: company_id || data?.company?.id,
+				code_box: data?.code_box,
+				custom_code_box: data?.custom_code_box,
+				division_id: data?.division?.id,
+				implementer_code: data?.implementer_code,
+				order_by:
+					order !== undefined && order !== null ? "alt_code" : undefined,
+				order_direction: order,
+				area_id: area_id,
+			},
+		})
 		.then(res => {
 			if (res.status === 401) {
 				return localStorage.clear();

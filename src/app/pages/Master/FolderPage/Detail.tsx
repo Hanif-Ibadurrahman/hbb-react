@@ -11,6 +11,8 @@ import { FolderInterfaceState } from "store/Types/FolderTypes";
 import { selectFolder } from "store/Selector/FolderSelector";
 import { DataTable } from "app/components/Datatables";
 import DropdownAction from "../Components/DropdownAction";
+import { ModalFilterDocument } from "./ModalFilterDocument";
+import api from "api/dox";
 
 const FolderPageDetail = ({ match }) => {
 	const folder: FolderInterfaceState = useSelector(selectFolder);
@@ -155,25 +157,26 @@ const FolderPageDetail = ({ match }) => {
 						<QR
 							id="Detail-Box-QR"
 							title="Scan here"
-							value={folder?.sign_code}
+							value={folder?.sign_code || "-"}
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">Folder Barcode</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">Folder QR</p>
 						</div>
 					</Card>
 				</div>
 				<div>
 					<div className="d-flex jc-between ai-center">
 						<h6 className="mb-4 mt-4">List Document</h6>
-						<Form.Control
+						{/* <Form.Control
 							type="search"
 							value={search}
 							onChange={filter}
 							className="input"
 							placeholder="Cari Dokumen"
 							style={{ width: 200 }}
-						/>
+						/> */}
+						<ModalFilterDocument id={folder?.id} />
 					</div>
 					<DataTable tableHeader={header} tableBody={foundDocument} />
 				</div>

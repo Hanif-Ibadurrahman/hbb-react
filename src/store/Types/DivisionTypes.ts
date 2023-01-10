@@ -20,7 +20,7 @@ export interface DivisionInterfaceState {
 	id: string | null;
 	name: string;
 	company?: CompanyInterfaceState;
-	customers: CustomerInterfaceDivision[];
+	customers?: CustomerInterfaceDivision[];
 }
 
 export interface DivisionsInterfaceState {

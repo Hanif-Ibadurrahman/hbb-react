@@ -5,6 +5,7 @@ import { CompanyInterfaceState } from "./CompanyTypes";
 interface DivisionBoxInterfaceState {
 	id: string | null;
 	code: string;
+	code_division?: string;
 	name: string;
 }
 
@@ -14,6 +15,32 @@ interface FolderBoxInterfaceState {
 	location: string;
 	no: string;
 	sign_code: string;
+}
+interface ImplementerBoxInterfaceState {
+	id: string | null;
+	implementer_code: string;
+}
+
+export interface RoomInterfaceState {
+	id: string | null;
+	name: string;
+	code_room: string;
+	floor: number;
+}
+
+export interface StaffIdInterfaceState {
+	id: string | null;
+	name: string;
+	nip: string;
+	email: string;
+	room: string;
+	firebase_token: string;
+	implementer_code?: string;
+}
+
+export interface StaffInterfaceState {
+	id: string | null;
+	staff?: StaffIdInterfaceState;
 }
 export interface BoxInterfaceState {
 	id: string | null;
@@ -27,6 +54,11 @@ export interface BoxInterfaceState {
 	company: CompanyInterfaceState;
 	division: DivisionBoxInterfaceState;
 	folders: [FolderBoxInterfaceState];
+	room?: RoomInterfaceState;
+	staff?: StaffInterfaceState;
+	implementer_code?: string;
+	implementer_by?: ImplementerBoxInterfaceState;
+	is_filled?: boolean;
 }
 
 export interface BoxesInterfaceState {

@@ -90,7 +90,7 @@ const BoxPageDetail = ({ match }) => {
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Custome Code</Form.Label>
+								<Form.Label>Alternative Code</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
@@ -131,13 +131,13 @@ const BoxPageDetail = ({ match }) => {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">Box Barcode</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">Box QR</p>
 						</div>
 					</Card>
 				</div>
 				<div>
 					<h6 className="mb-4 mt-4">Folder</h6>
-					<DataTable tableHeader={header} tableBody={folders} />
+					<DataTable tableHeader={header} tableBody={folders ? folders : []} />
 				</div>
 			</PageWrapper>
 		</>

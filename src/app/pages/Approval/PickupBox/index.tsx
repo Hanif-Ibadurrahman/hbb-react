@@ -158,7 +158,12 @@ const ApprovalAdminPickupBox = () => {
 					valueModalSet={false}
 				/>
 				<PageHeader breadcrumb={["Dashboard", "Approval Pick Up"]} />
-				<DataTable tableHeader={header} tableBody={pickUpList.PickUpItemList} />
+				<DataTable
+					tableHeader={header}
+					tableBody={
+						pickUpList?.PickUpItemList ? pickUpList?.PickUpItemList : []
+					}
+				/>
 				<Pagination
 					pageCount={pickUpList.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}

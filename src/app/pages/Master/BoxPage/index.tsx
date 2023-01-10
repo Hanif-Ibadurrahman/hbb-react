@@ -16,39 +16,35 @@ import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { deleteBox } from "actions/BoxActions";
 import Alert from "app/components/Alerts";
-import { selectBoxes } from "store/Selector/BoxSelector";
+import { selectBox, selectBoxes } from "store/Selector/BoxSelector";
 import moment from "moment";
 import { Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { SearchInput } from "./FilterInput";
+import { BoxInterfaceState } from "store/Types/BoxTypes";
 
 const BoxPage = () => {
 	const user = localStorage.getItem("User");
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 	const [modalShow, setModalShow] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
+	const [numSort, setNumSort] = useState(0);
+	const [order, setOrder] = useState<string | null>(null);
 	const boxes = useSelector(selectBoxes);
 	const dispatch = useDispatch();
-
+	const box: BoxInterfaceState = useSelector(selectBox);
 	let history = useHistory();
 	const handlePrint = () => {
 		history.push("/Print-PerPage");
-		setTimeout(function () {
-			window.location.reload();
-		}, 1000);
 	};
 
 	const FetchData = (page = 1) => {
-		if (boxes.Box.code_box === "") {
-			dispatch(getBoxesList(page));
-		} else {
-			dispatch(SearchBoxes);
-		}
+		dispatch(getBoxesList(page, null, box, order));
 	};
 
 	useEffect(() => {
 		FetchData();
-	}, []);
+	}, [box, order]);
 
 	const onDelete = (dispatch, id) => {
 		Swal.fire({
@@ -81,6 +77,21 @@ const BoxPage = () => {
 		dispatch(getBoxDetail(id));
 		setModalShow(true);
 	};
+
+	const onSort = () => {
+		setNumSort(prev => prev + 1);
+	};
+
+	useEffect(() => {
+		if (numSort === 1) {
+			setOrder("asc");
+		} else if (numSort === 2) {
+			setOrder("desc");
+		} else if (numSort === 3) {
+			setNumSort(0);
+			setOrder(null);
+		}
+	}, [numSort]);
 
 	const action = id => [
 		{
@@ -130,14 +141,49 @@ const BoxPage = () => {
 			title: "Code Box",
 			prop: "code_box",
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "15%" },
 			},
 		},
 		{
-			prop: "created_at",
-			sortable: true,
+			title: "Alternate Code",
+			prop: "custom_code_box",
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "18%" },
+			},
+			headerCell: () => {
+				return (
+					<div className="cur-p" onClick={() => onSort()}>
+						{`Alternate Code`}
+						<i className="fas fa-sort-alt ml-2"></i>
+					</div>
+				);
+			},
+		},
+		{
+			title: "Nama Divisi",
+			prop: "division",
+			cellProps: {
+				style: { width: "15%" },
+			},
+			cell: row => {
+				return row?.division?.name;
+			},
+		},
+		{
+			title: "Kode Pelaksana",
+			prop: "division",
+			cellProps: {
+				style: { width: "13%" },
+			},
+			cell: row => {
+				return row?.implementer_by?.implementer_code;
+			},
+		},
+		{
+			title: "Tanggal Pembuatan",
+			prop: "created_at",
+			cellProps: {
+				style: { width: "19%" },
 			},
 			headerCell: () => {
 				return (
@@ -169,8 +215,9 @@ const BoxPage = () => {
 			},
 		},
 	];
+
 	const HeaderAction = () => {
-		if (user === "superadmin") {
+		if (user === "superadmin" || user === "archiver") {
 			return (
 				<>
 					<PageHeader

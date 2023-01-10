@@ -61,10 +61,14 @@ export const filterData = async (data: DocumentInterfaceState) => {
 	};
 };
 
-export const getDocumentsList = page => {
+export const getDocumentsList = (
+	page,
+	company_id: String | null = null,
+	area_id: String | null = null,
+) => {
 	return async dispatch => {
 		try {
-			const response = await getAll(page);
+			const response = await getAll(page, company_id, area_id);
 			dispatch({
 				type: GET_DOCUMENTS_LIST,
 				payload: {

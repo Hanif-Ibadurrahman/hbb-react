@@ -15,6 +15,7 @@ import Alert from "app/components/Alerts";
 import { deleteAttachmentDoc } from "api/documents";
 
 const DocumentPageDetail = ({ match }) => {
+	const user = localStorage.getItem("User");
 	const document: DocumentInterfaceState = useSelector(selectDocument);
 	let history = useHistory();
 	const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -59,7 +60,7 @@ const DocumentPageDetail = ({ match }) => {
 		dispatch(getDocumentDetail(document_id));
 	}, []);
 
-	const newDate = moment(document?.date).format("d MMMM YYYY");
+	const newDate = moment(document?.date).format("DD MMMM YYYY");
 
 	return (
 		<>
@@ -182,18 +183,21 @@ const DocumentPageDetail = ({ match }) => {
 														/>
 													</div>
 												</div>
-												<Button
-													variant="danger"
-													className="d-flex jc-center ai-center"
-													onClick={() => onDelete(data)}
-													style={{
-														height: "38px",
-														width: "38px",
-														marginLeft: "24px",
-													}}
-												>
-													<i className="far fa-times"></i>
-												</Button>
+												{user === "archiver" ||
+													(user === "superadmin" && (
+														<Button
+															variant="danger"
+															className="d-flex jc-center ai-center"
+															onClick={() => onDelete(data)}
+															style={{
+																height: "38px",
+																width: "38px",
+																marginLeft: "24px",
+															}}
+														>
+															<i className="far fa-times"></i>
+														</Button>
+													))}
 											</div>
 										))}
 									</>
@@ -228,11 +232,11 @@ const DocumentPageDetail = ({ match }) => {
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
-								<Form.Label>No Lemari</Form.Label>
+								<Form.Label>Kode Lemari</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
-									defaultValue={document?.cabinet?.code_cabinet}
+									defaultValue={document?.cabinetSlot?.name}
 								/>
 							</Form.Group>
 							<Form.Group className="mb-3">
@@ -272,7 +276,7 @@ const DocumentPageDetail = ({ match }) => {
 							className="d-flex jc-center"
 						/>
 						<div className="d-flex jc-center">
-							<p className="p-xl ff-1-bd ta-center mt-3">Document Barcode</p>
+							<p className="p-xl ff-1-bd ta-center mt-3">Document QR</p>
 						</div>
 					</Card>
 				</div>

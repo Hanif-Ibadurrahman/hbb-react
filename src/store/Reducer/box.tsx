@@ -8,6 +8,7 @@ import {
 	SET_BOX_DATA,
 	FILTER_BOXES,
 	GET_BOXES_NOT_PAGE,
+	ADD_VALUES_FILTER,
 } from "../../actions/BoxActions";
 import { BoxesInterfaceState, BoxInterfaceState } from "../Types/BoxTypes";
 export const initialState: BoxesInterfaceState = {
@@ -20,10 +21,35 @@ export const initialState: BoxesInterfaceState = {
 		location: "",
 		created_at: "",
 		custom_code_box: "",
+		implementer_code: "",
+		is_filled: false,
+		room: {
+			code_room: "",
+			floor: 0,
+			id: "",
+			name: "",
+		},
+		staff: {
+			id: "",
+			staff: {
+				email: "",
+				firebase_token: "",
+				id: "",
+				name: "",
+				nip: "",
+				room: "",
+				implementer_code: "",
+			},
+		},
+		implementer_by: {
+			id: "",
+			implementer_code: "",
+		},
 		division: {
 			id: "",
 			code: "",
 			name: "",
+			code_division: "",
 		},
 		folders: [
 			{
@@ -104,6 +130,11 @@ export default (
 				},
 				ErrorBox: payload.errorMessage,
 			};
+		case ADD_VALUES_FILTER:
+			return {
+				...state,
+				Box: payload,
+			};
 		case GET_BOXES_NOT_PAGE:
 			return {
 				...state,
@@ -161,9 +192,34 @@ export default (
 					location: "",
 					created_at: "",
 					custom_code_box: "",
+					implementer_code: "",
+					is_filled: false,
+					staff: {
+						id: "",
+						staff: {
+							email: "",
+							firebase_token: "",
+							id: "",
+							name: "",
+							nip: "",
+							room: "",
+							implementer_code: "",
+						},
+					},
+					room: {
+						code_room: "",
+						floor: 0,
+						id: "",
+						name: "",
+					},
+					implementer_by: {
+						id: "",
+						implementer_code: "",
+					},
 					division: {
 						id: "",
 						code: "",
+						code_division: "",
 						name: "",
 					},
 					folders: [

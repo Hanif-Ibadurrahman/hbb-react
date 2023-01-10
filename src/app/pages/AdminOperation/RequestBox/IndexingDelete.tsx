@@ -130,7 +130,10 @@ const IndexingPage = () => {
 					show={showAlertSuccess}
 					onHide={() => setShowAlertSuccess(false)}
 				/>
-				<DataTable tableHeader={header} tableBody={indexings.Indexings} />
+				<DataTable
+					tableHeader={header}
+					tableBody={indexings?.Indexings ? indexings?.Indexings : []}
+				/>
 				<Pagination
 					pageCount={indexings.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}

@@ -12,13 +12,13 @@ const PrintBoxPerPage = () => {
 	const BoxData = boxes?.Boxes;
 	const dispatch = useDispatch();
 
-	const FetchData = (page = 1) => {
-		dispatch(getBoxesList(page));
-	};
+	// const FetchData = (page = 1) => {
+	// 	dispatch(getBoxesList(page));
+	// };
 
-	useEffect(() => {
-		FetchData();
-	}, []);
+	// useEffect(() => {
+	// 	FetchData();
+	// }, []);
 
 	const Width = {
 		width: "40mm",
@@ -32,17 +32,26 @@ const PrintBoxPerPage = () => {
 	};
 
 	const content = {
-		fontSize: "16px",
-		lineHeight: "16px",
+		fontSize: "11px",
+		lineHeight: "12px",
 	};
 
 	return (
 		<>
 			<div className="no-print">
-				<Pagination
+				<h4
+					style={{
+						marginTop: "20px",
+						marginBottom: "20px",
+						marginLeft: "12px",
+					}}
+				>
+					Print Barcode
+				</h4>
+				{/* <Pagination
 					pageCount={boxes.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}
-				/>
+				/> */}
 			</div>
 			<div>
 				{BoxData?.map((item, index) => {
@@ -57,14 +66,16 @@ const PrintBoxPerPage = () => {
 										className="d-flex jc-center"
 									/>
 								</Card>
-								<div className="ml-6 col-6">
+								<div className="ml-4 col-6">
 									<p style={title} className="ff-1-bd ta-center ">
 										Box
 									</p>
 									{/* <p style={content} className="ff-1-bd ta-center">{item.custom_code_box} - {item.division.code}</p> */}
 									<p style={content} className="ff-1-bd ta-center">
-										{/* {item?.code_box || item?.custom_code_box} */}
-										{item?.company?.code} - {item?.division?.code} -{" "}
+										{item?.code_box} {item?.company?.name}{" "}
+										{item?.division?.name ? item?.division?.name : " "}
+										<br />
+										{item?.implementer_by?.implementer_code}
 										{item?.custom_code_box}
 									</p>
 								</div>

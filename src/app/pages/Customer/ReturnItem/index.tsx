@@ -158,7 +158,10 @@ const ReturnItemPage = () => {
 					modalSet={setModalShow}
 					valueModalSet={false}
 				/>
-				<DataTable tableHeader={header} tableBody={returnList.ReturnList} />
+				<DataTable
+					tableHeader={header}
+					tableBody={returnList?.ReturnList ? returnList.ReturnList : []}
+				/>
 				<Pagination
 					pageCount={returnList.Meta.last_page}
 					onPageChange={data => FetchData(data.selected + 1)}

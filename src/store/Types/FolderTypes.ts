@@ -29,7 +29,7 @@ export interface FolderInterfaceState {
 	box: BoxFolderInterface;
 	cabinet_slot: string;
 	company: CompanyFolderInterface;
-	documents: [DocumentFolderInterface];
+	documents: DocumentFolderInterface[];
 	division: DivisionInterfaceState;
 	location: string;
 	no: string;

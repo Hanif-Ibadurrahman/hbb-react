@@ -41,6 +41,7 @@ import { getDocumentsList } from "actions/DocumentAction";
 import { selectDocuemnts } from "store/Selector/DocumentSelector";
 import { selectCompanys } from "store/Selector/CompanySelector";
 import { getCompanyList } from "actions/CompanyAction";
+import { getAllSummarySlot } from "api/cabinets";
 
 export function DashboardSuperadmin() {
 	const user = localStorage.getItem("User");
@@ -54,23 +55,25 @@ export function DashboardSuperadmin() {
 	const approvalOperationList = useSelector(selectApprovalList);
 	const borrowList = useSelector(selectBorrowItems);
 	const activityLogs = useSelector(selectActivityLogs);
-	const activityLogsSuperAdmin = activityLogs?.ActivityLogsSuperadmin;
 	const activityLogsArchiver = useSelector(selectActivityLogsArchiver);
 	const areas = useSelector(selectAreas);
 	const areaList = areas?.Areas;
 	const documents = useSelector(selectDocuemnts);
 	const Companys = useSelector(selectCompanys);
+	const companyList = Companys.Companys as any;
 	const [title, setTitle] = useState("");
 	const [selectedItem, setSelectedItem] = useState("");
+	const [selectedCompany, setSelectedCompany] = useState("");
+	const [summaryCabinetSlot, setSummaryCabinetSlot] = useState(0);
 
 	const BoxData = (page = 1) => {
-		dispatch(getBoxesList(page));
+		dispatch(getBoxesList(page, selectedCompany, null, null, selectedItem));
 	};
 	const BoxNoAsign = (page = 1) => {
-		dispatch(getBoxesListNoAsign(page));
+		dispatch(getBoxesListNoAsign(page, selectedCompany, selectedItem));
 	};
 	const CabinetData = (page = 1) => {
-		dispatch(getCabinetsList(page));
+		dispatch(getCabinetsList(page, selectedCompany, selectedItem));
 	};
 	const ReturnData = (page = 1) => {
 		dispatch(getReturnList(page));
@@ -81,17 +84,17 @@ export function DashboardSuperadmin() {
 	const FetchData = (page = 1) => {
 		dispatch(getAllConfirmedAdmin(page));
 	};
-	const BorrowList = (page = 1) => {
-		dispatch(getBorrowList(page));
-	};
+	// const BorrowList = (page = 1) => {
+	// 	dispatch(getBorrowList(page));
+	// };
 	const AreaList = (page = 1) => {
-		dispatch(getAreasList(page));
+		dispatch(getAreasList(page, selectedCompany));
 	};
-	const ArchiverLog = () => {
-		dispatch(GetActivityLogsArchiver());
-	};
+	// const ArchiverLog = () => {
+	// 	dispatch(GetActivityLogsArchiver());
+	// };
 	const DocumentList = (page = 1) => {
-		dispatch(getDocumentsList(page));
+		dispatch(getDocumentsList(page, selectedCompany, selectedItem));
 	};
 	const CompanyList = (page = 1) => {
 		dispatch(getCompanyList(page));
@@ -101,32 +104,32 @@ export function DashboardSuperadmin() {
 	}, []);
 	useEffect(() => {
 		DocumentList();
-	}, []);
-	useEffect(() => {
-		ArchiverLog();
-	}, []);
+	}, [selectedCompany, selectedItem]);
+	// useEffect(() => {
+	// 	ArchiverLog();
+	// }, []);
 	useEffect(() => {
 		AreaList();
-	}, []);
-	useEffect(() => {
-		BorrowList();
-	}, []);
+	}, [selectedCompany]);
+	// useEffect(() => {
+	// 	BorrowList();
+	// }, []);
 	useEffect(() => {
 		CabinetData();
-	}, []);
+	}, [selectedCompany, selectedItem]);
 	useEffect(() => {
 		if (user === "superadmin") {
 			BoxData();
 		}
-	}, []);
+	}, [selectedCompany, selectedItem]);
 	useEffect(() => {
 		if (user === "superadmin") {
 			BoxNoAsign();
 		}
-	}, []);
-	useEffect(() => {
-		ReturnData();
-	}, []);
+	}, [selectedCompany, selectedItem]);
+	// useEffect(() => {
+	// 	ReturnData();
+	// }, []);
 	useEffect(() => {
 		if (user === "csroperation") {
 			FetchData();
@@ -150,6 +153,19 @@ export function DashboardSuperadmin() {
 			return setTitle("List Box Di Pinjam");
 		}
 	}, []);
+
+	const SummarySlot = async () => {
+		try {
+			const res = await getAllSummarySlot(selectedItem);
+			setSummaryCabinetSlot(res?.data?.free_cabinet_slot);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	useEffect(() => {
+		SummarySlot();
+	}, [selectedItem]);
 
 	const totalCabinets = cabinets?.Meta?.total;
 	const totalBox = boxes?.Meta?.total;
@@ -245,7 +261,7 @@ export function DashboardSuperadmin() {
 						/>
 					</div>
 				</div>
-				<div className="row w-100% mh-0 mt-4">
+				<div className="row w-100% mh-0 row-summary mt-4">
 					<div className="col col-4 ph-0">
 						<CardHeader
 							icon="clone"
@@ -260,7 +276,13 @@ export function DashboardSuperadmin() {
 							text={["Perusahaan", <br />, "Pengguna."]}
 						/>
 					</div>
-					<div className="col col-4 ph-0 mh-4"></div>
+					<div className="col col-4 ph-0">
+						<CardHeader
+							icon="cabinet-filing"
+							total={summaryCabinetSlot || 0}
+							text={["Slot Lemari", <br />, "Kosong"]}
+						/>
+					</div>
 				</div>
 			</>
 		);
@@ -346,34 +368,20 @@ export function DashboardSuperadmin() {
 		setSelectedItem(e.target.value);
 	};
 
-	const ContentSuperAdmin = (
-		<>
-			<div className="row w-100% mb-8">
-				<div className="col col-4">
-					<Form.Group className="mb-4" controlId="formBasicEmail">
-						<Form.Label className="mb-4">Record Center</Form.Label>
-						<Form.Select
-							aria-label="Default select example"
-							onChange={e => onChangeRC(e)}
-							value={selectedItem}
-						>
-							<option>Pilih Record Center</option>
-							{areaList?.map((item, i) => (
-								<option value={item?.id}>{item?.name}</option>
-							))}
-						</Form.Select>
-					</Form.Group>
-				</div>
-				<div className="col col-4 ph-0">
-					<CardHeader
-						icon="chalkboard"
-						total={activityLogsSuperAdmin?.length || 0}
-						text={["Total", <br />, "Entry Data."]}
-					/>
-				</div>
-			</div>
-		</>
-	);
+	const onChangeCompany = e => {
+		setSelectedCompany(e.target.value);
+	};
+	const mapFreeCabinet = cabinets.Cabinets.map(item => {
+		return item?.free_cabinet_slot;
+	});
+
+	let freeCabinetSlot = 0;
+	mapFreeCabinet.forEach(item => {
+		var newDataFree = item !== undefined && item !== null ? item : 0;
+		freeCabinetSlot += newDataFree;
+	});
+
+	const ContentSuperAdmin = <></>;
 	const ContentArchiver = <></>;
 
 	const TableCSRAdmin = () => {
@@ -473,7 +481,7 @@ export function DashboardSuperadmin() {
 								onChange={e => onChangeRC(e)}
 								value={selectedItem}
 							>
-								<option>Pilih Record Center</option>
+								<option value={""}>Pilih Record Center</option>
 								{areaList?.map((item, i) => (
 									<option value={item?.id}>{item?.name}</option>
 								))}
@@ -481,7 +489,40 @@ export function DashboardSuperadmin() {
 						</Form.Group>
 					</div>
 				)}
-
+				{user === "superadmin" && (
+					<div className="row w-100% mb-8">
+						<div className="col col-4" style={{ paddingRight: "24px" }}>
+							<Form.Group className="mb-4" controlId="formBasicEmail">
+								<Form.Label className="mb-4">Perusahaan</Form.Label>
+								<Form.Select
+									aria-label="Default select example"
+									onChange={e => onChangeCompany(e)}
+									value={selectedCompany}
+								>
+									<option value={""}>Pilih Perusahaan</option>
+									{companyList?.map((item, i) => (
+										<option value={item?.id}>{item?.name}</option>
+									))}
+								</Form.Select>
+							</Form.Group>
+						</div>
+						<div className="col col-4">
+							<Form.Group className="mb-4" controlId="formBasicEmail">
+								<Form.Label className="mb-4">Record Center</Form.Label>
+								<Form.Select
+									aria-label="Default select example"
+									onChange={e => onChangeRC(e)}
+									value={selectedItem}
+								>
+									<option value={""}>Pilih Record Center</option>
+									{areaList?.map((item, i) => (
+										<option value={item?.id}>{item?.name}</option>
+									))}
+								</Form.Select>
+							</Form.Group>
+						</div>
+					</div>
+				)}
 				<CardDashboard />
 			</div>
 			<div className="pos-r p-8 pt-0 mt-4">

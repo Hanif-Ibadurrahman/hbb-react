@@ -115,11 +115,37 @@ const CabinetPage = props => {
 
 	const header = [
 		{
+			title: "Area",
+			prop: "",
+			cellProps: {
+				style: { width: "25%" },
+			},
+			cell: row => {
+				return row?.room?.area?.name;
+			},
+		},
+		{
+			title: "Ruangan",
+			prop: "room",
+			cellProps: {
+				style: { width: "25%" },
+			},
+			cell: row => {
+				return row?.room?.name;
+			},
+		},
+		{
 			title: "Code Cabinet",
 			prop: "code_cabinet",
-			sortable: true,
 			cellProps: {
-				style: { width: "80%" },
+				style: { width: "15%" },
+			},
+		},
+		{
+			title: "No Blok",
+			prop: "block_number",
+			cellProps: {
+				style: { width: "15%" },
 			},
 		},
 		{
@@ -168,7 +194,10 @@ const CabinetPage = props => {
 					value={true}
 					filter={SearchInput}
 				/>
-				<DataTable tableHeader={header} tableBody={cabinets.Cabinets} />
+				<DataTable
+					tableHeader={header}
+					tableBody={cabinets?.Cabinets ? cabinets?.Cabinets : []}
+				/>
 				<Pagination
 					pageCount={cabinets.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}

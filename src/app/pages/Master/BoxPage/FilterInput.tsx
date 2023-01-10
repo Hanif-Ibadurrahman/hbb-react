@@ -1,15 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Row, Container, Form, Modal } from "react-bootstrap";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { RESET_BOX_FORM, SearchBoxes } from "actions/BoxActions";
+import {
+	AddValueFilter,
+	getBoxesList,
+	RESET_BOX_FORM,
+	SearchBoxes,
+} from "actions/BoxActions";
 import { BoxInterfaceState } from "store/Types/BoxTypes";
 import { selectBox } from "store/Selector/BoxSelector";
+import { Autocomplete, TextField } from "@mui/material";
+import { selectCompanys } from "store/Selector/CompanySelector";
+import { selectDivisions } from "store/Selector/DivisionSelector";
+import { getCompanyList } from "actions/CompanyAction";
+import { getDivisionsList } from "actions/DivisionAction";
 
 export function SearchInput(props) {
 	const dispatch = useDispatch();
 	const box: BoxInterfaceState = useSelector(selectBox);
 	const [modalShow, setModalShow] = useState(false);
+	const company = useSelector(selectCompanys);
+	const division = useSelector(selectDivisions);
+	const CompanyList = (page = 1) => {
+		dispatch(getCompanyList(page));
+	};
+	const DivisionData = (page = 1) => {
+		dispatch(getDivisionsList(page));
+	};
+	useEffect(() => {
+		CompanyList();
+	}, []);
+	useEffect(() => {
+		DivisionData();
+	}, []);
 	return (
 		<>
 			<Button
@@ -32,8 +56,9 @@ export function SearchInput(props) {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							const res = await SearchBoxes(values);
-							await dispatch(res);
+							// const res = await getBoxesList(1, null, values);
+							dispatch(await AddValueFilter(values));
+							// await dispatch(res);
 							setModalShow(false);
 						} catch (e) {
 							setModalShow(false);
@@ -48,6 +73,7 @@ export function SearchInput(props) {
 						handleBlur,
 						handleSubmit,
 						isSubmitting,
+						setFieldValue,
 					}) => (
 						<Form onSubmit={handleSubmit} className="right">
 							<Modal.Header closeButton>
@@ -83,6 +109,85 @@ export function SearchInput(props) {
 													onChange={e => {
 														handleChange(e);
 													}}
+												/>
+											</Form.Group>
+										</Col>
+										<Col xs={12}>
+											<Form.Group className="mb-4">
+												<Form.Label>Kode Pelasana</Form.Label>
+												<Form.Control
+													type="text"
+													name="implementer_code"
+													placeholder="Kode Pelaksana"
+													value={values.implementer_code}
+													onChange={e => {
+														handleChange(e);
+													}}
+												/>
+											</Form.Group>
+										</Col>
+										<Col xs={12}>
+											<Form.Group className="mb-4">
+												<Form.Label>Perusahaan</Form.Label>
+												<Autocomplete
+													id="company"
+													options={company.Companys}
+													getOptionLabel={option => option.name}
+													value={values.company}
+													onChange={(e, value) => {
+														setFieldValue(
+															"company",
+															value !== null ? value : values.company,
+														);
+													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															placeholder="Company"
+															name="comapany_id"
+															{...params}
+														/>
+													)}
+												/>
+											</Form.Group>
+										</Col>
+										<Col xs={12}>
+											<Form.Group className="mb-4">
+												<Form.Label>Divisi</Form.Label>
+												<Autocomplete
+													id="division_id"
+													value={values?.division}
+													options={division?.Divisions}
+													getOptionLabel={option => option.name}
+													onChange={(e, value) => {
+														setFieldValue(
+															"division",
+															value !== null ? value : values?.division.id,
+														);
+													}}
+													renderInput={params => (
+														<TextField
+															margin="normal"
+															placeholder="Division"
+															name="division_id"
+															{...params}
+														/>
+													)}
+												/>
+											</Form.Group>
+										</Col>
+										<Col>
+											<Form.Group className="mb-4">
+												{/* <Form.Label>Box Terdaftar</Form.Label> */}
+												<Form.Check
+													type="checkbox"
+													label="Box Terdaftar"
+													name="is_filled"
+													onChange={e => {
+														handleChange(e);
+													}}
+													checked={values?.is_filled}
+													onBlur={handleBlur}
 												/>
 											</Form.Group>
 										</Col>

@@ -167,7 +167,9 @@ const ApprovalOperationRequestBox = () => {
 				<SearchInput />
 				<DataTable
 					tableHeader={header}
-					tableBody={requestBoxes?.RequestBoxes}
+					tableBody={
+						requestBoxes?.RequestBoxes ? requestBoxes?.RequestBoxes : []
+					}
 				/>
 				<Pagination
 					pageCount={requestBoxes.Meta.last_page || 1}

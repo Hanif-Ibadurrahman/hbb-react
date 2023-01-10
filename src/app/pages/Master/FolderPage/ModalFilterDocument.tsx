@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { DocumentInterfaceState } from "store/Types/DocumentTypes";
 import { selectDocument } from "store/Selector/DocumentSelector";
 import { filterData, RESET_DOCUMENT_FORM } from "actions/DocumentAction";
+import { filterDataDocument } from "actions/FolderAction";
 
-export function ModalFilter(props) {
+export function ModalFilterDocument(props) {
 	const dispatch = useDispatch();
 	const document: DocumentInterfaceState = useSelector(selectDocument);
 	const [modalShow, setModalShow] = useState(false);
@@ -33,7 +34,7 @@ export function ModalFilter(props) {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							const res = await filterData(values);
+							const res = await filterDataDocument(values, props.id);
 							await dispatch(res);
 							setModalShow(false);
 						} catch (e) {

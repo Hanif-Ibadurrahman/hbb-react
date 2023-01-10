@@ -28,13 +28,6 @@ const ModalAssign = props => {
 	useEffect(() => {
 		FetchData();
 	}, []);
-	const DocumentAssigned = (page = 1) => {
-		dispatch(getDocumentsAssigned(page));
-	};
-
-	useEffect(() => {
-		DocumentAssigned();
-	}, []);
 
 	const assignDocumentToFolder: AssignDocumentToFolderInterfaceState =
 		useSelector(selectAssignToFolder);

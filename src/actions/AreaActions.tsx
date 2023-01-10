@@ -20,10 +20,10 @@ export const FILTER_AREA = "FILTER_AREA";
 
 let limit = 20;
 
-export const getAreasList = page => {
+export const getAreasList = (page, company_id: String | null = null) => {
 	return async dispatch => {
 		try {
-			const response = await getAll(page);
+			const response = await getAll(page, company_id);
 			dispatch({
 				type: GET_AREAS_LIST,
 				payload: {

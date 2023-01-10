@@ -54,6 +54,7 @@ export const ModalForm = props => {
 		password: Yup.string().required("*Wajib diisi").min(8, "Min 8 Karakter"),
 		name: Yup.string().required("*Wajib diisi"),
 		nip: Yup.string().required("*Wajib diisi").max(18, "Maksimal 18 Karakter"),
+		implementer_code: Yup.string().required("*Wajib diisi"),
 	});
 
 	const editStaffSchema = Yup.object().shape({
@@ -227,6 +228,24 @@ export const ModalForm = props => {
 												/>
 												{touched.nip && errors.nip ? (
 													<p className="tc-danger-5 pos-a p-sm">{errors.nip}</p>
+												) : null}
+											</Form.Group>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label>Kode Pelaksana</Form.Label>
+												<Form.Control
+													type="text"
+													name="implementer_code"
+													placeholder="Kode Pelaksana"
+													value={values?.implementer_code}
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+												/>
+												{touched.implementer_code && errors.implementer_code ? (
+													<p className="tc-danger-5 pos-a p-sm">
+														{errors.implementer_code}
+													</p>
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4" controlId="formBasicEmail">

@@ -114,7 +114,7 @@ const FolderPage = () => {
 			prop: "no",
 			sortable: true,
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "30%" },
 			},
 			headerCell: () => {
 				return (
@@ -129,7 +129,17 @@ const FolderPage = () => {
 			title: "Status Folder",
 			prop: "status",
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "30%" },
+			},
+		},
+		{
+			title: "Kode Pelaksana",
+			prop: "implementer_code",
+			cellProps: {
+				style: { width: "20%" },
+			},
+			cell: row => {
+				return <div>{row?.implementer_by?.implementer_code || "-"}</div>;
 			},
 		},
 		{
@@ -197,7 +207,10 @@ const FolderPage = () => {
 					valueModalSet={false}
 				/>
 				<HeaderAction />
-				<DataTable tableHeader={header} tableBody={folders.Folders} />
+				<DataTable
+					tableHeader={header}
+					tableBody={folders?.Folders ? folders?.Folders : []}
+				/>
 				<Pagination
 					pageCount={folders.Meta.last_page || 1}
 					onPageChange={data => FetchData(data.selected + 1)}
