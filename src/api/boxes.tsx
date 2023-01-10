@@ -32,6 +32,7 @@ export const getAll = async (
 	company_id: String | null = null,
 	data: BoxInterfaceState | null = null,
 	order: String | null = null,
+	area_id: String | null = null,
 ) => {
 	return api
 		.get(`/boxes?`, {
@@ -46,6 +47,7 @@ export const getAll = async (
 				order_by:
 					order !== undefined && order !== null ? "alt_code" : undefined,
 				order_direction: order,
+				area_id: area_id,
 			},
 		})
 		.then(res => {

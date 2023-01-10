@@ -34,12 +34,14 @@ export const getAllArchiver = async params => {
 export const getAllBoxNoAsign = async (
 	page,
 	company_id: String | null = null,
+	area_id: String | null = null,
 ) => {
 	return api
 		.get(`/boxes?is_filled=false`, {
 			params: {
 				page: page,
 				company_id: company_id,
+				area_id: area_id,
 			},
 		})
 		.then(res => {
