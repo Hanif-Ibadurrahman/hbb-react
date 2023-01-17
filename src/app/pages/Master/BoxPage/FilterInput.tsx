@@ -15,6 +15,8 @@ import { selectCompanys } from "store/Selector/CompanySelector";
 import { selectDivisions } from "store/Selector/DivisionSelector";
 import { getCompanyList } from "actions/CompanyAction";
 import { getDivisionsList } from "actions/DivisionAction";
+import { selectAreas } from "store/Selector/AreaSelector";
+import { getAreasList } from "actions/AreaActions";
 
 export function SearchInput(props) {
 	const dispatch = useDispatch();
@@ -22,11 +24,16 @@ export function SearchInput(props) {
 	const [modalShow, setModalShow] = useState(false);
 	const company = useSelector(selectCompanys);
 	const division = useSelector(selectDivisions);
+	const areas = useSelector(selectAreas);
+	const areaList = areas?.Areas;
 	const CompanyList = (page = 1) => {
 		dispatch(getCompanyList(page));
 	};
 	const DivisionData = (page = 1) => {
 		dispatch(getDivisionsList(page));
+	};
+	const AreaList = (page = 1) => {
+		dispatch(getAreasList(page));
 	};
 	useEffect(() => {
 		CompanyList();
@@ -34,6 +41,10 @@ export function SearchInput(props) {
 	useEffect(() => {
 		DivisionData();
 	}, []);
+	useEffect(() => {
+		AreaList();
+	}, []);
+
 	return (
 		<>
 			<Button
@@ -56,7 +67,7 @@ export function SearchInput(props) {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							// const res = await getBoxesList(1, null, values);
+							console.log("values >>", values);
 							dispatch(await AddValueFilter(values));
 							// await dispatch(res);
 							setModalShow(false);
@@ -174,6 +185,25 @@ export function SearchInput(props) {
 														/>
 													)}
 												/>
+											</Form.Group>
+										</Col>
+										<Col xs={12}>
+											<Form.Group className="mb-4" controlId="formBasicEmail">
+												<Form.Label className="mb-4">Record Center</Form.Label>
+												<Form.Select
+													aria-label="Default select example"
+													name="area_id"
+													onChange={e => {
+														handleChange(e);
+													}}
+													onBlur={handleBlur}
+													value={values.area_id}
+												>
+													<option value={""}>Pilih Record Center</option>
+													{areaList?.map((item, i) => (
+														<option value={item?.id}>{item?.name}</option>
+													))}
+												</Form.Select>
 											</Form.Group>
 										</Col>
 										<Col>

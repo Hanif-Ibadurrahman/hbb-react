@@ -47,7 +47,7 @@ export const getAll = async (
 				order_by:
 					order !== undefined && order !== null ? "alt_code" : undefined,
 				order_direction: order,
-				area_id: area_id,
+				area_id: area_id || data?.area_id,
 			},
 		})
 		.then(res => {

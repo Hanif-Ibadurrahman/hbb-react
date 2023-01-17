@@ -59,6 +59,7 @@ export interface BoxInterfaceState {
 	implementer_code?: string;
 	implementer_by?: ImplementerBoxInterfaceState;
 	is_filled?: boolean;
+	area_id?: string;
 }
 
 export interface BoxesInterfaceState {
