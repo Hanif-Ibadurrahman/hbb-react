@@ -2,26 +2,26 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { PageWrapper } from "app/components/PageWrapper";
 import { DataTable } from "app/components/Datatables";
-import PageHeader from "../../Approval/Components/PageHeader";
-import DropdownAction from "app/components/DropdownAction";
 import { Pagination } from "app/components/Pagination";
 import { getActivityLogList } from "actions/ActivityLogAction";
 import { useDispatch, useSelector } from "react-redux";
-import { selectRequestBoxes } from "store/Selector/RequestBoxSelector";
-import moment from "moment";
-import { SearchInput } from "./FilterPreviewApproval";
 import { selectActivityLogs } from "store/Selector/ActivityLogSelector";
+import momentTZ from "moment-timezone";
 
 const ActivityLog = () => {
+	momentTZ.locale();
+	momentTZ.tz.setDefault("Asia/Jakarta");
 	const activityLog = useSelector(selectActivityLogs);
 	const dispatch = useDispatch();
 	const FetchData = (page = 1) => {
 		dispatch(getActivityLogList(page));
 	};
-
+	const moment = require("moment-timezone");
 	useEffect(() => {
 		FetchData();
 	}, []);
+
+	console.log("test >>>>", moment.locale("id"));
 
 	const header = [
 		{
@@ -40,12 +40,13 @@ const ActivityLog = () => {
 		},
 		{
 			title: "Tanggal Log Dibuat",
-			// sortable: true,
 			prop: "created_at",
+			cell: row => {
+				// return moment.tz(`${row?.created_at}`, 'Asia/Jakarta').format('MMMM Do YYYY, h:mm:ss a').toString().lang("id");
+				return momentTZ(row?.created_at).format("MMMM Do YYYY, h:mm:ss a");
+			},
 		},
 	];
-
-	console.log("data >>", activityLog?.ActivityLogs);
 
 	return (
 		<>

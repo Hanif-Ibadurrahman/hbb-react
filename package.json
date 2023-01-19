@@ -51,6 +51,7 @@
 		"lodash": "^4.17.21",
 		"mocha": "^9.1.2",
 		"moment": "^2.29.1",
+		"moment-timezone": "^0.5.40",
 		"node-plop": "0.26.2",
 		"plop": "2.7.4",
 		"react": "17.0.2",

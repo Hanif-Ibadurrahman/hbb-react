@@ -23,6 +23,7 @@ export const initialState: BoxesInterfaceState = {
 		custom_code_box: "",
 		implementer_code: "",
 		is_filled: false,
+		area_id: "",
 		room: {
 			code_room: "",
 			floor: 0,
@@ -194,6 +195,7 @@ export default (
 					custom_code_box: "",
 					implementer_code: "",
 					is_filled: false,
+					area_id: "",
 					staff: {
 						id: "",
 						staff: {
