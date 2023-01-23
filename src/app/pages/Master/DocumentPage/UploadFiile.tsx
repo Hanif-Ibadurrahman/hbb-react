@@ -90,7 +90,7 @@ export function UploadFileDoc(props) {
 									onChange={e => {
 										onChangeFile(e);
 									}}
-									accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .xls"
+									accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, .xls, .xlsx"
 									className="form-control"
 								/>
 							</Form.Group>
