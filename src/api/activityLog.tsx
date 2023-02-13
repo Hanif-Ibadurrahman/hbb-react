@@ -25,3 +25,12 @@ export const getActivityLogsArchiver = () => {
 	const id_user = localStorage.getItem("IdUser");
 	return api.get(`/activity-logs/summary/input-document/user?id=${id_user}`);
 };
+
+export const getDashboardSummary = async (
+	company_id: String | null = null,
+	area_id: String | null = null,
+) => {
+	return api.get(
+		`/dashboard/info-summary?area_id=${area_id}&company_id=${company_id}`,
+	);
+};

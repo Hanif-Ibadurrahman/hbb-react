@@ -71,7 +71,7 @@ const PickUpPage = () => {
 			},
 		},
 		{
-			title: "Code Box",
+			title: "Kode Box",
 			prop: "code_box",
 			sortable: true,
 			cellProps: {

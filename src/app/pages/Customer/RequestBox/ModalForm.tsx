@@ -192,19 +192,19 @@ const ModalForm = props => {
 												) : null}
 											</Form.Group>
 											{/* <Form.Group className="mb-3">
-												<Form.Label>Custome Code Box</Form.Label>
+												<Form.Label>Custome Kode Box</Form.Label>
 												<FieldArray name="code_boxes">
 													{({ remove, push }) => (
 														<div>
 															{values?.code_boxes?.map((codeBox, index) => (
 																<Form.Group className="mb-4" key={index}>
-																	<Form.Label>Code Box</Form.Label>
+																	<Form.Label>Kode Box</Form.Label>
 																	<Row>
 																		<Col xs={10}>
 																			<Form.Control
 																				type="text"
 																				name={`code_boxes.${index}`}
-																				placeholder="Code Box"
+																				placeholder="Kode Box"
 																				value={values.code_boxes[index]}
 																				onChange={e => {
 																					handleChange(e);

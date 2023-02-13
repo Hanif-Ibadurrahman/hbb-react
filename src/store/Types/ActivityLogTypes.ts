@@ -24,11 +24,28 @@ export interface ActivitiLogsArchiver {
 	area_id: string;
 }
 
+interface companySummary {
+	id: string;
+	name: string;
+}
+
+export interface DahsboardSummaryInterface {
+	total_document: number;
+	total_companies: number;
+	listCompanies: companySummary[];
+	total_cabinets: number;
+	total_cabinet_slots: number;
+	free_cabinet_slots: number;
+	filled_boxes: number;
+	free_boxes: number;
+}
+
 export interface ActivityLogsInterfaceState {
 	ActivityLog: ActivityLogInterfaceState;
 	ActivityLogs: ActivityLogInterfaceState[];
 	ActivityLogsSuperadmin: ActivitiLogsArchiver[];
 	ActivityLogsArchiver: ActivitiLogsArchiver[];
+	DashboardSummary: DahsboardSummaryInterface;
 	ErrorActivityLogs?: string;
 	Title: string;
 	Meta: PaginationState;

@@ -138,7 +138,7 @@ const BoxPage = () => {
 
 	const header = [
 		{
-			title: "Code Box",
+			title: "Kode Box",
 			prop: "code_box",
 			cellProps: {
 				style: { width: "15%" },

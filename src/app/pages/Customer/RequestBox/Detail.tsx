@@ -43,7 +43,7 @@ const RequestBoxDetail = props => {
 					<Card className="ph-5 pv-3 bd-rs-2">
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Code Box</Form.Label>
+								<Form.Label>Kode Box</Form.Label>
 
 								<Form.Control
 									type="text"

@@ -42,7 +42,7 @@ const CabinetPageDetail = ({ match }) => {
 					<Card className="ph-5 pv-3 bd-rs-2">
 						<Form className="mt-3">
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Code Cabinet</Form.Label>
+								<Form.Label>Kode Kabinet</Form.Label>
 								<Form.Control
 									type="text"
 									disabled

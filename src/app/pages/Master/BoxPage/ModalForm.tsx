@@ -130,7 +130,7 @@ const ModalForm = props => {
 									<Row>
 										<Col xs={12}>
 											<Form.Group className="mb-4" controlId="formBasicEmail">
-												<Form.Label>Code Box</Form.Label>
+												<Form.Label>Kode Box</Form.Label>
 												<Form.Control
 													type="text"
 													name="code_box"

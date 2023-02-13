@@ -19,3 +19,8 @@ export const selectActivityLogsArchiver = createSelector(
 	activityLogDomain,
 	state => state.ActivityLogsArchiver,
 );
+
+export const selectDashboardSummary = createSelector(
+	activityLogDomain,
+	state => state.DashboardSummary,
+);

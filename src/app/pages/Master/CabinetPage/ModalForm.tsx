@@ -155,7 +155,7 @@ export const ModalForm = props => {
 													/>
 												</Form.Group>
 												<Form.Group className="mb-4" controlId="formname">
-													<Form.Label>Code Cabinet</Form.Label>
+													<Form.Label>Kode Kabinet</Form.Label>
 													<Form.Control
 														type="text"
 														name="code_cabinet"
