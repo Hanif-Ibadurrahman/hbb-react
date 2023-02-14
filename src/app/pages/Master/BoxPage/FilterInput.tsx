@@ -97,11 +97,11 @@ export function SearchInput(props) {
 									<Row>
 										<Col xs={12}>
 											<Form.Group className="mb-4">
-												<Form.Label>Code Box</Form.Label>
+												<Form.Label>Kode Box</Form.Label>
 												<Form.Control
 													type="text"
 													name="code_box"
-													placeholder="Code Box"
+													placeholder="Kode Box"
 													value={values.code_box}
 													onChange={e => {
 														handleChange(e);

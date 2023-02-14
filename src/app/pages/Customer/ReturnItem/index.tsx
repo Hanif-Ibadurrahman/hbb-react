@@ -79,7 +79,7 @@ const ReturnItemPage = () => {
 
 	const header = [
 		{
-			title: "Code Box",
+			title: "Kode Box",
 			prop: "code_box",
 			sortable: true,
 			cellProps: {
@@ -87,7 +87,7 @@ const ReturnItemPage = () => {
 			},
 		},
 		{
-			title: "Customer Code Box",
+			title: "Custome Kode Box",
 			prop: "custom_code_box",
 			sortable: true,
 			cellProps: {

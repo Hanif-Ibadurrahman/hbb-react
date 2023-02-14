@@ -2,6 +2,7 @@ import {
 	GET_ACTIVITY_LOG_LIST,
 	GET_ACTIVITY_LOG_SUPERADMIN,
 	GET_ACTIVITY_LOG_ARCHIVER,
+	GET_DASHBOARD_SUMMARY,
 } from "../../actions/ActivityLogAction";
 
 import { ActivityLogsInterfaceState } from "store/Types/ActivityLogTypes";
@@ -22,6 +23,21 @@ export const initialState: ActivityLogsInterfaceState = {
 	},
 	ActivityLogsSuperadmin: [],
 	ActivityLogsArchiver: [],
+	DashboardSummary: {
+		filled_boxes: 0,
+		free_boxes: 0,
+		free_cabinet_slots: 0,
+		listCompanies: [
+			{
+				id: "",
+				name: "",
+			},
+		],
+		total_cabinet_slots: 0,
+		total_cabinets: 0,
+		total_companies: 0,
+		total_document: 0,
+	},
 	Title: "",
 	Meta: {
 		total: 0,
@@ -61,6 +77,11 @@ export default (
 				...state,
 				ActivityLogsArchiver: payload?.data?.data,
 				ErrorActivityLogs: payload.errorMessage,
+			};
+		case GET_DASHBOARD_SUMMARY:
+			return {
+				...state,
+				DashboardSummary: payload.data,
 			};
 		default:
 			return state;
