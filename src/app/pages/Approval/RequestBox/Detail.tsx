@@ -95,7 +95,7 @@ const ApprovalAdminDetail = ({ match }) => {
 									<div className="row mb-4">
 										<div className="col-6">
 											<Form.Group>
-												<Form.Label>Code Box</Form.Label>
+												<Form.Label>Kode Box</Form.Label>
 												<Form.Control
 													type="text"
 													disabled

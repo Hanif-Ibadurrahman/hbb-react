@@ -135,7 +135,7 @@ const CabinetPage = props => {
 			},
 		},
 		{
-			title: "Code Cabinet",
+			title: "Kode Kabinet",
 			prop: "code_cabinet",
 			cellProps: {
 				style: { width: "15%" },

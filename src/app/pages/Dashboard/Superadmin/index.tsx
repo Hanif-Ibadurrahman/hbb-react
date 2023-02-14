@@ -26,22 +26,31 @@ import { getBorrowList } from "actions/BorrowItemAction";
 import { UploadExcel } from "./UploadExcel";
 import { selectTransporters } from "store/Selector/TransporterSelector";
 import { getBoxesListNoAsign } from "actions/TransporterAction";
-import { Dropdown, Form } from "react-bootstrap";
+import { Button, Dropdown, Form } from "react-bootstrap";
 import { selectAreas } from "store/Selector/AreaSelector";
 import { getAreasList } from "actions/AreaActions";
 import {
+	selectActivityLog,
 	selectActivityLogs,
 	selectActivityLogsArchiver,
+	selectDashboardSummary,
 } from "store/Selector/ActivityLogSelector";
 import {
 	GetActivityLogsArchiver,
 	GetActivityLogsSuperAdmin,
+	getSummaryDashboard,
 } from "actions/ActivityLogAction";
 import { getDocumentsList } from "actions/DocumentAction";
 import { selectDocuemnts } from "store/Selector/DocumentSelector";
 import { selectCompanys } from "store/Selector/CompanySelector";
 import { getCompanyList } from "actions/CompanyAction";
 import { getAllSummarySlot } from "api/cabinets";
+import manualBookSuperAdmin from "assets/documents/ManualBook-RoleSuperAdmin.pdf";
+import manualBookCSRAdmin from "assets/documents/ManualBook-RoleCSRAdmin.pdf";
+import manualBookCSROperation from "assets/documents/ManualBook-RoleCSROperation.pdf";
+import manualBookArchiver from "assets/documents/ManualBook-RoleArchiver.pdf";
+import manualBookCustomer from "assets/documents/ManualBook-RoleCustomer.pdf";
+// import polismallSample from "assets/documents/ManualBook-RoleCustomer.pdf";
 
 export function DashboardSuperadmin() {
 	const user = localStorage.getItem("User");
@@ -54,9 +63,9 @@ export function DashboardSuperadmin() {
 	const returnItems = useSelector(selectReturnItems);
 	const approvalOperationList = useSelector(selectApprovalList);
 	const borrowList = useSelector(selectBorrowItems);
-	const activityLogs = useSelector(selectActivityLogs);
 	const activityLogsArchiver = useSelector(selectActivityLogsArchiver);
 	const areas = useSelector(selectAreas);
+	const summary = useSelector(selectDashboardSummary);
 	const areaList = areas?.Areas;
 	const documents = useSelector(selectDocuemnts);
 	const Companys = useSelector(selectCompanys);
@@ -65,7 +74,16 @@ export function DashboardSuperadmin() {
 	const [selectedItem, setSelectedItem] = useState("");
 	const [selectedCompany, setSelectedCompany] = useState("");
 	const [summaryCabinetSlot, setSummaryCabinetSlot] = useState(0);
+	const [manualBook, setManualBook] = useState("");
 
+	const SummaryData = (page = 1) => {
+		dispatch(getSummaryDashboard(selectedCompany, selectedItem));
+	};
+	useEffect(() => {
+		SummaryData();
+	}, [selectedCompany, selectedItem]);
+
+	console.log("sumarry >>>", summary);
 	const BoxData = (page = 1) => {
 		dispatch(getBoxesList(page, selectedCompany, null, null, selectedItem));
 	};
@@ -84,15 +102,9 @@ export function DashboardSuperadmin() {
 	const FetchData = (page = 1) => {
 		dispatch(getAllConfirmedAdmin(page));
 	};
-	// const BorrowList = (page = 1) => {
-	// 	dispatch(getBorrowList(page));
-	// };
 	const AreaList = (page = 1) => {
 		dispatch(getAreasList(page, selectedCompany));
 	};
-	// const ArchiverLog = () => {
-	// 	dispatch(GetActivityLogsArchiver());
-	// };
 	const DocumentList = (page = 1) => {
 		dispatch(getDocumentsList(page, selectedCompany, selectedItem));
 	};
@@ -105,15 +117,11 @@ export function DashboardSuperadmin() {
 	useEffect(() => {
 		DocumentList();
 	}, [selectedCompany, selectedItem]);
-	// useEffect(() => {
-	// 	ArchiverLog();
-	// }, []);
+
 	useEffect(() => {
 		AreaList();
 	}, [selectedCompany]);
-	// useEffect(() => {
-	// 	BorrowList();
-	// }, []);
+
 	useEffect(() => {
 		CabinetData();
 	}, [selectedCompany, selectedItem]);
@@ -220,14 +228,14 @@ export function DashboardSuperadmin() {
 
 	const headerCustomer = [
 		{
-			title: "Code Box",
+			title: "Kode Box",
 			prop: "code_box",
 			cellProps: {
 				style: { width: "40%" },
 			},
 		},
 		{
-			title: "Customer Code Box",
+			title: "Custome Kode Box",
 			prop: "custom_code_box",
 			cellProps: {
 				style: { width: "40%" },
@@ -371,12 +379,12 @@ export function DashboardSuperadmin() {
 	const onChangeCompany = e => {
 		setSelectedCompany(e.target.value);
 	};
-	const mapFreeCabinet = cabinets.Cabinets.map(item => {
+	const mapFreeCabinet = cabinets?.Cabinets?.map(item => {
 		return item?.free_cabinet_slot;
 	});
 
 	let freeCabinetSlot = 0;
-	mapFreeCabinet.forEach(item => {
+	mapFreeCabinet?.forEach(item => {
 		var newDataFree = item !== undefined && item !== null ? item : 0;
 		freeCabinetSlot += newDataFree;
 	});
@@ -459,6 +467,19 @@ export function DashboardSuperadmin() {
 			return <CardCustomer />;
 		}
 	};
+	useEffect(() => {
+		if (user === "superadmin") {
+			return setManualBook(manualBookSuperAdmin);
+		} else if (user === "csradmin") {
+			return setManualBook(manualBookCSRAdmin);
+		} else if (user === "csroperation") {
+			return setManualBook(manualBookCSROperation);
+		} else if (user === "archiver") {
+			return setManualBook(manualBookArchiver);
+		} else {
+			return setManualBook(manualBookCustomer);
+		}
+	}, [user]);
 
 	return (
 		<>
@@ -471,7 +492,26 @@ export function DashboardSuperadmin() {
 					<span className="ff-1 username text txtf-c">Selamat Datang,</span>
 					<span className="m-0 username text txtf-c"> {userName}</span>
 				</h3>
-				<h6 className="mb-3 tc-dark-contrast">Today Summary</h6>
+				<div className="row mb-4" style={{ alignItems: "center" }}>
+					<div className="col-4">
+						<h6 className="mb-3 tc-dark-contrast">Ringkasan Hari Ini</h6>
+					</div>
+					<div className="col-4" style={{ paddingLeft: "0" }}>
+						<a
+							href={manualBook}
+							download={`Manual Book - Aplikasi Dox : Role - ${
+								user || "customer"
+							}`}
+							target={"_blank"}
+							rel="noreferrer"
+						>
+							<Button className="bg-success" style={{ borderColor: "#198754" }}>
+								{" "}
+								Download Manual Book{" "}
+							</Button>
+						</a>
+					</div>
+				</div>
 				{user === "" && (
 					<div className="col col-4" style={{ paddingRight: "24px" }}>
 						<Form.Group className="mb-4" controlId="formBasicEmail">

@@ -108,7 +108,7 @@ const RoomPage = () => {
 			},
 		},
 		{
-			title: "Code Room",
+			title: "Kode Room",
 			prop: "code_room",
 			sortable: true,
 			cellProps: {

@@ -117,7 +117,7 @@ const FolderPageDetail = ({ match }) => {
 								<Form.Control type="text" disabled defaultValue={folder?.no} />
 							</Form.Group>
 							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Code Box</Form.Label>
+								<Form.Label>Kode Box</Form.Label>
 								<Form.Control
 									type="text"
 									disabled
