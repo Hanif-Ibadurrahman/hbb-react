@@ -54,3 +54,24 @@
     color: $d-color-dark;
   }
 }
+
+.manual-book {
+  position: fixed;
+  right: 32px;
+  bottom: 24px;
+  z-index: 3;
+  border-radius: 8px;
+  background-color: $d-color-secondary-6;
+  color: #fff;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  i {
+    font-size: 22px;
+    padding-left: 12px;
+  }
+  &:hover {
+    background-color: $d-color-secondary-5  ;
+    color: #fff ;
+  }
+}
