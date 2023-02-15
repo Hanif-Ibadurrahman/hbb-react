@@ -45,12 +45,6 @@ import { selectDocuemnts } from "store/Selector/DocumentSelector";
 import { selectCompanys } from "store/Selector/CompanySelector";
 import { getCompanyList } from "actions/CompanyAction";
 import { getAllSummarySlot } from "api/cabinets";
-import manualBookSuperAdmin from "assets/documents/ManualBook-RoleSuperAdmin.pdf";
-import manualBookCSRAdmin from "assets/documents/ManualBook-RoleCSRAdmin.pdf";
-import manualBookCSROperation from "assets/documents/ManualBook-RoleCSROperation.pdf";
-import manualBookArchiver from "assets/documents/ManualBook-RoleArchiver.pdf";
-import manualBookCustomer from "assets/documents/ManualBook-RoleCustomer.pdf";
-// import polismallSample from "assets/documents/ManualBook-RoleCustomer.pdf";
 
 export function DashboardSuperadmin() {
 	const user = localStorage.getItem("User");
@@ -74,7 +68,7 @@ export function DashboardSuperadmin() {
 	const [selectedItem, setSelectedItem] = useState("");
 	const [selectedCompany, setSelectedCompany] = useState("");
 	const [summaryCabinetSlot, setSummaryCabinetSlot] = useState(0);
-	const [manualBook, setManualBook] = useState("");
+	// const [manualBook, setManualBook] = useState("");
 
 	const SummaryData = (page = 1) => {
 		dispatch(getSummaryDashboard(selectedCompany, selectedItem));
@@ -467,19 +461,6 @@ export function DashboardSuperadmin() {
 			return <CardCustomer />;
 		}
 	};
-	useEffect(() => {
-		if (user === "superadmin") {
-			return setManualBook(manualBookSuperAdmin);
-		} else if (user === "csradmin") {
-			return setManualBook(manualBookCSRAdmin);
-		} else if (user === "csroperation") {
-			return setManualBook(manualBookCSROperation);
-		} else if (user === "archiver") {
-			return setManualBook(manualBookArchiver);
-		} else {
-			return setManualBook(manualBookCustomer);
-		}
-	}, [user]);
 
 	return (
 		<>
@@ -495,21 +476,6 @@ export function DashboardSuperadmin() {
 				<div className="row mb-4" style={{ alignItems: "center" }}>
 					<div className="col-4">
 						<h6 className="mb-3 tc-dark-contrast">Ringkasan Hari Ini</h6>
-					</div>
-					<div className="col-4" style={{ paddingLeft: "0" }}>
-						<a
-							href={manualBook}
-							download={`Manual Book - Aplikasi Dox : Role - ${
-								user || "customer"
-							}`}
-							target={"_blank"}
-							rel="noreferrer"
-						>
-							<Button className="bg-success" style={{ borderColor: "#198754" }}>
-								{" "}
-								Download Manual Book{" "}
-							</Button>
-						</a>
 					</div>
 				</div>
 				{user === "" && (
