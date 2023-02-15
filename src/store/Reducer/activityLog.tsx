@@ -36,7 +36,7 @@ export const initialState: ActivityLogsInterfaceState = {
 		total_cabinet_slots: 0,
 		total_cabinets: 0,
 		total_companies: 0,
-		total_document: 0,
+		total_documents: 0,
 	},
 	Title: "",
 	Meta: {

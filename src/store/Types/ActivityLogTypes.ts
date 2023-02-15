@@ -30,7 +30,7 @@ interface companySummary {
 }
 
 export interface DahsboardSummaryInterface {
-	total_document: number;
+	total_documents: number;
 	total_companies: number;
 	listCompanies: companySummary[];
 	total_cabinets: number;
