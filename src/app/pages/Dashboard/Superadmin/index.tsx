@@ -52,8 +52,6 @@ export function DashboardSuperadmin() {
 	const requestBoxes = useSelector(selectRequestBoxes);
 	const dispatch = useDispatch();
 	const cabinets = useSelector(selectCabinets);
-	const boxes = useSelector(selectBoxes);
-	const boxesNoAsign = useSelector(selectTransporters);
 	const returnItems = useSelector(selectReturnItems);
 	const approvalOperationList = useSelector(selectApprovalList);
 	const borrowList = useSelector(selectBorrowItems);
@@ -61,14 +59,12 @@ export function DashboardSuperadmin() {
 	const areas = useSelector(selectAreas);
 	const summary = useSelector(selectDashboardSummary);
 	const areaList = areas?.Areas;
-	const documents = useSelector(selectDocuemnts);
 	const Companys = useSelector(selectCompanys);
 	const companyList = Companys.Companys as any;
 	const [title, setTitle] = useState("");
 	const [selectedItem, setSelectedItem] = useState("");
 	const [selectedCompany, setSelectedCompany] = useState("");
 	const [summaryCabinetSlot, setSummaryCabinetSlot] = useState(0);
-	// const [manualBook, setManualBook] = useState("");
 
 	const SummaryData = (page = 1) => {
 		dispatch(getSummaryDashboard(selectedCompany, selectedItem));
@@ -77,16 +73,6 @@ export function DashboardSuperadmin() {
 		SummaryData();
 	}, [selectedCompany, selectedItem]);
 
-	console.log("sumarry >>>", summary);
-	const BoxData = (page = 1) => {
-		dispatch(getBoxesList(page, selectedCompany, null, null, selectedItem));
-	};
-	const BoxNoAsign = (page = 1) => {
-		dispatch(getBoxesListNoAsign(page, selectedCompany, selectedItem));
-	};
-	const CabinetData = (page = 1) => {
-		dispatch(getCabinetsList(page, selectedCompany, selectedItem));
-	};
 	const ReturnData = (page = 1) => {
 		dispatch(getReturnList(page));
 	};
@@ -99,39 +85,18 @@ export function DashboardSuperadmin() {
 	const AreaList = (page = 1) => {
 		dispatch(getAreasList(page, selectedCompany));
 	};
-	const DocumentList = (page = 1) => {
-		dispatch(getDocumentsList(page, selectedCompany, selectedItem));
-	};
+
 	const CompanyList = (page = 1) => {
 		dispatch(getCompanyList(page));
 	};
 	useEffect(() => {
 		CompanyList();
 	}, []);
-	useEffect(() => {
-		DocumentList();
-	}, [selectedCompany, selectedItem]);
 
 	useEffect(() => {
 		AreaList();
 	}, [selectedCompany]);
 
-	useEffect(() => {
-		CabinetData();
-	}, [selectedCompany, selectedItem]);
-	useEffect(() => {
-		if (user === "superadmin") {
-			BoxData();
-		}
-	}, [selectedCompany, selectedItem]);
-	useEffect(() => {
-		if (user === "superadmin") {
-			BoxNoAsign();
-		}
-	}, [selectedCompany, selectedItem]);
-	// useEffect(() => {
-	// 	ReturnData();
-	// }, []);
 	useEffect(() => {
 		if (user === "csroperation") {
 			FetchData();
@@ -169,13 +134,14 @@ export function DashboardSuperadmin() {
 		SummarySlot();
 	}, [selectedItem]);
 
-	const totalCabinets = cabinets?.Meta?.total;
-	const totalBox = boxes?.Meta?.total;
-	const totalBoxNoAsign = boxesNoAsign?.Meta?.total;
+	const totalCabinets = summary?.total_cabinets;
+	const totalBox = summary?.filled_boxes;
+	const totalBoxNoAsign = summary?.free_boxes;
 	const totalReturn = returnItems?.Meta?.total;
 	const boxCustomer = borrowList?.Meta?.total;
-	const totalDoc = documents?.Meta?.total;
-	const totalCompany = Companys?.Meta?.total;
+	const totalDoc = summary?.total_documents;
+	const totalCompany = summary?.total_companies;
+	const totalCabinetSlot = summary?.total_cabinet_slots;
 
 	const header = [
 		{
@@ -281,7 +247,7 @@ export function DashboardSuperadmin() {
 					<div className="col col-4 ph-0">
 						<CardHeader
 							icon="cabinet-filing"
-							total={summaryCabinetSlot || 0}
+							total={totalCabinetSlot || 0}
 							text={["Slot Lemari", <br />, "Kosong"]}
 						/>
 					</div>
@@ -362,7 +328,7 @@ export function DashboardSuperadmin() {
 	};
 
 	useEffect(() => {
-		dispatch(GetActivityLogsSuperAdmin(selectedItem));
+		// dispatch(GetActivityLogsSuperAdmin(selectedItem));
 		dispatch(getBorrowList(1, selectedItem));
 	}, [selectedItem]);
 

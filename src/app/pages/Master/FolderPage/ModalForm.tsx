@@ -132,7 +132,7 @@ const ModalForm = props => {
 												<Form.Control
 													type="text"
 													name="no"
-													placeholder="No Dokument"
+													placeholder="No Dokumen"
 													value={values?.no}
 													onChange={e => {
 														handleChange(e);

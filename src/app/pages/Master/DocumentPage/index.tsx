@@ -22,6 +22,7 @@ import ModalAddReference from "./ModalAddReference";
 import { UploadFileDoc } from "./UploadFiile";
 import { Button } from "react-bootstrap";
 import Breadcrumb from "app/components/BreadCrumb";
+import { height } from "@mui/system";
 
 const DocumentPage = () => {
 	const user = localStorage.getItem("User");
@@ -155,6 +156,44 @@ const DocumentPage = () => {
 			},
 			cell: row => {
 				return row?.detail ? row?.detail : "-";
+			},
+		},
+		{
+			title: "Lampiran",
+			prop: "lampiran",
+			cellProps: {
+				style: { width: "10%", textAlign: "center" },
+			},
+			cell: row => {
+				return (
+					<div className="d-flex ai-center jc-center">
+						{row?.document_file?.map((data, index) => (
+							<div
+								className="d-flex ai-center jc-center pv-2 ph-2 bg-primary-5 mr-2"
+								style={{
+									width: "35px",
+									height: "38px",
+									borderRadius: "4px",
+									cursor: "pointer",
+								}}
+							>
+								<div
+									className="mb-3"
+									onClick={() =>
+										window.open(`${data}`, "popup", "width=1200,height=1200")
+									}
+								>
+									<div className="d-flex jc-center ai-center mt-3">
+										<i
+											className="fas fa-file-alt"
+											style={{ fontSize: "18px" }}
+										></i>
+									</div>
+								</div>
+							</div>
+						))}
+					</div>
+				);
 			},
 		},
 		{
