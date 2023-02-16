@@ -139,7 +139,7 @@ const ModalForm = props => {
 												<Form.Control
 													type="text"
 													name="no"
-													placeholder="No Dokument"
+													placeholder="No Dokumen"
 													value={values?.no}
 													onChange={e => {
 														handleChange(e);
@@ -266,7 +266,7 @@ const ModalForm = props => {
 												) : null}
 											</Form.Group>
 											<Form.Group className="mb-4">
-												<Form.Label>Kondisi Dokument</Form.Label>
+												<Form.Label>Kondisi Dokumen</Form.Label>
 												<Form.Control
 													type="text"
 													name="condition"

@@ -108,7 +108,7 @@ const DocumentPageDetail = ({ match }) => {
 								<Form.Control type="text" disabled value={document?.nominal} />
 							</Form.Group>
 							<Form.Group className="mb-3">
-								<Form.Label>Masa Aktif Dokument</Form.Label>
+								<Form.Label>Masa Aktif Dokumen</Form.Label>
 								<Form.Control
 									type="text"
 									disabled

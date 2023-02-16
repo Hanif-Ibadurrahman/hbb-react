@@ -95,9 +95,31 @@ import RequestHistory from "./Customer/RequestHistory";
 // ALL USER
 import { UserProfile } from "./ProfilePage/Loadable";
 import PrintBoxPerPage from "./Master/BoxPage/PrintPerPage";
+import manualBookSuperAdmin from "assets/documents/ManualBook-RoleSuperAdmin.pdf";
+import manualBookCSRAdmin from "assets/documents/ManualBook-RoleCSRAdmin.pdf";
+import manualBookCSROperation from "assets/documents/ManualBook-RoleCSROperation.pdf";
+import manualBookArchiver from "assets/documents/ManualBook-RoleArchiver.pdf";
+import manualBookCustomer from "assets/documents/ManualBook-RoleCustomer.pdf";
+import "./Dashboard/dashboard.scoped.scss";
 
 export function Routes() {
 	const { i18n } = useTranslation();
+	const [manualBook, setManualBook] = React.useState("");
+	const user = localStorage.getItem("User");
+
+	React.useEffect(() => {
+		if (user === "superadmin") {
+			return setManualBook(manualBookSuperAdmin);
+		} else if (user === "csradmin") {
+			return setManualBook(manualBookCSRAdmin);
+		} else if (user === "csroperation") {
+			return setManualBook(manualBookCSROperation);
+		} else if (user === "archiver") {
+			return setManualBook(manualBookArchiver);
+		} else {
+			return setManualBook(manualBookCustomer);
+		}
+	}, [user]);
 	return (
 		<BrowserRouter>
 			<Helmet
@@ -111,6 +133,17 @@ export function Routes() {
 				<Sidebar />
 
 				<div className="content-wrapper w-80%">
+					<a
+						href={manualBook}
+						download={`Manual Book - Aplikasi Dox : Role - ${
+							user || "customer"
+						}`}
+						target={"_blank"}
+						rel="noreferrer"
+						className="pv-4 ph-4 manual-book no-print"
+					>
+						Panduan Aplikasi <i className="fas fa-book-reader"></i>
+					</a>
 					<NavBar />
 					<Switch>
 						{/*---------- DASHBOARD ---------*/}
