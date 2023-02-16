@@ -473,6 +473,16 @@ export function Sidebar() {
 				>
 					{""} Dokumen
 				</MenuItem>
+				<MenuItem
+					id={window.location.pathname === "/Cabinet" ? "active" : ""}
+					className=" pos-r"
+					icon={<img src={IconUI} className="h-5" alt="awSnap" />}
+					onClick={() => {
+						window.location.pathname = "/Cabinet";
+					}}
+				>
+					{""} Lemari
+				</MenuItem>
 				<SubMenu
 					className=""
 					icon={<img src={IconAdvanced} className="h-5" alt="awSnap" />}
