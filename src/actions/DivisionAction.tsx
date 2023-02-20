@@ -1,6 +1,13 @@
 import React from "react";
 import { DivisionInterfaceState } from "store/Types/DivisionTypes";
-import { create, destroy, getAll, getById, update } from "../api/divisions";
+import {
+	create,
+	destroy,
+	getAll,
+	getAllNotPage,
+	getById,
+	update,
+} from "../api/divisions";
 export const GET_DIVISIONS_LIST = "GET_DIVISIONS_LIST";
 export const GET_DIVISION_DETAIL = "GET_DIVISION_DETAIL";
 export const CREATE_DIVISION = "CREATE_DIVISION";
@@ -9,6 +16,7 @@ export const RESET_DIVISION_FORM = "RESET_DIVISION_FORM";
 export const RESET_DIVISION_LIST = "RESET_DIVISION_LIST";
 export const SET_DIVISION_DATA = "SET_DIVISION_DATA";
 export const UPDATE_DIVISION = "UPDATE_DIVISION";
+export const GET_DIVISION_NOT_PAGE = "GET_DIVISION_NOT_PAGE";
 
 let limit = 20;
 
@@ -28,6 +36,33 @@ export const getDivisionsList = (page, company_id: String | null = null) => {
 		} catch (error: any) {
 			dispatch({
 				type: GET_DIVISIONS_LIST,
+				payload: {
+					data: false,
+					errorMessage: error.message,
+				},
+			});
+			console.log(error);
+			throw error;
+		}
+	};
+};
+
+export const getDivisionsNotPage = (companyId: String | null = null) => {
+	return async dispatch => {
+		try {
+			const response = await getAllNotPage(companyId);
+			dispatch({
+				type: GET_DIVISION_NOT_PAGE,
+				payload: {
+					data: response?.data,
+					meta: response?.meta,
+					errorMessage: false,
+				},
+			});
+			return response;
+		} catch (error: any) {
+			dispatch({
+				type: GET_DIVISION_NOT_PAGE,
 				payload: {
 					data: false,
 					errorMessage: error.message,

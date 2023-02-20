@@ -25,7 +25,7 @@ export const CardHeader = props => {
 				</div>
 				<div
 					className="ff-1-bd h3 of-h"
-					style={{ height: 48, maxWidth: "calc(70% - 64px - 1.5rem" }}
+					style={{ height: 48, maxWidth: "calc(90% - 24px - 1.5rem" }}
 				>
 					<Tooltip title={props.total} arrow>
 						{/* <DynamicFont smooth content={props.total} /> */}
