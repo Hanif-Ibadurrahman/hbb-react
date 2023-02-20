@@ -180,7 +180,7 @@ export const ModalForm = props => {
 											>
 												<Form.Label>Password</Form.Label>
 												<Form.Control
-													type="text"
+													type="password"
 													name="password"
 													placeholder="password"
 													value={values?.password}

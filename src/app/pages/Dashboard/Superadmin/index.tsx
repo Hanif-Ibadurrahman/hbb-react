@@ -142,6 +142,7 @@ export function DashboardSuperadmin() {
 	const totalDoc = summary?.total_documents;
 	const totalCompany = summary?.total_companies;
 	const totalCabinetSlot = summary?.total_cabinet_slots;
+	const totalFreeCabinetSlot = summary?.free_cabinet_slots;
 
 	const header = [
 		{
@@ -216,11 +217,20 @@ export function DashboardSuperadmin() {
 					</div>
 					<div className="col col-4 ph-0 mh-4">
 						<CardHeader
-							icon="truck-loading"
-							total={totalBoxNoAsign || 0}
-							text={["Box tidak ", <br />, "Terdaftar."]}
+							icon="archive"
+							total={totalCabinetSlot || 0}
+							text={["Total", <br />, "Kapasitas", <br />, " Lemari."]}
 						/>
 					</div>
+					<div className="col col-4 ph-0">
+						<CardHeader
+							icon="cabinet-filing"
+							total={totalFreeCabinetSlot || 0}
+							text={["Kapasitas", <br />, "Lemari", <br />, "Kosong"]}
+						/>
+					</div>
+				</div>
+				<div className="row w-100% mh-0 mt-4">
 					<div className="col col-4 ph-0">
 						<CardHeader
 							icon="boxes"
@@ -228,27 +238,27 @@ export function DashboardSuperadmin() {
 							text={["Box", <br />, "Terdaftar."]}
 						/>
 					</div>
-				</div>
-				<div className="row w-100% mh-0 row-summary mt-4">
-					<div className="col col-4 ph-0">
+					<div className="col col-4 ph-0 mh-4">
 						<CardHeader
 							icon="clone"
 							total={totalDoc || 0}
 							text={["Total", <br />, "Dokumen."]}
 						/>
 					</div>
-					<div className="col col-4 ph-0 mh-4">
+					<div className="col col-4 ph-0">
+						<CardHeader
+							icon="truck-loading"
+							total={totalBoxNoAsign || 0}
+							text={["Box tidak ", <br />, "Terdaftar."]}
+						/>
+					</div>
+				</div>
+				<div className="row w-100% mh-0 mt-4 row-summary">
+					<div className="col col-4 pl-0 pr-4">
 						<CardHeader
 							icon="user-alt"
 							total={totalCompany || 0}
 							text={["Perusahaan", <br />, "Pengguna."]}
-						/>
-					</div>
-					<div className="col col-4 ph-0">
-						<CardHeader
-							icon="cabinet-filing"
-							total={totalCabinetSlot || 0}
-							text={["Slot Lemari", <br />, "Kosong"]}
 						/>
 					</div>
 				</div>

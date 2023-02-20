@@ -6,6 +6,7 @@ import {
 	RESET_DIVISION_LIST,
 	RESET_DIVISION_FORM,
 	SET_DIVISION_DATA,
+	GET_DIVISION_NOT_PAGE,
 } from "../../actions/DivisionAction";
 import {
 	DivisionsInterfaceState,
@@ -73,6 +74,18 @@ export default (
 				Division: payload,
 			};
 		case GET_DIVISIONS_LIST:
+			return {
+				...state,
+				Divisions: payload.data,
+				Meta: {
+					last_page: payload?.meta?.last_page,
+					current_page: payload?.meta?.current_page,
+					total: payload?.meta?.total,
+					per_page: payload?.meta?.per_page,
+				},
+				ErrorDivision: payload.errorMessage,
+			};
+		case GET_DIVISION_NOT_PAGE:
 			return {
 				...state,
 				Divisions: payload.data,

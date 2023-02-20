@@ -93,17 +93,30 @@ const StaffPage = () => {
 
 	const header = [
 		{
-			title: "Id",
-			prop: "id",
+			title: "Username",
+			prop: "username",
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "30%" },
 			},
 		},
 		{
-			title: "username",
-			prop: "username",
+			title: "Kode Pelaksana",
+			prop: "implementer_code",
 			cellProps: {
-				style: { width: "40%" },
+				style: { width: "30%" },
+			},
+			cell: row => {
+				return row?.staff?.implementer_code || "-";
+			},
+		},
+		{
+			title: "Ruangan",
+			prop: "room",
+			cellProps: {
+				style: { width: "20%" },
+			},
+			cell: row => {
+				return row?.staff?.room?.name || "-";
 			},
 		},
 		{

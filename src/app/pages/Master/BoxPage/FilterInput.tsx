@@ -14,7 +14,7 @@ import { Autocomplete, TextField } from "@mui/material";
 import { selectCompanys } from "store/Selector/CompanySelector";
 import { selectDivisions } from "store/Selector/DivisionSelector";
 import { getCompanyList } from "actions/CompanyAction";
-import { getDivisionsList } from "actions/DivisionAction";
+import { getDivisionsList, getDivisionsNotPage } from "actions/DivisionAction";
 import { selectAreas } from "store/Selector/AreaSelector";
 import { getAreasList } from "actions/AreaActions";
 
@@ -25,12 +25,13 @@ export function SearchInput(props) {
 	const company = useSelector(selectCompanys);
 	const division = useSelector(selectDivisions);
 	const areas = useSelector(selectAreas);
+	const [selectCompany, setSelectCompany] = useState<string | null>(null);
 	const areaList = areas?.Areas;
 	const CompanyList = (page = 1) => {
 		dispatch(getCompanyList(page));
 	};
 	const DivisionData = (page = 1) => {
-		dispatch(getDivisionsList(page));
+		dispatch(getDivisionsNotPage(selectCompany));
 	};
 	const AreaList = (page = 1) => {
 		dispatch(getAreasList(page));
@@ -40,7 +41,7 @@ export function SearchInput(props) {
 	}, []);
 	useEffect(() => {
 		DivisionData();
-	}, []);
+	}, [selectCompany]);
 	useEffect(() => {
 		AreaList();
 	}, []);
@@ -67,7 +68,6 @@ export function SearchInput(props) {
 					enableReinitialize={true}
 					onSubmit={async values => {
 						try {
-							console.log("values >>", values);
 							dispatch(await AddValueFilter(values));
 							// await dispatch(res);
 							setModalShow(false);
@@ -150,6 +150,10 @@ export function SearchInput(props) {
 															"company",
 															value !== null ? value : values.company,
 														);
+														setSelectCompany(
+															value !== null ? value?.id : values?.company?.id,
+														);
+														console.log("value company >>>", value);
 													}}
 													renderInput={params => (
 														<TextField
