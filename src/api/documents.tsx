@@ -122,7 +122,7 @@ export const getAllIndexing = async params => {
 
 export const getAllDocumentAssigned = async params => {
 	return api
-		.get(`/documents?per_page=999999999&is_assigned=false`)
+		.get(`/documents?per_page=20&is_assigned=false`)
 		.then(res => {
 			if (res.status === 401) {
 				return localStorage.clear();

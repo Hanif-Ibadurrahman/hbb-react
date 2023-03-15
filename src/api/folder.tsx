@@ -42,7 +42,7 @@ export const getAll = async params => {
 
 export const getAllNotPage = async params => {
 	return api
-		.get(`/folders?per_page=999999999`)
+		.get(`/folders?per_page=20`)
 		.then(res => {
 			return res.data;
 		})
@@ -53,7 +53,7 @@ export const getAllNotPage = async params => {
 
 export const getAllFolderNotAssigned = async params => {
 	return api
-		.get(`/folders?per_page=999999999&is_assigned=false`)
+		.get(`/folders?per_page=20&is_assigned=false`)
 		.then(res => {
 			return res.data;
 		})

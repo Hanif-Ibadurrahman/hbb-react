@@ -64,7 +64,7 @@ export const getAll = async (
 
 export const getAllNotPage = async params => {
 	return api
-		.get(`/boxes?per_page=999999999`)
+		.get(`/boxes?per_page=20`)
 		.then(res => {
 			return res.data;
 		})
