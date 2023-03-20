@@ -1,3 +1,5 @@
+import { currentYear } from "app/helper/DateHelper";
+
 export const Sidebar = () => {
 	return (
 		<aside className="main-sidebar">
@@ -259,7 +261,7 @@ export const Sidebar = () => {
 									<strong className="d-block">
 										Aplikasi Manajemen HBB & Inventaris
 									</strong>
-									© All Rights Reserved
+									©{currentYear} All Rights Reserved
 								</p>
 							</div>
 						</div>
