@@ -1,4 +1,5 @@
 import { currentYear } from "app/helper/DateHelper";
+import { Link } from "react-router-dom";
 
 export const Sidebar = () => {
 	return (
@@ -8,10 +9,10 @@ export const Sidebar = () => {
 					<div className="multinav-scroll" style={{ height: "100%" }}>
 						<ul className="sidebar-menu" data-widget="tree">
 							<li className="treeview">
-								<a href="#">
+								<Link to={"/dashboard"}>
 									<i data-feather="home"></i>
 									<span>Dashboard</span>
-								</a>
+								</Link>
 							</li>
 							<li className="treeview">
 								<a href="#">
