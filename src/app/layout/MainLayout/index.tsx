@@ -28,10 +28,6 @@ export const MainLayout = ({ children }: IMainLayout) => {
 
 				<div className="control-sidebar-bg"></div>
 			</div>
-
-			<Sticky />
-
-			<ChatBox />
 		</body>
 	);
 };

@@ -1,3 +1,5 @@
+// import { Search } from "../Search";
+
 export const Header = () => {
 	return (
 		<header className="main-header">
@@ -5,18 +7,18 @@ export const Header = () => {
 				<a href="index.html" className="logo">
 					<div className="logo-mini w-50">
 						<span className="light-logo">
-							<img src="images/logo-letter.png" alt="logo" />
+							<img src="images/logo-icon-pgn.png" alt="logo" />
 						</span>
 						<span className="dark-logo">
-							<img src="images/logo-letter.png" alt="logo" />
+							<img src="images/logo-icon-pgn.png" alt="logo" />
 						</span>
 					</div>
 					<div className="logo-lg">
 						<span className="light-logo">
-							<img src="images/logo-light-text.png" alt="logo" />
+							<img src="images/logo-text-pgn.png" alt="logo" />
 						</span>
 						<span className="dark-logo">
-							<img src="images/logo-light-text.png" alt="logo" />
+							<img src="images/logo-text-pgn.png" alt="logo" />
 						</span>
 					</div>
 				</a>
@@ -35,68 +37,13 @@ export const Header = () => {
 							</a>
 						</li>
 						<li className="btn-group d-lg-inline-flex d-none">
-							<div className="app-menu">
-								<div className="search-bx mx-5">
-									<form>
-										<div className="input-group">
-											<input
-												type="search"
-												className="form-control"
-												placeholder="Search"
-												aria-label="Search"
-												aria-describedby="button-addon3"
-											/>
-											<div className="input-group-append">
-												<button
-													className="btn"
-													type="submit"
-													id="button-addon3"
-												>
-													<i data-feather="search"></i>
-												</button>
-											</div>
-										</div>
-									</form>
-								</div>
-							</div>
+							<div className="app-menu">{/* <Search /> */}</div>
 						</li>
 					</ul>
 				</div>
 
 				<div className="navbar-custom-menu r-side">
 					<ul className="nav navbar-nav">
-						<li className="btn-group nav-item d-xl-inline-flex d-none">
-							<a
-								href="findspace.html"
-								className="waves-effect waves-light nav-link w-p100 full-screen btn-primary-light fs-18 l-h-26"
-							>
-								Find A Sapce
-							</a>
-						</li>
-						<li className="btn-group nav-item d-xl-inline-flex d-none">
-							<a
-								href="vendor.html"
-								className="waves-effect waves-light nav-link w-p100 full-screen btn-primary-light fs-18 l-h-26"
-							>
-								Vendor
-							</a>
-						</li>
-						<li className="btn-group nav-item d-xl-inline-flex d-none">
-							<a
-								href="help.html"
-								className="waves-effect waves-light nav-link w-p100 full-screen btn-primary-light fs-18 l-h-26"
-							>
-								Help
-							</a>
-						</li>
-						<li className="btn-group nav-item d-xl-inline-flex d-none">
-							<a
-								href="q&a.html"
-								className="waves-effect waves-light nav-link w-p100 full-screen btn-primary-light fs-18 l-h-26"
-							>
-								Q&A
-							</a>
-						</li>
 						<li className="btn-group nav-item d-lg-inline-flex d-none">
 							<a
 								href="#"
@@ -107,7 +54,7 @@ export const Header = () => {
 								<i data-feather="maximize"></i>
 							</a>
 						</li>
-						<li className="dropdown notifications-menu">
+						<li className="btn-group dropdown notifications-menu">
 							<a
 								href="#"
 								className="waves-effect waves-light dropdown-toggle btn-info-light"
@@ -197,7 +144,7 @@ export const Header = () => {
 							</a>
 						</li>
 
-						<li className="dropdown user user-menu">
+						<li className="btn-group dropdown user user-menu">
 							<a
 								href="#"
 								className="waves-effect waves-light dropdown-toggle l-h-12 no-shadow w-auto bg-transparent py-0"
