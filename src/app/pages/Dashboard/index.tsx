@@ -1,6 +1,6 @@
 import { MainLayout } from "app/layout/MainLayout";
 
-export const Dashboard = () => {
+const Dashboard = () => {
 	return (
 		<MainLayout>
 			<section className="content">
@@ -68,3 +68,5 @@ export const Dashboard = () => {
 		</MainLayout>
 	);
 };
+
+export default Dashboard;

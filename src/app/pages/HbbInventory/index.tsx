@@ -1,13 +1,13 @@
-import { TableWithExport } from "app/components/Table/TableWithExport";
 import { MainLayout } from "app/layout/MainLayout";
+import { TableSelection } from "./components/TableSelection";
 
-const MasterBarang = () => {
+const HbbInventory = () => {
 	return (
 		<MainLayout>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
-						<TableWithExport />
+						<TableSelection />
 					</div>
 				</div>
 			</section>
@@ -15,4 +15,4 @@ const MasterBarang = () => {
 	);
 };
 
-export default MasterBarang;
+export default HbbInventory;
