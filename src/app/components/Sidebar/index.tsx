@@ -1,5 +1,5 @@
 import { currentYear } from "app/helper/DateHelper";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export const Sidebar = () => {
 	return (
@@ -8,249 +8,249 @@ export const Sidebar = () => {
 				<div className="multinav">
 					<div className="multinav-scroll" style={{ height: "100%" }}>
 						<ul className="sidebar-menu" data-widget="tree">
-							<li className="treeview">
+							<li>
 								<Link to={"/dashboard"}>
 									<i data-feather="home"></i>
 									<span>Dashboard</span>
 								</Link>
 							</li>
-							<li className="treeview">
-								<a href="#">
+							<li>
+								<Link to={"/inventaris"}>
 									<i data-feather="package"></i>
 									<span>HBB dan Inventaris</span>
-								</a>
+								</Link>
 							</li>
-							<li className="treeview">
-								<a href="#">
+							<li>
+								<Link to={"/layanan"}>
 									<i data-feather="smile"></i>
 									<span>Layanan HBB</span>
-								</a>
+								</Link>
 							</li>
-							<li className="treeview">
-								<a href="#">
+							<li>
+								<Link to={"/cetak-barcode"}>
 									<i data-feather="printer"></i>
 									<span>Cetak Barcode</span>
-								</a>
+								</Link>
 							</li>
 							<li className="treeview">
-								<a href="#">
+								<Link to={""}>
 									<i data-feather="monitor"></i>
 									<span>Reporting</span>
 									<span className="pull-right-container">
 										<i className="fa fa-angle-right pull-right"></i>
 									</span>
-								</a>
+								</Link>
 								<ul className="treeview-menu">
 									<li>
-										<a href="index2.html">
+										<Link to={"/daftar-inventaris-ruangan"}>
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Daftar Inventaris Ruangan
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href="index2.html">
+										<Link to={"/laporan-hbb-dan-inventaris"}>
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Laporan HBB dan Inventaris
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href="index2.html">
+										<Link to={"/lampiran-hbb-dan-inventaris"}>
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Lampiran HBB dan Inventaris Semester
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href="index2.html">
+										<Link to={"/laporan-inventaris-koorporat"}>
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Laporan Inventaris Koorporat
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href="index2.html">
+										<Link to={"/formulir-izin-keluar-dan-masuk-gudang"}>
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Formulir Izin Keluar dan Masuk Gudang
-										</a>
+										</Link>
 									</li>
 								</ul>
 							</li>
 							<li className="treeview">
-								<a href="#">
+								<Link to={""}>
 									<i data-feather="database"></i>
 									<span>Master</span>
 									<span className="pull-right-container">
 										<i className="fa fa-angle-right pull-right"></i>
 									</span>
-								</a>
+								</Link>
 								<ul className="treeview-menu">
 									<li>
-										<a href="index2.html">
+										<Link to={"/master-bisnis-unit"}>
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Bisnis Unit
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href="index2.html">
+										<Link to="/master-area">
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Area
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href="index2.html">
+										<Link to="/master-barang">
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Barang
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href="index2.html">
+										<Link to="/master-divisi">
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Divisi
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href="index2.html">
+										<Link to="/master-kode-group">
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Kode Group
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href="index2.html">
+										<Link to="/master-kondisi">
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Kondisi
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href="index2.html">
+										<Link to="/master-lokasi">
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Lokasi
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href="index2.html">
+										<Link to="/master-negara">
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Negara
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href="index2.html">
+										<Link to="/master-pegawai">
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Pegawai
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href="index2.html">
+										<Link to="/master-pengelola">
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Pengelola
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href="index2.html">
+										<Link to="/master-penyedia">
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Penyedia
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href="index2.html">
+										<Link to="/master-satuan-kerja">
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Satuan Kerja
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href="index2.html">
+										<Link to="/master-user">
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											User
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href="index2.html">
+										<Link to="/master-warna">
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Warna
-										</a>
+										</Link>
 									</li>
 								</ul>
 							</li>
 							<li className="treeview">
-								<a href="#">
+								<Link to="#">
 									<i data-feather="clipboard"></i>
 									<span>Tiket Layanan</span>
 									<span className="pull-right-container">
 										<i className="fa fa-angle-right pull-right"></i>
 									</span>
-								</a>
+								</Link>
 								<ul className="treeview-menu">
 									<li>
-										<a href="index2.html">
+										<Link to="riwayat-tiket-layanan">
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Riwayat Tiket Layanan
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href="index2.html">
+										<Link to="pemindahan">
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
 											Pemindahan
-										</a>
+										</Link>
 									</li>
 								</ul>
 							</li>
