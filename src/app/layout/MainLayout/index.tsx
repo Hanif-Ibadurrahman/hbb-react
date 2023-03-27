@@ -1,9 +1,7 @@
-import { ChatBox } from "app/components/ChatBox";
 import { ControlSidebar } from "app/components/ControlSidebar";
 import { Footer } from "app/components/Footer";
 import { Header } from "app/components/Header";
 import { Sidebar } from "app/components/Sidebar";
-import { Sticky } from "app/components/Sticky";
 import React from "react";
 
 interface IMainLayout {
