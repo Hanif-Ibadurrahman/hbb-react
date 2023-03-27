@@ -42,6 +42,7 @@ const MasterArea = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
+							title="Area / Direktorat"
 							dataSource={fetchData}
 							columns={columns}
 							setSelectedPage={setSelectedPage}

@@ -42,6 +42,7 @@ const MasterLokasi = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
+							title="Lokasi"
 							dataSource={fetchData}
 							columns={columns}
 							setSelectedPage={setSelectedPage}

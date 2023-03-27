@@ -3,6 +3,7 @@ import { MainLayout } from "app/layout/MainLayout";
 import { useEffect, useState } from "react";
 import { IDataType, columns } from "./components/Table/ColumnAndDataType";
 import { PaginationState } from "store/Types/PaginationTypes";
+import { SideModal } from "app/components/Modal/SideModal";
 
 const MasterBisnisUnit = () => {
 	const [, setSelectedPage] = useState<number>(1);
@@ -37,6 +38,7 @@ const MasterBisnisUnit = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
+							title="Bisnis Unit"
 							dataSource={fetchData}
 							columns={columns}
 							setSelectedPage={setSelectedPage}
@@ -44,6 +46,19 @@ const MasterBisnisUnit = () => {
 					</div>
 				</div>
 			</section>
+
+			<SideModal title="Filter">
+				<h5 className="box-title  mt-20 d-block mb-10">Bisnis Unit</h5>
+				<div className="input-group">
+					<input
+						type="text"
+						value=""
+						data-role="tagsinput"
+						placeholder="add tags"
+					/>
+					<span className="input-group-addon">Tags</span>
+				</div>
+			</SideModal>
 		</MainLayout>
 	);
 };

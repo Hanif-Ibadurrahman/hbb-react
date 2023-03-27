@@ -3,6 +3,7 @@ import { MainLayout } from "app/layout/MainLayout";
 import { useEffect, useState } from "react";
 import { IDataType, columns } from "./components/Table/ColumnAndDataType";
 import { PaginationState } from "store/Types/PaginationTypes";
+import { SideModal } from "app/components/Modal/SideModal";
 
 const MasterPegawai = () => {
 	const [, setSelectedPage] = useState<number>(1);
@@ -46,6 +47,8 @@ const MasterPegawai = () => {
 					</div>
 				</div>
 			</section>
+
+			<SideModal title="Filter"></SideModal>
 		</MainLayout>
 	);
 };

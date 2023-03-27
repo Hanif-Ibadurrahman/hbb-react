@@ -38,6 +38,7 @@ const MasterKodeGroup = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
+							title="Group"
 							dataSource={fetchData}
 							columns={columns}
 							setSelectedPage={setSelectedPage}

@@ -27,12 +27,12 @@ export const columns: ColumnsType<IDataType> = [
 		title: "Action",
 		render: (text, record, index) => {
 			return (
-				<>
+				<div style={{ display: "flex", columnGap: 5 }}>
 					<Button type="primary">Edit</Button>
 					<Button type="primary" danger>
 						Delete
 					</Button>
-				</>
+				</div>
 			);
 		},
 	},

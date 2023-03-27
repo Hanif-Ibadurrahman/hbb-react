@@ -7,7 +7,7 @@ const MasterBarang = () => {
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
-						<TableWithExport />
+						<TableWithExport title="Barang" />
 					</div>
 				</div>
 			</section>
