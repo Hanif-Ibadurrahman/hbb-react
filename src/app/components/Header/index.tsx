@@ -1,11 +1,9 @@
-// import { Search } from "../Search";
-
 export const Header = () => {
 	return (
 		<header className="main-header">
 			<div className="d-flex align-items-center logo-box justify-content-start">
-				<a href="index.html" className="logo">
-					<div className="logo-mini w-50">
+				<a href="/" className="logo">
+					<div className="logo-mini w-25">
 						<span className="light-logo">
 							<img src="images/logo-icon-pgn.png" alt="logo" />
 						</span>
@@ -13,14 +11,14 @@ export const Header = () => {
 							<img src="images/logo-icon-pgn.png" alt="logo" />
 						</span>
 					</div>
-					<div className="logo-lg">
+					{/* <div className="logo-lg">
 						<span className="light-logo">
 							<img src="images/logo-text-pgn.png" alt="logo" />
 						</span>
 						<span className="dark-logo">
 							<img src="images/logo-text-pgn.png" alt="logo" />
 						</span>
-					</div>
+					</div> */}
 				</a>
 			</div>
 			<nav className="navbar navbar-static-top">
@@ -37,7 +35,21 @@ export const Header = () => {
 							</a>
 						</li>
 						<li className="btn-group d-lg-inline-flex d-none">
-							<div className="app-menu">{/* <Search /> */}</div>
+							<div className="app-menu">
+								<a href="/">
+									<div className="d-flex align-items-center">
+										<div
+											className="logo-mini w-25"
+											style={{ marginRight: "1em" }}
+										>
+											<img src="images/logo-icon-pgn.png" alt="logo" />
+										</div>
+										<div className="logo-mini w-25">
+											<img src="images/logo-text-pgn.png" alt="logo" />
+										</div>
+									</div>
+								</a>
+							</div>
 						</li>
 					</ul>
 				</div>
