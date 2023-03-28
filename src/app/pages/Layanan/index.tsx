@@ -42,6 +42,7 @@ const Layanan = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
+							title="Layanan HBB"
 							dataSource={fetchData}
 							columns={columns}
 							setSelectedPage={setSelectedPage}

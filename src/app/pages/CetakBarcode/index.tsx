@@ -38,6 +38,7 @@ const CetakBarcode = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
+							title="Daftar Area"
 							dataSource={fetchData}
 							columns={columns}
 							setSelectedPage={setSelectedPage}

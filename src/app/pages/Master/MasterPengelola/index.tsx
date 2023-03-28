@@ -38,6 +38,7 @@ const MasterPenyedia = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
+							title="Pengelola"
 							dataSource={fetchData}
 							columns={columns}
 							setSelectedPage={setSelectedPage}

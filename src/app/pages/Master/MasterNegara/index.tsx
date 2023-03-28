@@ -37,6 +37,7 @@ const MasterNegara = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
+							title="Negara"
 							dataSource={fetchData}
 							columns={columns}
 							setSelectedPage={setSelectedPage}

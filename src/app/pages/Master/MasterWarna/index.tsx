@@ -37,6 +37,7 @@ const MasterWarna = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
+							title="Warna"
 							dataSource={fetchData}
 							columns={columns}
 							setSelectedPage={setSelectedPage}

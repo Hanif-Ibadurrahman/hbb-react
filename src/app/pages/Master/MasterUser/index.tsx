@@ -40,6 +40,7 @@ const MasterUser = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
+							title="User"
 							dataSource={fetchData}
 							columns={columns}
 							setSelectedPage={setSelectedPage}

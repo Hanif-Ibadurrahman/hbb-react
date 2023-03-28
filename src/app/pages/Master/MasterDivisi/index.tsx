@@ -38,6 +38,7 @@ const MasterDivisi = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
+							title="Divisi"
 							dataSource={fetchData}
 							columns={columns}
 							setSelectedPage={setSelectedPage}

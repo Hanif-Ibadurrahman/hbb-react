@@ -40,6 +40,7 @@ const MasterSatuanKerja = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
+							title="Satuan Kerja"
 							dataSource={fetchData}
 							columns={columns}
 							setSelectedPage={setSelectedPage}

@@ -37,6 +37,7 @@ const MasterKondisi = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
+							title="Kondisi"
 							dataSource={fetchData}
 							columns={columns}
 							setSelectedPage={setSelectedPage}
