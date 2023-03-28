@@ -1,5 +1,5 @@
 import { currentYear } from "app/helper/DateHelper";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const Sidebar = () => {
 	return (
@@ -32,7 +32,7 @@ export const Sidebar = () => {
 									<span>Cetak Barcode</span>
 								</Link>
 							</li>
-							<li className="treeview">
+							<li className="treeview menu-open">
 								<Link to={""}>
 									<i data-feather="monitor"></i>
 									<span>Reporting</span>
@@ -88,7 +88,7 @@ export const Sidebar = () => {
 									</li>
 								</ul>
 							</li>
-							<li className="treeview">
+							<li className="treeview menu-open">
 								<Link to={""}>
 									<i data-feather="database"></i>
 									<span>Master</span>
@@ -96,7 +96,7 @@ export const Sidebar = () => {
 										<i className="fa fa-angle-right pull-right"></i>
 									</span>
 								</Link>
-								<ul className="treeview-menu">
+								<ul className="treeview-menu" style={{ display: "block" }}>
 									<li>
 										<Link to={"/master-bisnis-unit"}>
 											<i className="icon-Commit">
@@ -225,7 +225,7 @@ export const Sidebar = () => {
 									</li>
 								</ul>
 							</li>
-							<li className="treeview">
+							<li className="treeview menu-open">
 								<Link to="#">
 									<i data-feather="clipboard"></i>
 									<span>Tiket Layanan</span>

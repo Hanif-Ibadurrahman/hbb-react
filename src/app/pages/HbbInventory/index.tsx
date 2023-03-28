@@ -274,11 +274,11 @@ const HbbInventory = () => {
 				<div className="tags-default">
 					<input type="text" data-role="tagsinput" placeholder="Input" />
 				</div>
-				<h6 className="box-title mt-10 d-block mb-10">Negara Pembuat</h6>
+				{/* <h6 className="box-title mt-10 d-block mb-10">Negara Pembuat</h6>
 				<div className="tags-default">
 					<input type="text" data-role="tagsinput" placeholder="Input" />
 				</div>
-				{/* <h6 className="box-title mt-10 d-block mb-10">Tahun Pembuatan</h6>
+				<h6 className="box-title mt-10 d-block mb-10">Tahun Pembuatan</h6>
 				<div className="tags-default">
 					<input type="text" data-role="tagsinput" placeholder="Input" />
 				</div>

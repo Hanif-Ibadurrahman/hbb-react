@@ -1,6 +1,30 @@
+import { ColumnChart } from "app/components/Chart/Column";
+import { LineChart } from "app/components/Chart/Line";
+import { PieChart } from "app/components/Chart/Pie";
 import { MainLayout } from "app/layout/MainLayout";
 
 const Dashboard = () => {
+	const fetchDataLine = {
+		months: ["Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+		data: [
+			{ name: "HBB", data: [44, 55, 57, 56, 61, 58, 63, 60, 66] },
+			{ name: "Inventaris", data: [76, 85, 101, 98, 87, 105, 91, 114, 94] },
+		],
+	};
+
+	const fetchDataColumn = {
+		months: ["Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+		data: [
+			{ name: "HBB", data: [44, 55, 57, 56, 61, 58, 63, 60, 66] },
+			{ name: "Inventaris", data: [76, 85, 101, 98, 87, 105, 91, 114, 94] },
+		],
+	};
+
+	const fetchDataPie = {
+		label: ["Baik", "Rusak", "Hilang"],
+		data: [2000, 400, 54],
+	};
+
 	return (
 		<MainLayout>
 			<section className="content">
@@ -94,28 +118,37 @@ const Dashboard = () => {
 					<div className="col-xl-6 col-12">
 						<div className="box">
 							<div className="box-header with-border">
-								<h4 className="box-title">Column Chart</h4>
+								<h4 className="box-title">Jumlah Barang</h4>
 							</div>
 							<div className="box-body">
-								<div id="column-chart"></div>
+								<ColumnChart
+									series={fetchDataColumn.data}
+									categories={fetchDataColumn.months}
+								/>
 							</div>
 						</div>
 					</div>
 					<div className="col-xl-6 col-12">
 						<div className="box">
 							<div className="box-header with-border">
-								<h4 className="box-title">Simple Line Chart</h4>
+								<h4 className="box-title">Nilai Total</h4>
 							</div>
 							<div className="box-body">
-								<div id="line-chart"></div>
+								<LineChart
+									series={fetchDataLine.data}
+									categories={fetchDataLine.months}
+								/>
 							</div>
 						</div>
 					</div>
 					<div className="col-xl-12 col-12">
 						<div className="box">
 							<div className="box-body analytics-info">
-								<h4 className="box-title">Basic Pie chart</h4>
-								<div id="basic-pie" style={{ height: "400px" }}></div>
+								<h4 className="box-title">Kondisi Barang</h4>
+								<PieChart
+									series={fetchDataPie.data}
+									labels={fetchDataPie.label}
+								/>
 							</div>
 						</div>
 					</div>
