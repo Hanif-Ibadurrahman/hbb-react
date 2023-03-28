@@ -1,5 +1,5 @@
-import { Button } from "antd";
 import { ColumnsType } from "antd/es/table";
+import { ActionButtonTable } from "app/components/Table/Antd/ActionButtonTable";
 
 export interface IDataType {
 	nama_pegawai: string;
@@ -26,14 +26,7 @@ export const columns: ColumnsType<IDataType> = [
 	{
 		title: "Action",
 		render: (text, record, index) => {
-			return (
-				<div style={{ display: "flex", columnGap: 5 }}>
-					<Button type="primary">Edit</Button>
-					<Button type="primary" danger>
-						Delete
-					</Button>
-				</div>
-			);
+			return <ActionButtonTable />;
 		},
 	},
 ];

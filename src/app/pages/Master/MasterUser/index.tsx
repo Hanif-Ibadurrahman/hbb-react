@@ -1,4 +1,4 @@
-import { TablePaginateAndSort } from "app/components/Table/Antd/TablePaginate";
+import { TablePaginateAndSort } from "app/components/Table/Antd/TablePaginateAndSort";
 import { MainLayout } from "app/layout/MainLayout";
 import { useEffect, useState } from "react";
 import { IDataType, columns } from "./components/Table/ColumnAndDataType";

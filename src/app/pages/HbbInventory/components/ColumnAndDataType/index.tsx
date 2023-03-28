@@ -1,40 +1,54 @@
-import { Button } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { ActionButtonTable } from "app/components/Table/Antd/ActionButtonTable";
 
 export interface IDataType {
-	no: string;
 	name_barang: string;
+	mg: string;
+	sg: string;
+	th: string;
+	no_item: string;
+	no: string;
+	jenis_barang: string;
 	lokasi: string;
-	jenis_kerusakan: string;
-	lampiran: string;
+	kondisi: string;
 }
 
 export const columns: ColumnsType<IDataType> = [
 	{
-		title: "No. HBB/Inventaris",
-		dataIndex: "no",
-		sorter: true,
-	},
-	{
 		title: "Nama Barang",
 		dataIndex: "name_barang",
-		sorter: true,
+	},
+	{
+		title: "MG",
+		dataIndex: "mg",
+	},
+	{
+		title: "SG",
+		dataIndex: "sg",
+	},
+	{
+		title: "TH",
+		dataIndex: "th",
+	},
+	{
+		title: "No. Item",
+		dataIndex: "no_item",
+	},
+	{
+		title: "No. HBB/Inventaris",
+		dataIndex: "no",
+	},
+	{
+		title: "Jenis Barang",
+		dataIndex: "jenis_barang",
 	},
 	{
 		title: "Lokasi",
 		dataIndex: "lokasi",
-		sorter: true,
 	},
 	{
-		title: "Jenis Kerusanan",
-		dataIndex: "jenis_kerusakan",
-		sorter: true,
-	},
-	{
-		title: "Lampiran",
-		dataIndex: "lampiran",
-		sorter: true,
+		title: "Kondisi",
+		dataIndex: "kondisi",
 	},
 	{
 		title: "Action",

@@ -1,9 +1,10 @@
-import { TablePaginateAndSort } from "app/components/Table/Antd/TablePaginate";
+import { TablePaginateAndSort } from "app/components/Table/Antd/TablePaginateAndSort";
 import { MainLayout } from "app/layout/MainLayout";
 import { useEffect, useState } from "react";
 import { IDataType, columns } from "./components/Table/ColumnAndDataType";
 import { PaginationState } from "store/Types/PaginationTypes";
 import { SideModal } from "app/components/Modal/SideModal";
+import { CenterModal } from "app/components/Modal/CenterModal";
 
 const MasterBisnisUnit = () => {
 	const [, setSelectedPage] = useState<number>(1);
@@ -42,21 +43,98 @@ const MasterBisnisUnit = () => {
 							dataSource={fetchData}
 							columns={columns}
 							setSelectedPage={setSelectedPage}
+							contentHeader={
+								<button
+									type="button"
+									className="btn btn-primary"
+									data-bs-toggle="modal"
+									data-bs-target="#modal_add"
+								>
+									Tambah
+								</button>
+							}
 						/>
 					</div>
 				</div>
 			</section>
 
-			<SideModal title="Filter">
-				<h5 className="box-title  mt-20 d-block mb-10">Bisnis Unit</h5>
-				<div className="input-group">
-					<input
-						type="text"
-						value=""
-						data-role="tagsinput"
-						placeholder="add tags"
-					/>
-					<span className="input-group-addon">Tags</span>
+			<CenterModal
+				modalName="modal_add"
+				title="Tambah Data"
+				contentFooter={
+					<button
+						type="button"
+						className="btn btn-primary"
+						data-bs-dismiss="modal"
+					>
+						Simpan
+					</button>
+				}
+			>
+				<div className="col-12">
+					<div className="form-group">
+						<h6>
+							Bisnis Unit <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<input
+								type="text"
+								name="text"
+								className="form-control"
+								required
+								data-validation-required-message="This field is required"
+							/>
+						</div>
+					</div>
+				</div>
+			</CenterModal>
+
+			<CenterModal
+				modalName="modal_edit"
+				title="Ubah Data"
+				contentFooter={
+					<button
+						type="button"
+						className="btn btn-primary"
+						data-bs-dismiss="modal"
+					>
+						Simpan
+					</button>
+				}
+			>
+				<div className="col-12">
+					<div className="form-group">
+						<h6>
+							Bisnis Unit <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<input
+								type="text"
+								name="text"
+								className="form-control"
+								required
+								data-validation-required-message="This field is required"
+							/>
+						</div>
+					</div>
+				</div>
+			</CenterModal>
+
+			<SideModal
+				title="Filter"
+				contentFooter={
+					<button
+						type="button"
+						className="btn btn-primary"
+						data-bs-dismiss="modal"
+					>
+						Filter
+					</button>
+				}
+			>
+				<h6 className="box-title mt-10 d-block mb-10">Bisnis Unit</h6>
+				<div className="tags-default">
+					<input type="text" data-role="tagsinput" placeholder="Input" />
 				</div>
 			</SideModal>
 		</MainLayout>
