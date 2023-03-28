@@ -27758,7 +27758,7 @@ textarea.form-control {
   top: 0;
   left: 0;
   bottom: 0;
-  width: 480px;
+  width: 512px;
   max-width: 100%;
   margin: 0;
   -webkit-transform: translate(-100%, 0) !important;
@@ -27851,7 +27851,7 @@ textarea.form-control {
   top: 0;
   right: 0;
   bottom: 0;
-  width: 480px;
+  width: 512px;
   max-width: 100%;
   margin: 0;
   -webkit-transform: translate(100%, 0) !important;
