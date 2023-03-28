@@ -1,6 +1,6 @@
-import { Button, Table } from "antd";
+import { Table } from "antd";
 import { ColumnsType, TablePaginationConfig } from "antd/es/table";
-import { FilterValue, SorterResult } from "antd/es/table/interface";
+import { SorterResult } from "antd/es/table/interface";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { PaginationState } from "store/Types/PaginationTypes";
 
@@ -9,6 +9,7 @@ interface ITablePaginate {
 	subTitle?: string;
 	columns: ColumnsType<any>;
 	dataSource?: PaginationState;
+	contentHeader?: JSX.Element;
 	setSelectedPage: Dispatch<SetStateAction<number>>;
 }
 
@@ -23,6 +24,7 @@ export const TablePaginateAndSort = ({
 	subTitle,
 	columns,
 	dataSource,
+	contentHeader,
 	setSelectedPage,
 }: ITablePaginate) => {
 	const [data, setData] = useState<any>([]);
@@ -83,14 +85,16 @@ export const TablePaginateAndSort = ({
 						<button className="btn btn-secondary">Excel</button>
 						<button className="btn btn-secondary">PDF</button>
 					</div>
-					<button
-						type="button"
-						className="btn btn-secondary"
-						data-bs-toggle="modal"
-						data-bs-target="#modal-side"
-					>
-						<i className="fa fa-filter">Filter</i>
-					</button>
+					<div style={{ display: "flex", columnGap: 5 }}>
+						<button
+							className="btn btn-secondary"
+							data-bs-toggle="modal"
+							data-bs-target="#modal-side"
+						>
+							<i className="fa fa-filter">Filter</i>
+						</button>
+						{contentHeader}
+					</div>
 				</div>
 				<div className="table-responsive">
 					<Table
