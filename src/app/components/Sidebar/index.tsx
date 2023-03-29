@@ -1,38 +1,75 @@
 import { currentYear } from "app/helper/DateHelper";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export const Sidebar = () => {
+	const [selectedMenu, setSelectedMenu] = useState<{
+		key: string;
+		haveSubMenu?: boolean;
+	}>({ key: "", haveSubMenu: false });
+
+	const seletedMenuHandler = (thisKey: string, thisHaveSubMenu?: boolean) => {
+		selectedMenu.key === thisKey && selectedMenu.haveSubMenu
+			? setSelectedMenu({ key: "", haveSubMenu: thisHaveSubMenu })
+			: setSelectedMenu({ key: thisKey, haveSubMenu: thisHaveSubMenu });
+	};
+
 	return (
 		<aside className="main-sidebar">
 			<section className="sidebar position-relative">
 				<div className="multinav">
 					<div className="multinav-scroll" style={{ height: "100%" }}>
 						<ul className="sidebar-menu" data-widget="tree">
-							<li>
+							<li
+								className={`treeview ${
+									selectedMenu.key === "dashboard" ? "menu-open" : ""
+								}`}
+								onClick={() => seletedMenuHandler("dashboard")}
+							>
 								<Link to={"/dashboard"}>
 									<i data-feather="home"></i>
 									<span>Dashboard</span>
 								</Link>
 							</li>
-							<li>
+							<li
+								className={`treeview ${
+									selectedMenu.key === "inventaris" ? "menu-open" : ""
+								}`}
+								onClick={() => seletedMenuHandler("inventaris")}
+							>
 								<Link to={"/inventaris"}>
 									<i data-feather="package"></i>
 									<span>HBB dan Inventaris</span>
 								</Link>
 							</li>
-							<li>
+							<li
+								className={`treeview ${
+									selectedMenu.key === "layanan" ? "menu-open" : ""
+								}`}
+								onClick={() => seletedMenuHandler("layanan")}
+							>
 								<Link to={"/layanan"}>
 									<i data-feather="smile"></i>
 									<span>Layanan HBB</span>
 								</Link>
 							</li>
-							<li>
+							<li
+								className={`treeview ${
+									selectedMenu.key === "cetak-barcode" ? "menu-open" : ""
+								}`}
+								onClick={() => seletedMenuHandler("cetak-barcode")}
+							>
 								<Link to={"/cetak-barcode"}>
 									<i data-feather="printer"></i>
 									<span>Cetak Barcode</span>
 								</Link>
 							</li>
-							<li className="treeview menu-open">
+							<li
+								className={`treeview ${
+									selectedMenu.key === "reporting" ? "menu-open" : ""
+								}`}
+								onClick={() => seletedMenuHandler("reporting", true)}
+							>
 								<Link to={""}>
 									<i data-feather="monitor"></i>
 									<span>Reporting</span>
@@ -40,7 +77,13 @@ export const Sidebar = () => {
 										<i className="fa fa-angle-right pull-right"></i>
 									</span>
 								</Link>
-								<ul className="treeview-menu">
+								<ul
+									className="treeview-menu"
+									style={{
+										display:
+											selectedMenu.key === "reporting" ? "block" : "none",
+									}}
+								>
 									<li>
 										<Link to={"/daftar-inventaris-ruangan"}>
 											<i className="icon-Commit">
@@ -88,7 +131,12 @@ export const Sidebar = () => {
 									</li>
 								</ul>
 							</li>
-							<li className="treeview menu-open">
+							<li
+								className={`treeview ${
+									selectedMenu.key === "master" ? "menu-open" : ""
+								}`}
+								onClick={() => seletedMenuHandler("master", true)}
+							>
 								<Link to={""}>
 									<i data-feather="database"></i>
 									<span>Master</span>
@@ -96,7 +144,12 @@ export const Sidebar = () => {
 										<i className="fa fa-angle-right pull-right"></i>
 									</span>
 								</Link>
-								<ul className="treeview-menu" style={{ display: "block" }}>
+								<ul
+									className="treeview-menu"
+									style={{
+										display: selectedMenu.key === "master" ? "block" : "none",
+									}}
+								>
 									<li>
 										<Link to={"/master-bisnis-unit"}>
 											<i className="icon-Commit">
@@ -225,17 +278,28 @@ export const Sidebar = () => {
 									</li>
 								</ul>
 							</li>
-							<li className="treeview menu-open">
-								<Link to="#">
+							<li
+								className={`treeview ${
+									selectedMenu.key === "tiket-layanan" ? "menu-open" : ""
+								}`}
+								onClick={() => seletedMenuHandler("tiket-layanan", true)}
+							>
+								<Link to="">
 									<i data-feather="clipboard"></i>
 									<span>Tiket Layanan</span>
 									<span className="pull-right-container">
 										<i className="fa fa-angle-right pull-right"></i>
 									</span>
 								</Link>
-								<ul className="treeview-menu">
+								<ul
+									className="treeview-menu"
+									style={{
+										display:
+											selectedMenu.key === "tiket-layanan" ? "block" : "none",
+									}}
+								>
 									<li>
-										<Link to="riwayat-tiket-layanan">
+										<Link to="/riwayat-tiket-layanan">
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>
@@ -244,7 +308,7 @@ export const Sidebar = () => {
 										</Link>
 									</li>
 									<li>
-										<Link to="pemindahan">
+										<Link to="/pemindahan">
 											<i className="icon-Commit">
 												<span className="path1"></span>
 												<span className="path2"></span>

@@ -2,7 +2,7 @@ import { MainLayout } from "app/layout/MainLayout";
 import { TableSelectionPaginateAndSort } from "app/components/Table/Antd/TableSelectionPaginateAndSort";
 import { useEffect, useState } from "react";
 import { PaginationState } from "store/Types/PaginationTypes";
-import { IDataType, columns } from "./components/ColumnAndDataType";
+import { IDataType, columns } from "./components/Table/ColumnAndDataType";
 import { SideModal } from "app/components/Modal/SideModal";
 import { CenterModal } from "app/components/Modal/CenterModal";
 

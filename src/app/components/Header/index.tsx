@@ -1,4 +1,10 @@
-export const Header = () => {
+import FeatherIcon from "feather-icons-react";
+import { Link } from "react-router-dom";
+interface IHeader {
+	collapseHandler: (thisKey: string) => void;
+}
+
+export const Header = ({ collapseHandler }: IHeader) => {
 	return (
 		<header className="main-header">
 			<div className="d-flex align-items-center logo-box justify-content-start">
@@ -11,44 +17,30 @@ export const Header = () => {
 							<img src="images/logo-icon-pgn.png" alt="logo" />
 						</span>
 					</div>
-					{/* <div className="logo-lg">
-						<span className="light-logo">
-							<img src="images/logo-text-pgn.png" alt="logo" />
-						</span>
-						<span className="dark-logo">
-							<img src="images/logo-text-pgn.png" alt="logo" />
-						</span>
-					</div> */}
 				</a>
 			</div>
 			<nav className="navbar navbar-static-top">
 				<div className="app-menu">
 					<ul className="header-megamenu nav">
-						<li className="btn-group nav-item">
-							<a
-								href="#"
-								className="waves-effect waves-light nav-link push-btn btn-primary-light"
-								data-toggle="push-menu"
-								role="button"
-							>
-								<i data-feather="align-left"></i>
-							</a>
+						<li
+							className="btn-group nav-item"
+							onClick={() => collapseHandler("collapse")}
+						>
+							<div className="waves-effect waves-light nav-link push-btn btn-primary-light">
+								<FeatherIcon icon={"align-justify"} />
+							</div>
 						</li>
 						<li className="btn-group d-lg-inline-flex d-none">
 							<div className="app-menu">
-								<a href="/">
-									<div className="d-flex align-items-center">
-										<div
-											className="logo-mini w-25"
-											style={{ marginRight: "1em" }}
-										>
-											<img src="images/logo-icon-pgn.png" alt="logo" />
-										</div>
-										<div className="logo-mini w-25">
-											<img src="images/logo-text-pgn.png" alt="logo" />
-										</div>
+								<Link to="/">
+									<div
+										className="d-flex align-items-center"
+										style={{ width: 80, columnGap: 10 }}
+									>
+										<img src="images/logo-icon-pgn.png" alt="logo" />
+										<img src="images/logo-text-pgn.png" alt="logo" />
 									</div>
-								</a>
+								</Link>
 							</div>
 						</li>
 					</ul>
@@ -56,24 +48,13 @@ export const Header = () => {
 
 				<div className="navbar-custom-menu r-side">
 					<ul className="nav navbar-nav">
-						<li className="btn-group nav-item d-lg-inline-flex d-none">
-							<a
-								href="#"
-								data-provide="fullscreen"
-								className="waves-effect waves-light nav-link full-screen btn-warning-light"
-								title="Full Screen"
-							>
-								<i data-feather="maximize"></i>
-							</a>
-						</li>
 						<li className="btn-group dropdown notifications-menu">
 							<a
-								href="#"
 								className="waves-effect waves-light dropdown-toggle btn-info-light"
 								data-bs-toggle="dropdown"
 								title="Notifications"
 							>
-								<i data-feather="bell"></i>
+								<FeatherIcon icon={"bell"} />
 							</a>
 							<ul className="dropdown-menu animated bounceIn">
 								<li className="header">
@@ -145,20 +126,8 @@ export const Header = () => {
 							</ul>
 						</li>
 
-						<li className="btn-group nav-item">
-							<a
-								href="#"
-								data-toggle="control-sidebar"
-								title="Setting"
-								className="waves-effect full-screen waves-light btn-danger-light"
-							>
-								<i data-feather="settings"></i>
-							</a>
-						</li>
-
 						<li className="btn-group dropdown user user-menu">
 							<a
-								href="#"
 								className="waves-effect waves-light dropdown-toggle l-h-12 no-shadow w-auto bg-transparent py-0"
 								data-bs-toggle="dropdown"
 								title="User"
