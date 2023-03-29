@@ -5,6 +5,7 @@ import { IDataType, columns } from "./components/Table/ColumnAndDataType";
 import { PaginationState } from "store/Types/PaginationTypes";
 import { CenterModal } from "app/components/Modal/CenterModal";
 import { SideModal } from "app/components/Modal/SideModal";
+import { SelectWithTag } from "app/components/SelectWithTag";
 
 const MasterArea = () => {
 	const [, setSelectedPage] = useState<number>(1);
@@ -230,29 +231,17 @@ const MasterArea = () => {
 				}
 			>
 				<h6 className="box-title mt-10 d-block mb-10">Nama Area</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Daerah</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Pengelola</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">NIPG</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Pemegang</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Bisnis Unit</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
 			</SideModal>
 		</MainLayout>
 	);

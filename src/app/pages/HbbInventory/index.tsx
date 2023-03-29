@@ -5,6 +5,7 @@ import { PaginationState } from "store/Types/PaginationTypes";
 import { IDataType, columns } from "./components/Table/ColumnAndDataType";
 import { SideModal } from "app/components/Modal/SideModal";
 import { CenterModal } from "app/components/Modal/CenterModal";
+import { SelectWithTag } from "app/components/SelectWithTag";
 
 const HbbInventory = () => {
 	const [selectedRow, setSelectedRow] = useState<any[]>([]);
@@ -243,65 +244,69 @@ const HbbInventory = () => {
 				}
 			>
 				<h6 className="box-title mt-10 d-block mb-10">Jenis Barang</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Main Group</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Sub Group</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Tahun Perolehan</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Nama Barang</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Distributor</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">No Akuntansi</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">No BAST/DO</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
-				{/* <h6 className="box-title mt-10 d-block mb-10">Negara Pembuat</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
-				<h6 className="box-title mt-10 d-block mb-10">Tahun Pembuatan</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Negara Pembuat</h6>
+				<SelectWithTag colorTag="cyan" />
+				{/* <h6 className="box-title mt-10 d-block mb-10">Tahun Pembuatan</h6>
+				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Merk</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Jenis</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Model</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Warna</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Kapasitas</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div> */}
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Ukuran</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">No Seri</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">No Polisi</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">No Rangka</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">No Mesin</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">No BPKB</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">No Kontrak</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Tanggal Kontrak</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Bisnis Unit</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Area</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Satuan Kerja</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Lokasi</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Penanggung Jawab</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Kondisi</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Rentang Waktu</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Tahun Perolehan</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">No HBB</h6>
+				<SelectWithTag colorTag="cyan" /> */}
 			</SideModal>
 		</MainLayout>
 	);

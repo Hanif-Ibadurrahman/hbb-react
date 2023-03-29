@@ -3,6 +3,8 @@ import { MainLayout } from "app/layout/MainLayout";
 import { useEffect, useState } from "react";
 import { IDataType, columns } from "./components/Table/ColumnAndDataType";
 import { PaginationState } from "store/Types/PaginationTypes";
+import { SideModal } from "app/components/Modal/SideModal";
+import { SelectWithTag } from "app/components/SelectWithTag";
 
 const Layanan = () => {
 	const [, setSelectedPage] = useState<number>(1);
@@ -50,6 +52,32 @@ const Layanan = () => {
 					</div>
 				</div>
 			</section>
+
+			<SideModal
+				title="Filter"
+				contentFooter={
+					<button
+						type="button"
+						className="btn btn-primary"
+						data-bs-dismiss="modal"
+					>
+						Filter
+					</button>
+				}
+			>
+				<h6 className="box-title mt-10 d-block mb-10">Nama Area</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Daerah</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Pengelola</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">NIPG</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Pemegang</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Bisnis Unit</h6>
+				<SelectWithTag colorTag="cyan" />
+			</SideModal>
 		</MainLayout>
 	);
 };

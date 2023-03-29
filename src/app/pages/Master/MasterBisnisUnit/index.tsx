@@ -5,6 +5,7 @@ import { IDataType, columns } from "./components/Table/ColumnAndDataType";
 import { PaginationState } from "store/Types/PaginationTypes";
 import { SideModal } from "app/components/Modal/SideModal";
 import { CenterModal } from "app/components/Modal/CenterModal";
+import { SelectWithTag } from "app/components/SelectWithTag";
 
 const MasterBisnisUnit = () => {
 	const [, setSelectedPage] = useState<number>(1);
@@ -133,9 +134,7 @@ const MasterBisnisUnit = () => {
 				}
 			>
 				<h6 className="box-title mt-10 d-block mb-10">Bisnis Unit</h6>
-				<div className="tags-default">
-					<input type="text" data-role="tagsinput" placeholder="Input" />
-				</div>
+				<SelectWithTag colorTag="cyan" />
 			</SideModal>
 		</MainLayout>
 	);

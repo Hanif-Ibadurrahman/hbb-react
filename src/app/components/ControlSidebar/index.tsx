@@ -28,11 +28,11 @@ export const ControlSidebar = () => {
 			<div className="tab-content">
 				<div className="tab-pane active" id="control-sidebar-home-tab">
 					<div className="flexbox">
-						<a href="javascript:void(0)" className="text-grey">
+						<a href="#" className="text-grey">
 							<i className="ti-more"></i>
 						</a>
 						<p>Users</p>
-						<a href="javascript:void(0)" className="text-grey text-end">
+						<a href="#" className="text-grey text-end">
 							<i className="ti-plus"></i>
 						</a>
 					</div>
@@ -47,7 +47,7 @@ export const ControlSidebar = () => {
 					<div className="media-list media-list-hover mt-20">
 						<div className="media py-10 px-0">
 							<a className="avatar avatar-lg status-success" href="#">
-								<img src="../images/avatar/1.jpg" alt="..." />
+								<img src="images/avatar/1.jpg" alt="..." />
 							</a>
 							<div className="media-body">
 								<p className="fs-16">
@@ -62,7 +62,7 @@ export const ControlSidebar = () => {
 
 						<div className="media py-10 px-0">
 							<a className="avatar avatar-lg status-danger" href="#">
-								<img src="../images/avatar/2.jpg" alt="..." />
+								<img src="images/avatar/2.jpg" alt="..." />
 							</a>
 							<div className="media-body">
 								<p className="fs-16">
@@ -77,7 +77,7 @@ export const ControlSidebar = () => {
 
 						<div className="media py-10 px-0">
 							<a className="avatar avatar-lg status-warning" href="#">
-								<img src="../images/avatar/3.jpg" alt="..." />
+								<img src="images/avatar/3.jpg" alt="..." />
 							</a>
 							<div className="media-body">
 								<p className="fs-16">
@@ -92,7 +92,7 @@ export const ControlSidebar = () => {
 
 						<div className="media py-10 px-0">
 							<a className="avatar avatar-lg status-primary" href="#">
-								<img src="../images/avatar/4.jpg" alt="..." />
+								<img src="images/avatar/4.jpg" alt="..." />
 							</a>
 							<div className="media-body">
 								<p className="fs-16">
@@ -107,7 +107,7 @@ export const ControlSidebar = () => {
 
 						<div className="media py-10 px-0">
 							<a className="avatar avatar-lg status-success" href="#">
-								<img src="../images/avatar/1.jpg" alt="..." />
+								<img src="images/avatar/1.jpg" alt="..." />
 							</a>
 							<div className="media-body">
 								<p className="fs-16">
@@ -122,7 +122,7 @@ export const ControlSidebar = () => {
 
 						<div className="media py-10 px-0">
 							<a className="avatar avatar-lg status-danger" href="#">
-								<img src="../images/avatar/2.jpg" alt="..." />
+								<img src="images/avatar/2.jpg" alt="..." />
 							</a>
 							<div className="media-body">
 								<p className="fs-16">
@@ -137,7 +137,7 @@ export const ControlSidebar = () => {
 
 						<div className="media py-10 px-0">
 							<a className="avatar avatar-lg status-warning" href="#">
-								<img src="../images/avatar/3.jpg" alt="..." />
+								<img src="images/avatar/3.jpg" alt="..." />
 							</a>
 							<div className="media-body">
 								<p className="fs-16">
@@ -152,7 +152,7 @@ export const ControlSidebar = () => {
 
 						<div className="media py-10 px-0">
 							<a className="avatar avatar-lg status-primary" href="#">
-								<img src="../images/avatar/4.jpg" alt="..." />
+								<img src="images/avatar/4.jpg" alt="..." />
 							</a>
 							<div className="media-body">
 								<p className="fs-16">
@@ -168,11 +168,11 @@ export const ControlSidebar = () => {
 				</div>
 				<div className="tab-pane" id="control-sidebar-settings-tab">
 					<div className="flexbox">
-						<a href="javascript:void(0)" className="text-grey">
+						<a href="#" className="text-grey">
 							<i className="ti-more"></i>
 						</a>
 						<p>Todo List</p>
-						<a href="javascript:void(0)" className="text-grey text-end">
+						<a href="#" className="text-grey text-end">
 							<i className="ti-plus"></i>
 						</a>
 					</div>

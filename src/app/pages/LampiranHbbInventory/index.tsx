@@ -3,10 +3,14 @@ import { MainLayout } from "app/layout/MainLayout";
 import { useEffect, useState } from "react";
 import { PaginationState } from "store/Types/PaginationTypes";
 import { IDataType, columns } from "./components/Table/ColumnAndDataType";
+import { SideModal } from "app/components/Modal/SideModal";
+import { SelectWithTag } from "app/components/SelectWithTag";
+import { DatePicker } from "antd";
 
 const LampiranHbbInventory = () => {
 	const [, setSelectedPage] = useState<number>(1);
 	const [fetchData, setFetchData] = useState<PaginationState>();
+	const { RangePicker } = DatePicker;
 
 	useEffect(() => {
 		let data: IDataType[] = [];
@@ -43,6 +47,7 @@ const LampiranHbbInventory = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
+							title="Lampiran HBB dan Inventaris Semester"
 							dataSource={fetchData}
 							columns={columns}
 							setSelectedPage={setSelectedPage}
@@ -50,6 +55,26 @@ const LampiranHbbInventory = () => {
 					</div>
 				</div>
 			</section>
+
+			<SideModal
+				title="Filter"
+				contentFooter={
+					<button
+						type="button"
+						className="btn btn-primary"
+						data-bs-dismiss="modal"
+					>
+						Filter
+					</button>
+				}
+			>
+				<h6 className="box-title mt-10 d-block mb-10">Tanggal</h6>
+				<RangePicker style={{ width: "100%" }} format={"DD-MM-YYYY"} />
+				<h6 className="box-title mt-10 d-block mb-10">Jenis Barang</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Export</h6>
+				<SelectWithTag colorTag="cyan" />
+			</SideModal>
 		</MainLayout>
 	);
 };
