@@ -17,7 +17,7 @@
 		"noFallthroughCasesInSwitch": true,
 		"jsx": "react-jsx",
 		"baseUrl": "./src",
-		"types": ["webpack-env", "jest"]
+		"types": ["webpack-env", "jest", "@testing-library/jest-dom"]
 	},
 	"include": ["src", "internals/startingTemplate/**/*"]
 }
