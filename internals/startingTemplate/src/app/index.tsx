@@ -8,7 +8,7 @@
 
 import * as React from "react";
 import { Helmet } from "react-helmet-async";
-import { Switch, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 import { GlobalStyle } from "styles/global-styles";
 
@@ -22,16 +22,16 @@ export function App() {
 		<BrowserRouter>
 			<Helmet
 				titleTemplate="%s"
-				defaultTitle="DOX"
+				defaultTitle=""
 				htmlAttributes={{ lang: i18n.language }}
 			>
 				<meta name="description" content="A DOX application" />
 			</Helmet>
 
-			<Switch>
-				<Route exact path="/" component={HomePage} />
-				<Route component={NotFoundPage} />
-			</Switch>
+			<Routes>
+				<Route index element={HomePage} />
+				<Route element={NotFoundPage} />
+			</Routes>
 			<GlobalStyle />
 		</BrowserRouter>
 	);
