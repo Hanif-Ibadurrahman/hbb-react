@@ -4,17 +4,29 @@ import { Footer } from "app/components/Footer";
 import { Header } from "app/components/Header";
 import { Sidebar } from "app/components/Sidebar";
 import { Sticky } from "app/components/Sticky";
-import React from "react";
+import React, { useState } from "react";
 
 interface IFullLayout {
 	children: React.ReactNode;
 }
 
 export const FullLayout = ({ children }: IFullLayout) => {
+	const [selectedMenu, setSelectedMenu] = useState<string>("");
+
+	const collapseHandler = (thisKey: string) => {
+		selectedMenu === thisKey
+			? setSelectedMenu("")
+			: setSelectedMenu("collapse");
+	};
+
 	return (
-		<body className="hold-transition light-skin sidebar-mini theme-primary fixed">
+		<div
+			className={`light-skin sidebar-mini theme-primary fixed ${
+				selectedMenu ? "sidebar-collapse" : ""
+			}`}
+		>
 			<div className="wrapper">
-				<Header />
+				<Header collapseHandler={collapseHandler} />
 
 				<Sidebar />
 
@@ -32,6 +44,6 @@ export const FullLayout = ({ children }: IFullLayout) => {
 			<Sticky />
 
 			<ChatBox />
-		</body>
+		</div>
 	);
 };

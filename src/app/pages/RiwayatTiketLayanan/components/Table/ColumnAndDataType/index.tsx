@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Modal } from "antd";
 import { ColumnsType } from "antd/es/table";
 
 export interface IDataType {
@@ -21,12 +21,22 @@ export const columns: ColumnsType<IDataType> = [
 		title: "Action",
 		render: (text, record, index) => {
 			return (
-				<>
-					<Button type="primary">Edit</Button>
-					<Button type="primary" danger>
-						Delete
-					</Button>
-				</>
+				<button
+					type="button"
+					className="btn"
+					style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
+					onClick={() => {
+						Modal.confirm({
+							title: "Hapus Data",
+							content: "Apakah anda yakin ingin menghapus ini?",
+							cancelText: "Batal",
+							okText: "Hapus",
+							okType: "danger",
+						});
+					}}
+				>
+					Delete
+				</button>
 			);
 		},
 	},

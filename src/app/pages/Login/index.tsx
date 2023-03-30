@@ -1,18 +1,26 @@
 import { LoginAction } from "actions/LoginAction";
-import { Form, Input } from "antd";
+import { Form, Input, Modal } from "antd";
 import { useDispatch } from "react-redux";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	const modalAlert = () => {
+		Modal.error({
+			title: "Telah terjadi kesalahan pada saat login",
+			content: "Mohon di cek kembali username atau password yang dimasukkan",
+		});
+	};
 
 	const onFinish = async (values: any) => {
 		try {
 			const result = await LoginAction(values);
 			await dispatch(result);
-			redirect("/dashboard");
+			navigate("/", { replace: true });
 		} catch (error) {
-			alert(error);
+			modalAlert();
 		}
 	};
 

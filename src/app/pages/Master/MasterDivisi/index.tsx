@@ -100,7 +100,7 @@ const MasterDivisi = () => {
 
 			<CenterModal
 				modalName="modal_edit"
-				title="Tambah Data"
+				title="Ubah Data"
 				contentFooter={
 					<button
 						type="button"

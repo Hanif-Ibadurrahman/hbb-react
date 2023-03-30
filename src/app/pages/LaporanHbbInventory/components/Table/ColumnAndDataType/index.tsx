@@ -1,4 +1,3 @@
-import { Button } from "antd";
 import { ColumnsType } from "antd/es/table";
 
 export interface IDataType {

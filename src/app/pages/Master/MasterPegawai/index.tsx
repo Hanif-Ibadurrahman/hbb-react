@@ -5,6 +5,7 @@ import { IDataType, columns } from "./components/Table/ColumnAndDataType";
 import { PaginationState } from "store/Types/PaginationTypes";
 import { SideModal } from "app/components/Modal/SideModal";
 import { CenterModal } from "app/components/Modal/CenterModal";
+import { SelectWithTag } from "app/components/SelectWithTag";
 
 const MasterPegawai = () => {
 	const [, setSelectedPage] = useState<number>(1);
@@ -60,7 +61,19 @@ const MasterPegawai = () => {
 				</div>
 			</section>
 
-			<CenterModal modalName="modal_add" title="Tambah Data">
+			<CenterModal
+				modalName="modal_add"
+				title="Tambah Data"
+				contentFooter={
+					<button
+						type="button"
+						className="btn btn-primary"
+						data-bs-dismiss="modal"
+					>
+						Simpan
+					</button>
+				}
+			>
 				<div className="col-12">
 					<div className="form-group">
 						<h6>
@@ -98,7 +111,75 @@ const MasterPegawai = () => {
 					</div>
 				</div>
 			</CenterModal>
-			<SideModal title="Filter"></SideModal>
+			<CenterModal
+				modalName="modal_edit"
+				title="Ubah Data"
+				contentFooter={
+					<button
+						type="button"
+						className="btn btn-primary"
+						data-bs-dismiss="modal"
+					>
+						Simpan
+					</button>
+				}
+			>
+				<div className="col-12">
+					<div className="form-group">
+						<h6>
+							Nama <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<input
+								type="text"
+								name="text"
+								className="form-control"
+								required
+								data-validation-required-message="This field is required"
+							/>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>
+							NIPG <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<input
+								type="text"
+								name="text"
+								className="form-control"
+								required
+								data-validation-required-message="This field is required"
+							/>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Jabatan</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+				</div>
+			</CenterModal>
+			<SideModal
+				title="Filter"
+				contentFooter={
+					<button
+						type="button"
+						className="btn btn-primary"
+						data-bs-dismiss="modal"
+					>
+						Filter
+					</button>
+				}
+			>
+				<h6 className="box-title mt-10 d-block mb-10">Nama</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">NIPG</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Jabatan</h6>
+				<SelectWithTag colorTag="cyan" />
+			</SideModal>
 		</MainLayout>
 	);
 };

@@ -1,10 +1,30 @@
+import { Modal } from "antd";
+import { logout } from "api/login";
 import FeatherIcon from "feather-icons-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 interface IHeader {
 	collapseHandler: (thisKey: string) => void;
 }
 
 export const Header = ({ collapseHandler }: IHeader) => {
+	const navigate = useNavigate();
+
+	const modalAlert = () => {
+		Modal.error({
+			title: "Telah terjadi kesalahan pada saat logout",
+			content: "Mohon di tunggu beberapa saat lagi",
+		});
+	};
+
+	const handleLogout = async () => {
+		try {
+			await logout();
+			sessionStorage.clear();
+			navigate("/login", { replace: true });
+		} catch (error) {
+			modalAlert();
+		}
+	};
 	return (
 		<header className="main-header">
 			<div className="d-flex align-items-center logo-box justify-content-start">
@@ -147,7 +167,7 @@ export const Header = ({ collapseHandler }: IHeader) => {
 										<i className="ti-settings text-muted me-2"></i> Email
 									</a>
 									<div className="dropdown-divider"></div>
-									<a className="dropdown-item" href="auth_login.html">
+									<a className="dropdown-item" onClick={handleLogout}>
 										<i className="ti-lock text-muted me-2"></i> Logout
 									</a>
 								</li>

@@ -3,6 +3,9 @@ import { MainLayout } from "app/layout/MainLayout";
 import { useEffect, useState } from "react";
 import { IDataType, columns } from "./components/Table/ColumnAndDataType";
 import { PaginationState } from "store/Types/PaginationTypes";
+import { CenterModal } from "app/components/Modal/CenterModal";
+import { SideModal } from "app/components/Modal/SideModal";
+import { SelectWithTag } from "app/components/SelectWithTag";
 
 const MasterWarna = () => {
 	const [, setSelectedPage] = useState<number>(1);
@@ -41,10 +44,98 @@ const MasterWarna = () => {
 							dataSource={fetchData}
 							columns={columns}
 							setSelectedPage={setSelectedPage}
+							contentHeader={
+								<button
+									type="button"
+									className="btn btn-primary"
+									data-bs-toggle="modal"
+									data-bs-target="#modal_add"
+								>
+									Tambah
+								</button>
+							}
 						/>
 					</div>
 				</div>
 			</section>
+
+			<CenterModal
+				modalName="modal_add"
+				title="Tambah Data"
+				contentFooter={
+					<button
+						type="button"
+						className="btn btn-primary"
+						data-bs-dismiss="modal"
+					>
+						Simpan
+					</button>
+				}
+			>
+				<div className="col-12">
+					<div className="form-group">
+						<h6>
+							Warna <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<input
+								type="text"
+								name="text"
+								className="form-control"
+								required
+								data-validation-required-message="This field is required"
+							/>
+						</div>
+					</div>
+				</div>
+			</CenterModal>
+
+			<CenterModal
+				modalName="modal_edit"
+				title="Tambah Data"
+				contentFooter={
+					<button
+						type="button"
+						className="btn btn-primary"
+						data-bs-dismiss="modal"
+					>
+						Simpan
+					</button>
+				}
+			>
+				<div className="col-12">
+					<div className="form-group">
+						<h6>
+							Warna <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<input
+								type="text"
+								name="text"
+								className="form-control"
+								required
+								data-validation-required-message="This field is required"
+							/>
+						</div>
+					</div>
+				</div>
+			</CenterModal>
+
+			<SideModal
+				title="Filter"
+				contentFooter={
+					<button
+						type="button"
+						className="btn btn-primary"
+						data-bs-dismiss="modal"
+					>
+						Filter
+					</button>
+				}
+			>
+				<h6 className="box-title mt-10 d-block mb-10">Warna</h6>
+				<SelectWithTag colorTag="cyan" />
+			</SideModal>
 		</MainLayout>
 	);
 };

@@ -15,14 +15,14 @@ export const LoginAction = async (data: ILoginRequest) => {
 			});
 			const response = await login(data);
 
-			sessionStorage.setItem("Token", response.token);
+			sessionStorage.setItem("Token", response.data.token);
 
 			dispatch({
 				type: LOGIN_SUCCESS,
-				payload: response.token,
+				payload: response.data.token,
 			});
 
-			const dataDecode: ILoginTokenDecode = jwtDecode(response.token);
+			const dataDecode: ILoginTokenDecode = jwtDecode(response.data.token);
 
 			dispatch({
 				type: DECODE_TOKEN,

@@ -18,7 +18,7 @@ export const MainLayout = ({ children }: IMainLayout) => {
 	};
 
 	return (
-		<body
+		<div
 			className={`light-skin sidebar-mini theme-primary fixed ${
 				selectedMenu ? "sidebar-collapse" : ""
 			}`}
@@ -38,6 +38,6 @@ export const MainLayout = ({ children }: IMainLayout) => {
 
 				<div className="control-sidebar-bg"></div>
 			</div>
-		</body>
+		</div>
 	);
 };

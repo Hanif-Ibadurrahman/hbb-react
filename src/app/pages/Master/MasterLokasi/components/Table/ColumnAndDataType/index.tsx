@@ -1,5 +1,5 @@
-import { Button } from "antd";
 import { ColumnsType } from "antd/es/table";
+import { ActionButtonTable } from "app/components/Table/Antd/ActionButtonTable";
 
 export interface IDataType {
 	bisnis_unit: string;
@@ -44,14 +44,7 @@ export const columns: ColumnsType<IDataType> = [
 	{
 		title: "Action",
 		render: (text, record, index) => {
-			return (
-				<>
-					<Button type="primary">Edit</Button>
-					<Button type="primary" danger>
-						Delete
-					</Button>
-				</>
-			);
+			return <ActionButtonTable />;
 		},
 	},
 ];

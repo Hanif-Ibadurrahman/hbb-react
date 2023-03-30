@@ -3,6 +3,7 @@ import { MainLayout } from "app/layout/MainLayout";
 import { useEffect, useState } from "react";
 import { IDataType, columns } from "./components/Table/ColumnAndDataType";
 import { PaginationState } from "store/Types/PaginationTypes";
+import { CenterModal } from "app/components/Modal/CenterModal";
 
 const MasterPengelola = () => {
 	const [, setSelectedPage] = useState<number>(1);
@@ -46,6 +47,51 @@ const MasterPengelola = () => {
 					</div>
 				</div>
 			</section>
+
+			<CenterModal
+				modalName="modal_edit"
+				title="Ubah Data"
+				contentFooter={
+					<button
+						type="button"
+						className="btn btn-primary"
+						data-bs-dismiss="modal"
+					>
+						Simpan
+					</button>
+				}
+			>
+				<div className="col-12">
+					<div className="form-group">
+						<h6>
+							Nama Penyedia <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<input
+								type="text"
+								name="text"
+								className="form-control"
+								required
+								data-validation-required-message="This field is required"
+							/>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>
+							NIPG <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<input
+								type="text"
+								name="text"
+								className="form-control"
+								required
+								data-validation-required-message="This field is required"
+							/>
+						</div>
+					</div>
+				</div>
+			</CenterModal>
 		</MainLayout>
 	);
 };
