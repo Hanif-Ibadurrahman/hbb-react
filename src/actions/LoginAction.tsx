@@ -1,11 +1,12 @@
-import { LoginInterfaceState } from "store/Types/LoginTypes";
-import { login, reset } from "api/login";
+import jwtDecode from "jwt-decode";
+import { ILoginRequest, ILoginTokenDecode } from "store/Types/LoginTypes";
+import { login } from "api/login";
 export const SET_LOGIN_DATA = "SET_LOGIN_DATA";
-export const LOGIN_DATA = "LOGIN_DATA";
-export const RESET_ACCOUNT = "RESET_ACCOUNT";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const DECODE_TOKEN = "DECODE_TOKEN";
+export const LOGIN_FAILED = "LOGIN_FAILED";
 
-export const Login = async (data: LoginInterfaceState) => {
-	console.log(data);
+export const LoginAction = async (data: ILoginRequest) => {
 	return async dispatch => {
 		try {
 			dispatch({
@@ -13,62 +14,30 @@ export const Login = async (data: LoginInterfaceState) => {
 				payload: data,
 			});
 			const response = await login(data);
-			localStorage.setItem("Token", response?.data?.token?.token);
-			localStorage.setItem(
-				"User",
-				response?.data?.data?.roles[0] ? response?.data?.data?.roles[0] : "",
-			);
-			localStorage.setItem("IdUser", response?.data?.data?.user.id);
-			localStorage.setItem(
-				"UserName",
-				response?.data?.data?.user?.staff
-					? response?.data?.data?.user?.staff?.name
-					: response?.data?.data?.user?.username,
-			);
-			dispatch({
-				type: LOGIN_DATA,
-				payload: response?.data,
-			});
-			return response;
-		} catch (error: any) {
-			dispatch({
-				type: LOGIN_DATA,
-				payload: {
-					data: false,
-					errorMessage: error?.message,
-				},
-			});
-			console.log(error);
-			throw error;
-		}
-	};
-};
 
-export const ResetPassword = async (data: LoginInterfaceState) => {
-	return async dispatch => {
-		try {
+			sessionStorage.setItem("Token", response.token);
+
 			dispatch({
-				type: SET_LOGIN_DATA,
-				payload: data,
+				type: LOGIN_SUCCESS,
+				payload: response.token,
 			});
-			const response = await reset(data);
+
+			const dataDecode: ILoginTokenDecode = jwtDecode(response.token);
+
 			dispatch({
-				type: RESET_ACCOUNT,
-				payload: {
-					data: response.data,
-					errorMessage: false,
-				},
+				type: DECODE_TOKEN,
+				payload: dataDecode,
 			});
-			return response;
+
+			return dataDecode;
 		} catch (error: any) {
 			dispatch({
-				type: RESET_ACCOUNT,
+				type: LOGIN_FAILED,
 				payload: {
 					data: false,
 					errorMessage: error?.message,
 				},
 			});
-			console.log(error);
 			throw error;
 		}
 	};

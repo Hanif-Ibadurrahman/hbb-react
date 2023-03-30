@@ -1,35 +1,45 @@
-export interface StaffInterface {
-	email: string;
-	firebase_token: string;
-	firebase_token_expired: string;
-	firebase_token_updated: string;
-	id: string;
-	name: string;
-	nik: string;
-	room: string;
+export interface IUserTokenDecode {
+	id: string | null;
+	name: string | null;
+	nipg: string | null;
+	nipg_atasan: string | null;
+	nipg_kadiv: string | null;
+	id_area: number | null;
+	id_satker: number | null;
+	id_bisnit: number | null;
+	id_role: number | null;
 }
 
-export interface LoginInterfaceState {
+export interface ILoginTokenDecode {
+	iss: string | null;
+	iat: number | null;
+	exp: number | null;
+	nbf: number | null;
+	jti: string | null;
+	sub: string | null;
+	prv: string | null;
+	token_type: string | null;
+	expires_in: number | null;
+	user: IUserTokenDecode | null;
+	permissions: string[] | null;
+}
+
+export interface ILoginRequest {
 	username: string;
 	password: string;
-	email?: string;
-	token: {
-		token: string;
-		type: string;
-	};
-	data: {
-		roles: [""];
-		user: {
-			id: string;
-			username: string;
-			staff: StaffInterface;
-		};
-	};
+}
+export interface ILoginSuccessResponse {
+	token: string;
+}
+
+export interface ILoginFailedResponse {
+	error: string;
 }
 export interface LoginsInterfaceState {
-	Login: LoginInterfaceState;
-	user: [];
-	ErrorLogin?: string;
+	LoginSuccessResponse: ILoginSuccessResponse;
+	LoginFailedResponse: ILoginFailedResponse;
+	LoginRequest: ILoginRequest;
+	TokenDecode: ILoginTokenDecode;
 	Title: string;
 }
 

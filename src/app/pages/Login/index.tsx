@@ -1,11 +1,23 @@
-import { useState } from "react";
+import { LoginAction } from "actions/LoginAction";
+import { Form, Input } from "antd";
+import { useDispatch } from "react-redux";
+import { redirect } from "react-router-dom";
 
 const Login = () => {
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
+	const dispatch = useDispatch();
+
+	const onFinish = async (values: any) => {
+		try {
+			const result = await LoginAction(values);
+			await dispatch(result);
+			redirect("/dashboard");
+		} catch (error) {
+			alert(error);
+		}
+	};
 
 	return (
-		<body className="hold-transition theme-primary">
+		<div className="theme-primary">
 			<div className="container h-p100">
 				<div className="row align-items-center justify-content-md-center h-p100">
 					<div className="col-12">
@@ -19,43 +31,61 @@ const Login = () => {
 										</p>
 									</div>
 									<div className="p-40">
-										<form action="/" method="post">
-											<div className="form-group">
-												<div className="input-group mb-3">
-													<span className="input-group-text bg-transparent">
-														<i className="ti-user"></i>
-													</span>
-													<input
-														type="text"
-														className="form-control ps-15 bg-transparent"
-														placeholder="Username"
-													/>
+										<Form onFinish={onFinish} autoComplete="off">
+											<Form.Item
+												name="username"
+												rules={[
+													{
+														required: true,
+														message: "Please input your username!",
+													},
+												]}
+											>
+												<div className="form-group">
+													<div className="input-group mb-3">
+														<span className="input-group-text bg-transparent">
+															<i className="ti-user"></i>
+														</span>
+														<Input
+															type="text"
+															className="form-control ps-15 bg-transparent"
+															placeholder="Username"
+														/>
+													</div>
 												</div>
-											</div>
-											<div className="form-group">
-												<div className="input-group mb-3">
-													<span className="input-group-text  bg-transparent">
-														<i className="ti-lock"></i>
-													</span>
-													<input
-														type="password"
-														className="form-control ps-15 bg-transparent"
-														placeholder="Password"
-													/>
+											</Form.Item>
+											<Form.Item
+												name="password"
+												rules={[
+													{
+														required: true,
+														message: "Please input your password!",
+													},
+												]}
+											>
+												<div className="form-group">
+													<div className="input-group mb-3">
+														<span className="input-group-text  bg-transparent">
+															<i className="ti-lock"></i>
+														</span>
+														<Input.Password
+															type="password"
+															className="form-control ps-15 bg-transparent"
+															placeholder="Password"
+															style={{ display: "inherit" }}
+														/>
+													</div>
 												</div>
-											</div>
+											</Form.Item>
 											<div className="row">
 												<div className="col-6">
-													<div className="checkbox">
-														<input type="checkbox" id="basic_checkbox_1" />
-														<label htmlFor="basic_checkbox_1">
-															Remember Me
-														</label>
-													</div>
+													<a href="/login" className="text-warning ms-3">
+														Don't have an account?
+													</a>
 												</div>
 												<div className="col-6">
 													<div className="fog-pwd text-end">
-														<a href="" className="hover-warning">
+														<a href="/login" className="hover-warning">
 															<i className="ion ion-locked"></i> Forgot
 															password?
 														</a>
@@ -71,18 +101,7 @@ const Login = () => {
 													</button>
 												</div>
 											</div>
-										</form>
-										<div className="text-center">
-											<p className="mt-15 mb-0">
-												Don't have an account?
-												<a
-													href="auth_register.html"
-													className="text-warning ms-3"
-												>
-													Sign Up
-												</a>
-											</p>
-										</div>
+										</Form>
 									</div>
 								</div>
 							</div>
@@ -90,7 +109,7 @@ const Login = () => {
 					</div>
 				</div>
 			</div>
-		</body>
+		</div>
 	);
 };
 

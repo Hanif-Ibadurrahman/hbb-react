@@ -1,9 +1,12 @@
 import axios from "axios";
-import { Login } from "actions/LoginAction";
 
-const token = localStorage.getItem("Token");
+const token = sessionStorage.getItem("Token");
 
-export default axios.create({
+export const apiWithToken = axios.create({
 	baseURL: process.env.REACT_APP_API_URL,
-	headers: { Authorization: "Bearer " + token },
+	headers: { Authorization: "" + token },
+});
+
+export const api = axios.create({
+	baseURL: process.env.REACT_APP_API_URL,
 });
