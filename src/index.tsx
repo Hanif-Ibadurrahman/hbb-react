@@ -7,8 +7,8 @@
 import "react-app-polyfill/ie11";
 import "react-app-polyfill/stable";
 
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import FontFaceObserver from "fontfaceobserver";
 
@@ -20,8 +20,6 @@ import "styles/core/core.min.css";
 import "styles/core/main.min.css";
 
 import { App } from "app";
-
-import { HelmetProvider } from "react-helmet-async";
 
 import { configureAppStore } from "store/configureStore";
 
@@ -42,19 +40,18 @@ openSansObserver.load().then(() => {
 });
 
 const store = configureAppStore();
-const MOUNT_NODE = document.getElementById("root") as HTMLElement;
+const root = ReactDOM.createRoot(
+	document.getElementById("root") as HTMLElement,
+);
 
-ReactDOM.render(
+root.render(
 	<Provider store={store}>
 		<ThemeProvider>
-			<HelmetProvider>
-				<React.StrictMode>
-					<App />
-				</React.StrictMode>
-			</HelmetProvider>
+			<React.StrictMode>
+				<App />
+			</React.StrictMode>
 		</ThemeProvider>
 	</Provider>,
-	MOUNT_NODE,
 );
 
 // Hot reloadable translation json files

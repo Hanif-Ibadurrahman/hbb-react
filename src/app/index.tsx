@@ -1,5 +1,4 @@
 import { lazyLoad } from "utils/loadable";
-import { Helmet } from "react-helmet-async";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 export function App() {
@@ -68,7 +67,6 @@ export function App() {
 
 	return (
 		<Router>
-			<Helmet></Helmet>
 			<Routes>
 				<Route index element={<DashboardPage />}></Route>
 				<Route path="dashboard" element={<DashboardPage />} />

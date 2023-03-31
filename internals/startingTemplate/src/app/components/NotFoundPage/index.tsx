@@ -1,15 +1,15 @@
 import * as React from "react";
 import styled from "styled-components/macro";
 import { P } from "./P";
-import { Helmet } from "react-helmet-async";
+// import { Helmet } from "react-helmet-async";
 
 export function NotFoundPage() {
 	return (
 		<>
-			<Helmet>
+			{/* <Helmet>
 				<title>404 Page Not Found</title>
 				<meta name="description" content="Page not found" />
-			</Helmet>
+			</Helmet> */}
 			<Wrapper>
 				<Title>
 					4

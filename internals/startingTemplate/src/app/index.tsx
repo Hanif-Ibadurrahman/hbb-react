@@ -7,30 +7,31 @@
  */
 
 import * as React from "react";
-import { Helmet } from "react-helmet-async";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+// import { Helmet } from "react-helmet-async";
+// import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, BrowserRouter } from "react-router-dom";
 
 import { GlobalStyle } from "styles/global-styles";
 
-import { HomePage } from "./pages/HomePage/Loadable";
-import { NotFoundPage } from "./components/NotFoundPage/Loadable";
-import { useTranslation } from "react-i18next";
+// import { HomePage } from "./pages/HomePage/Loadable";
+// import { NotFoundPage } from "./components/NotFoundPage/Loadable";
+// import { useTranslation } from "react-i18next";
 
 export function App() {
-	const { i18n } = useTranslation();
+	// const { i18n } = useTranslation();
 	return (
 		<BrowserRouter>
-			<Helmet
+			{/* <Helmet
 				titleTemplate="%s"
 				defaultTitle=""
 				htmlAttributes={{ lang: i18n.language }}
 			>
 				<meta name="description" content="A DOX application" />
-			</Helmet>
+			</Helmet> */}
 
 			<Routes>
-				<Route index element={HomePage} />
-				<Route element={NotFoundPage} />
+				{/* <Route index element={HomePage} />
+				<Route element={NotFoundPage} /> */}
 			</Routes>
 			<GlobalStyle />
 		</BrowserRouter>

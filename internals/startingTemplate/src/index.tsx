@@ -18,7 +18,7 @@ import "sanitize.css/sanitize.css";
 // Import root app
 import { App } from "app";
 
-import { HelmetProvider } from "react-helmet-async";
+// import { HelmetProvider } from "react-helmet-async";
 
 import { configureAppStore } from "store/configureStore";
 
@@ -32,11 +32,11 @@ const MOUNT_NODE = document.getElementById("root") as HTMLElement;
 
 ReactDOM.render(
 	<Provider store={store}>
-		<HelmetProvider>
-			<React.StrictMode>
-				<App />
-			</React.StrictMode>
-		</HelmetProvider>
+		{/* <HelmetProvider> */}
+		<React.StrictMode>
+			<App />
+		</React.StrictMode>
+		{/* </HelmetProvider> */}
 	</Provider>,
 	MOUNT_NODE,
 );
