@@ -27746,7 +27746,7 @@ textarea.form-control {
 
 /*---modal---*/
 .modal-left .modal-content {
-  height: 100%;
+  height: max-content;
   display: -webkit-box;
   display: flex;
   -webkit-box-orient: vertical;
@@ -27859,7 +27859,7 @@ textarea.form-control {
   -webkit-transition: .5s;
   transition: .5s; }
 .modal-right .modal-content {
-  height: 100%;
+  height: max-content;
   display: -webkit-box;
   display: flex;
   -webkit-box-orient: vertical;

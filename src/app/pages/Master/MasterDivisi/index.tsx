@@ -45,6 +45,16 @@ const MasterDivisi = () => {
 							dataSource={fetchData}
 							columns={columns}
 							setSelectedPage={setSelectedPage}
+							contentHeader={
+								<button
+									type="button"
+									className="btn btn-primary"
+									data-bs-toggle="modal"
+									data-bs-target="#modal_add"
+								>
+									Tambah
+								</button>
+							}
 						/>
 					</div>
 				</div>
@@ -95,6 +105,20 @@ const MasterDivisi = () => {
 							/>
 						</div>
 					</div>
+					<div className="form-group">
+						<h6>
+							Nama Kepala Divisi <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<input
+								type="text"
+								name="text"
+								className="form-control"
+								required
+								data-validation-required-message="This field is required"
+							/>
+						</div>
+					</div>
 				</div>
 			</CenterModal>
 
@@ -132,6 +156,20 @@ const MasterDivisi = () => {
 					<div className="form-group">
 						<h6>
 							Nama Divisi <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<input
+								type="text"
+								name="text"
+								className="form-control"
+								required
+								data-validation-required-message="This field is required"
+							/>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>
+							Nama Kepala Divisi <span className="text-danger">*</span>
 						</h6>
 						<div className="controls">
 							<input

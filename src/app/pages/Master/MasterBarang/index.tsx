@@ -318,10 +318,10 @@ const MasterBarang = () => {
 				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Warna</h6>
 				<SelectWithTag colorTag="cyan" />
-				{/* <h6 className="box-title mt-10 d-block mb-10">Kapasitas</h6>
+				<h6 className="box-title mt-10 d-block mb-10">Kapasitas</h6>
 				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Ukuran</h6>
-				<SelectWithTag colorTag="cyan" /> */}
+				<SelectWithTag colorTag="cyan" />
 			</SideModal>
 		</MainLayout>
 	);

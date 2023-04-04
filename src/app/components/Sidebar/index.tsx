@@ -1,6 +1,7 @@
 import { currentYear } from "app/helper/DateHelper";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import FeatherIcon from "feather-icons-react";
 
 export const Sidebar = () => {
 	const [selectedMenu, setSelectedMenu] = useState<{
@@ -27,7 +28,7 @@ export const Sidebar = () => {
 								onClick={() => seletedMenuHandler("dashboard")}
 							>
 								<Link to={"/dashboard"}>
-									<i data-feather="home"></i>
+									<FeatherIcon icon={"home"} />
 									<span>Dashboard</span>
 								</Link>
 							</li>
@@ -38,7 +39,7 @@ export const Sidebar = () => {
 								onClick={() => seletedMenuHandler("inventaris")}
 							>
 								<Link to={"/inventaris"}>
-									<i data-feather="package"></i>
+									<FeatherIcon icon={"package"} />
 									<span>HBB dan Inventaris</span>
 								</Link>
 							</li>
@@ -49,7 +50,7 @@ export const Sidebar = () => {
 								onClick={() => seletedMenuHandler("layanan")}
 							>
 								<Link to={"/layanan"}>
-									<i data-feather="smile"></i>
+									<FeatherIcon icon={"smile"} />
 									<span>Layanan HBB</span>
 								</Link>
 							</li>
@@ -60,7 +61,7 @@ export const Sidebar = () => {
 								onClick={() => seletedMenuHandler("cetak-barcode")}
 							>
 								<Link to={"/cetak-barcode"}>
-									<i data-feather="printer"></i>
+									<FeatherIcon icon={"printer"} />
 									<span>Cetak Barcode</span>
 								</Link>
 							</li>
@@ -71,7 +72,7 @@ export const Sidebar = () => {
 								onClick={() => seletedMenuHandler("reporting", true)}
 							>
 								<Link to={""}>
-									<i data-feather="monitor"></i>
+									<FeatherIcon icon={"monitor"} />
 									<span>Reporting</span>
 									<span className="pull-right-container">
 										<i className="fa fa-angle-right pull-right"></i>
@@ -138,7 +139,7 @@ export const Sidebar = () => {
 								onClick={() => seletedMenuHandler("master", true)}
 							>
 								<Link to={""}>
-									<i data-feather="database"></i>
+									<FeatherIcon icon={"database"} />
 									<span>Master</span>
 									<span className="pull-right-container">
 										<i className="fa fa-angle-right pull-right"></i>
@@ -250,6 +251,15 @@ export const Sidebar = () => {
 										</Link>
 									</li>
 									<li>
+										<Link to="/master-perusahaan">
+											<i className="icon-Commit">
+												<span className="path1"></span>
+												<span className="path2"></span>
+											</i>
+											Perusahaan
+										</Link>
+									</li>
+									<li>
 										<Link to="/master-satuan-kerja">
 											<i className="icon-Commit">
 												<span className="path1"></span>
@@ -285,7 +295,7 @@ export const Sidebar = () => {
 								onClick={() => seletedMenuHandler("tiket-layanan", true)}
 							>
 								<Link to="">
-									<i data-feather="clipboard"></i>
+									<FeatherIcon icon={"clipboard"} />
 									<span>Tiket Layanan</span>
 									<span className="pull-right-container">
 										<i className="fa fa-angle-right pull-right"></i>

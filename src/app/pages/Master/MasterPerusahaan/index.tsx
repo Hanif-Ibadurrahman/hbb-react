@@ -3,19 +3,19 @@ import { MainLayout } from "app/layout/MainLayout";
 import { useEffect, useState } from "react";
 import { IDataType, columns } from "./components/Table/ColumnAndDataType";
 import { PaginationState } from "store/Types/PaginationTypes";
-import { CenterModal } from "app/components/Modal/CenterModal";
 import { SideModal } from "app/components/Modal/SideModal";
 import { SelectWithTag } from "app/components/SelectWithTag";
+import { CenterModal } from "app/components/Modal/CenterModal";
 
-const MasterKondisi = () => {
+const MasterPerusahaan = () => {
 	const [, setSelectedPage] = useState<number>(1);
 	const [fetchData, setFetchData] = useState<PaginationState>();
 
 	useEffect(() => {
 		let data: IDataType[] = [];
-		for (let i = 0; i < 100; i++) {
+		for (let i = 1; i <= 100; i++) {
 			data.push({
-				kondisi: `Kondisi ${i}`,
+				nama_perusahaan: `Perusahaan ${i}`,
 			});
 		}
 		setFetchData({
@@ -40,10 +40,20 @@ const MasterKondisi = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
-							title="Kondisi"
+							title="Negara"
 							dataSource={fetchData}
 							columns={columns}
 							setSelectedPage={setSelectedPage}
+							contentHeader={
+								<button
+									type="button"
+									className="btn btn-primary"
+									data-bs-toggle="modal"
+									data-bs-target="#modal_add"
+								>
+									Tambah
+								</button>
+							}
 						/>
 					</div>
 				</div>
@@ -65,7 +75,7 @@ const MasterKondisi = () => {
 				<div className="col-12">
 					<div className="form-group">
 						<h6>
-							Kondisi <span className="text-danger">*</span>
+							Nama Perusahaan <span className="text-danger">*</span>
 						</h6>
 						<div className="controls">
 							<input
@@ -82,7 +92,7 @@ const MasterKondisi = () => {
 
 			<CenterModal
 				modalName="modal_edit"
-				title="Tambah Data"
+				title="Ubah Data"
 				contentFooter={
 					<button
 						type="button"
@@ -96,7 +106,7 @@ const MasterKondisi = () => {
 				<div className="col-12">
 					<div className="form-group">
 						<h6>
-							Kondisi <span className="text-danger">*</span>
+							Nama Perusahaan <span className="text-danger">*</span>
 						</h6>
 						<div className="controls">
 							<input
@@ -123,11 +133,11 @@ const MasterKondisi = () => {
 					</button>
 				}
 			>
-				<h6 className="box-title mt-10 d-block mb-10">Kondisi</h6>
+				<h6 className="box-title mt-10 d-block mb-10">Nama Perusahaan</h6>
 				<SelectWithTag colorTag="cyan" />
 			</SideModal>
 		</MainLayout>
 	);
 };
 
-export default MasterKondisi;
+export default MasterPerusahaan;

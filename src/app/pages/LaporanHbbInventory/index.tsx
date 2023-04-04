@@ -69,6 +69,8 @@ const LaporanHbbInventory = () => {
 					</button>
 				}
 			>
+				<h6 className="box-title mt-10 d-block mb-10">Bisnis Unit</h6>
+				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Area</h6>
 				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Satuan Kerja</h6>

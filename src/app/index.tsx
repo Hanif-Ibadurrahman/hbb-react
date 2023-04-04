@@ -52,6 +52,9 @@ export function App() {
 	const MasterPenyediaPage = lazyLoad(
 		() => import("app/pages/Master/MasterPenyedia"),
 	);
+	const MasterPerusahaanPage = lazyLoad(
+		() => import("app/pages/Master/MasterPerusahaan"),
+	);
 	const MasterSatuanKerjaPage = lazyLoad(
 		() => import("app/pages/Master/MasterSatuanKerja"),
 	);
@@ -104,6 +107,7 @@ export function App() {
 				<Route path="master-pegawai" element={<MasterPegawaiPage />} />
 				<Route path="master-pengelola" element={<MasterPengelolaPage />} />
 				<Route path="master-penyedia" element={<MasterPenyediaPage />} />
+				<Route path="master-perusahaan" element={<MasterPerusahaanPage />} />
 				<Route path="master-satuan-kerja" element={<MasterSatuanKerjaPage />} />
 				<Route path="master-user" element={<MasterUserPage />} />
 				<Route path="master-warna" element={<MasterWarnaPage />} />
