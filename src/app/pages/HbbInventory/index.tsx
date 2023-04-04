@@ -6,8 +6,12 @@ import { IDataType, columns } from "./components/Table/ColumnAndDataType";
 import { SideModal } from "app/components/Modal/SideModal";
 import { CenterModal } from "app/components/Modal/CenterModal";
 import { SelectWithTag } from "app/components/SelectWithTag";
+import { Input, InputNumber, Upload } from "antd";
+import { InboxOutlined } from "@ant-design/icons";
 
 const HbbInventory = () => {
+	const { Dragger } = Upload;
+	const { TextArea } = Input;
 	const [selectedRow, setSelectedRow] = useState<any[]>([]);
 	const [, setSelectedPage] = useState<number>(1);
 	const [fetchData, setFetchData] = useState<PaginationState>();
@@ -153,12 +157,228 @@ const HbbInventory = () => {
 							<input type="text" name="text" className="form-control" />
 						</div>
 					</div>
+					<div className="form-group">
+						<h6>No Akuntansi</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Nomor BAST/DO</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Tanggal BAST/DO</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>
+							Negara Pembuat <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<input
+								type="text"
+								name="text"
+								className="form-control"
+								required
+								data-validation-required-message="This field is required"
+							/>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Tahun Pembuatan</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Merk</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Tipe</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Jenis</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Model</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>
+							Warna <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<input
+								type="text"
+								name="text"
+								className="form-control"
+								required
+								data-validation-required-message="This field is required"
+							/>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Kapasitas</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Ukuran</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>No Seri</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>No Polisi</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>No Rangka</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>No Mesin</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>No BPKB</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>No Kontrak</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Tanggal Kontrak</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Harga Perolehan</h6>
+						<div className="controls">
+							<InputNumber
+								addonBefore="Rp"
+								style={{ width: "100%" }}
+								onKeyPress={e => {
+									if (!/\d+/.test(e.key)) {
+										e.preventDefault();
+									}
+								}}
+								formatter={value =>
+									`${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+								}
+								parser={value => value!.replace(/\$\s?|(,*)/g, "")}
+							/>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>
+							Bisnis Unit <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<select className="form-select" name="jenis_barang">
+								<option value="sor_1">SOR I</option>
+								<option value="sor_2">SOR II</option>
+								<option value="sor_3">SOR III</option>
+							</select>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>
+							Area <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<select className="form-select" name="jenis_barang">
+								<option value="medan">Medan</option>
+								<option value="jakarta">Jakarta</option>
+							</select>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>
+							Satuan Kerja <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<select className="form-select" name="jenis_barang">
+								<option value="dewan_komisaris">Dewan Komisaris</option>
+								<option value="direktorat_utama">Direktorat Utama</option>
+							</select>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>
+							Lokasi <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<select className="form-select" name="jenis_barang">
+								<option value="pantry">Pantry</option>
+								<option value="diklat_baru">Diklat Baru</option>
+							</select>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Penanggung Jawab</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Kondisi</h6>
+						<div className="controls">
+							<select className="form-select" name="jenis_barang">
+								<option value="pinjam">Pinjam</option>
+							</select>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Keterangan</h6>
+						<div className="controls">
+							<TextArea rows={3} />
+						</div>
+					</div>
+					<Dragger name="file" multiple={true}>
+						Upload
+					</Dragger>
 				</div>
 			</CenterModal>
 
 			<CenterModal
 				modalName="modal_edit"
-				title="Ubah Data"
+				title="Edit Data"
 				contentFooter={
 					<button
 						type="button"
@@ -228,6 +448,222 @@ const HbbInventory = () => {
 							<input type="text" name="text" className="form-control" />
 						</div>
 					</div>
+					<div className="form-group">
+						<h6>No Akuntansi</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Nomor BAST/DO</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Tanggal BAST/DO</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>
+							Negara Pembuat <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<input
+								type="text"
+								name="text"
+								className="form-control"
+								required
+								data-validation-required-message="This field is required"
+							/>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Tahun Pembuatan</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Merk</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Tipe</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Jenis</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Model</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>
+							Warna <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<input
+								type="text"
+								name="text"
+								className="form-control"
+								required
+								data-validation-required-message="This field is required"
+							/>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Kapasitas</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Ukuran</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>No Seri</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>No Polisi</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>No Rangka</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>No Mesin</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>No BPKB</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>No Kontrak</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Tanggal Kontrak</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Harga Perolehan</h6>
+						<div className="controls">
+							<InputNumber
+								addonBefore="Rp"
+								style={{ width: "100%" }}
+								onKeyPress={e => {
+									if (!/\d+/.test(e.key)) {
+										e.preventDefault();
+									}
+								}}
+								formatter={value =>
+									`${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+								}
+								parser={value => value!.replace(/\$\s?|(,*)/g, "")}
+							/>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>
+							Bisnis Unit <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<select className="form-select" name="jenis_barang">
+								<option value="sor_1">SOR I</option>
+								<option value="sor_2">SOR II</option>
+								<option value="sor_3">SOR III</option>
+							</select>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>
+							Area <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<select className="form-select" name="jenis_barang">
+								<option value="medan">Medan</option>
+								<option value="jakarta">Jakarta</option>
+							</select>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>
+							Satuan Kerja <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<select className="form-select" name="jenis_barang">
+								<option value="dewan_komisaris">Dewan Komisaris</option>
+								<option value="direktorat_utama">Direktorat Utama</option>
+							</select>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>
+							Lokasi <span className="text-danger">*</span>
+						</h6>
+						<div className="controls">
+							<select className="form-select" name="jenis_barang">
+								<option value="pantry">Pantry</option>
+								<option value="diklat_baru">Diklat Baru</option>
+							</select>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Penanggung Jawab</h6>
+						<div className="controls">
+							<input type="text" name="text" className="form-control" />
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Kondisi</h6>
+						<div className="controls">
+							<select className="form-select" name="jenis_barang">
+								<option value="pinjam">Pinjam</option>
+							</select>
+						</div>
+					</div>
+					<div className="form-group">
+						<h6>Keterangan</h6>
+						<div className="controls">
+							<TextArea rows={3} />
+						</div>
+					</div>
+					<Dragger name="file" multiple={true}>
+						Upload
+					</Dragger>
 				</div>
 			</CenterModal>
 
@@ -261,7 +697,7 @@ const HbbInventory = () => {
 				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Negara Pembuat</h6>
 				<SelectWithTag colorTag="cyan" />
-				{/* <h6 className="box-title mt-10 d-block mb-10">Tahun Pembuatan</h6>
+				<h6 className="box-title mt-10 d-block mb-10">Tahun Pembuatan</h6>
 				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Merk</h6>
 				<SelectWithTag colorTag="cyan" />
@@ -306,7 +742,7 @@ const HbbInventory = () => {
 				<h6 className="box-title mt-10 d-block mb-10">Tahun Perolehan</h6>
 				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">No HBB</h6>
-				<SelectWithTag colorTag="cyan" /> */}
+				<SelectWithTag colorTag="cyan" />
 			</SideModal>
 		</MainLayout>
 	);
