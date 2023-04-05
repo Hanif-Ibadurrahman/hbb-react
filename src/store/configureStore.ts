@@ -27,6 +27,11 @@ export function configureAppStore() {
 	const store = configureStore({
 		reducer: createReducer(),
 
+		middleware: getDefaultMiddleware =>
+			getDefaultMiddleware({
+				serializableCheck: false,
+			}),
+
 		// middleware: ()[...getDefaultMiddleware({
 		// 	thunk
 		// })],
