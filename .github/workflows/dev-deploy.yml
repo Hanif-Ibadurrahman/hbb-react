@@ -68,7 +68,7 @@ jobs:
           tags: registry.anargya-tech.id/${{secrets.doppler_project}}-prod:latest
           cache-from: type=registry,ref=registry.anargya-tech.id/${{secrets.doppler_project}}-prod:buildcache
           cache-to: type=registry,ref=registry.anargya-tech.id/${{secrets.doppler_project}}-prod:buildcache,mode=max
-  deploy_api:
+  deploy_web:
     needs: [building-dev]
     uses: AnargyaAptana/action/.github/workflows/ssh-deploy-dev.yml@master
 
@@ -76,33 +76,10 @@ jobs:
       host: ${{ secrets.SERVER_DEV_SSH_HOST }}
       key: ${{ secrets.SERVER_DEV_SSH_KEY }}
       image_name: registry.anargya-tech.id/${{secrets.doppler_project}}-dev:latest
-      container_name: dox_api
+      container_name: ats_fe
       doppler_token: ${{secrets.doppler_token_dev}}
       doppler_project: ${{secrets.doppler_project}}
       doppler_config: dev
-  deploy_queue:
-    needs: [building-dev]
-    uses: AnargyaAptana/action/.github/workflows/ssh-deploy-dev.yml@master
 
-    secrets:
-      host: ${{ secrets.SERVER_DEV_SSH_HOST }}
-      key: ${{ secrets.SERVER_DEV_SSH_KEY }}
-      image_name: registry.anargya-tech.id/${{secrets.doppler_project}}-dev:latest
-      container_name: dox_queue
-      doppler_token: ${{secrets.doppler_token_queue_dev}}
-      doppler_project: ${{secrets.doppler_project}}
-      doppler_config: dev
-  deploy_scheduler:
-    needs: [building-dev]
-    uses: AnargyaAptana/action/.github/workflows/ssh-deploy-dev.yml@master
-
-    secrets:
-      host: ${{ secrets.SERVER_DEV_SSH_HOST }}
-      key: ${{ secrets.SERVER_DEV_SSH_KEY }}
-      image_name: registry.anargya-tech.id/${{secrets.doppler_project}}-dev:latest
-      container_name: dox_scheduler
-      doppler_token: ${{secrets.doppler_token_scheduler_dev}}
-      doppler_project: ${{secrets.doppler_project}}
-      doppler_config: dev
       
 
