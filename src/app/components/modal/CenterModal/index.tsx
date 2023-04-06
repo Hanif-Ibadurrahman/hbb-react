@@ -3,6 +3,7 @@ interface ICenterModal {
 	title?: string;
 	children?: React.ReactNode;
 	contentFooter?: JSX.Element;
+	isShowModal?: boolean;
 }
 
 export const CenterModal = ({
@@ -10,6 +11,7 @@ export const CenterModal = ({
 	modalName,
 	children,
 	contentFooter,
+	isShowModal,
 }: ICenterModal) => {
 	return (
 		<div
@@ -19,7 +21,7 @@ export const CenterModal = ({
 			role="dialog"
 			aria-labelledby="myLargeModalLabel"
 			aria-hidden="true"
-			style={{ display: "none" }}
+			style={{ display: isShowModal ? "block" : "none" }}
 		>
 			<div className="modal-dialog modal-lg">
 				<div className="modal-content">

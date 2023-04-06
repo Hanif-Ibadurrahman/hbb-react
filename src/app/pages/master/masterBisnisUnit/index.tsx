@@ -49,7 +49,7 @@ const MasterBisnisUnit = () => {
 									type="button"
 									className="btn btn-primary"
 									data-bs-toggle="modal"
-									data-bs-target="#modal_add"
+									data-bs-target="#modal"
 								>
 									Tambah
 								</button>
@@ -91,7 +91,7 @@ const MasterBisnisUnit = () => {
 			</CenterModal>
 
 			<CenterModal
-				modalName="modal_edit"
+				modalName="modal"
 				title="Ubah Data"
 				contentFooter={
 					<button

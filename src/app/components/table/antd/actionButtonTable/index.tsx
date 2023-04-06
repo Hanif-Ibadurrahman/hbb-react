@@ -7,7 +7,7 @@ export const ActionButtonTable = () => {
 				type="button"
 				className="btn btn-primary"
 				data-bs-toggle="modal"
-				data-bs-target="#modal_edit"
+				data-bs-target="#modal"
 			>
 				Edit
 			</button>

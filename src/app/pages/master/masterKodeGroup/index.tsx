@@ -118,7 +118,7 @@ const MasterKodeGroup = () => {
 			</CenterModal>
 
 			<CenterModal
-				modalName="modal_edit"
+				modalName="modal"
 				title="Tambah Data"
 				contentFooter={
 					<button

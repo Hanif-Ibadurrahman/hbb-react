@@ -13,6 +13,10 @@ export interface ICountryGetAllParams {
 	name: string;
 }
 
+export interface ICreateCountryRequest {
+	name: string;
+}
+
 export interface ICountryGetAllResponse {
 	status: string;
 	message: string;

@@ -49,7 +49,7 @@ const MasterPengelola = () => {
 			</section>
 
 			<CenterModal
-				modalName="modal_edit"
+				modalName="modal"
 				title="Ubah Data"
 				contentFooter={
 					<button

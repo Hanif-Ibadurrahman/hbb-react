@@ -2,7 +2,6 @@ import { Table } from "antd";
 import { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { SorterResult } from "antd/es/table/interface";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { PaginationState } from "store/types/paginationTypes";
 
 interface ITablePaginate {
 	title?: string;
@@ -27,17 +26,12 @@ export const TablePaginateAndSort = ({
 	contentHeader,
 	setSelectedPage,
 }: ITablePaginate) => {
-	const [data, setData] = useState<any>([]);
-	const [tableParams, setTableParams] = useState<TableParams>({
-		pagination: {
-			current: data,
-			pageSize: 10,
-		},
-	});
+	const [data, setData] = useState<any>();
+	const [tableParams, setTableParams] = useState<TableParams>();
 
 	useEffect(() => {
 		if (dataSource) {
-			setData(dataSource.data);
+			setData(dataSource.data.map(data => ({ ...data, key: data.id })));
 			setTableParams({
 				pagination: {
 					total: dataSource.total,
@@ -60,7 +54,7 @@ export const TablePaginateAndSort = ({
 
 		if (
 			pagination.pageSize &&
-			pagination.pageSize !== tableParams.pagination?.pageSize
+			pagination.pageSize !== tableParams?.pagination?.pageSize
 		) {
 			setData([]);
 			setSelectedPage(pagination.pageSize);

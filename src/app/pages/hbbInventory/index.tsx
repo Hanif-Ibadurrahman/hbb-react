@@ -68,7 +68,7 @@ const HbbInventory = () => {
 										type="button"
 										className="btn btn-primary"
 										data-bs-toggle="modal"
-										data-bs-target="#modal_add"
+										data-bs-target="#modal"
 									>
 										Tambah
 									</button>
@@ -376,7 +376,7 @@ const HbbInventory = () => {
 			</CenterModal>
 
 			<CenterModal
-				modalName="modal_edit"
+				modalName="modal"
 				title="Edit Data"
 				contentFooter={
 					<button

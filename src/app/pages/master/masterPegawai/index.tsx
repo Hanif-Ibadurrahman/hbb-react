@@ -51,7 +51,7 @@ const MasterPegawai = () => {
 									type="button"
 									className="btn btn-primary"
 									data-bs-toggle="modal"
-									data-bs-target="#modal_add"
+									data-bs-target="#modal"
 								>
 									Tambah
 								</button>
@@ -112,7 +112,7 @@ const MasterPegawai = () => {
 				</div>
 			</CenterModal>
 			<CenterModal
-				modalName="modal_edit"
+				modalName="modal"
 				title="Ubah Data"
 				contentFooter={
 					<button
