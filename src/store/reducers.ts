@@ -5,7 +5,8 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
 import { InjectedReducersType } from "utils/types/injector-typings";
-import { loginReducer } from "./Reducer/loginReducer";
+import { loginReducer } from "./reducer/loginReducer";
+import countryReducer from "./reducer/country";
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -18,6 +19,7 @@ export function createReducer(injectedReducers: InjectedReducersType = {}) {
 		return combineReducers({
 			...injectedReducers,
 			loginReducer,
+			countryReducer,
 		});
 	}
 }

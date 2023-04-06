@@ -1,5 +1,5 @@
 {
-	"name": "dox-frontend",
+	"name": "ats-frontend",
 	"version": "1.2.0",
 	"private": true,
 	"dependencies": {
@@ -11,7 +11,7 @@
 		"@reduxjs/toolkit": "^1.6.2",
 		"@testing-library/jest-dom": "^5.16.5",
 		"@testing-library/react": "13.4.0",
-    	"@testing-library/user-event": "^13.5.0",
+		"@testing-library/user-event": "^13.5.0",
 		"@types/fontfaceobserver": "0.0.6",
 		"@types/jest": "^27.5.2",
 		"@types/node": "16.18.21",
