@@ -16,7 +16,7 @@ module.exports = {
 	},
 	overrides: [
 		{
-			files: ["**/*.ts?(x)"],
+			files: ["src/**/*.ts?(x)"],
 			rules: {
 				"prettier/prettier": ["warn", prettierOptions],
 				// 'no-unused-vars': 0,
