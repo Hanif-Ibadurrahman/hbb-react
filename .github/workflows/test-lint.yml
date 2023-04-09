@@ -1,0 +1,12 @@
+name: Test and Lint
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    uses: AnargyaAptana/action/.github/workflows/node-lint.yml@master
+  test:
+    uses: AnargyaAptana/action/.github/workflows/node-test.yml@master
