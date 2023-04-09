@@ -29,6 +29,7 @@ import reportWebVitals from "reportWebVitals";
 
 // Initialize languages
 import "./locales/i18n";
+import { AppAuth } from "appAuth";
 
 // Observe loading of Inter (to remove 'Inter', remove the <link> tag in
 // the index.html file and this observer)
@@ -48,7 +49,9 @@ root.render(
 	<Provider store={store}>
 		<ThemeProvider>
 			<React.StrictMode>
-				<App />
+				<AppAuth>
+					<App />
+				</AppAuth>
 			</React.StrictMode>
 		</ThemeProvider>
 	</Provider>,

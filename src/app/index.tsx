@@ -2,71 +2,71 @@ import { lazyLoad } from "utils/loadable";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 export function App() {
-	const DashboardPage = lazyLoad(() => import("app/pages/Dashboard"));
-	const HbbInventaryPage = lazyLoad(() => import("app/pages/HbbInventory"));
-	const LayananPage = lazyLoad(() => import("app/pages/Layanan"));
-	const CetakBarcodePage = lazyLoad(() => import("app/pages/CetakBarcode"));
+	const DashboardPage = lazyLoad(() => import("app/pages/dashboard"));
+	const HbbInventaryPage = lazyLoad(() => import("app/pages/hbbInventory"));
+	const LayananPage = lazyLoad(() => import("app/pages/layanan"));
+	const CetakBarcodePage = lazyLoad(() => import("app/pages/cetakBarcode"));
 	const InventarisRuanganPage = lazyLoad(
-		() => import("app/pages/InventarisRuangan"),
+		() => import("app/pages/inventarisRuangan"),
 	);
 	const LaporanHbbInventarisPage = lazyLoad(
-		() => import("app/pages/LaporanHbbInventory"),
+		() => import("app/pages/laporanHbbInventory"),
 	);
 	const LampiranHbbInventarisPage = lazyLoad(
-		() => import("app/pages/LampiranHbbInventory"),
+		() => import("app/pages/lampiranHbbInventory"),
 	);
 	const LaporanInventarisKoorporatPage = lazyLoad(
-		() => import("app/pages/LaporanInventarisKoorporat"),
+		() => import("app/pages/laporanInventarisKoorporat"),
 	);
 	const FormulirKeluarMasukGudangPage = lazyLoad(
-		() => import("app/pages/FormulirKeluarMasukGudang"),
+		() => import("app/pages/formulirKeluarMasukGudang"),
 	);
-	const MasterAreaPage = lazyLoad(() => import("app/pages/Master/MasterArea"));
+	const MasterAreaPage = lazyLoad(() => import("app/pages/master/masterArea"));
 	const MasterBarangPage = lazyLoad(
-		() => import("app/pages/Master/MasterBarang"),
+		() => import("app/pages/master/masterBarang"),
 	);
 	const MasterBisnisUnitPage = lazyLoad(
-		() => import("app/pages/Master/MasterBisnisUnit"),
+		() => import("app/pages/master/masterBisnisUnit"),
 	);
 	const MasterDivisiPage = lazyLoad(
-		() => import("app/pages/Master/MasterDivisi"),
+		() => import("app/pages/master/masterDivisi"),
 	);
 	const MasterKodeGroupPage = lazyLoad(
-		() => import("app/pages/Master/MasterKodeGroup"),
+		() => import("app/pages/master/masterKodeGroup"),
 	);
 	const MasterKondisiPage = lazyLoad(
-		() => import("app/pages/Master/MasterKondisi"),
+		() => import("app/pages/master/masterKondisi"),
 	);
 	const MasterLokasiPage = lazyLoad(
-		() => import("app/pages/Master/MasterLokasi"),
+		() => import("app/pages/master/masterLokasi"),
 	);
 	const MasterNegaraPage = lazyLoad(
-		() => import("app/pages/Master/MasterNegara"),
+		() => import("app/pages/master/masterNegara"),
 	);
 	const MasterPegawaiPage = lazyLoad(
-		() => import("app/pages/Master/MasterPegawai"),
+		() => import("app/pages/master/masterPegawai"),
 	);
 	const MasterPengelolaPage = lazyLoad(
-		() => import("app/pages/Master/MasterPengelola"),
+		() => import("app/pages/master/masterPengelola"),
 	);
 	const MasterPenyediaPage = lazyLoad(
-		() => import("app/pages/Master/MasterPenyedia"),
+		() => import("app/pages/master/masterPenyedia"),
 	);
 	const MasterPerusahaanPage = lazyLoad(
-		() => import("app/pages/Master/MasterPerusahaan"),
+		() => import("app/pages/master/masterPerusahaan"),
 	);
 	const MasterSatuanKerjaPage = lazyLoad(
-		() => import("app/pages/Master/MasterSatuanKerja"),
+		() => import("app/pages/master/masterSatuanKerja"),
 	);
-	const MasterUserPage = lazyLoad(() => import("app/pages/Master/MasterUser"));
+	const MasterUserPage = lazyLoad(() => import("app/pages/master/masterUser"));
 	const MasterWarnaPage = lazyLoad(
-		() => import("app/pages/Master/MasterWarna"),
+		() => import("app/pages/master/masterWarna"),
 	);
 	const RiwayatTiketLayananPage = lazyLoad(
-		() => import("app/pages/RiwayatTiketLayanan"),
+		() => import("app/pages/riwayatTiketLayanan"),
 	);
-	const Pemindahan = lazyLoad(() => import("app/pages/Pemindahan"));
-	const LoginPage = lazyLoad(() => import("app/pages/Login"));
+	const Pemindahan = lazyLoad(() => import("app/pages/pemindahan"));
+	const LoginPage = lazyLoad(() => import("app/pages/login"));
 
 	return (
 		<Router>
