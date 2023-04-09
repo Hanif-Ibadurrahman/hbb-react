@@ -6,15 +6,19 @@ interface ISelectWithTag {
 	placeholder?: string;
 	dataOption?: DefaultOptionType[];
 	colorTag: "gold" | "lime" | "green" | "cyan";
+	onChange?: (value: string) => void;
 }
 
 export const SelectWithTag = ({
 	placeholder,
 	dataOption,
 	colorTag,
+	onChange,
 }: ISelectWithTag) => {
 	const handleChange = (value: string) => {
-		console.log(`selected ${value}`);
+		if (onChange) {
+			onChange(value);
+		}
 	};
 
 	const tagRender = (props: CustomTagProps) => {
@@ -23,7 +27,6 @@ export const SelectWithTag = ({
 			event.preventDefault();
 			event.stopPropagation();
 		};
-		console.log(value);
 		return (
 			<Tag
 				color={colorTag}

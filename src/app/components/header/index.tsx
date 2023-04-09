@@ -70,6 +70,7 @@ export const Header = ({ collapseHandler }: IHeader) => {
 					<ul className="nav navbar-nav">
 						<li className="btn-group dropdown notifications-menu">
 							<a
+								href="/"
 								className="waves-effect waves-light dropdown-toggle btn-info-light"
 								data-bs-toggle="dropdown"
 								title="Notifications"
@@ -84,7 +85,7 @@ export const Header = ({ collapseHandler }: IHeader) => {
 												<h4 className="mb-0 mt-0">Notifications</h4>
 											</div>
 											<div>
-												<a href="#" className="text-danger">
+												<a href="/" className="text-danger">
 													Clear All
 												</a>
 											</div>
@@ -95,44 +96,44 @@ export const Header = ({ collapseHandler }: IHeader) => {
 								<li>
 									<ul className="menu sm-scrol">
 										<li>
-											<a href="#">
+											<a href="/">
 												<i className="fa fa-users text-info"></i> Curabitur id
 												eros quis nunc suscipit blandit.
 											</a>
 										</li>
 										<li>
-											<a href="#">
+											<a href="/">
 												<i className="fa fa-warning text-warning"></i> Duis
 												malesuada justo eu sapien elementum, in semper diam
 												posuere.
 											</a>
 										</li>
 										<li>
-											<a href="#">
+											<a href="/">
 												<i className="fa fa-users text-danger"></i> Donec at
 												nisi sit amet tortor commodo porttitor pretium a erat.
 											</a>
 										</li>
 										<li>
-											<a href="#">
+											<a href="/">
 												<i className="fa fa-shopping-cart text-success"></i> In
 												gravida mauris et nisi
 											</a>
 										</li>
 										<li>
-											<a href="#">
+											<a href="/">
 												<i className="fa fa-user text-danger"></i> Praesent eu
 												lacus in libero dictum fermentum.
 											</a>
 										</li>
 										<li>
-											<a href="#">
+											<a href="/">
 												<i className="fa fa-user text-primary"></i> Nunc
 												fringilla lorem
 											</a>
 										</li>
 										<li>
-											<a href="#">
+											<a href="/">
 												<i className="fa fa-user text-success"></i> Nullam
 												euismod dolor ut quam interdum, at scelerisque ipsum
 												imperdiet.
@@ -141,13 +142,14 @@ export const Header = ({ collapseHandler }: IHeader) => {
 									</ul>
 								</li>
 								<li className="footer">
-									<a href="#">View all</a>
+									<a href="/">View all</a>
 								</li>
 							</ul>
 						</li>
 
 						<li className="btn-group dropdown user user-menu">
 							<a
+								href="/"
 								className="waves-effect waves-light dropdown-toggle l-h-12 no-shadow w-auto bg-transparent py-0"
 								data-bs-toggle="dropdown"
 								title="User"
@@ -167,7 +169,11 @@ export const Header = ({ collapseHandler }: IHeader) => {
 										<i className="ti-settings text-muted me-2"></i> Email
 									</a>
 									<div className="dropdown-divider"></div>
-									<a className="dropdown-item" onClick={handleLogout}>
+									<a
+										href="/login"
+										className="dropdown-item"
+										onClick={handleLogout}
+									>
 										<i className="ti-lock text-muted me-2"></i> Logout
 									</a>
 								</li>

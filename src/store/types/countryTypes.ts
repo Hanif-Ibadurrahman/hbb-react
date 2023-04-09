@@ -1,7 +1,7 @@
 import { PaginationState } from "./paginationTypes";
 
 export interface ICountry {
-	id: string | null;
+	id: string;
 	name: string | null;
 }
 
@@ -10,10 +10,16 @@ export interface ICountryPaginateResponse extends PaginationState {
 }
 
 export interface ICountryGetAllParams {
-	name: string;
+	page?: number;
+	page_size?: number;
+	name?: string;
 }
 
 export interface ICreateCountryRequest {
+	name: string;
+}
+
+export interface IUpdateCountryRequest {
 	name: string;
 }
 

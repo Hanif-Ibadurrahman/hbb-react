@@ -4,68 +4,64 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 export function App() {
 	const DashboardPage = lazyLoad(() => import("app/pages/dashboard"));
 	const HbbInventaryPage = lazyLoad(() => import("app/pages/hbbInventory"));
-	const LayananPage = lazyLoad(() => import("app/pages/layanan"));
-	const CetakBarcodePage = lazyLoad(() => import("app/pages/cetakBarcode"));
-	const InventarisRuanganPage = lazyLoad(
-		() => import("app/pages/inventarisRuangan"),
+	const ServicePage = lazyLoad(() => import("app/pages/service"));
+	const PrintBarcodePage = lazyLoad(() => import("app/pages/printBarcode"));
+	const RoomInventoryPage = lazyLoad(() => import("app/pages/roomInventory"));
+	const HbbInventoryReportPage = lazyLoad(
+		() => import("app/pages/hbbInventoryReport"),
 	);
-	const LaporanHbbInventarisPage = lazyLoad(
-		() => import("app/pages/laporanHbbInventory"),
+	const HbbInventarisAttachmentPage = lazyLoad(
+		() => import("app/pages/hbbInventoryAttachment"),
 	);
-	const LampiranHbbInventarisPage = lazyLoad(
-		() => import("app/pages/lampiranHbbInventory"),
+	const CorporateInventoryReportPage = lazyLoad(
+		() => import("app/pages/corporateInventoryReport"),
 	);
-	const LaporanInventarisKoorporatPage = lazyLoad(
-		() => import("app/pages/laporanInventarisKoorporat"),
-	);
-	const FormulirKeluarMasukGudangPage = lazyLoad(
-		() => import("app/pages/formulirKeluarMasukGudang"),
+	const WarehouseCheckInOutPage = lazyLoad(
+		() => import("app/pages/warehouseCheckInOut"),
 	);
 	const MasterAreaPage = lazyLoad(() => import("app/pages/master/masterArea"));
-	const MasterBarangPage = lazyLoad(
-		() => import("app/pages/master/masterBarang"),
+	const MasterItemPage = lazyLoad(() => import("app/pages/master/masterItem"));
+	const MasterBusinessUnitPage = lazyLoad(
+		() => import("app/pages/master/masterBusinessUnit"),
 	);
-	const MasterBisnisUnitPage = lazyLoad(
-		() => import("app/pages/master/masterBisnisUnit"),
+	const MasterDivisionPage = lazyLoad(
+		() => import("app/pages/master/masterDivision"),
 	);
-	const MasterDivisiPage = lazyLoad(
-		() => import("app/pages/master/masterDivisi"),
+	const MasterCodeGroupPage = lazyLoad(
+		() => import("app/pages/master/masterCodeGroup"),
 	);
-	const MasterKodeGroupPage = lazyLoad(
-		() => import("app/pages/master/masterKodeGroup"),
+	const MasterConditionPage = lazyLoad(
+		() => import("app/pages/master/masterCondition"),
 	);
-	const MasterKondisiPage = lazyLoad(
-		() => import("app/pages/master/masterKondisi"),
+	const MasterLocationPage = lazyLoad(
+		() => import("app/pages/master/masterLocation"),
 	);
-	const MasterLokasiPage = lazyLoad(
-		() => import("app/pages/master/masterLokasi"),
+	const MasterCountryPage = lazyLoad(
+		() => import("app/pages/master/masterCountry"),
 	);
-	const MasterNegaraPage = lazyLoad(
-		() => import("app/pages/master/masterNegara"),
+	const MasterEmployeePage = lazyLoad(
+		() => import("app/pages/master/masterEmployee"),
 	);
-	const MasterPegawaiPage = lazyLoad(
-		() => import("app/pages/master/masterPegawai"),
+	const MasterManagerPage = lazyLoad(
+		() => import("app/pages/master/masterManager"),
 	);
-	const MasterPengelolaPage = lazyLoad(
-		() => import("app/pages/master/masterPengelola"),
+	const MasterProviderPage = lazyLoad(
+		() => import("app/pages/master/masterProvider"),
 	);
-	const MasterPenyediaPage = lazyLoad(
-		() => import("app/pages/master/masterPenyedia"),
+	const MasterCompanyPage = lazyLoad(
+		() => import("app/pages/master/masterCompany"),
 	);
-	const MasterPerusahaanPage = lazyLoad(
-		() => import("app/pages/master/masterPerusahaan"),
-	);
-	const MasterSatuanKerjaPage = lazyLoad(
-		() => import("app/pages/master/masterSatuanKerja"),
+	const MasterWorkUnitPage = lazyLoad(
+		() => import("app/pages/master/masterWorkUnit"),
 	);
 	const MasterUserPage = lazyLoad(() => import("app/pages/master/masterUser"));
-	const MasterWarnaPage = lazyLoad(
-		() => import("app/pages/master/masterWarna"),
+	const MasterColorPage = lazyLoad(
+		() => import("app/pages/master/masterColor"),
 	);
-	const RiwayatTiketLayananPage = lazyLoad(
-		() => import("app/pages/riwayatTiketLayanan"),
+	const ServiceTicketHistoryPage = lazyLoad(
+		() => import("app/pages/serviceTicketHistory"),
 	);
-	const Pemindahan = lazyLoad(() => import("app/pages/pemindahan"));
+	const Displacement = lazyLoad(() => import("app/pages/displacement"));
 	const LoginPage = lazyLoad(() => import("app/pages/login"));
 
 	return (
@@ -74,48 +70,48 @@ export function App() {
 				<Route index element={<DashboardPage />}></Route>
 				<Route path="dashboard" element={<DashboardPage />} />
 				<Route path="inventaris" element={<HbbInventaryPage />} />
-				<Route path="layanan" element={<LayananPage />} />
-				<Route path="cetak-barcode" element={<CetakBarcodePage />} />
+				<Route path="layanan" element={<ServicePage />} />
+				<Route path="cetak-barcode" element={<PrintBarcodePage />} />
 				<Route
 					path="daftar-inventaris-ruangan"
-					element={<InventarisRuanganPage />}
+					element={<RoomInventoryPage />}
 				/>
 				<Route
 					path="laporan-hbb-dan-inventaris"
-					element={<LaporanHbbInventarisPage />}
+					element={<HbbInventoryReportPage />}
 				/>
 				<Route
 					path="lampiran-hbb-dan-inventaris"
-					element={<LampiranHbbInventarisPage />}
+					element={<HbbInventarisAttachmentPage />}
 				/>
 				<Route
 					path="laporan-inventaris-koorporat"
-					element={<LaporanInventarisKoorporatPage />}
+					element={<CorporateInventoryReportPage />}
 				/>
 				<Route
 					path="formulir-izin-keluar-dan-masuk-gudang"
-					element={<FormulirKeluarMasukGudangPage />}
+					element={<WarehouseCheckInOutPage />}
 				/>
 				<Route path="master-area" element={<MasterAreaPage />} />
-				<Route path="master-barang" element={<MasterBarangPage />} />
-				<Route path="master-bisnis-unit" element={<MasterBisnisUnitPage />} />
-				<Route path="master-divisi" element={<MasterDivisiPage />} />
-				<Route path="master-kode-group" element={<MasterKodeGroupPage />} />
-				<Route path="master-kondisi" element={<MasterKondisiPage />} />
-				<Route path="master-lokasi" element={<MasterLokasiPage />} />
-				<Route path="master-negara" element={<MasterNegaraPage />} />
-				<Route path="master-pegawai" element={<MasterPegawaiPage />} />
-				<Route path="master-pengelola" element={<MasterPengelolaPage />} />
-				<Route path="master-penyedia" element={<MasterPenyediaPage />} />
-				<Route path="master-perusahaan" element={<MasterPerusahaanPage />} />
-				<Route path="master-satuan-kerja" element={<MasterSatuanKerjaPage />} />
+				<Route path="master-barang" element={<MasterItemPage />} />
+				<Route path="master-bisnis-unit" element={<MasterBusinessUnitPage />} />
+				<Route path="master-divisi" element={<MasterDivisionPage />} />
+				<Route path="master-kode-group" element={<MasterCodeGroupPage />} />
+				<Route path="master-kondisi" element={<MasterConditionPage />} />
+				<Route path="master-lokasi" element={<MasterLocationPage />} />
+				<Route path="master-negara" element={<MasterCountryPage />} />
+				<Route path="master-pegawai" element={<MasterEmployeePage />} />
+				<Route path="master-pengelola" element={<MasterManagerPage />} />
+				<Route path="master-penyedia" element={<MasterProviderPage />} />
+				<Route path="master-perusahaan" element={<MasterCompanyPage />} />
+				<Route path="master-satuan-kerja" element={<MasterWorkUnitPage />} />
 				<Route path="master-user" element={<MasterUserPage />} />
-				<Route path="master-warna" element={<MasterWarnaPage />} />
+				<Route path="master-warna" element={<MasterColorPage />} />
 				<Route
 					path="riwayat-tiket-layanan"
-					element={<RiwayatTiketLayananPage />}
+					element={<ServiceTicketHistoryPage />}
 				/>
-				<Route path="pemindahan" element={<Pemindahan />} />
+				<Route path="pemindahan" element={<Displacement />} />
 				<Route path="login" element={<LoginPage />} />
 			</Routes>
 		</Router>

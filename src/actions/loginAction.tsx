@@ -15,6 +15,7 @@ export const loginAction = (data: ILoginRequest) => {
 			});
 			const response = await loginApi(data);
 
+			sessionStorage.clear();
 			sessionStorage.setItem("Token", response.data.token);
 
 			dispatch({
