@@ -5,7 +5,7 @@ export const CheckAuthentication = (error: any) => {
 		sessionStorage.clear();
 		return Swal.fire({
 			icon: "error",
-			title: "Opps... Authentikasi sudah expire. Silakan login kembali",
+			title: "Opps... Authentikasi sudah expire.",
 			showConfirmButton: false,
 			timer: 3000,
 		});

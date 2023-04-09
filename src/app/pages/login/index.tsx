@@ -2,43 +2,60 @@ import { loginAction } from "actions/loginAction";
 import { Form, Input, Modal } from "antd";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import BackgroundImage from "assets/image/background.jpg";
 
 const Login = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-
-	const modalAlert = () => {
-		Modal.error({
-			title: "Telah terjadi kesalahan pada saat login",
-			content: "Mohon di cek kembali username atau password yang dimasukkan",
-		});
-	};
 
 	const onFinish = async (values: any) => {
 		try {
 			await dispatch(loginAction(values));
 			navigate("/", { replace: true });
 		} catch (error) {
-			modalAlert();
+			Swal.fire({
+				icon: "error",
+				title: "Opps... Telah terjadi kesalahan pada saat login",
+				showConfirmButton: false,
+				timer: 3000,
+			});
 		}
 	};
 
 	return (
-		<div className="theme-primary">
+		<div
+			className="hold-transition theme-primary bg-img"
+			style={{
+				backgroundImage: `url(${BackgroundImage})`,
+				backgroundPosition: "center",
+				backgroundSize: "cover",
+				backgroundRepeat: "no-repeat",
+				width: "100vw",
+				height: "100vh",
+			}}
+		>
 			<div className="container h-p100">
 				<div className="row align-items-center justify-content-md-center h-p100">
 					<div className="col-12">
-						<div className="row justify-content-center g-10">
+						<div className="row justify-content-center g-0">
 							<div className="col-lg-5 col-md-5 col-12">
-								<div className="bg-white rounded10">
-									<div className="content-top-agile p-20 pb-0">
-										<h2 className="text-primary">Let's Get Started</h2>
-										<p className="mb-0">
-											Sign in to continue to HBB Application.
-										</p>
+								<div className="bg-white rounded10 shadow-lg">
+									<div className="content-top-agile p-40 pb-0">
+										<div className="row">
+											<div className="col-3">
+												<img src="images/logo-icon-pgn.png" alt="logo" />
+											</div>
+											<div className="col-9">
+												<h2 className="text-primary">Welcome</h2>
+												<p className="mb-0">
+													Sign in to continue to HBB Application.
+												</p>
+											</div>
+										</div>
 									</div>
 									<div className="p-40">
-										<Form onFinish={onFinish} autoComplete="off">
+										<Form onFinish={onFinish}>
 											<Form.Item
 												name="username"
 												rules={[
@@ -85,24 +102,11 @@ const Login = () => {
 												</div>
 											</Form.Item>
 											<div className="row">
-												<div className="col-6">
-													<a href="/login" className="text-warning ms-3">
-														Don't have an account?
-													</a>
-												</div>
-												<div className="col-6">
-													<div className="fog-pwd text-end">
-														<a href="/login" className="hover-warning">
-															<i className="ion ion-locked"></i> Forgot
-															password?
-														</a>
-														<br />
-													</div>
-												</div>
 												<div className="col-12 text-center">
 													<button
 														type="submit"
 														className="btn btn-danger mt-10"
+														style={{ width: "100%" }}
 													>
 														SIGN IN
 													</button>

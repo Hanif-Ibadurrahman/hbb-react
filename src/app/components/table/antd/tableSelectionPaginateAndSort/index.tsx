@@ -1,6 +1,5 @@
-import { Table } from "antd";
-import { ColumnsType, TablePaginationConfig } from "antd/es/table";
-import { SorterResult } from "antd/es/table/interface";
+import { Pagination, PaginationProps, Table } from "antd";
+import { ColumnsType } from "antd/es/table";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { PaginationState } from "store/types/paginationTypes";
 
@@ -12,13 +11,12 @@ interface ITableSelectionPaginateAndSort {
 	dataSource?: PaginationState;
 	contentHeader?: JSX.Element;
 	setSelectedRow: Dispatch<SetStateAction<any[]>>;
-	setSelectedPage: Dispatch<SetStateAction<number>>;
-}
-
-interface TableParams {
-	pagination?: TablePaginationConfig;
-	sortField?: string;
-	sortOrder?: string;
+	setSelectedPage: React.Dispatch<
+		React.SetStateAction<{
+			page: number;
+			pageSize: number;
+		}>
+	>;
 }
 
 export const TableSelectionPaginateAndSort = ({
@@ -32,43 +30,25 @@ export const TableSelectionPaginateAndSort = ({
 	setSelectedPage,
 }: ITableSelectionPaginateAndSort) => {
 	const [data, setData] = useState<any>([]);
-	const [tableParams, setTableParams] = useState<TableParams>({
-		pagination: {
-			current: data,
-			pageSize: 10,
-		},
+	const [pagination, setPagination] = useState<PaginationProps>({
+		current: 1,
+		pageSize: 20,
 	});
 
 	useEffect(() => {
 		if (dataSource) {
 			setData(dataSource.data);
-			setTableParams({
-				pagination: {
-					total: dataSource.total,
-					current: dataSource.current_page,
-					pageSize: dataSource.last_page ?? undefined,
-				},
+			setPagination({
+				current: dataSource.current_page,
+				pageSize: dataSource.per_page,
+				total: dataSource.total,
 			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dataSource]);
 
-	const handleTableChange = (
-		pagination: TablePaginationConfig,
-		sorter: SorterResult<any>,
-	) => {
-		setTableParams({
-			pagination,
-			...sorter,
-		});
-
-		if (
-			pagination.pageSize &&
-			pagination.pageSize !== tableParams.pagination?.pageSize
-		) {
-			setData([]);
-			setSelectedPage(pagination.pageSize);
-		}
+	const handlePaginate = (page: number, pageSize: number) => {
+		setSelectedPage({ page: page, pageSize: pageSize });
 	};
 
 	return (
@@ -112,8 +92,16 @@ export const TableSelectionPaginateAndSort = ({
 						}}
 						dataSource={data}
 						scroll={{ x: 2500, y: 600 }}
-						onChange={handleTableChange}
 					/>
+					<div
+						style={{
+							display: "flex",
+							justifyContent: "end",
+							marginTop: 20,
+						}}
+					>
+						<Pagination {...pagination} onChange={handlePaginate}></Pagination>
+					</div>
 				</div>
 			</div>
 		</div>

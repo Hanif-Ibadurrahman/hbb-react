@@ -1,7 +1,6 @@
-import { Table } from "antd";
-import { ColumnsType, TablePaginationConfig } from "antd/es/table";
-import { SorterResult } from "antd/es/table/interface";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Pagination, Table } from "antd";
+import { ColumnsType } from "antd/es/table";
+import { useEffect, useState } from "react";
 
 interface ITablePaginate {
 	title?: string;
@@ -9,13 +8,12 @@ interface ITablePaginate {
 	columns: ColumnsType<any>;
 	dataSource?: any;
 	contentHeader?: JSX.Element;
-	setSelectedPage: Dispatch<SetStateAction<number>>;
-}
-
-interface TableParams {
-	pagination?: TablePaginationConfig;
-	sortField?: string;
-	sortOrder?: string;
+	setSelectedPage: React.Dispatch<
+		React.SetStateAction<{
+			page: number;
+			pageSize: number;
+		}>
+	>;
 }
 
 export const TablePaginateAndSort = ({
@@ -27,38 +25,25 @@ export const TablePaginateAndSort = ({
 	setSelectedPage,
 }: ITablePaginate) => {
 	const [data, setData] = useState<any>();
-	const [tableParams, setTableParams] = useState<TableParams>();
+	const [pagination, setPagination] = useState<PaginationProps>({
+		current: 1,
+		pageSize: 20,
+	});
 
 	useEffect(() => {
 		if (dataSource) {
 			setData(dataSource.data.map(data => ({ ...data, key: data.id })));
-			setTableParams({
-				pagination: {
-					total: dataSource.total,
-					current: dataSource.current_page,
-					pageSize: dataSource.last_page ?? undefined,
-				},
+			setPagination({
+				current: dataSource.current_page,
+				pageSize: dataSource.per_page,
+				total: dataSource.total,
 			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dataSource]);
 
-	const handleTableChange = (
-		pagination: TablePaginationConfig,
-		sorter: SorterResult<any>,
-	) => {
-		setTableParams({
-			pagination,
-			...sorter,
-		});
-
-		if (
-			pagination.pageSize &&
-			pagination.pageSize !== tableParams?.pagination?.pageSize
-		) {
-			setData([]);
-			setSelectedPage(pagination.pageSize);
-		}
+	const handlePaginate = (page: number, pageSize: number) => {
+		setSelectedPage({ page: page, pageSize: pageSize });
 	};
 
 	return (
@@ -91,11 +76,16 @@ export const TablePaginateAndSort = ({
 					</div>
 				</div>
 				<div className="table-responsive">
-					<Table
-						columns={columns}
-						dataSource={data}
-						onChange={handleTableChange}
-					/>
+					<Table columns={columns} dataSource={data} pagination={false} />
+					<div
+						style={{
+							display: "flex",
+							justifyContent: "end",
+							marginTop: 20,
+						}}
+					>
+						<Pagination {...pagination} onChange={handlePaginate}></Pagination>
+					</div>
 				</div>
 			</div>
 		</div>

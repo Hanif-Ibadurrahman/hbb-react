@@ -1,13 +1,24 @@
 import { Modal } from "antd";
 
-export const ActionButtonTable = () => {
+export interface IButtonAction {
+	setShowModal: React.Dispatch<
+		React.SetStateAction<{
+			show: boolean;
+			id?: string | undefined;
+		}>
+	>;
+	itemId: string;
+}
+
+export const ActionButtonTable = ({ setShowModal, itemId }: IButtonAction) => {
 	return (
 		<div style={{ display: "flex", columnGap: 5 }}>
 			<button
 				type="button"
 				className="btn btn-primary"
-				data-bs-toggle="modal"
-				data-bs-target="#modal"
+				onClick={() => {
+					setShowModal({ show: true, id: itemId });
+				}}
 			>
 				Edit
 			</button>

@@ -11,5 +11,10 @@ export interface PaginationState {
 	link: any;
 	from: number;
 	to: number;
+	link: {
+		url: string | null;
+		label: string | null;
+		active: boolean;
+	}[];
 	data: any;
 }
