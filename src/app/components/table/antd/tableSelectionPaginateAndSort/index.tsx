@@ -1,8 +1,8 @@
 import { Pagination, PaginationProps, Table } from "antd";
-import { ColumnsType } from "antd/es/table";
+import { ColumnsType, TableProps } from "antd/es/table";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { PaginationState } from "store/types/paginationTypes";
-
+import type { TableProps as RcTableProps } from "rc-table/lib/Table";
 interface ITableSelectionPaginateAndSort {
 	title?: string;
 	subTitle?: string;
@@ -17,6 +17,10 @@ interface ITableSelectionPaginateAndSort {
 			pageSize: number;
 		}>
 	>;
+	scroll?: {
+		x?: string | number | true;
+		y?: string | number;
+	};
 }
 
 export const TableSelectionPaginateAndSort = ({
@@ -28,6 +32,7 @@ export const TableSelectionPaginateAndSort = ({
 	contentHeader,
 	setSelectedRow,
 	setSelectedPage,
+	scroll,
 }: ITableSelectionPaginateAndSort) => {
 	const [data, setData] = useState<any>([]);
 	const [pagination, setPagination] = useState<PaginationProps>({
@@ -91,7 +96,8 @@ export const TableSelectionPaginateAndSort = ({
 							},
 						}}
 						dataSource={data}
-						scroll={{ x: 2500, y: 600 }}
+						pagination={false}
+						scroll={scroll}
 					/>
 					<div
 						style={{

@@ -1,5 +1,5 @@
 import { Pagination, PaginationProps, Table } from "antd";
-import { ColumnsType } from "antd/es/table";
+import { ColumnsType, TableProps } from "antd/es/table";
 import { useEffect, useState } from "react";
 
 interface ITablePaginate {
@@ -14,6 +14,10 @@ interface ITablePaginate {
 			pageSize: number;
 		}>
 	>;
+	scroll?: {
+		x?: string | number | true;
+		y?: string | number;
+	};
 }
 
 export const TablePaginateAndSort = ({
@@ -23,6 +27,7 @@ export const TablePaginateAndSort = ({
 	dataSource,
 	contentHeader,
 	setSelectedPage,
+	scroll,
 }: ITablePaginate) => {
 	const [data, setData] = useState<any>();
 	const [pagination, setPagination] = useState<PaginationProps>({
@@ -76,7 +81,12 @@ export const TablePaginateAndSort = ({
 					</div>
 				</div>
 				<div className="table-responsive">
-					<Table columns={columns} dataSource={data} pagination={false} />
+					<Table
+						columns={columns}
+						dataSource={data}
+						pagination={false}
+						scroll={scroll}
+					/>
 					<div
 						style={{
 							display: "flex",
