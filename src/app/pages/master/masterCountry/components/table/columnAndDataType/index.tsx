@@ -1,7 +1,6 @@
 import { ColumnsType } from "antd/es/table";
 import { ActionButtonTable } from "app/components/table/antd/actionButtonTable";
 import { ICountry } from "store/types/countryTypes";
-
 interface IColumn {
 	setShowModal: React.Dispatch<
 		React.SetStateAction<{
