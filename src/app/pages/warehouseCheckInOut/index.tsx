@@ -37,6 +37,7 @@ const WarehouseCheckInOut = () => {
 							dataSource={fetchData}
 							setSelectedRow={setSelectedRow}
 							setSelectedPage={setSelectedPage}
+							scroll={{ x: 2500, y: 600 }}
 						/>
 					</div>
 				</div>
