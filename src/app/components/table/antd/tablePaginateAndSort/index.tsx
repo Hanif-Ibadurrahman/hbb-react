@@ -1,4 +1,4 @@
-import { Pagination, Table } from "antd";
+import { Pagination, PaginationProps, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
 
