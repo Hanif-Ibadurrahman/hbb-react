@@ -53,6 +53,5 @@ build/*
 # ENVs
 .env*local
 
-package-lock.json
-
 .env
+.vscode

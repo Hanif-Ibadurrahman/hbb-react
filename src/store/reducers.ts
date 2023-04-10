@@ -4,7 +4,7 @@
 
 import { combineReducers } from "@reduxjs/toolkit";
 
-import { InjectedReducersType } from "utils/types/injector-typings";
+import { InjectedReducersType } from "../utils/types/injector-typings";
 import { loginReducer } from "./reducer/loginReducer";
 import countryReducer from "./reducer/country";
 
@@ -13,13 +13,14 @@ import countryReducer from "./reducer/country";
  */
 export function createReducer(injectedReducers: InjectedReducersType = {}) {
 	// Initially we don't have any injectedReducers, so returning identity function to avoid the error
-	if (Object.keys(injectedReducers).length === 0) {
-		return state => state;
-	} else {
-		return combineReducers({
-			...injectedReducers,
-			loginReducer,
-			countryReducer,
-		});
-	}
+	// if (Object.keys(injectedReducers).length === 0) {
+	// 	return state => state;
+	// } else {
+
+	// }
+	return combineReducers({
+		...injectedReducers,
+		loginReducer,
+		countryReducer,
+	});
 }
