@@ -36,6 +36,9 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
+          build-args: 
+            - REACT_APP_PUBLIC_URL=http://ats-dev.anargya-tech.id
+            - REACT_APP_API_URL=http://ats-api-dev.anargya-tech.id
           push: true
           tags: registry.anargya-tech.id/${{secrets.doppler_project}}-dev:latest
           cache-from: type=registry,ref=registry.anargya-tech.id/${{secrets.doppler_project}}-dev:buildcache
@@ -68,6 +71,9 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
+          build-args: 
+            - REACT_APP_PUBLIC_URL=http://ats-dev.anargya-tech.id
+            - REACT_APP_API_URL=http://ats-api-dev.anargya-tech.id
           push: true
           tags: registry.anargya-tech.id/${{secrets.doppler_project}}-prod:latest
           cache-from: type=registry,ref=registry.anargya-tech.id/${{secrets.doppler_project}}-prod:buildcache
