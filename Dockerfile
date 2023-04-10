@@ -5,13 +5,11 @@ RUN apk update \
     && apk add bash
 COPY yarn.lock ./
 COPY package.json ./
-RUN yarn
+RUN yarn install
 COPY ./ ./
-RUN ["chmod", "+x", "start.sh"]
-RUN ./start.sh
+RUN yarn build
 
 FROM nginx:1.19 as production-stage
 WORKDIR /app
-RUN rm -rf ./*
-COPY --from=build-stage /app/build ./
+COPY --from=build-stage /app/build /usr/share/nginx/html
 COPY site.conf /etc/nginx/nginx.conf
