@@ -51,7 +51,7 @@ export interface IItemGetAllResponse {
 }
 
 export interface IItemInterfaceState {
-	countryList: IItem[] | [];
+	getAllItemWithPagination: IItemPaginateResponse | null;
 	title: string;
 }
 

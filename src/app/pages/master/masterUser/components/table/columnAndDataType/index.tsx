@@ -1,36 +1,44 @@
 import { ColumnsType } from "antd/es/table";
-export interface IDataType {
-	nama_user: string;
-	bisnis_unit: string;
-	area: string;
-	role: string;
+import { ActionButtonTable } from "app/components/table/antd/actionButtonTable";
+import { IUser } from "store/types/userTypes";
+interface IColumn {
+	setShowModal: React.Dispatch<
+		React.SetStateAction<{
+			show: boolean;
+			id?: string | undefined;
+		}>
+	>;
 }
 
-export const columns: ColumnsType<IDataType> = [
-	{
-		title: "Nama User",
-		dataIndex: "nama_user",
-		sorter: true,
-	},
-	{
-		title: "Bisnis Unit",
-		dataIndex: "bisnis_unit",
-		sorter: true,
-	},
-	{
-		title: "Area",
-		dataIndex: "area",
-		sorter: true,
-	},
-	{
-		title: "Role",
-		dataIndex: "role",
-		sorter: true,
-	},
-	{
-		title: "Action",
-		render: (text, record, index) => {
-			return <></>;
+export const columns = ({ setShowModal }: IColumn) => {
+	const columnType: ColumnsType<IUser> = [
+		{
+			title: "Nama User",
+			dataIndex: "name",
+			sorter: true,
 		},
-	},
-];
+		{
+			title: "Bisnis Unit",
+			dataIndex: "id_bisnit",
+			sorter: true,
+		},
+		{
+			title: "Area",
+			dataIndex: "id_area",
+			sorter: true,
+		},
+		{
+			title: "Role",
+			dataIndex: "id_role",
+			sorter: true,
+		},
+		{
+			title: "Action",
+			dataIndex: "id",
+			render: (text, record, index) => {
+				return <ActionButtonTable setShowModal={setShowModal} itemId={text} />;
+			},
+		},
+	];
+	return columnType;
+};

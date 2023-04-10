@@ -31,7 +31,7 @@ export interface IBusinessUnitGetAllResponse {
 }
 
 export interface IBusinessUnitInterfaceState {
-	countryList: IBusinessUnit[] | [];
+	getAllBusinessUnitWithPagination: IBusinessUnitPaginateResponse | null;
 	title: string;
 }
 

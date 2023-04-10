@@ -3,17 +3,17 @@ import {
 	SET_COUNTRY_DATA,
 	GET_COUNTRY_LIST,
 } from "actions/countryAction";
-import { ICountryInterfaceState } from "store/types/countryTypes";
+import { ICountryGetAllReducer } from "store/types/countryTypes";
 
-export const initialState: ICountryInterfaceState = {
-	countryList: [],
-	title: "Country",
+export const initialState: ICountryGetAllReducer = {
+	getAllCountryWithPaginate: null,
+	title: "Get All Country",
 };
 
-export const countryReducer = (
+export const countryFilterReducer = (
 	state = initialState,
 	{ type, payload },
-): ICountryInterfaceState => {
+): ICountryGetAllReducer => {
 	switch (type) {
 		case SET_COUNTRY_DATA:
 			return {
@@ -23,7 +23,7 @@ export const countryReducer = (
 		case GET_COUNTRY_LIST:
 			return {
 				...state,
-				countryList: payload.data.data.data,
+				getAllCountryWithPaginate: payload.data.data,
 			};
 		case PROCESS_FAILED:
 			return {

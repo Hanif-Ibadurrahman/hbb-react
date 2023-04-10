@@ -1,24 +1,35 @@
 import { ColumnsType } from "antd/es/table";
-export interface IDataType {
-	nama_user: string;
-	nipg: string;
+import { ActionButtonTable } from "app/components/table/antd/actionButtonTable";
+import { IManager } from "store/types/managerTypes";
+
+interface IColumn {
+	setShowModal: React.Dispatch<
+		React.SetStateAction<{
+			show: boolean;
+			id?: string | undefined;
+		}>
+	>;
 }
 
-export const columns: ColumnsType<IDataType> = [
-	{
-		title: "Nama User",
-		dataIndex: "nama_user",
-		sorter: true,
-	},
-	{
-		title: "NIPG",
-		dataIndex: "nipg",
-		sorter: true,
-	},
-	{
-		title: "Action",
-		render: (text, record, index) => {
-			return <></>;
+export const columns = ({ setShowModal }: IColumn) => {
+	const columnType: ColumnsType<IManager> = [
+		{
+			title: "Nama User",
+			dataIndex: "nama_pengelola",
+			sorter: true,
 		},
-	},
-];
+		{
+			title: "NIPG",
+			dataIndex: "nipg",
+			sorter: true,
+		},
+		{
+			title: "Action",
+			dataIndex: "id",
+			render: (text, record, index) => {
+				return <ActionButtonTable setShowModal={setShowModal} itemId={text} />;
+			},
+		},
+	];
+	return columnType;
+};
