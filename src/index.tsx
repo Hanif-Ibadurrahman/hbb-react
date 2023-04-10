@@ -14,22 +14,21 @@ import FontFaceObserver from "fontfaceobserver";
 
 // Use consistent styling
 import "sanitize.css/sanitize.css";
-import "assets/modules/fontawesome-pro-5.11.2/css/all.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "styles/core/core.min.css";
 import "styles/core/main.min.css";
 
-import { App } from "app";
+import { App } from "./app";
 
-import { configureAppStore } from "store/configureStore";
+import { configureAppStore } from "./store/configureStore";
 
-import { ThemeProvider } from "styles/theme/ThemeProvider";
+import { ThemeProvider } from "./styles/theme/ThemeProvider";
 
-import reportWebVitals from "reportWebVitals";
+import reportWebVitals from "./reportWebVitals";
 
 // Initialize languages
 import "./locales/i18n";
-import { AppAuth } from "appAuth";
+import { AppAuth } from "./appAuth";
 
 // Observe loading of Inter (to remove 'Inter', remove the <link> tag in
 // the index.html file and this observer)

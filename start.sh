@@ -1,34 +1,30 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-set -e
+# Recreate config file
+touch .env
+echo printenv >> .env
+rm -rf ./env-config.js
+touch ./env-config.js
 
-env=${APP_ENV:-production}
+echo "window._env_ = {" >> ./env-config.js
 
-echo "Running container in \"$env\" environment. "
+# Read each line in .env file
+# Each line represents key=value pairs
+while read -r line || [[ -n "$line" ]];
+do
+  # Split env variables by character `=`
+  if printf '%s\n' "$line" | grep -q -e '='; then
+    varname=$(printf '%s\n' "$line" | sed -e 's/=.*//')
+    varvalue=$(printf '%s\n' "$line" | sed -e 's/^[^=]*=//')
+  fi
 
-if [ "$env" = "production" ]; then
+  # Read value of current variable if exists as Environment variable
+  value=$(printf '%s\n' "${!varname}")
+  # Otherwise use value from .env file
+  [[ -z $value ]] && value=${varvalue}
+  
+  # Append configuration property to JS file
+  echo "  $varname: \"$value\"," >> ./env-config.js
+done < .env
 
-    echo "Running production environment"
-    npm run build:production
-
-elif [ "$env" = "local" ]; then
-
-    echo "Running local environment"
-    npm run build:local
-
-elif [ "$env" = "development" ]; then
-
-    echo "Running development environment"
-    npm run build:development
-
-elif [ "$env" = "staging" ]; then
-
-    echo "Running staging environment"
-    npm run build:staging
-
-else
-
-    echo "Could not match the container environment \"$env\""
-    exit 1
-
-fi
+echo "}" >> ./env-config.js

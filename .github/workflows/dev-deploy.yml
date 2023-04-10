@@ -34,8 +34,14 @@ jobs:
           password: ${{ secrets.docker_reg_password }}
       - name: Build and Push
         uses: docker/build-push-action@v4
+        env: 
+          REACT_APP_PUBLIC_URL: ${{ env.REACT_APP_PUBLIC_URL }}
+          REACT_APP_API_URL: ${{ env.REACT_APP_API_URL }}
         with:
           context: .
+          build-args: |
+            REACT_APP_PUBLIC_URL=${{ env.REACT_APP_PUBLIC_URL }}
+            REACT_APP_API_URL=${{ env.REACT_APP_API_URL }}
           push: true
           tags: registry.anargya-tech.id/${{secrets.doppler_project}}-dev:latest
           cache-from: type=registry,ref=registry.anargya-tech.id/${{secrets.doppler_project}}-dev:buildcache
@@ -66,8 +72,14 @@ jobs:
           password: ${{ secrets.docker_reg_password }}
       - name: Build and Push
         uses: docker/build-push-action@v4
+        env: 
+          REACT_APP_PUBLIC_URL: ${{ env.REACT_APP_PUBLIC_URL }}
+          REACT_APP_API_URL: ${{ env.REACT_APP_API_URL }}
         with:
           context: .
+          build-args: |
+            REACT_APP_PUBLIC_URL=${{ env.REACT_APP_PUBLIC_URL }}
+            REACT_APP_API_URL=${{ env.REACT_APP_API_URL }}
           push: true
           tags: registry.anargya-tech.id/${{secrets.doppler_project}}-prod:latest
           cache-from: type=registry,ref=registry.anargya-tech.id/${{secrets.doppler_project}}-prod:buildcache
