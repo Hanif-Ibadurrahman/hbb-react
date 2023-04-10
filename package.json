@@ -94,7 +94,7 @@
 	},
 	"scripts": {
 		"start": "react-scripts start",
-		"build": "react-scripts build",
+		"build": "react-scripts build --verbose",
 		"build:local": "env-cmd -f .env.local react-scripts build",
 		"build:development": "env-cmd -f .env.development react-scripts build",
 		"build:staging": "env-cmd -f .env.staging react-scripts build",
