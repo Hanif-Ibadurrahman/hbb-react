@@ -8,7 +8,6 @@ export interface PaginationState {
 	next_page_url: string | null;
 	prev_page_url: string | null;
 	path: string;
-	link: any;
 	from: number;
 	to: number;
 	link: {
