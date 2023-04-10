@@ -1,37 +1,37 @@
 import { ColumnsType } from "antd/es/table";
-export interface IDataType {
-	nama_main_group: string;
-	kode_main_group: string;
-	nama_sub_group: string;
-	kode_sub_group: string;
+import { ActionButtonTable } from "app/components/table/antd/actionButtonTable";
+import { ICodeGroup } from "store/types/codeGroupTypes";
+interface IColumn {
+	setShowModal: React.Dispatch<
+		React.SetStateAction<{
+			show: boolean;
+			id?: string | undefined;
+		}>
+	>;
 }
 
-export const columns: ColumnsType<IDataType> = [
-	{
-		title: "Nama Main Group",
-		dataIndex: "nama_main_group",
-		sorter: true,
-	},
-	{
-		title: "Kode Main Group",
-		dataIndex: "kode_main_group",
-		sorter: true,
-	},
-	{
-		title: "Nama Sub Group",
-		dataIndex: "nama_sub_group",
-		sorter: true,
-	},
-	{
-		title: "Kode Sub Group",
-		dataIndex: "kode_sub_group",
-		sorter: true,
-	},
-	{
-		title: "Action",
-		render: (text, record, index) => {
-			// return <ActionButtonTable />;
-			return <></>;
+export const columns = ({ setShowModal }: IColumn) => {
+	const columnType: ColumnsType<ICodeGroup> = [
+		{
+			title: "Nama Main Group",
+			dataIndex: "value",
+			sorter: true,
+			render: (text, record, index) => {
+				return record.value;
+			},
 		},
-	},
-];
+		{
+			title: "Kode Main Group",
+			dataIndex: "code",
+			sorter: true,
+		},
+		{
+			title: "Action",
+			dataIndex: "id",
+			render: (text, record, index) => {
+				return <ActionButtonTable setShowModal={setShowModal} itemId={text} />;
+			},
+		},
+	];
+	return columnType;
+};
