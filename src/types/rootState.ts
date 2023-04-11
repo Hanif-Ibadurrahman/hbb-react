@@ -1,6 +1,6 @@
 import { ThemeState } from "styles/theme/slice/types";
 import { ILoginInterfaceState } from "store/types/loginTypes";
-import { ICountryInterfaceState } from "store/types/countryTypes";
+import { ICountryState } from "store/types/countryTypes";
 
 // [IMPORT NEW CONTAINERSTATE ABOVE] < Needed for generating containers seamlessly
 
@@ -13,6 +13,6 @@ import { ICountryInterfaceState } from "store/types/countryTypes";
 export interface RootState {
 	theme?: ThemeState;
 	loginReducer?: ILoginInterfaceState;
-	countryReducer?: ICountryInterfaceState;
+	countryReducer?: ICountryState;
 	// [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
 }

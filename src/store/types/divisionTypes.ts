@@ -5,13 +5,13 @@ import { IWorkUnit } from "./workUnitTypes";
 
 export interface IDivision {
 	id: string;
-	id_bisnis_unit: string;
-	id_area: string;
-	id_satker: string;
-	name: string;
-	bisnis_unit: IBusinessUnit;
-	area: IArea;
-	satker: IWorkUnit;
+	id_bisnis_unit: string | null;
+	id_area: string | null;
+	id_satker: string | null;
+	name: string | null;
+	bisnis_unit: IBusinessUnit | null;
+	area: IArea | null;
+	satker: IWorkUnit | null;
 }
 
 export interface IDivisionPaginateResponse extends PaginationState {
@@ -39,7 +39,7 @@ export interface IDivisionGetAllResponse {
 }
 
 export interface IDivisionInterfaceState {
-	countryList: IDivision[] | [];
+	getAllDivisionWithPagination: IDivisionPaginateResponse | null;
 	title: string;
 }
 

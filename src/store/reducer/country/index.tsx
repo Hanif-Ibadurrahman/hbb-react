@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import { countryReducer } from "./countryReducer";
-import { countryFilterReducer } from "./countryFilterReducer";
+import { countryViewReducer } from "./countryViewReducer";
+import { countryFilterReducer } from "./countryGetAllReducer";
 
 export default combineReducers({
-	countryReducer,
+	countryViewReducer,
 	countryFilterReducer,
 });

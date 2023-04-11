@@ -17,21 +17,21 @@ export const columns = ({ setShowModal }: IColumn) => {
 			title: "Bisnis Unit",
 			sorter: true,
 			render: (text, record, index) => {
-				return record.satker.bisnis_unit.name;
+				return record.satker?.bisnis_unit?.name;
 			},
 		},
 		{
 			title: "Area",
 			sorter: true,
 			render: (text, record, index) => {
-				return record.satker.area.name;
+				return record.satker?.area?.name;
 			},
 		},
 		{
 			title: "Satuan Kerja",
 			sorter: true,
 			render: (text, record, index) => {
-				return record.satker.name;
+				return record.satker?.name;
 			},
 		},
 		{
@@ -43,14 +43,14 @@ export const columns = ({ setShowModal }: IColumn) => {
 			title: "Nama Penanggung Jawab",
 			sorter: true,
 			render: (text, record, index) => {
-				return record.employee.emp_name;
+				return record.employee?.emp_name;
 			},
 		},
 		{
 			title: "NIPG",
 			sorter: true,
 			render: (text, record, index) => {
-				return record.employee.nipg;
+				return record.employee?.nipg;
 			},
 		},
 		{

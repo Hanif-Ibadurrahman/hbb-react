@@ -5,14 +5,14 @@ import { PaginationState } from "./paginationTypes";
 
 export interface IWorkUnit {
 	id: string;
-	id_bisnis_unit: string;
-	id_area: string;
-	name: string;
-	id_pegawai: string;
+	id_bisnis_unit: string | null;
+	id_area: string | null;
+	name: string | null;
+	id_pegawai: string | null;
 	from_opname: number | null;
-	bisnis_unit: IBusinessUnit;
-	area: IArea;
-	employee?: IEmployee;
+	bisnis_unit: IBusinessUnit | null;
+	area: IArea | null;
+	employee?: IEmployee | null;
 }
 
 export interface IWorkUnitPaginateResponse extends PaginationState {
@@ -40,7 +40,7 @@ export interface IWorkUnitGetAllResponse {
 }
 
 export interface IWorkUnitInterfaceState {
-	countryList: IWorkUnit[] | [];
+	getAllWorkUnitWithPagination: IWorkUnitPaginateResponse | null;
 	title: string;
 }
 

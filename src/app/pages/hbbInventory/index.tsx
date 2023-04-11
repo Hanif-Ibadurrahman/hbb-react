@@ -1,22 +1,59 @@
 import { MainLayout } from "app/layout/mainLayout";
 import { TableSelectionPaginateAndSort } from "app/components/table/antd/tableSelectionPaginateAndSort";
-import { useState } from "react";
-import { PaginationState } from "store/types/paginationTypes";
+import { useEffect, useState } from "react";
 import { SideModal } from "app/components/modal/sideModal";
 import { CenterModal } from "app/components/modal/centerModal";
 import { SelectWithTag } from "app/components/selectWithTag";
 import { Input, InputNumber, Upload } from "antd";
 import { columns } from "./components/table/columnAndDataType";
+import { IInventoryGetAllParams } from "store/types/inventoryTypes";
+import { getAllInventoryApi } from "api/inventory";
 
 const HbbInventory = () => {
 	const { Dragger } = Upload;
 	const { TextArea } = Input;
+	const [params, setParams] = useState<IInventoryGetAllParams | undefined>();
+	const [tempFilter, setTempFilter] = useState<
+		IInventoryGetAllParams | undefined
+	>();
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+		show: false,
+	});
 	const [selectedRow, setSelectedRow] = useState<any[]>([]);
 	const [selectedPage, setSelectedPage] = useState<{
 		page: number;
 		pageSize: number;
 	}>({ page: 1, pageSize: 20 });
-	const [fetchData, setFetchData] = useState<PaginationState>();
+	const [initialValue, setInitialValue] = useState<string | null>();
+	const [dataTable, setDataTable] = useState();
+
+	const fetchDataList = async () => {
+		try {
+			const response = await getAllInventoryApi(params);
+			setDataTable(response.data.data);
+			// await dispatch(getCountryListAction(params));
+		} catch (error: any) {
+			// CheckAuthentication(error);
+		}
+	};
+
+	useEffect(() => {
+		fetchDataList();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [params]);
+
+	useEffect(() => {
+		setParams({
+			...params,
+			page: selectedPage.page,
+			page_size: selectedPage.pageSize,
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedPage]);
+
+	const setValueFilter = () => {
+		setParams({ ...params, ...tempFilter });
+	};
 
 	return (
 		<MainLayout>
@@ -45,12 +82,12 @@ const HbbInventory = () => {
 									</button>
 								</>
 							}
-							columns={columns}
-							rowKey={"name_barang"}
-							dataSource={fetchData}
+							columns={columns({ setShowModal })}
+							rowKey={"id"}
+							dataSource={dataTable}
 							setSelectedRow={setSelectedRow}
 							setSelectedPage={setSelectedPage}
-							scroll={{ x: 2500, y: 600 }}
+							scroll={{ x: 1500 }}
 						/>
 					</div>
 				</div>
@@ -354,6 +391,7 @@ const HbbInventory = () => {
 						type="button"
 						className="btn btn-primary"
 						data-bs-dismiss="modal"
+						onClick={setValueFilter}
 					>
 						Filter
 					</button>
@@ -366,13 +404,22 @@ const HbbInventory = () => {
 				<h6 className="box-title mt-10 d-block mb-10">Sub Group</h6>
 				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Tahun Perolehan</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag
+					colorTag="cyan"
+					onChange={v => setTempFilter({ tahun_perolehan: v.toString() })}
+				/>
 				<h6 className="box-title mt-10 d-block mb-10">Nama Barang</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag
+					colorTag="cyan"
+					onChange={v => setTempFilter({ name: v.toString() })}
+				/>
 				<h6 className="box-title mt-10 d-block mb-10">Distributor</h6>
 				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">No Akuntansi</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag
+					colorTag="cyan"
+					onChange={v => setTempFilter({ no_akuntansi: v.toString() })}
+				/>
 				<h6 className="box-title mt-10 d-block mb-10">No BAST/DO</h6>
 				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Negara Pembuat</h6>
@@ -380,13 +427,19 @@ const HbbInventory = () => {
 				<h6 className="box-title mt-10 d-block mb-10">Tahun Pembuatan</h6>
 				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Merk</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag
+					colorTag="cyan"
+					onChange={v => setTempFilter({ merk: v.toString() })}
+				/>
 				<h6 className="box-title mt-10 d-block mb-10">Jenis</h6>
 				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Model</h6>
 				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Warna</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag
+					colorTag="cyan"
+					onChange={v => setTempFilter({ color: v.toString() })}
+				/>
 				<h6 className="box-title mt-10 d-block mb-10">Kapasitas</h6>
 				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Ukuran</h6>

@@ -1,7 +1,6 @@
 import { ColumnsType } from "antd/es/table";
 import { ActionButtonTable } from "app/components/table/antd/actionButtonTable";
 import { IWorkUnit } from "store/types/workUnitTypes";
-
 interface IColumn {
 	setShowModal: React.Dispatch<
 		React.SetStateAction<{
@@ -18,7 +17,7 @@ export const columns = ({ setShowModal }: IColumn) => {
 			dataIndex: "bisnis_unit",
 			sorter: true,
 			render: (text, record, index) => {
-				return record.bisnis_unit.name;
+				return record.bisnis_unit?.name;
 			},
 		},
 		{
@@ -26,7 +25,7 @@ export const columns = ({ setShowModal }: IColumn) => {
 			dataIndex: "area",
 			sorter: true,
 			render: (text, record, index) => {
-				return record.area.name;
+				return record.area?.name;
 			},
 		},
 		{

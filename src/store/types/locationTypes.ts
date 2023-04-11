@@ -4,14 +4,14 @@ import { IWorkUnit } from "./workUnitTypes";
 
 export interface ILocation {
 	id: string;
-	id_bisnis_unit: string;
-	id_area: string;
-	id_pegawai: string;
-	id_satker: string;
-	name: string;
+	id_bisnis_unit: string | null;
+	id_area: string | null;
+	id_pegawai: string | null;
+	id_satker: string | null;
+	name: string | null;
 	from_opname: number | null;
-	satker: IWorkUnit;
-	employee: IEmployee;
+	satker: IWorkUnit | null;
+	employee: IEmployee | null;
 }
 
 export interface ILocationPaginateResponse extends PaginationState {
@@ -39,7 +39,7 @@ export interface ILocationGetAllResponse {
 }
 
 export interface ILocationInterfaceState {
-	countryList: ILocation[] | [];
+	getAllLocationWithPagination: ILocationPaginateResponse | null;
 	title: string;
 }
 
