@@ -21,3 +21,7 @@ export const getDetailCountryApi = (id: string) => {
 export const updateCountryApi = (id: string, input: IUpdateCountryRequest) => {
 	return apiWithToken.put(`/api/master/country/${id}`, input);
 };
+
+export const deleteCountryApi = (id: string) => {
+	return apiWithToken.delete(`/api/master/country/${id}`);
+};
