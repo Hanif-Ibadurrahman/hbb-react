@@ -1,5 +1,3 @@
-import { Modal } from "antd";
-
 export interface IButtonAction {
 	setShowModal: React.Dispatch<
 		React.SetStateAction<{
@@ -7,10 +5,15 @@ export interface IButtonAction {
 			id?: string | undefined;
 		}>
 	>;
+	handleDelete?: (id: string) => void;
 	itemId: string;
 }
 
-export const ActionButtonTable = ({ setShowModal, itemId }: IButtonAction) => {
+export const ActionButtonTable = ({
+	setShowModal,
+	handleDelete,
+	itemId,
+}: IButtonAction) => {
 	return (
 		<div style={{ display: "flex", columnGap: 5 }}>
 			<button
@@ -27,13 +30,9 @@ export const ActionButtonTable = ({ setShowModal, itemId }: IButtonAction) => {
 				className="btn"
 				style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
 				onClick={() => {
-					Modal.confirm({
-						title: "Hapus Data",
-						content: "Apakah anda yakin ingin menghapus ini?",
-						cancelText: "Batal",
-						okText: "Hapus",
-						okType: "danger",
-					});
+					if (handleDelete) {
+						handleDelete(itemId);
+					}
 				}}
 			>
 				Delete

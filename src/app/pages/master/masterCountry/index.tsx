@@ -1,16 +1,24 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
 import { MainLayout } from "app/layout/mainLayout";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import { SideModal } from "app/components/modal/sideModal";
 import { SelectWithTag } from "app/components/selectWithTag";
 import { ICountry, ICountryGetAllParams } from "store/types/countryTypes";
-import { getAllCountryApi, getDetailCountryApi } from "api/country";
+import {
+	createNewCountryApi,
+	deleteCountryApi,
+	getAllCountryApi,
+	getDetailCountryApi,
+	updateCountryApi,
+} from "api/country";
+import { Modal as AntdModal, Button, Form, FormInstance, Input } from "antd";
 import { useFormik } from "formik";
-import { Modal } from "./components/modal";
+import Swal from "sweetalert2";
 
 const MasterCountry = () => {
-	// const dispatch = useDispatch();
+	const [form] = Form.useForm();
+	const formRef = useRef<FormInstance>(null);
 	const [params, setParams] = useState<ICountryGetAllParams | undefined>();
 	const [tempFilter, setTempFilter] = useState<
 		ICountryGetAllParams | undefined
@@ -22,16 +30,13 @@ const MasterCountry = () => {
 		page: number;
 		pageSize: number;
 	}>({ page: 1, pageSize: 20 });
-	const [initialValue, setInitialValue] = useState<string | null>();
+	const [initialValue, setInitialValue] = useState<{ name: string }>();
 	const [dataTable, setDataTable] = useState();
-
-	// const country = useSelector(countrySelector);
 
 	const fetchDataList = async () => {
 		try {
 			const response = await getAllCountryApi(params);
 			setDataTable(response.data.data);
-			// await dispatch(getCountryListAction(params));
 		} catch (error: any) {
 			// CheckAuthentication(error);
 		}
@@ -47,7 +52,8 @@ const MasterCountry = () => {
 	};
 
 	const handleInitialValue = (values: ICountry) => {
-		setInitialValue(values.name);
+		setInitialValue({ name: values.name || "" });
+		formRef.current?.setFieldsValue({ name: values.name || "" });
 	};
 
 	useEffect(() => {
@@ -72,18 +78,83 @@ const MasterCountry = () => {
 	}, [showModal]);
 
 	const formik = useFormik({
-		initialValues: { name: "" },
-		onSubmit: () => {},
+		initialValues: { name: initialValue?.name },
+		enableReinitialize: true,
+		onSubmit: values => {},
 	});
 
 	const handleAdd = () => {
-		// onReset();
 		setShowModal({ show: true });
+		setInitialValue({ name: "" });
+		formRef.current?.resetFields();
+	};
+
+	const handleDelete = (id: string) => {
+		const swalCustom = Swal.mixin({
+			customClass: {
+				confirmButton: "btn btn-success m-1",
+				cancelButton: "btn btn-danger m-1",
+			},
+			buttonsStyling: false,
+		});
+
+		swalCustom
+			.fire({
+				title: "Apakah anda yakin?",
+				text: "Ingin menghapus data ini",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonText: "Delete",
+				cancelButtonText: "Cancel",
+				reverseButtons: true,
+			})
+			.then(result => {
+				if (result.isConfirmed) {
+					deleteCountryApi(id).then(res => {
+						if (res.data.status === "success") {
+							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
+							fetchDataList();
+						} else {
+							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+						}
+					});
+				} else if (result.dismiss === Swal.DismissReason.cancel) {
+					swalCustom.fire("Batal", "Data ini batal dihapus", "error");
+				}
+			});
+	};
+
+	const onFinish = (values: any) => {
+		if (showModal.id) {
+			updateCountryApi(showModal.id, values).then(res => {
+				if (res.data.status === "success") {
+					setShowModal({ show: false });
+					fetchDataList();
+				}
+				Swal.fire({
+					icon: res.data.status,
+					title: res.data.message,
+					showConfirmButton: false,
+					timer: 3000,
+				});
+			});
+		} else {
+			createNewCountryApi(values).then(res => {
+				if (res.data.status === "success") {
+					setShowModal({ show: false });
+				}
+				Swal.fire({
+					icon: res.data.status,
+					title: res.data.message,
+					showConfirmButton: false,
+					timer: 3000,
+				});
+			});
+		}
 	};
 
 	const handleCancel = () => {
 		setShowModal({ show: false });
-		// onReset();
 	};
 
 	const setValueFilter = () => {
@@ -97,7 +168,7 @@ const MasterCountry = () => {
 					<div className="col-12">
 						<TablePaginateAndSort
 							title="Negara"
-							columns={columns({ setShowModal })}
+							columns={columns({ setShowModal, handleDelete })}
 							dataSource={dataTable}
 							setSelectedPage={setSelectedPage}
 							contentHeader={
@@ -114,11 +185,51 @@ const MasterCountry = () => {
 				</div>
 			</section>
 
-			<Modal
-				isShowModal={showModal}
-				initialValue={initialValue}
-				setShowModal={setShowModal}
-			/>
+			<AntdModal
+				title={showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+				footer={
+					<div style={{ display: "flex", justifyContent: "end", columnGap: 5 }}>
+						<Button type="primary" danger onClick={handleCancel}>
+							Close
+						</Button>
+						<Button type="primary" onClick={form.submit}>
+							Simpan
+						</Button>
+					</div>
+				}
+				onCancel={handleCancel}
+				open={showModal.show}
+			>
+				<div className="col-12">
+					<Form form={form} ref={formRef} onFinish={onFinish}>
+						<Form.Item
+							name="name"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<span>
+									Nama Negara <span className="text-danger">*</span>
+								</span>
+								<div className="controls">
+									<Input
+										type="text"
+										name="name"
+										className="form-control"
+										placeholder="Nama Negara"
+										onChange={formik.handleChange}
+										value={formik.values.name}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+					</Form>
+				</div>
+			</AntdModal>
 
 			<SideModal
 				title="Filter"
