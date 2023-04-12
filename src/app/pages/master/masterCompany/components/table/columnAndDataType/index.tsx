@@ -8,9 +8,10 @@ interface IColumn {
 			id?: string | undefined;
 		}>
 	>;
+	handleDelete: (id: string) => void;
 }
 
-export const columns = ({ setShowModal }: IColumn) => {
+export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 	const columnType: ColumnsType<ICompany> = [
 		{
 			title: "Nama Perusahaan",
@@ -18,10 +19,21 @@ export const columns = ({ setShowModal }: IColumn) => {
 			sorter: true,
 		},
 		{
+			title: "Kode",
+			dataIndex: "code",
+			sorter: true,
+		},
+		{
 			title: "Action",
 			dataIndex: "id",
 			render: (text, record, index) => {
-				return <ActionButtonTable setShowModal={setShowModal} itemId={text} />;
+				return (
+					<ActionButtonTable
+						setShowModal={setShowModal}
+						handleDelete={handleDelete}
+						itemId={text}
+					/>
+				);
 			},
 		},
 	];

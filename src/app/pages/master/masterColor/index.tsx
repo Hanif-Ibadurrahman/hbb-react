@@ -35,8 +35,10 @@ const MasterColor = () => {
 
 	const fetchDataList = async () => {
 		try {
-			const response = await getAllColorApi(params);
-			setDataTable(response.data.data);
+			if (params) {
+				const response = await getAllColorApi(params);
+				setDataTable(response.data.data);
+			}
 		} catch (error: any) {
 			// CheckAuthentication(error);
 		}
@@ -78,7 +80,7 @@ const MasterColor = () => {
 	}, [showModal]);
 
 	const formik = useFormik({
-		initialValues: { name: initialValue?.name },
+		initialValues: { ...initialValue },
 		enableReinitialize: true,
 		onSubmit: values => {},
 	});

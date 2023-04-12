@@ -1,6 +1,6 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
 import { MainLayout } from "app/layout/mainLayout";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import { SideModal } from "app/components/modal/sideModal";
 import { SelectWithTag } from "app/components/selectWithTag";
@@ -35,8 +35,10 @@ const MasterCountry = () => {
 
 	const fetchDataList = async () => {
 		try {
-			const response = await getAllCountryApi(params);
-			setDataTable(response.data.data);
+			if (params) {
+				const response = await getAllCountryApi(params);
+				setDataTable(response.data.data);
+			}
 		} catch (error: any) {
 			// CheckAuthentication(error);
 		}
@@ -78,7 +80,7 @@ const MasterCountry = () => {
 	}, [showModal]);
 
 	const formik = useFormik({
-		initialValues: { name: initialValue?.name },
+		initialValues: { ...initialValue },
 		enableReinitialize: true,
 		onSubmit: values => {},
 	});
@@ -142,6 +144,7 @@ const MasterCountry = () => {
 			createNewCountryApi(values).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });
+					fetchDataList();
 				}
 				Swal.fire({
 					icon: res.data.status,
