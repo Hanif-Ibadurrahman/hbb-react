@@ -1,18 +1,24 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
 import { MainLayout } from "app/layout/mainLayout";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import { SideModal } from "app/components/modal/sideModal";
-import { CenterModal } from "app/components/modal/centerModal";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { IEmployeeGetAllParams } from "store/types/employeeTypes";
-import { getAllEmployeeApi } from "api/employee";
+import { IEmployee, IEmployeeGetAllParams } from "store/types/employeeTypes";
+import {
+	createNewEmployeeApi,
+	deleteEmployeeApi,
+	getAllEmployeeApi,
+	getDetailEmployeeApi,
+	updateEmployeeApi,
+} from "api/employee";
+import { Modal as AntdModal, Button, Form, FormInstance, Input } from "antd";
+import { useFormik } from "formik";
+import Swal from "sweetalert2";
 
 const MasterEmployee = () => {
-	const [selectedPage, setSelectedPage] = useState<{
-		page: number;
-		pageSize: number;
-	}>({ page: 1, pageSize: 20 });
+	const [form] = Form.useForm();
+	const formRef = useRef<FormInstance>(null);
 	const [params, setParams] = useState<IEmployeeGetAllParams | undefined>();
 	const [tempFilter, setTempFilter] = useState<
 		IEmployeeGetAllParams | undefined
@@ -20,16 +26,43 @@ const MasterEmployee = () => {
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
 	});
+	const [selectedPage, setSelectedPage] = useState<{
+		page: number;
+		pageSize: number;
+	}>({ page: 1, pageSize: 20 });
+	const [initialValue, setInitialValue] = useState<{
+		emp_name: string;
+		nipg: string;
+		jabatan: string;
+	}>();
 	const [dataTable, setDataTable] = useState();
 
 	const fetchDataList = async () => {
 		try {
 			const response = await getAllEmployeeApi(params);
 			setDataTable(response.data.data);
-			// await dispatch(getCountryListAction(params));
 		} catch (error: any) {
 			// CheckAuthentication(error);
 		}
+	};
+
+	const fetchDataDetail = async (id: string) => {
+		try {
+			const response = await getDetailEmployeeApi(id);
+			handleInitialValue(response.data.data);
+		} catch (error: any) {
+			// CheckAuthentication(error);
+		}
+	};
+
+	const handleInitialValue = (values: IEmployee) => {
+		const setData = {
+			emp_name: values.emp_name || "",
+			nipg: values.nipg || "",
+			jabatan: values.jabatan || "",
+		};
+		setInitialValue(setData);
+		formRef.current?.setFieldsValue(setData);
 	};
 
 	useEffect(() => {
@@ -46,6 +79,98 @@ const MasterEmployee = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedPage]);
 
+	useEffect(() => {
+		if (showModal.show && showModal.id) {
+			fetchDataDetail(showModal.id);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [showModal]);
+
+	const formik = useFormik({
+		initialValues: { ...initialValue },
+		enableReinitialize: true,
+		onSubmit: values => {},
+	});
+
+	const handleAdd = () => {
+		setShowModal({ show: true });
+		setInitialValue({
+			emp_name: "",
+			nipg: "",
+			jabatan: "",
+		});
+		formRef.current?.resetFields();
+	};
+
+	const handleDelete = (id: string) => {
+		const swalCustom = Swal.mixin({
+			customClass: {
+				confirmButton: "btn btn-success m-1",
+				cancelButton: "btn btn-danger m-1",
+			},
+			buttonsStyling: false,
+		});
+
+		swalCustom
+			.fire({
+				title: "Apakah anda yakin?",
+				text: "Ingin menghapus data ini",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonText: "Delete",
+				cancelButtonText: "Cancel",
+				reverseButtons: true,
+			})
+			.then(result => {
+				if (result.isConfirmed) {
+					deleteEmployeeApi(id).then(res => {
+						if (res.data.status === "success") {
+							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
+							fetchDataList();
+						} else {
+							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+						}
+					});
+				} else if (result.dismiss === Swal.DismissReason.cancel) {
+					swalCustom.fire("Batal", "Data ini batal dihapus", "error");
+				}
+			});
+	};
+
+	const onFinish = (values: any) => {
+		if (showModal.id) {
+			updateEmployeeApi(showModal.id, values).then(res => {
+				if (res.data.status === "success") {
+					setShowModal({ show: false });
+					fetchDataList();
+				}
+				Swal.fire({
+					icon: res.data.status,
+					title: res.data.message,
+					showConfirmButton: false,
+					timer: 3000,
+				});
+			});
+		} else {
+			createNewEmployeeApi(values).then(res => {
+				if (res.data.status === "success") {
+					setShowModal({ show: false });
+					fetchDataList();
+				}
+				Swal.fire({
+					icon: res.data.status,
+					title: res.data.message,
+					showConfirmButton: false,
+					timer: 3000,
+				});
+			});
+		}
+	};
+
+	const handleCancel = () => {
+		setShowModal({ show: false });
+	};
+
 	const setValueFilter = () => {
 		setParams({ ...params, ...tempFilter });
 	};
@@ -58,14 +183,13 @@ const MasterEmployee = () => {
 						<TablePaginateAndSort
 							title="Pegawai"
 							dataSource={dataTable}
-							columns={columns({ setShowModal })}
+							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPage={setSelectedPage}
 							contentHeader={
 								<button
 									type="button"
 									className="btn btn-primary"
-									data-bs-toggle="modal"
-									data-bs-target="#modal_add"
+									onClick={handleAdd}
 								>
 									Tambah
 								</button>
@@ -75,56 +199,91 @@ const MasterEmployee = () => {
 				</div>
 			</section>
 
-			<CenterModal
-				modalName="modal"
-				title="Tambah Data"
-				contentFooter={
-					<button
-						type="button"
-						className="btn btn-primary"
-						data-bs-dismiss="modal"
-					>
-						Simpan
-					</button>
+			<AntdModal
+				title={showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+				footer={
+					<div style={{ display: "flex", justifyContent: "end", columnGap: 5 }}>
+						<Button type="primary" danger onClick={handleCancel}>
+							Close
+						</Button>
+						<Button type="primary" onClick={form.submit}>
+							Simpan
+						</Button>
+					</div>
 				}
+				onCancel={handleCancel}
+				open={showModal.show}
 			>
 				<div className="col-12">
-					<div className="form-group">
-						<h6>
-							Nama <span className="text-danger">*</span>
-						</h6>
-						<div className="controls">
-							<input
-								type="text"
-								name="text"
-								className="form-control"
-								required
-								data-validation-required-message="This field is required"
-							/>
-						</div>
-					</div>
-					<div className="form-group">
-						<h6>
-							NIPG <span className="text-danger">*</span>
-						</h6>
-						<div className="controls">
-							<input
-								type="text"
-								name="text"
-								className="form-control"
-								required
-								data-validation-required-message="This field is required"
-							/>
-						</div>
-					</div>
-					<div className="form-group">
-						<h6>Jabatan</h6>
-						<div className="controls">
-							<input type="text" name="text" className="form-control" />
-						</div>
-					</div>
+					<Form form={form} ref={formRef} onFinish={onFinish}>
+						<Form.Item
+							name="emp_name"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<span>
+									Nama <span className="text-danger">*</span>
+								</span>
+								<div className="controls">
+									<Input
+										type="text"
+										name="emp_name"
+										className="form-control"
+										placeholder="Nama Negara"
+										onChange={formik.handleChange}
+										value={formik.values.emp_name}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+						<Form.Item
+							name="nipg"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<span>
+									NIPG <span className="text-danger">*</span>
+								</span>
+								<div className="controls">
+									<Input
+										type="text"
+										name="nipg"
+										className="form-control"
+										placeholder="NIPG"
+										onChange={formik.handleChange}
+										value={formik.values.nipg}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+						<Form.Item name="jabatan">
+							<div className="form-group">
+								<span>Jabatan</span>
+								<div className="controls">
+									<Input
+										type="text"
+										name="jabatan"
+										className="form-control"
+										placeholder="Jabatan"
+										onChange={formik.handleChange}
+										value={formik.values.jabatan}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+					</Form>
 				</div>
-			</CenterModal>
+			</AntdModal>
 
 			<SideModal
 				title="Filter"

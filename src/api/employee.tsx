@@ -25,3 +25,7 @@ export const updateEmployeeApi = (
 ) => {
 	return apiWithToken.put(`/api/master/employee/${id}`, input);
 };
+
+export const deleteEmployeeApi = (id: string) => {
+	return apiWithToken.delete(`/api/master/employee/${id}`);
+};
