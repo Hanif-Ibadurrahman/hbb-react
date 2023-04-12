@@ -25,3 +25,7 @@ export const updateCodeGroupApi = (
 ) => {
 	return apiWithToken.put(`/api/master/main-group/${id}`, input);
 };
+
+export const deleteCodeGroupApi = (id: string) => {
+	return apiWithToken.delete(`/api/master/main-group/${id}`);
+};
