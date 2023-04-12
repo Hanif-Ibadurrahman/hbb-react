@@ -38,8 +38,10 @@ const MasterBusinessUnit = () => {
 
 	const fetchDataList = async () => {
 		try {
-			const response = await getAllBusinessUnitApi(params);
-			setDataTable(response.data.data);
+			if (params) {
+				const response = await getAllBusinessUnitApi(params);
+				setDataTable(response.data.data);
+			}
 		} catch (error: any) {
 			// CheckAuthentication(error);
 		}
@@ -81,7 +83,7 @@ const MasterBusinessUnit = () => {
 	}, [showModal]);
 
 	const formik = useFormik({
-		initialValues: { name: initialValue?.name },
+		initialValues: { ...initialValue },
 		enableReinitialize: true,
 		onSubmit: values => {},
 	});
@@ -145,6 +147,7 @@ const MasterBusinessUnit = () => {
 			createNewBusinessUnitApi(values).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });
+					fetchDataList();
 				}
 				Swal.fire({
 					icon: res.data.status,

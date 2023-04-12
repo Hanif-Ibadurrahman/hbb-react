@@ -35,8 +35,10 @@ const MasterCondition = () => {
 
 	const fetchDataList = async () => {
 		try {
-			const response = await getAllConditionApi(params);
-			setDataTable(response.data.data);
+			if (params) {
+				const response = await getAllConditionApi(params);
+				setDataTable(response.data.data);
+			}
 		} catch (error: any) {
 			// CheckAuthentication(error);
 		}
@@ -78,7 +80,7 @@ const MasterCondition = () => {
 	}, [showModal]);
 
 	const formik = useFormik({
-		initialValues: { name: initialValue?.name },
+		initialValues: { ...initialValue },
 		enableReinitialize: true,
 		onSubmit: values => {},
 	});

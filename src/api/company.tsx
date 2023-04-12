@@ -22,3 +22,7 @@ export const createNewCompanyApi = (input: ICreateCompanyRequest) => {
 export const updateCompanyApi = (id: string, input: IUpdateCompanyRequest) => {
 	return apiWithToken.put(`/api/master/company/${id}`, input);
 };
+
+export const deleteCompanyApi = (id: string) => {
+	return apiWithToken.delete(`/api/master/company/${id}`);
+};

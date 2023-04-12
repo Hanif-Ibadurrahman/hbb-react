@@ -39,8 +39,10 @@ const MasterEmployee = () => {
 
 	const fetchDataList = async () => {
 		try {
-			const response = await getAllEmployeeApi(params);
-			setDataTable(response.data.data);
+			if (params) {
+				const response = await getAllEmployeeApi(params);
+				setDataTable(response.data.data);
+			}
 		} catch (error: any) {
 			// CheckAuthentication(error);
 		}

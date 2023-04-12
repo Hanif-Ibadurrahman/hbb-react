@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import { SideModal } from "app/components/modal/sideModal";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { CenterModal } from "app/components/modal/centerModal";
 import { ICodeGroup, ICodeGroupGetAllParams } from "store/types/codeGroupTypes";
 import {
 	createNewCodeGroupApi,
@@ -39,8 +38,10 @@ const MasterCodeGroup = () => {
 
 	const fetchDataList = async () => {
 		try {
-			const response = await getAllCodeGroupApi(params);
-			setDataTable(response.data.data);
+			if (params) {
+				const response = await getAllCodeGroupApi(params);
+				setDataTable(response.data.data);
+			}
 		} catch (error: any) {
 			// CheckAuthentication(error);
 		}

@@ -14,6 +14,7 @@ export const getAllCountryApi = (params?: ICountryGetAllParams) => {
 export const createNewCountryApi = (input: ICreateCountryRequest) => {
 	return apiWithToken.post(`/api/master/country`, input);
 };
+
 export const getDetailCountryApi = (id: string) => {
 	return apiWithToken.get(`/api/master/country/${id}`);
 };

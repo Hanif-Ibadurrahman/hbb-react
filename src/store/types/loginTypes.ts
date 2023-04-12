@@ -7,7 +7,8 @@ export interface IUserTokenDecode {
 	id_area: number | null;
 	id_satker: number | null;
 	id_bisnit: number | null;
-	id_role: number | null;
+	id_company: number | null;
+	roles: string[] | null;
 }
 
 export interface ILoginTokenDecode {

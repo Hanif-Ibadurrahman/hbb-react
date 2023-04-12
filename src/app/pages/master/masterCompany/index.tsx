@@ -1,14 +1,26 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
 import { MainLayout } from "app/layout/mainLayout";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import { SideModal } from "app/components/modal/sideModal";
 import { SelectWithTag } from "app/components/selectWithTag";
 import { CenterModal } from "app/components/modal/centerModal";
 import { ICountryGetAllParams } from "store/types/countryTypes";
-import { getAllCompanyApi } from "api/company";
+import {
+	createNewCompanyApi,
+	getAllCompanyApi,
+	getDetailCompanyApi,
+	updateCompanyApi,
+} from "api/company";
+import { Modal as AntdModal, Button, Form, FormInstance, Input } from "antd";
+import { useFormik } from "formik";
+import Swal from "sweetalert2";
+import { ICompany } from "store/types/companyTypes";
+import { deleteCountryApi } from "api/country";
 
 const MasterCompany = () => {
+	const [form] = Form.useForm();
+	const formRef = useRef<FormInstance>(null);
 	const [params, setParams] = useState<ICountryGetAllParams | undefined>();
 	const [tempFilter, setTempFilter] = useState<
 		ICountryGetAllParams | undefined
@@ -20,17 +32,35 @@ const MasterCompany = () => {
 		page: number;
 		pageSize: number;
 	}>({ page: 1, pageSize: 20 });
-	const [initialValue, setInitialValue] = useState<string | null>();
+	const [initialValue, setInitialValue] = useState<{
+		name: string;
+		code: string;
+	}>();
 	const [dataTable, setDataTable] = useState();
 
 	const fetchDataList = async () => {
 		try {
-			const response = await getAllCompanyApi(params);
-			setDataTable(response.data.data);
-			// await dispatch(getCountryListAction(params));
+			if (params) {
+				const response = await getAllCompanyApi(params);
+				setDataTable(response.data.data);
+			}
 		} catch (error: any) {
 			// CheckAuthentication(error);
 		}
+	};
+
+	const fetchDataDetail = async (id: string) => {
+		try {
+			const response = await getDetailCompanyApi(id);
+			handleInitialValue(response.data.data);
+		} catch (error: any) {
+			// CheckAuthentication(error);
+		}
+	};
+
+	const handleInitialValue = (values: ICompany) => {
+		setInitialValue({ name: values.name || "", code: values.code || "" });
+		formRef.current?.setFieldsValue({ name: values.name || "" });
 	};
 
 	useEffect(() => {
@@ -47,6 +77,94 @@ const MasterCompany = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedPage]);
 
+	useEffect(() => {
+		if (showModal.show && showModal.id) {
+			fetchDataDetail(showModal.id);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [showModal]);
+
+	const formik = useFormik({
+		initialValues: { ...initialValue },
+		enableReinitialize: true,
+		onSubmit: values => {},
+	});
+
+	const handleAdd = () => {
+		setShowModal({ show: true });
+		setInitialValue({ name: "", code: "" });
+		formRef.current?.resetFields();
+	};
+
+	const handleDelete = (id: string) => {
+		const swalCustom = Swal.mixin({
+			customClass: {
+				confirmButton: "btn btn-success m-1",
+				cancelButton: "btn btn-danger m-1",
+			},
+			buttonsStyling: false,
+		});
+
+		swalCustom
+			.fire({
+				title: "Apakah anda yakin?",
+				text: "Ingin menghapus data ini",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonText: "Delete",
+				cancelButtonText: "Cancel",
+				reverseButtons: true,
+			})
+			.then(result => {
+				if (result.isConfirmed) {
+					deleteCountryApi(id).then(res => {
+						if (res.data.status === "success") {
+							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
+							fetchDataList();
+						} else {
+							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+						}
+					});
+				} else if (result.dismiss === Swal.DismissReason.cancel) {
+					swalCustom.fire("Batal", "Data ini batal dihapus", "error");
+				}
+			});
+	};
+
+	const onFinish = (values: any) => {
+		if (showModal.id) {
+			updateCompanyApi(showModal.id, values).then(res => {
+				if (res.data.status === "success") {
+					setShowModal({ show: false });
+					fetchDataList();
+				}
+				Swal.fire({
+					icon: res.data.status,
+					title: res.data.message,
+					showConfirmButton: false,
+					timer: 3000,
+				});
+			});
+		} else {
+			createNewCompanyApi(values).then(res => {
+				if (res.data.status === "success") {
+					setShowModal({ show: false });
+					fetchDataList();
+				}
+				Swal.fire({
+					icon: res.data.status,
+					title: res.data.message,
+					showConfirmButton: false,
+					timer: 3000,
+				});
+			});
+		}
+	};
+
+	const handleCancel = () => {
+		setShowModal({ show: false });
+	};
+
 	const setValueFilter = () => {
 		setParams({ ...params, ...tempFilter });
 	};
@@ -59,14 +177,13 @@ const MasterCompany = () => {
 						<TablePaginateAndSort
 							title="Perusahaan"
 							dataSource={dataTable}
-							columns={columns({ setShowModal })}
+							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPage={setSelectedPage}
 							contentHeader={
 								<button
 									type="button"
 									className="btn btn-primary"
-									data-bs-toggle="modal"
-									data-bs-target="#modal"
+									onClick={handleAdd}
 								>
 									Tambah
 								</button>
@@ -76,36 +193,76 @@ const MasterCompany = () => {
 				</div>
 			</section>
 
-			<CenterModal
-				modalName="modal"
-				title="Ubah Data"
-				contentFooter={
-					<button
-						type="button"
-						className="btn btn-primary"
-						data-bs-dismiss="modal"
-					>
-						Simpan
-					</button>
+			<AntdModal
+				title={showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+				footer={
+					<div style={{ display: "flex", justifyContent: "end", columnGap: 5 }}>
+						<Button type="primary" danger onClick={handleCancel}>
+							Close
+						</Button>
+						<Button type="primary" onClick={form.submit}>
+							Simpan
+						</Button>
+					</div>
 				}
+				onCancel={handleCancel}
+				open={showModal.show}
 			>
 				<div className="col-12">
-					<div className="form-group">
-						<h6>
-							Nama Perusahaan <span className="text-danger">*</span>
-						</h6>
-						<div className="controls">
-							<input
-								type="text"
-								name="text"
-								className="form-control"
-								required
-								data-validation-required-message="This field is required"
-							/>
-						</div>
-					</div>
+					<Form form={form} ref={formRef} onFinish={onFinish}>
+						<Form.Item
+							name="name"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<span>
+									Nama Perusahaan <span className="text-danger">*</span>
+								</span>
+								<div className="controls">
+									<Input
+										type="text"
+										name="name"
+										className="form-control"
+										placeholder="Nama Perusahaan"
+										onChange={formik.handleChange}
+										value={formik.values.name}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+						<Form.Item
+							name="code"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<span>
+									Kode <span className="text-danger">*</span>
+								</span>
+								<div className="controls">
+									<Input
+										type="text"
+										name="code"
+										className="form-control"
+										placeholder="Kode"
+										onChange={formik.handleChange}
+										value={formik.values.code}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+					</Form>
 				</div>
-			</CenterModal>
+			</AntdModal>
 
 			<SideModal
 				title="Filter"

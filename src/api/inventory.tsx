@@ -14,6 +14,7 @@ export const getAllInventoryApi = (params?: IInventoryGetAllParams) => {
 export const createNewInventoryApi = (input: ICreateInventoryRequest) => {
 	return apiWithToken.post(`/api/inventory`, input);
 };
+
 export const getDetailInventoryApi = (id: string) => {
 	return apiWithToken.get(`/api/inventory/${id}`);
 };
