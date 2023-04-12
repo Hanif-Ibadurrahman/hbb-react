@@ -14,6 +14,7 @@ export const getAllConditionApi = (params?: IConditionGetAllParams) => {
 export const createNewConditionApi = (input: ICreateConditionRequest) => {
 	return apiWithToken.post(`/api/master/condition`, input);
 };
+
 export const getDetailConditionApi = (id: string) => {
 	return apiWithToken.get(`/api/master/condition/${id}`);
 };
@@ -23,4 +24,8 @@ export const updateConditionApi = (
 	input: IUpdateConditionRequest,
 ) => {
 	return apiWithToken.put(`/api/master/condition/${id}`, input);
+};
+
+export const deleteConditionApi = (id: string) => {
+	return apiWithToken.delete(`/api/master/condition/${id}`);
 };
