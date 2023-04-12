@@ -25,3 +25,7 @@ export const updateBusinessUnitApi = (
 ) => {
 	return apiWithToken.put(`/api/master/bisnis-unit/${id}`, input);
 };
+
+export const deleteBusinessUnitApi = (id: string) => {
+	return apiWithToken.delete(`/api/master/bisnis-unit/${id}`);
+};
