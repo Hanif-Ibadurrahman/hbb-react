@@ -1,33 +1,33 @@
 import {
 	IServiceRepairGetAllParams,
-	ICreateServiceRepairRepair,
-	IUpdateServiceRepairRepair,
+	ICreateServiceRepairRequest,
+	IUpdateServiceRepairRequest,
 } from "store/types/serviceRepairTypes";
 import { apiWithToken } from ".";
 
 export const getAllServiceRepairApi = (params?: IServiceRepairGetAllParams) => {
-	return apiWithToken.get(`/api/master/service-request`, {
+	return apiWithToken.get(`/api/master/service-repair`, {
 		params: params,
 	});
 };
 
 export const createNewServiceRepairApi = (
-	input: ICreateServiceRepairRepair,
+	input: ICreateServiceRepairRequest,
 ) => {
-	return apiWithToken.post(`/api/master/service-request`, input);
+	return apiWithToken.post(`/api/master/service-repair`, input);
 };
 
 export const getDetailServiceRepairApi = (id: string) => {
-	return apiWithToken.get(`/api/master/service-request/${id}`);
+	return apiWithToken.get(`/api/master/service-repair/${id}`);
 };
 
 export const updateServiceRepairApi = (
 	id: string,
-	input: IUpdateServiceRepairRepair,
+	input: IUpdateServiceRepairRequest,
 ) => {
-	return apiWithToken.put(`/api/master/service-request/${id}`, input);
+	return apiWithToken.put(`/api/master/service-repair/${id}`, input);
 };
 
 export const deleteServiceRepairApi = (id: string) => {
-	return apiWithToken.delete(`/api/master/service-request/${id}`);
+	return apiWithToken.delete(`/api/master/service-repair/${id}`);
 };

@@ -4,29 +4,30 @@ import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import { SideModal } from "app/components/modal/sideModal";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { ICountryGetAllParams } from "store/types/countryTypes";
-import {
-	createNewCompanyApi,
-	getAllCompanyApi,
-	getDetailCompanyApi,
-	updateCompanyApi,
-} from "api/company";
 import { Modal as AntdModal, Button, Form, FormInstance, Input } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import {
-	ICompany,
-	ICompanyPaginateResponse,
-	ICreateCompanyRequest,
-} from "store/types/companyTypes";
-import { deleteCountryApi } from "api/country";
+	ICreateServiceDisplacementRequest,
+	IServiceDisplacementGetAllParams,
+	IServiceDisplacementPaginateResponse,
+} from "store/types/serviceDisplacementTypes";
+import {
+	createNewServiceDisplacementApi,
+	deleteServiceDisplacementApi,
+	getDetailServiceDisplacementApi,
+	updateServiceDisplacementApi,
+} from "api/serviceDisplacement";
+import { IServiceDisplacement } from "store/types/serviceDisplacementTypes";
 
-const MasterCompany = () => {
+const ServiceDisplacement = () => {
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
-	const [params, setParams] = useState<ICountryGetAllParams | undefined>();
+	const [params, setParams] = useState<
+		IServiceDisplacementGetAllParams | undefined
+	>();
 	const [tempFilter, setTempFilter] = useState<
-		ICountryGetAllParams | undefined
+		IServiceDisplacementGetAllParams | undefined
 	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
@@ -35,17 +36,49 @@ const MasterCompany = () => {
 		page: number;
 		pageSize: number;
 	}>({ page: 1, pageSize: 20 });
-	const [initialValue, setInitialValue] = useState<ICreateCompanyRequest>({
-		name: "",
-		code: "",
-	});
-	const [dataTable, setDataTable] = useState<ICompanyPaginateResponse>();
+	const [initialValue, setInitialValue] =
+		useState<ICreateServiceDisplacementRequest>();
+	const [dataTable, setDataTable] =
+		useState<IServiceDisplacementPaginateResponse>();
 
 	const fetchDataList = async () => {
 		try {
 			if (params) {
-				const response = await getAllCompanyApi(params);
-				setDataTable(response.data.data);
+				// const response = await getAllServiceDisplacementApi(params);
+				// setDataTable(response.data.data);
+				let data: IServiceDisplacement[] = [];
+				for (let i = 1; i <= 100; i++) {
+					data.push({
+						id: `${i}`,
+						name_item: `102023 ${i}`,
+						condition: "Baik",
+						description: "Pinjam",
+						photo: "Foto",
+						specification: `Spesifikasi ${i}`,
+						user: `User ${i}`,
+					});
+				}
+				setDataTable({
+					total: 100,
+					per_page: 10,
+					current_page: 1,
+					last_page: 10,
+					first_page_url: "",
+					last_page_url: "",
+					next_page_url: "",
+					prev_page_url: "",
+					path: "",
+					link: [
+						{
+							url: null,
+							label: null,
+							active: false,
+						},
+					],
+					from: 1,
+					to: 10,
+					data: data,
+				});
 			}
 		} catch (error: any) {
 			// CheckAuthentication(error);
@@ -54,16 +87,24 @@ const MasterCompany = () => {
 
 	const fetchDataDetail = async (id: string) => {
 		try {
-			const response = await getDetailCompanyApi(id);
+			const response = await getDetailServiceDisplacementApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
 			// CheckAuthentication(error);
 		}
 	};
 
-	const handleInitialValue = (values: ICompany) => {
-		setInitialValue({ name: values.name || "", code: values.code || "" });
-		formRef.current?.setFieldsValue({ name: values.name || "" });
+	const handleInitialValue = (values: IServiceDisplacement) => {
+		const setData = {
+			name_item: values.name_item || "",
+			description: values.description || "",
+			photo: values.name_item || "",
+			user: values.name_item || "",
+			condition: values.name_item || "",
+			specification: values.name_item || "",
+		};
+		// setInitialValue();
+		// formRef.current?.setFieldsValue({ name: values.name || "" });
 	};
 
 	useEffect(() => {
@@ -95,7 +136,7 @@ const MasterCompany = () => {
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		setInitialValue({ name: "", code: "" });
+		// setInitialValue({ name: "" });
 		formRef.current?.resetFields();
 	};
 
@@ -110,33 +151,41 @@ const MasterCompany = () => {
 
 		swalCustom
 			.fire({
-				title: "Apakah anda yakin?",
-				text: "Ingin menghapus data ini",
+				title: "Apakah anda yakin ingin menolak permintaan ini?",
+				text: "Alasan penolakan",
+				input: "text",
 				icon: "warning",
+				preConfirm: input => {
+					console.log(input);
+				},
 				showCancelButton: true,
-				confirmButtonText: "Delete",
+				confirmButtonText: "Reject",
 				cancelButtonText: "Cancel",
 				reverseButtons: true,
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					deleteCountryApi(id).then(res => {
+					deleteServiceDisplacementApi(id).then(res => {
 						if (res.data.status === "success") {
-							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
+							swalCustom.fire(
+								"Reject",
+								"Permintaan ini telah direject.",
+								"success",
+							);
 							fetchDataList();
 						} else {
 							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
 						}
 					});
 				} else if (result.dismiss === Swal.DismissReason.cancel) {
-					swalCustom.fire("Batal", "Data ini batal dihapus", "error");
+					swalCustom.fire("Batal", "Permintaan ini batal direject", "error");
 				}
 			});
 	};
 
 	const onFinish = (values: any) => {
 		if (showModal.id) {
-			updateCompanyApi(showModal.id, values).then(res => {
+			updateServiceDisplacementApi(showModal.id, values).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });
 					fetchDataList();
@@ -149,7 +198,7 @@ const MasterCompany = () => {
 				});
 			});
 		} else {
-			createNewCompanyApi(values).then(res => {
+			createNewServiceDisplacementApi(values).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });
 					fetchDataList();
@@ -178,7 +227,7 @@ const MasterCompany = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
-							title="Perusahaan"
+							title="Permintaan Layanan - Pemindahan"
 							dataSource={dataTable}
 							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPage={setSelectedPage}
@@ -214,33 +263,23 @@ const MasterCompany = () => {
 			>
 				<div className="col-12">
 					<Form form={form} ref={formRef} onFinish={onFinish}>
-						<Form.Item
-							name="name"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
+						<Form.Item name="name_item">
 							<div className="form-group">
-								<span>
-									Nama Perusahaan <span className="text-danger">*</span>
-								</span>
+								<span>Nama Barang</span>
 								<div className="controls">
 									<Input
 										type="text"
-										name="name"
+										name="name_item"
 										className="form-control"
-										placeholder="Nama Perusahaan"
+										placeholder="Nama Barang"
 										onChange={formik.handleChange}
-										value={formik.values.name}
+										value={formik.values.name_item}
 									/>
 								</div>
 							</div>
 						</Form.Item>
 						<Form.Item
-							name="code"
+							name="description"
 							rules={[
 								{
 									required: true,
@@ -250,16 +289,61 @@ const MasterCompany = () => {
 						>
 							<div className="form-group">
 								<span>
-									Kode <span className="text-danger">*</span>
+									Deskripsi <span className="text-danger">*</span>
 								</span>
 								<div className="controls">
 									<Input
 										type="text"
-										name="code"
+										name="description"
 										className="form-control"
-										placeholder="Kode"
+										placeholder="Deskripsi"
 										onChange={formik.handleChange}
-										value={formik.values.code}
+										value={formik.values.description}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+						<Form.Item name="user">
+							<div className="form-group">
+								<span>Nama Pemakai</span>
+								<div className="controls">
+									<Input
+										type="text"
+										name="user"
+										className="form-control"
+										placeholder="Nama Pemakai"
+										onChange={formik.handleChange}
+										value={formik.values.user}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+						<Form.Item name="condition">
+							<div className="form-group">
+								<span>Kondisi</span>
+								<div className="controls">
+									<Input
+										type="text"
+										name="condition"
+										className="form-control"
+										placeholder="Kondisi"
+										onChange={formik.handleChange}
+										value={formik.values.condition}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+						<Form.Item name="specification">
+							<div className="form-group">
+								<span>Spesifikasi</span>
+								<div className="controls">
+									<Input
+										type="text"
+										name="specification"
+										className="form-control"
+										placeholder="Spesifikasi"
+										onChange={formik.handleChange}
+										value={formik.values.specification}
 									/>
 								</div>
 							</div>
@@ -275,20 +359,26 @@ const MasterCompany = () => {
 						type="button"
 						className="btn btn-primary"
 						data-bs-dismiss="modal"
-						onClick={setValueFilter}
 					>
 						Filter
 					</button>
 				}
 			>
-				<h6 className="box-title mt-10 d-block mb-10">Nama Perusahaan</h6>
-				<SelectWithTag
-					colorTag="cyan"
-					onChange={v => setTempFilter({ name: v.toString() })}
-				/>
+				<h6 className="box-title mt-10 d-block mb-10">Nama Area</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Daerah</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Pengelola</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">NIPG</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Pemegang</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Bisnis Unit</h6>
+				<SelectWithTag colorTag="cyan" />
 			</SideModal>
 		</MainLayout>
 	);
 };
 
-export default MasterCompany;
+export default ServiceDisplacement;

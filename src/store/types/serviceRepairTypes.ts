@@ -21,22 +21,22 @@ export interface IServiceRepairGetAllParams {
 	description?: string | null;
 }
 
-export interface ICreateServiceRepairRepair {
-	name_item: string | null;
-	description: string | null;
-	photo: string | null;
-	user: string | null;
-	condition: string | null;
-	specification: string | null;
+export interface ICreateServiceRepairRequest {
+	name_item: string;
+	description: string;
+	photo: string;
+	user: string;
+	condition: string;
+	specification: string;
 }
 
-export interface IUpdateServiceRepairRepair {
-	name_item: string | null;
-	description: string | null;
-	photo: string | null;
-	user: string | null;
-	condition: string | null;
-	specification: string | null;
+export interface IUpdateServiceRepairRequest {
+	name_item: string;
+	description: string;
+	photo: string;
+	user: string;
+	condition: string;
+	specification: string;
 }
 
 export interface IServiceRepairGetAllResponse {

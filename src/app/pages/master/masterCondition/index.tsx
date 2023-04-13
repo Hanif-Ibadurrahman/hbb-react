@@ -208,6 +208,7 @@ const MasterCondition = () => {
 				}
 				onCancel={handleCancel}
 				open={showModal.show}
+				width={800}
 			>
 				<div className="col-12">
 					<Form form={form} ref={formRef} onFinish={onFinish}>

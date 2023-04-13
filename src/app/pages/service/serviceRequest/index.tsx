@@ -8,6 +8,7 @@ import { Modal as AntdModal, Button, Form, FormInstance, Input } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import {
+	ICreateServiceRequestRequest,
 	IServiceRequestGetAllParams,
 	IServiceRequestPaginateResponse,
 } from "store/types/serviceRequestTypes";
@@ -35,10 +36,8 @@ const ServiceRequest = () => {
 		page: number;
 		pageSize: number;
 	}>({ page: 1, pageSize: 20 });
-	const [initialValue, setInitialValue] = useState<{
-		name_item: string;
-		description: string;
-	}>();
+	const [initialValue, setInitialValue] =
+		useState<ICreateServiceRequestRequest>();
 	const [dataTable, setDataTable] = useState<IServiceRequestPaginateResponse>();
 
 	const fetchDataList = async () => {
@@ -151,11 +150,15 @@ const ServiceRequest = () => {
 
 		swalCustom
 			.fire({
-				title: "Apakah anda yakin?",
-				text: "Ingin menghapus data ini",
+				title: "Apakah anda yakin ingin menolak permintaan ini?",
+				text: "Alasan penolakan",
+				input: "text",
 				icon: "warning",
+				preConfirm: input => {
+					console.log(input);
+				},
 				showCancelButton: true,
-				confirmButtonText: "Delete",
+				confirmButtonText: "Reject",
 				cancelButtonText: "Cancel",
 				reverseButtons: true,
 			})
@@ -165,7 +168,7 @@ const ServiceRequest = () => {
 						if (res.data.status === "success") {
 							swalCustom.fire(
 								"Reject",
-								"Permintaan ini talah direject.",
+								"Permintaan ini telah direject.",
 								"success",
 							);
 							fetchDataList();
@@ -240,6 +243,113 @@ const ServiceRequest = () => {
 					</div>
 				</div>
 			</section>
+
+			<AntdModal
+				title={showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+				footer={
+					<div style={{ display: "flex", justifyContent: "end", columnGap: 5 }}>
+						<Button type="primary" danger onClick={handleCancel}>
+							Close
+						</Button>
+						<Button type="primary" onClick={form.submit}>
+							Simpan
+						</Button>
+					</div>
+				}
+				onCancel={handleCancel}
+				open={showModal.show}
+				width={800}
+			>
+				<div className="col-12">
+					<Form form={form} ref={formRef} onFinish={onFinish}>
+						<Form.Item name="name_item">
+							<div className="form-group">
+								<span>Nama Barang</span>
+								<div className="controls">
+									<Input
+										type="text"
+										name="name_item"
+										className="form-control"
+										placeholder="Nama Barang"
+										onChange={formik.handleChange}
+										value={formik.values.name_item}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+						<Form.Item
+							name="description"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<span>
+									Deskripsi <span className="text-danger">*</span>
+								</span>
+								<div className="controls">
+									<Input
+										type="text"
+										name="description"
+										className="form-control"
+										placeholder="Deskripsi"
+										onChange={formik.handleChange}
+										value={formik.values.description}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+						<Form.Item name="user">
+							<div className="form-group">
+								<span>Nama Pemakai</span>
+								<div className="controls">
+									<Input
+										type="text"
+										name="user"
+										className="form-control"
+										placeholder="Nama Pemakai"
+										onChange={formik.handleChange}
+										value={formik.values.user}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+						<Form.Item name="condition">
+							<div className="form-group">
+								<span>Kondisi</span>
+								<div className="controls">
+									<Input
+										type="text"
+										name="condition"
+										className="form-control"
+										placeholder="Kondisi"
+										onChange={formik.handleChange}
+										value={formik.values.condition}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+						<Form.Item name="specification">
+							<div className="form-group">
+								<span>Spesifikasi</span>
+								<div className="controls">
+									<Input
+										type="text"
+										name="specification"
+										className="form-control"
+										placeholder="Spesifikasi"
+										onChange={formik.handleChange}
+										value={formik.values.specification}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+					</Form>
+				</div>
+			</AntdModal>
 
 			<SideModal
 				title="Filter"
