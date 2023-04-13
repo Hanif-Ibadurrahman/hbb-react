@@ -3,7 +3,7 @@ import {
 	ICreateDivisionRequest,
 	IUpdateDivisionRequest,
 } from "store/types/divisionTypes";
-import { apiWithToken } from "./dox";
+import { apiWithToken } from ".";
 
 export const getAllDivisionApi = (params?: IDivisionGetAllParams) => {
 	return apiWithToken.get(`/api/master/division`, {

@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import { SideModal } from "app/components/modal/sideModal";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { CenterModal } from "app/components/modal/centerModal";
 import { ICountryGetAllParams } from "store/types/countryTypes";
 import {
 	createNewCompanyApi,
@@ -15,7 +14,11 @@ import {
 import { Modal as AntdModal, Button, Form, FormInstance, Input } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
-import { ICompany } from "store/types/companyTypes";
+import {
+	ICompany,
+	ICompanyPaginateResponse,
+	ICreateCompanyRequest,
+} from "store/types/companyTypes";
 import { deleteCountryApi } from "api/country";
 
 const MasterCompany = () => {
@@ -32,11 +35,11 @@ const MasterCompany = () => {
 		page: number;
 		pageSize: number;
 	}>({ page: 1, pageSize: 20 });
-	const [initialValue, setInitialValue] = useState<{
-		name: string;
-		code: string;
-	}>();
-	const [dataTable, setDataTable] = useState();
+	const [initialValue, setInitialValue] = useState<ICreateCompanyRequest>({
+		name: "",
+		code: "",
+	});
+	const [dataTable, setDataTable] = useState<ICompanyPaginateResponse>();
 
 	const fetchDataList = async () => {
 		try {

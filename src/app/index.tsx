@@ -4,7 +4,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 export function App() {
 	const DashboardPage = lazyLoad(() => import("app/pages/dashboard"));
 	const HbbInventaryPage = lazyLoad(() => import("app/pages/hbbInventory"));
-	const ServicePage = lazyLoad(() => import("app/pages/service"));
+	const ServiceRequestPage = lazyLoad(
+		() => import("app/pages/service/serviceRequest"),
+	);
 	const PrintBarcodePage = lazyLoad(() => import("app/pages/printBarcode"));
 	const RoomInventoryPage = lazyLoad(() => import("app/pages/roomInventory"));
 	const HbbInventoryReportPage = lazyLoad(
@@ -70,7 +72,7 @@ export function App() {
 				<Route index element={<DashboardPage />}></Route>
 				<Route path="dashboard" element={<DashboardPage />} />
 				<Route path="inventaris" element={<HbbInventaryPage />} />
-				<Route path="layanan" element={<ServicePage />} />
+				<Route path="permintaan-layanan" element={<ServiceRequestPage />} />
 				<Route path="cetak-barcode" element={<PrintBarcodePage />} />
 				<Route
 					path="daftar-inventaris-ruangan"

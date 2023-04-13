@@ -3,7 +3,7 @@ import {
 	ICreateCodeGroupRequest,
 	IUpdateCodeGroupRequest,
 } from "store/types/codeGroupTypes";
-import { apiWithToken } from "./dox";
+import { apiWithToken } from ".";
 
 export const getAllCodeGroupApi = (params?: ICodeGroupGetAllParams) => {
 	return apiWithToken.get(`/api/master/main-group`, {

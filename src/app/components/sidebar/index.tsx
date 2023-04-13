@@ -47,12 +47,31 @@ export const Sidebar = () => {
 								className={`treeview ${
 									selectedMenu.key === "layanan" ? "menu-open" : ""
 								}`}
-								onClick={() => seletedMenuHandler("layanan")}
+								onClick={() => seletedMenuHandler("layanan", true)}
 							>
-								<Link to={"/layanan"}>
+								<Link to={""}>
 									<FeatherIcon icon={"smile"} />
 									<span>Layanan HBB</span>
+									<span className="pull-right-container">
+										<i className="fa fa-angle-right pull-right"></i>
+									</span>
 								</Link>
+								<ul
+									className="treeview-menu"
+									style={{
+										display: selectedMenu.key === "layanan" ? "block" : "none",
+									}}
+								>
+									<li>
+										<Link to={"/permintaan-layanan"}>
+											<i className="icon-Commit">
+												<span className="path1"></span>
+												<span className="path2"></span>
+											</i>
+											Permintaan Layanan - Permintaan
+										</Link>
+									</li>
+								</ul>
 							</li>
 							<li
 								className={`treeview ${

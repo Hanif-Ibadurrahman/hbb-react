@@ -3,7 +3,7 @@ import {
 	ICreateAreaRequest,
 	IUpdateAreaRequest,
 } from "store/types/areaTypes";
-import { apiWithToken } from "./dox";
+import { apiWithToken } from ".";
 
 export const getAllAreaApi = (params?: IAreaGetAllParams) => {
 	return apiWithToken.get(`/api/master/area`, {

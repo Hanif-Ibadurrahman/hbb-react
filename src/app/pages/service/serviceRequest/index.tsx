@@ -4,29 +4,29 @@ import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import { SideModal } from "app/components/modal/sideModal";
 import { SelectWithTag } from "app/components/selectWithTag";
-import {
-	createNewColorApi,
-	deleteColorApi,
-	getAllColorApi,
-	getDetailColorApi,
-	updateColorApi,
-} from "api/color";
-import {
-	IColor,
-	IColorGetAllParams,
-	IColorPaginateResponse,
-	ICreateColorRequest,
-} from "store/types/colorTypes";
 import { Modal as AntdModal, Button, Form, FormInstance, Input } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
+import {
+	IServiceRequestGetAllParams,
+	IServiceRequestPaginateResponse,
+} from "store/types/serviceRequestTypes";
+import {
+	createNewServiceRequestApi,
+	deleteServiceRequestApi,
+	getDetailServiceRequestApi,
+	updateServiceRequestApi,
+} from "api/serviceRequest";
+import { IServiceRequest } from "store/types/serviceRequestTypes";
 
-const MasterColor = () => {
+const ServiceRequest = () => {
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
-	const [params, setParams] = useState<IColorGetAllParams | undefined>();
+	const [params, setParams] = useState<
+		IServiceRequestGetAllParams | undefined
+	>();
 	const [tempFilter, setTempFilter] = useState<
-		IColorGetAllParams | undefined
+		IServiceRequestGetAllParams | undefined
 	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
@@ -35,16 +35,50 @@ const MasterColor = () => {
 		page: number;
 		pageSize: number;
 	}>({ page: 1, pageSize: 20 });
-	const [initialValue, setInitialValue] = useState<ICreateColorRequest>({
-		name: "",
-	});
-	const [dataTable, setDataTable] = useState<IColorPaginateResponse>();
+	const [initialValue, setInitialValue] = useState<{
+		name_item: string;
+		description: string;
+	}>();
+	const [dataTable, setDataTable] = useState<IServiceRequestPaginateResponse>();
 
 	const fetchDataList = async () => {
 		try {
 			if (params) {
-				const response = await getAllColorApi(params);
-				setDataTable(response.data.data);
+				// const response = await getAllServiceRequestApi(params);
+				// setDataTable(response.data.data);
+				let data: IServiceRequest[] = [];
+				for (let i = 1; i <= 100; i++) {
+					data.push({
+						id: `${i}`,
+						name_item: `Barang ${i}`,
+						condition: "Baik",
+						description: "Pinjam",
+						photo: "Foto",
+						specification: `Spesifikasi ${i}`,
+						user: `User ${i}`,
+					});
+				}
+				setDataTable({
+					total: 100,
+					per_page: 10,
+					current_page: 1,
+					last_page: 10,
+					first_page_url: "",
+					last_page_url: "",
+					next_page_url: "",
+					prev_page_url: "",
+					path: "",
+					link: [
+						{
+							url: null,
+							label: null,
+							active: false,
+						},
+					],
+					from: 1,
+					to: 10,
+					data: data,
+				});
 			}
 		} catch (error: any) {
 			// CheckAuthentication(error);
@@ -53,16 +87,24 @@ const MasterColor = () => {
 
 	const fetchDataDetail = async (id: string) => {
 		try {
-			const response = await getDetailColorApi(id);
+			const response = await getDetailServiceRequestApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
 			// CheckAuthentication(error);
 		}
 	};
 
-	const handleInitialValue = (values: IColor) => {
-		setInitialValue({ name: values.name || "" });
-		formRef.current?.setFieldsValue({ name: values.name || "" });
+	const handleInitialValue = (values: IServiceRequest) => {
+		const setData = {
+			name_item: values.name_item || "",
+			description: values.description || "",
+			photo: values.name_item || "",
+			user: values.name_item || "",
+			condition: values.name_item || "",
+			specification: values.name_item || "",
+		};
+		// setInitialValue();
+		// formRef.current?.setFieldsValue({ name: values.name || "" });
 	};
 
 	useEffect(() => {
@@ -94,7 +136,7 @@ const MasterColor = () => {
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		setInitialValue({ name: "" });
+		// setInitialValue({ name: "" });
 		formRef.current?.resetFields();
 	};
 
@@ -119,23 +161,27 @@ const MasterColor = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					deleteColorApi(id).then(res => {
+					deleteServiceRequestApi(id).then(res => {
 						if (res.data.status === "success") {
-							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
+							swalCustom.fire(
+								"Reject",
+								"Permintaan ini talah direject.",
+								"success",
+							);
 							fetchDataList();
 						} else {
 							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
 						}
 					});
 				} else if (result.dismiss === Swal.DismissReason.cancel) {
-					swalCustom.fire("Batal", "Data ini batal dihapus", "error");
+					swalCustom.fire("Batal", "Permintaan ini batal direject", "error");
 				}
 			});
 	};
 
 	const onFinish = (values: any) => {
 		if (showModal.id) {
-			updateColorApi(showModal.id, values).then(res => {
+			updateServiceRequestApi(showModal.id, values).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });
 					fetchDataList();
@@ -148,7 +194,7 @@ const MasterColor = () => {
 				});
 			});
 		} else {
-			createNewColorApi(values).then(res => {
+			createNewServiceRequestApi(values).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });
 					fetchDataList();
@@ -177,7 +223,7 @@ const MasterColor = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
-							title="Warna"
+							title="Permintaan Layanan - Permintaan"
 							dataSource={dataTable}
 							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPage={setSelectedPage}
@@ -195,52 +241,6 @@ const MasterColor = () => {
 				</div>
 			</section>
 
-			<AntdModal
-				title={showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
-				footer={
-					<div style={{ display: "flex", justifyContent: "end", columnGap: 5 }}>
-						<Button type="primary" danger onClick={handleCancel}>
-							Close
-						</Button>
-						<Button type="primary" onClick={form.submit}>
-							Simpan
-						</Button>
-					</div>
-				}
-				onCancel={handleCancel}
-				open={showModal.show}
-			>
-				<div className="col-12">
-					<Form form={form} ref={formRef} onFinish={onFinish}>
-						<Form.Item
-							name="name"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
-							<div className="form-group">
-								<span>
-									Warna <span className="text-danger">*</span>
-								</span>
-								<div className="controls">
-									<Input
-										type="text"
-										name="name"
-										className="form-control"
-										placeholder="Warna"
-										onChange={formik.handleChange}
-										value={formik.values.name}
-									/>
-								</div>
-							</div>
-						</Form.Item>
-					</Form>
-				</div>
-			</AntdModal>
-
 			<SideModal
 				title="Filter"
 				contentFooter={
@@ -248,20 +248,26 @@ const MasterColor = () => {
 						type="button"
 						className="btn btn-primary"
 						data-bs-dismiss="modal"
-						onClick={setValueFilter}
 					>
 						Filter
 					</button>
 				}
 			>
-				<h6 className="box-title mt-10 d-block mb-10">Warna</h6>
-				<SelectWithTag
-					colorTag="cyan"
-					onChange={v => setTempFilter({ name: v.toString() })}
-				/>
+				<h6 className="box-title mt-10 d-block mb-10">Nama Area</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Daerah</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Pengelola</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">NIPG</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Pemegang</h6>
+				<SelectWithTag colorTag="cyan" />
+				<h6 className="box-title mt-10 d-block mb-10">Bisnis Unit</h6>
+				<SelectWithTag colorTag="cyan" />
 			</SideModal>
 		</MainLayout>
 	);
 };
 
-export default MasterColor;
+export default ServiceRequest;

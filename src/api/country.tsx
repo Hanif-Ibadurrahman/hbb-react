@@ -3,7 +3,7 @@ import {
 	ICreateCountryRequest,
 	IUpdateCountryRequest,
 } from "store/types/countryTypes";
-import { apiWithToken } from "./dox";
+import { apiWithToken } from ".";
 
 export const getAllCountryApi = (params?: ICountryGetAllParams) => {
 	return apiWithToken.get(`/api/master/country`, {

@@ -4,7 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import { SideModal } from "app/components/modal/sideModal";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { ICondition, IConditionGetAllParams } from "store/types/conditionTypes";
+import {
+	ICondition,
+	IConditionGetAllParams,
+	IConditionPaginateResponse,
+} from "store/types/conditionTypes";
 import {
 	createNewConditionApi,
 	deleteConditionApi,
@@ -15,6 +19,7 @@ import {
 import { Modal as AntdModal, Button, Form, FormInstance, Input } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
+import { ICreateCountryRequest } from "store/types/countryTypes";
 
 const MasterCondition = () => {
 	const [form] = Form.useForm();
@@ -30,8 +35,10 @@ const MasterCondition = () => {
 		page: number;
 		pageSize: number;
 	}>({ page: 1, pageSize: 20 });
-	const [initialValue, setInitialValue] = useState<{ name: string }>();
-	const [dataTable, setDataTable] = useState();
+	const [initialValue, setInitialValue] = useState<ICreateCountryRequest>({
+		name: "",
+	});
+	const [dataTable, setDataTable] = useState<IConditionPaginateResponse>();
 
 	const fetchDataList = async () => {
 		try {

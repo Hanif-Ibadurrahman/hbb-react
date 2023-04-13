@@ -3,7 +3,7 @@ import {
 	ICreateConditionRequest,
 	IUpdateConditionRequest,
 } from "store/types/conditionTypes";
-import { apiWithToken } from "./dox";
+import { apiWithToken } from ".";
 
 export const getAllConditionApi = (params?: IConditionGetAllParams) => {
 	return apiWithToken.get(`/api/master/condition`, {

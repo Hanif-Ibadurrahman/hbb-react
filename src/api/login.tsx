@@ -1,4 +1,4 @@
-import { api, apiWithToken } from "api/dox";
+import { api, apiWithToken } from "api";
 
 import { ILoginRequest } from "store/types/loginTypes";
 

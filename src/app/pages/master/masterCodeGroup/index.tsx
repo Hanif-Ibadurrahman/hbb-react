@@ -4,7 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import { SideModal } from "app/components/modal/sideModal";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { ICodeGroup, ICodeGroupGetAllParams } from "store/types/codeGroupTypes";
+import {
+	ICodeGroup,
+	ICodeGroupGetAllParams,
+	ICodeGroupPaginateResponse,
+	ICreateCodeGroupRequest,
+} from "store/types/codeGroupTypes";
 import {
 	createNewCodeGroupApi,
 	deleteCodeGroupApi,
@@ -30,11 +35,11 @@ const MasterCodeGroup = () => {
 		page: number;
 		pageSize: number;
 	}>({ page: 1, pageSize: 20 });
-	const [initialValue, setInitialValue] = useState<{
-		value: string;
-		code: string;
-	}>();
-	const [dataTable, setDataTable] = useState();
+	const [initialValue, setInitialValue] = useState<ICreateCodeGroupRequest>({
+		value: "",
+		code: "",
+	});
+	const [dataTable, setDataTable] = useState<ICodeGroupPaginateResponse>();
 
 	const fetchDataList = async () => {
 		try {

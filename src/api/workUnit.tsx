@@ -3,7 +3,7 @@ import {
 	ICreateWorkUnitRequest,
 	IUpdateWorkUnitRequest,
 } from "store/types/workUnitTypes";
-import { apiWithToken } from "./dox";
+import { apiWithToken } from ".";
 
 export const getAllWorkUnitApi = (params?: IWorkUnitGetAllParams) => {
 	return apiWithToken.get(`/api/master/satuan-kerja`, {

@@ -3,7 +3,7 @@ import {
 	ICreateCompanyRequest,
 	IUpdateCompanyRequest,
 } from "store/types/companyTypes";
-import { apiWithToken } from "./dox";
+import { apiWithToken } from ".";
 
 export const getAllCompanyApi = (params?: ICompanyGetAllParams) => {
 	return apiWithToken.get(`/api/master/company`, {
