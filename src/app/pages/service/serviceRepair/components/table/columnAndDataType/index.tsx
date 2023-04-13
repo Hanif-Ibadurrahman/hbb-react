@@ -1,5 +1,5 @@
 import { ColumnsType } from "antd/es/table";
-import { IServiceRequest } from "store/types/serviceRequestTypes";
+import { IServiceRepair } from "store/types/serviceRepairTypes";
 
 interface IColumn {
 	setShowModal: React.Dispatch<
@@ -12,9 +12,9 @@ interface IColumn {
 }
 
 export const columns = ({ setShowModal, handleDelete }: IColumn) => {
-	const columnType: ColumnsType<IServiceRequest> = [
+	const columnType: ColumnsType<IServiceRepair> = [
 		{
-			title: "Nama Barang",
+			title: "No HBB/Inventaris",
 			dataIndex: "name_item",
 			sorter: true,
 		},
