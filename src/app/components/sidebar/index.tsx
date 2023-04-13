@@ -68,7 +68,16 @@ export const Sidebar = () => {
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
-											Permintaan Layanan - Permintaan
+											Permintaan Layanan -<br /> Permintaan
+										</Link>
+									</li>
+									<li>
+										<Link to={"/permintaan-perbaikan"}>
+											<i className="icon-Commit">
+												<span className="path1"></span>
+												<span className="path2"></span>
+											</i>
+											Permintaan Layanan -<br /> Perbaikan
 										</Link>
 									</li>
 								</ul>
@@ -128,7 +137,7 @@ export const Sidebar = () => {
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
-											Lampiran HBB dan Inventaris Semester
+											Lampiran HBB dan <br /> Inventaris Semester
 										</Link>
 									</li>
 									<li>
@@ -146,7 +155,7 @@ export const Sidebar = () => {
 												<span className="path1"></span>
 												<span className="path2"></span>
 											</i>
-											Formulir Izin Keluar dan Masuk Gudang
+											Formulir Izin Keluar dan <br /> Masuk Gudang
 										</Link>
 									</li>
 								</ul>
