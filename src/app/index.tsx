@@ -10,6 +10,9 @@ export function App() {
 	const ServiceRepairPage = lazyLoad(
 		() => import("app/pages/service/serviceRepair"),
 	);
+	const ServiceDisplacementPage = lazyLoad(
+		() => import("app/pages/service/serviceDisplacement"),
+	);
 	const PrintBarcodePage = lazyLoad(() => import("app/pages/printBarcode"));
 	const RoomInventoryPage = lazyLoad(() => import("app/pages/roomInventory"));
 	const HbbInventoryReportPage = lazyLoad(
@@ -77,6 +80,10 @@ export function App() {
 				<Route path="inventaris" element={<HbbInventaryPage />} />
 				<Route path="permintaan-layanan" element={<ServiceRequestPage />} />
 				<Route path="permintaan-perbaikan" element={<ServiceRepairPage />} />
+				<Route
+					path="permintaan-pemindahan"
+					element={<ServiceDisplacementPage />}
+				/>
 				<Route path="cetak-barcode" element={<PrintBarcodePage />} />
 				<Route
 					path="daftar-inventaris-ruangan"

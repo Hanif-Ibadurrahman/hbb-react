@@ -22,21 +22,21 @@ export interface IServiceRequestGetAllParams {
 }
 
 export interface ICreateServiceRequestRequest {
-	name_item: string | null;
-	description: string | null;
-	photo: string | null;
-	user: string | null;
-	condition: string | null;
-	specification: string | null;
+	name_item: string;
+	description: string;
+	photo: string;
+	user: string;
+	condition: string;
+	specification: string;
 }
 
 export interface IUpdateServiceRequestRequest {
-	name_item: string | null;
-	description: string | null;
-	photo: string | null;
-	user: string | null;
-	condition: string | null;
-	specification: string | null;
+	name_item: string;
+	description: string;
+	photo: string;
+	user: string;
+	condition: string;
+	specification: string;
 }
 
 export interface IServiceRequestGetAllResponse {
