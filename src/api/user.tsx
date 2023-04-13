@@ -3,7 +3,7 @@ import {
 	ICreateUserRequest,
 	IUpdateUserRequest,
 } from "store/types/userTypes";
-import { apiWithToken } from "./dox";
+import { apiWithToken } from ".";
 
 export const getAllUserApi = (params?: IUserGetAllParams) => {
 	return apiWithToken.get(`/api/master/user`, {

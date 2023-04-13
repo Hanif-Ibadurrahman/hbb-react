@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import {
 	IBusinessUnit,
 	IBusinessUnitGetAllParams,
+	IBusinessUnitPaginateResponse,
+	ICreateBusinessUnitRequest,
 } from "store/types/businessUnitTypes";
 import {
 	createNewBusinessUnitApi,
@@ -15,9 +17,11 @@ import {
 import { SideModal } from "app/components/modal/sideModal";
 import { SelectWithTag } from "app/components/selectWithTag";
 import { columns } from "./components/table/columnAndDataType";
+import jwtDecode from "jwt-decode";
 import { Modal as AntdModal, Button, Form, FormInstance, Input } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
+import { ILoginTokenDecode } from "store/types/loginTypes";
 
 const MasterBusinessUnit = () => {
 	const [form] = Form.useForm();
@@ -33,8 +37,15 @@ const MasterBusinessUnit = () => {
 		page: number;
 		pageSize: number;
 	}>({ page: 1, pageSize: 20 });
-	const [initialValue, setInitialValue] = useState<{ name: string }>();
-	const [dataTable, setDataTable] = useState();
+	const [initialValue, setInitialValue] = useState<ICreateBusinessUnitRequest>({
+		name: "",
+		id_company: "",
+	});
+	const [dataTable, setDataTable] = useState<IBusinessUnitPaginateResponse>();
+
+	const token = sessionStorage.getItem("Token") || "";
+
+	const tokenDecode: ILoginTokenDecode = jwtDecode(token);
 
 	const fetchDataList = async () => {
 		try {
@@ -57,8 +68,12 @@ const MasterBusinessUnit = () => {
 	};
 
 	const handleInitialValue = (values: IBusinessUnit) => {
-		setInitialValue({ name: values.name || "" });
-		formRef.current?.setFieldsValue({ name: values.name || "" });
+		const setData = {
+			name: values.name || "",
+			id_company: values.id_company || "",
+		};
+		setInitialValue(setData);
+		formRef.current?.setFieldsValue(setData);
 	};
 
 	useEffect(() => {
@@ -90,7 +105,7 @@ const MasterBusinessUnit = () => {
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		setInitialValue({ name: "" });
+		setInitialValue({ name: "", id_company: "" });
 		formRef.current?.resetFields();
 	};
 
@@ -144,7 +159,11 @@ const MasterBusinessUnit = () => {
 				});
 			});
 		} else {
-			createNewBusinessUnitApi(values).then(res => {
+			const input: ICreateBusinessUnitRequest = {
+				...values,
+				id_company: tokenDecode.user?.id_company,
+			};
+			createNewBusinessUnitApi(input).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });
 					fetchDataList();

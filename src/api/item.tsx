@@ -3,7 +3,7 @@ import {
 	ICreateItemRequest,
 	IUpdateItemRequest,
 } from "store/types/itemTypes";
-import { apiWithToken } from "./dox";
+import { apiWithToken } from ".";
 
 export const getAllItemApi = (params?: IItemGetAllParams) => {
 	return apiWithToken.get(`/api/master/item`, {

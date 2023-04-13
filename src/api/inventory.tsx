@@ -3,7 +3,7 @@ import {
 	ICreateInventoryRequest,
 	IUpdateInventoryRequest,
 } from "store/types/inventoryTypes";
-import { apiWithToken } from "./dox";
+import { apiWithToken } from ".";
 
 export const getAllInventoryApi = (params?: IInventoryGetAllParams) => {
 	return apiWithToken.get(`/api/inventory`, {

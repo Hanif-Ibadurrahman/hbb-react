@@ -4,7 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import { SideModal } from "app/components/modal/sideModal";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { ICountry, ICountryGetAllParams } from "store/types/countryTypes";
+import {
+	ICountry,
+	ICountryGetAllParams,
+	ICountryPaginateResponse,
+	ICreateCountryRequest,
+} from "store/types/countryTypes";
 import {
 	createNewCountryApi,
 	deleteCountryApi,
@@ -30,8 +35,10 @@ const MasterCountry = () => {
 		page: number;
 		pageSize: number;
 	}>({ page: 1, pageSize: 20 });
-	const [initialValue, setInitialValue] = useState<{ name: string }>();
-	const [dataTable, setDataTable] = useState();
+	const [initialValue, setInitialValue] = useState<ICreateCountryRequest>({
+		name: "",
+	});
+	const [dataTable, setDataTable] = useState<ICountryPaginateResponse>();
 
 	const fetchDataList = async () => {
 		try {

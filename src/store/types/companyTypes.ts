@@ -19,10 +19,12 @@ export interface ICompanyGetAllParams {
 
 export interface ICreateCompanyRequest {
 	name: string;
+	code: string;
 }
 
 export interface IUpdateCompanyRequest {
 	name: string;
+	code: string;
 }
 
 export interface ICompanyGetAllResponse {

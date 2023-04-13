@@ -3,7 +3,7 @@ import {
 	ICreateBusinessUnitRequest,
 	IUpdateBusinessUnitRequest,
 } from "store/types/businessUnitTypes";
-import { apiWithToken } from "./dox";
+import { apiWithToken } from ".";
 
 export const getAllBusinessUnitApi = (params?: IBusinessUnitGetAllParams) => {
 	return apiWithToken.get(`/api/master/bisnis-unit`, {

@@ -3,7 +3,7 @@ import {
 	ICreateProviderRequest,
 	IUpdateProviderRequest,
 } from "store/types/providerTypes";
-import { apiWithToken } from "./dox";
+import { apiWithToken } from ".";
 
 export const getAllProviderApi = (params?: IProviderGetAllParams) => {
 	return apiWithToken.get(`/api/master/penyedia`, {

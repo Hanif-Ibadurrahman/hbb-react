@@ -3,7 +3,7 @@ import {
 	ICreateEmployeeRequest,
 	IUpdateEmployeeRequest,
 } from "store/types/employeeTypes";
-import { apiWithToken } from "./dox";
+import { apiWithToken } from ".";
 
 export const getAllEmployeeApi = (params?: IEmployeeGetAllParams) => {
 	return apiWithToken.get(`/api/master/employee`, {

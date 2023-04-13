@@ -18,10 +18,12 @@ export interface IBusinessUnitGetAllParams {
 
 export interface ICreateBusinessUnitRequest {
 	name: string;
+	id_company: string;
 }
 
 export interface IUpdateBusinessUnitRequest {
 	name: string;
+	id_company: string;
 }
 
 export interface IBusinessUnitGetAllResponse {

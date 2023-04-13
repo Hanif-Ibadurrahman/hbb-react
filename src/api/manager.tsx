@@ -3,7 +3,7 @@ import {
 	ICreateManagerRequest,
 	IUpdateManagerRequest,
 } from "store/types/managerTypes";
-import { apiWithToken } from "./dox";
+import { apiWithToken } from ".";
 
 export const getAllManagerApi = (params?: IManagerGetAllParams) => {
 	return apiWithToken.get(`/api/master/pengelola`, {

@@ -4,7 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import { SideModal } from "app/components/modal/sideModal";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { IEmployee, IEmployeeGetAllParams } from "store/types/employeeTypes";
+import {
+	ICreateEmployeeRequest,
+	IEmployee,
+	IEmployeeGetAllParams,
+	IEmployeePaginateResponse,
+} from "store/types/employeeTypes";
 import {
 	createNewEmployeeApi,
 	deleteEmployeeApi,
@@ -30,12 +35,12 @@ const MasterEmployee = () => {
 		page: number;
 		pageSize: number;
 	}>({ page: 1, pageSize: 20 });
-	const [initialValue, setInitialValue] = useState<{
-		emp_name: string;
-		nipg: string;
-		jabatan: string;
-	}>();
-	const [dataTable, setDataTable] = useState();
+	const [initialValue, setInitialValue] = useState<ICreateEmployeeRequest>({
+		emp_name: "",
+		nipg: "",
+		jabatan: "",
+	});
+	const [dataTable, setDataTable] = useState<IEmployeePaginateResponse>();
 
 	const fetchDataList = async () => {
 		try {

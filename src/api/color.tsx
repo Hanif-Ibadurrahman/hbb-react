@@ -3,7 +3,7 @@ import {
 	ICreateColorRequest,
 	IUpdateColorRequest,
 } from "store/types/colorTypes";
-import { apiWithToken } from "./dox";
+import { apiWithToken } from ".";
 
 export const getAllColorApi = (params?: IColorGetAllParams) => {
 	return apiWithToken.get(`/api/master/color`, {

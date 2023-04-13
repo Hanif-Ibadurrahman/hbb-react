@@ -3,7 +3,7 @@ import {
 	ICreateLocationRequest,
 	IUpdateLocationRequest,
 } from "store/types/locationTypes";
-import { apiWithToken } from "./dox";
+import { apiWithToken } from ".";
 
 export const getAllLocationApi = (params?: ILocationGetAllParams) => {
 	return apiWithToken.get(`/api/master/location`, {
