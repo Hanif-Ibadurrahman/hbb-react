@@ -22,6 +22,7 @@ import { Modal as AntdModal, Button, Form, FormInstance, Input } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { ILoginTokenDecode } from "store/types/loginTypes";
+import { CheckAuthentication } from "app/helper/authentication";
 
 const MasterBusinessUnit = () => {
 	const [form] = Form.useForm();
@@ -54,7 +55,7 @@ const MasterBusinessUnit = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 
@@ -63,7 +64,7 @@ const MasterBusinessUnit = () => {
 			const response = await getDetailBusinessUnitApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 

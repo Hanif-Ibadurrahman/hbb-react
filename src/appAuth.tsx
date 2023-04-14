@@ -1,7 +1,3 @@
-// import { ControlSidebar } from "app/components/controlSidebar";
-// import { Footer } from "app/components/footer";
-// import { Header } from "app/components/header";
-// import { Sidebar } from "app/components/sidebar";
 import React from "react";
 
 interface IAppAuth {
