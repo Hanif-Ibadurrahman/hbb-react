@@ -2,7 +2,6 @@ import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAnd
 import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
-import { CenterModal } from "app/components/modal/centerModal";
 import { SideModal } from "app/components/modal/sideModal";
 import { SelectWithTag } from "app/components/selectWithTag";
 import {
@@ -24,16 +23,19 @@ import { IBusinessUnitGetAllParams } from "store/types/businessUnitTypes";
 import {
 	Modal as AntdModal,
 	Button,
+	Divider,
 	Form,
 	FormInstance,
 	Input,
 	Select,
+	Typography,
 } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { CheckAuthentication } from "app/helper/authentication";
 
 const MasterArea = () => {
+	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [params, setParams] = useState<IAreaGetAllParams | undefined>();
@@ -51,6 +53,8 @@ const MasterArea = () => {
 	const [initialValue, setInitialValue] = useState<ICreateAreaRequest>({
 		name: "",
 		daerah: "",
+		pengelola: "",
+		id_bisnis_unit: "",
 	});
 	const [dataTable, setDataTable] = useState<IAreaPaginateResponse>();
 	const [dataOptionBusinessUnit, setDataOptionBusinessUnit] = useState<
@@ -90,13 +94,19 @@ const MasterArea = () => {
 	};
 
 	const handleInitialValue = (values: IArea) => {
-		const setData = {
+		setInitialValue({
+			name: values.name || "",
+			daerah: values.daerah || "",
+			pengelola: "",
+			nipg: "",
+			pemegang: values.pemegang || "",
+			id_bisnis_unit: values.bisnis_unit?.name || "",
+		});
+		formRef.current?.setFieldsValue({
 			name: values.name || "",
 			daerah: values.daerah || "",
 			id_bisnis_unit: values.bisnis_unit?.id || "",
-		};
-		setInitialValue(setData);
-		formRef.current?.setFieldsValue(setData);
+		});
 	};
 
 	useEffect(() => {
@@ -133,7 +143,14 @@ const MasterArea = () => {
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		setInitialValue({ name: "", daerah: "" });
+		setInitialValue({
+			name: "",
+			daerah: "",
+			pengelola: "",
+			nipg: "",
+			pemegang: "",
+			id_bisnis_unit: "",
+		});
 		formik.resetForm();
 		formRef.current?.resetFields();
 	};
@@ -236,14 +253,23 @@ const MasterArea = () => {
 			</section>
 
 			<AntdModal
-				title={showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+				title={
+					<Title level={3}>
+						{showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+					</Title>
+				}
 				footer={
 					<div style={{ display: "flex", justifyContent: "end", columnGap: 5 }}>
-						<Button type="primary" danger onClick={handleCancel}>
+						<Button shape="round" size="large" onClick={handleCancel}>
 							Close
 						</Button>
-						<Button type="primary" onClick={form.submit}>
-							Simpan
+						<Button
+							type="primary"
+							size="large"
+							shape="round"
+							onClick={form.submit}
+						>
+							Save
 						</Button>
 					</div>
 				}
@@ -251,173 +277,150 @@ const MasterArea = () => {
 				open={showModal.show}
 				width={800}
 			>
-				<div className="col-12">
-					<Form form={form} ref={formRef} onFinish={onFinish}>
-						<Form.Item
-							name="name"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
-							<div className="form-group">
-								<span>
-									Nama Area <span className="text-danger">*</span>
-								</span>
-								<div className="controls">
-									<Input
-										type="text"
-										name="name"
-										className="form-control"
-										placeholder="Nama Area"
-										onChange={formik.handleChange}
-										value={formik.values.name}
-									/>
-								</div>
-							</div>
-						</Form.Item>
-						<Form.Item
-							name="daerah"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
-							<div className="form-group">
-								<span>
-									Daerah <span className="text-danger">*</span>
-								</span>
-								<div className="controls">
-									<Input
-										type="text"
-										name="daerah"
-										className="form-control"
-										placeholder="Daerah"
-										onChange={formik.handleChange}
-										value={formik.values.daerah}
-									/>
-								</div>
-							</div>
-						</Form.Item>
-						<Form.Item
-							name="id_bisnis_unit"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
-							<div className="form-group">
-								<span>
-									Bisnis Unit <span className="text-danger">*</span>
-								</span>
-								<div className="controls">
-									<Select
-										showSearch
-										placeholder="Pilih Bisnis Unit"
-										onSearch={v => setBusinessUnitParams({ name: v })}
-										filterOption={(input, option) =>
-											(`${option?.label}` ?? "")
-												.toLowerCase()
-												.includes(input.toLowerCase())
-										}
-										options={dataOptionBusinessUnit}
-										onChange={(v, opt) => {
-											formik.handleChange(v);
-											formRef.current?.setFieldsValue({
-												id_bisnis_unit: v,
-											});
-										}}
-										value={formik.values.id_bisnis_unit}
-									/>
-								</div>
-							</div>
-						</Form.Item>
-					</Form>
-				</div>
-			</AntdModal>
-
-			<CenterModal
-				modalName="modal"
-				title="Tambah Data"
-				contentFooter={
-					<button
-						type="button"
-						className="btn btn-primary"
-						data-bs-dismiss="modal"
+				<Form form={form} ref={formRef} onFinish={onFinish}>
+					<Divider />
+					<Form.Item
+						name="name"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
 					>
-						Simpan
-					</button>
-				}
-			>
-				<div className="col-12">
-					<div className="form-group">
-						<h6>
-							Nama Area <span className="text-danger">*</span>
-						</h6>
-						<div className="controls">
-							<input
-								type="text"
-								name="text"
-								className="form-control"
-								required
-								data-validation-required-message="This field is required"
-							/>
+						<div className="form-group">
+							<Title level={5}>
+								Nama Area <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="name"
+									className="form-control"
+									placeholder="Nama Area"
+									onChange={formik.handleChange}
+									value={formik.values.name}
+								/>
+							</div>
 						</div>
-					</div>
-					<div className="form-group">
-						<h6>
-							Daerah <span className="text-danger">*</span>
-						</h6>
-						<div className="controls">
-							<input
-								type="text"
-								name="text"
-								className="form-control"
-								required
-								data-validation-required-message="This field is required"
-							/>
+					</Form.Item>
+					<Form.Item
+						name="daerah"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Daerah <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="daerah"
+									className="form-control"
+									placeholder="Daerah"
+									onChange={formik.handleChange}
+									value={formik.values.daerah}
+								/>
+							</div>
 						</div>
-					</div>
-					<div className="form-group">
-						<h6>
-							Pengelola <span className="text-danger">*</span>
-						</h6>
-						<div className="controls">
-							<input
-								type="text"
-								name="text"
-								className="form-control"
-								required
-								data-validation-required-message="This field is required"
-							/>
+					</Form.Item>
+					<Form.Item
+						name="pengelola"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Pengelola <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="pengelola"
+									className="form-control"
+									placeholder="Pengelola"
+									onChange={formik.handleChange}
+									value={formik.values.pengelola}
+								/>
+							</div>
 						</div>
-					</div>
-					<div className="form-group">
-						<h6>NIPG</h6>
-						<div className="controls">
-							<input type="text" name="text" className="form-control" />
+					</Form.Item>
+					<Form.Item name="nipg">
+						<div className="form-group">
+							<Title level={5}>NIPG</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="nipg"
+									className="form-control"
+									placeholder="NIPG"
+									onChange={formik.handleChange}
+									value={formik.values.nipg}
+								/>
+							</div>
 						</div>
-					</div>
-					<div className="form-group">
-						<h6>Pemegang</h6>
-						<div className="controls">
-							<input type="text" name="text" className="form-control" />
+					</Form.Item>
+					<Form.Item name="pemegang">
+						<div className="form-group">
+							<Title level={5}>Pemegang</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="pemegang"
+									className="form-control"
+									placeholder="Pemegang"
+									onChange={formik.handleChange}
+									value={formik.values.pemegang}
+								/>
+							</div>
 						</div>
-					</div>
-					<div className="form-group">
-						<h6>Bisnis Unit</h6>
-						<select className="form-select" name="bisnis_unit">
-							<option value="kantor_pusat">Kantor Pusat</option>
-						</select>
-					</div>
-				</div>
-			</CenterModal>
+					</Form.Item>
+					<Form.Item
+						name="id_bisnis_unit"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Bisnis Unit <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									placeholder="Pilih Bisnis Unit"
+									onSearch={v => setBusinessUnitParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionBusinessUnit}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_bisnis_unit", v);
+										formRef.current?.setFieldsValue({
+											id_bisnis_unit: v,
+										});
+									}}
+									value={formik.values.id_bisnis_unit}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+				</Form>
+			</AntdModal>
 
 			<SideModal
 				title="Filter"

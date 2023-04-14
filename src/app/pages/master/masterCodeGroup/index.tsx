@@ -17,12 +17,21 @@ import {
 	getDetailCodeGroupApi,
 	updateCodeGroupApi,
 } from "api/codeGroup";
-import { Modal as AntdModal, Button, Form, FormInstance, Input } from "antd";
+import {
+	Modal as AntdModal,
+	Button,
+	Divider,
+	Form,
+	FormInstance,
+	Input,
+	Typography,
+} from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { CheckAuthentication } from "app/helper/authentication";
 
 const MasterCodeGroup = () => {
+	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [params, setParams] = useState<ICodeGroupGetAllParams | undefined>();
@@ -208,14 +217,23 @@ const MasterCodeGroup = () => {
 			</section>
 
 			<AntdModal
-				title={showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+				title={
+					<Title level={3}>
+						{showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+					</Title>
+				}
 				footer={
 					<div style={{ display: "flex", justifyContent: "end", columnGap: 5 }}>
-						<Button type="primary" danger onClick={handleCancel}>
+						<Button shape="round" size="large" onClick={handleCancel}>
 							Close
 						</Button>
-						<Button type="primary" onClick={form.submit}>
-							Simpan
+						<Button
+							type="primary"
+							size="large"
+							shape="round"
+							onClick={form.submit}
+						>
+							Save
 						</Button>
 					</div>
 				}
@@ -223,62 +241,60 @@ const MasterCodeGroup = () => {
 				open={showModal.show}
 				width={800}
 			>
-				<div className="col-12">
-					<Form form={form} ref={formRef} onFinish={onFinish}>
-						<Form.Item
-							name="value"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
-							<div className="form-group">
-								<span>
-									Group <span className="text-danger">*</span>
-								</span>
-								<div className="controls">
-									<Input
-										type="text"
-										name="value"
-										className="form-control"
-										placeholder="Group"
-										onChange={formik.handleChange}
-										value={formik.values.value}
-									/>
-								</div>
+				<Form form={form} ref={formRef} onFinish={onFinish}>
+					<Divider />
+					<Form.Item
+						name="value"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Group <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="value"
+									className="form-control"
+									placeholder="Group"
+									onChange={formik.handleChange}
+									value={formik.values.value}
+								/>
 							</div>
-						</Form.Item>
-						<Form.Item
-							name="code"
-							rules={[
-								{
-									required: true,
-									max: 2,
-									message:
-										"Harap isi field ini dan tidak lebih dari 2 karakter",
-								},
-							]}
-						>
-							<div className="form-group">
-								<span>
-									Code <span className="text-danger">*</span>
-								</span>
-								<div className="controls">
-									<Input
-										type="text"
-										name="code"
-										className="form-control"
-										placeholder="Code"
-										onChange={formik.handleChange}
-										value={formik.values.code}
-									/>
-								</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="code"
+						rules={[
+							{
+								required: true,
+								max: 2,
+								message: "Harap isi field ini dan tidak lebih dari 2 karakter",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Code <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="code"
+									className="form-control"
+									placeholder="Code"
+									onChange={formik.handleChange}
+									value={formik.values.code}
+								/>
 							</div>
-						</Form.Item>
-					</Form>
-				</div>
+						</div>
+					</Form.Item>
+				</Form>
 			</AntdModal>
 
 			<SideModal

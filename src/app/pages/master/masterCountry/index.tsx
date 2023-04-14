@@ -17,12 +17,21 @@ import {
 	getDetailCountryApi,
 	updateCountryApi,
 } from "api/country";
-import { Modal as AntdModal, Button, Form, FormInstance, Input } from "antd";
+import {
+	Modal as AntdModal,
+	Button,
+	Divider,
+	Form,
+	FormInstance,
+	Input,
+	Typography,
+} from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { CheckAuthentication } from "app/helper/authentication";
 
 const MasterCountry = () => {
+	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [params, setParams] = useState<ICountryGetAllParams | undefined>();
@@ -198,14 +207,23 @@ const MasterCountry = () => {
 			</section>
 
 			<AntdModal
-				title={showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+				title={
+					<Title level={3}>
+						{showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+					</Title>
+				}
 				footer={
 					<div style={{ display: "flex", justifyContent: "end", columnGap: 5 }}>
-						<Button type="primary" danger onClick={handleCancel}>
+						<Button shape="round" size="large" onClick={handleCancel}>
 							Close
 						</Button>
-						<Button type="primary" onClick={form.submit}>
-							Simpan
+						<Button
+							type="primary"
+							size="large"
+							shape="round"
+							onClick={form.submit}
+						>
+							Save
 						</Button>
 					</div>
 				}
@@ -213,35 +231,34 @@ const MasterCountry = () => {
 				open={showModal.show}
 				width={800}
 			>
-				<div className="col-12">
-					<Form form={form} ref={formRef} onFinish={onFinish}>
-						<Form.Item
-							name="name"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
-							<div className="form-group">
-								<span>
-									Nama Negara <span className="text-danger">*</span>
-								</span>
-								<div className="controls">
-									<Input
-										type="text"
-										name="name"
-										className="form-control"
-										placeholder="Nama Negara"
-										onChange={formik.handleChange}
-										value={formik.values.name}
-									/>
-								</div>
+				<Form form={form} ref={formRef} onFinish={onFinish}>
+					<Divider />
+					<Form.Item
+						name="name"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Nama Negara <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="name"
+									className="form-control"
+									placeholder="Nama Negara"
+									onChange={formik.handleChange}
+									value={formik.values.name}
+								/>
 							</div>
-						</Form.Item>
-					</Form>
-				</div>
+						</div>
+					</Form.Item>
+				</Form>
 			</AntdModal>
 
 			<SideModal

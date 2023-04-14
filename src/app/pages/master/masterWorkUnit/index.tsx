@@ -19,10 +19,12 @@ import {
 import {
 	Modal as AntdModal,
 	Button,
+	Divider,
 	Form,
 	FormInstance,
 	Input,
 	Select,
+	Typography,
 } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
@@ -34,6 +36,7 @@ import { getAllAreaApi } from "api/area";
 import { CheckAuthentication } from "app/helper/authentication";
 
 const MasterWorkUnit = () => {
+	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [params, setParams] = useState<IWorkUnitGetAllParams | undefined>();
@@ -84,7 +87,6 @@ const MasterWorkUnit = () => {
 		try {
 			const response = await getAllBusinessUnitApi(businessUnitParams);
 			const businessUnitList = response.data.data.data;
-			console.log(businessUnitList);
 			setDataOptionBusinessUnit(
 				businessUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
@@ -97,7 +99,6 @@ const MasterWorkUnit = () => {
 		try {
 			const response = await getAllAreaApi(areaParams);
 			const areaList = response.data.data.data;
-			console.log(areaList);
 			setDataOptionArea(
 				areaList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
@@ -107,14 +108,18 @@ const MasterWorkUnit = () => {
 	};
 
 	const handleInitialValue = (values: IWorkUnit) => {
-		const setData = {
+		setInitialValue({
+			name: values.name || "",
+			id_bisnis_unit: values.bisnis_unit?.name || "",
+			id_area: values.area?.name || "",
+			id_pegawai: values.id_pegawai || "",
+		});
+		formRef.current?.setFieldsValue({
 			name: values.name || "",
 			id_bisnis_unit: values.id_bisnis_unit || "",
 			id_area: values.id_area || "",
 			id_pegawai: values.id_pegawai || "",
-		};
-		setInitialValue(setData);
-		formRef.current?.setFieldsValue(setData);
+		});
 	};
 
 	useEffect(() => {
@@ -263,14 +268,23 @@ const MasterWorkUnit = () => {
 			</section>
 
 			<AntdModal
-				title={showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+				title={
+					<Title level={3}>
+						{showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+					</Title>
+				}
 				footer={
 					<div style={{ display: "flex", justifyContent: "end", columnGap: 5 }}>
-						<Button type="primary" danger onClick={handleCancel}>
+						<Button shape="round" size="large" onClick={handleCancel}>
 							Close
 						</Button>
-						<Button type="primary" onClick={form.submit}>
-							Simpan
+						<Button
+							type="primary"
+							size="large"
+							shape="round"
+							onClick={form.submit}
+						>
+							Save
 						</Button>
 					</div>
 				}
@@ -278,111 +292,109 @@ const MasterWorkUnit = () => {
 				open={showModal.show}
 				width={800}
 			>
-				<div className="col-12">
-					<Form form={form} ref={formRef} onFinish={onFinish}>
-						<Form.Item name="id_bisnis_unit">
-							<div className="form-group">
-								<span>Bisnis Unit</span>
-								<div className="controls">
-									<Select
-										showSearch
-										placeholder="Pilih Bisnis Unit"
-										onSearch={v => setBusinessUnitParams({ name: v })}
-										filterOption={(input, option) =>
-											(`${option?.label}` ?? "")
-												.toLowerCase()
-												.includes(input.toLowerCase())
-										}
-										options={dataOptionBusinessUnit}
-										onChange={(v, opt) => {
-											formik.setFieldValue("id_bisnis_unit", v);
-											formRef.current?.setFieldsValue({
-												id_bisnis_unit: v,
-											});
-										}}
-										value={formik.values.id_bisnis_unit}
-									/>
-								</div>
+				<Form form={form} ref={formRef} onFinish={onFinish}>
+					<Divider />
+					<Form.Item name="id_bisnis_unit">
+						<div className="form-group">
+							<Title level={5}>Bisnis Unit</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									placeholder="Pilih Bisnis Unit"
+									onSearch={v => setBusinessUnitParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionBusinessUnit}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_bisnis_unit", v);
+										formRef.current?.setFieldsValue({
+											id_bisnis_unit: v,
+										});
+									}}
+									value={formik.values.id_bisnis_unit}
+								/>
 							</div>
-						</Form.Item>
-						<Form.Item name="id_area">
-							<div className="form-group">
-								<span>Area</span>
-								<div className="controls">
-									<Select
-										showSearch
-										placeholder="Pilih Area"
-										onSearch={v => setAreaParams({ name: v })}
-										filterOption={(input, option) =>
-											(`${option?.label}` ?? "")
-												.toLowerCase()
-												.includes(input.toLowerCase())
-										}
-										options={dataOptionArea}
-										onChange={(v, opt) => {
-											formik.setFieldValue("id_area", v);
-											formRef.current?.setFieldsValue({
-												id_area: v,
-											});
-										}}
-										value={formik.values.id_area}
-									/>
-								</div>
+						</div>
+					</Form.Item>
+					<Form.Item name="id_area">
+						<div className="form-group">
+							<Title level={5}>Area</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									placeholder="Pilih Area"
+									onSearch={v => setAreaParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionArea}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_area", v);
+										formRef.current?.setFieldsValue({
+											id_area: v,
+										});
+									}}
+									value={formik.values.id_area}
+								/>
 							</div>
-						</Form.Item>
-						<Form.Item
-							name="name"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
-							<div className="form-group">
-								<span>
-									Nama Satuan Kerja <span className="text-danger">*</span>
-								</span>
-								<div className="controls">
-									<Input
-										type="text"
-										name="name"
-										className="form-control"
-										placeholder="Nama Satuan Kerja"
-										onChange={formik.handleChange}
-										value={formik.values.name}
-									/>
-								</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="name"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Nama Satuan Kerja <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="name"
+									className="form-control"
+									placeholder="Nama Satuan Kerja"
+									onChange={formik.handleChange}
+									value={formik.values.name}
+								/>
 							</div>
-						</Form.Item>
-						<Form.Item
-							name="id_pegawai"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
-							<div className="form-group">
-								<span>
-									Nama Kepala Satuan Kerja{" "}
-									<span className="text-danger">*</span>
-								</span>
-								<div className="controls">
-									<Input
-										type="text"
-										name="id_pegawai"
-										className="form-control"
-										placeholder="Nama Kepala Satuan Kerja"
-										onChange={formik.handleChange}
-										value={formik.values.id_pegawai}
-									/>
-								</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_pegawai"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Nama Kepala Satuan Kerja <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="id_pegawai"
+									className="form-control"
+									placeholder="Nama Kepala Satuan Kerja"
+									onChange={formik.handleChange}
+									value={formik.values.id_pegawai}
+								/>
 							</div>
-						</Form.Item>
-					</Form>
-				</div>
+						</div>
+					</Form.Item>
+				</Form>
 			</AntdModal>
 
 			<SideModal
@@ -392,6 +404,7 @@ const MasterWorkUnit = () => {
 						type="button"
 						className="btn btn-primary"
 						data-bs-dismiss="modal"
+						onClick={setValueFilter}
 					>
 						Filter
 					</button>
@@ -402,7 +415,10 @@ const MasterWorkUnit = () => {
 				<h6 className="box-title mt-10 d-block mb-10">Area</h6>
 				<SelectWithTag colorTag="cyan" />
 				<h6 className="box-title mt-10 d-block mb-10">Nama Satuan Kerja</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag
+					colorTag="cyan"
+					onChange={v => setTempFilter({ name: v.toString() })}
+				/>
 				<h6 className="box-title mt-10 d-block mb-10">
 					Nama Kepala Satuan Kerja
 				</h6>
