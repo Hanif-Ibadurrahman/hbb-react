@@ -23,6 +23,8 @@ export interface IAreaGetAllParams {
 }
 export interface ICreateAreaRequest {
 	name: string;
+	daerah: string;
+	id_bisnis_unit?: string;
 }
 export interface IUpdateAreaRequest {
 	name: string;
