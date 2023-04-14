@@ -25,3 +25,7 @@ export const updateDivisionApi = (
 ) => {
 	return apiWithToken.put(`/api/master/division/${id}`, input);
 };
+
+export const deleteDivisionApi = (id: string) => {
+	return apiWithToken.delete(`/api/master/division/${id}`);
+};

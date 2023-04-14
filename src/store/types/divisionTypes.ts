@@ -26,10 +26,16 @@ export interface IDivisionGetAllParams {
 
 export interface ICreateDivisionRequest {
 	name: string;
+	id_bisnis_unit: string;
+	id_area: string;
+	id_satker: string;
 }
 
 export interface IUpdateDivisionRequest {
 	name: string;
+	id_bisnis_unit: string;
+	id_area: string;
+	id_satker: string;
 }
 
 export interface IDivisionGetAllResponse {

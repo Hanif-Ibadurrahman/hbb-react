@@ -17,12 +17,21 @@ import {
 	getDetailEmployeeApi,
 	updateEmployeeApi,
 } from "api/employee";
-import { Modal as AntdModal, Button, Form, FormInstance, Input } from "antd";
+import {
+	Modal as AntdModal,
+	Button,
+	Divider,
+	Form,
+	FormInstance,
+	Input,
+	Typography,
+} from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { CheckAuthentication } from "app/helper/authentication";
 
 const MasterEmployee = () => {
+	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [params, setParams] = useState<IEmployeeGetAllParams | undefined>();
@@ -209,14 +218,23 @@ const MasterEmployee = () => {
 			</section>
 
 			<AntdModal
-				title={showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+				title={
+					<Title level={3}>
+						{showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+					</Title>
+				}
 				footer={
 					<div style={{ display: "flex", justifyContent: "end", columnGap: 5 }}>
-						<Button type="primary" danger onClick={handleCancel}>
+						<Button shape="round" size="large" onClick={handleCancel}>
 							Close
 						</Button>
-						<Button type="primary" onClick={form.submit}>
-							Simpan
+						<Button
+							type="primary"
+							size="large"
+							shape="round"
+							onClick={form.submit}
+						>
+							Save
 						</Button>
 					</div>
 				}
@@ -224,75 +242,74 @@ const MasterEmployee = () => {
 				open={showModal.show}
 				width={800}
 			>
-				<div className="col-12">
-					<Form form={form} ref={formRef} onFinish={onFinish}>
-						<Form.Item
-							name="emp_name"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
-							<div className="form-group">
-								<span>
-									Nama <span className="text-danger">*</span>
-								</span>
-								<div className="controls">
-									<Input
-										type="text"
-										name="emp_name"
-										className="form-control"
-										placeholder="Nama Negara"
-										onChange={formik.handleChange}
-										value={formik.values.emp_name}
-									/>
-								</div>
+				<Form form={form} ref={formRef} onFinish={onFinish}>
+					<Divider />
+					<Form.Item
+						name="emp_name"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Nama <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="emp_name"
+									className="form-control"
+									placeholder="Nama Pegawai"
+									onChange={formik.handleChange}
+									value={formik.values.emp_name}
+								/>
 							</div>
-						</Form.Item>
-						<Form.Item
-							name="nipg"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
-							<div className="form-group">
-								<span>
-									NIPG <span className="text-danger">*</span>
-								</span>
-								<div className="controls">
-									<Input
-										type="text"
-										name="nipg"
-										className="form-control"
-										placeholder="NIPG"
-										onChange={formik.handleChange}
-										value={formik.values.nipg}
-									/>
-								</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="nipg"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								NIPG <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="nipg"
+									className="form-control"
+									placeholder="NIPG"
+									onChange={formik.handleChange}
+									value={formik.values.nipg}
+								/>
 							</div>
-						</Form.Item>
-						<Form.Item name="jabatan">
-							<div className="form-group">
-								<span>Jabatan</span>
-								<div className="controls">
-									<Input
-										type="text"
-										name="jabatan"
-										className="form-control"
-										placeholder="Jabatan"
-										onChange={formik.handleChange}
-										value={formik.values.jabatan}
-									/>
-								</div>
+						</div>
+					</Form.Item>
+					<Form.Item name="jabatan">
+						<div className="form-group">
+							<Title level={5}>Jabatan</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="jabatan"
+									className="form-control"
+									placeholder="Jabatan"
+									onChange={formik.handleChange}
+									value={formik.values.jabatan}
+								/>
 							</div>
-						</Form.Item>
-					</Form>
-				</div>
+						</div>
+					</Form.Item>
+				</Form>
 			</AntdModal>
 
 			<SideModal
