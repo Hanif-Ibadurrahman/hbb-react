@@ -31,6 +31,7 @@ import {
 } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
+import { CheckAuthentication } from "app/helper/authentication";
 
 const MasterArea = () => {
 	const [form] = Form.useForm();
@@ -63,7 +64,7 @@ const MasterArea = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 
@@ -72,7 +73,7 @@ const MasterArea = () => {
 			const response = await getDetailAreaApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 
@@ -84,7 +85,7 @@ const MasterArea = () => {
 				businessUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 

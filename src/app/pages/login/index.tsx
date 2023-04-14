@@ -4,15 +4,24 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import BackgroundImage from "assets/image/background.jpg";
+import { useEffect } from "react";
 
 const Login = () => {
+	const token = sessionStorage.getItem("Token");
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (token) {
+			navigate("/", { replace: true });
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const onFinish = async (values: any) => {
 		try {
 			await dispatch(loginAction(values));
-			navigate("/", { replace: true });
+			window.location.href = "/";
 		} catch (error) {
 			Swal.fire({
 				icon: "error",

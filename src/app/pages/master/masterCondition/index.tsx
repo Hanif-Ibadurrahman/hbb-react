@@ -20,6 +20,7 @@ import { Modal as AntdModal, Button, Form, FormInstance, Input } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { ICreateCountryRequest } from "store/types/countryTypes";
+import { CheckAuthentication } from "app/helper/authentication";
 
 const MasterCondition = () => {
 	const [form] = Form.useForm();
@@ -47,7 +48,7 @@ const MasterCondition = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 
@@ -56,7 +57,7 @@ const MasterCondition = () => {
 			const response = await getDetailConditionApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 

@@ -20,6 +20,7 @@ import {
 	ICreateCompanyRequest,
 } from "store/types/companyTypes";
 import { deleteCountryApi } from "api/country";
+import { CheckAuthentication } from "app/helper/authentication";
 
 const MasterCompany = () => {
 	const [form] = Form.useForm();
@@ -48,7 +49,7 @@ const MasterCompany = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 
@@ -57,7 +58,7 @@ const MasterCompany = () => {
 			const response = await getDetailCompanyApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 

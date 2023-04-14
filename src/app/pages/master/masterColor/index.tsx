@@ -20,6 +20,7 @@ import {
 import { Modal as AntdModal, Button, Form, FormInstance, Input } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
+import { CheckAuthentication } from "app/helper/authentication";
 
 const MasterColor = () => {
 	const [form] = Form.useForm();
@@ -47,7 +48,7 @@ const MasterColor = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 
@@ -56,7 +57,7 @@ const MasterColor = () => {
 			const response = await getDetailColorApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 

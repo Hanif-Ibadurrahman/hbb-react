@@ -7,6 +7,7 @@ import { SelectWithTag } from "app/components/selectWithTag";
 import { CenterModal } from "app/components/modal/centerModal";
 import { IDivisionGetAllParams } from "store/types/divisionTypes";
 import { getAllDivisionApi } from "api/division";
+import { CheckAuthentication } from "app/helper/authentication";
 
 const MasterDivision = () => {
 	const [params, setParams] = useState<IDivisionGetAllParams | undefined>();
@@ -27,9 +28,8 @@ const MasterDivision = () => {
 		try {
 			const response = await getAllDivisionApi(params);
 			setDataTable(response.data.data);
-			// await dispatch(getCountryListAction(params));
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 

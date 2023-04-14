@@ -31,6 +31,7 @@ import { getAllBusinessUnitApi } from "api/businessUnit";
 import { IBusinessUnitGetAllParams } from "store/types/businessUnitTypes";
 import { IAreaGetAllParams } from "store/types/areaTypes";
 import { getAllAreaApi } from "api/area";
+import { CheckAuthentication } from "app/helper/authentication";
 
 const MasterWorkUnit = () => {
 	const [form] = Form.useForm();
@@ -66,7 +67,7 @@ const MasterWorkUnit = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 
@@ -75,7 +76,7 @@ const MasterWorkUnit = () => {
 			const response = await getDetailWorkUnitApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 
@@ -88,7 +89,7 @@ const MasterWorkUnit = () => {
 				businessUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 
@@ -101,7 +102,7 @@ const MasterWorkUnit = () => {
 				areaList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 
