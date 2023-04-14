@@ -2,16 +2,11 @@ import { ColumnsType } from "antd/es/table";
 import { IServiceRequest } from "store/types/serviceRequestTypes";
 
 interface IColumn {
-	setShowModal: React.Dispatch<
-		React.SetStateAction<{
-			show: boolean;
-			id?: string | undefined;
-		}>
-	>;
+	handleApprove: (id: string) => void;
 	handleDelete: (id: string) => void;
 }
 
-export const columns = ({ setShowModal, handleDelete }: IColumn) => {
+export const columns = ({ handleApprove, handleDelete }: IColumn) => {
 	const columnType: ColumnsType<IServiceRequest> = [
 		{
 			title: "Nama Barang",
@@ -53,7 +48,7 @@ export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 							type="button"
 							className="btn btn-success"
 							onClick={() => {
-								setShowModal({ show: true, id: text });
+								handleApprove(text);
 							}}
 						>
 							Approve
