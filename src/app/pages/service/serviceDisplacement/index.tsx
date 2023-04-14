@@ -134,9 +134,18 @@ const ServiceDisplacement = () => {
 		onSubmit: values => {},
 	});
 
+	const handleApprove = (id: string) => {};
+
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		// setInitialValue({ name: "" });
+		setInitialValue({
+			name_item: "",
+			description: "",
+			condition: "",
+			user: "",
+			specification: "",
+			photo: "",
+		});
 		formRef.current?.resetFields();
 	};
 
@@ -229,7 +238,7 @@ const ServiceDisplacement = () => {
 						<TablePaginateAndSort
 							title="Permintaan Layanan - Pemindahan"
 							dataSource={dataTable}
-							columns={columns({ setShowModal, handleDelete })}
+							columns={columns({ handleApprove, handleDelete })}
 							setSelectedPage={setSelectedPage}
 							contentHeader={
 								<button

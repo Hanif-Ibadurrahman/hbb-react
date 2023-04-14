@@ -8,26 +8,26 @@ import { Modal as AntdModal, Button, Form, FormInstance, Input } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import {
-	ICreateServiceRequestRequest,
-	IServiceRequestGetAllParams,
-	IServiceRequestPaginateResponse,
-} from "store/types/serviceRequestTypes";
+	ICreateServiceRepairRequest,
+	IServiceRepairGetAllParams,
+	IServiceRepairPaginateResponse,
+} from "store/types/serviceRepairTypes";
 import {
-	createNewServiceRequestApi,
-	deleteServiceRequestApi,
-	getDetailServiceRequestApi,
-	updateServiceRequestApi,
-} from "api/serviceRequest";
-import { IServiceRequest } from "store/types/serviceRequestTypes";
+	createNewServiceRepairApi,
+	deleteServiceRepairApi,
+	getDetailServiceRepairApi,
+	updateServiceRepairApi,
+} from "api/serviceRepair";
+import { IServiceRepair } from "store/types/serviceRepairTypes";
 
-const ServiceRequest = () => {
+const ServiceReturn = () => {
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [params, setParams] = useState<
-		IServiceRequestGetAllParams | undefined
+		IServiceRepairGetAllParams | undefined
 	>();
 	const [tempFilter, setTempFilter] = useState<
-		IServiceRequestGetAllParams | undefined
+		IServiceRepairGetAllParams | undefined
 	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
@@ -37,19 +37,19 @@ const ServiceRequest = () => {
 		pageSize: number;
 	}>({ page: 1, pageSize: 20 });
 	const [initialValue, setInitialValue] =
-		useState<ICreateServiceRequestRequest>();
-	const [dataTable, setDataTable] = useState<IServiceRequestPaginateResponse>();
+		useState<ICreateServiceRepairRequest>();
+	const [dataTable, setDataTable] = useState<IServiceRepairPaginateResponse>();
 
 	const fetchDataList = async () => {
 		try {
 			if (params) {
-				// const response = await getAllServiceRequestApi(params);
+				// const response = await getAllServiceRepairApi(params);
 				// setDataTable(response.data.data);
-				let data: IServiceRequest[] = [];
+				let data: IServiceRepair[] = [];
 				for (let i = 1; i <= 100; i++) {
 					data.push({
 						id: `${i}`,
-						name_item: `Barang ${i}`,
+						name_item: `102023 ${i}`,
 						condition: "Baik",
 						description: "Pinjam",
 						photo: "Foto",
@@ -86,14 +86,14 @@ const ServiceRequest = () => {
 
 	const fetchDataDetail = async (id: string) => {
 		try {
-			const response = await getDetailServiceRequestApi(id);
+			const response = await getDetailServiceRepairApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
 			// CheckAuthentication(error);
 		}
 	};
 
-	const handleInitialValue = (values: IServiceRequest) => {
+	const handleInitialValue = (values: IServiceRepair) => {
 		const setData = {
 			name_item: values.name_item || "",
 			description: values.description || "",
@@ -173,7 +173,7 @@ const ServiceRequest = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					deleteServiceRequestApi(id).then(res => {
+					deleteServiceRepairApi(id).then(res => {
 						if (res.data.status === "success") {
 							swalCustom.fire(
 								"Reject",
@@ -193,7 +193,7 @@ const ServiceRequest = () => {
 
 	const onFinish = (values: any) => {
 		if (showModal.id) {
-			updateServiceRequestApi(showModal.id, values).then(res => {
+			updateServiceRepairApi(showModal.id, values).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });
 					fetchDataList();
@@ -206,7 +206,7 @@ const ServiceRequest = () => {
 				});
 			});
 		} else {
-			createNewServiceRequestApi(values).then(res => {
+			createNewServiceRepairApi(values).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });
 					fetchDataList();
@@ -235,7 +235,7 @@ const ServiceRequest = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
-							title="Permintaan Layanan - Permintaan"
+							title="Permintaan Layanan - Pengembalian"
 							dataSource={dataTable}
 							columns={columns({ handleApprove, handleDelete })}
 							setSelectedPage={setSelectedPage}
@@ -389,4 +389,4 @@ const ServiceRequest = () => {
 	);
 };
 
-export default ServiceRequest;
+export default ServiceReturn;

@@ -20,7 +20,7 @@ import {
 } from "api/serviceRepair";
 import { IServiceRepair } from "store/types/serviceRepairTypes";
 
-const ServiceDisplacement = () => {
+const ServiceRepair = () => {
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [params, setParams] = useState<
@@ -133,9 +133,18 @@ const ServiceDisplacement = () => {
 		onSubmit: values => {},
 	});
 
+	const handleApprove = (id: string) => {};
+
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		// setInitialValue({ name: "" });
+		setInitialValue({
+			name_item: "",
+			description: "",
+			condition: "",
+			user: "",
+			specification: "",
+			photo: "",
+		});
 		formRef.current?.resetFields();
 	};
 
@@ -228,7 +237,7 @@ const ServiceDisplacement = () => {
 						<TablePaginateAndSort
 							title="Permintaan Layanan - Perbaikan"
 							dataSource={dataTable}
-							columns={columns({ setShowModal, handleDelete })}
+							columns={columns({ handleApprove, handleDelete })}
 							setSelectedPage={setSelectedPage}
 							contentHeader={
 								<button
@@ -380,4 +389,4 @@ const ServiceDisplacement = () => {
 	);
 };
 
-export default ServiceDisplacement;
+export default ServiceRepair;
