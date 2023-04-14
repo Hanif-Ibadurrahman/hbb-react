@@ -22,3 +22,7 @@ export const createNewAreaApi = (input: ICreateAreaRequest) => {
 export const updateAreaApi = (id: string, input: IUpdateAreaRequest) => {
 	return apiWithToken.put(`/api/master/area/${id}`, input);
 };
+
+export const deleteAreaApi = (id: string) => {
+	return apiWithToken.delete(`/api/master/area/${id}`);
+};
