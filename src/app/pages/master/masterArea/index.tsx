@@ -36,7 +36,7 @@ const MasterArea = () => {
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [params, setParams] = useState<IAreaGetAllParams | undefined>();
-	const [businessInitParams, setBusinessUnitParams] = useState<
+	const [businessUnitParams, setBusinessUnitParams] = useState<
 		IBusinessUnitGetAllParams | undefined
 	>();
 	const [tempFilter, setTempFilter] = useState<IAreaGetAllParams | undefined>();
@@ -47,7 +47,6 @@ const MasterArea = () => {
 		page: number;
 		pageSize: number;
 	}>({ page: 1, pageSize: 20 });
-
 	const [initialValue, setInitialValue] = useState<ICreateAreaRequest>({
 		name: "",
 		daerah: "",
@@ -79,13 +78,11 @@ const MasterArea = () => {
 
 	const fetchDataBusinessUnit = async () => {
 		try {
-			if (businessInitParams) {
-				const response = await getAllBusinessUnitApi(businessInitParams);
-				const businessUnitList = response.data.data.data;
-				setDataOptionBusinessUnit(
-					businessUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
-				);
-			}
+			const response = await getAllBusinessUnitApi(businessUnitParams);
+			const businessUnitList = response.data.data.data;
+			setDataOptionBusinessUnit(
+				businessUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
+			);
 		} catch (error: any) {
 			// CheckAuthentication(error);
 		}
@@ -104,7 +101,7 @@ const MasterArea = () => {
 	useEffect(() => {
 		fetchDataBusinessUnit();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [businessInitParams]);
+	}, [businessUnitParams]);
 
 	useEffect(() => {
 		fetchDataList();

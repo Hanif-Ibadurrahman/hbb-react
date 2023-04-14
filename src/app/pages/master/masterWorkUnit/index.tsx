@@ -1,16 +1,45 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
 import { MainLayout } from "app/layout/mainLayout";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import { SideModal } from "app/components/modal/sideModal";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { CenterModal } from "app/components/modal/centerModal";
-import { IWorkUnitGetAllParams } from "store/types/workUnitTypes";
-import { getAllWorkUnitApi } from "api/workUnit";
+import {
+	ICreateWorkUnitRequest,
+	IWorkUnit,
+	IWorkUnitGetAllParams,
+} from "store/types/workUnitTypes";
+import {
+	createNewWorkUnitApi,
+	deleteWorkUnitApi,
+	getAllWorkUnitApi,
+	getDetailWorkUnitApi,
+	updateWorkUnitApi,
+} from "api/workUnit";
+import {
+	Modal as AntdModal,
+	Button,
+	Form,
+	FormInstance,
+	Input,
+	Select,
+} from "antd";
+import { useFormik } from "formik";
+import Swal from "sweetalert2";
+import { DefaultOptionType } from "antd/es/select";
+import { getAllBusinessUnitApi } from "api/businessUnit";
+import { IBusinessUnitGetAllParams } from "store/types/businessUnitTypes";
+import { IAreaGetAllParams } from "store/types/areaTypes";
+import { getAllAreaApi } from "api/area";
 
 const MasterWorkUnit = () => {
-	// const dispatch = useDispatch();
+	const [form] = Form.useForm();
+	const formRef = useRef<FormInstance>(null);
 	const [params, setParams] = useState<IWorkUnitGetAllParams | undefined>();
+	const [businessUnitParams, setBusinessUnitParams] = useState<
+		IBusinessUnitGetAllParams | undefined
+	>();
+	const [areaParams, setAreaParams] = useState<IAreaGetAllParams | undefined>();
 	const [tempFilter, setTempFilter] = useState<
 		IWorkUnitGetAllParams | undefined
 	>();
@@ -21,18 +50,81 @@ const MasterWorkUnit = () => {
 		page: number;
 		pageSize: number;
 	}>({ page: 1, pageSize: 20 });
-	const [initialValue, setInitialValue] = useState<string | null>();
+	const [initialValue, setInitialValue] = useState<ICreateWorkUnitRequest>();
 	const [dataTable, setDataTable] = useState();
+	const [dataOptionBusinessUnit, setDataOptionBusinessUnit] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionArea, setDataOptionArea] = useState<
+		DefaultOptionType[] | undefined
+	>();
 
 	const fetchDataList = async () => {
 		try {
-			const response = await getAllWorkUnitApi(params);
-			setDataTable(response.data.data);
-			// await dispatch(getCountryListAction(params));
+			if (params) {
+				const response = await getAllWorkUnitApi(params);
+				setDataTable(response.data.data);
+			}
 		} catch (error: any) {
 			// CheckAuthentication(error);
 		}
 	};
+
+	const fetchDataDetail = async (id: string) => {
+		try {
+			const response = await getDetailWorkUnitApi(id);
+			handleInitialValue(response.data.data);
+		} catch (error: any) {
+			// CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataBusinessUnit = async () => {
+		try {
+			const response = await getAllBusinessUnitApi(businessUnitParams);
+			const businessUnitList = response.data.data.data;
+			console.log(businessUnitList);
+			setDataOptionBusinessUnit(
+				businessUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
+			);
+		} catch (error: any) {
+			// CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataArea = async () => {
+		try {
+			const response = await getAllAreaApi(areaParams);
+			const areaList = response.data.data.data;
+			console.log(areaList);
+			setDataOptionArea(
+				areaList.map(v => ({ label: v.name, value: `${v.id}` })),
+			);
+		} catch (error: any) {
+			// CheckAuthentication(error);
+		}
+	};
+
+	const handleInitialValue = (values: IWorkUnit) => {
+		const setData = {
+			name: values.name || "",
+			id_bisnis_unit: values.id_bisnis_unit || "",
+			id_area: values.id_area || "",
+			id_pegawai: values.id_pegawai || "",
+		};
+		setInitialValue(setData);
+		formRef.current?.setFieldsValue(setData);
+	};
+
+	useEffect(() => {
+		fetchDataBusinessUnit();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [businessUnitParams]);
+
+	useEffect(() => {
+		fetchDataArea();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [areaParams]);
 
 	useEffect(() => {
 		fetchDataList();
@@ -48,6 +140,99 @@ const MasterWorkUnit = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedPage]);
 
+	useEffect(() => {
+		if (showModal.show && showModal.id) {
+			fetchDataDetail(showModal.id);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [showModal]);
+
+	const formik = useFormik({
+		initialValues: { ...initialValue },
+		enableReinitialize: true,
+		onSubmit: values => {},
+	});
+
+	const handleAdd = () => {
+		setShowModal({ show: true });
+		setInitialValue({
+			name: "",
+			id_bisnis_unit: "",
+			id_area: "",
+			id_pegawai: "",
+		});
+		formRef.current?.resetFields();
+	};
+
+	const handleDelete = (id: string) => {
+		const swalCustom = Swal.mixin({
+			customClass: {
+				confirmButton: "btn btn-success m-1",
+				cancelButton: "btn btn-danger m-1",
+			},
+			buttonsStyling: false,
+		});
+
+		swalCustom
+			.fire({
+				title: "Apakah anda yakin?",
+				text: "Ingin menghapus data ini",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonText: "Delete",
+				cancelButtonText: "Cancel",
+				reverseButtons: true,
+			})
+			.then(result => {
+				if (result.isConfirmed) {
+					deleteWorkUnitApi(id).then(res => {
+						if (res.data.status === "success") {
+							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
+							fetchDataList();
+						} else {
+							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+						}
+					});
+				} else if (result.dismiss === Swal.DismissReason.cancel) {
+					swalCustom.fire("Batal", "Data ini batal dihapus", "error");
+				}
+			});
+	};
+
+	const onFinish = (values: any) => {
+		if (showModal.id) {
+			updateWorkUnitApi(showModal.id, values).then(res => {
+				if (res.data.status === "success") {
+					setShowModal({ show: false });
+					fetchDataList();
+				}
+				Swal.fire({
+					icon: res.data.status,
+					title: res.data.message,
+					showConfirmButton: false,
+					timer: 3000,
+				});
+			});
+		} else {
+			createNewWorkUnitApi(values).then(res => {
+				if (res.data.status === "success") {
+					setShowModal({ show: false });
+					fetchDataList();
+				}
+				Swal.fire({
+					icon: res.data.status,
+					title: res.data.message,
+					showConfirmButton: false,
+					timer: 3000,
+				});
+			});
+		}
+	};
+
+	const handleCancel = () => {
+		setShowModal({ show: false });
+	};
+
 	const setValueFilter = () => {
 		setParams({ ...params, ...tempFilter });
 	};
@@ -60,14 +245,13 @@ const MasterWorkUnit = () => {
 						<TablePaginateAndSort
 							title="Satuan Kerja"
 							dataSource={dataTable}
-							columns={columns({ setShowModal })}
+							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPage={setSelectedPage}
 							contentHeader={
 								<button
 									type="button"
 									className="btn btn-primary"
-									data-bs-toggle="modal"
-									data-bs-target="#modal"
+									onClick={handleAdd}
 								>
 									Tambah
 								</button>
@@ -77,84 +261,128 @@ const MasterWorkUnit = () => {
 				</div>
 			</section>
 
-			<CenterModal
-				modalName="modal"
-				title="Tambah Data"
-				contentFooter={
-					<button
-						type="button"
-						className="btn btn-primary"
-						data-bs-dismiss="modal"
-					>
-						Simpan
-					</button>
+			<AntdModal
+				title={showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+				footer={
+					<div style={{ display: "flex", justifyContent: "end", columnGap: 5 }}>
+						<Button type="primary" danger onClick={handleCancel}>
+							Close
+						</Button>
+						<Button type="primary" onClick={form.submit}>
+							Simpan
+						</Button>
+					</div>
 				}
+				onCancel={handleCancel}
+				open={showModal.show}
+				width={800}
 			>
 				<div className="col-12">
-					<div className="form-group">
-						<h6>
-							Bisnis Unit <span className="text-danger">*</span>
-						</h6>
-						<div className="controls">
-							<select
-								className="form-select"
-								name="bisnis_unit"
-								required
-								data-validation-required-message="This field is required"
-							>
-								<option value="sor_1">SOR I</option>
-								<option value="sor_2">SOR II</option>
-								<option value="sor_3">SOR III</option>
-							</select>
-						</div>
-					</div>
-					<div className="form-group">
-						<h6>
-							Area <span className="text-danger">*</span>
-						</h6>
-						<div className="controls">
-							<select
-								className="form-select"
-								name="area"
-								required
-								data-validation-required-message="This field is required"
-							>
-								<option value="jakarta">Jakarta</option>
-								<option value="bogor">Bogor</option>
-								<option value="medan">Medan</option>
-							</select>
-						</div>
-					</div>
-					<div className="form-group">
-						<h6>
-							Nama Satuan Kerja <span className="text-danger">*</span>
-						</h6>
-						<div className="controls">
-							<input
-								type="text"
-								name="text"
-								className="form-control"
-								required
-								data-validation-required-message="This field is required"
-							/>
-						</div>
-					</div>
-					<div className="form-group">
-						<h6>
-							Nama Kepala Satuan Kerja <span className="text-danger">*</span>
-						</h6>
-						<div className="controls">
-							<input
-								type="text"
-								name="text"
-								className="form-control"
-								required
-								data-validation-required-message="This field is required"
-							/>
-						</div>
-					</div>
+					<Form form={form} ref={formRef} onFinish={onFinish}>
+						<Form.Item name="id_bisnis_unit">
+							<div className="form-group">
+								<span>Bisnis Unit</span>
+								<div className="controls">
+									<Select
+										showSearch
+										placeholder="Pilih Bisnis Unit"
+										onSearch={v => setBusinessUnitParams({ name: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionBusinessUnit}
+										onChange={(v, opt) => {
+											formik.setFieldValue("id_bisnis_unit", v);
+											formRef.current?.setFieldsValue({
+												id_bisnis_unit: v,
+											});
+										}}
+										value={formik.values.id_bisnis_unit}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+						<Form.Item name="id_area">
+							<div className="form-group">
+								<span>Area</span>
+								<div className="controls">
+									<Select
+										showSearch
+										placeholder="Pilih Area"
+										onSearch={v => setAreaParams({ name: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionArea}
+										onChange={(v, opt) => {
+											formik.setFieldValue("id_area", v);
+											formRef.current?.setFieldsValue({
+												id_area: v,
+											});
+										}}
+										value={formik.values.id_area}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+						<Form.Item
+							name="name"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<span>
+									Nama Satuan Kerja <span className="text-danger">*</span>
+								</span>
+								<div className="controls">
+									<Input
+										type="text"
+										name="name"
+										className="form-control"
+										placeholder="Nama Satuan Kerja"
+										onChange={formik.handleChange}
+										value={formik.values.name}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+						<Form.Item
+							name="id_pegawai"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<span>
+									Nama Kepala Satuan Kerja{" "}
+									<span className="text-danger">*</span>
+								</span>
+								<div className="controls">
+									<Input
+										type="text"
+										name="id_pegawai"
+										className="form-control"
+										placeholder="Nama Kepala Satuan Kerja"
+										onChange={formik.handleChange}
+										value={formik.values.id_pegawai}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+					</Form>
 				</div>
-			</CenterModal>
+			</AntdModal>
 
 			<SideModal
 				title="Filter"

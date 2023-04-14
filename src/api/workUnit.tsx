@@ -25,3 +25,7 @@ export const updateWorkUnitApi = (
 ) => {
 	return apiWithToken.put(`/api/master/satuan-kerja/${id}`, input);
 };
+
+export const deleteWorkUnitApi = (id: string) => {
+	return apiWithToken.delete(`/api/master/satuan-kerja/${id}`);
+};
