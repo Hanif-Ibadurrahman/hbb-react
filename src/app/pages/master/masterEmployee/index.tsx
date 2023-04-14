@@ -106,6 +106,7 @@ const MasterEmployee = () => {
 			nipg: "",
 			jabatan: "",
 		});
+		formik.resetForm();
 		formRef.current?.resetFields();
 	};
 

@@ -96,6 +96,7 @@ const MasterCompany = () => {
 	const handleAdd = () => {
 		setShowModal({ show: true });
 		setInitialValue({ name: "", code: "" });
+		formik.resetForm();
 		formRef.current?.resetFields();
 	};
 
