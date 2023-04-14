@@ -103,6 +103,7 @@ const MasterCodeGroup = () => {
 			value: "",
 			code: "",
 		});
+		formik.resetForm();
 		formRef.current?.resetFields();
 	};
 
@@ -253,7 +254,9 @@ const MasterCodeGroup = () => {
 							rules={[
 								{
 									required: true,
-									message: "Harap isi field ini",
+									max: 2,
+									message:
+										"Harap isi field ini dan tidak lebih dari 2 karakter",
 								},
 							]}
 						>

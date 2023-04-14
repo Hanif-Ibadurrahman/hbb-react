@@ -95,6 +95,7 @@ const MasterColor = () => {
 	const handleAdd = () => {
 		setShowModal({ show: true });
 		setInitialValue({ name: "" });
+		formik.resetForm();
 		formRef.current?.resetFields();
 	};
 

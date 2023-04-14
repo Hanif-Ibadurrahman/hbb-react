@@ -106,6 +106,7 @@ const MasterBusinessUnit = () => {
 	const handleAdd = () => {
 		setShowModal({ show: true });
 		setInitialValue({ name: "", id_company: "" });
+		formik.resetForm();
 		formRef.current?.resetFields();
 	};
 

@@ -133,6 +133,7 @@ const MasterArea = () => {
 	const handleAdd = () => {
 		setShowModal({ show: true });
 		setInitialValue({ name: "", daerah: "" });
+		formik.resetForm();
 		formRef.current?.resetFields();
 	};
 
