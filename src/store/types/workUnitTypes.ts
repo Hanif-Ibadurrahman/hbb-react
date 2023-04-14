@@ -27,10 +27,16 @@ export interface IWorkUnitGetAllParams {
 
 export interface ICreateWorkUnitRequest {
 	name: string;
+	id_area: string;
+	id_bisnis_unit: string;
+	id_pegawai: string;
 }
 
 export interface IUpdateWorkUnitRequest {
 	name: string;
+	id_area: string;
+	id_bisnis_unit: string;
+	id_pegawai: string;
 }
 
 export interface IWorkUnitGetAllResponse {
