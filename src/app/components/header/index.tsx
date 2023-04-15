@@ -2,6 +2,9 @@ import { Modal } from "antd";
 import { logoutApi } from "api/login";
 import FeatherIcon from "feather-icons-react";
 import { Link, useNavigate } from "react-router-dom";
+import PgnIcon from "assets/image/logo-icon-pgn.png";
+import PgnText from "assets/image/logo-text-pgn.png";
+
 interface IHeader {
 	collapseHandler: (thisKey: string) => void;
 }

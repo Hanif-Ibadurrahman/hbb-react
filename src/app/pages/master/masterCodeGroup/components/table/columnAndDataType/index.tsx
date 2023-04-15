@@ -1,5 +1,5 @@
 import { ColumnsType } from "antd/es/table";
-import { ActionButtonTable } from "app/components/table/antd/actionButtonTable";
+import { NavigateFunction } from "react-router-dom";
 import { ICodeGroup } from "store/types/codeGroupTypes";
 interface IColumn {
 	setShowModal: React.Dispatch<
@@ -9,9 +9,10 @@ interface IColumn {
 		}>
 	>;
 	handleDelete: (id: string) => void;
+	navigate: NavigateFunction;
 }
 
-export const columns = ({ setShowModal, handleDelete }: IColumn) => {
+export const columns = ({ setShowModal, handleDelete, navigate }: IColumn) => {
 	const columnType: ColumnsType<ICodeGroup> = [
 		{
 			title: "Nama Main Group",
@@ -31,11 +32,39 @@ export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 			dataIndex: "id",
 			render: (text, record, index) => {
 				return (
-					<ActionButtonTable
-						setShowModal={setShowModal}
-						handleDelete={handleDelete}
-						itemId={text}
-					/>
+					<div style={{ display: "flex", columnGap: 5 }}>
+						<button
+							type="button"
+							className="btn btn-info"
+							onClick={() => {
+								navigate("/master-sub-main-group", {
+									replace: true,
+									state: { mainGroupData: record },
+								});
+							}}
+						>
+							List
+						</button>
+						<button
+							type="button"
+							className="btn btn-primary"
+							onClick={() => {
+								setShowModal({ show: true, id: text });
+							}}
+						>
+							Edit
+						</button>
+						<button
+							type="button"
+							className="btn"
+							style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
+							onClick={() => {
+								handleDelete(text);
+							}}
+						>
+							Delete
+						</button>
+					</div>
 				);
 			},
 		},
