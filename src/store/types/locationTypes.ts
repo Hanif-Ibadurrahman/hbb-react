@@ -25,11 +25,21 @@ export interface ILocationGetAllParams {
 }
 
 export interface ICreateLocationRequest {
+	id_bisnis_unit: string;
+	id_area: string;
+	id_pegawai: string;
+	id_satker: string;
 	name: string;
+	from_opname: number;
 }
 
 export interface IUpdateLocationRequest {
+	id_bisnis_unit: string;
+	id_area: string;
+	id_pegawai: string;
+	id_satker: string;
 	name: string;
+	from_opname: number;
 }
 
 export interface ILocationGetAllResponse {

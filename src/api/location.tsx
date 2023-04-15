@@ -24,3 +24,7 @@ export const updateLocationApi = (
 ) => {
 	return apiWithToken.put(`/api/master/location/${id}`, input);
 };
+
+export const deleteLocationApi = (id: string) => {
+	return apiWithToken.delete(`/api/master/location/${id}`);
+};
