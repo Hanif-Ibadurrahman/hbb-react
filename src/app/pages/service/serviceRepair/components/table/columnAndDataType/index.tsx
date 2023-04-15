@@ -58,9 +58,7 @@ export const columns = ({ handleApprove, handleDelete }: IColumn) => {
 							className="btn"
 							style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
 							onClick={() => {
-								if (handleDelete) {
-									handleDelete(text);
-								}
+								handleDelete(text);
 							}}
 						>
 							Reject

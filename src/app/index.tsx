@@ -41,6 +41,9 @@ export function App() {
 	const MasterCodeGroupPage = lazyLoad(
 		() => import("app/pages/master/masterCodeGroup"),
 	);
+	const MasterSubCodeGroupPage = lazyLoad(
+		() => import("app/pages/master/masterSubCodeGroup"),
+	);
 	const MasterConditionPage = lazyLoad(
 		() => import("app/pages/master/masterCondition"),
 	);
@@ -114,6 +117,10 @@ export function App() {
 				<Route path="master-bisnis-unit" element={<MasterBusinessUnitPage />} />
 				<Route path="master-divisi" element={<MasterDivisionPage />} />
 				<Route path="master-kode-group" element={<MasterCodeGroupPage />} />
+				<Route
+					path="master-sub-main-group"
+					element={<MasterSubCodeGroupPage />}
+				/>
 				<Route path="master-kondisi" element={<MasterConditionPage />} />
 				<Route path="master-lokasi" element={<MasterLocationPage />} />
 				<Route path="master-negara" element={<MasterCountryPage />} />

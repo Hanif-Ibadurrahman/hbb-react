@@ -5,18 +5,18 @@ import { columns } from "./components/table/columnAndDataType";
 import { SideModal } from "app/components/modal/sideModal";
 import { SelectWithTag } from "app/components/selectWithTag";
 import {
-	ICodeGroup,
-	ICodeGroupGetAllParams,
-	ICodeGroupPaginateResponse,
-	ICreateCodeGroupRequest,
-} from "store/types/codeGroupTypes";
+	ISubCodeGroup,
+	ISubCodeGroupGetAllParams,
+	ISubCodeGroupPaginateResponse,
+	ICreateSubCodeGroupRequest,
+} from "store/types/subCodeGroupTypes";
 import {
-	createNewCodeGroupApi,
-	deleteCodeGroupApi,
-	getAllCodeGroupApi,
-	getDetailCodeGroupApi,
-	updateCodeGroupApi,
-} from "api/codeGroup";
+	createNewSubCodeGroupApi,
+	deleteSubCodeGroupApi,
+	getAllSubCodeGroupApi,
+	getDetailSubCodeGroupApi,
+	updateSubCodeGroupApi,
+} from "api/subCodeGroup";
 import {
 	Modal as AntdModal,
 	Button,
@@ -29,16 +29,17 @@ import {
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { CheckAuthentication } from "app/helper/authentication";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const MasterCodeGroup = () => {
+const MasterSubCodeGroup = () => {
 	const { Title } = Typography;
 	const navigate = useNavigate();
+	const location = useLocation();
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
-	const [params, setParams] = useState<ICodeGroupGetAllParams | undefined>();
+	const [params, setParams] = useState<ISubCodeGroupGetAllParams | undefined>();
 	const [tempFilter, setTempFilter] = useState<
-		ICodeGroupGetAllParams | undefined
+		ISubCodeGroupGetAllParams | undefined
 	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
@@ -47,17 +48,30 @@ const MasterCodeGroup = () => {
 		page: number;
 		pageSize: number;
 	}>({ page: 1, pageSize: 20 });
-	const [initialValue, setInitialValue] = useState<ICreateCodeGroupRequest>({
+	const [initialValue, setInitialValue] = useState<ICreateSubCodeGroupRequest>({
+		id_main_group: "",
 		value: "",
 		code: "",
 	});
-	const [dataTable, setDataTable] = useState<ICodeGroupPaginateResponse>();
+	const [dataTable, setDataTable] = useState<ISubCodeGroupPaginateResponse>();
 
 	const fetchDataList = async () => {
 		try {
 			if (params) {
-				const response = await getAllCodeGroupApi(params);
-				setDataTable(response.data.data);
+				if (location.state === null) {
+					navigate("/master-kode-group", { replace: true });
+				}
+				const mainGroupId = location.state.mainGroupData.id;
+				const response = await getAllSubCodeGroupApi(mainGroupId, params);
+				const data = {
+					...response.data.data,
+					data: response.data.data.data.map(d => ({
+						...d,
+						mainGroupName: location.state.mainGroupData.value,
+						mainGroupCode: location.state.mainGroupData.code,
+					})),
+				};
+				setDataTable(data);
 			}
 		} catch (error: any) {
 			CheckAuthentication(error);
@@ -66,15 +80,16 @@ const MasterCodeGroup = () => {
 
 	const fetchDataDetail = async (id: string) => {
 		try {
-			const response = await getDetailCodeGroupApi(id);
+			const response = await getDetailSubCodeGroupApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
 	};
 
-	const handleInitialValue = (values: ICodeGroup) => {
+	const handleInitialValue = (values: ISubCodeGroup) => {
 		const setData = {
+			id_main_group: "",
 			value: values.value || "",
 			code: values.code || "",
 		};
@@ -112,6 +127,7 @@ const MasterCodeGroup = () => {
 	const handleAdd = () => {
 		setShowModal({ show: true });
 		setInitialValue({
+			id_main_group: "",
 			value: "",
 			code: "",
 		});
@@ -140,7 +156,7 @@ const MasterCodeGroup = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					deleteCodeGroupApi(id).then(res => {
+					deleteSubCodeGroupApi(id).then(res => {
 						if (res.data.status === "success") {
 							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
 							fetchDataList();
@@ -156,7 +172,7 @@ const MasterCodeGroup = () => {
 
 	const onFinish = (values: any) => {
 		if (showModal.id) {
-			updateCodeGroupApi(showModal.id, values).then(res => {
+			updateSubCodeGroupApi(showModal.id, values).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });
 					fetchDataList();
@@ -169,7 +185,11 @@ const MasterCodeGroup = () => {
 				});
 			});
 		} else {
-			createNewCodeGroupApi(values).then(res => {
+			const input = {
+				...values,
+				id_main_group: location.state.mainGroupData.id,
+			};
+			createNewSubCodeGroupApi(input).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });
 					fetchDataList();
@@ -198,9 +218,9 @@ const MasterCodeGroup = () => {
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
-							title="Group"
+							title="Sub Group"
 							dataSource={dataTable}
-							columns={columns({ setShowModal, handleDelete, navigate })}
+							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPage={setSelectedPage}
 							contentHeader={
 								<>
@@ -256,7 +276,7 @@ const MasterCodeGroup = () => {
 					>
 						<div className="form-group">
 							<Title level={5}>
-								Group <span className="text-danger">*</span>
+								Sub Group <span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
 								<Input
@@ -327,4 +347,4 @@ const MasterCodeGroup = () => {
 	);
 };
 
-export default MasterCodeGroup;
+export default MasterSubCodeGroup;
