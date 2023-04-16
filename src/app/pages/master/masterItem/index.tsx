@@ -211,8 +211,10 @@ const MasterItem = () => {
 
 	const fetchDataList = async () => {
 		try {
-			const response = await getAllItemApi(params);
-			setDataTable(response.data.data);
+			if (params) {
+				const response = await getAllItemApi(params);
+				setDataTable(response.data.data);
+			}
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}

@@ -16,14 +16,19 @@ export interface IManagerGetAllParams {
 	page_size?: number;
 	nama_pengelola?: string;
 	nipg?: string;
+	jabatan?: string;
 }
 
 export interface ICreateManagerRequest {
-	name: string;
+	nama_pengelola: string;
+	jabatan: string;
+	nipg: string;
 }
 
 export interface IUpdateManagerRequest {
-	name: string;
+	nama_pengelola: string;
+	jabatan: string;
+	nipg: string;
 }
 
 export interface IManagerGetAllResponse {
