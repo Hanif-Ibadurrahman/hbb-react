@@ -22,3 +22,7 @@ export const createNewManagerApi = (input: ICreateManagerRequest) => {
 export const updateManagerApi = (id: string, input: IUpdateManagerRequest) => {
 	return apiWithToken.put(`/api/master/pengelola/${id}`, input);
 };
+
+export const deleteManagerApi = (id: string) => {
+	return apiWithToken.delete(`/api/master/pengelola/${id}`);
+};
