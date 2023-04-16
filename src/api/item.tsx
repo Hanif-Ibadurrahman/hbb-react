@@ -22,3 +22,7 @@ export const createNewItemApi = (input: ICreateItemRequest) => {
 export const updateItemApi = (id: string, input: IUpdateItemRequest) => {
 	return apiWithToken.put(`/api/master/item/${id}`, input);
 };
+
+export const deleteItemApi = (id: string) => {
+	return apiWithToken.delete(`/api/master/Item/${id}`);
+};

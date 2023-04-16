@@ -37,11 +37,35 @@ export interface IItemGetAllParams {
 }
 
 export interface ICreateItemRequest {
+	id_area: string;
+	id_main_group: string;
+	id_sub_group: string;
 	name: string;
+	merk: string;
+	tipe: string;
+	jenis: string;
+	model: string;
+	warna: string;
+	kapasitas: string;
+	ukuran: string;
+	satuan: string;
+	id_company: string;
 }
 
 export interface IUpdateItemRequest {
+	id_area: string;
+	id_main_group: string;
+	id_sub_group: string;
 	name: string;
+	merk: string;
+	tipe: string;
+	jenis: string;
+	model: string;
+	warna: string;
+	kapasitas: string;
+	ukuran: string;
+	satuan: string;
+	id_company: string;
 }
 
 export interface IItemGetAllResponse {

@@ -1,89 +1,43 @@
-import { lazyLoad } from "utils/loadable";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { DashboardPage } from "./pages/dashboard/dashboardPage";
+import { CorporateInventoryReportPage } from "./pages/corporateInventoryReport/corporateInventoryReportPage";
+import { DisplacementPage } from "./pages/displacement/displacementPage";
+import { HbbInventoryPage } from "./pages/hbbInventory/hbbInventoryPage";
+import { HbbInventarisAttachmentPage } from "./pages/hbbInventoryAttachment/hbbInventoryAttachmentPage";
+import { HbbInventoryReportPage } from "./pages/hbbInventoryReport/hbbInventoryReportPage";
+import { LoginPage } from "./pages/login/loginPage";
+import { PrintBarcodePage } from "./pages/printBarcode/printBarcodePage";
+import { RoomInventoryPage } from "./pages/roomInventory/roomInventoryPage";
+import { ServiceTicketHistoryPage } from "./pages/serviceTicketHistory/serviceTicketHistoryPage";
+import { WarehouseCheckInOutPage } from "./pages/warehouseCheckInOut/warehouseCheckinOutPage";
+import { MasterAreaPage } from "./pages/master/masterArea/masterAreaPage";
+import { MasterBusinessUnitPage } from "./pages/master/masterBusinessUnit/masterBusinessUnitPage";
+import { MasterCodeGroupPage } from "./pages/master/masterCodeGroup/masterCodeGroupPage";
+import { MasterColorPage } from "./pages/master/masterColor/masterColorPage";
+import { MasterCompanyPage } from "./pages/master/masterCompany/masterCompanyPage";
+import { MasterConditionPage } from "./pages/master/masterCondition/masterConditionPage";
+import { MasterCountryPage } from "./pages/master/masterCountry/masterCountryPage";
+import { MasterDivisionPage } from "./pages/master/masterDivision/masterDivisionPage";
+import { MasterEmployeePage } from "./pages/master/masterEmployee/masterEmployeePage";
+import { MasterItemPage } from "./pages/master/masterItem/masterItemPage";
+import { MasterLocationPage } from "./pages/master/masterLocation/masterLocationPage";
+import { MasterManagerPage } from "./pages/master/masterManager/masterManagerPage";
+import { MasterProviderPage } from "./pages/master/masterProvider/masterProviderPage";
+import { MasterSubCodeGroupPage } from "./pages/master/masterSubCodeGroup/masterSubCodeGroupPage";
+import { MasterWorkUnitPage } from "./pages/master/masterWorkUnit/masterWorkUnitPage";
+import { MasterUserPage } from "./pages/master/masterUser/masterUserPage";
+import { ServiceDisplacementPage } from "./pages/service/serviceDisplacement/serviceDisplacemenetPage";
+import { ServiceRequestPage } from "./pages/service/serviceRequest/serviceRequestPage";
+import { ServiceRepairPage } from "./pages/service/serviceRepair/serviceRepairPage";
+import { ServiceReturnPage } from "./pages/service/serviceReturn/serviceReturnPage";
 
 export function App() {
-	const DashboardPage = lazyLoad(() => import("app/pages/dashboard"));
-	const HbbInventaryPage = lazyLoad(() => import("app/pages/hbbInventory"));
-	const ServiceRequestPage = lazyLoad(
-		() => import("app/pages/service/serviceRequest"),
-	);
-	const ServiceRepairPage = lazyLoad(
-		() => import("app/pages/service/serviceRepair"),
-	);
-	const ServiceDisplacementPage = lazyLoad(
-		() => import("app/pages/service/serviceDisplacement"),
-	);
-	const ServiceReturnPage = lazyLoad(
-		() => import("app/pages/service/serviceReturn"),
-	);
-	const PrintBarcodePage = lazyLoad(() => import("app/pages/printBarcode"));
-	const RoomInventoryPage = lazyLoad(() => import("app/pages/roomInventory"));
-	const HbbInventoryReportPage = lazyLoad(
-		() => import("app/pages/hbbInventoryReport"),
-	);
-	const HbbInventarisAttachmentPage = lazyLoad(
-		() => import("app/pages/hbbInventoryAttachment"),
-	);
-	const CorporateInventoryReportPage = lazyLoad(
-		() => import("app/pages/corporateInventoryReport"),
-	);
-	const WarehouseCheckInOutPage = lazyLoad(
-		() => import("app/pages/warehouseCheckInOut"),
-	);
-	const MasterAreaPage = lazyLoad(() => import("app/pages/master/masterArea"));
-	const MasterItemPage = lazyLoad(() => import("app/pages/master/masterItem"));
-	const MasterBusinessUnitPage = lazyLoad(
-		() => import("app/pages/master/masterBusinessUnit"),
-	);
-	const MasterDivisionPage = lazyLoad(
-		() => import("app/pages/master/masterDivision"),
-	);
-	const MasterCodeGroupPage = lazyLoad(
-		() => import("app/pages/master/masterCodeGroup"),
-	);
-	const MasterSubCodeGroupPage = lazyLoad(
-		() => import("app/pages/master/masterSubCodeGroup"),
-	);
-	const MasterConditionPage = lazyLoad(
-		() => import("app/pages/master/masterCondition"),
-	);
-	const MasterLocationPage = lazyLoad(
-		() => import("app/pages/master/masterLocation"),
-	);
-	const MasterCountryPage = lazyLoad(
-		() => import("app/pages/master/masterCountry"),
-	);
-	const MasterEmployeePage = lazyLoad(
-		() => import("app/pages/master/masterEmployee"),
-	);
-	const MasterManagerPage = lazyLoad(
-		() => import("app/pages/master/masterManager"),
-	);
-	const MasterProviderPage = lazyLoad(
-		() => import("app/pages/master/masterProvider"),
-	);
-	const MasterCompanyPage = lazyLoad(
-		() => import("app/pages/master/masterCompany"),
-	);
-	const MasterWorkUnitPage = lazyLoad(
-		() => import("app/pages/master/masterWorkUnit"),
-	);
-	const MasterUserPage = lazyLoad(() => import("app/pages/master/masterUser"));
-	const MasterColorPage = lazyLoad(
-		() => import("app/pages/master/masterColor"),
-	);
-	const ServiceTicketHistoryPage = lazyLoad(
-		() => import("app/pages/serviceTicketHistory"),
-	);
-	const Displacement = lazyLoad(() => import("app/pages/displacement"));
-	const LoginPage = lazyLoad(() => import("app/pages/login"));
-
 	return (
 		<Router>
 			<Routes>
 				<Route index element={<DashboardPage />}></Route>
 				<Route path="dashboard" element={<DashboardPage />} />
-				<Route path="inventaris" element={<HbbInventaryPage />} />
+				<Route path="inventaris" element={<HbbInventoryPage />} />
 				<Route path="permintaan-layanan" element={<ServiceRequestPage />} />
 				<Route path="permintaan-perbaikan" element={<ServiceRepairPage />} />
 				<Route
@@ -135,7 +89,7 @@ export function App() {
 					path="riwayat-tiket-layanan"
 					element={<ServiceTicketHistoryPage />}
 				/>
-				<Route path="pemindahan" element={<Displacement />} />
+				<Route path="pemindahan" element={<DisplacementPage />} />
 				<Route path="login" element={<LoginPage />} />
 			</Routes>
 		</Router>
