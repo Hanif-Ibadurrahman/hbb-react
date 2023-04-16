@@ -71,16 +71,13 @@ const MasterManager = () => {
 	};
 
 	const handleInitialValue = (values: IManager) => {
-		setInitialValue({
+		const setData = {
 			nama_pengelola: values.nama_pengelola || "",
 			jabatan: values.jabatan || "",
 			nipg: values.nipg || "",
-		});
-		formRef.current?.setFieldsValue({
-			nama_pengelola: values.nama_pengelola || "",
-			jabatan: values.jabatan || "",
-			nipg: values.nipg || "",
-		});
+		};
+		setInitialValue(setData);
+		formRef.current?.setFieldsValue(setData);
 	};
 
 	useEffect(() => {
