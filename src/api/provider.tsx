@@ -25,3 +25,7 @@ export const updateProviderApi = (
 ) => {
 	return apiWithToken.put(`/api/master/penyedia/${id}`, input);
 };
+
+export const deleteProviderApi = (id: string) => {
+	return apiWithToken.delete(`/api/master/penyedia/${id}`);
+};

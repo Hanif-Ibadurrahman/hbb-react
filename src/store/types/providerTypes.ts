@@ -19,11 +19,15 @@ export interface IProviderGetAllParams {
 }
 
 export interface ICreateProviderRequest {
-	name: string;
+	nama_penyedia: string;
+	jabatan: string;
+	nipg: string;
 }
 
 export interface IUpdateProviderRequest {
-	name: string;
+	nama_penyedia: string;
+	jabatan: string;
+	nipg: string;
 }
 
 export interface IProviderGetAllResponse {

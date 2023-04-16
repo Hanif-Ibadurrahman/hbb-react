@@ -12,7 +12,7 @@ interface IColumn {
 	handleDelete: (id: string) => void;
 }
 
-export const columns = ({ setShowModal, handleDelete }: IColumn) => {
+export const columns = ({ setShowModal }: IColumn) => {
 	const columnType: ColumnsType<IManager> = [
 		{
 			title: "Nama User",
