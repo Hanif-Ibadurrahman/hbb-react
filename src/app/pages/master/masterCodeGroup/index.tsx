@@ -2,8 +2,6 @@ import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAnd
 import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
-import { SideModal } from "app/components/modal/sideModal";
-import { SelectWithTag } from "app/components/selectWithTag";
 import {
 	ICodeGroup,
 	ICodeGroupGetAllParams,
@@ -30,16 +28,15 @@ import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { CheckAuthentication } from "app/helper/authentication";
 import { useNavigate } from "react-router-dom";
+import { ModalFilter } from "./components/modalFilter";
 
 const MasterCodeGroup = () => {
 	const { Title } = Typography;
 	const navigate = useNavigate();
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
+	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<ICodeGroupGetAllParams | undefined>();
-	const [tempFilter, setTempFilter] = useState<
-		ICodeGroupGetAllParams | undefined
-	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
 	});
@@ -188,10 +185,6 @@ const MasterCodeGroup = () => {
 		setShowModal({ show: false });
 	};
 
-	const setValueFilter = () => {
-		setParams({ ...params, ...tempFilter });
-	};
-
 	return (
 		<MainLayout>
 			<section className="content">
@@ -205,11 +198,17 @@ const MasterCodeGroup = () => {
 							contentHeader={
 								<>
 									<button
+										className="btn btn-secondary"
+										onClick={() => setShowFilter(true)}
+									>
+										<i className="fa fa-filter">Filter</i>
+									</button>
+									<button
 										type="button"
 										className="btn btn-primary"
 										onClick={handleAdd}
 									>
-										Tambah Group
+										Tambah
 									</button>
 								</>
 							}
@@ -299,30 +298,11 @@ const MasterCodeGroup = () => {
 				</Form>
 			</AntdModal>
 
-			<SideModal
-				title="Filter"
-				contentFooter={
-					<button
-						type="button"
-						className="btn btn-primary"
-						data-bs-dismiss="modal"
-						onClick={setValueFilter}
-					>
-						Filter
-					</button>
-				}
-			>
-				<h6 className="box-title mt-10 d-block mb-10">Group</h6>
-				<SelectWithTag
-					colorTag="cyan"
-					onChange={v => setTempFilter({ value: v.toString() })}
-				/>
-				<h6 className="box-title mt-10 d-block mb-10">Code</h6>
-				<SelectWithTag
-					colorTag="cyan"
-					onChange={v => setTempFilter({ code: v.toString() })}
-				/>
-			</SideModal>
+			<ModalFilter
+				isShow={showFilter}
+				setShowModal={setShowFilter}
+				setParams={setParams}
+			/>
 		</MainLayout>
 	);
 };
