@@ -31,6 +31,7 @@ import { ServiceRequestPage } from "./pages/service/serviceRequest/serviceReques
 import { ServiceRepairPage } from "./pages/service/serviceRepair/serviceRepairPage";
 import { ServiceReturnPage } from "./pages/service/serviceReturn/serviceReturnPage";
 import { ServiceReplacementPage } from "./pages/service/serviceReplacement/serviceReplacemenetPage";
+import { ServiceChangePage } from "./pages/service/serviceChange/serviceChangePage";
 
 export function App() {
 	return (
@@ -50,6 +51,7 @@ export function App() {
 					path="permintaan-penggantian"
 					element={<ServiceReplacementPage />}
 				/>
+				<Route path="permintaan-perubahan" element={<ServiceChangePage />} />
 				<Route path="cetak-barcode" element={<PrintBarcodePage />} />
 				<Route
 					path="daftar-inventaris-ruangan"
