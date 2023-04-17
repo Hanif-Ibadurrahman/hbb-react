@@ -2,8 +2,6 @@ import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAnd
 import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
-import { SideModal } from "app/components/modal/sideModal";
-import { SelectWithTag } from "app/components/selectWithTag";
 import {
 	ICreateItemRequest,
 	IItem,
@@ -38,9 +36,11 @@ import { getAllColorApi } from "api/color";
 import { IColorGetAllParams } from "store/types/colorTypes";
 import { ILoginTokenDecode } from "store/types/loginTypes";
 import jwtDecode from "jwt-decode";
+import { ModalFilter } from "./components/modalFilter";
 
 const MasterItem = () => {
 	const { Title } = Typography;
+	const [showFilter, setShowFilter] = useState(false);
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [selectedPage, setSelectedPage] = useState<{
@@ -58,7 +58,6 @@ const MasterItem = () => {
 	const [colorParams, setColorParams] = useState<
 		IColorGetAllParams | undefined
 	>();
-	const [tempFilter, setTempFilter] = useState<IItemGetAllParams | undefined>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
 	});
@@ -330,10 +329,6 @@ const MasterItem = () => {
 		setShowModal({ show: false });
 	};
 
-	const setValueFilter = () => {
-		setParams({ ...params, ...tempFilter });
-	};
-
 	return (
 		<MainLayout>
 			<section className="content">
@@ -345,13 +340,21 @@ const MasterItem = () => {
 							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPage={setSelectedPage}
 							contentHeader={
-								<button
-									type="button"
-									className="btn btn-primary"
-									onClick={handleAdd}
-								>
-									Tambah
-								</button>
+								<>
+									<button
+										className="btn btn-secondary"
+										onClick={() => setShowFilter(true)}
+									>
+										<i className="fa fa-filter">Filter</i>
+									</button>
+									<button
+										type="button"
+										className="btn btn-primary"
+										onClick={handleAdd}
+									>
+										Tambah
+									</button>
+								</>
 							}
 						/>
 					</div>
@@ -578,43 +581,11 @@ const MasterItem = () => {
 				</Form>
 			</AntdModal>
 
-			<SideModal
-				title="Filter"
-				contentFooter={
-					<button
-						type="button"
-						className="btn btn-primary"
-						data-bs-dismiss="modal"
-						onClick={setValueFilter}
-					>
-						Filter
-					</button>
-				}
-			>
-				<h6 className="box-title mt-10 d-block mb-10">Main Group</h6>
-				<SelectWithTag colorTag="cyan" />
-				<h6 className="box-title mt-10 d-block mb-10">Sub Group</h6>
-				<SelectWithTag colorTag="cyan" />
-				<h6 className="box-title mt-10 d-block mb-10">Nama Barang</h6>
-				<SelectWithTag
-					colorTag="cyan"
-					onChange={v => setTempFilter({ name: v.toString() })}
-				/>
-				<h6 className="box-title mt-10 d-block mb-10">Merk</h6>
-				<SelectWithTag colorTag="cyan" />
-				<h6 className="box-title mt-10 d-block mb-10">Tipe</h6>
-				<SelectWithTag colorTag="cyan" />
-				<h6 className="box-title mt-10 d-block mb-10">Jenis</h6>
-				<SelectWithTag colorTag="cyan" />
-				<h6 className="box-title mt-10 d-block mb-10">Model</h6>
-				<SelectWithTag colorTag="cyan" />
-				<h6 className="box-title mt-10 d-block mb-10">Warna</h6>
-				<SelectWithTag colorTag="cyan" />
-				<h6 className="box-title mt-10 d-block mb-10">Kapasitas</h6>
-				<SelectWithTag colorTag="cyan" />
-				<h6 className="box-title mt-10 d-block mb-10">Ukuran</h6>
-				<SelectWithTag colorTag="cyan" />
-			</SideModal>
+			<ModalFilter
+				isShow={showFilter}
+				setShowModal={setShowFilter}
+				setParams={setParams}
+			/>
 		</MainLayout>
 	);
 };

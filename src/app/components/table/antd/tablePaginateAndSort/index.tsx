@@ -1,7 +1,6 @@
 import { Pagination, PaginationProps, Table } from "antd";
-import { ColumnsType, TableProps } from "antd/es/table";
+import { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
-
 interface ITablePaginate {
 	title?: string;
 	subTitle?: string;
@@ -69,16 +68,7 @@ export const TablePaginateAndSort = ({
 						<button className="btn btn-secondary">Excel</button>
 						<button className="btn btn-secondary">PDF</button>
 					</div>
-					<div style={{ display: "flex", columnGap: 5 }}>
-						<button
-							className="btn btn-secondary"
-							data-bs-toggle="modal"
-							data-bs-target="#modal-side"
-						>
-							<i className="fa fa-filter">Filter</i>
-						</button>
-						{contentHeader}
-					</div>
+					<div style={{ display: "flex", columnGap: 5 }}>{contentHeader}</div>
 				</div>
 				<div className="table-responsive">
 					<Table
