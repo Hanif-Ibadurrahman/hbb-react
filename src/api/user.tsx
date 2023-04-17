@@ -21,3 +21,7 @@ export const getDetailUserApi = (id: string) => {
 export const updateUserApi = (id: string, input: IUpdateUserRequest) => {
 	return apiWithToken.put(`/api/master/user/${id}`, input);
 };
+
+export const deleteUserApi = (id: string) => {
+	return apiWithToken.delete(`/api/master/user/${id}`);
+};
