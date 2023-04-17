@@ -1,12 +1,12 @@
 import { Button, Col, Drawer, Form, Row, Space } from "antd";
 import { SelectWithTag } from "app/components/selectWithTag";
 import { Dispatch, SetStateAction } from "react";
-import { IAreaGetAllParams } from "store/types/areaTypes";
+import { ISubCodeGroupGetAllParams } from "store/types/subCodeGroupTypes";
 
 interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
-	setParams: Dispatch<SetStateAction<IAreaGetAllParams | undefined>>;
+	setParams: Dispatch<SetStateAction<ISubCodeGroupGetAllParams | undefined>>;
 }
 
 export const ModalFilter = ({
@@ -57,42 +57,14 @@ export const ModalFilter = ({
 			<Form form={formFilter} layout="vertical" onFinish={handleSubmit}>
 				<Row gutter={16}>
 					<Col span={24}>
-						<Form.Item name="name" label="Nama Area">
+						<Form.Item name="value" label="Sub Group">
 							<SelectWithTag colorTag="cyan" />
 						</Form.Item>
 					</Col>
 				</Row>
 				<Row gutter={16}>
 					<Col span={24}>
-						<Form.Item name="daerah" label="Daerah">
-							<SelectWithTag colorTag="cyan" />
-						</Form.Item>
-					</Col>
-				</Row>
-				<Row gutter={16}>
-					<Col span={24}>
-						<Form.Item name="pengelola" label="Pengelola">
-							<SelectWithTag colorTag="cyan" />
-						</Form.Item>
-					</Col>
-				</Row>
-				<Row gutter={16}>
-					<Col span={24}>
-						<Form.Item name="nipg" label="NIPG">
-							<SelectWithTag colorTag="cyan" />
-						</Form.Item>
-					</Col>
-				</Row>
-				<Row gutter={16}>
-					<Col span={24}>
-						<Form.Item name="pemegang" label="Pemegang">
-							<SelectWithTag colorTag="cyan" />
-						</Form.Item>
-					</Col>
-				</Row>
-				<Row gutter={16}>
-					<Col span={24}>
-						<Form.Item name="id_bisnis_unit" label="Bisnis Unit">
+						<Form.Item name="code" label="Code">
 							<SelectWithTag colorTag="cyan" />
 						</Form.Item>
 					</Col>

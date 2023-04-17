@@ -40,14 +40,13 @@ import { ModalFilter } from "./components/modalFilter";
 
 const MasterItem = () => {
 	const { Title } = Typography;
-	const [showFilter, setShowFilter] = useState(false);
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [selectedPage, setSelectedPage] = useState<{
 		page: number;
 		pageSize: number;
 	}>({ page: 1, pageSize: 20 });
-
+	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<IItemGetAllParams | undefined>();
 	const [codeGroupParams, setCodeGroupParams] = useState<
 		ICodeGroupGetAllParams | undefined

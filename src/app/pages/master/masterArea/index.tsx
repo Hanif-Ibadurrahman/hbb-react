@@ -35,9 +35,9 @@ import { ModalFilter } from "./components/modalFilter";
 
 const MasterArea = () => {
 	const { Title } = Typography;
-	const [showFilter, setShowFilter] = useState(false);
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
+	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<IAreaGetAllParams | undefined>();
 	const [businessUnitParams, setBusinessUnitParams] = useState<
 		IBusinessUnitGetAllParams | undefined
