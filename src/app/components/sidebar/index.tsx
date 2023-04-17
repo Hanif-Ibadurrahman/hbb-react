@@ -116,6 +116,15 @@ export const Sidebar = () => {
 											Permintaan Layanan -<br /> Perubahan
 										</Link>
 									</li>
+									<li>
+										<Link to={"/permintaan-pemeriksaan"}>
+											<i className="icon-Commit">
+												<span className="path1"></span>
+												<span className="path2"></span>
+											</i>
+											Permintaan Layanan -<br /> Pemeriksaan
+										</Link>
+									</li>
 								</ul>
 							</li>
 							<li
