@@ -1,12 +1,12 @@
 import { Button, Col, Drawer, Form, Row, Space } from "antd";
 import { SelectWithTag } from "app/components/selectWithTag";
 import { Dispatch, SetStateAction } from "react";
-import { IItemGetAllParams } from "store/types/itemTypes";
+import { IBusinessUnitGetAllParams } from "store/types/businessUnitTypes";
 
 interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
-	setParams: Dispatch<SetStateAction<IItemGetAllParams | undefined>>;
+	setParams: Dispatch<SetStateAction<IBusinessUnitGetAllParams | undefined>>;
 }
 
 export const ModalFilter = ({
@@ -38,7 +38,7 @@ export const ModalFilter = ({
 	return (
 		<Drawer
 			title="Filter"
-			size="large"
+			size="default"
 			onClose={handleCancel}
 			open={isShow}
 			bodyStyle={{ paddingBottom: 80 }}
@@ -56,61 +56,43 @@ export const ModalFilter = ({
 		>
 			<Form form={formFilter} layout="vertical" onFinish={handleSubmit}>
 				<Row gutter={16}>
-					<Col span={12}>
-						<Form.Item name="id_main_group" label="Main Group">
-							<SelectWithTag colorTag="cyan" />
-						</Form.Item>
-					</Col>
-					<Col span={12}>
-						<Form.Item name="id_sub_group" label="Sub Group">
+					<Col span={24}>
+						<Form.Item name="name" label="Nama Area">
 							<SelectWithTag colorTag="cyan" />
 						</Form.Item>
 					</Col>
 				</Row>
 				<Row gutter={16}>
-					<Col span={12}>
-						<Form.Item name="name" label="Nama Barang">
-							<SelectWithTag colorTag="cyan" />
-						</Form.Item>
-					</Col>
-					<Col span={12}>
-						<Form.Item name="merk" label="Merk">
+					<Col span={24}>
+						<Form.Item name="daerah" label="Daerah">
 							<SelectWithTag colorTag="cyan" />
 						</Form.Item>
 					</Col>
 				</Row>
 				<Row gutter={16}>
-					<Col span={12}>
-						<Form.Item name="tipe" label="Tipe">
-							<SelectWithTag colorTag="cyan" />
-						</Form.Item>
-					</Col>
-					<Col span={12}>
-						<Form.Item name="jenis" label="Jenis">
+					<Col span={24}>
+						<Form.Item name="pengelola" label="Pengelola">
 							<SelectWithTag colorTag="cyan" />
 						</Form.Item>
 					</Col>
 				</Row>
 				<Row gutter={16}>
-					<Col span={12}>
-						<Form.Item name="model" label="Model">
-							<SelectWithTag colorTag="cyan" />
-						</Form.Item>
-					</Col>
-					<Col span={12}>
-						<Form.Item name="warna" label="Warna">
+					<Col span={24}>
+						<Form.Item name="nipg" label="NIPG">
 							<SelectWithTag colorTag="cyan" />
 						</Form.Item>
 					</Col>
 				</Row>
 				<Row gutter={16}>
-					<Col span={12}>
-						<Form.Item name="kapasitas" label="Kapasital">
+					<Col span={24}>
+						<Form.Item name="pemegang" label="Pemegang">
 							<SelectWithTag colorTag="cyan" />
 						</Form.Item>
 					</Col>
-					<Col span={12}>
-						<Form.Item name="ukuran" label="Ukuran">
+				</Row>
+				<Row gutter={16}>
+					<Col span={24}>
+						<Form.Item name="id_bisnis_unit" label="Bisnis Unit">
 							<SelectWithTag colorTag="cyan" />
 						</Form.Item>
 					</Col>
