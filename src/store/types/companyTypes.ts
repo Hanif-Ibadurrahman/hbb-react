@@ -13,8 +13,8 @@ export interface ICompanyPaginateResponse extends PaginationState {
 export interface ICompanyGetAllParams {
 	page?: number;
 	page_size?: number;
-	nama_pengelola?: string;
-	nipg?: string;
+	name?: string;
+	code?: string;
 }
 
 export interface ICreateCompanyRequest {

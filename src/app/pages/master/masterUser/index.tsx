@@ -1,15 +1,46 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
 import { MainLayout } from "app/layout/mainLayout";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import { SideModal } from "app/components/modal/sideModal";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { CenterModal } from "app/components/modal/centerModal";
-import { getAllUserApi } from "api/user";
-import { IUserGetAllParams } from "store/types/userTypes";
+import {
+	createNewUserApi,
+	deleteUserApi,
+	getAllUserApi,
+	getDetailUserApi,
+	updateUserApi,
+} from "api/user";
+import {
+	ICreateUserRequest,
+	IUser,
+	IUserGetAllParams,
+} from "store/types/userTypes";
+import {
+	Modal as AntdModal,
+	Button,
+	Divider,
+	Form,
+	FormInstance,
+	Input,
+	Select,
+	Typography,
+} from "antd";
+import { useFormik } from "formik";
+import Swal from "sweetalert2";
+import { CheckAuthentication } from "app/helper/authentication";
+import { DefaultOptionType } from "antd/es/select";
+import { ICompanyGetAllParams } from "store/types/companyTypes";
+import { getAllCompanyApi } from "api/company";
 
 const MasterUser = () => {
+	const { Title } = Typography;
+	const [form] = Form.useForm();
+	const formRef = useRef<FormInstance>(null);
 	const [params, setParams] = useState<IUserGetAllParams | undefined>();
+	const [companyParams, setCompanyParams] = useState<
+		ICompanyGetAllParams | undefined
+	>();
 	const [tempFilter, setTempFilter] = useState<IUserGetAllParams | undefined>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
@@ -18,18 +49,88 @@ const MasterUser = () => {
 		page: number;
 		pageSize: number;
 	}>({ page: 1, pageSize: 20 });
-	const [initialValue, setInitialValue] = useState<string | null>();
+	const [initialValue, setInitialValue] = useState<ICreateUserRequest>({
+		username: "",
+		password: "",
+		name: "",
+		nipg: "",
+		id_role: "",
+		id_company: "",
+	});
 	const [dataTable, setDataTable] = useState();
+	const [dataOptionCompany, setDataOptionCompany] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionRole, setDataOptionRole] = useState<
+		DefaultOptionType[] | undefined
+	>([
+		{ value: 1, label: "Super Admisnitrator" },
+		{ value: 2, label: "Pengelola" },
+		{ value: 3, label: "User" },
+		{ value: 4, label: "PGNMAS" },
+		{ value: 5, label: "Asisten Pengelola" },
+		{ value: 6, label: "Pelapor" },
+		{ value: 7, label: "Kepala Satker" },
+		{ value: 8, label: "Admin Area" },
+		{ value: 9, label: "Akuntansi" },
+		{ value: 10, label: "Division Head" },
+	]);
 
 	const fetchDataList = async () => {
 		try {
-			const response = await getAllUserApi(params);
-			setDataTable(response.data.data);
-			// await dispatch(getCountryListAction(params));
+			if (params) {
+				const response = await getAllUserApi(params);
+				setDataTable(response.data.data);
+			}
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
+
+	const fetchDataDetail = async (id: string) => {
+		try {
+			const response = await getDetailUserApi(id);
+			handleInitialValue(response.data.data);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const handleInitialValue = (values: IUser) => {
+		setInitialValue({
+			username: values.username || "",
+			password: values.raw_password || "",
+			name: values.name || "",
+			nipg: values.nipg || "",
+			id_role: values.id_role || "",
+			id_company: values.id_company || "",
+		});
+		formRef.current?.setFieldsValue({
+			username: values.username || "",
+			password: values.raw_password || "",
+			name: values.name || "",
+			nipg: values.nipg || "",
+			id_role: values.id_role || "",
+			id_company: values.id_company || "",
+		});
+	};
+
+	const fetchDataCompany = async () => {
+		try {
+			const response = await getAllCompanyApi(companyParams);
+			const companyList = response.data.data.data;
+			setDataOptionCompany(
+				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	useEffect(() => {
+		fetchDataCompany();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [companyParams]);
 
 	useEffect(() => {
 		fetchDataList();
@@ -45,6 +146,109 @@ const MasterUser = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedPage]);
 
+	useEffect(() => {
+		if (showModal.show && showModal.id) {
+			fetchDataDetail(showModal.id);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [showModal]);
+
+	const formik = useFormik({
+		initialValues: { ...initialValue },
+		enableReinitialize: true,
+		onSubmit: values => {},
+	});
+
+	const handleAdd = () => {
+		setShowModal({ show: true });
+		setInitialValue({
+			username: "",
+			password: "",
+			name: "",
+			nipg: "",
+			id_role: "",
+			id_company: "",
+		});
+		formik.resetForm();
+		formRef.current?.resetFields();
+	};
+
+	const handleDelete = (id: string) => {
+		const swalCustom = Swal.mixin({
+			customClass: {
+				confirmButton: "btn btn-success m-1",
+				cancelButton: "btn btn-danger m-1",
+			},
+			buttonsStyling: false,
+		});
+
+		swalCustom
+			.fire({
+				title: "Apakah anda yakin?",
+				text: "Ingin menghapus data ini",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonText: "Delete",
+				cancelButtonText: "Cancel",
+				reverseButtons: true,
+			})
+			.then(result => {
+				if (result.isConfirmed) {
+					deleteUserApi(id).then(res => {
+						if (res.data.status === "success") {
+							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
+							fetchDataList();
+						} else {
+							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+						}
+					});
+				} else if (result.dismiss === Swal.DismissReason.cancel) {
+					swalCustom.fire("Batal", "Data ini batal dihapus", "error");
+				}
+			});
+	};
+
+	const onFinish = (values: any) => {
+		if (showModal.id) {
+			updateUserApi(showModal.id, values).then(res => {
+				if (res.data.status === "success") {
+					setShowModal({ show: false });
+					Swal.fire({
+						icon: "success",
+						title: "User berhasil ditambahkan",
+						showConfirmButton: false,
+						timer: 3000,
+					});
+					fetchDataList();
+				} else {
+					Swal.fire({
+						icon: "error",
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				}
+			});
+		} else {
+			createNewUserApi(values).then(res => {
+				if (res.data.status === "success") {
+					setShowModal({ show: false });
+					fetchDataList();
+				}
+				Swal.fire({
+					icon: res.data.status,
+					title: res.data.message,
+					showConfirmButton: false,
+					timer: 3000,
+				});
+			});
+		}
+	};
+
+	const handleCancel = () => {
+		setShowModal({ show: false });
+	};
+
 	const setValueFilter = () => {
 		setParams({ ...params, ...tempFilter });
 	};
@@ -57,14 +261,13 @@ const MasterUser = () => {
 						<TablePaginateAndSort
 							title="User"
 							dataSource={dataTable}
-							columns={columns({ setShowModal })}
+							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPage={setSelectedPage}
 							contentHeader={
 								<button
 									type="button"
 									className="btn btn-primary"
-									data-bs-toggle="modal"
-									data-bs-target="#modal"
+									onClick={handleAdd}
 								>
 									Tambah
 								</button>
@@ -74,111 +277,184 @@ const MasterUser = () => {
 				</div>
 			</section>
 
-			<CenterModal
-				modalName="modal"
-				title="Tambah Data"
-				contentFooter={
-					<button
-						type="button"
-						className="btn btn-primary"
-						data-bs-dismiss="modal"
-					>
-						Simpan
-					</button>
+			<AntdModal
+				title={
+					<Title level={3}>
+						{showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+					</Title>
 				}
-			>
-				<div className="col-12">
-					<div className="form-group">
-						<h6>
-							Nama User <span className="text-danger">*</span>
-						</h6>
-						<div className="controls">
-							<input
-								type="text"
-								name="text"
-								className="form-control"
-								required
-								data-validation-required-message="This field is required"
-							/>
-						</div>
-						<div className="form-group">
-							<h6>
-								Role <span className="text-danger">*</span>
-							</h6>
-							<div className="controls">
-								<select
-									className="form-select"
-									name="role"
-									required
-									data-validation-required-message="This field is required"
-								>
-									<option value="superadmin">Super Administration</option>
-									<option value="user">User</option>
-									<option value="pengelola">Pengelola</option>
-								</select>
-							</div>
-						</div>
-						<div className="form-group">
-							<h6>
-								Bisnis Unit <span className="text-danger">*</span>
-							</h6>
-							<div className="controls">
-								<select
-									className="form-select"
-									name="bisnis_unit"
-									required
-									data-validation-required-message="This field is required"
-								>
-									<option value="sor_1">SOR I</option>
-									<option value="sor_2">SOR II</option>
-									<option value="sor_3">SOR III</option>
-								</select>
-							</div>
-						</div>
-						<div className="form-group">
-							<h6>
-								Area <span className="text-danger">*</span>
-							</h6>
-							<div className="controls">
-								<select
-									className="form-select"
-									name="area"
-									required
-									data-validation-required-message="This field is required"
-								>
-									<option value="jakarta">Jakarta</option>
-									<option value="bogor">Bogor</option>
-									<option value="medan">Medan</option>
-								</select>
-							</div>
-						</div>
-						<h6>
-							Username <span className="text-danger">*</span>
-						</h6>
-						<div className="controls">
-							<input
-								type="text"
-								name="text"
-								className="form-control"
-								required
-								data-validation-required-message="This field is required"
-							/>
-						</div>
-						<h6>
-							Password <span className="text-danger">*</span>
-						</h6>
-						<div className="controls">
-							<input
-								type="password"
-								name="text"
-								className="form-control"
-								required
-								data-validation-required-message="This field is required"
-							/>
-						</div>
+				footer={
+					<div style={{ display: "flex", justifyContent: "end", columnGap: 5 }}>
+						<Button shape="round" size="large" onClick={handleCancel}>
+							Close
+						</Button>
+						<Button
+							type="primary"
+							size="large"
+							shape="round"
+							onClick={form.submit}
+						>
+							Save
+						</Button>
 					</div>
-				</div>
-			</CenterModal>
+				}
+				onCancel={handleCancel}
+				open={showModal.show}
+				width={800}
+			>
+				<Form form={form} ref={formRef} onFinish={onFinish}>
+					<Divider />
+					<Form.Item
+						name="username"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Username<span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="username"
+									className="form-control"
+									placeholder="Username"
+									onChange={formik.handleChange}
+									value={formik.values.username}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="password"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Password <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Input
+									type="password"
+									name="password"
+									className="form-control"
+									placeholder="Password"
+									onChange={formik.handleChange}
+									value={formik.values.password}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="name"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Nama User <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="name"
+									className="form-control"
+									placeholder="Nama User"
+									onChange={formik.handleChange}
+									value={formik.values.name}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="nipg"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								NIPG <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="nipg"
+									className="form-control"
+									placeholder="NIPG"
+									onChange={formik.handleChange}
+									value={formik.values.nipg}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item name="id_company">
+						<div className="form-group">
+							<Title level={5}>Perusahaan</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									placeholder="Pilih Perusahaan"
+									onSearch={v => setCompanyParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionCompany}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_company", v);
+										formRef.current?.setFieldsValue({
+											id_company: v,
+										});
+									}}
+									value={formik.values.id_company}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item name="id_role">
+						<div className="form-group">
+							<Title level={5}>Role</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									placeholder="Pilih Role"
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionRole}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_role", v);
+										formRef.current?.setFieldsValue({
+											id_role: v,
+										});
+									}}
+									value={formik.values.id_role}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+				</Form>
+			</AntdModal>
 
 			<SideModal
 				title="Filter"

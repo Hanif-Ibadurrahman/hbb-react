@@ -33,11 +33,21 @@ export interface IUserGetAllParams {
 }
 
 export interface ICreateUserRequest {
+	username: string;
+	password: string;
 	name: string;
+	nipg: string;
+	id_role: string;
+	id_company: string;
 }
 
 export interface IUpdateUserRequest {
+	username: string;
+	password: string;
 	name: string;
+	nipg: string;
+	id_role: string;
+	id_company: string;
 }
 
 export interface IUserGetAllResponse {
