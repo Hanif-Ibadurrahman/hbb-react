@@ -1,8 +1,7 @@
 import { Pagination, PaginationProps, Table } from "antd";
-import { ColumnsType, TableProps } from "antd/es/table";
+import { ColumnsType } from "antd/es/table";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { PaginationState } from "store/types/paginationTypes";
-import type { TableProps as RcTableProps } from "rc-table/lib/Table";
 interface ITableSelectionPaginateAndSort {
 	title?: string;
 	subTitle?: string;
