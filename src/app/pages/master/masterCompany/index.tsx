@@ -2,8 +2,6 @@ import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAnd
 import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
-import { SideModal } from "app/components/modal/sideModal";
-import { SelectWithTag } from "app/components/selectWithTag";
 import { ICountryGetAllParams } from "store/types/countryTypes";
 import {
 	createNewCompanyApi,
@@ -29,15 +27,14 @@ import {
 } from "store/types/companyTypes";
 import { deleteCountryApi } from "api/country";
 import { CheckAuthentication } from "app/helper/authentication";
+import { ModalFilter } from "./components/modalFilter";
 
 const MasterCompany = () => {
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
+	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<ICountryGetAllParams | undefined>();
-	const [tempFilter, setTempFilter] = useState<
-		ICountryGetAllParams | undefined
-	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
 	});
@@ -180,10 +177,6 @@ const MasterCompany = () => {
 		setShowModal({ show: false });
 	};
 
-	const setValueFilter = () => {
-		setParams({ ...params, ...tempFilter });
-	};
-
 	return (
 		<MainLayout>
 			<section className="content">
@@ -195,13 +188,21 @@ const MasterCompany = () => {
 							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPage={setSelectedPage}
 							contentHeader={
-								<button
-									type="button"
-									className="btn btn-primary"
-									onClick={handleAdd}
-								>
-									Tambah
-								</button>
+								<>
+									<button
+										className="btn btn-secondary"
+										onClick={() => setShowFilter(true)}
+									>
+										<i className="fa fa-filter">Filter</i>
+									</button>
+									<button
+										type="button"
+										className="btn btn-primary"
+										onClick={handleAdd}
+									>
+										Tambah
+									</button>
+								</>
 							}
 						/>
 					</div>
@@ -289,25 +290,11 @@ const MasterCompany = () => {
 				</Form>
 			</AntdModal>
 
-			<SideModal
-				title="Filter"
-				contentFooter={
-					<button
-						type="button"
-						className="btn btn-primary"
-						data-bs-dismiss="modal"
-						onClick={setValueFilter}
-					>
-						Filter
-					</button>
-				}
-			>
-				<h6 className="box-title mt-10 d-block mb-10">Nama Perusahaan</h6>
-				<SelectWithTag
-					colorTag="cyan"
-					onChange={v => setTempFilter({ name: v.toString() })}
-				/>
-			</SideModal>
+			<ModalFilter
+				isShow={showFilter}
+				setShowModal={setShowFilter}
+				setParams={setParams}
+			/>
 		</MainLayout>
 	);
 };

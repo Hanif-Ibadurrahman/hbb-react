@@ -22,6 +22,8 @@ export interface IDivisionGetAllParams {
 	page?: number;
 	page_size?: number;
 	name?: string;
+	satker?: string;
+	kepala_satker?: string;
 }
 
 export interface ICreateDivisionRequest {

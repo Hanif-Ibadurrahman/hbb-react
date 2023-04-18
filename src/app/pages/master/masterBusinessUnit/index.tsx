@@ -15,7 +15,6 @@ import {
 	updateBusinessUnitApi,
 } from "api/businessUnit";
 import { columns } from "./components/table/columnAndDataType";
-import jwtDecode from "jwt-decode";
 import {
 	Modal as AntdModal,
 	Button,
@@ -27,8 +26,7 @@ import {
 } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
-import { ILoginTokenDecode } from "store/types/loginTypes";
-import { CheckAuthentication } from "app/helper/authentication";
+import { CheckAuthentication, TokenDekode } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
 
 const MasterBusinessUnit = () => {
@@ -50,9 +48,7 @@ const MasterBusinessUnit = () => {
 	});
 	const [dataTable, setDataTable] = useState<IBusinessUnitPaginateResponse>();
 
-	const token = sessionStorage.getItem("Token") || "";
-
-	const tokenDecode: ILoginTokenDecode = jwtDecode(token);
+	const tokenDecode = TokenDekode();
 
 	const fetchDataList = async () => {
 		try {

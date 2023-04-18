@@ -31,8 +31,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ModalFilter } from "./components/modalFilter";
 
 const MasterSubCodeGroup = () => {
-	const { Title } = Typography;
 	const navigate = useNavigate();
+	const { Title } = Typography;
 	const location = useLocation();
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
@@ -86,7 +86,7 @@ const MasterSubCodeGroup = () => {
 
 	const handleInitialValue = (values: ISubCodeGroup) => {
 		const setData = {
-			id_main_group: "",
+			id_main_group: values.id_main_group || "",
 			value: values.value || "",
 			code: values.code || "",
 		};
@@ -168,8 +168,12 @@ const MasterSubCodeGroup = () => {
 	};
 
 	const onFinish = (values: any) => {
+		const input = {
+			...values,
+			id_main_group: location.state.mainGroupData.id,
+		};
 		if (showModal.id) {
-			updateSubCodeGroupApi(showModal.id, values).then(res => {
+			updateSubCodeGroupApi(showModal.id, input).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });
 					fetchDataList();

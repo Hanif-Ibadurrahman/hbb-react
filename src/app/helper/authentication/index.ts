@@ -1,4 +1,6 @@
 import Swal from "sweetalert2";
+import { ITokenDecode } from "store/types/loginTypes";
+import jwtDecode from "jwt-decode";
 
 export const CheckAuthentication = (error: any) => {
 	if (error.response.data.error === "Unauthenticated") {
@@ -10,4 +12,10 @@ export const CheckAuthentication = (error: any) => {
 			timer: 3000,
 		});
 	}
+};
+
+export const TokenDekode = () => {
+	const token = sessionStorage.getItem("Token") || "";
+	const tokenDecode: ITokenDecode = jwtDecode(token);
+	return tokenDecode;
 };

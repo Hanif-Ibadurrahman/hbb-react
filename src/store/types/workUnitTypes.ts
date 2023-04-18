@@ -23,6 +23,9 @@ export interface IWorkUnitGetAllParams {
 	page?: number;
 	page_size?: number;
 	name?: string;
+	bisnis_unit?: string;
+	area?: string;
+	kepala_satker?: string;
 }
 
 export interface ICreateWorkUnitRequest {

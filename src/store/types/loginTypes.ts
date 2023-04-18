@@ -11,7 +11,7 @@ export interface IUserTokenDecode {
 	roles: string[] | null;
 }
 
-export interface ILoginTokenDecode {
+export interface ITokenDecode {
 	iss: string | null;
 	iat: number | null;
 	exp: number | null;
@@ -40,7 +40,7 @@ export interface ILoginInterfaceState {
 	loginSuccessResponse: ILoginSuccessResponse | null;
 	loginFailedResponse: ILoginFailedResponse | null;
 	loginRequest: ILoginRequest | null;
-	tokenDecode: ILoginTokenDecode | null;
+	tokenDecode: ITokenDecode | null;
 	title: string;
 }
 
