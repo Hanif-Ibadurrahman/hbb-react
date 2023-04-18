@@ -2,7 +2,6 @@ import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAnd
 import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
-import { CenterModal } from "app/components/modal/centerModal";
 import {
 	ICreateProviderRequest,
 	IProvider,
@@ -15,8 +14,6 @@ import {
 	getDetailProviderApi,
 	updateProviderApi,
 } from "api/provider";
-import { SideModal } from "app/components/modal/sideModal";
-import { SelectWithTag } from "app/components/selectWithTag";
 import {
 	Modal as AntdModal,
 	Button,
@@ -29,15 +26,14 @@ import {
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { CheckAuthentication } from "app/helper/authentication";
+import { ModalFilter } from "./components/modalFilter";
 
 const MasterProvider = () => {
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
+	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<IProviderGetAllParams | undefined>();
-	const [tempFilter, setTempFilter] = useState<
-		IProviderGetAllParams | undefined
-	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
 	});
@@ -189,10 +185,6 @@ const MasterProvider = () => {
 		setShowModal({ show: false });
 	};
 
-	const setValueFilter = () => {
-		setParams({ ...params, ...tempFilter });
-	};
-
 	return (
 		<MainLayout>
 			<section className="content">
@@ -313,30 +305,11 @@ const MasterProvider = () => {
 				</Form>
 			</AntdModal>
 
-			<SideModal
-				title="Filter"
-				contentFooter={
-					<button
-						type="button"
-						className="btn btn-primary"
-						data-bs-dismiss="modal"
-						onClick={setValueFilter}
-					>
-						Filter
-					</button>
-				}
-			>
-				<h6 className="box-title mt-10 d-block mb-10">Nama Penyedia</h6>
-				<SelectWithTag
-					colorTag="cyan"
-					onChange={v => setTempFilter({ nama_penyedia: v.toString() })}
-				/>
-				<h6 className="box-title mt-10 d-block mb-10">NIPG</h6>
-				<SelectWithTag
-					colorTag="cyan"
-					onChange={v => setTempFilter({ nipg: v.toString() })}
-				/>
-			</SideModal>
+			<ModalFilter
+				isShow={showFilter}
+				setShowModal={setShowFilter}
+				setParams={setParams}
+			/>
 		</MainLayout>
 	);
 };

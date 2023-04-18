@@ -16,6 +16,7 @@ export interface IProviderGetAllParams {
 	page_size?: number;
 	nama_penyedia?: string;
 	nipg?: string;
+	jabatan?: string;
 }
 
 export interface ICreateProviderRequest {

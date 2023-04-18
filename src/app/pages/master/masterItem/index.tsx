@@ -14,7 +14,7 @@ import {
 	getDetailItemApi,
 	updateItemApi,
 } from "api/item";
-import { CheckAuthentication } from "app/helper/authentication";
+import { CheckAuthentication, TokenDekode } from "app/helper/authentication";
 import {
 	Modal as AntdModal,
 	Button,
@@ -34,8 +34,6 @@ import { getAllSubCodeGroupApi } from "api/subCodeGroup";
 import { useFormik } from "formik";
 import { getAllColorApi } from "api/color";
 import { IColorGetAllParams } from "store/types/colorTypes";
-import { ILoginTokenDecode } from "store/types/loginTypes";
-import jwtDecode from "jwt-decode";
 import { ModalFilter } from "./components/modalFilter";
 
 const MasterItem = () => {
@@ -86,8 +84,7 @@ const MasterItem = () => {
 		DefaultOptionType[] | undefined
 	>();
 
-	const token = sessionStorage.getItem("Token") || "";
-	const tokenDecode: ILoginTokenDecode = jwtDecode(token);
+	const tokenDecode = TokenDekode();
 
 	useEffect(() => {
 		fetchDataList();

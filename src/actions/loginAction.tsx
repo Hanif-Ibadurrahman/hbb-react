@@ -1,5 +1,5 @@
 import jwtDecode from "jwt-decode";
-import { ILoginRequest, ILoginTokenDecode } from "store/types/loginTypes";
+import { ILoginRequest, ITokenDecode } from "store/types/loginTypes";
 import { loginApi } from "api/login";
 export const SET_LOGIN_DATA = "SET_LOGIN_DATA";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
@@ -23,7 +23,7 @@ export const loginAction = (data: ILoginRequest) => {
 				payload: response.data.token,
 			});
 
-			const dataDecode: ILoginTokenDecode = jwtDecode(response.data.token);
+			const dataDecode: ITokenDecode = jwtDecode(response.data.token);
 
 			dispatch({
 				type: DECODE_TOKEN,

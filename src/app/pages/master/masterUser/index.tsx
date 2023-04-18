@@ -2,8 +2,6 @@ import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAnd
 import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
-import { SideModal } from "app/components/modal/sideModal";
-import { SelectWithTag } from "app/components/selectWithTag";
 import {
 	createNewUserApi,
 	deleteUserApi,
@@ -32,16 +30,17 @@ import { CheckAuthentication } from "app/helper/authentication";
 import { DefaultOptionType } from "antd/es/select";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { getAllCompanyApi } from "api/company";
+import { ModalFilter } from "./components/modalFilter";
 
 const MasterUser = () => {
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
+	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<IUserGetAllParams | undefined>();
 	const [companyParams, setCompanyParams] = useState<
 		ICompanyGetAllParams | undefined
 	>();
-	const [tempFilter, setTempFilter] = useState<IUserGetAllParams | undefined>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
 	});
@@ -249,10 +248,6 @@ const MasterUser = () => {
 		setShowModal({ show: false });
 	};
 
-	const setValueFilter = () => {
-		setParams({ ...params, ...tempFilter });
-	};
-
 	return (
 		<MainLayout>
 			<section className="content">
@@ -264,13 +259,21 @@ const MasterUser = () => {
 							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPage={setSelectedPage}
 							contentHeader={
-								<button
-									type="button"
-									className="btn btn-primary"
-									onClick={handleAdd}
-								>
-									Tambah
-								</button>
+								<>
+									<button
+										className="btn btn-secondary"
+										onClick={() => setShowFilter(true)}
+									>
+										<i className="fa fa-filter">Filter</i>
+									</button>
+									<button
+										type="button"
+										className="btn btn-primary"
+										onClick={handleAdd}
+									>
+										Tambah
+									</button>
+								</>
 							}
 						/>
 					</div>
@@ -456,31 +459,11 @@ const MasterUser = () => {
 				</Form>
 			</AntdModal>
 
-			<SideModal
-				title="Filter"
-				contentFooter={
-					<button
-						type="button"
-						className="btn btn-primary"
-						data-bs-dismiss="modal"
-						onClick={setValueFilter}
-					>
-						Filter
-					</button>
-				}
-			>
-				<h6 className="box-title mt-10 d-block mb-10">Nama User</h6>
-				<SelectWithTag
-					colorTag="cyan"
-					onChange={v => setTempFilter({ name: v.toString() })}
-				/>
-				<h6 className="box-title mt-10 d-block mb-10">Bisnis Unit</h6>
-				<SelectWithTag colorTag="cyan" />
-				<h6 className="box-title mt-10 d-block mb-10">Area</h6>
-				<SelectWithTag colorTag="cyan" />
-				<h6 className="box-title mt-10 d-block mb-10">Role</h6>
-				<SelectWithTag colorTag="cyan" />
-			</SideModal>
+			<ModalFilter
+				isShow={showFilter}
+				setShowModal={setShowFilter}
+				setParams={setParams}
+			/>
 		</MainLayout>
 	);
 };

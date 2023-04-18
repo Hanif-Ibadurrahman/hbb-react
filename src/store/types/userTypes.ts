@@ -30,6 +30,9 @@ export interface IUserGetAllParams {
 	page?: number;
 	page_size?: number;
 	name?: string;
+	bisnis_unit?: string;
+	area?: string;
+	role?: string;
 }
 
 export interface ICreateUserRequest {

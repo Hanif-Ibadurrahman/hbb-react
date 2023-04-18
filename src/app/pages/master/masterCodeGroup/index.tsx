@@ -31,8 +31,8 @@ import { useNavigate } from "react-router-dom";
 import { ModalFilter } from "./components/modalFilter";
 
 const MasterCodeGroup = () => {
-	const { Title } = Typography;
 	const navigate = useNavigate();
+	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [showFilter, setShowFilter] = useState(false);
