@@ -33,7 +33,7 @@ export interface IInventoryPaginateResponse extends PaginationState {
 
 export interface IInventoryGetAllParams {
 	page?: number;
-	page_size?: number;
+	per_page?: number;
 	name?: string;
 	tahun_perolehan?: string;
 	no_akuntansi?: string;

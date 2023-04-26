@@ -9,10 +9,12 @@ import { SelectWithTag } from "app/components/selectWithTag";
 
 const WarehouseCheckInOut = () => {
 	const [selectedRow, setSelectedRow] = useState<any[]>([]);
-	const [selectedPage, setSelectedPage] = useState<{
-		page: number;
-		pageSize: number;
-	}>({ page: 1, pageSize: 20 });
+	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
+		page?: number;
+		per_page?: number;
+		sort?: string;
+		order_by?: string;
+	}>();
 	const [fetchData, setFetchData] = useState<PaginationState>();
 
 	return (
@@ -36,7 +38,7 @@ const WarehouseCheckInOut = () => {
 							rowKey={"name_barang"}
 							dataSource={fetchData}
 							setSelectedRow={setSelectedRow}
-							setSelectedPage={setSelectedPage}
+							setSelectedPageAndSort={setSelectedPageAndSort}
 							scroll={{ x: 2500, y: 600 }}
 						/>
 					</div>

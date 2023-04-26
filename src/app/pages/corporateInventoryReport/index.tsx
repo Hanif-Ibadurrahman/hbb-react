@@ -9,10 +9,12 @@ import { DatePicker } from "antd";
 
 const CorporateInventoryReport = () => {
 	const { RangePicker } = DatePicker;
-	const [selectedPage, setSelectedPage] = useState<{
-		page: number;
-		pageSize: number;
-	}>({ page: 1, pageSize: 20 });
+	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
+		page?: number;
+		per_page?: number;
+		sort?: string;
+		order_by?: string;
+	}>();
 	const [fetchData, setFetchData] = useState<PaginationState>();
 
 	return (
@@ -24,7 +26,7 @@ const CorporateInventoryReport = () => {
 							title="Laporan Inventaris Koorporat"
 							dataSource={fetchData}
 							columns={columns}
-							setSelectedPage={setSelectedPage}
+							setSelectedPageAndSort={setSelectedPageAndSort}
 						/>
 					</div>
 				</div>

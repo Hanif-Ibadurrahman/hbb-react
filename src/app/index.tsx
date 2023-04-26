@@ -34,6 +34,7 @@ import { ServiceReplacementPage } from "./pages/service/serviceReplacement/servi
 import { ServiceChangePage } from "./pages/service/serviceChange/serviceChangePage";
 import { ServiceInspectionPage } from "./pages/service/serviceInspection/serviceInspectionPage";
 import { ServiceDeletePage } from "./pages/service/serviceDelete/serviceDeletePage";
+import { MasterWorkflowPage } from "./pages/master/masterWorkflow/masterWorkflowPage";
 
 export function App() {
 	return (
@@ -99,6 +100,7 @@ export function App() {
 				<Route path="master-satuan-kerja" element={<MasterWorkUnitPage />} />
 				<Route path="master-user" element={<MasterUserPage />} />
 				<Route path="master-warna" element={<MasterColorPage />} />
+				<Route path="master-workflow" element={<MasterWorkflowPage />} />
 				<Route
 					path="riwayat-tiket-layanan"
 					element={<ServiceTicketHistoryPage />}

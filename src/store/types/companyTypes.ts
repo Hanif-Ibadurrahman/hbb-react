@@ -12,7 +12,7 @@ export interface ICompanyPaginateResponse extends PaginationState {
 
 export interface ICompanyGetAllParams {
 	page?: number;
-	page_size?: number;
+	per_page?: number;
 	name?: string;
 	code?: string;
 }

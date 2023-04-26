@@ -1,15 +1,17 @@
 import { Select, Tag } from "antd";
 import type { CustomTagProps } from "rc-select/lib/BaseSelect";
 import { DefaultOptionType, SelectProps } from "antd/es/select";
-
+import { generateRandomHex } from "app/helper/common";
 interface ISelectWithTag extends SelectProps {
 	placeholder?: string;
+	mode?: "tags" | "multiple";
 	dataOption?: DefaultOptionType[];
-	colorTag: "gold" | "lime" | "green" | "cyan";
+	colorTag?: "gold" | "lime" | "green" | "cyan";
 }
 
 export const SelectWithTag = ({
 	placeholder,
+	mode,
 	dataOption,
 	colorTag,
 	...props
@@ -20,9 +22,10 @@ export const SelectWithTag = ({
 			event.preventDefault();
 			event.stopPropagation();
 		};
+		const randomColor = `#${generateRandomHex(6)}`;
 		return (
 			<Tag
-				color={colorTag}
+				color={colorTag ?? randomColor}
 				onMouseDown={onPreventMouseDown}
 				closable={closable}
 				onClose={onClose}
@@ -33,10 +36,12 @@ export const SelectWithTag = ({
 		);
 	};
 
+	const modeSelect = mode ?? "tags";
+
 	return (
 		<Select
 			{...props}
-			mode="tags"
+			mode={modeSelect}
 			tagRender={tagRender}
 			style={{ width: "100%" }}
 			placeholder={placeholder}

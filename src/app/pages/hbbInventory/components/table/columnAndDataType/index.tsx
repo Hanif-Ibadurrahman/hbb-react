@@ -16,46 +16,55 @@ export const columns = ({ setShowModal }: IColumn) => {
 		{
 			title: "Nama Barang",
 			dataIndex: "name",
+			sorter: true,
 		},
 		{
 			title: "MG",
 			dataIndex: "main_group",
 			width: 80,
 			align: "center",
+			sorter: true,
 		},
 		{
 			title: "SG",
 			dataIndex: "sub_group",
 			width: 80,
 			align: "center",
+			sorter: true,
 		},
 		{
 			title: "TH",
 			dataIndex: "year",
 			width: 100,
 			align: "center",
+			sorter: true,
 		},
 		{
 			title: "No. Item",
 			dataIndex: "serial_no",
 			width: 100,
 			align: "center",
+			sorter: true,
 		},
 		{
 			title: "No. HBB/Inventaris",
 			dataIndex: "code",
+			sorter: true,
 		},
 		{
 			title: "Jenis Barang",
 			dataIndex: "inventory_type",
+			sorter: true,
 		},
 		{
 			title: "Lokasi",
 			dataIndex: "location",
+			sorter: true,
 		},
 		{
 			title: "Kondisi",
 			dataIndex: "kondisi",
+			sorter: true,
 		},
 		{
 			title: "Action",

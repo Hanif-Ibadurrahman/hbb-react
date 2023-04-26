@@ -10,11 +10,16 @@ interface ITableSelectionPaginateAndSort {
 	dataSource?: PaginationState;
 	contentHeader?: JSX.Element;
 	setSelectedRow: Dispatch<SetStateAction<any[]>>;
-	setSelectedPage: React.Dispatch<
-		React.SetStateAction<{
-			page: number;
-			pageSize: number;
-		}>
+	setSelectedPageAndSort: React.Dispatch<
+		React.SetStateAction<
+			| {
+					page?: number | undefined;
+					per_page?: number | undefined;
+					sort?: string | undefined;
+					order_by?: string | undefined;
+			  }
+			| undefined
+		>
 	>;
 	scroll?: {
 		x?: string | number | true;
@@ -30,14 +35,11 @@ export const TableSelectionPaginateAndSort = ({
 	dataSource,
 	contentHeader,
 	setSelectedRow,
-	setSelectedPage,
+	setSelectedPageAndSort,
 	scroll,
 }: ITableSelectionPaginateAndSort) => {
 	const [data, setData] = useState<any>([]);
-	const [pagination, setPagination] = useState<PaginationProps>({
-		current: 1,
-		pageSize: 20,
-	});
+	const [pagination, setPagination] = useState<PaginationProps>();
 
 	useEffect(() => {
 		if (dataSource) {
@@ -51,8 +53,17 @@ export const TableSelectionPaginateAndSort = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dataSource]);
 
+	const handleTable = sorter => {
+		setSelectedPageAndSort({
+			page: pagination?.current,
+			per_page: pagination?.pageSize,
+			order_by: sorter.field,
+			sort: sorter.order,
+		});
+	};
+
 	const handlePaginate = (page: number, pageSize: number) => {
-		setSelectedPage({ page: page, pageSize: pageSize });
+		setSelectedPageAndSort({ page: page, per_page: pageSize });
 	};
 
 	return (
@@ -97,6 +108,9 @@ export const TableSelectionPaginateAndSort = ({
 						dataSource={data}
 						pagination={false}
 						scroll={scroll}
+						onChange={(pagination, filters, sorter, extra) => {
+							handleTable(sorter);
+						}}
 					/>
 					<div
 						style={{

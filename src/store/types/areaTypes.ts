@@ -15,7 +15,7 @@ export interface IAreaPaginateResponse extends PaginationState {
 }
 export interface IAreaGetAllParams {
 	page?: number;
-	page_size?: number;
+	per_page?: number;
 	name?: string;
 	daerah?: string;
 	pemegang?: string;
@@ -28,9 +28,16 @@ export interface ICreateAreaRequest {
 	nipg?: string;
 	pemegang?: string;
 	id_bisnis_unit: string;
+	id_company?: string;
 }
 export interface IUpdateAreaRequest {
 	name: string;
+	daerah: string;
+	pengelola: string;
+	nipg?: string;
+	pemegang?: string;
+	id_bisnis_unit: string;
+	id_company: string;
 }
 export interface IAreaGetAllResponse {
 	status: string;

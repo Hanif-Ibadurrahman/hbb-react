@@ -8,7 +8,7 @@ export interface ICountryPaginateResponse extends PaginationState {
 }
 export interface ICountryGetAllParams {
 	page?: number;
-	page_size?: number;
+	per_page?: number;
 	name?: string;
 }
 export interface ICreateCountryRequest {

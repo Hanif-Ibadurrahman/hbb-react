@@ -10,10 +10,12 @@ import { DatePicker } from "antd";
 const HbbInventoryReport = () => {
 	const { RangePicker } = DatePicker;
 
-	const [selectedPage, setSelectedPage] = useState<{
-		page: number;
-		pageSize: number;
-	}>({ page: 1, pageSize: 20 });
+	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
+		page?: number;
+		per_page?: number;
+		sort?: string;
+		order_by?: string;
+	}>();
 	const [fetchData, setFetchData] = useState<PaginationState>();
 
 	return (
@@ -25,7 +27,7 @@ const HbbInventoryReport = () => {
 							title="Laporan HBB dan Inventaris"
 							dataSource={fetchData}
 							columns={columns}
-							setSelectedPage={setSelectedPage}
+							setSelectedPageAndSort={setSelectedPageAndSort}
 						/>
 					</div>
 				</div>

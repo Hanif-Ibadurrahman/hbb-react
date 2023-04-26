@@ -8,7 +8,7 @@ export interface IColorPaginateResponse extends PaginationState {
 }
 export interface IColorGetAllParams {
 	page?: number;
-	page_size?: number;
+	per_page?: number;
 	name?: string;
 }
 export interface ICreateColorRequest {

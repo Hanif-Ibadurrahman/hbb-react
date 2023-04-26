@@ -8,7 +8,7 @@ export interface IConditionPaginateResponse extends PaginationState {
 }
 export interface IConditionGetAllParams {
 	page?: number;
-	page_size?: number;
+	per_page?: number;
 	name?: string;
 }
 export interface ICreateConditionRequest {

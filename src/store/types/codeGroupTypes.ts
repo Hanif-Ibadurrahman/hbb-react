@@ -10,7 +10,7 @@ export interface ICodeGroupPaginateResponse extends PaginationState {
 
 export interface ICodeGroupGetAllParams {
 	page?: number;
-	page_size?: number;
+	per_page?: number;
 	value?: string;
 	code?: string;
 }

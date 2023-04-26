@@ -16,7 +16,7 @@ export interface IServiceDisplacementPaginateResponse extends PaginationState {
 
 export interface IServiceDisplacementGetAllParams {
 	page?: number;
-	page_size?: number;
+	per_page?: number;
 	name_item?: string | null;
 	description?: string | null;
 }

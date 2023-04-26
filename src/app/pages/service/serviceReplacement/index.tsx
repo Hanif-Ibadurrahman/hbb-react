@@ -32,10 +32,12 @@ const ServiceReplacement = () => {
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
 	});
-	const [selectedPage, setSelectedPage] = useState<{
-		page: number;
-		pageSize: number;
-	}>({ page: 1, pageSize: 20 });
+	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
+		page?: number;
+		per_page?: number;
+		sort?: string;
+		order_by?: string;
+	}>();
 	const [initialValue, setInitialValue] =
 		useState<ICreateServiceReplacementRequest>();
 	const [dataTable, setDataTable] =
@@ -115,11 +117,10 @@ const ServiceReplacement = () => {
 	useEffect(() => {
 		setParams({
 			...params,
-			page: selectedPage.page,
-			page_size: selectedPage.pageSize,
+			...selectedPageAndSort,
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedPage]);
+	}, [selectedPageAndSort]);
 
 	useEffect(() => {
 		if (showModal.show && showModal.id) {
@@ -239,7 +240,7 @@ const ServiceReplacement = () => {
 							title="Permintaan Layanan - Penggantian"
 							dataSource={dataTable}
 							columns={columns({ handleApprove, handleDelete })}
-							setSelectedPage={setSelectedPage}
+							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
 								<button
 									type="button"

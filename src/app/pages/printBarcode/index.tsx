@@ -5,10 +5,12 @@ import { columns } from "./components/table/columnAndDataType";
 import { PaginationState } from "store/types/paginationTypes";
 
 const PrintBarcode = () => {
-	const [selectedPage, setSelectedPage] = useState<{
-		page: number;
-		pageSize: number;
-	}>({ page: 1, pageSize: 20 });
+	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
+		page?: number;
+		per_page?: number;
+		sort?: string;
+		order_by?: string;
+	}>();
 	const [fetchData, setFetchData] = useState<PaginationState>();
 
 	return (
@@ -20,7 +22,7 @@ const PrintBarcode = () => {
 							title="Daftar Area"
 							dataSource={fetchData}
 							columns={columns}
-							setSelectedPage={setSelectedPage}
+							setSelectedPageAndSort={setSelectedPageAndSort}
 						/>
 					</div>
 				</div>

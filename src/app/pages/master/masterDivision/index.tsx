@@ -52,10 +52,12 @@ const MasterDivision = () => {
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
 	});
-	const [selectedPage, setSelectedPage] = useState<{
-		page: number;
-		pageSize: number;
-	}>({ page: 1, pageSize: 20 });
+	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
+		page?: number;
+		per_page?: number;
+		sort?: string;
+		order_by?: string;
+	}>();
 	const [initialValue, setInitialValue] = useState<ICreateDivisionRequest>({
 		name: "",
 		id_area: "",
@@ -167,11 +169,10 @@ const MasterDivision = () => {
 	useEffect(() => {
 		setParams({
 			...params,
-			page: selectedPage.page,
-			page_size: selectedPage.pageSize,
+			...selectedPageAndSort,
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedPage]);
+	}, [selectedPageAndSort]);
 
 	useEffect(() => {
 		if (showModal.show && showModal.id) {
@@ -276,7 +277,7 @@ const MasterDivision = () => {
 							title="Divisi"
 							dataSource={dataTable}
 							columns={columns({ setShowModal, handleDelete })}
-							setSelectedPage={setSelectedPage}
+							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
 								<>
 									<button

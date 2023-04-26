@@ -1,20 +1,20 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
 import { MainLayout } from "app/layout/mainLayout";
-import { useEffect, useRef, useState } from "react";
-import {
-	IBusinessUnit,
-	IBusinessUnitGetAllParams,
-	IBusinessUnitPaginateResponse,
-	ICreateBusinessUnitRequest,
-} from "store/types/businessUnitTypes";
-import {
-	createNewBusinessUnitApi,
-	deleteBusinessUnitApi,
-	getAllBusinessUnitApi,
-	getDetailBusinessUnitApi,
-	updateBusinessUnitApi,
-} from "api/businessUnit";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
+import {
+	createNewWorkflowApi,
+	deleteWorkflowApi,
+	getAllWorkflowApi,
+	getDetailWorkflowApi,
+	updateWorkflowApi,
+} from "api/workflow";
+import {
+	IWorkflow,
+	IWorkflowGetAllParams,
+	IWorkflowPaginateResponse,
+	ICreateWorkflowRequest,
+} from "store/types/workflowTypes";
 import {
 	Modal as AntdModal,
 	Button,
@@ -22,19 +22,31 @@ import {
 	Form,
 	FormInstance,
 	Input,
+	Select,
+	StepProps,
+	Steps,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
-import { CheckAuthentication, TokenDekode } from "app/helper/authentication";
+import { CheckAuthentication } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
+import { DefaultOptionType } from "antd/es/select";
+import { ICompanyGetAllParams } from "store/types/companyTypes";
+import { getAllCompanyApi } from "api/company";
+import { SelectWithTag } from "app/components/selectWithTag";
 
-const MasterBusinessUnit = () => {
+const MasterWorkflow = () => {
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
+	const [flow, setFlow] = useState<string[]>();
+	const [selectedFlow, setSelectedFlow] = useState(0);
 	const [showFilter, setShowFilter] = useState(false);
-	const [params, setParams] = useState<IBusinessUnitGetAllParams | undefined>();
+	const [params, setParams] = useState<IWorkflowGetAllParams | undefined>();
+	const [companyParams, setCompanyParams] = useState<
+		ICompanyGetAllParams | undefined
+	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
 	});
@@ -44,18 +56,29 @@ const MasterBusinessUnit = () => {
 		sort?: string;
 		order_by?: string;
 	}>();
-	const [initialValue, setInitialValue] = useState<ICreateBusinessUnitRequest>({
+	const [initialValue, setInitialValue] = useState<ICreateWorkflowRequest>({
 		name: "",
+		description: "",
+		created_at: "",
 		id_company: "",
 	});
-	const [dataTable, setDataTable] = useState<IBusinessUnitPaginateResponse>();
-
-	const tokenDecode = TokenDekode();
+	const [dataTable, setDataTable] = useState<IWorkflowPaginateResponse>();
+	const [dataOptionCompany, setDataOptionCompany] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionRole, setDataOptionRole] = useState<
+		DefaultOptionType[] | undefined
+	>([
+		{ value: "pengelola", label: "Pengelola" },
+		{ value: "user", label: "User" },
+		{ value: "kepala satuan kerja", label: "Kepala Satker" },
+		{ value: "admin area", label: "Admin Area" },
+	]);
 
 	const fetchDataList = async () => {
 		try {
 			if (params) {
-				const response = await getAllBusinessUnitApi(params);
+				const response = await getAllWorkflowApi(params);
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
@@ -65,20 +88,43 @@ const MasterBusinessUnit = () => {
 
 	const fetchDataDetail = async (id: string) => {
 		try {
-			const response = await getDetailBusinessUnitApi(id);
+			const response = await getDetailWorkflowApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
 	};
 
-	const handleInitialValue = (values: IBusinessUnit) => {
-		const setData = {
+	const fetchDataCompany = async () => {
+		try {
+			const response = await getAllCompanyApi(companyParams);
+			const companyList = response.data.data.data;
+			setDataOptionCompany(
+				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	useEffect(() => {
+		fetchDataCompany();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [companyParams]);
+
+	const handleInitialValue = (values: IWorkflow) => {
+		setInitialValue({
 			name: values.name || "",
+			description: values.description || "",
+			created_at: values.created_at || "",
 			id_company: values.id_company || "",
-		};
-		setInitialValue(setData);
-		formRef.current?.setFieldsValue(setData);
+		});
+		formRef.current?.setFieldsValue({
+			name: values.name || "",
+			description: values.description || "",
+			created_at: values.created_at || "",
+			id_company: values.id_company || "",
+		});
 	};
 
 	useEffect(() => {
@@ -109,7 +155,12 @@ const MasterBusinessUnit = () => {
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		setInitialValue({ name: "", id_company: "" });
+		setInitialValue({
+			name: "",
+			description: "",
+			created_at: "",
+			id_company: "",
+		});
 		formik.resetForm();
 		formRef.current?.resetFields();
 	};
@@ -135,7 +186,7 @@ const MasterBusinessUnit = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					deleteBusinessUnitApi(id).then(res => {
+					deleteWorkflowApi(id).then(res => {
 						if (res.data.status === "success") {
 							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
 							fetchDataList();
@@ -151,7 +202,7 @@ const MasterBusinessUnit = () => {
 
 	const onFinish = (values: any) => {
 		if (showModal.id) {
-			updateBusinessUnitApi(showModal.id, values).then(res => {
+			updateWorkflowApi(showModal.id, values).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });
 					fetchDataList();
@@ -164,11 +215,8 @@ const MasterBusinessUnit = () => {
 				});
 			});
 		} else {
-			const input: ICreateBusinessUnitRequest = {
-				...values,
-				id_company: tokenDecode.user?.id_company,
-			};
-			createNewBusinessUnitApi(input).then(res => {
+			const input = { ...values, id_company: parseInt(values.id_company) };
+			createNewWorkflowApi(input).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });
 					fetchDataList();
@@ -187,15 +235,36 @@ const MasterBusinessUnit = () => {
 		setShowModal({ show: false });
 	};
 
+	const generateStepApprocal = useMemo(() => {
+		const items: StepProps[] | undefined = flow?.map((value, index) => ({
+			title: `Step Approve ${index + 1}`,
+			subTitle: "",
+			status: "process",
+			description: value.toUpperCase(),
+		}));
+
+		return (
+			<Steps
+				type="navigation"
+				current={selectedFlow}
+				onChange={setSelectedFlow}
+				size="small"
+				className="site-navigation-steps"
+				items={items}
+			/>
+		);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [flow, selectedFlow]);
+
 	return (
 		<MainLayout>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
-							title="Bisnis Unit"
-							columns={columns({ setShowModal, handleDelete })}
+							title="Workflow"
 							dataSource={dataTable}
+							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
 								<>
@@ -257,20 +326,91 @@ const MasterBusinessUnit = () => {
 					>
 						<div className="form-group">
 							<Title level={5}>
-								Bisnis Unit <span className="text-danger">*</span>
+								Nama Workflow <span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
 								<Input
 									type="text"
 									name="name"
 									className="form-control"
-									placeholder="Bisnis Unit"
 									onChange={formik.handleChange}
 									value={formik.values.name}
 								/>
 							</div>
 						</div>
 					</Form.Item>
+					<Form.Item
+						name="description"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Deskripsi <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="description"
+									className="form-control"
+									onChange={formik.handleChange}
+									value={formik.values.description}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item name="id_company">
+						<div className="form-group">
+							<Title level={5}>
+								Perusahaan <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setCompanyParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionCompany}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_company", v);
+										formRef.current?.setFieldsValue({
+											id_company: v,
+										});
+									}}
+									value={formik.values.id_company}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item name="roles">
+						<div className="form-group">
+							<Title level={5}>
+								Roles <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<SelectWithTag
+									mode="multiple"
+									dataOption={dataOptionRole}
+									onChange={(v, opt) => {
+										setFlow(v);
+										formik.setFieldValue("roles", v);
+										formRef.current?.setFieldsValue({
+											roles: v,
+										});
+									}}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+
+					{generateStepApprocal}
 				</Form>
 			</AntdModal>
 
@@ -283,4 +423,4 @@ const MasterBusinessUnit = () => {
 	);
 };
 
-export default MasterBusinessUnit;
+export default MasterWorkflow;
