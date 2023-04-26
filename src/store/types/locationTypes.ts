@@ -20,7 +20,7 @@ export interface ILocationPaginateResponse extends PaginationState {
 
 export interface ILocationGetAllParams {
 	page?: number;
-	page_size?: number;
+	per_page?: number;
 	name?: string;
 }
 

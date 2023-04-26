@@ -7,10 +7,12 @@ import { SideModal } from "app/components/modal/sideModal";
 import { SelectWithTag } from "app/components/selectWithTag";
 
 const RoomInventory = () => {
-	const [selectedPage, setSelectedPage] = useState<{
-		page: number;
-		pageSize: number;
-	}>({ page: 1, pageSize: 20 });
+	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
+		page?: number;
+		per_page?: number;
+		sort?: string;
+		order_by?: string;
+	}>();
 	const [fetchData, setFetchData] = useState<PaginationState>();
 
 	return (
@@ -22,7 +24,7 @@ const RoomInventory = () => {
 							title="Laporan Inventaris Ruangan"
 							dataSource={fetchData}
 							columns={columns}
-							setSelectedPage={setSelectedPage}
+							setSelectedPageAndSort={setSelectedPageAndSort}
 						/>
 					</div>
 				</div>

@@ -10,7 +10,7 @@ export interface IEmployeePaginateResponse extends PaginationState {
 }
 export interface IEmployeeGetAllParams {
 	page?: number;
-	page_size?: number;
+	per_page?: number;
 	nipg?: string;
 	emp_name?: string;
 	jabatan?: string;

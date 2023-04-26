@@ -20,10 +20,12 @@ const HbbInventory = () => {
 		show: false,
 	});
 	const [selectedRow, setSelectedRow] = useState<any[]>([]);
-	const [selectedPage, setSelectedPage] = useState<{
-		page: number;
-		pageSize: number;
-	}>({ page: 1, pageSize: 20 });
+	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
+		page?: number;
+		per_page?: number;
+		sort?: string;
+		order_by?: string;
+	}>();
 	const [initialValue, setInitialValue] = useState<string | null>();
 	const [dataTable, setDataTable] = useState();
 
@@ -45,11 +47,10 @@ const HbbInventory = () => {
 	useEffect(() => {
 		setParams({
 			...params,
-			page: selectedPage.page,
-			page_size: selectedPage.pageSize,
+			...selectedPageAndSort,
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedPage]);
+	}, [selectedPageAndSort]);
 
 	const setValueFilter = () => {
 		setParams({ ...params, ...tempFilter });
@@ -86,7 +87,7 @@ const HbbInventory = () => {
 							rowKey={"id"}
 							dataSource={dataTable}
 							setSelectedRow={setSelectedRow}
-							setSelectedPage={setSelectedPage}
+							setSelectedPageAndSort={setSelectedPageAndSort}
 							scroll={{ x: 1500 }}
 						/>
 					</div>

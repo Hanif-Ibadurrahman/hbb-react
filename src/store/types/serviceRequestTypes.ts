@@ -16,7 +16,7 @@ export interface IServiceRequestPaginateResponse extends PaginationState {
 
 export interface IServiceRequestGetAllParams {
 	page?: number;
-	page_size?: number;
+	per_page?: number;
 	name_item?: string | null;
 	description?: string | null;
 }

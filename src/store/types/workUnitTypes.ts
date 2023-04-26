@@ -21,7 +21,7 @@ export interface IWorkUnitPaginateResponse extends PaginationState {
 
 export interface IWorkUnitGetAllParams {
 	page?: number;
-	page_size?: number;
+	per_page?: number;
 	name?: string;
 	bisnis_unit?: string;
 	area?: string;

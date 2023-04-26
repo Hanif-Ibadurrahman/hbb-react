@@ -12,7 +12,7 @@ export interface IBusinessUnitPaginateResponse extends PaginationState {
 
 export interface IBusinessUnitGetAllParams {
 	page?: number;
-	page_size?: number;
+	per_page?: number;
 	name?: string;
 }
 

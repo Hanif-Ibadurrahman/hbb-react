@@ -23,7 +23,7 @@ export interface IItemPaginateResponse extends PaginationState {
 
 export interface IItemGetAllParams {
 	page?: number;
-	page_size?: number;
+	per_page?: number;
 	main_group?: string;
 	sub_group?: string;
 	name?: string;

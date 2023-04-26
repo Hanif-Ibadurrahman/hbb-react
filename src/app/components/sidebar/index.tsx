@@ -234,15 +234,6 @@ export const Sidebar = () => {
 									}}
 								>
 									<li>
-										<Link to={"/master-bisnis-unit"}>
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Bisnis Unit
-										</Link>
-									</li>
-									<li>
 										<Link to="/master-area">
 											<i className="icon-Commit">
 												<span className="path1"></span>
@@ -258,6 +249,15 @@ export const Sidebar = () => {
 												<span className="path2"></span>
 											</i>
 											Barang
+										</Link>
+									</li>
+									<li>
+										<Link to={"/master-bisnis-unit"}>
+											<i className="icon-Commit">
+												<span className="path1"></span>
+												<span className="path2"></span>
+											</i>
+											Bisnis Unit
 										</Link>
 									</li>
 									<li>
@@ -366,6 +366,15 @@ export const Sidebar = () => {
 												<span className="path2"></span>
 											</i>
 											Warna
+										</Link>
+									</li>
+									<li>
+										<Link to="/master-workflow">
+											<i className="icon-Commit">
+												<span className="path1"></span>
+												<span className="path2"></span>
+											</i>
+											Workflow
 										</Link>
 									</li>
 								</ul>

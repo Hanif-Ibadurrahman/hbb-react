@@ -13,7 +13,7 @@ export interface IProviderPaginateResponse extends PaginationState {
 
 export interface IProviderGetAllParams {
 	page?: number;
-	page_size?: number;
+	per_page?: number;
 	nama_penyedia?: string;
 	nipg?: string;
 	jabatan?: string;
