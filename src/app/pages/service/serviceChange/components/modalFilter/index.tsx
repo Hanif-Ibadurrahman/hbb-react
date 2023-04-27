@@ -1,13 +1,12 @@
 import { Button, Col, Drawer, Form, Row, Space } from "antd";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { TokenDekode } from "app/helper/authentication";
-import { Dispatch, SetStateAction, useMemo } from "react";
-import { IWorkUnitGetAllParams } from "store/types/workUnitTypes";
+import { Dispatch, SetStateAction } from "react";
+import { IWorkflowGetAllParams } from "store/types/workflowTypes";
 
 interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
-	setParams: Dispatch<SetStateAction<IWorkUnitGetAllParams | undefined>>;
+	setParams: Dispatch<SetStateAction<IWorkflowGetAllParams | undefined>>;
 }
 
 export const ModalFilter = ({
@@ -16,22 +15,6 @@ export const ModalFilter = ({
 	setParams,
 }: IModalFilter) => {
 	const [formFilter] = Form.useForm();
-	const tokenDecode = TokenDekode();
-
-	const generateContent = useMemo(() => {
-		const isSuperadmin = Object.values(tokenDecode.user?.roles ?? {}).includes(
-			"Super Admin",
-		);
-		if (isSuperadmin) {
-			return (
-				<Col span={24}>
-					<Form.Item name="company" label="Perusahaan">
-						<SelectWithTag />
-					</Form.Item>
-				</Col>
-			);
-		}
-	}, [tokenDecode]);
 
 	const handleSubmit = v => {
 		const filterParams = Object.entries(v).reduce((res, curr) => {
@@ -74,26 +57,13 @@ export const ModalFilter = ({
 			<Form form={formFilter} layout="vertical" onFinish={handleSubmit}>
 				<Row gutter={16}>
 					<Col span={24}>
-						<Form.Item name="bisnis_unit" label="Bisnis Unit">
+						<Form.Item name="name" label="Nama Workflow">
+							<SelectWithTag />
+						</Form.Item>
+						<Form.Item name="description" label="Deskripsi">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
-					<Col span={24}>
-						<Form.Item name="area" label="Area">
-							<SelectWithTag />
-						</Form.Item>
-					</Col>
-					<Col span={24}>
-						<Form.Item name="satker" label="Nama Satuan Kerja">
-							<SelectWithTag />
-						</Form.Item>
-					</Col>
-					<Col span={24}>
-						<Form.Item name="kepala_satker" label="Nama Kepala Satuan Kerja">
-							<SelectWithTag />
-						</Form.Item>
-					</Col>
-					{generateContent}
 				</Row>
 			</Form>
 		</Drawer>

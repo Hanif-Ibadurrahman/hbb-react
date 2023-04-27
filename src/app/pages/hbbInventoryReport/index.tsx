@@ -46,25 +46,25 @@ const HbbInventoryReport = () => {
 				}
 			>
 				<h6 className="box-title mt-10 d-block mb-10">Bisnis Unit</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Area</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Satuan Kerja</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Lokasi</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Main Group</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Sub Group</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Tanggal</h6>
 				<RangePicker style={{ width: "100%" }} format={"DD-MM-YYYY"} />
 				<h6 className="box-title mt-10 d-block mb-10">Sub Group</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Jenis Barang</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Export</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 			</SideModal>
 		</MainLayout>
 	);

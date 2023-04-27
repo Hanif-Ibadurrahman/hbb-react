@@ -8,7 +8,7 @@ import { apiWithToken } from ".";
 export const getAllServiceDisplacementApi = (
 	params?: IServiceDisplacementGetAllParams,
 ) => {
-	return apiWithToken.get(`/api/master/service-displacement`, {
+	return apiWithToken.get(`/api/transaksi/pemindahan`, {
 		params: params,
 	});
 };
@@ -16,20 +16,28 @@ export const getAllServiceDisplacementApi = (
 export const createNewServiceDisplacementApi = (
 	input: ICreateServiceDisplacementRequest,
 ) => {
-	return apiWithToken.post(`/api/master/service-displacement`, input);
+	return apiWithToken.post(`/api/transaksi/pemindahan`, input);
 };
 
 export const getDetailServiceDisplacementApi = (id: string) => {
-	return apiWithToken.get(`/api/master/service-displacement/${id}`);
+	return apiWithToken.get(`/api/transaksi/pemindahan/${id}`);
 };
 
 export const updateServiceDisplacementApi = (
 	id: string,
 	input: IUpdateServiceDisplacementRequest,
 ) => {
-	return apiWithToken.put(`/api/master/service-displacement/${id}`, input);
+	return apiWithToken.put(`/api/transaksi/pemindahan/${id}`, input);
 };
 
 export const deleteServiceDisplacementApi = (id: string) => {
-	return apiWithToken.delete(`/api/master/service-displacement/${id}`);
+	return apiWithToken.delete(`/api/transaksi/pemindahan/${id}`);
+};
+
+export const approveServiceDisplacementApi = (id: string) => {
+	return apiWithToken.get(`/api/approval/pemindahan/approve/${id}`);
+};
+
+export const rejectServiceDisplacementApi = (id: string) => {
+	return apiWithToken.post(`/api/approval/pemindahan/reject/${id}`);
 };

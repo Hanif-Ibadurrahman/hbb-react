@@ -374,17 +374,17 @@ const ServiceRepair = () => {
 				}
 			>
 				<h6 className="box-title mt-10 d-block mb-10">Nama Area</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Daerah</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Pengelola</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">NIPG</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Pemegang</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Bisnis Unit</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 			</SideModal>
 		</MainLayout>
 	);

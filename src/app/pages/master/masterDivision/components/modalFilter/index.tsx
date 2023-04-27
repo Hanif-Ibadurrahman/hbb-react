@@ -1,8 +1,8 @@
 import { Button, Col, Drawer, Form, Row, Space } from "antd";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { Dispatch, SetStateAction } from "react";
+import { TokenDekode } from "app/helper/authentication";
+import { Dispatch, SetStateAction, useMemo } from "react";
 import { IDivisionGetAllParams } from "store/types/divisionTypes";
-
 interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -15,6 +15,24 @@ export const ModalFilter = ({
 	setParams,
 }: IModalFilter) => {
 	const [formFilter] = Form.useForm();
+	const tokenDecode = TokenDekode();
+
+	const generateContent = useMemo(() => {
+		const isSuperadmin = Object.values(tokenDecode.user?.roles ?? {}).includes(
+			"Super Admin",
+		);
+		if (isSuperadmin) {
+			return (
+				<Row gutter={16}>
+					<Col span={24}>
+						<Form.Item name="company" label="Perusahaan">
+							<SelectWithTag />
+						</Form.Item>
+					</Col>
+				</Row>
+			);
+		}
+	}, [tokenDecode]);
 
 	const handleSubmit = v => {
 		const filterParams = Object.entries(v).reduce((res, curr) => {
@@ -58,19 +76,20 @@ export const ModalFilter = ({
 				<Row gutter={16}>
 					<Col span={24}>
 						<Form.Item name="name" label="Nama Divisi">
-							<SelectWithTag colorTag="cyan" />
+							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={24}>
 						<Form.Item name="satker" label="Nama Satuan Kerja">
-							<SelectWithTag colorTag="cyan" />
+							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={24}>
 						<Form.Item name="kepala_satker" label="Nama Kepala Satuan Kerja">
-							<SelectWithTag colorTag="cyan" />
+							<SelectWithTag />
 						</Form.Item>
 					</Col>
+					{generateContent}
 				</Row>
 			</Form>
 		</Drawer>

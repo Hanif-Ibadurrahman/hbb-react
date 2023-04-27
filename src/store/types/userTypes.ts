@@ -1,5 +1,19 @@
 import { PaginationState } from "./paginationTypes";
-
+export interface IRoles {
+	id: string;
+	name: string | null;
+	guard_name: string | null;
+	created_at: string;
+	updated_at: string | null;
+}
+export interface IUserRoles {
+	id: string;
+	user_id: string;
+	role_id: string;
+	created_at: string;
+	updated_at: string | null;
+	roles: IRoles;
+}
 export interface IUser {
 	id: string;
 	username: string | null;
@@ -16,10 +30,13 @@ export interface IUser {
 	id_bisnit: string | null;
 	entry_stamp: string | null;
 	edit_stamp: string | null;
-	del: number | null;
-	role_id: string | null;
+	del: boolean;
 	user_uuid: string | null;
 	id_company: string | null;
+	created_at: string | null;
+	updated_at: string | null;
+	deleted_at: string | null;
+	user_roles: IUserRoles[];
 }
 
 export interface IUserPaginateResponse extends PaginationState {
@@ -39,18 +56,24 @@ export interface ICreateUserRequest {
 	username: string;
 	password: string;
 	name: string;
-	nipg: string;
-	id_role: string;
+	nipg?: string;
+	roles: string[];
 	id_company: string;
+	id_bisnit: string;
+	id_area: string;
+	id_satker: string;
 }
 
 export interface IUpdateUserRequest {
 	username: string;
 	password: string;
 	name: string;
-	nipg: string;
-	id_role: string;
+	nipg?: string;
+	roles: string[];
 	id_company: string;
+	id_bisnit: string;
+	id_area: string;
+	id_satker: string;
 }
 
 export interface IUserGetAllResponse {

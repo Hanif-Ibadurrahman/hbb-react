@@ -366,7 +366,6 @@ const MasterLocation = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									placeholder="Pilih Bisnis Unit"
 									onSearch={v => setBusinessUnitParams({ name: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
@@ -391,7 +390,6 @@ const MasterLocation = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									placeholder="Pilih Area"
 									onSearch={v => setAreaParams({ name: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
@@ -416,7 +414,6 @@ const MasterLocation = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									placeholder="Pilih Satuan Kerja"
 									onSearch={v => setWorkUnitParams({ name: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
@@ -466,7 +463,6 @@ const MasterLocation = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									placeholder="Pilih Penanggung Jawab"
 									onSearch={v => setEmployeeParams({ name: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")

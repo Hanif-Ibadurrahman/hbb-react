@@ -58,17 +58,17 @@ export const ModalFilter = ({
 				<Row gutter={16}>
 					<Col span={24}>
 						<Form.Item name="nama_penyedia" label="Nama Penyedia">
-							<SelectWithTag colorTag="cyan" />
+							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={24}>
 						<Form.Item name="nipg" label="NIPG">
-							<SelectWithTag colorTag="cyan" />
+							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={24}>
 						<Form.Item name="jabatan" label="Jabatan">
-							<SelectWithTag colorTag="cyan" />
+							<SelectWithTag />
 						</Form.Item>
 					</Col>
 				</Row>

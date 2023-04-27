@@ -31,6 +31,13 @@ import { DefaultOptionType } from "antd/es/select";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { getAllCompanyApi } from "api/company";
 import { ModalFilter } from "./components/modalFilter";
+import { SelectWithTag } from "app/components/selectWithTag";
+import { IBusinessUnitGetAllParams } from "store/types/businessUnitTypes";
+import { getAllBusinessUnitApi } from "api/businessUnit";
+import { IAreaGetAllParams } from "store/types/areaTypes";
+import { getAllAreaApi } from "api/area";
+import { IWorkUnitGetAllParams } from "store/types/workUnitTypes";
+import { getAllWorkUnitApi } from "api/workUnit";
 
 const MasterUser = () => {
 	const { Title } = Typography;
@@ -41,7 +48,18 @@ const MasterUser = () => {
 	const [companyParams, setCompanyParams] = useState<
 		ICompanyGetAllParams | undefined
 	>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	const [businessUnitParams, setBusinessUnitParams] = useState<
+		IBusinessUnitGetAllParams | undefined
+	>();
+	const [areaParams, setAreaParams] = useState<IAreaGetAllParams | undefined>();
+	const [workUnitParams, setWorkUnitParams] = useState<
+		IWorkUnitGetAllParams | undefined
+	>();
+	const [showModal, setShowModal] = useState<{
+		show: boolean;
+		id?: string;
+		uuid?: string;
+	}>({
 		show: false,
 	});
 	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
@@ -55,11 +73,23 @@ const MasterUser = () => {
 		password: "",
 		name: "",
 		nipg: "",
-		id_role: "",
+		roles: [],
 		id_company: "",
+		id_area: "",
+		id_bisnit: "",
+		id_satker: "",
 	});
 	const [dataTable, setDataTable] = useState();
 	const [dataOptionCompany, setDataOptionCompany] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionBusinessUnit, setDataOptionBusinessUnit] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionArea, setDataOptionArea] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionWorkUnit, setDataOptionWorkUnit] = useState<
 		DefaultOptionType[] | undefined
 	>();
 	const [dataOptionRole, setDataOptionRole] = useState<
@@ -98,21 +128,28 @@ const MasterUser = () => {
 	};
 
 	const handleInitialValue = (values: IUser) => {
+		console.log(values);
 		setInitialValue({
 			username: values.username || "",
 			password: values.raw_password || "",
 			name: values.name || "",
 			nipg: values.nipg || "",
-			id_role: values.id_role || "",
+			roles: values.user_roles?.map(v => v.role_id),
 			id_company: values.id_company || "",
+			id_area: values.id_area || "",
+			id_bisnit: values.id_bisnit || "",
+			id_satker: values.id_satker || "",
 		});
 		formRef.current?.setFieldsValue({
 			username: values.username || "",
 			password: values.raw_password || "",
 			name: values.name || "",
 			nipg: values.nipg || "",
-			id_role: values.id_role || "",
+			roles: values.user_roles?.map(v => v.role_id),
 			id_company: values.id_company || "",
+			id_area: values.id_area || "",
+			id_bisnit: values.id_bisnit || "",
+			id_satker: values.id_satker || "",
 		});
 	};
 
@@ -132,6 +169,57 @@ const MasterUser = () => {
 		fetchDataCompany();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [companyParams]);
+
+	const fetchDataBusinessUnit = async () => {
+		try {
+			const response = await getAllBusinessUnitApi(businessUnitParams);
+			const businessUnitList = response.data.data.data;
+			setDataOptionBusinessUnit(
+				businessUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	useEffect(() => {
+		fetchDataBusinessUnit();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [businessUnitParams]);
+
+	const fetchDataArea = async () => {
+		try {
+			const response = await getAllAreaApi(areaParams);
+			const areaList = response.data.data.data;
+			setDataOptionArea(
+				areaList.map(v => ({ label: v.name, value: `${v.id}` })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	useEffect(() => {
+		fetchDataArea();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [areaParams]);
+
+	const fetchDataWorkUnit = async () => {
+		try {
+			const response = await getAllWorkUnitApi(workUnitParams);
+			const workUnitList = response.data.data.data;
+			setDataOptionWorkUnit(
+				workUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	useEffect(() => {
+		fetchDataWorkUnit();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [workUnitParams]);
 
 	useEffect(() => {
 		fetchDataList();
@@ -166,8 +254,11 @@ const MasterUser = () => {
 			password: "",
 			name: "",
 			nipg: "",
-			id_role: "",
+			roles: [],
 			id_company: "",
+			id_area: "",
+			id_bisnit: "",
+			id_satker: "",
 		});
 		formik.resetForm();
 		formRef.current?.resetFields();
@@ -195,7 +286,7 @@ const MasterUser = () => {
 			.then(result => {
 				if (result.isConfirmed) {
 					deleteUserApi(id).then(res => {
-						if (res.data.status === "success") {
+						if (res.data.success === "success") {
 							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
 							fetchDataList();
 						} else {
@@ -209,9 +300,9 @@ const MasterUser = () => {
 	};
 
 	const onFinish = (values: any) => {
-		if (showModal.id) {
-			updateUserApi(showModal.id, values).then(res => {
-				if (res.data.status === "success") {
+		if (showModal.uuid) {
+			updateUserApi(showModal.uuid, values).then(res => {
+				if (res.data.success === "success") {
 					setShowModal({ show: false });
 					Swal.fire({
 						icon: "success",
@@ -231,16 +322,23 @@ const MasterUser = () => {
 			});
 		} else {
 			createNewUserApi(values).then(res => {
-				if (res.data.status === "success") {
+				if (res.data.success === "success") {
 					setShowModal({ show: false });
 					fetchDataList();
+					Swal.fire({
+						icon: "success",
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				} else {
+					Swal.fire({
+						icon: "error",
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
-				});
 			});
 		}
 	};
@@ -347,10 +445,11 @@ const MasterUser = () => {
 								Password <span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
-								<Input
+								<Input.Password
 									type="password"
 									name="password"
 									className="form-control"
+									style={{ display: "inline-flex" }}
 									placeholder="Password"
 									onChange={formik.handleChange}
 									value={formik.values.password}
@@ -383,19 +482,9 @@ const MasterUser = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item
-						name="nipg"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
+					<Form.Item name="nipg">
 						<div className="form-group">
-							<Title level={5}>
-								NIPG <span className="text-danger">*</span>
-							</Title>
+							<Title level={5}>NIPG</Title>
 							<div className="controls">
 								<Input
 									type="text"
@@ -408,13 +497,22 @@ const MasterUser = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item name="id_company">
+					<Form.Item
+						name="id_company"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
 						<div className="form-group">
-							<Title level={5}>Perusahaan</Title>
+							<Title level={5}>
+								Perusahaan <span className="text-danger">*</span>
+							</Title>
 							<div className="controls">
 								<Select
 									showSearch
-									placeholder="Pilih Perusahaan"
 									onSearch={v => setCompanyParams({ name: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
@@ -425,7 +523,7 @@ const MasterUser = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_company", v);
 										formRef.current?.setFieldsValue({
-											id_company: v,
+											id_company: parseInt(v),
 										});
 									}}
 									value={formik.values.id_company}
@@ -433,26 +531,131 @@ const MasterUser = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item name="id_role">
+					<Form.Item
+						name="id_area"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
 						<div className="form-group">
-							<Title level={5}>Role</Title>
+							<Title level={5}>
+								Area <span className="text-danger">*</span>
+							</Title>
 							<div className="controls">
 								<Select
 									showSearch
-									placeholder="Pilih Role"
+									onSearch={v => setAreaParams({ name: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()
 											.includes(input.toLowerCase())
 									}
-									options={dataOptionRole}
+									options={dataOptionArea}
 									onChange={(v, opt) => {
-										formik.setFieldValue("id_role", v);
+										formik.setFieldValue("id_area", v);
 										formRef.current?.setFieldsValue({
-											id_role: v,
+											id_area: parseInt(v),
 										});
 									}}
-									value={formik.values.id_role}
+									value={formik.values.id_area}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_bisnit"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Bisnis Unit <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setBusinessUnitParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionBusinessUnit}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_bisnit", v);
+										formRef.current?.setFieldsValue({
+											id_bisnit: parseInt(v),
+										});
+									}}
+									value={formik.values.id_bisnit}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_satker"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Satuan Kerja <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setWorkUnitParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionWorkUnit}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_satker", v);
+										formRef.current?.setFieldsValue({
+											id_satker: parseInt(v),
+										});
+									}}
+									value={formik.values.id_satker}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="roles"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Role <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<SelectWithTag
+									mode="multiple"
+									dataOption={dataOptionRole}
+									onChange={(v, opt) => {
+										formik.setFieldValue("roles", v);
+										formRef.current?.setFieldsValue({
+											roles: v,
+										});
+									}}
 								/>
 							</div>
 						</div>

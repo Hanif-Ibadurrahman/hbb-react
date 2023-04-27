@@ -45,7 +45,7 @@ const ServiceTicketHistory = () => {
 				}
 			>
 				<h6 className="box-title mt-10 d-block mb-10">Nomor</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Nomor</h6>
 				<RangePicker style={{ width: "100%" }} />
 			</SideModal>

@@ -6,7 +6,7 @@ import {
 import { apiWithToken } from ".";
 
 export const getAllServiceDeleteApi = (params?: IServiceDeleteGetAllParams) => {
-	return apiWithToken.get(`/api/master/service-delete`, {
+	return apiWithToken.get(`/api/transaksi/penghapusan`, {
 		params: params,
 	});
 };
@@ -14,20 +14,20 @@ export const getAllServiceDeleteApi = (params?: IServiceDeleteGetAllParams) => {
 export const createNewServiceDeleteApi = (
 	input: ICreateServiceDeleteRequest,
 ) => {
-	return apiWithToken.post(`/api/master/service-delete`, input);
+	return apiWithToken.post(`/api/transaksi/penghapusan`, input);
 };
 
 export const getDetailServiceDeleteApi = (id: string) => {
-	return apiWithToken.get(`/api/master/service-delete/${id}`);
+	return apiWithToken.get(`/api/transaksi/penghapusan/${id}`);
 };
 
 export const updateServiceDeleteApi = (
 	id: string,
 	input: IUpdateServiceDeleteRequest,
 ) => {
-	return apiWithToken.put(`/api/master/service-delete/${id}`, input);
+	return apiWithToken.put(`/api/transaksi/penghapusan/${id}`, input);
 };
 
 export const deleteServiceDeleteApi = (id: string) => {
-	return apiWithToken.delete(`/api/master/service-delete/${id}`);
+	return apiWithToken.delete(`/api/transaksi/penghapusan/${id}`);
 };

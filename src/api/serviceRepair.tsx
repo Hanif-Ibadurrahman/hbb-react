@@ -6,7 +6,7 @@ import {
 import { apiWithToken } from ".";
 
 export const getAllServiceRepairApi = (params?: IServiceRepairGetAllParams) => {
-	return apiWithToken.get(`/api/master/service-repair`, {
+	return apiWithToken.get(`/api/transaksi/perbaikan`, {
 		params: params,
 	});
 };
@@ -14,20 +14,20 @@ export const getAllServiceRepairApi = (params?: IServiceRepairGetAllParams) => {
 export const createNewServiceRepairApi = (
 	input: ICreateServiceRepairRequest,
 ) => {
-	return apiWithToken.post(`/api/master/service-repair`, input);
+	return apiWithToken.post(`/api/transaksi/perbaikan`, input);
 };
 
 export const getDetailServiceRepairApi = (id: string) => {
-	return apiWithToken.get(`/api/master/service-repair/${id}`);
+	return apiWithToken.get(`/api/transaksi/perbaikan/${id}`);
 };
 
 export const updateServiceRepairApi = (
 	id: string,
 	input: IUpdateServiceRepairRequest,
 ) => {
-	return apiWithToken.put(`/api/master/service-repair/${id}`, input);
+	return apiWithToken.put(`/api/transaksi/perbaikan/${id}`, input);
 };
 
 export const deleteServiceRepairApi = (id: string) => {
-	return apiWithToken.delete(`/api/master/service-repair/${id}`);
+	return apiWithToken.delete(`/api/transaksi/perbaikan/${id}`);
 };

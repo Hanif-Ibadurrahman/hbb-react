@@ -133,35 +133,35 @@ const Displacement = () => {
 				}
 			>
 				<h6 className="box-title mt-10 d-block mb-10">Jenis Barang</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Main Group</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Sub Group</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Tahun Perolehan</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Nama Barang</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Distributor</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">No Akuntansi</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">No BAST/DO</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Negara Pembuat</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Tahun Pembuatan</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Merk</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Jenis</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Model</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Warna</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Kapasitas</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 			</SideModal>
 		</MainLayout>
 	);

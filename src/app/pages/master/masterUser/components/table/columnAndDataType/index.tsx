@@ -1,11 +1,13 @@
+import { Tag } from "antd";
 import { ColumnsType } from "antd/es/table";
-import { ActionButtonTable } from "app/components/table/antd/actionButtonTable";
+import { generateRandomHex } from "app/helper/common";
 import { IUser } from "store/types/userTypes";
 interface IColumn {
 	setShowModal: React.Dispatch<
 		React.SetStateAction<{
 			show: boolean;
-			id?: string | undefined;
+			id?: string;
+			uuid?: string;
 		}>
 	>;
 	handleDelete: (id: string) => void;
@@ -24,6 +26,11 @@ export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 			sorter: true,
 		},
 		{
+			title: "Satuan Kerja",
+			dataIndex: "id_satker",
+			sorter: true,
+		},
+		{
 			title: "Bisnis Unit",
 			dataIndex: "id_bisnit",
 			sorter: true,
@@ -34,20 +41,49 @@ export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 			sorter: true,
 		},
 		{
-			title: "Role",
-			dataIndex: "id_role",
+			title: "Perusahaan",
+			dataIndex: "id_company",
 			sorter: true,
 		},
 		{
+			title: "Role",
+			sorter: true,
+			render: (text, record, index) => {
+				const roles = record.user_roles.map(value => {
+					return (
+						<Tag color={`#${generateRandomHex(6)}`}>{value.roles?.name}</Tag>
+					);
+				});
+
+				return roles;
+			},
+		},
+		{
 			title: "Action",
-			dataIndex: "id",
+			dataIndex: "user_uuid",
 			render: (text, record, index) => {
 				return (
-					<ActionButtonTable
-						setShowModal={setShowModal}
-						handleDelete={handleDelete}
-						itemId={text}
-					/>
+					<div style={{ display: "flex", columnGap: 5 }}>
+						<button
+							type="button"
+							className="btn btn-primary"
+							onClick={() => {
+								setShowModal({ show: true, id: record.id, uuid: text });
+							}}
+						>
+							Edit
+						</button>
+						<button
+							type="button"
+							className="btn"
+							style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
+							onClick={() => {
+								handleDelete(text);
+							}}
+						>
+							Delete
+						</button>
+					</div>
 				);
 			},
 		},

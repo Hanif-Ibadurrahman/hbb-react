@@ -2,7 +2,7 @@ export interface IButtonAction {
 	setShowModal: React.Dispatch<
 		React.SetStateAction<{
 			show: boolean;
-			id?: string | undefined;
+			id?: string;
 		}>
 	>;
 	handleDelete?: (id: string) => void;

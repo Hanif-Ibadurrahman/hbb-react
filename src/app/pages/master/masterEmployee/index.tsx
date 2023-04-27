@@ -47,7 +47,7 @@ const MasterEmployee = () => {
 	const [initialValue, setInitialValue] = useState<ICreateEmployeeRequest>({
 		emp_name: "",
 		nipg: "",
-		jabatan: "",
+		position: "",
 	});
 	const [dataTable, setDataTable] = useState<IEmployeePaginateResponse>();
 
@@ -75,7 +75,7 @@ const MasterEmployee = () => {
 		const setData = {
 			emp_name: values.emp_name || "",
 			nipg: values.nipg || "",
-			jabatan: values.jabatan || "",
+			position: values.jabatan || "",
 		};
 		setInitialValue(setData);
 		formRef.current?.setFieldsValue(setData);
@@ -112,7 +112,7 @@ const MasterEmployee = () => {
 		setInitialValue({
 			emp_name: "",
 			nipg: "",
-			jabatan: "",
+			position: "",
 		});
 		formik.resetForm();
 		formRef.current?.resetFields();
@@ -296,17 +296,17 @@ const MasterEmployee = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item name="jabatan">
+					<Form.Item name="position">
 						<div className="form-group">
 							<Title level={5}>Jabatan</Title>
 							<div className="controls">
 								<Input
 									type="text"
-									name="jabatan"
+									name="position"
 									className="form-control"
 									placeholder="Jabatan"
 									onChange={formik.handleChange}
-									value={formik.values.jabatan}
+									value={formik.values.position}
 								/>
 							</div>
 						</div>

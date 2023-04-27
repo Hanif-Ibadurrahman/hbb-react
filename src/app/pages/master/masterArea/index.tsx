@@ -404,7 +404,6 @@ const MasterArea = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									placeholder="Pilih Bisnis Unit"
 									onSearch={v => setBusinessUnitParams({ name: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")

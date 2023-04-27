@@ -6,7 +6,7 @@ interface IColumn {
 	setShowModal: React.Dispatch<
 		React.SetStateAction<{
 			show: boolean;
-			id?: string | undefined;
+			id?: string;
 		}>
 	>;
 }

@@ -18,12 +18,12 @@ export interface IEmployeeGetAllParams {
 export interface ICreateEmployeeRequest {
 	nipg: string;
 	emp_name: string;
-	jabatan: string;
+	position: string;
 }
 export interface IUpdateEmployeeRequest {
 	nipg: string;
 	emp_name: string;
-	jabatan: string;
+	position: string;
 }
 export interface IEmployeeGetAllResponse {
 	status: string;

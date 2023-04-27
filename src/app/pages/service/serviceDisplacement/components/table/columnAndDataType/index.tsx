@@ -1,13 +1,11 @@
 import { ColumnsType } from "antd/es/table";
-import { ActionButtonTable } from "app/components/table/antd/actionButtonTable";
 import { IServiceRequest } from "store/types/serviceRequestTypes";
-
 interface IColumn {
 	handleApprove: (id: string) => void;
-	handleDelete: (id: string) => void;
+	handleReject: (id: string) => void;
 }
 
-export const columns = ({ handleApprove, handleDelete }: IColumn) => {
+export const columns = ({ handleApprove, handleReject }: IColumn) => {
 	const columnType: ColumnsType<IServiceRequest> = [
 		{
 			title: "No HBB/Inventaris",
@@ -59,7 +57,7 @@ export const columns = ({ handleApprove, handleDelete }: IColumn) => {
 							className="btn"
 							style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
 							onClick={() => {
-								handleDelete(text);
+								handleReject(text);
 							}}
 						>
 							Reject
