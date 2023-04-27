@@ -215,8 +215,7 @@ const MasterWorkflow = () => {
 				});
 			});
 		} else {
-			const input = { ...values, id_company: parseInt(values.id_company) };
-			createNewWorkflowApi(input).then(res => {
+			createNewWorkflowApi(values).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });
 					fetchDataList();
@@ -363,7 +362,15 @@ const MasterWorkflow = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item name="id_company">
+					<Form.Item
+						name="id_company"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
 						<div className="form-group">
 							<Title level={5}>
 								Perusahaan <span className="text-danger">*</span>
@@ -381,7 +388,7 @@ const MasterWorkflow = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_company", v);
 										formRef.current?.setFieldsValue({
-											id_company: v,
+											id_company: parseInt(v),
 										});
 									}}
 									value={formik.values.id_company}

@@ -1,6 +1,7 @@
 import { Button, Col, Drawer, Form, Row, Space } from "antd";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { Dispatch, SetStateAction } from "react";
+import { TokenDekode } from "app/helper/authentication";
+import { Dispatch, SetStateAction, useMemo } from "react";
 import { IAreaGetAllParams } from "store/types/areaTypes";
 
 interface IModalFilter {
@@ -15,6 +16,22 @@ export const ModalFilter = ({
 	setParams,
 }: IModalFilter) => {
 	const [formFilter] = Form.useForm();
+	const tokenDecode = TokenDekode();
+
+	const generateContent = useMemo(() => {
+		const isSuperadmin = Object.values(tokenDecode.user?.roles ?? {}).includes(
+			"Super Admin",
+		);
+		if (isSuperadmin) {
+			return (
+				<Col span={24}>
+					<Form.Item name="company" label="Perusahaan">
+						<SelectWithTag />
+					</Form.Item>
+				</Col>
+			);
+		}
+	}, [tokenDecode]);
 
 	const handleSubmit = v => {
 		const filterParams = Object.entries(v).reduce((res, curr) => {
@@ -58,44 +75,35 @@ export const ModalFilter = ({
 				<Row gutter={16}>
 					<Col span={24}>
 						<Form.Item name="name" label="Nama Area">
-							<SelectWithTag colorTag="cyan" />
+							<SelectWithTag />
 						</Form.Item>
 					</Col>
-				</Row>
-				<Row gutter={16}>
 					<Col span={24}>
 						<Form.Item name="daerah" label="Daerah">
-							<SelectWithTag colorTag="cyan" />
+							<SelectWithTag />
 						</Form.Item>
 					</Col>
-				</Row>
-				<Row gutter={16}>
 					<Col span={24}>
 						<Form.Item name="pengelola" label="Pengelola">
-							<SelectWithTag colorTag="cyan" />
+							<SelectWithTag />
 						</Form.Item>
 					</Col>
-				</Row>
-				<Row gutter={16}>
 					<Col span={24}>
 						<Form.Item name="nipg" label="NIPG">
-							<SelectWithTag colorTag="cyan" />
+							<SelectWithTag />
 						</Form.Item>
 					</Col>
-				</Row>
-				<Row gutter={16}>
 					<Col span={24}>
 						<Form.Item name="pemegang" label="Pemegang">
-							<SelectWithTag colorTag="cyan" />
+							<SelectWithTag />
 						</Form.Item>
 					</Col>
-				</Row>
-				<Row gutter={16}>
 					<Col span={24}>
 						<Form.Item name="id_bisnis_unit" label="Bisnis Unit">
-							<SelectWithTag colorTag="cyan" />
+							<SelectWithTag />
 						</Form.Item>
 					</Col>
+					{generateContent}
 				</Row>
 			</Form>
 		</Drawer>

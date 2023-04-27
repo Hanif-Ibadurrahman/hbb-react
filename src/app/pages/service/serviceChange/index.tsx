@@ -2,8 +2,6 @@ import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAnd
 import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
-import { SideModal } from "app/components/modal/sideModal";
-import { SelectWithTag } from "app/components/selectWithTag";
 import { Modal as AntdModal, Button, Form, FormInstance, Input } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
@@ -15,10 +13,15 @@ import {
 import {
 	createNewServiceChangeApi,
 	deleteServiceChangeApi,
+	getAllServiceChangeApi,
 	getDetailServiceChangeApi,
 	updateServiceChangeApi,
 } from "api/serviceChange";
 import { IServiceChange } from "store/types/serviceChangeTypes";
+import { CheckAuthentication } from "app/helper/authentication";
+import { IItemGetAllParams } from "store/types/itemTypes";
+import { DefaultOptionType } from "antd/es/select";
+import { getAllItemApi } from "api/item";
 
 const ServiceChange = () => {
 	const [form] = Form.useForm();
@@ -26,9 +29,7 @@ const ServiceChange = () => {
 	const [params, setParams] = useState<
 		IServiceChangeGetAllParams | undefined
 	>();
-	const [tempFilter, setTempFilter] = useState<
-		IServiceChangeGetAllParams | undefined
-	>();
+	const [itemParams, setItemParams] = useState<IItemGetAllParams | undefined>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
 	});
@@ -41,48 +42,18 @@ const ServiceChange = () => {
 	const [initialValue, setInitialValue] =
 		useState<ICreateServiceChangeRequest>();
 	const [dataTable, setDataTable] = useState<IServiceChangePaginateResponse>();
+	const [dataOptionItem, setDataOptionItem] = useState<
+		DefaultOptionType[] | undefined
+	>();
 
 	const fetchDataList = async () => {
 		try {
 			if (params) {
-				// const response = await getAllServiceChangeApi(params);
-				// setDataTable(response.data.data);
-				let data: IServiceChange[] = [];
-				for (let i = 1; i <= 100; i++) {
-					data.push({
-						id: `${i}`,
-						name_item: `102023 ${i}`,
-						condition: "Baik",
-						description: "Pinjam",
-						photo: "Foto",
-						specification: `Spesifikasi ${i}`,
-						user: `User ${i}`,
-					});
-				}
-				setDataTable({
-					total: 100,
-					per_page: 10,
-					current_page: 1,
-					last_page: 10,
-					first_page_url: "",
-					last_page_url: "",
-					next_page_url: "",
-					prev_page_url: "",
-					path: "",
-					link: [
-						{
-							url: null,
-							label: null,
-							active: false,
-						},
-					],
-					from: 1,
-					to: 10,
-					data: data,
-				});
+				const response = await getAllServiceChangeApi(params);
+				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 
@@ -91,7 +62,7 @@ const ServiceChange = () => {
 			const response = await getDetailServiceChangeApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 
@@ -107,6 +78,23 @@ const ServiceChange = () => {
 		// setInitialValue();
 		// formRef.current?.setFieldsValue({ name: values.name || "" });
 	};
+
+	const fetchDataItem = async () => {
+		try {
+			const response = await getAllItemApi(itemParams);
+			const itemList = response.data.data.data;
+			setDataOptionItem(
+				itemList.map(v => ({ label: v.name, value: `${v.id}` })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	useEffect(() => {
+		fetchDataItem();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [itemParams]);
 
 	useEffect(() => {
 		fetchDataList();
@@ -138,14 +126,9 @@ const ServiceChange = () => {
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		setInitialValue({
-			name_item: "",
-			description: "",
-			condition: "",
-			user: "",
-			specification: "",
-			photo: "",
-		});
+		// setInitialValue({
+
+		// });
 		formRef.current?.resetFields();
 	};
 
@@ -226,10 +209,6 @@ const ServiceChange = () => {
 		setShowModal({ show: false });
 	};
 
-	const setValueFilter = () => {
-		setParams({ ...params, ...tempFilter });
-	};
-
 	return (
 		<MainLayout>
 			<section className="content">
@@ -276,14 +255,23 @@ const ServiceChange = () => {
 							<div className="form-group">
 								<span>Nama Barang</span>
 								<div className="controls">
-									<Input
-										type="text"
-										name="name_item"
-										className="form-control"
-										placeholder="Nama Barang"
-										onChange={formik.handleChange}
-										value={formik.values.name_item}
-									/>
+									{/* <Select
+										showSearch
+										onSearch={v => setAreaParams({ name: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionArea}
+										onChange={(v, opt) => {
+											formik.setFieldValue("id_area", v);
+											formRef.current?.setFieldsValue({
+												id_area: v,
+											});
+										}}
+										value={formik.values.id_area}
+									/> */}
 								</div>
 							</div>
 						</Form.Item>
@@ -352,7 +340,7 @@ const ServiceChange = () => {
 										className="form-control"
 										placeholder="Spesifikasi"
 										onChange={formik.handleChange}
-										value={formik.values.specification}
+										value={formik.values.spesification}
 									/>
 								</div>
 							</div>
@@ -361,31 +349,11 @@ const ServiceChange = () => {
 				</div>
 			</AntdModal>
 
-			<SideModal
-				title="Filter"
-				contentFooter={
-					<button
-						type="button"
-						className="btn btn-primary"
-						data-bs-dismiss="modal"
-					>
-						Filter
-					</button>
-				}
-			>
-				<h6 className="box-title mt-10 d-block mb-10">Nama Area</h6>
-				<SelectWithTag colorTag="cyan" />
-				<h6 className="box-title mt-10 d-block mb-10">Daerah</h6>
-				<SelectWithTag colorTag="cyan" />
-				<h6 className="box-title mt-10 d-block mb-10">Pengelola</h6>
-				<SelectWithTag colorTag="cyan" />
-				<h6 className="box-title mt-10 d-block mb-10">NIPG</h6>
-				<SelectWithTag colorTag="cyan" />
-				<h6 className="box-title mt-10 d-block mb-10">Pemegang</h6>
-				<SelectWithTag colorTag="cyan" />
-				<h6 className="box-title mt-10 d-block mb-10">Bisnis Unit</h6>
-				<SelectWithTag colorTag="cyan" />
-			</SideModal>
+			{/* <ModalFilter
+				isShow={showFilter}
+				setShowModal={setShowFilter}
+				setParams={setParams}
+			/> */}
 		</MainLayout>
 	);
 };

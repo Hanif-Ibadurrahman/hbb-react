@@ -20,6 +20,7 @@ export interface IAreaGetAllParams {
 	daerah?: string;
 	pemegang?: string;
 	bisnis_unit?: string;
+	company?: string;
 }
 export interface ICreateAreaRequest {
 	name: string;

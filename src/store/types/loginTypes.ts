@@ -8,7 +8,7 @@ export interface IUserTokenDecode {
 	id_satker: number | null;
 	id_bisnit: number | null;
 	id_company: number | null;
-	roles: string[] | null;
+	roles: Object | null;
 }
 
 export interface ITokenDecode {
@@ -22,7 +22,7 @@ export interface ITokenDecode {
 	token_type: string | null;
 	expires_in: number | null;
 	user: IUserTokenDecode | null;
-	permissions: string[] | null;
+	permissions: Object | null;
 }
 
 export interface ILoginRequest {

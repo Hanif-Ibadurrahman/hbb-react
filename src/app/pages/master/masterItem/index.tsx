@@ -391,7 +391,6 @@ const MasterItem = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									placeholder="Pilih Main Group"
 									onSearch={v => setCodeGroupParams({ value: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
@@ -416,7 +415,6 @@ const MasterItem = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									placeholder="Pilih Sub Group"
 									onSearch={v => setSubCodeGroupParams({ value: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
@@ -526,7 +524,6 @@ const MasterItem = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									placeholder="Pilih Warna"
 									onSearch={v => setColorParams({ name: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")

@@ -143,13 +143,13 @@ const WarehouseCheckInOut = () => {
 				}
 			>
 				<h6 className="box-title mt-10 d-block mb-10">Lokasi</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">No HBB / Inventaris</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Nama Barang</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 				<h6 className="box-title mt-10 d-block mb-10">Kondisi</h6>
-				<SelectWithTag colorTag="cyan" />
+				<SelectWithTag />
 			</SideModal>
 		</MainLayout>
 	);

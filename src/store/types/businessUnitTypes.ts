@@ -14,6 +14,7 @@ export interface IBusinessUnitGetAllParams {
 	page?: number;
 	per_page?: number;
 	name?: string;
+	company?: string;
 }
 
 export interface ICreateBusinessUnitRequest {

@@ -22,21 +22,29 @@ export interface IServiceChangeGetAllParams {
 }
 
 export interface ICreateServiceChangeRequest {
-	name_item: string;
+	inventory_code: string;
+	emp_name: string;
 	description: string;
 	photo: string;
 	user: string;
 	condition: string;
-	specification: string;
+	spesification: string;
+	id_company: string;
+	created_by: string;
+	files: File[];
 }
 
 export interface IUpdateServiceChangeRequest {
-	name_item: string;
+	inventory_code: string;
+	emp_name: string;
 	description: string;
 	photo: string;
 	user: string;
 	condition: string;
-	specification: string;
+	spesification: string;
+	id_company: string;
+	created_by: string;
+	files: File[];
 }
 
 export interface IServiceChangeGetAllResponse {

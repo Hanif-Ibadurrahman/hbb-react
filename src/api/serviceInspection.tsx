@@ -8,7 +8,7 @@ import { apiWithToken } from ".";
 export const getAllServiceInspectionApi = (
 	params?: IServiceInspectionGetAllParams,
 ) => {
-	return apiWithToken.get(`/api/master/service-inspection`, {
+	return apiWithToken.get(`/api/transaksi/pemeriksaan`, {
 		params: params,
 	});
 };
@@ -16,20 +16,20 @@ export const getAllServiceInspectionApi = (
 export const createNewServiceInspectionApi = (
 	input: ICreateServiceInspectionRequest,
 ) => {
-	return apiWithToken.post(`/api/master/service-inspection`, input);
+	return apiWithToken.post(`/api/transaksi/pemeriksaan`, input);
 };
 
 export const getDetailServiceInspectionApi = (id: string) => {
-	return apiWithToken.get(`/api/master/service-inspection/${id}`);
+	return apiWithToken.get(`/api/transaksi/pemeriksaan/${id}`);
 };
 
 export const updateServiceInspectionApi = (
 	id: string,
 	input: IUpdateServiceInspectionRequest,
 ) => {
-	return apiWithToken.put(`/api/master/service-inspection/${id}`, input);
+	return apiWithToken.put(`/api/transaksi/pemeriksaan/${id}`, input);
 };
 
 export const deleteServiceInspectionApi = (id: string) => {
-	return apiWithToken.delete(`/api/master/service-inspection/${id}`);
+	return apiWithToken.delete(`/api/transaksi/pemeriksaan/${id}`);
 };
