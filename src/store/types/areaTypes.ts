@@ -4,6 +4,7 @@ export interface IArea {
 	id: string;
 	id_bisnis_unit: string | null;
 	id_emp: string | null;
+	id_company: string | null;
 	name: string | null;
 	daerah: string | null;
 	pemegang: string | null;
@@ -25,20 +26,16 @@ export interface IAreaGetAllParams {
 export interface ICreateAreaRequest {
 	name: string;
 	daerah: string;
-	pengelola: string;
-	nipg?: string;
-	pemegang?: string;
 	id_bisnis_unit: string;
-	id_company?: string;
+	id_company: string;
+	id_emp: string;
 }
 export interface IUpdateAreaRequest {
 	name: string;
 	daerah: string;
-	pengelola: string;
-	nipg?: string;
-	pemegang?: string;
 	id_bisnis_unit: string;
 	id_company: string;
+	id_emp: string;
 }
 export interface IAreaGetAllResponse {
 	status: string;

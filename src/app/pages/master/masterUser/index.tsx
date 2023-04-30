@@ -38,11 +38,13 @@ import { IAreaGetAllParams } from "store/types/areaTypes";
 import { getAllAreaApi } from "api/area";
 import { IWorkUnitGetAllParams } from "store/types/workUnitTypes";
 import { getAllWorkUnitApi } from "api/workUnit";
+import { includes } from "lodash";
 
 const MasterUser = () => {
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
+	const [selectedRole, setSelectedRole] = useState<string[]>();
 	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<IUserGetAllParams | undefined>();
 	const [companyParams, setCompanyParams] = useState<
@@ -363,7 +365,7 @@ const MasterUser = () => {
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
 									>
-										<i className="fa fa-filter">Filter</i>
+										<i className="fa fa-filter" />
 									</button>
 									<button
 										type="button"
@@ -482,21 +484,55 @@ const MasterUser = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item name="nipg">
+					<Form.Item
+						name="roles"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
 						<div className="form-group">
-							<Title level={5}>NIPG</Title>
+							<Title level={5}>
+								Role <span className="text-danger">*</span>
+							</Title>
 							<div className="controls">
-								<Input
-									type="text"
-									name="nipg"
-									className="form-control"
-									placeholder="NIPG"
-									onChange={formik.handleChange}
-									value={formik.values.nipg}
+								<SelectWithTag
+									mode="multiple"
+									dataOption={dataOptionRole}
+									onChange={(v, opt) => {
+										setSelectedRole(
+											opt.map(v => {
+												return v.label;
+											}),
+										);
+										formik.setFieldValue("roles", v);
+										formRef.current?.setFieldsValue({
+											roles: v,
+										});
+									}}
 								/>
 							</div>
 						</div>
 					</Form.Item>
+					{selectedRole?.includes("User") && (
+						<Form.Item name="nipg">
+							<div className="form-group">
+								<Title level={5}>NIPG</Title>
+								<div className="controls">
+									<Input
+										type="text"
+										name="nipg"
+										className="form-control"
+										placeholder="NIPG"
+										onChange={formik.handleChange}
+										value={formik.values.nipg}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+					)}
 					<Form.Item
 						name="id_company"
 						rules={[
@@ -629,33 +665,6 @@ const MasterUser = () => {
 										});
 									}}
 									value={formik.values.id_satker}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="roles"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Role <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<SelectWithTag
-									mode="multiple"
-									dataOption={dataOptionRole}
-									onChange={(v, opt) => {
-										formik.setFieldValue("roles", v);
-										formRef.current?.setFieldsValue({
-											roles: v,
-										});
-									}}
 								/>
 							</div>
 						</div>

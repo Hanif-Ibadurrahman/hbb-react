@@ -1,10 +1,7 @@
-import { Modal } from "antd";
+import { Dropdown, MenuProps, Modal } from "antd";
 import { logoutApi } from "api/login";
 import FeatherIcon from "feather-icons-react";
 import { Link, useNavigate } from "react-router-dom";
-import PgnIcon from "assets/image/logo-icon-pgn.png";
-import PgnText from "assets/image/logo-text-pgn.png";
-
 interface IHeader {
 	collapseHandler: (thisKey: string) => void;
 }
@@ -28,6 +25,37 @@ export const Header = ({ collapseHandler }: IHeader) => {
 			modalAlert();
 		}
 	};
+
+	const items: MenuProps["items"] = [
+		{
+			key: "1",
+			label: (
+				// eslint-disable-next-line jsx-a11y/anchor-is-valid
+				<a className="dropdown-item">
+					<i className="ti-user text-muted me-2"></i> Profile
+				</a>
+			),
+		},
+		{
+			key: "2",
+			label: (
+				// eslint-disable-next-line jsx-a11y/anchor-is-valid
+				<a className="dropdown-item">
+					<i className="ti-settings text-muted me-2"></i> Email
+				</a>
+			),
+		},
+		{
+			key: "3",
+			label: (
+				// eslint-disable-next-line jsx-a11y/anchor-is-valid
+				<a className="dropdown-item" onClick={handleLogout}>
+					<i className="ti-lock text-muted me-2"></i> Logout
+				</a>
+			),
+		},
+	];
+
 	return (
 		<header className="main-header">
 			<div className="d-flex align-items-center logo-box justify-content-start">
@@ -150,37 +178,16 @@ export const Header = ({ collapseHandler }: IHeader) => {
 							</ul>
 						</li>
 
-						<li className="btn-group dropdown user user-menu">
-							<a
-								href="/"
-								className="waves-effect waves-light dropdown-toggle l-h-12 no-shadow w-auto bg-transparent py-0"
-								data-bs-toggle="dropdown"
-								title="User"
-							>
-								<img
-									src="images/avatar/avatar-1.png"
-									className="avatar rounded-10 bg-primary-light h-40 w-40"
-									alt=""
-								/>
-							</a>
-							<ul className="dropdown-menu animated flipInX">
-								<li className="user-body">
-									<a className="dropdown-item" href="extra_profile.html">
-										<i className="ti-user text-muted me-2"></i> Profile
-									</a>
-									<a className="dropdown-item" href="mailbox.html">
-										<i className="ti-settings text-muted me-2"></i> Email
-									</a>
-									<div className="dropdown-divider"></div>
-									<a
-										href="/login"
-										className="dropdown-item"
-										onClick={handleLogout}
-									>
-										<i className="ti-lock text-muted me-2"></i> Logout
-									</a>
-								</li>
-							</ul>
+						<li className="dropdown user user-menu">
+							<Dropdown menu={{ items }} placement="bottomLeft">
+								<div data-bs-toggle="dropdown" title="User">
+									<img
+										src="images/avatar/avatar-1.png"
+										className="avatar rounded-10 bg-primary-light h-40 w-40"
+										alt=""
+									/>
+								</div>
+							</Dropdown>
 						</li>
 					</ul>
 				</div>

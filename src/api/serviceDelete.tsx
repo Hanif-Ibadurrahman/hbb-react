@@ -31,3 +31,14 @@ export const updateServiceDeleteApi = (
 export const deleteServiceDeleteApi = (id: string) => {
 	return apiWithToken.delete(`/api/transaksi/penghapusan/${id}`);
 };
+
+export const approveServiceDeleteApi = (id: string) => {
+	return apiWithToken.get(`/api/approval/penghapusan/approve/${id}`);
+};
+
+export const rejectServiceDeleteApi = (
+	id: string,
+	input: { remark: string },
+) => {
+	return apiWithToken.post(`/api/approval/penghapusan/reject/${id}`, input);
+};

@@ -35,6 +35,7 @@ import { getAllAreaApi } from "api/area";
 import { getAllWorkUnitApi } from "api/workUnit";
 import { getAllEmployeeApi } from "api/employee";
 import { ModalFilter } from "./components/modalFilter";
+import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 
 const MasterLocation = () => {
 	const { Title } = Typography;
@@ -50,7 +51,7 @@ const MasterLocation = () => {
 		IWorkUnitGetAllParams | undefined
 	>();
 	const [employeeParams, setEmployeeParams] = useState<
-		IWorkUnitGetAllParams | undefined
+		IEmployeeGetAllParams | undefined
 	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
@@ -316,7 +317,7 @@ const MasterLocation = () => {
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
 									>
-										<i className="fa fa-filter">Filter</i>
+										<i className="fa fa-filter" />
 									</button>
 									<button
 										type="button"
@@ -463,7 +464,7 @@ const MasterLocation = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setEmployeeParams({ name: v })}
+									onSearch={v => setEmployeeParams({ emp_name: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()

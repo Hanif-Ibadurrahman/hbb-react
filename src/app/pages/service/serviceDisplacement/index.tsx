@@ -2,8 +2,6 @@ import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAnd
 import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
-import { SideModal } from "app/components/modal/sideModal";
-import { SelectWithTag } from "app/components/selectWithTag";
 import {
 	Modal as AntdModal,
 	Button,
@@ -24,6 +22,7 @@ import {
 import {
 	approveServiceDisplacementApi,
 	createNewServiceDisplacementApi,
+	deleteServiceDisplacementApi,
 	getAllServiceDisplacementApi,
 	getDetailServiceDisplacementApi,
 	rejectServiceDisplacementApi,
@@ -32,29 +31,44 @@ import {
 import { IServiceDisplacement } from "store/types/serviceDisplacementTypes";
 import { CheckAuthentication } from "app/helper/authentication";
 import { DefaultOptionType } from "antd/es/select";
-import { getAllItemApi } from "api/item";
-import { IItemGetAllParams } from "store/types/itemTypes";
-import { IUserGetAllParams } from "store/types/userTypes";
-import { getAllUserApi } from "api/user";
 import { getAllCompanyApi } from "api/company";
 import { getAllWorkflowApi } from "api/workflow";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { IWorkflowGetAllParams } from "store/types/workflowTypes";
+import { isAllowCreateServiceDisplacement } from "app/helper/permission";
+import { IEmployeeGetAllParams } from "store/types/employeeTypes";
+import { getAllEmployeeApi } from "api/employee";
+import { ILocationGetAllParams } from "store/types/locationTypes";
+import { getAllLocationApi } from "api/location";
+import { IInventoryGetAllParams } from "store/types/inventoryTypes";
+import { getAllInventoryApi } from "api/inventory";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { ModalFilter } from "./components/modalFilter";
 
 const ServiceDisplacement = () => {
+	dayjs.extend(customParseFormat);
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
+	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<
 		IServiceDisplacementGetAllParams | undefined
 	>();
-	const [itemParams, setItemParams] = useState<IItemGetAllParams | undefined>();
-	const [userParams, setUserParams] = useState<IUserGetAllParams | undefined>();
+	const [inventoryParams, setInventoryParams] = useState<
+		IInventoryGetAllParams | undefined
+	>();
+	const [employeeParams, setEmployeeParams] = useState<
+		IEmployeeGetAllParams | undefined
+	>();
 	const [companyParams, setCompanyParams] = useState<
 		ICompanyGetAllParams | undefined
 	>();
 	const [workflowParams, setWorkflowParams] = useState<
 		IWorkflowGetAllParams | undefined
+	>();
+	const [locationParams, setLocationParams] = useState<
+		ILocationGetAllParams | undefined
 	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
@@ -69,16 +83,19 @@ const ServiceDisplacement = () => {
 		useState<ICreateServiceDisplacementRequest>();
 	const [dataTable, setDataTable] =
 		useState<IServiceDisplacementPaginateResponse>();
-	const [dataOptionItem, setDataOptionItem] = useState<
+	const [dataOptionInventory, setDataOptionInventory] = useState<
 		DefaultOptionType[] | undefined
 	>();
-	const [dataOptionUser, setDataOptionUser] = useState<
+	const [dataOptionEmployee, setDataOptionEmployee] = useState<
 		DefaultOptionType[] | undefined
 	>();
 	const [dataOptionCompany, setDataOptionCompany] = useState<
 		DefaultOptionType[] | undefined
 	>();
 	const [dataOptionWorkflow, setDataOptionWorkflow] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionLocation, setDataOptionLocation] = useState<
 		DefaultOptionType[] | undefined
 	>();
 
@@ -103,35 +120,45 @@ const ServiceDisplacement = () => {
 	};
 
 	const handleInitialValue = (values: IServiceDisplacement) => {
-		// const setData = {
-		// };
-		// setInitialValue();
-		// formRef.current?.setFieldsValue({ name: values.name || "" });
+		setInitialValue({
+			date: values.date || "",
+			id_inventory: values.id_inventory || "",
+			from_user: values.from_user || "",
+			to_user: values.to_user || "",
+			id_company: values.id_company || "",
+			id_lokasi: values.id_lokasi || "",
+			id_workflow: "",
+		});
+		formRef.current?.setFieldsValue({
+			date: values.date || "",
+			id_inventory: values.id_inventory || "",
+			from_user: values.from_user || "",
+			to_user: values.to_user || "",
+			id_company: values.id_company || "",
+			id_lokasi: values.id_lokasi || "",
+			id_workflow: "",
+		});
 	};
 
-	const fetchDataItem = async () => {
+	const fetchDataInventory = async () => {
 		try {
-			const response = await getAllItemApi(itemParams);
-			const itemList = response.data.data.data;
-			setDataOptionItem(
-				itemList.map(v => ({ label: v.name, value: `${v.id}` })),
+			const availableInventory = { ...inventoryParams, status: 1 };
+			const response = await getAllInventoryApi(availableInventory);
+			const inventoryList = response.data.data.data;
+			setDataOptionInventory(
+				inventoryList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
 	};
 
-	useEffect(() => {
-		fetchDataItem();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [itemParams]);
-
-	const fetchDataUser = async () => {
+	const fetchDataEmployee = async () => {
 		try {
-			const response = await getAllUserApi(userParams);
-			const userList = response.data.data.data;
-			setDataOptionUser(
-				userList.map(v => ({ label: v.name, value: `${v.id}` })),
+			const response = await getAllEmployeeApi(employeeParams);
+			const employeeList = response.data.data.data;
+			setDataOptionEmployee(
+				employeeList.map(v => ({ label: v.emp_name, value: `${v.id}` })),
 			);
 		} catch (error: any) {
 			CheckAuthentication(error);
@@ -162,6 +189,23 @@ const ServiceDisplacement = () => {
 		}
 	};
 
+	const fetchDataLocation = async () => {
+		try {
+			const response = await getAllLocationApi(locationParams);
+			const locationList = response.data.data.data;
+			setDataOptionLocation(
+				locationList.map(v => ({ label: v.name, value: `${v.id}` })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	useEffect(() => {
+		fetchDataInventory();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [inventoryParams]);
+
 	useEffect(() => {
 		fetchDataWorkflow();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -173,9 +217,14 @@ const ServiceDisplacement = () => {
 	}, [companyParams]);
 
 	useEffect(() => {
-		fetchDataUser();
+		fetchDataEmployee();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [userParams]);
+	}, [employeeParams]);
+
+	useEffect(() => {
+		fetchDataLocation();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [locationParams]);
 
 	useEffect(() => {
 		fetchDataList();
@@ -244,7 +293,16 @@ const ServiceDisplacement = () => {
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		// setInitialValue({});
+		setInitialValue({
+			date: "",
+			id_inventory: "",
+			from_user: "",
+			to_user: "",
+			id_company: "",
+			id_lokasi: "",
+			id_workflow: "",
+		});
+		formik.resetForm();
 		formRef.current?.resetFields();
 	};
 
@@ -263,9 +321,6 @@ const ServiceDisplacement = () => {
 				text: "Alasan penolakan",
 				input: "text",
 				icon: "warning",
-				preConfirm: input => {
-					console.log(input);
-				},
 				showCancelButton: true,
 				confirmButtonText: "Reject",
 				cancelButtonText: "Cancel",
@@ -273,27 +328,68 @@ const ServiceDisplacement = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					rejectServiceDisplacementApi(id).then(res => {
-						if (res.data.status === "success") {
-							swalCustom.fire(
-								"Reject",
-								"Permintaan ini telah direject.",
-								"success",
-							);
-							fetchDataList();
-						} else {
-							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
-						}
-					});
+					rejectServiceDisplacementApi(id, { remark: result.value }).then(
+						res => {
+							if (res.data.status === "success") {
+								swalCustom.fire(
+									"Reject",
+									"Permintaan ini telah direject.",
+									"success",
+								);
+								fetchDataList();
+							} else {
+								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+							}
+						},
+					);
 				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					swalCustom.fire("Batal", "Permintaan ini batal direject", "error");
 				}
 			});
 	};
 
+	const handleDelete = (id: string) => {
+		const swalCustom = Swal.mixin({
+			customClass: {
+				confirmButton: "btn btn-success m-1",
+				cancelButton: "btn btn-danger m-1",
+			},
+			buttonsStyling: false,
+		});
+
+		swalCustom
+			.fire({
+				title: "Apakah anda yakin?",
+				text: "Ingin menghapus data ini",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonText: "Delete",
+				cancelButtonText: "Cancel",
+				reverseButtons: true,
+			})
+			.then(result => {
+				if (result.isConfirmed) {
+					deleteServiceDisplacementApi(id).then(res => {
+						if (res.data.status === "success") {
+							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
+							fetchDataList();
+						} else {
+							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+						}
+					});
+				} else if (result.dismiss === Swal.DismissReason.cancel) {
+					swalCustom.fire("Batal", "Data ini batal dihapus", "error");
+				}
+			});
+	};
+
 	const onFinish = (values: any) => {
 		if (showModal.id) {
-			updateServiceDisplacementApi(showModal.id, values).then(res => {
+			const input = {
+				...values,
+				tipe: "PEMINDAHAN",
+			};
+			updateServiceDisplacementApi(showModal.id, input).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });
 					fetchDataList();
@@ -337,16 +433,31 @@ const ServiceDisplacement = () => {
 						<TablePaginateAndSort
 							title="Permintaan Layanan - Pemindahan"
 							dataSource={dataTable}
-							columns={columns({ handleApprove, handleReject })}
+							columns={columns({
+								setShowModal,
+								handleDelete,
+								handleApprove,
+								handleReject,
+							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<button
-									type="button"
-									className="btn btn-primary"
-									onClick={handleAdd}
-								>
-									Tambah
-								</button>
+								<>
+									<button
+										className="btn btn-secondary"
+										onClick={() => setShowFilter(true)}
+									>
+										<i className="fa fa-filter" />
+									</button>
+									{isAllowCreateServiceDisplacement && (
+										<button
+											type="button"
+											className="btn btn-primary"
+											onClick={handleAdd}
+										>
+											Tambah
+										</button>
+									)}
+								</>
 							}
 						/>
 					</div>
@@ -393,11 +504,18 @@ const ServiceDisplacement = () => {
 									<DatePicker
 										className="form-control"
 										onChange={(value, dateString) => {
+											console.log(dateString);
 											formik.setFieldValue("date", dateString);
 											formRef.current?.setFieldsValue({
 												date: dateString,
 											});
 										}}
+										format={"YYYY-MM-DD"}
+										value={
+											formik.values.date
+												? dayjs(formik.values.date, "YYYY-MM-DD")
+												: undefined
+										}
 									/>
 								</div>
 							</div>
@@ -413,18 +531,18 @@ const ServiceDisplacement = () => {
 						>
 							<div className="form-group">
 								<Title level={5}>
-									Barang <span className="text-danger">*</span>
+									Inventaris <span className="text-danger">*</span>
 								</Title>
 								<div className="controls">
 									<Select
 										showSearch
-										onSearch={v => setItemParams({ name: v })}
+										onSearch={v => setInventoryParams({ name: v })}
 										filterOption={(input, option) =>
 											(`${option?.label}` ?? "")
 												.toLowerCase()
 												.includes(input.toLowerCase())
 										}
-										options={dataOptionItem}
+										options={dataOptionInventory}
 										onChange={(v, opt) => {
 											formik.setFieldValue("id_inventory", v);
 											formRef.current?.setFieldsValue({
@@ -452,13 +570,13 @@ const ServiceDisplacement = () => {
 								<div className="controls">
 									<Select
 										showSearch
-										onSearch={v => setUserParams({ name: v })}
+										onSearch={v => setEmployeeParams({ emp_name: v })}
 										filterOption={(input, option) =>
 											(`${option?.label}` ?? "")
 												.toLowerCase()
 												.includes(input.toLowerCase())
 										}
-										options={dataOptionUser}
+										options={dataOptionEmployee}
 										onChange={(v, opt) => {
 											formik.setFieldValue("from_user", v);
 											formRef.current?.setFieldsValue({
@@ -486,13 +604,13 @@ const ServiceDisplacement = () => {
 								<div className="controls">
 									<Select
 										showSearch
-										onSearch={v => setUserParams({ name: v })}
+										onSearch={v => setEmployeeParams({ emp_name: v })}
 										filterOption={(input, option) =>
 											(`${option?.label}` ?? "")
 												.toLowerCase()
 												.includes(input.toLowerCase())
 										}
-										options={dataOptionUser}
+										options={dataOptionEmployee}
 										onChange={(v, opt) => {
 											formik.setFieldValue("to_user", v);
 											formRef.current?.setFieldsValue({
@@ -539,6 +657,40 @@ const ServiceDisplacement = () => {
 							</div>
 						</Form.Item>
 						<Form.Item
+							name="id_lokasi"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<Title level={5}>
+									Lokasi <span className="text-danger">*</span>
+								</Title>
+								<div className="controls">
+									<Select
+										showSearch
+										onSearch={v => setLocationParams({ name: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionLocation}
+										onChange={(v, opt) => {
+											formik.setFieldValue("id_lokasi", v);
+											formRef.current?.setFieldsValue({
+												id_lokasi: parseInt(v),
+											});
+										}}
+										value={formik.values.id_lokasi}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+						<Form.Item
 							name="id_workflow"
 							rules={[
 								{
@@ -576,31 +728,11 @@ const ServiceDisplacement = () => {
 				</div>
 			</AntdModal>
 
-			<SideModal
-				title="Filter"
-				contentFooter={
-					<button
-						type="button"
-						className="btn btn-primary"
-						data-bs-dismiss="modal"
-					>
-						Filter
-					</button>
-				}
-			>
-				<h6 className="box-title mt-10 d-block mb-10">Nama Area</h6>
-				<SelectWithTag />
-				<h6 className="box-title mt-10 d-block mb-10">Daerah</h6>
-				<SelectWithTag />
-				<h6 className="box-title mt-10 d-block mb-10">Pengelola</h6>
-				<SelectWithTag />
-				<h6 className="box-title mt-10 d-block mb-10">NIPG</h6>
-				<SelectWithTag />
-				<h6 className="box-title mt-10 d-block mb-10">Pemegang</h6>
-				<SelectWithTag />
-				<h6 className="box-title mt-10 d-block mb-10">Bisnis Unit</h6>
-				<SelectWithTag />
-			</SideModal>
+			<ModalFilter
+				isShow={showFilter}
+				setShowModal={setShowFilter}
+				setParams={setParams}
+			/>
 		</MainLayout>
 	);
 };

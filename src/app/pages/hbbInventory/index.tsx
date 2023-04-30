@@ -62,7 +62,7 @@ const HbbInventory = () => {
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
 									>
-										<i className="fa fa-filter">Filter</i>
+										<i className="fa fa-filter" />
 									</button>
 									<button
 										type="button"

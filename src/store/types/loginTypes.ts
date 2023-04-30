@@ -1,5 +1,5 @@
 export interface IUserTokenDecode {
-	id: string | null;
+	id: string;
 	name: string | null;
 	nipg: string | null;
 	nipg_atasan: string | null;

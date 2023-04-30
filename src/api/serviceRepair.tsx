@@ -14,7 +14,9 @@ export const getAllServiceRepairApi = (params?: IServiceRepairGetAllParams) => {
 export const createNewServiceRepairApi = (
 	input: ICreateServiceRepairRequest,
 ) => {
-	return apiWithToken.post(`/api/transaksi/perbaikan`, input);
+	return apiWithToken.post(`/api/transaksi/perbaikan`, input, {
+		headers: { "Content-Type": "multipart/form-data" },
+	});
 };
 
 export const getDetailServiceRepairApi = (id: string) => {
@@ -25,9 +27,22 @@ export const updateServiceRepairApi = (
 	id: string,
 	input: IUpdateServiceRepairRequest,
 ) => {
-	return apiWithToken.put(`/api/transaksi/perbaikan/${id}`, input);
+	return apiWithToken.put(`/api/transaksi/perbaikan/${id}`, input, {
+		headers: { "Content-Type": "multipart/form-data" },
+	});
 };
 
 export const deleteServiceRepairApi = (id: string) => {
 	return apiWithToken.delete(`/api/transaksi/perbaikan/${id}`);
+};
+
+export const approveServiceRepairApi = (id: string) => {
+	return apiWithToken.get(`/api/approval/perbaikan/approve/${id}`);
+};
+
+export const rejectServiceRepairApi = (
+	id: string,
+	input: { remark: string },
+) => {
+	return apiWithToken.post(`/api/approval/perbaikan/reject/${id}`, input);
 };

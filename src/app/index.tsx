@@ -30,7 +30,7 @@ import { ServiceDisplacementPage } from "./pages/service/serviceDisplacement/ser
 import { ServiceRequestPage } from "./pages/service/serviceRequest/serviceRequestPage";
 import { ServiceRepairPage } from "./pages/service/serviceRepair/serviceRepairPage";
 import { ServiceReturnPage } from "./pages/service/serviceReturn/serviceReturnPage";
-import { ServiceReplacementPage } from "./pages/service/serviceReplacement/serviceReplacemenetPage";
+import { ServiceReplacementPage } from "./pages/service/serviceReplacement/serviceReplacementPage";
 import { ServiceChangePage } from "./pages/service/serviceChange/serviceChangePage";
 import { ServiceInspectionPage } from "./pages/service/serviceInspection/serviceInspectionPage";
 import { ServiceDeletePage } from "./pages/service/serviceDelete/serviceDeletePage";

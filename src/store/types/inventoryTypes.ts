@@ -43,6 +43,7 @@ export interface IInventoryGetAllParams {
 	size?: string;
 	code?: string;
 	serial_no?: string;
+	status?: number;
 }
 
 export interface ICreateInventoryRequest {

@@ -32,6 +32,10 @@ import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { CheckAuthentication } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
+import { ICompanyGetAllParams } from "store/types/companyTypes";
+import { getAllCompanyApi } from "api/company";
+import { IEmployeeGetAllParams } from "store/types/employeeTypes";
+import { getAllEmployeeApi } from "api/employee";
 
 const MasterArea = () => {
 	const { Title } = Typography;
@@ -41,6 +45,12 @@ const MasterArea = () => {
 	const [params, setParams] = useState<IAreaGetAllParams | undefined>();
 	const [businessUnitParams, setBusinessUnitParams] = useState<
 		IBusinessUnitGetAllParams | undefined
+	>();
+	const [companyParams, setCompanyParams] = useState<
+		ICompanyGetAllParams | undefined
+	>();
+	const [employeeParams, setEmployeeParams] = useState<
+		IEmployeeGetAllParams | undefined
 	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
@@ -54,13 +64,44 @@ const MasterArea = () => {
 	const [initialValue, setInitialValue] = useState<ICreateAreaRequest>({
 		name: "",
 		daerah: "",
-		pengelola: "",
 		id_bisnis_unit: "",
+		id_emp: "",
+		id_company: "",
 	});
 	const [dataTable, setDataTable] = useState<IAreaPaginateResponse>();
 	const [dataOptionBusinessUnit, setDataOptionBusinessUnit] = useState<
 		DefaultOptionType[] | undefined
 	>();
+	const [dataOptionCompany, setDataOptionCompany] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionEmployee, setDataOptionEmployee] = useState<
+		DefaultOptionType[] | undefined
+	>();
+
+	const fetchDataCompany = async () => {
+		try {
+			const response = await getAllCompanyApi(companyParams);
+			const companyList = response.data.data.data;
+			setDataOptionCompany(
+				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataEmployee = async () => {
+		try {
+			const response = await getAllEmployeeApi(employeeParams);
+			const employeeList = response.data.data.data;
+			setDataOptionEmployee(
+				employeeList.map(v => ({ label: v.emp_name, value: `${v.id}` })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
 
 	const fetchDataList = async () => {
 		try {
@@ -98,17 +139,28 @@ const MasterArea = () => {
 		setInitialValue({
 			name: values.name || "",
 			daerah: values.daerah || "",
-			pengelola: "",
-			nipg: "",
-			pemegang: values.pemegang || "",
 			id_bisnis_unit: values.bisnis_unit?.name || "",
+			id_emp: values.id_emp || "",
+			id_company: values.id_company || "",
 		});
 		formRef.current?.setFieldsValue({
 			name: values.name || "",
 			daerah: values.daerah || "",
 			id_bisnis_unit: values.bisnis_unit?.id || "",
+			id_emp: values.id_emp || "",
+			id_company: values.id_company || "",
 		});
 	};
+
+	useEffect(() => {
+		fetchDataCompany();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [companyParams]);
+
+	useEffect(() => {
+		fetchDataEmployee();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [employeeParams]);
 
 	useEffect(() => {
 		fetchDataBusinessUnit();
@@ -146,9 +198,8 @@ const MasterArea = () => {
 		setInitialValue({
 			name: "",
 			daerah: "",
-			pengelola: "",
-			nipg: "",
-			pemegang: "",
+			id_emp: "",
+			id_company: "",
 			id_bisnis_unit: "",
 		});
 		formik.resetForm();
@@ -240,7 +291,7 @@ const MasterArea = () => {
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
 									>
-										<i className="fa fa-filter">Filter</i>
+										<i className="fa fa-filter" />
 									</button>
 									<button
 										type="button"
@@ -333,8 +384,32 @@ const MasterArea = () => {
 							</div>
 						</div>
 					</Form.Item>
+					<Form.Item name="id_emp">
+						<div className="form-group">
+							<Title level={5}>Pemegang</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setEmployeeParams({ emp_name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionEmployee}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_emp", v);
+										formRef.current?.setFieldsValue({
+											id_emp: v,
+										});
+									}}
+									value={formik.values.id_emp}
+								/>
+							</div>
+						</div>
+					</Form.Item>
 					<Form.Item
-						name="pengelola"
+						name="id_company"
 						rules={[
 							{
 								required: true,
@@ -344,46 +419,25 @@ const MasterArea = () => {
 					>
 						<div className="form-group">
 							<Title level={5}>
-								Pengelola <span className="text-danger">*</span>
+								Perusahaan <span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
-								<Input
-									type="text"
-									name="pengelola"
-									className="form-control"
-									placeholder="Pengelola"
-									onChange={formik.handleChange}
-									value={formik.values.pengelola}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item name="nipg">
-						<div className="form-group">
-							<Title level={5}>NIPG</Title>
-							<div className="controls">
-								<Input
-									type="text"
-									name="nipg"
-									className="form-control"
-									placeholder="NIPG"
-									onChange={formik.handleChange}
-									value={formik.values.nipg}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item name="pemegang">
-						<div className="form-group">
-							<Title level={5}>Pemegang</Title>
-							<div className="controls">
-								<Input
-									type="text"
-									name="pemegang"
-									className="form-control"
-									placeholder="Pemegang"
-									onChange={formik.handleChange}
-									value={formik.values.pemegang}
+								<Select
+									showSearch
+									onSearch={v => setCompanyParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionCompany}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_company", v);
+										formRef.current?.setFieldsValue({
+											id_company: parseInt(v),
+										});
+									}}
+									value={formik.values.id_company}
 								/>
 							</div>
 						</div>
@@ -414,7 +468,7 @@ const MasterArea = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_bisnis_unit", v);
 										formRef.current?.setFieldsValue({
-											id_bisnis_unit: v,
+											id_bisnis_unit: parseInt(v),
 										});
 									}}
 									value={formik.values.id_bisnis_unit}

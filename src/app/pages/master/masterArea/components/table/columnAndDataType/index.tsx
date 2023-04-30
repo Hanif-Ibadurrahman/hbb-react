@@ -24,16 +24,6 @@ export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 			sorter: true,
 		},
 		{
-			title: "Pengelola",
-			dataIndex: "pengelola",
-			sorter: true,
-		},
-		{
-			title: "NIPG",
-			dataIndex: "nipg",
-			sorter: true,
-		},
-		{
 			title: "Pemegang",
 			dataIndex: "pemegang",
 			sorter: true,
