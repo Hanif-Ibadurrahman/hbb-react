@@ -1,11 +1,14 @@
 import { Button, Col, Drawer, Form, Row, Space } from "antd";
 import { SelectWithTag } from "app/components/selectWithTag";
 import { Dispatch, SetStateAction } from "react";
-import { IServiceChangeGetAllParams } from "store/types/serviceChangeTypes";
+import { IServiceInspectionGetAllParams } from "store/types/serviceInspectionTypes";
+
 interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
-	setParams: Dispatch<SetStateAction<IServiceChangeGetAllParams | undefined>>;
+	setParams: Dispatch<
+		SetStateAction<IServiceInspectionGetAllParams | undefined>
+	>;
 }
 
 export const ModalFilter = ({

@@ -1,40 +1,58 @@
 import { ColumnsType } from "antd/es/table";
-import { IServiceRequest } from "store/types/serviceRequestTypes";
+import {
+	isAllowApproveServiceDisplacement,
+	isAllowDeleteServiceDisplacement,
+	isAllowRejectServiceDisplacement,
+	isAllowUpdateServiceDisplacement,
+} from "app/helper/permission";
+import { IServiceDisplacement } from "store/types/serviceDisplacementTypes";
 interface IColumn {
+	setShowModal: React.Dispatch<
+		React.SetStateAction<{
+			show: boolean;
+			id?: string;
+		}>
+	>;
+	handleDelete: (id: string) => void;
 	handleApprove: (id: string) => void;
 	handleReject: (id: string) => void;
 }
 
-export const columns = ({ handleApprove, handleReject }: IColumn) => {
-	const columnType: ColumnsType<IServiceRequest> = [
+export const columns = ({
+	setShowModal,
+	handleDelete,
+	handleApprove,
+	handleReject,
+}: IColumn) => {
+	const columnType: ColumnsType<IServiceDisplacement> = [
 		{
-			title: "No HBB/Inventaris",
-			dataIndex: "name_item",
+			title: "Tanggal",
+			dataIndex: "date",
 			sorter: true,
 		},
 		{
-			title: "Deskripsi",
-			dataIndex: "description",
+			title: "Inventory",
+			dataIndex: "id_inventory",
 			sorter: true,
 		},
 		{
-			title: "Foto",
-			dataIndex: "photo",
+			title: "Dari User",
+			dataIndex: "from_user",
 			sorter: true,
 		},
 		{
-			title: "Nama Pemakai",
-			dataIndex: "user",
+			title: "Untuk User",
+			dataIndex: "to_user",
 			sorter: true,
 		},
 		{
-			title: "Kondisi",
-			dataIndex: "condition",
+			title: "Perusahaan",
+			dataIndex: "id_company",
 			sorter: true,
 		},
 		{
-			title: "Spesifikasi",
-			dataIndex: "specification",
+			title: "Lokasi",
+			dataIndex: "id_lokasi",
 			sorter: true,
 		},
 		{
@@ -43,25 +61,52 @@ export const columns = ({ handleApprove, handleReject }: IColumn) => {
 			render: (text, record, index) => {
 				return (
 					<div style={{ display: "flex", columnGap: 5 }}>
-						<button
-							type="button"
-							className="btn btn-success"
-							onClick={() => {
-								handleApprove(text);
-							}}
-						>
-							Approve
-						</button>
-						<button
-							type="button"
-							className="btn"
-							style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
-							onClick={() => {
-								handleReject(text);
-							}}
-						>
-							Reject
-						</button>
+						{isAllowApproveServiceDisplacement && (
+							<button
+								type="button"
+								className="btn btn-success"
+								onClick={() => {
+									handleApprove(text);
+								}}
+							>
+								Approve
+							</button>
+						)}
+						{isAllowRejectServiceDisplacement && (
+							<button
+								type="button"
+								className="btn"
+								style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
+								onClick={() => {
+									handleReject(text);
+								}}
+							>
+								Reject
+							</button>
+						)}
+						{isAllowUpdateServiceDisplacement && (
+							<button
+								type="button"
+								className="btn btn-primary"
+								onClick={() => {
+									setShowModal({ show: true, id: text });
+								}}
+							>
+								Edit
+							</button>
+						)}
+						{isAllowDeleteServiceDisplacement && (
+							<button
+								type="button"
+								className="btn"
+								style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
+								onClick={() => {
+									handleDelete(text);
+								}}
+							>
+								Delete
+							</button>
+						)}
 					</div>
 				);
 			},

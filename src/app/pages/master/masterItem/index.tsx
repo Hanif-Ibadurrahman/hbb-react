@@ -35,6 +35,8 @@ import { useFormik } from "formik";
 import { getAllColorApi } from "api/color";
 import { IColorGetAllParams } from "store/types/colorTypes";
 import { ModalFilter } from "./components/modalFilter";
+import { ICompanyGetAllParams } from "store/types/companyTypes";
+import { getAllCompanyApi } from "api/company";
 
 const MasterItem = () => {
 	const { Title } = Typography;
@@ -53,6 +55,9 @@ const MasterItem = () => {
 	>();
 	const [subCodeGroupParams, setSubCodeGroupParams] = useState<
 		ISubCodeGroupGetAllParams | undefined
+	>();
+	const [companyParams, setCompanyParams] = useState<
+		ICompanyGetAllParams | undefined
 	>();
 	const [colorParams, setColorParams] = useState<
 		IColorGetAllParams | undefined
@@ -80,6 +85,9 @@ const MasterItem = () => {
 		DefaultOptionType[] | undefined
 	>();
 	const [dataOptionSubCodeGroup, setDataOptionSubCodeGroup] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionCompany, setDataOptionCompany] = useState<
 		DefaultOptionType[] | undefined
 	>();
 	const [dataOptionColor, setDataOptionColor] = useState<
@@ -165,6 +173,18 @@ const MasterItem = () => {
 		}
 	};
 
+	const fetchDataCompany = async () => {
+		try {
+			const response = await getAllCompanyApi(companyParams);
+			const companyList = response.data.data.data;
+			setDataOptionCompany(
+				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
 	const fetchDataColor = async () => {
 		try {
 			const response = await getAllColorApi(colorParams);
@@ -172,6 +192,17 @@ const MasterItem = () => {
 			setDataOptionColor(
 				colorList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataList = async () => {
+		try {
+			if (params) {
+				const response = await getAllItemApi(params);
+				setDataTable(response.data.data);
+			}
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -202,20 +233,14 @@ const MasterItem = () => {
 	}, [subCodeGroupParams, formik.values.id_main_group]);
 
 	useEffect(() => {
+		fetchDataCompany();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [companyParams]);
+
+	useEffect(() => {
 		fetchDataColor();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [colorParams]);
-
-	const fetchDataList = async () => {
-		try {
-			if (params) {
-				const response = await getAllItemApi(params);
-				setDataTable(response.data.data);
-			}
-		} catch (error: any) {
-			CheckAuthentication(error);
-		}
-	};
 
 	useEffect(() => {
 		setParams({
@@ -303,11 +328,7 @@ const MasterItem = () => {
 				});
 			});
 		} else {
-			const input: ICreateItemRequest = {
-				...values,
-				id_company: tokenDecode.user?.id_company,
-			};
-			createNewItemApi(input).then(res => {
+			createNewItemApi(values).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });
 					fetchDataList();
@@ -342,7 +363,7 @@ const MasterItem = () => {
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
 									>
-										<i className="fa fa-filter">Filter</i>
+										<i className="fa fa-filter" />
 									</button>
 									<button
 										type="button"
@@ -429,6 +450,40 @@ const MasterItem = () => {
 										});
 									}}
 									value={formik.values.id_sub_group}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_company"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Perusahaan <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setCompanyParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionCompany}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_company", v);
+										formRef.current?.setFieldsValue({
+											id_company: parseInt(v),
+										});
+									}}
+									value={formik.values.id_company}
 								/>
 							</div>
 						</div>

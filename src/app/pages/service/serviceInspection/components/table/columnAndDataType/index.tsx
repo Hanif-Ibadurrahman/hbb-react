@@ -1,17 +1,37 @@
+import { Button } from "antd";
 import { ColumnsType } from "antd/es/table";
-import { ActionButtonTable } from "app/components/table/antd/actionButtonTable";
-import { IServiceRequest } from "store/types/serviceRequestTypes";
+import {
+	isAllowApproveServiceInspection,
+	isAllowDeleteServiceInspection,
+	isAllowRejectServiceInspection,
+	isAllowUpdateServiceInspection,
+} from "app/helper/permission";
+import { IServiceInspection } from "store/types/serviceInspectionTypes";
 
 interface IColumn {
-	handleApprove: (id: string) => void;
+	setShowModal: React.Dispatch<
+		React.SetStateAction<{
+			show: boolean;
+			id?: string;
+		}>
+	>;
 	handleDelete: (id: string) => void;
+	handleApprove: (id: string) => void;
+	handleReject: (id: string) => void;
+	handleShowFile: (id: string) => void;
 }
 
-export const columns = ({ handleApprove, handleDelete }: IColumn) => {
-	const columnType: ColumnsType<IServiceRequest> = [
+export const columns = ({
+	setShowModal,
+	handleDelete,
+	handleApprove,
+	handleReject,
+	handleShowFile,
+}: IColumn) => {
+	const columnType: ColumnsType<IServiceInspection> = [
 		{
-			title: "No HBB/Inventaris",
-			dataIndex: "name_item",
+			title: "Kode Inventaris",
+			dataIndex: "inventory_code",
 			sorter: true,
 		},
 		{
@@ -21,12 +41,25 @@ export const columns = ({ handleApprove, handleDelete }: IColumn) => {
 		},
 		{
 			title: "Foto",
-			dataIndex: "photo",
 			sorter: true,
+			render: (text, record, index) => {
+				return record.attachment_file ? (
+					<Button
+						type="link"
+						onClick={() => {
+							handleShowFile(record.id);
+						}}
+					>
+						Show
+					</Button>
+				) : (
+					"Tidak ada"
+				);
+			},
 		},
 		{
-			title: "Nama Pemakai",
-			dataIndex: "user",
+			title: "Nama Pegawai",
+			dataIndex: "emp_name",
 			sorter: true,
 		},
 		{
@@ -36,7 +69,7 @@ export const columns = ({ handleApprove, handleDelete }: IColumn) => {
 		},
 		{
 			title: "Spesifikasi",
-			dataIndex: "specification",
+			dataIndex: "spesification",
 			sorter: true,
 		},
 		{
@@ -45,25 +78,52 @@ export const columns = ({ handleApprove, handleDelete }: IColumn) => {
 			render: (text, record, index) => {
 				return (
 					<div style={{ display: "flex", columnGap: 5 }}>
-						<button
-							type="button"
-							className="btn btn-success"
-							onClick={() => {
-								handleApprove(text);
-							}}
-						>
-							Approve
-						</button>
-						<button
-							type="button"
-							className="btn"
-							style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
-							onClick={() => {
-								handleDelete(text);
-							}}
-						>
-							Reject
-						</button>
+						{isAllowApproveServiceInspection && (
+							<button
+								type="button"
+								className="btn btn-success"
+								onClick={() => {
+									handleApprove(text);
+								}}
+							>
+								Approve
+							</button>
+						)}
+						{isAllowRejectServiceInspection && (
+							<button
+								type="button"
+								className="btn"
+								style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
+								onClick={() => {
+									handleReject(text);
+								}}
+							>
+								Reject
+							</button>
+						)}
+						{isAllowUpdateServiceInspection && (
+							<button
+								type="button"
+								className="btn btn-primary"
+								onClick={() => {
+									setShowModal({ show: true, id: text });
+								}}
+							>
+								Edit
+							</button>
+						)}
+						{isAllowDeleteServiceInspection && (
+							<button
+								type="button"
+								className="btn"
+								style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
+								onClick={() => {
+									handleDelete(text);
+								}}
+							>
+								Delete
+							</button>
+						)}
 					</div>
 				);
 			},

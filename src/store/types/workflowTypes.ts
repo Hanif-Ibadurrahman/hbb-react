@@ -9,6 +9,7 @@ export interface IWorkflow {
 	id_area: string | null;
 	id_satuan_kerja: string | null;
 	id_company: string | null;
+	is_reverse: boolean;
 }
 export interface IWorkflowPaginateResponse extends PaginationState {
 	data: IWorkflow[];
@@ -27,6 +28,7 @@ export interface ICreateWorkflowRequest {
 	created_at: string;
 	id_company: string;
 	roles?: string[];
+	is_reverse: boolean;
 }
 export interface IUpdateWorkflowRequest {
 	name: string;
@@ -34,6 +36,7 @@ export interface IUpdateWorkflowRequest {
 	created_at: string;
 	id_company: string;
 	roles?: string[];
+	is_reverse: boolean;
 }
 export interface IWorkflowGetAllResponse {
 	status: string;

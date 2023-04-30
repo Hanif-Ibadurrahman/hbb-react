@@ -1,11 +1,12 @@
-import { Button, Col, Drawer, Form, Row, Space } from "antd";
+import { Button, Col, Drawer, Form, Input, Row, Space } from "antd";
 import { SelectWithTag } from "app/components/selectWithTag";
 import { Dispatch, SetStateAction } from "react";
-import { IServiceChangeGetAllParams } from "store/types/serviceChangeTypes";
+import { IServiceDeleteGetAllParams } from "store/types/serviceDeleteTypes";
+
 interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
-	setParams: Dispatch<SetStateAction<IServiceChangeGetAllParams | undefined>>;
+	setParams: Dispatch<SetStateAction<IServiceDeleteGetAllParams | undefined>>;
 }
 
 export const ModalFilter = ({
@@ -56,27 +57,17 @@ export const ModalFilter = ({
 			<Form form={formFilter} layout="vertical" onFinish={handleSubmit}>
 				<Row gutter={16}>
 					<Col span={24}>
-						<Form.Item name="inventory_code" label="Kode Inventaris">
+						<Form.Item name="date" label="Tanggal">
+							<Input type="date" />
+						</Form.Item>
+					</Col>
+					<Col span={24}>
+						<Form.Item name="reason" label="Alasan">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={24}>
-						<Form.Item name="description" label="Deskripsi">
-							<SelectWithTag />
-						</Form.Item>
-					</Col>
-					<Col span={24}>
-						<Form.Item name="condition" label="Kondisi">
-							<SelectWithTag />
-						</Form.Item>
-					</Col>
-					<Col span={24}>
-						<Form.Item name="emp_name" label="Nama Pegawai">
-							<SelectWithTag />
-						</Form.Item>
-					</Col>
-					<Col span={24}>
-						<Form.Item name="spesification" label="Spesifikasi">
+						<Form.Item name="remark" label="Alasan">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>

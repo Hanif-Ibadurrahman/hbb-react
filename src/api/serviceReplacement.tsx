@@ -16,7 +16,9 @@ export const getAllServiceReplacementApi = (
 export const createNewServiceReplacementApi = (
 	input: ICreateServiceReplacementRequest,
 ) => {
-	return apiWithToken.post(`/api/transaksi/penggantian`, input);
+	return apiWithToken.post(`/api/transaksi/penggantian`, input, {
+		headers: { "Content-Type": "multipart/form-data" },
+	});
 };
 
 export const getDetailServiceReplacementApi = (id: string) => {
@@ -27,9 +29,22 @@ export const updateServiceReplacementApi = (
 	id: string,
 	input: IUpdateServiceReplacementRequest,
 ) => {
-	return apiWithToken.put(`/api/transaksi/penggantian/${id}`, input);
+	return apiWithToken.put(`/api/transaksi/penggantian/${id}`, input, {
+		headers: { "Content-Type": "multipart/form-data" },
+	});
 };
 
 export const deleteServiceReplacementApi = (id: string) => {
 	return apiWithToken.delete(`/api/transaksi/penggantian/${id}`);
+};
+
+export const approveServiceReplacementApi = (id: string) => {
+	return apiWithToken.get(`/api/approval/penggantian/approve/${id}`);
+};
+
+export const rejectServiceReplacementApi = (
+	id: string,
+	input: { remark: string },
+) => {
+	return apiWithToken.post(`/api/approval/penggantian/reject/${id}`, input);
 };

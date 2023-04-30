@@ -1,11 +1,12 @@
 import { Button, Col, Drawer, Form, Row, Space } from "antd";
 import { SelectWithTag } from "app/components/selectWithTag";
 import { Dispatch, SetStateAction } from "react";
-import { IServiceChangeGetAllParams } from "store/types/serviceChangeTypes";
+import { IServiceReturnGetAllParams } from "store/types/serviceReturnTypes";
+
 interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
-	setParams: Dispatch<SetStateAction<IServiceChangeGetAllParams | undefined>>;
+	setParams: Dispatch<SetStateAction<IServiceReturnGetAllParams | undefined>>;
 }
 
 export const ModalFilter = ({
@@ -72,11 +73,6 @@ export const ModalFilter = ({
 					</Col>
 					<Col span={24}>
 						<Form.Item name="emp_name" label="Nama Pegawai">
-							<SelectWithTag />
-						</Form.Item>
-					</Col>
-					<Col span={24}>
-						<Form.Item name="spesification" label="Spesifikasi">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>

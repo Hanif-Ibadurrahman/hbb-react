@@ -22,6 +22,8 @@ import {
 	Form,
 	FormInstance,
 	Input,
+	Radio,
+	RadioChangeEvent,
 	Select,
 	StepProps,
 	Steps,
@@ -61,6 +63,7 @@ const MasterWorkflow = () => {
 		description: "",
 		created_at: "",
 		id_company: "",
+		is_reverse: false,
 	});
 	const [dataTable, setDataTable] = useState<IWorkflowPaginateResponse>();
 	const [dataOptionCompany, setDataOptionCompany] = useState<
@@ -118,12 +121,14 @@ const MasterWorkflow = () => {
 			description: values.description || "",
 			created_at: values.created_at || "",
 			id_company: values.id_company || "",
+			is_reverse: values.is_reverse,
 		});
 		formRef.current?.setFieldsValue({
 			name: values.name || "",
 			description: values.description || "",
 			created_at: values.created_at || "",
 			id_company: values.id_company || "",
+			is_reverse: values.is_reverse,
 		});
 	};
 
@@ -160,6 +165,7 @@ const MasterWorkflow = () => {
 			description: "",
 			created_at: "",
 			id_company: "",
+			is_reverse: false,
 		});
 		formik.resetForm();
 		formRef.current?.resetFields();
@@ -271,7 +277,7 @@ const MasterWorkflow = () => {
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
 									>
-										<i className="fa fa-filter">Filter</i>
+										<i className="fa fa-filter" />
 									</button>
 									<button
 										type="button"
@@ -338,19 +344,9 @@ const MasterWorkflow = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item
-						name="description"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
+					<Form.Item name="description">
 						<div className="form-group">
-							<Title level={5}>
-								Deskripsi <span className="text-danger">*</span>
-							</Title>
+							<Title level={5}>Deskripsi</Title>
 							<div className="controls">
 								<Input
 									type="text"
@@ -396,7 +392,15 @@ const MasterWorkflow = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item name="roles">
+					<Form.Item
+						name="roles"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
 						<div className="form-group">
 							<Title level={5}>
 								Roles <span className="text-danger">*</span>
@@ -412,12 +416,42 @@ const MasterWorkflow = () => {
 											roles: v,
 										});
 									}}
+									value={formik.values.roles}
 								/>
 							</div>
 						</div>
 					</Form.Item>
-
 					{generateStepApprocal}
+
+					<Form.Item
+						name="is_reverse"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<Title level={5}>
+							Reverse <span className="text-danger">*</span>
+						</Title>
+						<Radio.Group
+							options={[
+								{ label: "Yes", value: 1 },
+								{ label: "No", value: 0 },
+							]}
+							onChange={(e: RadioChangeEvent) => {
+								const v = e.target.value;
+								formik.setFieldValue("is_reverse", v);
+								formRef.current?.setFieldsValue({
+									is_reverse: v,
+								});
+							}}
+							value={formik.values.is_reverse}
+							optionType="button"
+							buttonStyle="solid"
+						/>
+					</Form.Item>
 				</Form>
 			</AntdModal>
 

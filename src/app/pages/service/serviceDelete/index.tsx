@@ -2,9 +2,17 @@ import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAnd
 import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
-import { SideModal } from "app/components/modal/sideModal";
-import { SelectWithTag } from "app/components/selectWithTag";
-import { Modal as AntdModal, Button, Form, FormInstance, Input } from "antd";
+import {
+	Modal as AntdModal,
+	Button,
+	DatePicker,
+	Divider,
+	Form,
+	FormInstance,
+	Input,
+	Select,
+	Typography,
+} from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import {
@@ -13,21 +21,50 @@ import {
 	IServiceDeletePaginateResponse,
 } from "store/types/serviceDeleteTypes";
 import {
+	approveServiceDeleteApi,
 	createNewServiceDeleteApi,
 	deleteServiceDeleteApi,
+	getAllServiceDeleteApi,
 	getDetailServiceDeleteApi,
+	rejectServiceDeleteApi,
 	updateServiceDeleteApi,
 } from "api/serviceDelete";
 import { IServiceDelete } from "store/types/serviceDeleteTypes";
+import { CheckAuthentication } from "app/helper/authentication";
+import { DefaultOptionType } from "antd/es/select";
+import { getAllCompanyApi } from "api/company";
+import { getAllWorkflowApi } from "api/workflow";
+import { ICompanyGetAllParams } from "store/types/companyTypes";
+import { IWorkflowGetAllParams } from "store/types/workflowTypes";
+import { isAllowCreateServiceDelete } from "app/helper/permission";
+import { IEmployeeGetAllParams } from "store/types/employeeTypes";
+import { getAllEmployeeApi } from "api/employee";
+import { IInventoryGetAllParams } from "store/types/inventoryTypes";
+import { getAllInventoryApi } from "api/inventory";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { ModalFilter } from "./components/modalFilter";
 
 const ServiceDelete = () => {
+	dayjs.extend(customParseFormat);
+	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
+	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<
 		IServiceDeleteGetAllParams | undefined
 	>();
-	const [tempFilter, setTempFilter] = useState<
-		IServiceDeleteGetAllParams | undefined
+	const [inventoryParams, setInventoryParams] = useState<
+		IInventoryGetAllParams | undefined
+	>();
+	const [employeeParams, setEmployeeParams] = useState<
+		IEmployeeGetAllParams | undefined
+	>();
+	const [companyParams, setCompanyParams] = useState<
+		ICompanyGetAllParams | undefined
+	>();
+	const [workflowParams, setWorkflowParams] = useState<
+		IWorkflowGetAllParams | undefined
 	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
@@ -41,48 +78,27 @@ const ServiceDelete = () => {
 	const [initialValue, setInitialValue] =
 		useState<ICreateServiceDeleteRequest>();
 	const [dataTable, setDataTable] = useState<IServiceDeletePaginateResponse>();
+	const [dataOptionInventory, setDataOptionInventory] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionEmployee, setDataOptionEmployee] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionCompany, setDataOptionCompany] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionWorkflow, setDataOptionWorkflow] = useState<
+		DefaultOptionType[] | undefined
+	>();
 
 	const fetchDataList = async () => {
 		try {
 			if (params) {
-				// const response = await getAllServiceDeleteApi(params);
-				// setDataTable(response.data.data);
-				let data: IServiceDelete[] = [];
-				for (let i = 1; i <= 100; i++) {
-					data.push({
-						id: `${i}`,
-						name_item: `102023 ${i}`,
-						condition: "Baik",
-						description: "Pinjam",
-						photo: "Foto",
-						specification: `Spesifikasi ${i}`,
-						user: `User ${i}`,
-					});
-				}
-				setDataTable({
-					total: 100,
-					per_page: 10,
-					current_page: 1,
-					last_page: 10,
-					first_page_url: "",
-					last_page_url: "",
-					next_page_url: "",
-					prev_page_url: "",
-					path: "",
-					link: [
-						{
-							url: null,
-							label: null,
-							active: false,
-						},
-					],
-					from: 1,
-					to: 10,
-					data: data,
-				});
+				const response = await getAllServiceDeleteApi(params);
+				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 
@@ -91,22 +107,99 @@ const ServiceDelete = () => {
 			const response = await getDetailServiceDeleteApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			// CheckAuthentication(error);
+			CheckAuthentication(error);
 		}
 	};
 
 	const handleInitialValue = (values: IServiceDelete) => {
-		const setData = {
-			name_item: values.name_item || "",
-			description: values.description || "",
-			photo: values.name_item || "",
-			user: values.name_item || "",
-			condition: values.name_item || "",
-			specification: values.name_item || "",
-		};
-		// setInitialValue();
-		// formRef.current?.setFieldsValue({ name: values.name || "" });
+		setInitialValue({
+			date: values.date || "",
+			id_inventory: values.id_inventory || "",
+			reason: values.reason || "",
+			remark: values.remark || "",
+			id_company: values.id_company || "",
+			id_workflow: "",
+			created_by: values.created_by || "",
+		});
+		formRef.current?.setFieldsValue({
+			date: values.date || "",
+			id_inventory: values.id_inventory || "",
+			reason: values.reason || "",
+			remark: values.remark || "",
+			id_company: values.id_company || "",
+			id_workflow: "",
+			created_by: values.created_by || "",
+		});
 	};
+
+	const fetchDataInventory = async () => {
+		try {
+			const availableInventory = { ...inventoryParams, status: 1 };
+			const response = await getAllInventoryApi(availableInventory);
+			const inventoryList = response.data.data.data;
+			setDataOptionInventory(
+				inventoryList.map(v => ({ label: v.name, value: `${v.id}` })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataEmployee = async () => {
+		try {
+			const response = await getAllEmployeeApi(employeeParams);
+			const employeeList = response.data.data.data;
+			setDataOptionEmployee(
+				employeeList.map(v => ({ label: v.emp_name, value: `${v.id}` })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataCompany = async () => {
+		try {
+			const response = await getAllCompanyApi(companyParams);
+			const companyList = response.data.data.data;
+			setDataOptionCompany(
+				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataWorkflow = async () => {
+		try {
+			const response = await getAllWorkflowApi(workflowParams);
+			const workflowList = response.data.data.data;
+			setDataOptionWorkflow(
+				workflowList.map(v => ({ label: v.name, value: `${v.id}` })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	useEffect(() => {
+		fetchDataInventory();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [inventoryParams]);
+
+	useEffect(() => {
+		fetchDataWorkflow();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [workflowParams]);
+
+	useEffect(() => {
+		fetchDataCompany();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [companyParams]);
+
+	useEffect(() => {
+		fetchDataEmployee();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [employeeParams]);
 
 	useEffect(() => {
 		fetchDataList();
@@ -134,22 +227,61 @@ const ServiceDelete = () => {
 		onSubmit: values => {},
 	});
 
-	const handleApprove = (id: string) => {};
+	const handleApprove = (id: string) => {
+		const swalCustom = Swal.mixin({
+			customClass: {
+				confirmButton: "btn btn-success m-1",
+				cancelButton: "btn btn-danger m-1",
+			},
+			buttonsStyling: false,
+		});
+
+		swalCustom
+			.fire({
+				title: "Apakah anda yakin?",
+				text: "Ingin menyetujui permintaan ini",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonText: "Approve",
+				cancelButtonText: "Cancel",
+				reverseButtons: true,
+			})
+			.then(result => {
+				if (result.isConfirmed) {
+					approveServiceDeleteApi(id).then(res => {
+						if (res.data.status === "success") {
+							swalCustom.fire(
+								"Approve",
+								"Data ini telah disetujui.",
+								"success",
+							);
+							fetchDataList();
+						} else {
+							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+						}
+					});
+				} else if (result.dismiss === Swal.DismissReason.cancel) {
+					swalCustom.fire("Batal", "Permintaan ini batal disetujui", "error");
+				}
+			});
+	};
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
 		setInitialValue({
-			name_item: "",
-			description: "",
-			condition: "",
-			user: "",
-			specification: "",
-			photo: "",
+			date: "",
+			id_inventory: "",
+			reason: "",
+			remark: "",
+			id_company: "",
+			id_workflow: "",
+			created_by: "",
 		});
+		formik.resetForm();
 		formRef.current?.resetFields();
 	};
 
-	const handleDelete = (id: string) => {
+	const handleReject = (id: string) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -164,9 +296,6 @@ const ServiceDelete = () => {
 				text: "Alasan penolakan",
 				input: "text",
 				icon: "warning",
-				preConfirm: input => {
-					console.log(input);
-				},
 				showCancelButton: true,
 				confirmButtonText: "Reject",
 				cancelButtonText: "Cancel",
@@ -174,7 +303,7 @@ const ServiceDelete = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					deleteServiceDeleteApi(id).then(res => {
+					rejectServiceDeleteApi(id, { remark: result.value }).then(res => {
 						if (res.data.status === "success") {
 							swalCustom.fire(
 								"Reject",
@@ -188,6 +317,41 @@ const ServiceDelete = () => {
 					});
 				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					swalCustom.fire("Batal", "Permintaan ini batal direject", "error");
+				}
+			});
+	};
+
+	const handleDelete = (id: string) => {
+		const swalCustom = Swal.mixin({
+			customClass: {
+				confirmButton: "btn btn-success m-1",
+				cancelButton: "btn btn-danger m-1",
+			},
+			buttonsStyling: false,
+		});
+
+		swalCustom
+			.fire({
+				title: "Apakah anda yakin?",
+				text: "Ingin menghapus data ini",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonText: "Delete",
+				cancelButtonText: "Cancel",
+				reverseButtons: true,
+			})
+			.then(result => {
+				if (result.isConfirmed) {
+					deleteServiceDeleteApi(id).then(res => {
+						if (res.data.status === "success") {
+							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
+							fetchDataList();
+						} else {
+							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+						}
+					});
+				} else if (result.dismiss === Swal.DismissReason.cancel) {
+					swalCustom.fire("Batal", "Data ini batal dihapus", "error");
 				}
 			});
 	};
@@ -226,10 +390,6 @@ const ServiceDelete = () => {
 		setShowModal({ show: false });
 	};
 
-	const setValueFilter = () => {
-		setParams({ ...params, ...tempFilter });
-	};
-
 	return (
 		<MainLayout>
 			<section className="content">
@@ -238,16 +398,31 @@ const ServiceDelete = () => {
 						<TablePaginateAndSort
 							title="Permintaan Layanan - Penghapusan"
 							dataSource={dataTable}
-							columns={columns({ handleApprove, handleDelete })}
+							columns={columns({
+								setShowModal,
+								handleDelete,
+								handleApprove,
+								handleReject,
+							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<button
-									type="button"
-									className="btn btn-primary"
-									onClick={handleAdd}
-								>
-									Tambah
-								</button>
+								<>
+									<button
+										className="btn btn-secondary"
+										onClick={() => setShowFilter(true)}
+									>
+										<i className="fa fa-filter" />
+									</button>
+									{isAllowCreateServiceDelete && (
+										<button
+											type="button"
+											className="btn btn-primary"
+											onClick={handleAdd}
+										>
+											Tambah
+										</button>
+									)}
+								</>
 							}
 						/>
 					</div>
@@ -255,7 +430,11 @@ const ServiceDelete = () => {
 			</section>
 
 			<AntdModal
-				title={showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+				title={
+					<Title level={3}>
+						{showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+					</Title>
+				}
 				footer={
 					<div style={{ display: "flex", justifyContent: "end", columnGap: 5 }}>
 						<Button type="primary" danger onClick={handleCancel}>
@@ -272,23 +451,9 @@ const ServiceDelete = () => {
 			>
 				<div className="col-12">
 					<Form form={form} ref={formRef} onFinish={onFinish}>
-						<Form.Item name="name_item">
-							<div className="form-group">
-								<span>Nama Barang</span>
-								<div className="controls">
-									<Input
-										type="text"
-										name="name_item"
-										className="form-control"
-										placeholder="Nama Barang"
-										onChange={formik.handleChange}
-										value={formik.values.name_item}
-									/>
-								</div>
-							</div>
-						</Form.Item>
+						<Divider />
 						<Form.Item
-							name="description"
+							name="date"
 							rules={[
 								{
 									required: true,
@@ -297,62 +462,210 @@ const ServiceDelete = () => {
 							]}
 						>
 							<div className="form-group">
-								<span>
-									Deskripsi <span className="text-danger">*</span>
-								</span>
+								<Title level={5}>
+									Tanggal <span className="text-danger">*</span>
+								</Title>
 								<div className="controls">
-									<Input
-										type="text"
-										name="description"
+									<DatePicker
 										className="form-control"
-										placeholder="Deskripsi"
-										onChange={formik.handleChange}
-										value={formik.values.description}
+										onChange={(value, dateString) => {
+											formik.setFieldValue("date", dateString);
+											formRef.current?.setFieldsValue({
+												date: dateString,
+											});
+										}}
+										format={"YYYY-MM-DD"}
+										value={
+											formik.values.date
+												? dayjs(formik.values.date, "YYYY-MM-DD")
+												: undefined
+										}
 									/>
 								</div>
 							</div>
 						</Form.Item>
-						<Form.Item name="user">
+						<Form.Item
+							name="id_inventory"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
 							<div className="form-group">
-								<span>Nama Pemakai</span>
+								<Title level={5}>
+									Inventaris <span className="text-danger">*</span>
+								</Title>
 								<div className="controls">
-									<Input
-										type="text"
-										name="user"
-										className="form-control"
-										placeholder="Nama Pemakai"
-										onChange={formik.handleChange}
-										value={formik.values.user}
+									<Select
+										showSearch
+										onSearch={v => setInventoryParams({ name: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionInventory}
+										onChange={(v, opt) => {
+											formik.setFieldValue("id_inventory", v);
+											formRef.current?.setFieldsValue({
+												id_inventory: parseInt(v),
+											});
+										}}
+										value={formik.values.id_inventory}
 									/>
 								</div>
 							</div>
 						</Form.Item>
-						<Form.Item name="condition">
+						<Form.Item
+							name="reason"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
 							<div className="form-group">
-								<span>Kondisi</span>
+								<Title level={5}>
+									Alasan <span className="text-danger">*</span>
+								</Title>
 								<div className="controls">
 									<Input
 										type="text"
-										name="condition"
+										name="reason"
 										className="form-control"
-										placeholder="Kondisi"
+										placeholder="Alasan"
 										onChange={formik.handleChange}
-										value={formik.values.condition}
+										value={formik.values.reason}
 									/>
 								</div>
 							</div>
 						</Form.Item>
-						<Form.Item name="specification">
+						<Form.Item
+							name="remark"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
 							<div className="form-group">
-								<span>Spesifikasi</span>
+								<Title level={5}>
+									Remark <span className="text-danger">*</span>
+								</Title>
 								<div className="controls">
 									<Input
 										type="text"
-										name="specification"
+										name="remark"
 										className="form-control"
-										placeholder="Spesifikasi"
+										placeholder="Remark"
 										onChange={formik.handleChange}
-										value={formik.values.specification}
+										value={formik.values.remark}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+						<Form.Item
+							name="id_company"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<Title level={5}>
+									Perusahaan <span className="text-danger">*</span>
+								</Title>
+								<div className="controls">
+									<Select
+										showSearch
+										onSearch={v => setCompanyParams({ name: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionCompany}
+										onChange={(v, opt) => {
+											formik.setFieldValue("id_company", v);
+											formRef.current?.setFieldsValue({
+												id_company: parseInt(v),
+											});
+										}}
+										value={formik.values.id_company}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+						<Form.Item
+							name="created_by"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<Title level={5}>
+									Dibuat oleh <span className="text-danger">*</span>
+								</Title>
+								<div className="controls">
+									<Select
+										showSearch
+										onSearch={v => setEmployeeParams({ emp_name: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionEmployee}
+										onChange={(v, opt) => {
+											formik.setFieldValue("created_by", v);
+											formRef.current?.setFieldsValue({
+												created_by: parseInt(v),
+											});
+										}}
+										value={formik.values.created_by}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+						<Form.Item
+							name="id_workflow"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<Title level={5}>
+									Workflow <span className="text-danger">*</span>
+								</Title>
+								<div className="controls">
+									<Select
+										showSearch
+										onSearch={v => setWorkflowParams({ name: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionWorkflow}
+										onChange={(v, opt) => {
+											formik.setFieldValue("id_workflow", v);
+											formRef.current?.setFieldsValue({
+												id_workflow: parseInt(v),
+											});
+										}}
+										value={formik.values.id_workflow}
 									/>
 								</div>
 							</div>
@@ -361,31 +674,11 @@ const ServiceDelete = () => {
 				</div>
 			</AntdModal>
 
-			<SideModal
-				title="Filter"
-				contentFooter={
-					<button
-						type="button"
-						className="btn btn-primary"
-						data-bs-dismiss="modal"
-					>
-						Filter
-					</button>
-				}
-			>
-				<h6 className="box-title mt-10 d-block mb-10">Nama Area</h6>
-				<SelectWithTag />
-				<h6 className="box-title mt-10 d-block mb-10">Daerah</h6>
-				<SelectWithTag />
-				<h6 className="box-title mt-10 d-block mb-10">Pengelola</h6>
-				<SelectWithTag />
-				<h6 className="box-title mt-10 d-block mb-10">NIPG</h6>
-				<SelectWithTag />
-				<h6 className="box-title mt-10 d-block mb-10">Pemegang</h6>
-				<SelectWithTag />
-				<h6 className="box-title mt-10 d-block mb-10">Bisnis Unit</h6>
-				<SelectWithTag />
-			</SideModal>
+			<ModalFilter
+				isShow={showFilter}
+				setShowModal={setShowFilter}
+				setParams={setParams}
+			/>
 		</MainLayout>
 	);
 };

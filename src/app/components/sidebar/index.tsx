@@ -2,6 +2,10 @@ import { currentYear } from "app/helper/dateHelper";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
+import {
+	isAllowShowMasterSidebar,
+	isAllowShowServiceSidebar,
+} from "app/helper/permission";
 
 export const Sidebar = () => {
 	const [selectedMenu, setSelectedMenu] = useState<{
@@ -43,99 +47,102 @@ export const Sidebar = () => {
 									<span>HBB dan Inventaris</span>
 								</Link>
 							</li>
-							<li
-								className={`treeview ${
-									selectedMenu.key === "layanan" ? "menu-open" : ""
-								}`}
-								onClick={() => seletedMenuHandler("layanan", true)}
-							>
-								<Link to={""}>
-									<FeatherIcon icon={"smile"} />
-									<span>Layanan HBB</span>
-									<span className="pull-right-container">
-										<i className="fa fa-angle-right pull-right"></i>
-									</span>
-								</Link>
-								<ul
-									className="treeview-menu"
-									style={{
-										display: selectedMenu.key === "layanan" ? "block" : "none",
-									}}
+							{isAllowShowServiceSidebar && (
+								<li
+									className={`treeview ${
+										selectedMenu.key === "layanan" ? "menu-open" : ""
+									}`}
+									onClick={() => seletedMenuHandler("layanan", true)}
 								>
-									<li>
-										<Link to={"/permintaan-layanan"}>
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Permintaan Layanan -<br /> Permintaan
-										</Link>
-									</li>
-									<li>
-										<Link to={"/permintaan-perbaikan"}>
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Permintaan Layanan -<br /> Perbaikan
-										</Link>
-									</li>
-									<li>
-										<Link to={"/permintaan-pemindahan"}>
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Permintaan Layanan -<br /> Pemindahan
-										</Link>
-									</li>
-									<li>
-										<Link to={"/permintaan-pengembalian"}>
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Permintaan Layanan -<br /> Pengembalian
-										</Link>
-									</li>
-									<li>
-										<Link to={"/permintaan-penggantian"}>
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Permintaan Layanan -<br /> Penggantian
-										</Link>
-									</li>
-									<li>
-										<Link to={"/permintaan-perubahan"}>
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Permintaan Layanan -<br /> Perubahan
-										</Link>
-									</li>
-									<li>
-										<Link to={"/permintaan-pemeriksaan"}>
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Permintaan Layanan -<br /> Pemeriksaan
-										</Link>
-									</li>
-									<li>
-										<Link to={"/permintaan-penghapusan"}>
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Permintaan Layanan -<br /> Penghapusan
-										</Link>
-									</li>
-								</ul>
-							</li>
+									<Link to={""}>
+										<FeatherIcon icon={"smile"} />
+										<span>Layanan HBB</span>
+										<span className="pull-right-container">
+											<i className="fa fa-angle-right pull-right"></i>
+										</span>
+									</Link>
+									<ul
+										className="treeview-menu"
+										style={{
+											display:
+												selectedMenu.key === "layanan" ? "block" : "none",
+										}}
+									>
+										<li>
+											<Link to={"/permintaan-layanan"}>
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Permintaan Layanan -<br /> Permintaan
+											</Link>
+										</li>
+										<li>
+											<Link to={"/permintaan-perbaikan"}>
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Permintaan Layanan -<br /> Perbaikan
+											</Link>
+										</li>
+										<li>
+											<Link to={"/permintaan-pemindahan"}>
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Permintaan Layanan -<br /> Pemindahan
+											</Link>
+										</li>
+										<li>
+											<Link to={"/permintaan-pengembalian"}>
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Permintaan Layanan -<br /> Pengembalian
+											</Link>
+										</li>
+										<li>
+											<Link to={"/permintaan-penggantian"}>
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Permintaan Layanan -<br /> Penggantian
+											</Link>
+										</li>
+										<li>
+											<Link to={"/permintaan-perubahan"}>
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Permintaan Layanan -<br /> Perubahan
+											</Link>
+										</li>
+										<li>
+											<Link to={"/permintaan-pemeriksaan"}>
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Permintaan Layanan -<br /> Pemeriksaan
+											</Link>
+										</li>
+										<li>
+											<Link to={"/permintaan-penghapusan"}>
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Permintaan Layanan -<br /> Penghapusan
+											</Link>
+										</li>
+									</ul>
+								</li>
+							)}
 							<li
 								className={`treeview ${
 									selectedMenu.key === "cetak-barcode" ? "menu-open" : ""
@@ -214,171 +221,173 @@ export const Sidebar = () => {
 									</li>
 								</ul>
 							</li>
-							<li
-								className={`treeview ${
-									selectedMenu.key === "master" ? "menu-open" : ""
-								}`}
-								onClick={() => seletedMenuHandler("master", true)}
-							>
-								<Link to={""}>
-									<FeatherIcon icon={"database"} />
-									<span>Master</span>
-									<span className="pull-right-container">
-										<i className="fa fa-angle-right pull-right"></i>
-									</span>
-								</Link>
-								<ul
-									className="treeview-menu"
-									style={{
-										display: selectedMenu.key === "master" ? "block" : "none",
-									}}
+							{isAllowShowMasterSidebar && (
+								<li
+									className={`treeview ${
+										selectedMenu.key === "master" ? "menu-open" : ""
+									}`}
+									onClick={() => seletedMenuHandler("master", true)}
 								>
-									<li>
-										<Link to="/master-area">
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Area
-										</Link>
-									</li>
-									<li>
-										<Link to="/master-barang">
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Barang
-										</Link>
-									</li>
-									<li>
-										<Link to={"/master-bisnis-unit"}>
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Bisnis Unit
-										</Link>
-									</li>
-									<li>
-										<Link to="/master-divisi">
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Divisi
-										</Link>
-									</li>
-									<li>
-										<Link to="/master-kode-group">
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Kode Group
-										</Link>
-									</li>
-									<li>
-										<Link to="/master-kondisi">
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Kondisi
-										</Link>
-									</li>
-									<li>
-										<Link to="/master-lokasi">
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Lokasi
-										</Link>
-									</li>
-									<li>
-										<Link to="/master-negara">
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Negara
-										</Link>
-									</li>
-									<li>
-										<Link to="/master-pegawai">
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Pegawai
-										</Link>
-									</li>
-									<li>
-										<Link to="/master-pengelola">
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Pengelola
-										</Link>
-									</li>
-									<li>
-										<Link to="/master-penyedia">
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Penyedia
-										</Link>
-									</li>
-									<li>
-										<Link to="/master-perusahaan">
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Perusahaan
-										</Link>
-									</li>
-									<li>
-										<Link to="/master-satuan-kerja">
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Satuan Kerja
-										</Link>
-									</li>
-									<li>
-										<Link to="/master-user">
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											User
-										</Link>
-									</li>
-									<li>
-										<Link to="/master-warna">
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Warna
-										</Link>
-									</li>
-									<li>
-										<Link to="/master-workflow">
-											<i className="icon-Commit">
-												<span className="path1"></span>
-												<span className="path2"></span>
-											</i>
-											Workflow
-										</Link>
-									</li>
-								</ul>
-							</li>
+									<Link to={""}>
+										<FeatherIcon icon={"database"} />
+										<span>Master</span>
+										<span className="pull-right-container">
+											<i className="fa fa-angle-right pull-right"></i>
+										</span>
+									</Link>
+									<ul
+										className="treeview-menu"
+										style={{
+											display: selectedMenu.key === "master" ? "block" : "none",
+										}}
+									>
+										<li>
+											<Link to="/master-area">
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Area
+											</Link>
+										</li>
+										<li>
+											<Link to="/master-barang">
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Barang
+											</Link>
+										</li>
+										<li>
+											<Link to={"/master-bisnis-unit"}>
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Bisnis Unit
+											</Link>
+										</li>
+										<li>
+											<Link to="/master-divisi">
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Divisi
+											</Link>
+										</li>
+										<li>
+											<Link to="/master-kode-group">
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Kode Group
+											</Link>
+										</li>
+										<li>
+											<Link to="/master-kondisi">
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Kondisi
+											</Link>
+										</li>
+										<li>
+											<Link to="/master-lokasi">
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Lokasi
+											</Link>
+										</li>
+										<li>
+											<Link to="/master-negara">
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Negara
+											</Link>
+										</li>
+										<li>
+											<Link to="/master-pegawai">
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Pegawai
+											</Link>
+										</li>
+										<li>
+											<Link to="/master-pengelola">
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Pengelola
+											</Link>
+										</li>
+										<li>
+											<Link to="/master-penyedia">
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Penyedia
+											</Link>
+										</li>
+										<li>
+											<Link to="/master-perusahaan">
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Perusahaan
+											</Link>
+										</li>
+										<li>
+											<Link to="/master-satuan-kerja">
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Satuan Kerja
+											</Link>
+										</li>
+										<li>
+											<Link to="/master-user">
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												User
+											</Link>
+										</li>
+										<li>
+											<Link to="/master-warna">
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Warna
+											</Link>
+										</li>
+										<li>
+											<Link to="/master-workflow">
+												<i className="icon-Commit">
+													<span className="path1"></span>
+													<span className="path2"></span>
+												</i>
+												Workflow
+											</Link>
+										</li>
+									</ul>
+								</li>
+							)}
 							<li
 								className={`treeview ${
 									selectedMenu.key === "tiket-layanan" ? "menu-open" : ""

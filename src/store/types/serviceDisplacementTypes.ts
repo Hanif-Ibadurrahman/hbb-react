@@ -4,7 +4,7 @@ export interface IServiceDisplacement {
 	id_quest: string | null;
 	date: string | null;
 	remark: string | null;
-	status: number | null;
+	status: string | null;
 	id_inventory: string | null;
 	nipg_from: string | null;
 	nipg_to: string | null;
@@ -33,6 +33,7 @@ export interface IServiceDisplacement {
 	created_at: string | null;
 	updated_at: string | null;
 	deleted_at: string | null;
+	id_company: string | null;
 }
 
 export interface IServiceDisplacementPaginateResponse extends PaginationState {
@@ -42,7 +43,7 @@ export interface IServiceDisplacementPaginateResponse extends PaginationState {
 export interface IServiceDisplacementGetAllParams {
 	page?: number;
 	per_page?: number;
-	description?: string | null;
+	date?: string;
 }
 
 export interface ICreateServiceDisplacementRequest {
@@ -52,7 +53,8 @@ export interface ICreateServiceDisplacementRequest {
 	id_workflow: string;
 	from_user: string;
 	to_user: string;
-	tipe: string;
+	id_lokasi: string;
+	tipe?: string;
 }
 
 export interface IUpdateServiceDisplacementRequest {
@@ -62,7 +64,8 @@ export interface IUpdateServiceDisplacementRequest {
 	id_workflow: string;
 	from_user: string;
 	to_user: string;
-	tipe: string;
+	id_lokasi: string;
+	tipe?: string;
 }
 
 export interface IServiceDisplacementGetAllResponse {
