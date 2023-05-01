@@ -97,16 +97,11 @@ const MasterUser = () => {
 	const [dataOptionRole, setDataOptionRole] = useState<
 		DefaultOptionType[] | undefined
 	>([
-		{ value: 1, label: "Super Admisnitrator" },
+		{ value: 1, label: "Super Admin" },
 		{ value: 2, label: "Pengelola" },
-		{ value: 3, label: "User" },
-		{ value: 4, label: "PGNMAS" },
-		{ value: 5, label: "Asisten Pengelola" },
-		{ value: 6, label: "Pelapor" },
-		{ value: 7, label: "Kepala Satker" },
-		{ value: 8, label: "Admin Area" },
-		{ value: 9, label: "Akuntansi" },
-		{ value: 10, label: "Division Head" },
+		{ value: 3, label: "Admin Area" },
+		{ value: 4, label: "Kepala Satuan Kerja" },
+		{ value: 5, label: "User" },
 	]);
 
 	const fetchDataList = async () => {
@@ -167,11 +162,6 @@ const MasterUser = () => {
 		}
 	};
 
-	useEffect(() => {
-		fetchDataCompany();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [companyParams]);
-
 	const fetchDataBusinessUnit = async () => {
 		try {
 			const response = await getAllBusinessUnitApi(businessUnitParams);
@@ -184,11 +174,6 @@ const MasterUser = () => {
 		}
 	};
 
-	useEffect(() => {
-		fetchDataBusinessUnit();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [businessUnitParams]);
-
 	const fetchDataArea = async () => {
 		try {
 			const response = await getAllAreaApi(areaParams);
@@ -200,11 +185,6 @@ const MasterUser = () => {
 			CheckAuthentication(error);
 		}
 	};
-
-	useEffect(() => {
-		fetchDataArea();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [areaParams]);
 
 	const fetchDataWorkUnit = async () => {
 		try {
@@ -222,6 +202,21 @@ const MasterUser = () => {
 		fetchDataWorkUnit();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [workUnitParams]);
+
+	useEffect(() => {
+		fetchDataArea();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [areaParams]);
+
+	useEffect(() => {
+		fetchDataCompany();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [companyParams]);
+
+	useEffect(() => {
+		fetchDataBusinessUnit();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [businessUnitParams]);
 
 	useEffect(() => {
 		fetchDataList();

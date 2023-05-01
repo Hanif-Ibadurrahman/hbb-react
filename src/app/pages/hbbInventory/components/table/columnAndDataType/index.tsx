@@ -9,9 +9,10 @@ interface IColumn {
 			id?: string;
 		}>
 	>;
+	handleDelete: (id: string) => void;
 }
 
-export const columns = ({ setShowModal }: IColumn) => {
+export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 	const columnType: ColumnsType<IInventory> = [
 		{
 			title: "Nama Barang",
@@ -70,7 +71,29 @@ export const columns = ({ setShowModal }: IColumn) => {
 			title: "Action",
 			dataIndex: "id",
 			render: (text, record, index) => {
-				return <ActionButtonTable setShowModal={setShowModal} itemId={text} />;
+				return (
+					<div style={{ display: "flex", columnGap: 5 }}>
+						<button
+							type="button"
+							className="btn btn-primary"
+							onClick={() => {
+								setShowModal({ show: true, id: text });
+							}}
+						>
+							Edit
+						</button>
+						<button
+							type="button"
+							className="btn"
+							style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
+							onClick={() => {
+								handleDelete(text);
+							}}
+						>
+							Delete
+						</button>
+					</div>
+				);
 			},
 		},
 	];

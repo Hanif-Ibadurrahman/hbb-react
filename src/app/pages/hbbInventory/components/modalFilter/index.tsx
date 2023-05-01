@@ -74,7 +74,7 @@ export const ModalFilter = ({
 			<Form form={formFilter} layout="vertical" onFinish={handleSubmit}>
 				<Row gutter={16}>
 					<Col span={12}>
-						<Form.Item name="jenis" label="Jenis Barang">
+						<Form.Item name="inventory_type" label="Jenis Barang">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
@@ -89,17 +89,17 @@ export const ModalFilter = ({
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="tahun_perolehan" label="Tahun Perolehan">
+						<Form.Item name="year" label="Tahun Perolehan">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="name" label="Nama Barang">
+						<Form.Item name="id_barang" label="Nama Barang">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="Distributor">
+						<Form.Item name="distributor" label="Distributor">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
@@ -109,17 +109,17 @@ export const ModalFilter = ({
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="No BAST/DO">
+						<Form.Item name="no_bast" label="No BAST/DO">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="Negara Pembuat">
+						<Form.Item name="id_country" label="Negara Pembuat">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="Tahun Pembuatan">
+						<Form.Item name="year_made" label="Tahun Pembuatan">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
@@ -129,87 +129,87 @@ export const ModalFilter = ({
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="Model">
+						<Form.Item name="model" label="Model">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="color" label="Warna">
+						<Form.Item name="id_color" label="Warna">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="Kapasitas">
+						<Form.Item name="capacity" label="Kapasitas">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="Ukuran">
+						<Form.Item name="size" label="Ukuran">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="No Seri">
+						<Form.Item name="serial_number" label="No Seri">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="No Polisi">
+						<Form.Item name="no_polisi" label="No Polisi">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="No Rangka">
+						<Form.Item name="no_rangka" label="No Rangka">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="No Mesin">
+						<Form.Item name="no_mesin" label="No Mesin">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="No BPKB">
+						<Form.Item name="no_bpkb" label="No BPKB">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="No Kontrak">
+						<Form.Item name="contract_no" label="No Kontrak">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="Tanggal Kontrak">
+						<Form.Item name="contract_date" label="Tanggal Kontrak">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="Bisnis Unit">
+						<Form.Item name="id_bisnis_unit" label="Bisnis Unit">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="Area">
+						<Form.Item name="id_area" label="Area">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="Satuan Kerja">
+						<Form.Item name="id_satker" label="Satuan Kerja">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="Lokasi">
+						<Form.Item name="id_location" label="Lokasi">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="Penanggung Jawab">
+						<Form.Item name="id_penanggung_jawab" label="Penanggung Jawab">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="Kondisi">
+						<Form.Item name="condition" label="Kondisi">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>

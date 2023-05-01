@@ -73,10 +73,11 @@ const MasterWorkflow = () => {
 	const [dataOptionRole, setDataOptionRole] = useState<
 		DefaultOptionType[] | undefined
 	>([
-		{ value: "pengelola", label: "Pengelola" },
-		{ value: "user", label: "User" },
-		{ value: "kepala satuan kerja", label: "Kepala Satker" },
-		{ value: "admin area", label: "Admin Area" },
+		{ value: 1, label: "Super Admin" },
+		{ value: 2, label: "Pengelola" },
+		{ value: 3, label: "Admin Area" },
+		{ value: 4, label: "Kepala Satuan Kerja" },
+		{ value: 5, label: "User" },
 	]);
 
 	const fetchDataList = async () => {
@@ -111,11 +112,6 @@ const MasterWorkflow = () => {
 		}
 	};
 
-	useEffect(() => {
-		fetchDataCompany();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [companyParams]);
-
 	const handleInitialValue = (values: IWorkflow) => {
 		setInitialValue({
 			name: values.name || "",
@@ -132,6 +128,11 @@ const MasterWorkflow = () => {
 			is_reverse: values.is_reverse,
 		});
 	};
+
+	useEffect(() => {
+		fetchDataCompany();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [companyParams]);
 
 	useEffect(() => {
 		fetchDataList();
@@ -246,7 +247,7 @@ const MasterWorkflow = () => {
 			title: `Step Approve ${index + 1}`,
 			subTitle: "",
 			status: "process",
-			description: value.toUpperCase(),
+			description: value,
 		}));
 
 		return (
@@ -319,7 +320,7 @@ const MasterWorkflow = () => {
 				}
 				onCancel={handleCancel}
 				open={showModal.show}
-				width={800}
+				width={900}
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
@@ -413,7 +414,11 @@ const MasterWorkflow = () => {
 									mode="multiple"
 									dataOption={dataOptionRole}
 									onChange={(v, opt) => {
-										setFlow(v);
+										setFlow(
+											opt.map(o => {
+												return o.label;
+											}),
+										);
 										formik.setFieldValue("roles", v);
 										formRef.current?.setFieldsValue({
 											roles: v,

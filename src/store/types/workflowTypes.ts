@@ -3,11 +3,9 @@ export interface IWorkflow {
 	id: string;
 	name: string | null;
 	description: string | null;
+	roles: string | null;
 	created_at: string | null;
 	deleted_at: string | null;
-	id_bisnis_unit: string | null;
-	id_area: string | null;
-	id_satuan_kerja: string | null;
 	id_company: string | null;
 	is_reverse: boolean;
 }
@@ -20,14 +18,14 @@ export interface IWorkflowGetAllParams {
 	name?: string;
 	description?: string;
 	created_at?: string;
-	roles?: string[];
+	roles?: number[];
 }
 export interface ICreateWorkflowRequest {
 	name: string;
 	description: string;
 	created_at: string;
 	id_company: string;
-	roles?: string[];
+	roles?: number[];
 	is_reverse: boolean;
 }
 export interface IUpdateWorkflowRequest {
