@@ -28,6 +28,7 @@ import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { CheckAuthentication } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
+import { listCheckPermission } from "app/helper/permission";
 
 const MasterColor = () => {
 	const { Title } = Typography;
@@ -194,13 +195,15 @@ const MasterColor = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
-									<button
-										type="button"
-										className="btn btn-primary"
-										onClick={handleAdd}
-									>
-										Tambah
-									</button>
+									{listCheckPermission.isAllowCreateMasterColor && (
+										<button
+											type="button"
+											className="btn btn-primary"
+											onClick={handleAdd}
+										>
+											Tambah
+										</button>
+									)}
 								</>
 							}
 						/>

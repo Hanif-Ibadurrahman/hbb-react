@@ -1,10 +1,5 @@
 import { ColumnsType } from "antd/es/table";
-import {
-	isAllowApproveServiceDelete,
-	isAllowDeleteServiceDelete,
-	isAllowRejectServiceDelete,
-	isAllowUpdateServiceDelete,
-} from "app/helper/permission";
+import { listCheckPermission } from "app/helper/permission";
 import { IServiceDelete } from "store/types/serviceDeleteTypes";
 interface IColumn {
 	setShowModal: React.Dispatch<
@@ -56,7 +51,7 @@ export const columns = ({
 			render: (text, record, index) => {
 				return (
 					<div style={{ display: "flex", columnGap: 5 }}>
-						{isAllowApproveServiceDelete && (
+						{listCheckPermission.isAllowApproveServicePenghapusan && (
 							<button
 								type="button"
 								className="btn btn-success"
@@ -67,7 +62,7 @@ export const columns = ({
 								Approve
 							</button>
 						)}
-						{isAllowRejectServiceDelete && (
+						{listCheckPermission.isAllowRejectServicePenghapusan && (
 							<button
 								type="button"
 								className="btn"
@@ -79,7 +74,7 @@ export const columns = ({
 								Reject
 							</button>
 						)}
-						{isAllowUpdateServiceDelete && (
+						{listCheckPermission.isAllowUpdateServicePenghapusan && (
 							<button
 								type="button"
 								className="btn btn-primary"
@@ -90,7 +85,7 @@ export const columns = ({
 								Edit
 							</button>
 						)}
-						{isAllowDeleteServiceDelete && (
+						{listCheckPermission.isAllowDeleteServicePenghapusan && (
 							<button
 								type="button"
 								className="btn"

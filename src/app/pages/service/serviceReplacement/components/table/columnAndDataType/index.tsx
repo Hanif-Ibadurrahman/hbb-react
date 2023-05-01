@@ -1,11 +1,6 @@
 import { Button } from "antd";
 import { ColumnsType } from "antd/es/table";
-import {
-	isAllowApproveServiceReplacement,
-	isAllowDeleteServiceReplacement,
-	isAllowRejectServiceReplacement,
-	isAllowUpdateServiceReplacement,
-} from "app/helper/permission";
+import { listCheckPermission } from "app/helper/permission";
 import { IServiceReplacement } from "store/types/serviceReplacementTypes";
 
 interface IColumn {
@@ -78,7 +73,7 @@ export const columns = ({
 			render: (text, record, index) => {
 				return (
 					<div style={{ display: "flex", columnGap: 5 }}>
-						{isAllowApproveServiceReplacement && (
+						{listCheckPermission.isAllowApproveServicePenggantian && (
 							<button
 								type="button"
 								className="btn btn-success"
@@ -89,7 +84,7 @@ export const columns = ({
 								Approve
 							</button>
 						)}
-						{isAllowRejectServiceReplacement && (
+						{listCheckPermission.isAllowRejectServicePenggantian && (
 							<button
 								type="button"
 								className="btn"
@@ -101,7 +96,7 @@ export const columns = ({
 								Reject
 							</button>
 						)}
-						{isAllowUpdateServiceReplacement && (
+						{listCheckPermission.isAllowUpdateServicePenggantian && (
 							<button
 								type="button"
 								className="btn btn-primary"
@@ -112,7 +107,7 @@ export const columns = ({
 								Edit
 							</button>
 						)}
-						{isAllowDeleteServiceReplacement && (
+						{listCheckPermission.isAllowDeleteServicePenggantian && (
 							<button
 								type="button"
 								className="btn"

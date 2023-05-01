@@ -22,12 +22,17 @@ import {
 	Form,
 	FormInstance,
 	Input,
+	Select,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { CheckAuthentication, TokenDekode } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
+import { ICompanyGetAllParams } from "store/types/companyTypes";
+import { DefaultOptionType } from "antd/es/select";
+import { getAllCompanyApi } from "api/company";
+import { listCheckPermission } from "app/helper/permission";
 
 const MasterBusinessUnit = () => {
 	const { Title } = Typography;
@@ -35,6 +40,9 @@ const MasterBusinessUnit = () => {
 	const formRef = useRef<FormInstance>(null);
 	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<IBusinessUnitGetAllParams | undefined>();
+	const [companyParams, setCompanyParams] = useState<
+		ICompanyGetAllParams | undefined
+	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
 		show: false,
 	});
@@ -49,6 +57,9 @@ const MasterBusinessUnit = () => {
 		id_company: "",
 	});
 	const [dataTable, setDataTable] = useState<IBusinessUnitPaginateResponse>();
+	const [dataOptionCompany, setDataOptionCompany] = useState<
+		DefaultOptionType[] | undefined
+	>();
 
 	const tokenDecode = TokenDekode();
 
@@ -72,6 +83,18 @@ const MasterBusinessUnit = () => {
 		}
 	};
 
+	const fetchDataCompany = async () => {
+		try {
+			const response = await getAllCompanyApi(companyParams);
+			const companyList = response.data.data.data;
+			setDataOptionCompany(
+				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
 	const handleInitialValue = (values: IBusinessUnit) => {
 		const setData = {
 			name: values.name || "",
@@ -80,6 +103,11 @@ const MasterBusinessUnit = () => {
 		setInitialValue(setData);
 		formRef.current?.setFieldsValue(setData);
 	};
+
+	useEffect(() => {
+		fetchDataCompany();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [companyParams]);
 
 	useEffect(() => {
 		fetchDataList();
@@ -164,11 +192,7 @@ const MasterBusinessUnit = () => {
 				});
 			});
 		} else {
-			const input: ICreateBusinessUnitRequest = {
-				...values,
-				id_company: tokenDecode.user?.id_company,
-			};
-			createNewBusinessUnitApi(input).then(res => {
+			createNewBusinessUnitApi(values).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });
 					fetchDataList();
@@ -205,13 +229,15 @@ const MasterBusinessUnit = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
-									<button
-										type="button"
-										className="btn btn-primary"
-										onClick={handleAdd}
-									>
-										Tambah
-									</button>
+									{listCheckPermission.isAllowCreateMasterBisnisUnit && (
+										<button
+											type="button"
+											className="btn btn-primary"
+											onClick={handleAdd}
+										>
+											Tambah
+										</button>
+									)}
 								</>
 							}
 						/>
@@ -267,6 +293,40 @@ const MasterBusinessUnit = () => {
 									placeholder="Bisnis Unit"
 									onChange={formik.handleChange}
 									value={formik.values.name}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_company"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Perusahaan <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setCompanyParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionCompany}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_company", v);
+										formRef.current?.setFieldsValue({
+											id_company: parseInt(v),
+										});
+									}}
+									value={formik.values.id_company}
 								/>
 							</div>
 						</div>

@@ -28,6 +28,7 @@ import {
 import { deleteCountryApi } from "api/country";
 import { CheckAuthentication } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
+import { listCheckPermission } from "app/helper/permission";
 
 const MasterCompany = () => {
 	const { Title } = Typography;
@@ -196,13 +197,15 @@ const MasterCompany = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
-									<button
-										type="button"
-										className="btn btn-primary"
-										onClick={handleAdd}
-									>
-										Tambah
-									</button>
+									{listCheckPermission.isAllowCreateMasterCompany && (
+										<button
+											type="button"
+											className="btn btn-primary"
+											onClick={handleAdd}
+										>
+											Tambah
+										</button>
+									)}
 								</>
 							}
 						/>

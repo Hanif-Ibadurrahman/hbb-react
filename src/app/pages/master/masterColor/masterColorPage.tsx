@@ -1,8 +1,13 @@
 import { Loading } from "app/components/loading";
+import { listCheckPermission } from "app/helper/permission";
 import { lazyLoad } from "utils/loadable";
 
-export const MasterColorPage = lazyLoad(
-	() => import("app/pages/master/masterColor"),
-	undefined,
-	{ fallback: <Loading /> },
-);
+const loadPage = () => {
+	return listCheckPermission.isAllowReadMasterColor
+		? () => import("app/pages/master/masterColor")
+		: () => import("app/pages/error/notFound");
+};
+
+export const MasterColorPage = lazyLoad(loadPage(), undefined, {
+	fallback: <Loading />,
+});

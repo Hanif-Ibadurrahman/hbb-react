@@ -35,7 +35,7 @@ import {
 import { IServiceReplacement } from "store/types/serviceReplacementTypes";
 import { CheckAuthentication } from "app/helper/authentication";
 import { UploadOutlined } from "@ant-design/icons";
-import { isAllowCreateServiceReplacement } from "app/helper/permission";
+import { listCheckPermission } from "app/helper/permission";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 import { DefaultOptionType } from "antd/es/select";
@@ -513,7 +513,7 @@ const ServiceReplacement = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
-									{isAllowCreateServiceReplacement && (
+									{listCheckPermission.isAllowCreateServicePenggantian && (
 										<button
 											type="button"
 											className="btn btn-primary"

@@ -35,6 +35,7 @@ import { IBusinessUnitGetAllParams } from "store/types/businessUnitTypes";
 import { getAllWorkUnitApi } from "api/workUnit";
 import { IWorkUnitGetAllParams } from "store/types/workUnitTypes";
 import { ModalFilter } from "./components/modalFilter";
+import { listCheckPermission } from "app/helper/permission";
 
 const MasterDivision = () => {
 	const { Title } = Typography;
@@ -286,13 +287,15 @@ const MasterDivision = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
-									<button
-										type="button"
-										className="btn btn-primary"
-										onClick={handleAdd}
-									>
-										Tambah
-									</button>
+									{listCheckPermission.isAllowCreateMasterDivision && (
+										<button
+											type="button"
+											className="btn btn-primary"
+											onClick={handleAdd}
+										>
+											Tambah
+										</button>
+									)}
 								</>
 							}
 						/>

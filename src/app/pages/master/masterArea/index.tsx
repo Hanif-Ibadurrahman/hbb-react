@@ -36,6 +36,7 @@ import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { getAllCompanyApi } from "api/company";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 import { getAllEmployeeApi } from "api/employee";
+import { listCheckPermission } from "app/helper/permission";
 
 const MasterArea = () => {
 	const { Title } = Typography;
@@ -293,13 +294,15 @@ const MasterArea = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
-									<button
-										type="button"
-										className="btn btn-primary"
-										onClick={handleAdd}
-									>
-										Tambah
-									</button>
+									{listCheckPermission.isAllowCreateMasterArea && (
+										<button
+											type="button"
+											className="btn btn-primary"
+											onClick={handleAdd}
+										>
+											Tambah
+										</button>
+									)}
 								</>
 							}
 						/>

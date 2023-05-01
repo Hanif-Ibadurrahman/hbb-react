@@ -104,16 +104,16 @@ const MasterManager = () => {
 		onSubmit: values => {},
 	});
 
-	const handleAdd = () => {
-		setShowModal({ show: true });
-		setInitialValue({
-			nama_pengelola: "",
-			jabatan: "",
-			nipg: "",
-		});
-		formik.resetForm();
-		formRef.current?.resetFields();
-	};
+	// const handleAdd = () => {
+	// 	setShowModal({ show: true });
+	// 	setInitialValue({
+	// 		nama_pengelola: "",
+	// 		jabatan: "",
+	// 		nipg: "",
+	// 	});
+	// 	formik.resetForm();
+	// 	formRef.current?.resetFields();
+	// };
 
 	const handleDelete = (id: string) => {
 		const swalCustom = Swal.mixin({
@@ -194,6 +194,25 @@ const MasterManager = () => {
 							dataSource={dataTable}
 							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPageAndSort={setSelectedPageAndSort}
+							contentHeader={
+								<>
+									<button
+										className="btn btn-secondary"
+										onClick={() => setShowFilter(true)}
+									>
+										<i className="fa fa-filter" />
+									</button>
+									{/* {listCheckPermission.isAllowCreateMasterPengelola && (
+										<button
+											type="button"
+											className="btn btn-primary"
+											onClick={handleAdd}
+										>
+											Tambah
+										</button>
+									)} */}
+								</>
+							}
 						/>
 					</div>
 				</div>

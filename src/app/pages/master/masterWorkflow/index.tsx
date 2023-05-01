@@ -37,6 +37,7 @@ import { DefaultOptionType } from "antd/es/select";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { getAllCompanyApi } from "api/company";
 import { SelectWithTag } from "app/components/selectWithTag";
+import { listCheckPermission } from "app/helper/permission";
 
 const MasterWorkflow = () => {
 	const { Title } = Typography;
@@ -279,13 +280,15 @@ const MasterWorkflow = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
-									<button
-										type="button"
-										className="btn btn-primary"
-										onClick={handleAdd}
-									>
-										Tambah
-									</button>
+									{listCheckPermission.isAllowCreateMasterWorkflow && (
+										<button
+											type="button"
+											className="btn btn-primary"
+											onClick={handleAdd}
+										>
+											Tambah
+										</button>
+									)}
 								</>
 							}
 						/>
