@@ -1,8 +1,13 @@
 import { Loading } from "app/components/loading";
+import { listCheckPermission } from "app/helper/permission";
 import { lazyLoad } from "utils/loadable";
 
-export const MasterWorkflowPage = lazyLoad(
-	() => import("app/pages/master/masterWorkflow"),
-	undefined,
-	{ fallback: <Loading /> },
-);
+const loadPage = () => {
+	return listCheckPermission.isAllowReadMasterWorkflow
+		? () => import("app/pages/master/masterWorkflow")
+		: () => import("app/pages/error/notFound");
+};
+
+export const MasterWorkflowPage = lazyLoad(loadPage(), undefined, {
+	fallback: <Loading />,
+});

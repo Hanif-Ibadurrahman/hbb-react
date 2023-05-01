@@ -1,8 +1,13 @@
 import { Loading } from "app/components/loading";
+import { listCheckPermission } from "app/helper/permission";
 import { lazyLoad } from "utils/loadable";
 
-export const MasterItemPage = lazyLoad(
-	() => import("app/pages/master/masterItem"),
-	undefined,
-	{ fallback: <Loading /> },
-);
+const loadPage = () => {
+	return listCheckPermission.isAllowReadMasterItem
+		? () => import("app/pages/master/masterItem")
+		: () => import("app/pages/error/notFound");
+};
+
+export const MasterItemPage = lazyLoad(loadPage(), undefined, {
+	fallback: <Loading />,
+});

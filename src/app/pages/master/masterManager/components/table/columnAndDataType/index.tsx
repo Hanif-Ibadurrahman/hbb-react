@@ -1,5 +1,5 @@
 import { ColumnsType } from "antd/es/table";
-import { ActionButtonTable } from "app/components/table/antd/actionButtonTable";
+import { listCheckPermission } from "app/helper/permission";
 import { IManager } from "store/types/managerTypes";
 
 interface IColumn {
@@ -35,15 +35,29 @@ export const columns = ({ setShowModal }: IColumn) => {
 			render: (text, record, index) => {
 				return (
 					<div style={{ display: "flex", columnGap: 5 }}>
-						<button
-							type="button"
-							className="btn btn-primary"
-							onClick={() => {
-								setShowModal({ show: true, id: text });
-							}}
-						>
-							Edit
-						</button>
+						{listCheckPermission.isAllowUpdateMasterPengelola && (
+							<button
+								type="button"
+								className="btn btn-primary"
+								onClick={() => {
+									setShowModal({ show: true, id: text });
+								}}
+							>
+								Edit
+							</button>
+						)}
+						{/* {listCheckPermission.isAllowDeleteMasterPengelola && (
+							<button
+								type="button"
+								className="btn"
+								style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
+								onClick={() => {
+									handleDelete(text);
+								}}
+							>
+								Delete
+							</button>
+						)} */}
 					</div>
 				);
 			},

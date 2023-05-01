@@ -35,7 +35,7 @@ import { getAllCompanyApi } from "api/company";
 import { getAllWorkflowApi } from "api/workflow";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { IWorkflowGetAllParams } from "store/types/workflowTypes";
-import { isAllowCreateServiceDisplacement } from "app/helper/permission";
+import { listCheckPermission } from "app/helper/permission";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 import { getAllEmployeeApi } from "api/employee";
 import { ILocationGetAllParams } from "store/types/locationTypes";
@@ -448,7 +448,7 @@ const ServiceDisplacement = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
-									{isAllowCreateServiceDisplacement && (
+									{listCheckPermission.isAllowCreateServicePemindahan && (
 										<button
 											type="button"
 											className="btn btn-primary"

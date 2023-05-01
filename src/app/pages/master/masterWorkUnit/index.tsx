@@ -33,6 +33,7 @@ import { IAreaGetAllParams } from "store/types/areaTypes";
 import { getAllAreaApi } from "api/area";
 import { CheckAuthentication } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
+import { listCheckPermission } from "app/helper/permission";
 
 const MasterWorkUnit = () => {
 	const { Title } = Typography;
@@ -255,13 +256,15 @@ const MasterWorkUnit = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
-									<button
-										type="button"
-										className="btn btn-primary"
-										onClick={handleAdd}
-									>
-										Tambah
-									</button>
+									{listCheckPermission.isAllowCreateMasterSatuanKerja && (
+										<button
+											type="button"
+											className="btn btn-primary"
+											onClick={handleAdd}
+										>
+											Tambah
+										</button>
+									)}
 								</>
 							}
 						/>

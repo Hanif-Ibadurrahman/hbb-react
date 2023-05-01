@@ -35,7 +35,7 @@ import {
 import { IServiceRequest } from "store/types/serviceRequestTypes";
 import { CheckAuthentication } from "app/helper/authentication";
 import { UploadOutlined } from "@ant-design/icons";
-import { isAllowCreateServiceRequest } from "app/helper/permission";
+import { listCheckPermission } from "app/helper/permission";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 import { DefaultOptionType } from "antd/es/select";
@@ -481,7 +481,7 @@ const ServiceRequest = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
-									{isAllowCreateServiceRequest && (
+									{listCheckPermission.isAllowCreateServicePermintaan && (
 										<button
 											type="button"
 											className="btn btn-primary"

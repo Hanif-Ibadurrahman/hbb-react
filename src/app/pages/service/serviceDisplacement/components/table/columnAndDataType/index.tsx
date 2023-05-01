@@ -1,10 +1,5 @@
 import { ColumnsType } from "antd/es/table";
-import {
-	isAllowApproveServiceDisplacement,
-	isAllowDeleteServiceDisplacement,
-	isAllowRejectServiceDisplacement,
-	isAllowUpdateServiceDisplacement,
-} from "app/helper/permission";
+import { listCheckPermission } from "app/helper/permission";
 import { IServiceDisplacement } from "store/types/serviceDisplacementTypes";
 interface IColumn {
 	setShowModal: React.Dispatch<
@@ -61,7 +56,7 @@ export const columns = ({
 			render: (text, record, index) => {
 				return (
 					<div style={{ display: "flex", columnGap: 5 }}>
-						{isAllowApproveServiceDisplacement && (
+						{listCheckPermission.isAllowApproveServicePemindahan && (
 							<button
 								type="button"
 								className="btn btn-success"
@@ -72,7 +67,7 @@ export const columns = ({
 								Approve
 							</button>
 						)}
-						{isAllowRejectServiceDisplacement && (
+						{listCheckPermission.isAllowRejectServicePemindahan && (
 							<button
 								type="button"
 								className="btn"
@@ -84,7 +79,7 @@ export const columns = ({
 								Reject
 							</button>
 						)}
-						{isAllowUpdateServiceDisplacement && (
+						{listCheckPermission.isAllowUpdateServicePemindahan && (
 							<button
 								type="button"
 								className="btn btn-primary"
@@ -95,7 +90,7 @@ export const columns = ({
 								Edit
 							</button>
 						)}
-						{isAllowDeleteServiceDisplacement && (
+						{listCheckPermission.isAllowDeleteServicePemindahan && (
 							<button
 								type="button"
 								className="btn"

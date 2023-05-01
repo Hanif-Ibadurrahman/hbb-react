@@ -14,7 +14,7 @@ import {
 	getDetailItemApi,
 	updateItemApi,
 } from "api/item";
-import { CheckAuthentication, TokenDekode } from "app/helper/authentication";
+import { CheckAuthentication } from "app/helper/authentication";
 import {
 	Modal as AntdModal,
 	Button,
@@ -37,6 +37,7 @@ import { IColorGetAllParams } from "store/types/colorTypes";
 import { ModalFilter } from "./components/modalFilter";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { getAllCompanyApi } from "api/company";
+import { listCheckPermission } from "app/helper/permission";
 
 const MasterItem = () => {
 	const { Title } = Typography;
@@ -93,8 +94,6 @@ const MasterItem = () => {
 	const [dataOptionColor, setDataOptionColor] = useState<
 		DefaultOptionType[] | undefined
 	>();
-
-	const tokenDecode = TokenDekode();
 
 	useEffect(() => {
 		fetchDataList();
@@ -365,13 +364,15 @@ const MasterItem = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
-									<button
-										type="button"
-										className="btn btn-primary"
-										onClick={handleAdd}
-									>
-										Tambah
-									</button>
+									{listCheckPermission.isAllowCreateMasterItem && (
+										<button
+											type="button"
+											className="btn btn-primary"
+											onClick={handleAdd}
+										>
+											Tambah
+										</button>
+									)}
 								</>
 							}
 						/>

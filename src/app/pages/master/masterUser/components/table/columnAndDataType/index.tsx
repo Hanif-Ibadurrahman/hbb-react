@@ -1,6 +1,7 @@
 import { Tag } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { generateRandomHex } from "app/helper/common";
+import { listCheckPermission } from "app/helper/permission";
 import { IUser } from "store/types/userTypes";
 interface IColumn {
 	setShowModal: React.Dispatch<
@@ -64,25 +65,29 @@ export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 			render: (text, record, index) => {
 				return (
 					<div style={{ display: "flex", columnGap: 5 }}>
-						<button
-							type="button"
-							className="btn btn-primary"
-							onClick={() => {
-								setShowModal({ show: true, id: record.id, uuid: text });
-							}}
-						>
-							Edit
-						</button>
-						<button
-							type="button"
-							className="btn"
-							style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
-							onClick={() => {
-								handleDelete(text);
-							}}
-						>
-							Delete
-						</button>
+						{listCheckPermission.isAllowUpdateMasterUser && (
+							<button
+								type="button"
+								className="btn btn-primary"
+								onClick={() => {
+									setShowModal({ show: true, id: record.id, uuid: text });
+								}}
+							>
+								Edit
+							</button>
+						)}
+						{listCheckPermission.isAllowDeleteMasterUser && (
+							<button
+								type="button"
+								className="btn"
+								style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
+								onClick={() => {
+									handleDelete(text);
+								}}
+							>
+								Delete
+							</button>
+						)}
 					</div>
 				);
 			},

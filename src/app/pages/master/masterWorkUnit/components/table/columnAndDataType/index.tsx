@@ -1,5 +1,5 @@
 import { ColumnsType } from "antd/es/table";
-import { ActionButtonTable } from "app/components/table/antd/actionButtonTable";
+import { listCheckPermission } from "app/helper/permission";
 import { IWorkUnit } from "store/types/workUnitTypes";
 interface IColumn {
 	setShowModal: React.Dispatch<
@@ -47,11 +47,31 @@ export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 			dataIndex: "id",
 			render: (text, record, index) => {
 				return (
-					<ActionButtonTable
-						setShowModal={setShowModal}
-						handleDelete={handleDelete}
-						itemId={text}
-					/>
+					<div style={{ display: "flex", columnGap: 5 }}>
+						{listCheckPermission.isAllowUpdateMasterSatuanKerja && (
+							<button
+								type="button"
+								className="btn btn-primary"
+								onClick={() => {
+									setShowModal({ show: true, id: text });
+								}}
+							>
+								Edit
+							</button>
+						)}
+						{listCheckPermission.isAllowDeleteMasterSatuanKerja && (
+							<button
+								type="button"
+								className="btn"
+								style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
+								onClick={() => {
+									handleDelete(text);
+								}}
+							>
+								Delete
+							</button>
+						)}
+					</div>
 				);
 			},
 		},

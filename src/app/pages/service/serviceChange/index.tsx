@@ -35,7 +35,7 @@ import {
 import { IServiceChange } from "store/types/serviceChangeTypes";
 import { CheckAuthentication } from "app/helper/authentication";
 import { UploadOutlined } from "@ant-design/icons";
-import { isAllowCreateServiceChange } from "app/helper/permission";
+import { listCheckPermission } from "app/helper/permission";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 import { DefaultOptionType } from "antd/es/select";
@@ -511,7 +511,7 @@ const ServiceChange = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
-									{isAllowCreateServiceChange && (
+									{listCheckPermission.isAllowCreateServicePerubahan && (
 										<button
 											type="button"
 											className="btn btn-primary"

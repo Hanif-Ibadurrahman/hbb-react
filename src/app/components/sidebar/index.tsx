@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import {
-	isAllowShowMasterSidebar,
-	isAllowShowServiceSidebar,
+	isAllowShowMasterModule,
+	isAllowShowServiceModule,
 } from "app/helper/permission";
 
 export const Sidebar = () => {
@@ -47,7 +47,7 @@ export const Sidebar = () => {
 									<span>HBB dan Inventaris</span>
 								</Link>
 							</li>
-							{isAllowShowServiceSidebar && (
+							{isAllowShowServiceModule() && (
 								<li
 									className={`treeview ${
 										selectedMenu.key === "layanan" ? "menu-open" : ""
@@ -221,7 +221,7 @@ export const Sidebar = () => {
 									</li>
 								</ul>
 							</li>
-							{isAllowShowMasterSidebar && (
+							{isAllowShowMasterModule() && (
 								<li
 									className={`treeview ${
 										selectedMenu.key === "master" ? "menu-open" : ""

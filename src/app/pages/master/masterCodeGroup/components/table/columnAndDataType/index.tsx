@@ -1,4 +1,5 @@
 import { ColumnsType } from "antd/es/table";
+import { listCheckPermission } from "app/helper/permission";
 import { NavigateFunction } from "react-router-dom";
 import { ICodeGroup } from "store/types/codeGroupTypes";
 interface IColumn {
@@ -45,25 +46,29 @@ export const columns = ({ setShowModal, handleDelete, navigate }: IColumn) => {
 						>
 							List
 						</button>
-						<button
-							type="button"
-							className="btn btn-primary"
-							onClick={() => {
-								setShowModal({ show: true, id: text });
-							}}
-						>
-							Edit
-						</button>
-						<button
-							type="button"
-							className="btn"
-							style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
-							onClick={() => {
-								handleDelete(text);
-							}}
-						>
-							Delete
-						</button>
+						{listCheckPermission.isAllowUpdateMasterMainGroup && (
+							<button
+								type="button"
+								className="btn btn-primary"
+								onClick={() => {
+									setShowModal({ show: true, id: text });
+								}}
+							>
+								Edit
+							</button>
+						)}
+						{listCheckPermission.isAllowDeleteMasterMainGroup && (
+							<button
+								type="button"
+								className="btn"
+								style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
+								onClick={() => {
+									handleDelete(text);
+								}}
+							>
+								Delete
+							</button>
+						)}
 					</div>
 				);
 			},

@@ -15,7 +15,9 @@ export const CheckAuthentication = (error: any) => {
 };
 
 export const TokenDekode = () => {
-	const token = sessionStorage.getItem("Token") || "";
-	const tokenDecode: ITokenDecode = jwtDecode(token);
-	return tokenDecode;
+	const token = sessionStorage?.getItem("Token");
+	if (token) {
+		const tokenDecode: ITokenDecode = jwtDecode(token);
+		return tokenDecode;
+	}
 };

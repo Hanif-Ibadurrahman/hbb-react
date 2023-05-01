@@ -29,6 +29,7 @@ import Swal from "sweetalert2";
 import { CheckAuthentication } from "app/helper/authentication";
 import { useNavigate } from "react-router-dom";
 import { ModalFilter } from "./components/modalFilter";
+import { listCheckPermission } from "app/helper/permission";
 
 const MasterCodeGroup = () => {
 	const navigate = useNavigate();
@@ -204,13 +205,15 @@ const MasterCodeGroup = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
-									<button
-										type="button"
-										className="btn btn-primary"
-										onClick={handleAdd}
-									>
-										Tambah
-									</button>
+									{listCheckPermission.isAllowCreateMasterMainGroup && (
+										<button
+											type="button"
+											className="btn btn-primary"
+											onClick={handleAdd}
+										>
+											Tambah
+										</button>
+									)}
 								</>
 							}
 						/>

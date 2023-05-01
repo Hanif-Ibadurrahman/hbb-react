@@ -36,7 +36,6 @@ import { getAllCompanyApi } from "api/company";
 import { getAllWorkflowApi } from "api/workflow";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { IWorkflowGetAllParams } from "store/types/workflowTypes";
-import { isAllowCreateServiceDelete } from "app/helper/permission";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 import { getAllEmployeeApi } from "api/employee";
 import { IInventoryGetAllParams } from "store/types/inventoryTypes";
@@ -44,6 +43,7 @@ import { getAllInventoryApi } from "api/inventory";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { ModalFilter } from "./components/modalFilter";
+import { listCheckPermission } from "app/helper/permission";
 
 const ServiceDelete = () => {
 	dayjs.extend(customParseFormat);
@@ -413,7 +413,7 @@ const ServiceDelete = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
-									{isAllowCreateServiceDelete && (
+									{listCheckPermission.isAllowCreateServicePenghapusan && (
 										<button
 											type="button"
 											className="btn btn-primary"

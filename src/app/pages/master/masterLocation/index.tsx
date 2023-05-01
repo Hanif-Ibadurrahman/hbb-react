@@ -36,6 +36,7 @@ import { getAllWorkUnitApi } from "api/workUnit";
 import { getAllEmployeeApi } from "api/employee";
 import { ModalFilter } from "./components/modalFilter";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
+import { listCheckPermission } from "app/helper/permission";
 
 const MasterLocation = () => {
 	const { Title } = Typography;
@@ -319,13 +320,15 @@ const MasterLocation = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
-									<button
-										type="button"
-										className="btn btn-primary"
-										onClick={handleAdd}
-									>
-										Tambah
-									</button>
+									{listCheckPermission.isAllowCreateMasterLocation && (
+										<button
+											type="button"
+											className="btn btn-primary"
+											onClick={handleAdd}
+										>
+											Tambah
+										</button>
+									)}
 								</>
 							}
 							scroll={{ x: 1500 }}

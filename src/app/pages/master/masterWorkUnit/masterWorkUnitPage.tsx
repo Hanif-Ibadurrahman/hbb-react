@@ -1,8 +1,13 @@
 import { Loading } from "app/components/loading";
+import { listCheckPermission } from "app/helper/permission";
 import { lazyLoad } from "utils/loadable";
 
-export const MasterWorkUnitPage = lazyLoad(
-	() => import("app/pages/master/masterWorkUnit"),
-	undefined,
-	{ fallback: <Loading /> },
-);
+const loadPage = () => {
+	return listCheckPermission.isAllowReadMasterSatuanKerja
+		? () => import("app/pages/master/masterWorkUnit")
+		: () => import("app/pages/error/notFound");
+};
+
+export const MasterWorkUnitPage = lazyLoad(loadPage(), undefined, {
+	fallback: <Loading />,
+});

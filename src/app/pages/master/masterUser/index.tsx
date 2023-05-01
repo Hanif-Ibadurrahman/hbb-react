@@ -38,7 +38,7 @@ import { IAreaGetAllParams } from "store/types/areaTypes";
 import { getAllAreaApi } from "api/area";
 import { IWorkUnitGetAllParams } from "store/types/workUnitTypes";
 import { getAllWorkUnitApi } from "api/workUnit";
-import { includes } from "lodash";
+import { listCheckPermission } from "app/helper/permission";
 
 const MasterUser = () => {
 	const { Title } = Typography;
@@ -367,13 +367,15 @@ const MasterUser = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
-									<button
-										type="button"
-										className="btn btn-primary"
-										onClick={handleAdd}
-									>
-										Tambah
-									</button>
+									{listCheckPermission.isAllowCreateMasterUser && (
+										<button
+											type="button"
+											className="btn btn-primary"
+											onClick={handleAdd}
+										>
+											Tambah
+										</button>
+									)}
 								</>
 							}
 						/>

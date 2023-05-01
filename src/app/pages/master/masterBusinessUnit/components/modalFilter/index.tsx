@@ -18,7 +18,7 @@ export const ModalFilter = ({
 	const tokenDecode = TokenDekode();
 
 	const generateContent = useMemo(() => {
-		const isSuperadmin = Object.values(tokenDecode.user?.roles ?? {}).includes(
+		const isSuperadmin = Object.values(tokenDecode?.user?.roles ?? {}).includes(
 			"Super Admin",
 		);
 		if (isSuperadmin) {

@@ -1,8 +1,13 @@
 import { Loading } from "app/components/loading";
+import { listCheckPermission } from "app/helper/permission";
 import { lazyLoad } from "utils/loadable";
 
-export const MasterSubCodeGroupPage = lazyLoad(
-	() => import("app/pages/master/masterSubCodeGroup"),
-	undefined,
-	{ fallback: <Loading /> },
-);
+const loadPage = () => {
+	return listCheckPermission.isAllowReadMasterSubGroup
+		? () => import("app/pages/master/masterSubCodeGroup")
+		: () => import("app/pages/error/notFound");
+};
+
+export const MasterSubCodeGroupPage = lazyLoad(loadPage(), undefined, {
+	fallback: <Loading />,
+});
