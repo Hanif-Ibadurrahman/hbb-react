@@ -95,20 +95,6 @@ const MasterItem = () => {
 		DefaultOptionType[] | undefined
 	>();
 
-	useEffect(() => {
-		fetchDataList();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [params]);
-
-	const fetchDataDetail = async (id: string) => {
-		try {
-			const response = await getDetailItemApi(id);
-			handleInitialValue(response.data.data);
-		} catch (error: any) {
-			CheckAuthentication(error);
-		}
-	};
-
 	const handleInitialValue = (values: IItem) => {
 		setInitialValue({
 			name: values.name || "",
@@ -147,6 +133,15 @@ const MasterItem = () => {
 		enableReinitialize: true,
 		onSubmit: values => {},
 	});
+
+	const fetchDataDetail = async (id: string) => {
+		try {
+			const response = await getDetailItemApi(id);
+			handleInitialValue(response.data.data);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
 
 	const fetchDataCodeGroup = async () => {
 		try {
@@ -206,6 +201,11 @@ const MasterItem = () => {
 			CheckAuthentication(error);
 		}
 	};
+
+	useEffect(() => {
+		fetchDataList();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [params]);
 
 	useEffect(() => {
 		fetchDataCodeGroup();

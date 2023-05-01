@@ -25,3 +25,7 @@ export const updateInventoryApi = (
 ) => {
 	return apiWithToken.put(`/api/inventory/${id}`, input);
 };
+
+export const deleteInventoryApi = (id: string) => {
+	return apiWithToken.delete(`/api/inventory/${id}`);
+};
