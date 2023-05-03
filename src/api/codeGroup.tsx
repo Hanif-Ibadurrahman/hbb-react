@@ -11,7 +11,7 @@ export const getAllCodeGroupApi = (params?: ICodeGroupGetAllParams) => {
 	});
 };
 
-export const getDetailCodeGroupApi = (id: string) => {
+export const getDetailCodeGroupApi = (id: number) => {
 	return apiWithToken.get(`/api/master/main-group/${id}`);
 };
 
@@ -20,12 +20,12 @@ export const createNewCodeGroupApi = (input: ICreateCodeGroupRequest) => {
 };
 
 export const updateCodeGroupApi = (
-	id: string,
+	id: number,
 	input: IUpdateCodeGroupRequest,
 ) => {
 	return apiWithToken.put(`/api/master/main-group/${id}`, input);
 };
 
-export const deleteCodeGroupApi = (id: string) => {
+export const deleteCodeGroupApi = (id: number) => {
 	return apiWithToken.delete(`/api/master/main-group/${id}`);
 };

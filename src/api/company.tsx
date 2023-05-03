@@ -11,7 +11,7 @@ export const getAllCompanyApi = (params?: ICompanyGetAllParams) => {
 	});
 };
 
-export const getDetailCompanyApi = (id: string) => {
+export const getDetailCompanyApi = (id: number) => {
 	return apiWithToken.get(`/api/master/company/${id}`);
 };
 
@@ -19,10 +19,10 @@ export const createNewCompanyApi = (input: ICreateCompanyRequest) => {
 	return apiWithToken.post(`/api/master/company`, input);
 };
 
-export const updateCompanyApi = (id: string, input: IUpdateCompanyRequest) => {
+export const updateCompanyApi = (id: number, input: IUpdateCompanyRequest) => {
 	return apiWithToken.put(`/api/master/company/${id}`, input);
 };
 
-export const deleteCompanyApi = (id: string) => {
+export const deleteCompanyApi = (id: number) => {
 	return apiWithToken.delete(`/api/master/company/${id}`);
 };

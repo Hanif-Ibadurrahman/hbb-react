@@ -1,7 +1,7 @@
 import { PaginationState } from "./paginationTypes";
 
 export interface IServiceInspection {
-	id: string;
+	id: number;
 	inventory_code: string | null;
 	description: string | null;
 	attachment_file: string | null;

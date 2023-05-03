@@ -11,6 +11,7 @@ import {
 	FormInstance,
 	Input,
 	Select,
+	Space,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
@@ -51,9 +52,9 @@ const ServiceDelete = () => {
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [showFilter, setShowFilter] = useState(false);
-	const [params, setParams] = useState<
-		IServiceDeleteGetAllParams | undefined
-	>();
+	const [params, setParams] = useState<IServiceDeleteGetAllParams | undefined>({
+		per_page: 10,
+	});
 	const [inventoryParams, setInventoryParams] = useState<
 		IInventoryGetAllParams | undefined
 	>();
@@ -66,7 +67,7 @@ const ServiceDelete = () => {
 	const [workflowParams, setWorkflowParams] = useState<
 		IWorkflowGetAllParams | undefined
 	>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
 	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
@@ -102,7 +103,7 @@ const ServiceDelete = () => {
 		}
 	};
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailServiceDeleteApi(id);
 			handleInitialValue(response.data.data);
@@ -227,7 +228,7 @@ const ServiceDelete = () => {
 		onSubmit: values => {},
 	});
 
-	const handleApprove = (id: string) => {
+	const handleApprove = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -281,7 +282,7 @@ const ServiceDelete = () => {
 		formRef.current?.resetFields();
 	};
 
-	const handleReject = (id: string) => {
+	const handleReject = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -321,7 +322,7 @@ const ServiceDelete = () => {
 			});
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -406,7 +407,13 @@ const ServiceDelete = () => {
 							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -422,7 +429,7 @@ const ServiceDelete = () => {
 											Tambah
 										</button>
 									)}
-								</>
+								</Space>
 							}
 						/>
 					</div>

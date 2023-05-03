@@ -11,7 +11,7 @@ export const getAllItemApi = (params?: IItemGetAllParams) => {
 	});
 };
 
-export const getDetailItemApi = (id: string) => {
+export const getDetailItemApi = (id: number) => {
 	return apiWithToken.get(`/api/master/item/${id}`);
 };
 
@@ -19,10 +19,10 @@ export const createNewItemApi = (input: ICreateItemRequest) => {
 	return apiWithToken.post(`/api/master/item`, input);
 };
 
-export const updateItemApi = (id: string, input: IUpdateItemRequest) => {
+export const updateItemApi = (id: number, input: IUpdateItemRequest) => {
 	return apiWithToken.put(`/api/master/item/${id}`, input);
 };
 
-export const deleteItemApi = (id: string) => {
+export const deleteItemApi = (id: number) => {
 	return apiWithToken.delete(`/api/master/Item/${id}`);
 };

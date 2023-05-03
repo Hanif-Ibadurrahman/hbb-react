@@ -21,12 +21,12 @@ export const createNewServiceInspectionApi = (
 	});
 };
 
-export const getDetailServiceInspectionApi = (id: string) => {
+export const getDetailServiceInspectionApi = (id: number) => {
 	return apiWithToken.get(`/api/transaksi/pemeriksaan/${id}`);
 };
 
 export const updateServiceInspectionApi = (
-	id: string,
+	id: number,
 	input: IUpdateServiceInspectionRequest,
 ) => {
 	return apiWithToken.put(`/api/transaksi/pemeriksaan/${id}`, input, {
@@ -34,16 +34,16 @@ export const updateServiceInspectionApi = (
 	});
 };
 
-export const deleteServiceInspectionApi = (id: string) => {
+export const deleteServiceInspectionApi = (id: number) => {
 	return apiWithToken.delete(`/api/transaksi/pemeriksaan/${id}`);
 };
 
-export const approveServiceInspectionApi = (id: string) => {
+export const approveServiceInspectionApi = (id: number) => {
 	return apiWithToken.get(`/api/approval/pemeriksaan/approve/${id}`);
 };
 
 export const rejectServiceInspectionApi = (
-	id: string,
+	id: number,
 	input: { remark: string },
 ) => {
 	return apiWithToken.post(`/api/approval/pemeriksaan/reject/${id}`, input);

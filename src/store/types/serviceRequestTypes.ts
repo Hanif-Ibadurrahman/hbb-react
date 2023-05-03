@@ -1,6 +1,6 @@
 import { PaginationState } from "./paginationTypes";
 export interface IServiceRequest {
-	id: string;
+	id: number;
 	nipg: string | null;
 	date: string | null;
 	remark: string | null;

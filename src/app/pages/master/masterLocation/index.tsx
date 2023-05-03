@@ -9,7 +9,9 @@ import {
 } from "store/types/locationTypes";
 import {
 	createNewLocationApi,
+	deleteLocationApi,
 	getAllLocationApi,
+	getDetailLocationApi,
 	updateLocationApi,
 } from "api/location";
 import {
@@ -20,6 +22,7 @@ import {
 	FormInstance,
 	Input,
 	Select,
+	Space,
 	Typography,
 } from "antd";
 import Swal from "sweetalert2";
@@ -29,21 +32,26 @@ import { IAreaGetAllParams } from "store/types/areaTypes";
 import { IWorkUnitGetAllParams } from "store/types/workUnitTypes";
 import { DefaultOptionType } from "antd/es/select";
 import { CheckAuthentication } from "app/helper/authentication";
-import { deleteDivisionApi, getDetailDivisionApi } from "api/division";
-import { getAllBusinessUnitApi } from "api/businessUnit";
-import { getAllAreaApi } from "api/area";
-import { getAllWorkUnitApi } from "api/workUnit";
-import { getAllEmployeeApi } from "api/employee";
+import {
+	getAllBusinessUnitApi,
+	getDetailBusinessUnitApi,
+} from "api/businessUnit";
+import { getAllAreaApi, getDetailAreaApi } from "api/area";
+import { getAllWorkUnitApi, getDetailWorkUnitApi } from "api/workUnit";
+import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
 import { ModalFilter } from "./components/modalFilter";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 import { listCheckPermission } from "app/helper/permission";
+import { checkDefaultOption, removeNullFields } from "app/helper/common";
 
 const MasterLocation = () => {
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [showFilter, setShowFilter] = useState(false);
-	const [params, setParams] = useState<ILocationGetAllParams | undefined>();
+	const [params, setParams] = useState<ILocationGetAllParams | undefined>({
+		per_page: 10,
+	});
 	const [businessUnitParams, setBusinessUnitParams] = useState<
 		IBusinessUnitGetAllParams | undefined
 	>();
@@ -54,7 +62,7 @@ const MasterLocation = () => {
 	const [employeeParams, setEmployeeParams] = useState<
 		IEmployeeGetAllParams | undefined
 	>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
 	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
@@ -63,14 +71,8 @@ const MasterLocation = () => {
 		sort?: string;
 		order_by?: string;
 	}>();
-	const [initialValue, setInitialValue] = useState<ICreateLocationRequest>({
-		name: "",
-		id_area: "",
-		id_bisnis_unit: "",
-		id_satker: "",
-		id_pegawai: "",
-		from_opname: 0,
-	});
+	const [initialValue, setInitialValue] =
+		useState<Partial<ICreateLocationRequest>>();
 	const [dataTable, setDataTable] = useState();
 	const [dataOptionBusinessUnit, setDataOptionBusinessUnit] = useState<
 		DefaultOptionType[] | undefined
@@ -96,32 +98,13 @@ const MasterLocation = () => {
 		}
 	};
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
-			const response = await getDetailDivisionApi(id);
+			const response = await getDetailLocationApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
-	};
-
-	const handleInitialValue = (values: ILocation) => {
-		setInitialValue({
-			name: values.name || "",
-			id_area: values.id_area || "",
-			id_bisnis_unit: values.id_bisnis_unit || "",
-			id_satker: values.satker?.name || "",
-			id_pegawai: values.employee?.emp_name || "",
-			from_opname: 0,
-		});
-		formRef.current?.setFieldsValue({
-			name: values.name || "",
-			id_area: values.id_area || "",
-			id_bisnis_unit: values.id_bisnis_unit || "",
-			id_satker: values.id_satker || "",
-			id_pegawai: values.id_pegawai || "",
-			from_opname: 0,
-		});
 	};
 
 	const fetchDataBusinessUnit = async () => {
@@ -129,8 +112,18 @@ const MasterLocation = () => {
 			const response = await getAllBusinessUnitApi(businessUnitParams);
 			const businessUnitList = response.data.data.data;
 			setDataOptionBusinessUnit(
-				businessUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
+				businessUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataBusinessUnitDetail = async (id: number) => {
+		try {
+			const response = await getDetailBusinessUnitApi(id);
+			const detail = response.data.data;
+			setDataOptionBusinessUnit([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -140,9 +133,17 @@ const MasterLocation = () => {
 		try {
 			const response = await getAllAreaApi(areaParams);
 			const areaList = response.data.data.data;
-			setDataOptionArea(
-				areaList.map(v => ({ label: v.name, value: `${v.id}` })),
-			);
+			setDataOptionArea(areaList.map(v => ({ label: v.name, value: v.id })));
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataAreaDetail = async (id: number) => {
+		try {
+			const response = await getDetailAreaApi(id);
+			const detail = response.data.data;
+			setDataOptionArea([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -153,8 +154,18 @@ const MasterLocation = () => {
 			const response = await getAllWorkUnitApi(workUnitParams);
 			const workUnitList = response.data.data.data;
 			setDataOptionWorkUnit(
-				workUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
+				workUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataWorkUnitDetail = async (id: number) => {
+		try {
+			const response = await getDetailWorkUnitApi(id);
+			const detail = response.data.data;
+			setDataOptionWorkUnit([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -165,11 +176,39 @@ const MasterLocation = () => {
 			const response = await getAllEmployeeApi(employeeParams);
 			const employeeList = response.data.data.data;
 			setDataOptionEmployee(
-				employeeList.map(v => ({ label: v.emp_name, value: `${v.id}` })),
+				employeeList.map(v => ({ label: v.emp_name, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
+	};
+
+	const fetchDataEmployeeDetail = async (id: number) => {
+		try {
+			const response = await getDetailEmployeeApi(id);
+			const detail = response.data.data;
+			setDataOptionEmployee([{ label: detail.emp_name, value: detail.id }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const handleInitialValue = (values: ILocation) => {
+		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionBusinessUnit!, setData.id_bisnis_unit)) {
+			fetchDataBusinessUnitDetail(setData.id_bisnis_unit);
+		}
+		if (!checkDefaultOption(dataOptionArea!, setData.id_area)) {
+			fetchDataAreaDetail(setData.id_area);
+		}
+		if (!checkDefaultOption(dataOptionWorkUnit!, setData.id_satker)) {
+			fetchDataWorkUnitDetail(setData.id_satker);
+		}
+		if (!checkDefaultOption(dataOptionWorkUnit!, setData.id_pegawai)) {
+			fetchDataEmployeeDetail(setData.id_pegawai);
+		}
+		setInitialValue(setData);
+		formRef.current?.setFieldsValue(setData);
 	};
 
 	useEffect(() => {
@@ -219,20 +258,17 @@ const MasterLocation = () => {
 	});
 
 	const handleAdd = () => {
+		fetchDataArea();
+		fetchDataWorkUnit();
+		fetchDataEmployee();
+		fetchDataBusinessUnit();
 		setShowModal({ show: true });
-		setInitialValue({
-			name: "",
-			id_area: "",
-			id_bisnis_unit: "",
-			id_satker: "",
-			id_pegawai: "",
-			from_opname: 0,
-		});
+		setInitialValue(undefined);
 		formik.resetForm();
 		formRef.current?.resetFields();
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -253,7 +289,7 @@ const MasterLocation = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					deleteDivisionApi(id).then(res => {
+					deleteLocationApi(id).then(res => {
 						if (res.data.status === "success") {
 							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
 							fetchDataList();
@@ -313,7 +349,13 @@ const MasterLocation = () => {
 							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -329,7 +371,7 @@ const MasterLocation = () => {
 											Tambah
 										</button>
 									)}
-								</>
+								</Space>
 							}
 							scroll={{ x: 1500 }}
 						/>
@@ -361,6 +403,7 @@ const MasterLocation = () => {
 				onCancel={handleCancel}
 				open={showModal.show}
 				width={800}
+				destroyOnClose
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />

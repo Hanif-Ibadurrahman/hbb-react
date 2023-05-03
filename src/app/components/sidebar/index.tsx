@@ -23,7 +23,10 @@ export const Sidebar = () => {
 		<aside className="main-sidebar">
 			<section className="sidebar position-relative">
 				<div className="multinav">
-					<div className="multinav-scroll" style={{ height: "100%" }}>
+					<div
+						className="multinav-scroll"
+						style={{ height: "100%", overflow: "auto" }}
+					>
 						<ul className="sidebar-menu" data-widget="tree">
 							<li
 								className={`treeview ${
@@ -74,7 +77,7 @@ export const Sidebar = () => {
 													<span className="path1"></span>
 													<span className="path2"></span>
 												</i>
-												Permintaan Layanan -<br /> Permintaan
+												Permintaan
 											</Link>
 										</li>
 										<li>
@@ -83,7 +86,7 @@ export const Sidebar = () => {
 													<span className="path1"></span>
 													<span className="path2"></span>
 												</i>
-												Permintaan Layanan -<br /> Perbaikan
+												Perbaikan
 											</Link>
 										</li>
 										<li>
@@ -92,7 +95,7 @@ export const Sidebar = () => {
 													<span className="path1"></span>
 													<span className="path2"></span>
 												</i>
-												Permintaan Layanan -<br /> Pemindahan
+												Pemindahan
 											</Link>
 										</li>
 										<li>
@@ -101,7 +104,7 @@ export const Sidebar = () => {
 													<span className="path1"></span>
 													<span className="path2"></span>
 												</i>
-												Permintaan Layanan -<br /> Pengembalian
+												Pengembalian
 											</Link>
 										</li>
 										<li>
@@ -110,7 +113,7 @@ export const Sidebar = () => {
 													<span className="path1"></span>
 													<span className="path2"></span>
 												</i>
-												Permintaan Layanan -<br /> Penggantian
+												Penggantian
 											</Link>
 										</li>
 										<li>
@@ -119,7 +122,7 @@ export const Sidebar = () => {
 													<span className="path1"></span>
 													<span className="path2"></span>
 												</i>
-												Permintaan Layanan -<br /> Perubahan
+												Perubahan
 											</Link>
 										</li>
 										<li>
@@ -128,7 +131,7 @@ export const Sidebar = () => {
 													<span className="path1"></span>
 													<span className="path2"></span>
 												</i>
-												Permintaan Layanan -<br /> Pemeriksaan
+												Pemeriksaan
 											</Link>
 										</li>
 										<li>
@@ -137,7 +140,7 @@ export const Sidebar = () => {
 													<span className="path1"></span>
 													<span className="path2"></span>
 												</i>
-												Permintaan Layanan -<br /> Penghapusan
+												Penghapusan
 											</Link>
 										</li>
 									</ul>

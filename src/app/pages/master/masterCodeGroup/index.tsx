@@ -22,6 +22,7 @@ import {
 	Form,
 	FormInstance,
 	Input,
+	Space,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
@@ -37,8 +38,10 @@ const MasterCodeGroup = () => {
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [showFilter, setShowFilter] = useState(false);
-	const [params, setParams] = useState<ICodeGroupGetAllParams | undefined>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	const [params, setParams] = useState<ICodeGroupGetAllParams | undefined>({
+		per_page: 10,
+	});
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
 	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
@@ -64,7 +67,7 @@ const MasterCodeGroup = () => {
 		}
 	};
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailCodeGroupApi(id);
 			handleInitialValue(response.data.data);
@@ -118,7 +121,7 @@ const MasterCodeGroup = () => {
 		formRef.current?.resetFields();
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -198,7 +201,13 @@ const MasterCodeGroup = () => {
 							columns={columns({ setShowModal, handleDelete, navigate })}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -214,7 +223,7 @@ const MasterCodeGroup = () => {
 											Tambah
 										</button>
 									)}
-								</>
+								</Space>
 							}
 						/>
 					</div>
@@ -245,6 +254,7 @@ const MasterCodeGroup = () => {
 				onCancel={handleCancel}
 				open={showModal.show}
 				width={800}
+				destroyOnClose
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />

@@ -1,9 +1,12 @@
 import { PaginationState } from "./paginationTypes";
 
 export interface IBusinessUnit {
-	id: string;
+	id: number;
 	name: string | null;
-	id_company?: string | null;
+	id_company: number | null;
+	created_at: string | null;
+	updated_at: string | null;
+	deleted_at: string | null;
 }
 
 export interface IBusinessUnitPaginateResponse extends PaginationState {
@@ -19,12 +22,12 @@ export interface IBusinessUnitGetAllParams {
 
 export interface ICreateBusinessUnitRequest {
 	name: string;
-	id_company: string;
+	id_company: number;
 }
 
 export interface IUpdateBusinessUnitRequest {
 	name: string;
-	id_company: string;
+	id_company: number;
 }
 
 export interface IBusinessUnitGetAllResponse {

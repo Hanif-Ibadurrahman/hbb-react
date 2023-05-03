@@ -22,30 +22,47 @@ import {
 	FormInstance,
 	Input,
 	Select,
+	Space,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { DefaultOptionType } from "antd/es/select";
-import { getAllBusinessUnitApi } from "api/businessUnit";
+import {
+	getAllBusinessUnitApi,
+	getDetailBusinessUnitApi,
+} from "api/businessUnit";
 import { IBusinessUnitGetAllParams } from "store/types/businessUnitTypes";
 import { IAreaGetAllParams } from "store/types/areaTypes";
-import { getAllAreaApi } from "api/area";
+import { getAllAreaApi, getDetailAreaApi } from "api/area";
 import { CheckAuthentication } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
 import { listCheckPermission } from "app/helper/permission";
+import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
+import { checkDefaultOption, removeNullFields } from "app/helper/common";
+import { IEmployeeGetAllParams } from "store/types/employeeTypes";
+import { ICompanyGetAllParams } from "store/types/companyTypes";
+import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
 
 const MasterWorkUnit = () => {
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [showFilter, setShowFilter] = useState(false);
-	const [params, setParams] = useState<IWorkUnitGetAllParams | undefined>();
+	const [params, setParams] = useState<IWorkUnitGetAllParams | undefined>({
+		per_page: 10,
+	});
+	const [companyParams, setCompanyParams] = useState<
+		ICompanyGetAllParams | undefined
+	>();
 	const [businessUnitParams, setBusinessUnitParams] = useState<
 		IBusinessUnitGetAllParams | undefined
 	>();
 	const [areaParams, setAreaParams] = useState<IAreaGetAllParams | undefined>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	const [employeeParams, setEmployeeParams] = useState<
+		IEmployeeGetAllParams | undefined
+	>();
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
 	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
@@ -62,6 +79,12 @@ const MasterWorkUnit = () => {
 	const [dataOptionArea, setDataOptionArea] = useState<
 		DefaultOptionType[] | undefined
 	>();
+	const [dataOptionEmployee, setDataOptionEmployee] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionCompany, setDataOptionCompany] = useState<
+		DefaultOptionType[] | undefined
+	>();
 
 	const fetchDataList = async () => {
 		try {
@@ -74,7 +97,7 @@ const MasterWorkUnit = () => {
 		}
 	};
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailWorkUnitApi(id);
 			handleInitialValue(response.data.data);
@@ -95,6 +118,16 @@ const MasterWorkUnit = () => {
 		}
 	};
 
+	const fetchDataBusinessUnitDetail = async (id: number) => {
+		try {
+			const response = await getDetailBusinessUnitApi(id);
+			const detail = response.data.data;
+			setDataOptionBusinessUnit([{ label: detail.name, value: detail.id }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
 	const fetchDataArea = async () => {
 		try {
 			const response = await getAllAreaApi(areaParams);
@@ -107,20 +140,82 @@ const MasterWorkUnit = () => {
 		}
 	};
 
-	const handleInitialValue = (values: IWorkUnit) => {
-		setInitialValue({
-			name: values.name || "",
-			id_bisnis_unit: values.bisnis_unit?.name || "",
-			id_area: values.area?.name || "",
-			id_pegawai: values.id_pegawai || "",
-		});
-		formRef.current?.setFieldsValue({
-			name: values.name || "",
-			id_bisnis_unit: values.id_bisnis_unit || "",
-			id_area: values.id_area || "",
-			id_pegawai: values.id_pegawai || "",
-		});
+	const fetchDataAreaDetail = async (id: number) => {
+		try {
+			const response = await getDetailAreaApi(id);
+			const detail = response.data.data;
+			setDataOptionArea([{ label: detail.name, value: detail.id }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
 	};
+
+	const fetchDataEmployee = async () => {
+		try {
+			const response = await getAllEmployeeApi(employeeParams);
+			const employeeList = response.data.data.data;
+			setDataOptionEmployee(
+				employeeList.map(v => ({ label: v.emp_name, value: v.id })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataEmployeeDetail = async (id: number) => {
+		try {
+			const response = await getDetailEmployeeApi(id);
+			const detail = response.data.data;
+			setDataOptionEmployee([{ label: detail.emp_name, value: detail.id }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataCompany = async () => {
+		try {
+			const response = await getAllCompanyApi(companyParams);
+			const companyList = response.data.data.data;
+			setDataOptionCompany(
+				companyList.map(v => ({ label: v.name, value: v.id })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataCompanyDetail = async (id: number) => {
+		try {
+			const response = await getDetailCompanyApi(id);
+			const detail = response.data.data;
+			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const handleInitialValue = (values: IWorkUnit) => {
+		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionBusinessUnit!, setData.id_bisnis_unit)) {
+			fetchDataBusinessUnitDetail(setData.id_bisnis_unit);
+		}
+		if (!checkDefaultOption(dataOptionArea!, setData.id_area)) {
+			fetchDataAreaDetail(setData.id_area);
+		}
+		if (!checkDefaultOption(dataOptionEmployee!, setData.id_pegawai)) {
+			fetchDataEmployeeDetail(setData.id_pegawai);
+		}
+		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
+			fetchDataCompanyDetail(setData.id_company);
+		}
+		setInitialValue(setData);
+		formRef.current?.setFieldsValue(setData);
+	};
+
+	useEffect(() => {
+		fetchDataCompany();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [companyParams]);
 
 	useEffect(() => {
 		fetchDataBusinessUnit();
@@ -131,6 +226,11 @@ const MasterWorkUnit = () => {
 		fetchDataArea();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [areaParams]);
+
+	useEffect(() => {
+		fetchDataEmployee();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [employeeParams]);
 
 	useEffect(() => {
 		fetchDataList();
@@ -159,17 +259,15 @@ const MasterWorkUnit = () => {
 	});
 
 	const handleAdd = () => {
+		fetchDataEmployee();
+		fetchDataArea();
+		fetchDataBusinessUnit();
 		setShowModal({ show: true });
-		setInitialValue({
-			name: "",
-			id_bisnis_unit: "",
-			id_area: "",
-			id_pegawai: "",
-		});
+		setInitialValue(undefined);
 		formRef.current?.resetFields();
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -249,7 +347,13 @@ const MasterWorkUnit = () => {
 							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -265,7 +369,7 @@ const MasterWorkUnit = () => {
 											Tambah
 										</button>
 									)}
-								</>
+								</Space>
 							}
 						/>
 					</div>
@@ -296,6 +400,7 @@ const MasterWorkUnit = () => {
 				onCancel={handleCancel}
 				open={showModal.show}
 				width={800}
+				destroyOnClose
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
@@ -386,13 +491,56 @@ const MasterWorkUnit = () => {
 								Nama Kepala Satuan Kerja <span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
-								<Input
-									type="text"
-									name="id_pegawai"
-									className="form-control"
-									placeholder="Nama Kepala Satuan Kerja"
-									onChange={formik.handleChange}
+								<Select
+									showSearch
+									onSearch={v => setEmployeeParams({ emp_name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionEmployee}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_pegawai", v);
+										formRef.current?.setFieldsValue({
+											id_pegawai: v,
+										});
+									}}
 									value={formik.values.id_pegawai}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_company"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Perusahaan <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setCompanyParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionCompany}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_company", v);
+										formRef.current?.setFieldsValue({
+											id_company: v,
+										});
+									}}
+									value={formik.values.id_company}
 								/>
 							</div>
 						</div>

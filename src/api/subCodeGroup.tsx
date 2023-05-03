@@ -6,7 +6,7 @@ import {
 import { apiWithToken } from ".";
 
 export const getAllSubCodeGroupApi = (
-	id: string,
+	id: number,
 	params?: ISubCodeGroupGetAllParams,
 ) => {
 	return apiWithToken.get(`/api/master/sub-groups/${id}`, {
@@ -14,7 +14,7 @@ export const getAllSubCodeGroupApi = (
 	});
 };
 
-export const getDetailSubCodeGroupApi = (id: string) => {
+export const getDetailSubCodeGroupApi = (id: number) => {
 	return apiWithToken.get(`/api/master/sub-group/${id}`);
 };
 
@@ -23,12 +23,12 @@ export const createNewSubCodeGroupApi = (input: ICreateSubCodeGroupRequest) => {
 };
 
 export const updateSubCodeGroupApi = (
-	id: string,
+	id: number,
 	input: IUpdateSubCodeGroupRequest,
 ) => {
 	return apiWithToken.put(`/api/master/sub-group/${id}`, input);
 };
 
-export const deleteSubCodeGroupApi = (id: string) => {
+export const deleteSubCodeGroupApi = (id: number) => {
 	return apiWithToken.delete(`/api/master/sub-group/${id}`);
 };

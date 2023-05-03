@@ -11,7 +11,7 @@ export const getAllBusinessUnitApi = (params?: IBusinessUnitGetAllParams) => {
 	});
 };
 
-export const getDetailBusinessUnitApi = (id: string) => {
+export const getDetailBusinessUnitApi = (id: number) => {
 	return apiWithToken.get(`/api/master/bisnis-unit/${id}`);
 };
 
@@ -20,12 +20,12 @@ export const createNewBusinessUnitApi = (input: ICreateBusinessUnitRequest) => {
 };
 
 export const updateBusinessUnitApi = (
-	id: string,
+	id: number,
 	input: IUpdateBusinessUnitRequest,
 ) => {
 	return apiWithToken.put(`/api/master/bisnis-unit/${id}`, input);
 };
 
-export const deleteBusinessUnitApi = (id: string) => {
+export const deleteBusinessUnitApi = (id: number) => {
 	return apiWithToken.delete(`/api/master/bisnis-unit/${id}`);
 };

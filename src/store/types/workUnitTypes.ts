@@ -4,21 +4,23 @@ import { IEmployee } from "./employeeTypes";
 import { PaginationState } from "./paginationTypes";
 
 export interface IWorkUnit {
-	id: string;
-	id_bisnis_unit: string | null;
-	id_area: string | null;
+	id: number;
+	id_bisnis_unit: number | null;
+	id_area: number | null;
 	name: string | null;
-	id_pegawai: string | null;
-	from_opname: number | null;
+	id_pegawai: number | null;
+	from_opname: boolean | null;
+	id_company: number | null;
+	created_at: string | null;
+	updated_at: string | null;
+	deleted_at: string | null;
 	bisnis_unit: IBusinessUnit | null;
 	area: IArea | null;
 	employee?: IEmployee | null;
 }
-
 export interface IWorkUnitPaginateResponse extends PaginationState {
 	data: IWorkUnit[];
 }
-
 export interface IWorkUnitGetAllParams {
 	page?: number;
 	per_page?: number;
@@ -30,9 +32,10 @@ export interface IWorkUnitGetAllParams {
 
 export interface ICreateWorkUnitRequest {
 	name: string;
-	id_area: string;
-	id_bisnis_unit: string;
-	id_pegawai: string;
+	id_area: number;
+	id_bisnis_unit: number;
+	id_pegawai: number;
+	id_company: number;
 }
 
 export interface IUpdateWorkUnitRequest {
@@ -40,6 +43,7 @@ export interface IUpdateWorkUnitRequest {
 	id_area: string;
 	id_bisnis_unit: string;
 	id_pegawai: string;
+	id_company: number;
 }
 
 export interface IWorkUnitGetAllResponse {

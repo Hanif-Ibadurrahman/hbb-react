@@ -1,6 +1,7 @@
+import { DefaultOptionType } from "antd/es/select";
 import { intersection } from "lodash";
 
-export const generateRandomHex = (length: number): string => {
+export const generateRandomHex = (length: number) => {
 	const chars = "0123456789abcdef";
 	let result = "";
 	for (let i = 0; i < length; i++) {
@@ -8,6 +9,23 @@ export const generateRandomHex = (length: number): string => {
 		result += chars[randomIndex];
 	}
 	return result;
+};
+
+export const checkDefaultOption = (
+	dataOption: DefaultOptionType[],
+	value: any,
+) => {
+	return dataOption?.some(opt => opt.value === value);
+};
+
+export const removeNullFields = object => {
+	const newObj = { ...object };
+	for (const key in newObj) {
+		if (newObj.hasOwnProperty(key) && newObj[key] === null) {
+			delete newObj[key];
+		}
+	}
+	return newObj;
 };
 
 export const convertListToCRUDPermissionMaster = (listMaster: string[]) => {

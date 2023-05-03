@@ -13,6 +13,7 @@ import {
 	Input,
 	InputNumber,
 	Select,
+	Space,
 	Tabs,
 	TabsProps,
 	Typography,
@@ -60,6 +61,7 @@ import { IConditionGetAllParams } from "store/types/conditionTypes";
 import { getAllConditionApi } from "api/condition";
 import { getAllCountryApi } from "api/country";
 import { ICountryGetAllParams } from "store/types/countryTypes";
+import { removeNullFields } from "app/helper/common";
 
 const HbbInventory = () => {
 	dayjs.extend(customParseFormat);
@@ -68,8 +70,10 @@ const HbbInventory = () => {
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [showFilter, setShowFilter] = useState(false);
-	const [params, setParams] = useState<IInventoryGetAllParams | undefined>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	const [params, setParams] = useState<IInventoryGetAllParams | undefined>({
+		per_page: 10,
+	});
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
 	const [codeGroupParams, setCodeGroupParams] = useState<
@@ -111,39 +115,8 @@ const HbbInventory = () => {
 		sort?: string;
 		order_by?: string;
 	}>();
-	const [initialValue, setInitialValue] = useState<ICreateInventoryRequest>({
-		id_company: "",
-		id_main_group: "",
-		id_sub_group: "",
-		serial_no: "",
-		id_barang: "",
-		distributor: "",
-		no_akuntansi: "",
-		no_bast: "",
-		date_bast: "",
-		id_country: "",
-		merk: "",
-		type: "",
-		jenis: "",
-		model: "",
-		id_color: "",
-		capacity: "",
-		size: "",
-		serial_number: "",
-		no_polisi: "",
-		no_rangka: "",
-		no_mesin: "",
-		no_bpkb: "",
-		contract_no: "",
-		contract_date: "",
-		id_bisnis_unit: "",
-		id_area: "",
-		id_satker: "",
-		id_location: "",
-		id_penanggung_jawab: "",
-		condition: "",
-		remark: "",
-	});
+	const [initialValue, setInitialValue] =
+		useState<Partial<ICreateInventoryRequest>>();
 	const [dataTable, setDataTable] = useState();
 	const [dataOptionCodeGroup, setDataOptionCodeGroup] = useState<
 		DefaultOptionType[] | undefined
@@ -193,7 +166,7 @@ const HbbInventory = () => {
 		}
 	};
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailInventoryApi(id);
 			handleInitialValue(response.data.data);
@@ -214,7 +187,7 @@ const HbbInventory = () => {
 		}
 	};
 
-	const fetchDataSubCodeGroup = async (id: string) => {
+	const fetchDataSubCodeGroup = async (id: number) => {
 		try {
 			const response = await getAllSubCodeGroupApi(id, subCodeGroupParams);
 			const areaList = response.data.data.data;
@@ -347,72 +320,9 @@ const HbbInventory = () => {
 	};
 
 	const handleInitialValue = (values: IInventoryDetail) => {
-		setInitialValue({
-			id_company: values.id_company || "",
-			id_main_group: values.id_main_group || "",
-			id_sub_group: values.id_sub_group || "",
-			serial_no: values.serial_no || "",
-			id_barang: values.name || "",
-			distributor: values.distributor || "",
-			no_akuntansi: values.no_akuntansi || "",
-			no_bast: values.no_bast || "",
-			date_bast: values.date_bast || "",
-			id_country: values.country || "",
-			merk: values.merk || "",
-			type: values.type || "",
-			jenis: values.jenis || "",
-			model: values.model || "",
-			id_color: values.color || "",
-			capacity: values.capacity || "",
-			size: values.size || "",
-			serial_number: values.serial_number || "",
-			no_polisi: values.no_polisi || "",
-			no_rangka: values.no_rangka || "",
-			no_mesin: values.no_mesin || "",
-			no_bpkb: values.no_bpkb || "",
-			contract_no: values.contract_no || "",
-			contract_date: values.contract_date || "",
-			id_bisnis_unit: values.id_bisnis_unit || "",
-			id_area: values.area || "",
-			id_satker: values.satker || "",
-			id_location: values.location || "",
-			id_penanggung_jawab: values.penanggung_jawab || "",
-			condition: `${values.condition}` || "",
-			remark: values.remark || "",
-		});
-		formRef.current?.setFieldsValue({
-			id_company: values.id_company || "",
-			id_main_group: values.id_main_group || "",
-			id_sub_group: values.id_sub_group || "",
-			serial_no: values.serial_no || "",
-			id_barang: values.id_barang || "",
-			distributor: values.distributor || "",
-			no_akuntansi: values.no_akuntansi || "",
-			no_bast: values.no_bast || "",
-			date_bast: values.date_bast || "",
-			id_country: values.id_country || "",
-			merk: values.merk || "",
-			type: values.type || "",
-			jenis: values.jenis || "",
-			model: values.model || "",
-			id_color: values.id_color || "",
-			capacity: values.capacity || "",
-			size: values.size || "",
-			serial_number: values.serial_number || "",
-			no_polisi: values.no_polisi || "",
-			no_rangka: values.no_rangka || "",
-			no_mesin: values.no_mesin || "",
-			no_bpkb: values.no_bpkb || "",
-			contract_no: values.contract_no || "",
-			contract_date: values.contract_date || "",
-			id_bisnis_unit: values.id_bisnis_unit || "",
-			id_area: values.id_area || "",
-			id_satker: values.id_satker || "",
-			id_location: values.id_location || "",
-			id_penanggung_jawab: values.id_penanggung_jawab || "",
-			condition: `${values.condition}` || "",
-			remark: values.remark || "",
-		});
+		const setData = removeNullFields(values);
+		setInitialValue(setData);
+		formRef.current?.setFieldsValue(setData);
 	};
 
 	const formik = useFormik({
@@ -474,14 +384,14 @@ const HbbInventory = () => {
 			fetchDataSubCodeGroup(mainGroupId);
 		}
 
-		if (showModal.id) {
+		if (!showModal.id && showModal.show) {
 			setInitialValue({
 				...initialValue,
-				id_sub_group: "",
+				id_sub_group: undefined,
 			});
-			formik.setFieldValue("id_sub_group", "");
+			formik.setFieldValue("id_sub_group", undefined);
 			formRef.current?.setFieldsValue({
-				id_sub_group: "",
+				id_sub_group: undefined,
 			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -517,44 +427,12 @@ const HbbInventory = () => {
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		setInitialValue({
-			id_company: "",
-			id_main_group: "",
-			id_sub_group: "",
-			serial_no: "",
-			id_barang: "",
-			distributor: "",
-			no_akuntansi: "",
-			no_bast: "",
-			date_bast: "",
-			id_country: "",
-			merk: "",
-			type: "",
-			jenis: "",
-			model: "",
-			id_color: "",
-			capacity: "",
-			size: "",
-			serial_number: "",
-			no_polisi: "",
-			no_rangka: "",
-			no_mesin: "",
-			no_bpkb: "",
-			contract_no: "",
-			contract_date: "",
-			id_bisnis_unit: "",
-			id_area: "",
-			id_satker: "",
-			id_location: "",
-			id_penanggung_jawab: "",
-			condition: "",
-			remark: "",
-		});
+		setInitialValue(undefined);
 		formik.resetForm();
 		formRef.current?.resetFields();
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -622,7 +500,7 @@ const HbbInventory = () => {
 	const itemTab: TabsProps["items"] = [
 		{
 			key: "1",
-			label: `Tab 1`,
+			label: `Informasi Umum`,
 			children: (
 				<>
 					<Form.Item
@@ -749,7 +627,7 @@ const HbbInventory = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_company", v);
 										formRef.current?.setFieldsValue({
-											id_company: parseInt(v),
+											id_company: v,
 										});
 									}}
 									value={formik.values.id_company}
@@ -783,7 +661,7 @@ const HbbInventory = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_area", v);
 										formRef.current?.setFieldsValue({
-											id_area: parseInt(v),
+											id_area: v,
 										});
 									}}
 									value={formik.values.id_area}
@@ -817,7 +695,7 @@ const HbbInventory = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_location", v);
 										formRef.current?.setFieldsValue({
-											id_location: parseInt(v),
+											id_location: v,
 										});
 									}}
 									value={formik.values.id_location}
@@ -851,7 +729,7 @@ const HbbInventory = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_bisnis_unit", v);
 										formRef.current?.setFieldsValue({
-											id_bisnis_unit: parseInt(v),
+											id_bisnis_unit: v,
 										});
 									}}
 									value={formik.values.id_bisnis_unit}
@@ -885,7 +763,7 @@ const HbbInventory = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_satker", v);
 										formRef.current?.setFieldsValue({
-											id_satker: parseInt(v),
+											id_satker: v,
 										});
 									}}
 									value={formik.values.id_satker}
@@ -919,7 +797,7 @@ const HbbInventory = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_barang", v);
 										formRef.current?.setFieldsValue({
-											id_barang: parseInt(v),
+											id_barang: v,
 										});
 									}}
 									value={formik.values.id_barang}
@@ -1074,7 +952,7 @@ const HbbInventory = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_country", v);
 										formRef.current?.setFieldsValue({
-											id_country: parseInt(v),
+											id_country: v,
 										});
 									}}
 									value={formik.values.id_country}
@@ -1174,7 +1052,7 @@ const HbbInventory = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_color", v);
 										formRef.current?.setFieldsValue({
-											id_color: parseInt(v),
+											id_color: v,
 										});
 									}}
 									value={formik.values.id_color}
@@ -1221,7 +1099,7 @@ const HbbInventory = () => {
 		},
 		{
 			key: "2",
-			label: `Tab 2`,
+			label: `Detail`,
 			children: (
 				<>
 					<Form.Item name="merk">
@@ -1295,81 +1173,6 @@ const HbbInventory = () => {
 									placeholder="Ukuran"
 									onChange={formik.handleChange}
 									value={formik.values.size}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item name="distributor">
-						<div className="form-group">
-							<Title level={5}>Distributor</Title>
-							<div className="controls">
-								<Input
-									type="text"
-									name="distributor"
-									className="form-control"
-									placeholder="Distributor"
-									onChange={formik.handleChange}
-									value={formik.values.distributor}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item name="remark">
-						<div className="form-group">
-							<Title level={5}>Keterangan</Title>
-							<div className="controls">
-								<TextArea
-									rows={3}
-									name="remark"
-									className="form-control"
-									placeholder="Keterangan"
-									onChange={formik.handleChange}
-									value={formik.values.remark}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-				</>
-			),
-		},
-		{
-			key: "3",
-			label: `Tab 3`,
-			children: (
-				<>
-					<Form.Item name="contract_no">
-						<div className="form-group">
-							<Title level={5}>Nomor Kontak</Title>
-							<div className="controls">
-								<Input
-									type="text"
-									name="contract_no"
-									className="form-control"
-									placeholder="Nomor Akuntansi"
-									onChange={formik.handleChange}
-									value={formik.values.contract_no}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item name="contract_date">
-						<div className="form-group">
-							<Title level={5}>Tanggal Kontrak</Title>
-							<div className="controls">
-								<DatePicker
-									className="form-control"
-									onChange={(value, dateString) => {
-										formik.setFieldValue("contract_date", dateString);
-										formRef.current?.setFieldsValue({
-											contract_date: dateString,
-										});
-									}}
-									format={"YYYY-MM-DD"}
-									value={
-										formik.values.contract_date
-											? dayjs(formik.values.contract_date, "YYYY-MM-DD")
-											: undefined
-									}
 								/>
 							</div>
 						</div>
@@ -1479,6 +1282,81 @@ const HbbInventory = () => {
 							</div>
 						</div>
 					</Form.Item>
+					<Form.Item name="remark">
+						<div className="form-group">
+							<Title level={5}>Keterangan</Title>
+							<div className="controls">
+								<TextArea
+									rows={3}
+									name="remark"
+									className="form-control"
+									placeholder="Keterangan"
+									onChange={formik.handleChange}
+									value={formik.values.remark}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+				</>
+			),
+		},
+		{
+			key: "3",
+			label: `Kontak`,
+			children: (
+				<>
+					<Form.Item name="distributor">
+						<div className="form-group">
+							<Title level={5}>Distributor</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="distributor"
+									className="form-control"
+									placeholder="Distributor"
+									onChange={formik.handleChange}
+									value={formik.values.distributor}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item name="contract_no">
+						<div className="form-group">
+							<Title level={5}>Nomor Kontak</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="contract_no"
+									className="form-control"
+									placeholder="Nomor Akuntansi"
+									onChange={formik.handleChange}
+									value={formik.values.contract_no}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item name="contract_date">
+						<div className="form-group">
+							<Title level={5}>Tanggal Kontrak</Title>
+							<div className="controls">
+								<DatePicker
+									className="form-control"
+									onChange={(value, dateString) => {
+										formik.setFieldValue("contract_date", dateString);
+										formRef.current?.setFieldsValue({
+											contract_date: dateString,
+										});
+									}}
+									format={"YYYY-MM-DD"}
+									value={
+										formik.values.contract_date
+											? dayjs(formik.values.contract_date, "YYYY-MM-DD")
+											: undefined
+									}
+								/>
+							</div>
+						</div>
+					</Form.Item>
 				</>
 			),
 		},
@@ -1496,7 +1374,13 @@ const HbbInventory = () => {
 						<TableSelectionPaginateAndSort
 							title={"HBB dan Inventaris"}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -1518,7 +1402,7 @@ const HbbInventory = () => {
 									>
 										Tambah
 									</button>
-								</>
+								</Space>
 							}
 							columns={columns({ setShowModal, handleDelete })}
 							rowKey={"id"}
@@ -1555,6 +1439,7 @@ const HbbInventory = () => {
 				onCancel={handleCancel}
 				open={showModal.show}
 				width={800}
+				destroyOnClose
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />

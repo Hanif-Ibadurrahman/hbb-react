@@ -49,7 +49,7 @@ interface ReposListForksResponseItem {
 	mirror_url: string;
 	name: string;
 	network_count: number;
-	node_id: string;
+	node_id: number;
 	notifications_url: string;
 	open_issues_count: number;
 	owner: { login: string };

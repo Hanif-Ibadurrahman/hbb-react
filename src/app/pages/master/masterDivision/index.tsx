@@ -23,34 +23,46 @@ import {
 	FormInstance,
 	Input,
 	Select,
+	Space,
 	Typography,
 } from "antd";
 import Swal from "sweetalert2";
 import { IAreaGetAllParams } from "store/types/areaTypes";
 import { useFormik } from "formik";
 import { DefaultOptionType } from "antd/es/select";
-import { getAllBusinessUnitApi } from "api/businessUnit";
-import { getAllAreaApi } from "api/area";
+import {
+	getAllBusinessUnitApi,
+	getDetailBusinessUnitApi,
+} from "api/businessUnit";
+import { getAllAreaApi, getDetailAreaApi } from "api/area";
 import { IBusinessUnitGetAllParams } from "store/types/businessUnitTypes";
-import { getAllWorkUnitApi } from "api/workUnit";
+import { getAllWorkUnitApi, getDetailWorkUnitApi } from "api/workUnit";
 import { IWorkUnitGetAllParams } from "store/types/workUnitTypes";
 import { ModalFilter } from "./components/modalFilter";
 import { listCheckPermission } from "app/helper/permission";
+import { checkDefaultOption, removeNullFields } from "app/helper/common";
+import { ICompanyGetAllParams } from "store/types/companyTypes";
+import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
 
 const MasterDivision = () => {
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [showFilter, setShowFilter] = useState(false);
-	const [params, setParams] = useState<IDivisionGetAllParams | undefined>();
+	const [params, setParams] = useState<IDivisionGetAllParams | undefined>({
+		per_page: 10,
+	});
 	const [businessUnitParams, setBusinessUnitParams] = useState<
 		IBusinessUnitGetAllParams | undefined
 	>();
 	const [areaParams, setAreaParams] = useState<IAreaGetAllParams | undefined>();
+	const [companyParams, setCompanyParams] = useState<
+		ICompanyGetAllParams | undefined
+	>();
 	const [workUnitParams, setWorkUnitParams] = useState<
 		IWorkUnitGetAllParams | undefined
 	>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
 	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
@@ -59,12 +71,8 @@ const MasterDivision = () => {
 		sort?: string;
 		order_by?: string;
 	}>();
-	const [initialValue, setInitialValue] = useState<ICreateDivisionRequest>({
-		name: "",
-		id_area: "",
-		id_bisnis_unit: "",
-		id_satker: "",
-	});
+	const [initialValue, setInitialValue] =
+		useState<Partial<ICreateDivisionRequest>>();
 	const [dataTable, setDataTable] = useState();
 	const [dataOptionBusinessUnit, setDataOptionBusinessUnit] = useState<
 		DefaultOptionType[] | undefined
@@ -73,6 +81,9 @@ const MasterDivision = () => {
 		DefaultOptionType[] | undefined
 	>();
 	const [dataOptionWorkUnit, setDataOptionWorkUnit] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionCompany, setDataOptionCompany] = useState<
 		DefaultOptionType[] | undefined
 	>();
 
@@ -87,7 +98,7 @@ const MasterDivision = () => {
 		}
 	};
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailDivisionApi(id);
 			handleInitialValue(response.data.data);
@@ -101,8 +112,18 @@ const MasterDivision = () => {
 			const response = await getAllBusinessUnitApi(businessUnitParams);
 			const businessUnitList = response.data.data.data;
 			setDataOptionBusinessUnit(
-				businessUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
+				businessUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataBusinessUnitDetail = async (id: number) => {
+		try {
+			const response = await getDetailBusinessUnitApi(id);
+			const detail = response.data.data;
+			setDataOptionBusinessUnit([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -112,9 +133,17 @@ const MasterDivision = () => {
 		try {
 			const response = await getAllAreaApi(areaParams);
 			const areaList = response.data.data.data;
-			setDataOptionArea(
-				areaList.map(v => ({ label: v.name, value: `${v.id}` })),
-			);
+			setDataOptionArea(areaList.map(v => ({ label: v.name, value: v.id })));
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataAreaDetail = async (id: number) => {
+		try {
+			const response = await getDetailAreaApi(id);
+			const detail = response.data.data;
+			setDataOptionArea([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -125,26 +154,61 @@ const MasterDivision = () => {
 			const response = await getAllWorkUnitApi(workUnitParams);
 			const workUnitList = response.data.data.data;
 			setDataOptionWorkUnit(
-				workUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
+				workUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
 	};
 
+	const fetchDataWorkUnitDetail = async (id: number) => {
+		try {
+			const response = await getDetailWorkUnitApi(id);
+			const detail = response.data.data;
+			setDataOptionWorkUnit([{ label: detail.name, value: detail.id }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataCompany = async () => {
+		try {
+			const response = await getAllCompanyApi(companyParams);
+			const companyList = response.data.data.data;
+			setDataOptionCompany(
+				companyList.map(v => ({ label: v.name, value: v.id })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataCompanyDetail = async (id: number) => {
+		try {
+			const response = await getDetailCompanyApi(id);
+			const detail = response.data.data;
+			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
 	const handleInitialValue = (values: IDivision) => {
-		setInitialValue({
-			name: values.name || "",
-			id_area: values.area?.name || "",
-			id_bisnis_unit: values.bisnis_unit?.name || "",
-			id_satker: values.satker?.name || "",
-		});
-		formRef.current?.setFieldsValue({
-			name: values.name || "",
-			id_area: values.id_area || "",
-			id_bisnis_unit: values.id_bisnis_unit || "",
-			id_satker: values.id_satker || "",
-		});
+		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionBusinessUnit!, setData.id_bisnis_unit)) {
+			fetchDataBusinessUnitDetail(setData.id_bisnis_unit);
+		}
+		if (!checkDefaultOption(dataOptionArea!, setData.id_area)) {
+			fetchDataAreaDetail(setData.id_area);
+		}
+		if (!checkDefaultOption(dataOptionWorkUnit!, setData.id_satker)) {
+			fetchDataWorkUnitDetail(setData.id_satker);
+		}
+		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
+			fetchDataCompanyDetail(setData.id_company);
+		}
+		setInitialValue(setData);
+		formRef.current?.setFieldsValue(setData);
 	};
 
 	useEffect(() => {
@@ -161,6 +225,11 @@ const MasterDivision = () => {
 		fetchDataWorkUnit();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [workUnitParams]);
+
+	useEffect(() => {
+		fetchDataCompany();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [companyParams]);
 
 	useEffect(() => {
 		fetchDataList();
@@ -189,18 +258,16 @@ const MasterDivision = () => {
 	});
 
 	const handleAdd = () => {
+		fetchDataBusinessUnit();
+		fetchDataArea();
+		fetchDataWorkUnit();
 		setShowModal({ show: true });
-		setInitialValue({
-			name: "",
-			id_area: "",
-			id_bisnis_unit: "",
-			id_satker: "",
-		});
+		setInitialValue(undefined);
 		formik.resetForm();
 		formRef.current?.resetFields();
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -280,7 +347,13 @@ const MasterDivision = () => {
 							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -296,7 +369,7 @@ const MasterDivision = () => {
 											Tambah
 										</button>
 									)}
-								</>
+								</Space>
 							}
 						/>
 					</div>
@@ -327,12 +400,15 @@ const MasterDivision = () => {
 				onCancel={handleCancel}
 				open={showModal.show}
 				width={800}
+				destroyOnClose
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
 					<Form.Item name="id_area">
 						<div className="form-group">
-							<Title level={5}>Area</Title>
+							<Title level={5}>
+								Area <span className="text-danger">*</span>
+							</Title>
 							<div className="controls">
 								<Select
 									showSearch
@@ -356,7 +432,9 @@ const MasterDivision = () => {
 					</Form.Item>
 					<Form.Item name="id_bisnis_unit">
 						<div className="form-group">
-							<Title level={5}>Bisnis Unit</Title>
+							<Title level={5}>
+								Bisnis Unit <span className="text-danger">*</span>
+							</Title>
 							<div className="controls">
 								<Select
 									showSearch
@@ -380,7 +458,9 @@ const MasterDivision = () => {
 					</Form.Item>
 					<Form.Item name="id_satker">
 						<div className="form-group">
-							<Title level={5}>Satuan Kerja</Title>
+							<Title level={5}>
+								Satuan Kerja <span className="text-danger">*</span>
+							</Title>
 							<div className="controls">
 								<Select
 									showSearch
@@ -423,6 +503,40 @@ const MasterDivision = () => {
 									placeholder="Nama Divisi"
 									onChange={formik.handleChange}
 									value={formik.values.name}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_company"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Perusahaan <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setCompanyParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionCompany}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_company", v);
+										formRef.current?.setFieldsValue({
+											id_company: v,
+										});
+									}}
+									value={formik.values.id_company}
 								/>
 							</div>
 						</div>

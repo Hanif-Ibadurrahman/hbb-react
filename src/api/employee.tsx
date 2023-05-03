@@ -11,7 +11,7 @@ export const getAllEmployeeApi = (params?: IEmployeeGetAllParams) => {
 	});
 };
 
-export const getDetailEmployeeApi = (id: string) => {
+export const getDetailEmployeeApi = (id: number) => {
 	return apiWithToken.get(`/api/master/employee/${id}`);
 };
 
@@ -20,12 +20,12 @@ export const createNewEmployeeApi = (input: ICreateEmployeeRequest) => {
 };
 
 export const updateEmployeeApi = (
-	id: string,
+	id: number,
 	input: IUpdateEmployeeRequest,
 ) => {
 	return apiWithToken.put(`/api/master/employee/${id}`, input);
 };
 
-export const deleteEmployeeApi = (id: string) => {
+export const deleteEmployeeApi = (id: number) => {
 	return apiWithToken.delete(`/api/master/employee/${id}`);
 };

@@ -219,7 +219,7 @@ export const ModalFilter = ({
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="No HBB">
+						<Form.Item name="code" label="No HBB">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>

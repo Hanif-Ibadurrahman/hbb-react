@@ -1,10 +1,14 @@
 import { PaginationState } from "./paginationTypes";
 
 export interface IManager {
-	id: string;
+	id: number;
 	nama_pengelola: string | null;
 	jabatan: string | null;
 	nipg: string | null;
+	id_company: number | null;
+	created_at: string | null;
+	updated_at: string | null;
+	deleted_at: string | null;
 }
 
 export interface IManagerPaginateResponse extends PaginationState {
@@ -23,12 +27,14 @@ export interface ICreateManagerRequest {
 	nama_pengelola: string;
 	jabatan: string;
 	nipg: string;
+	id_company: number | null;
 }
 
 export interface IUpdateManagerRequest {
 	nama_pengelola: string;
 	jabatan: string;
 	nipg: string;
+	id_company: number | null;
 }
 
 export interface IManagerGetAllResponse {

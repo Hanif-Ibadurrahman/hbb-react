@@ -14,6 +14,7 @@ import {
 	List,
 	Row,
 	Select,
+	Space,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
@@ -57,8 +58,10 @@ const ServiceReplacement = () => {
 	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<
 		IServiceReplacementGetAllParams | undefined
-	>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	>({
+		per_page: 10,
+	});
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
 	const [inventoryParams, setInventoryParams] = useState<
@@ -187,7 +190,7 @@ const ServiceReplacement = () => {
 		}
 	};
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailServiceReplacementApi(id);
 			handleInitialValue(response.data.data);
@@ -269,7 +272,7 @@ const ServiceReplacement = () => {
 		onSubmit: values => {},
 	});
 
-	const handleApprove = (id: string) => {
+	const handleApprove = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -327,7 +330,7 @@ const ServiceReplacement = () => {
 		formRef.current?.resetFields();
 	};
 
-	const handleReject = (id: string) => {
+	const handleReject = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -369,7 +372,7 @@ const ServiceReplacement = () => {
 			});
 	};
 
-	const handleShowFile = (id: string) => {
+	const handleShowFile = (id: number) => {
 		getDetailServiceReplacementApi(id).then(res => {
 			const link = res.data.data.attachment_file;
 			setLinkFile(link);
@@ -377,7 +380,7 @@ const ServiceReplacement = () => {
 		});
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -506,7 +509,13 @@ const ServiceReplacement = () => {
 							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -522,7 +531,7 @@ const ServiceReplacement = () => {
 											Tambah
 										</button>
 									)}
-								</>
+								</Space>
 							}
 						/>
 					</div>

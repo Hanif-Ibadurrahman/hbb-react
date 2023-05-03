@@ -7,13 +7,13 @@ interface IColumn {
 	setShowModal: React.Dispatch<
 		React.SetStateAction<{
 			show: boolean;
-			id?: string;
+			id?: number;
 		}>
 	>;
-	handleDelete: (id: string) => void;
-	handleApprove: (id: string) => void;
-	handleReject: (id: string) => void;
-	handleShowFile: (id: string) => void;
+	handleDelete: (id: number) => void;
+	handleApprove: (id: number) => void;
+	handleReject: (id: number) => void;
+	handleShowFile: (id: number) => void;
 }
 
 export const columns = ({

@@ -17,27 +17,27 @@ export const createNewServiceDeleteApi = (
 	return apiWithToken.post(`/api/transaksi/penghapusan`, input);
 };
 
-export const getDetailServiceDeleteApi = (id: string) => {
+export const getDetailServiceDeleteApi = (id: number) => {
 	return apiWithToken.get(`/api/transaksi/penghapusan/${id}`);
 };
 
 export const updateServiceDeleteApi = (
-	id: string,
+	id: number,
 	input: IUpdateServiceDeleteRequest,
 ) => {
 	return apiWithToken.put(`/api/transaksi/penghapusan/${id}`, input);
 };
 
-export const deleteServiceDeleteApi = (id: string) => {
+export const deleteServiceDeleteApi = (id: number) => {
 	return apiWithToken.delete(`/api/transaksi/penghapusan/${id}`);
 };
 
-export const approveServiceDeleteApi = (id: string) => {
+export const approveServiceDeleteApi = (id: number) => {
 	return apiWithToken.get(`/api/approval/penghapusan/approve/${id}`);
 };
 
 export const rejectServiceDeleteApi = (
-	id: string,
+	id: number,
 	input: { remark: string },
 ) => {
 	return apiWithToken.post(`/api/approval/penghapusan/reject/${id}`, input);

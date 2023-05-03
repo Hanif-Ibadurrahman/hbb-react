@@ -15,14 +15,14 @@ export const createNewColorApi = (input: ICreateColorRequest) => {
 	return apiWithToken.post(`/api/master/color`, input);
 };
 
-export const getDetailColorApi = (id: string) => {
+export const getDetailColorApi = (id: number) => {
 	return apiWithToken.get(`/api/master/color/${id}`);
 };
 
-export const updateColorApi = (id: string, input: IUpdateColorRequest) => {
+export const updateColorApi = (id: number, input: IUpdateColorRequest) => {
 	return apiWithToken.put(`/api/master/color/${id}`, input);
 };
 
-export const deleteColorApi = (id: string) => {
+export const deleteColorApi = (id: number) => {
 	return apiWithToken.delete(`/api/master/color/${id}`);
 };

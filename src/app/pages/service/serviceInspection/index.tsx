@@ -14,6 +14,7 @@ import {
 	List,
 	Row,
 	Select,
+	Space,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
@@ -57,8 +58,10 @@ const ServiceInspection = () => {
 	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<
 		IServiceInspectionGetAllParams | undefined
-	>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	>({
+		per_page: 10,
+	});
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
 	const [inventoryParams, setInventoryParams] = useState<
@@ -187,7 +190,7 @@ const ServiceInspection = () => {
 		}
 	};
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailServiceInspectionApi(id);
 			handleInitialValue(response.data.data);
@@ -269,7 +272,7 @@ const ServiceInspection = () => {
 		onSubmit: values => {},
 	});
 
-	const handleApprove = (id: string) => {
+	const handleApprove = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -327,7 +330,7 @@ const ServiceInspection = () => {
 		formRef.current?.resetFields();
 	};
 
-	const handleReject = (id: string) => {
+	const handleReject = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -367,7 +370,7 @@ const ServiceInspection = () => {
 			});
 	};
 
-	const handleShowFile = (id: string) => {
+	const handleShowFile = (id: number) => {
 		getDetailServiceInspectionApi(id).then(res => {
 			const link = res.data.data.attachment_file;
 			setLinkFile(link);
@@ -375,7 +378,7 @@ const ServiceInspection = () => {
 		});
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -504,7 +507,13 @@ const ServiceInspection = () => {
 							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -520,7 +529,7 @@ const ServiceInspection = () => {
 											Tambah
 										</button>
 									)}
-								</>
+								</Space>
 							}
 						/>
 					</div>

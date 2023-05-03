@@ -19,12 +19,12 @@ export const createNewServiceRepairApi = (
 	});
 };
 
-export const getDetailServiceRepairApi = (id: string) => {
+export const getDetailServiceRepairApi = (id: number) => {
 	return apiWithToken.get(`/api/transaksi/perbaikan/${id}`);
 };
 
 export const updateServiceRepairApi = (
-	id: string,
+	id: number,
 	input: IUpdateServiceRepairRequest,
 ) => {
 	return apiWithToken.put(`/api/transaksi/perbaikan/${id}`, input, {
@@ -32,16 +32,16 @@ export const updateServiceRepairApi = (
 	});
 };
 
-export const deleteServiceRepairApi = (id: string) => {
+export const deleteServiceRepairApi = (id: number) => {
 	return apiWithToken.delete(`/api/transaksi/perbaikan/${id}`);
 };
 
-export const approveServiceRepairApi = (id: string) => {
+export const approveServiceRepairApi = (id: number) => {
 	return apiWithToken.get(`/api/approval/perbaikan/approve/${id}`);
 };
 
 export const rejectServiceRepairApi = (
-	id: string,
+	id: number,
 	input: { remark: string },
 ) => {
 	return apiWithToken.post(`/api/approval/perbaikan/reject/${id}`, input);

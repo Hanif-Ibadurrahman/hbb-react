@@ -24,6 +24,12 @@ const RoomInventory = () => {
 							title="Laporan Inventaris Ruangan"
 							dataSource={fetchData}
 							columns={columns}
+							contentHeader={
+								<div className="btn-group">
+									<button className="btn btn-secondary">Excel</button>
+									<button className="btn btn-secondary">PDF</button>
+								</div>
+							}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 						/>
 					</div>

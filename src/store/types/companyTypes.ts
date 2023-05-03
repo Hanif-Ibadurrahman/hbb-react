@@ -1,7 +1,7 @@
 import { PaginationState } from "./paginationTypes";
 
 export interface ICompany {
-	id: string;
+	id: number;
 	name: string | null;
 	code: string | null;
 }

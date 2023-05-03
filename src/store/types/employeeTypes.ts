@@ -1,9 +1,9 @@
 import { PaginationState } from "./paginationTypes";
 export interface IEmployee {
-	id: string;
+	id: number;
 	nipg: string | null;
 	emp_name: string | null;
-	jabatan: string | null;
+	position: string | null;
 }
 export interface IEmployeePaginateResponse extends PaginationState {
 	data: IEmployee[];
@@ -13,7 +13,7 @@ export interface IEmployeeGetAllParams {
 	per_page?: number;
 	nipg?: string;
 	emp_name?: string;
-	jabatan?: string;
+	position?: string;
 }
 export interface ICreateEmployeeRequest {
 	nipg: string;

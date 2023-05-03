@@ -1,42 +1,49 @@
 import { PaginationState } from "./paginationTypes";
 export interface IRoles {
-	id: string;
+	id: number;
 	name: string | null;
 	guard_name: string | null;
 	created_at: string;
 	updated_at: string | null;
 }
 export interface IUserRoles {
-	id: string;
-	user_id: string;
-	role_id: string;
+	id: number;
+	user_id: number;
+	role_id: number;
 	created_at: string;
 	updated_at: string | null;
 	roles: IRoles;
 }
 export interface IUser {
-	id: string;
+	id: number;
 	username: string | null;
 	name: string | null;
 	raw_password: string | null;
 	nipg: string | null;
-	id_role: string | null;
-	id_division: string | null;
-	id_level: string | null;
+	id_role: number | null;
+	id_division: number | null;
+	id_level: number | null;
 	nipg_atasan: string | null;
 	nipg_kadiv: string | null;
-	id_area: string | null;
-	id_satker: string | null;
-	id_bisnit: string | null;
+	id_area: number | null;
+	id_satker: number | null;
+	id_bisnit: number | null;
 	entry_stamp: string | null;
 	edit_stamp: string | null;
 	del: boolean;
-	user_uuid: string | null;
-	id_company: string | null;
+	user_uuid: number | null;
+	id_company: number | null;
 	created_at: string | null;
 	updated_at: string | null;
 	deleted_at: string | null;
 	user_roles: IUserRoles[];
+	id_emp: number | null;
+	email: string | null;
+	company_name: string | null;
+	bisnis_unit_name: string | null;
+	area_name: string | null;
+	satker_name: string | null;
+	emp_name: string | null;
 }
 
 export interface IUserPaginateResponse extends PaginationState {
@@ -53,27 +60,31 @@ export interface IUserGetAllParams {
 }
 
 export interface ICreateUserRequest {
+	email: string;
 	username: string;
 	password: string;
 	name: string;
-	nipg?: string;
-	roles: string[];
-	id_company: string;
-	id_bisnit: string;
-	id_area: string;
-	id_satker: string;
+	nipg: string;
+	roles: number[];
+	id_company: number;
+	id_bisnit: number;
+	id_area: number;
+	id_satker: number;
+	id_emp: number;
 }
 
 export interface IUpdateUserRequest {
+	email: string;
 	username: string;
 	password: string;
 	name: string;
-	nipg?: string;
-	roles: string[];
-	id_company: string;
-	id_bisnit: string;
-	id_area: string;
-	id_satker: string;
+	nipg: string;
+	roles: number[];
+	id_company: number;
+	id_bisnit: number;
+	id_area: number;
+	id_satker: number;
+	id_emp: number;
 }
 
 export interface IUserGetAllResponse {

@@ -21,20 +21,31 @@ import {
 	Form,
 	FormInstance,
 	Input,
+	Select,
+	Space,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { CheckAuthentication } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
+import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
+import { ICompanyGetAllParams } from "store/types/companyTypes";
+import { DefaultOptionType } from "antd/es/select";
+import { checkDefaultOption, removeNullFields } from "app/helper/common";
 
 const MasterManager = () => {
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [showFilter, setShowFilter] = useState(false);
-	const [params, setParams] = useState<IManagerGetAllParams | undefined>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	const [params, setParams] = useState<IManagerGetAllParams | undefined>({
+		per_page: 10,
+	});
+	const [companyParams, setCompanyParams] = useState<
+		ICompanyGetAllParams | undefined
+	>();
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
 	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
@@ -43,12 +54,12 @@ const MasterManager = () => {
 		sort?: string;
 		order_by?: string;
 	}>();
-	const [initialValue, setInitialValue] = useState<ICreateManagerRequest>({
-		nama_pengelola: "",
-		jabatan: "",
-		nipg: "",
-	});
+	const [initialValue, setInitialValue] =
+		useState<Partial<ICreateManagerRequest>>();
 	const [dataTable, setDataTable] = useState();
+	const [dataOptionCompany, setDataOptionCompany] = useState<
+		DefaultOptionType[] | undefined
+	>();
 
 	const fetchDataList = async () => {
 		try {
@@ -59,7 +70,7 @@ const MasterManager = () => {
 		} catch (error: any) {}
 	};
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailManagerApi(id);
 			handleInitialValue(response.data.data);
@@ -68,15 +79,41 @@ const MasterManager = () => {
 		}
 	};
 
+	const fetchDataCompany = async () => {
+		try {
+			const response = await getAllCompanyApi(companyParams);
+			const companyList = response.data.data.data;
+			setDataOptionCompany(
+				companyList.map(v => ({ label: v.name, value: v.id })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataCompanyDetail = async (id: number) => {
+		try {
+			const response = await getDetailCompanyApi(id);
+			const detail = response.data.data;
+			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
 	const handleInitialValue = (values: IManager) => {
-		const setData = {
-			nama_pengelola: values.nama_pengelola || "",
-			jabatan: values.jabatan || "",
-			nipg: values.nipg || "",
-		};
+		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
+			fetchDataCompanyDetail(setData.id_company);
+		}
 		setInitialValue(setData);
 		formRef.current?.setFieldsValue(setData);
 	};
+
+	useEffect(() => {
+		fetchDataCompany();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [companyParams]);
 
 	useEffect(() => {
 		fetchDataList();
@@ -105,17 +142,14 @@ const MasterManager = () => {
 	});
 
 	// const handleAdd = () => {
+	// 	fetchDataCompany();
 	// 	setShowModal({ show: true });
-	// 	setInitialValue({
-	// 		nama_pengelola: "",
-	// 		jabatan: "",
-	// 		nipg: "",
-	// 	});
+	// 	setInitialValue(undefined);
 	// 	formik.resetForm();
 	// 	formRef.current?.resetFields();
 	// };
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -195,7 +229,13 @@ const MasterManager = () => {
 							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -211,7 +251,7 @@ const MasterManager = () => {
 											Tambah
 										</button>
 									)} */}
-								</>
+								</Space>
 							}
 						/>
 					</div>
@@ -242,6 +282,7 @@ const MasterManager = () => {
 				onCancel={handleCancel}
 				open={showModal.show}
 				width={800}
+				destroyOnClose
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
@@ -316,6 +357,40 @@ const MasterManager = () => {
 									placeholder="Jabatan"
 									onChange={formik.handleChange}
 									value={formik.values.jabatan}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_company"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Perusahaan <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setCompanyParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionCompany}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_company", v);
+										formRef.current?.setFieldsValue({
+											id_company: v,
+										});
+									}}
+									value={formik.values.id_company}
 								/>
 							</div>
 						</div>

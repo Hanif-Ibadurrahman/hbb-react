@@ -11,7 +11,7 @@ export const getAllDivisionApi = (params?: IDivisionGetAllParams) => {
 	});
 };
 
-export const getDetailDivisionApi = (id: string) => {
+export const getDetailDivisionApi = (id: number) => {
 	return apiWithToken.get(`/api/master/division/${id}`);
 };
 
@@ -20,12 +20,12 @@ export const createNewDivisionApi = (input: ICreateDivisionRequest) => {
 };
 
 export const updateDivisionApi = (
-	id: string,
+	id: number,
 	input: IUpdateDivisionRequest,
 ) => {
 	return apiWithToken.put(`/api/master/division/${id}`, input);
 };
 
-export const deleteDivisionApi = (id: string) => {
+export const deleteDivisionApi = (id: number) => {
 	return apiWithToken.delete(`/api/master/division/${id}`);
 };

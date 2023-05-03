@@ -1,7 +1,7 @@
 import { PaginationState } from "./paginationTypes";
 
 export interface IServiceRepair {
-	id: string;
+	id: number;
 	id_quest: string | null;
 	nipg: string | null;
 	id_inventory: string | null;

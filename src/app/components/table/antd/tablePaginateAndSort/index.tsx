@@ -68,19 +68,7 @@ export const TablePaginateAndSort = ({
 				<h6 className="box-subtitle">{subTitle}</h6>
 			</div>
 			<div className="box-body">
-				<div
-					style={{
-						display: "flex",
-						justifyContent: "space-between",
-						marginBottom: "1em",
-					}}
-				>
-					<div className="btn-group">
-						<button className="btn btn-secondary">Excel</button>
-						<button className="btn btn-secondary">PDF</button>
-					</div>
-					<div style={{ display: "flex", columnGap: 5 }}>{contentHeader}</div>
-				</div>
+				{contentHeader}
 				<div className="table-responsive">
 					<Table
 						columns={columns}

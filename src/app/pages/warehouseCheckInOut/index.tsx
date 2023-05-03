@@ -25,14 +25,28 @@ const WarehouseCheckInOut = () => {
 						<TableSelectionPaginateAndSort
 							title={"Formulir Izin keluar dan masuk gudang"}
 							contentHeader={
-								<button
-									type="button"
-									className="btn btn-primary"
-									data-bs-toggle="modal"
-									data-bs-target="#modal_cetak"
+								<div
+									style={{
+										display: "flex",
+										justifyContent: "space-between",
+										marginBottom: "1em",
+									}}
 								>
-									Cetak
-								</button>
+									<div className="btn-group">
+										<button className="btn btn-secondary">Excel</button>
+										<button className="btn btn-secondary">PDF</button>
+									</div>
+									<div style={{ display: "flex", columnGap: 5 }}>
+										<button
+											type="button"
+											className="btn btn-primary"
+											data-bs-toggle="modal"
+											data-bs-target="#modal_cetak"
+										>
+											Cetak
+										</button>
+									</div>
+								</div>
 							}
 							columns={columns}
 							rowKey={"name_barang"}

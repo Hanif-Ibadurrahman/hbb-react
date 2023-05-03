@@ -21,12 +21,12 @@ export const createNewServiceReplacementApi = (
 	});
 };
 
-export const getDetailServiceReplacementApi = (id: string) => {
+export const getDetailServiceReplacementApi = (id: number) => {
 	return apiWithToken.get(`/api/transaksi/penggantian/${id}`);
 };
 
 export const updateServiceReplacementApi = (
-	id: string,
+	id: number,
 	input: IUpdateServiceReplacementRequest,
 ) => {
 	return apiWithToken.put(`/api/transaksi/penggantian/${id}`, input, {
@@ -34,16 +34,16 @@ export const updateServiceReplacementApi = (
 	});
 };
 
-export const deleteServiceReplacementApi = (id: string) => {
+export const deleteServiceReplacementApi = (id: number) => {
 	return apiWithToken.delete(`/api/transaksi/penggantian/${id}`);
 };
 
-export const approveServiceReplacementApi = (id: string) => {
+export const approveServiceReplacementApi = (id: number) => {
 	return apiWithToken.get(`/api/approval/penggantian/approve/${id}`);
 };
 
 export const rejectServiceReplacementApi = (
-	id: string,
+	id: number,
 	input: { remark: string },
 ) => {
 	return apiWithToken.post(`/api/approval/penggantian/reject/${id}`, input);

@@ -25,6 +25,7 @@ import {
 	Radio,
 	RadioChangeEvent,
 	Select,
+	Space,
 	StepProps,
 	Steps,
 	Typography,
@@ -46,11 +47,13 @@ const MasterWorkflow = () => {
 	const [flow, setFlow] = useState<string[]>();
 	const [selectedFlow, setSelectedFlow] = useState(0);
 	const [showFilter, setShowFilter] = useState(false);
-	const [params, setParams] = useState<IWorkflowGetAllParams | undefined>();
+	const [params, setParams] = useState<IWorkflowGetAllParams | undefined>({
+		per_page: 10,
+	});
 	const [companyParams, setCompanyParams] = useState<
 		ICompanyGetAllParams | undefined
 	>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
 	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
@@ -59,13 +62,8 @@ const MasterWorkflow = () => {
 		sort?: string;
 		order_by?: string;
 	}>();
-	const [initialValue, setInitialValue] = useState<ICreateWorkflowRequest>({
-		name: "",
-		description: "",
-		created_at: "",
-		id_company: "",
-		is_reverse: false,
-	});
+	const [initialValue, setInitialValue] =
+		useState<Partial<ICreateWorkflowRequest>>();
 	const [dataTable, setDataTable] = useState<IWorkflowPaginateResponse>();
 	const [dataOptionCompany, setDataOptionCompany] = useState<
 		DefaultOptionType[] | undefined
@@ -91,7 +89,7 @@ const MasterWorkflow = () => {
 		}
 	};
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailWorkflowApi(id);
 			handleInitialValue(response.data.data);
@@ -162,18 +160,12 @@ const MasterWorkflow = () => {
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		setInitialValue({
-			name: "",
-			description: "",
-			created_at: "",
-			id_company: "",
-			is_reverse: false,
-		});
+		setInitialValue(undefined);
 		formik.resetForm();
 		formRef.current?.resetFields();
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -274,7 +266,13 @@ const MasterWorkflow = () => {
 							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -290,7 +288,7 @@ const MasterWorkflow = () => {
 											Tambah
 										</button>
 									)}
-								</>
+								</Space>
 							}
 						/>
 					</div>
@@ -321,6 +319,7 @@ const MasterWorkflow = () => {
 				onCancel={handleCancel}
 				open={showModal.show}
 				width={900}
+				destroyOnClose
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />

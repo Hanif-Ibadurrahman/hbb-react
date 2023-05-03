@@ -11,7 +11,7 @@ export const getAllProviderApi = (params?: IProviderGetAllParams) => {
 	});
 };
 
-export const getDetailProviderApi = (id: string) => {
+export const getDetailProviderApi = (id: number) => {
 	return apiWithToken.get(`/api/master/penyedia/${id}`);
 };
 
@@ -20,12 +20,12 @@ export const createNewProviderApi = (input: ICreateProviderRequest) => {
 };
 
 export const updateProviderApi = (
-	id: string,
+	id: number,
 	input: IUpdateProviderRequest,
 ) => {
 	return apiWithToken.put(`/api/master/penyedia/${id}`, input);
 };
 
-export const deleteProviderApi = (id: string) => {
+export const deleteProviderApi = (id: number) => {
 	return apiWithToken.delete(`/api/master/penyedia/${id}`);
 };

@@ -23,21 +23,23 @@ import {
 	FormInstance,
 	Input,
 	Select,
+	Space,
 	Typography,
 } from "antd";
 import Swal from "sweetalert2";
 import { DefaultOptionType } from "antd/es/select";
 import { ICodeGroupGetAllParams } from "store/types/codeGroupTypes";
 import { ISubCodeGroupGetAllParams } from "store/types/subCodeGroupTypes";
-import { getAllCodeGroupApi } from "api/codeGroup";
+import { getAllCodeGroupApi, getDetailCodeGroupApi } from "api/codeGroup";
 import { getAllSubCodeGroupApi } from "api/subCodeGroup";
 import { useFormik } from "formik";
-import { getAllColorApi } from "api/color";
+import { getAllColorApi, getDetailColorApi } from "api/color";
 import { IColorGetAllParams } from "store/types/colorTypes";
 import { ModalFilter } from "./components/modalFilter";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
-import { getAllCompanyApi } from "api/company";
+import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
 import { listCheckPermission } from "app/helper/permission";
+import { checkDefaultOption, removeNullFields } from "app/helper/common";
 
 const MasterItem = () => {
 	const { Title } = Typography;
@@ -50,7 +52,9 @@ const MasterItem = () => {
 		order_by?: string;
 	}>();
 	const [showFilter, setShowFilter] = useState(false);
-	const [params, setParams] = useState<IItemGetAllParams | undefined>();
+	const [params, setParams] = useState<IItemGetAllParams | undefined>({
+		per_page: 10,
+	});
 	const [codeGroupParams, setCodeGroupParams] = useState<
 		ICodeGroupGetAllParams | undefined
 	>();
@@ -63,24 +67,11 @@ const MasterItem = () => {
 	const [colorParams, setColorParams] = useState<
 		IColorGetAllParams | undefined
 	>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
-	const [initialValue, setInitialValue] = useState<ICreateItemRequest>({
-		name: "",
-		id_area: "",
-		id_company: "",
-		id_main_group: "",
-		id_sub_group: "",
-		jenis: "",
-		kapasitas: "",
-		merk: "",
-		model: "",
-		satuan: "",
-		tipe: "",
-		ukuran: "",
-		warna: "",
-	});
+	const [initialValue, setInitialValue] =
+		useState<Partial<ICreateItemRequest>>();
 	const [dataTable, setDataTable] = useState();
 	const [dataOptionCodeGroup, setDataOptionCodeGroup] = useState<
 		DefaultOptionType[] | undefined
@@ -95,46 +86,13 @@ const MasterItem = () => {
 		DefaultOptionType[] | undefined
 	>();
 
-	const handleInitialValue = (values: IItem) => {
-		setInitialValue({
-			name: values.name || "",
-			id_area: values.id_area || "",
-			id_main_group: values.id_main_group || "",
-			id_sub_group: values.id_sub_group || "",
-			id_company: values.id_company || "",
-			jenis: values.jenis || "",
-			merk: values.merk || "",
-			model: values.model || "",
-			satuan: values.satuan || "",
-			tipe: values.tipe || "",
-			ukuran: values.ukuran || "",
-			kapasitas: values.kapasitas || "",
-			warna: values.warna || "",
-		});
-		formRef.current?.setFieldsValue({
-			name: values.name || "",
-			id_area: values.id_area || "",
-			id_main_group: values.id_main_group || "",
-			id_sub_group: values.id_sub_group || "",
-			id_company: values.id_company || "",
-			jenis: values.jenis || "",
-			merk: values.merk || "",
-			model: values.model || "",
-			satuan: values.satuan || "",
-			tipe: values.tipe || "",
-			ukuran: values.ukuran || "",
-			kapasitas: values.kapasitas || "",
-			warna: values.warna || "",
-		});
-	};
-
 	const formik = useFormik({
 		initialValues: { ...initialValue },
 		enableReinitialize: true,
 		onSubmit: values => {},
 	});
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailItemApi(id);
 			handleInitialValue(response.data.data);
@@ -148,20 +106,40 @@ const MasterItem = () => {
 			const response = await getAllCodeGroupApi(codeGroupParams);
 			const codeGroupList = response.data.data.data;
 			setDataOptionCodeGroup(
-				codeGroupList.map(v => ({ label: v.value, value: `${v.id}` })),
+				codeGroupList.map(v => ({ label: v.value, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
 	};
 
-	const fetchDataSubCodeGroup = async (id: string) => {
+	const fetchDataCodeGroupDetail = async (id: number) => {
+		try {
+			const response = await getDetailCodeGroupApi(id);
+			const detail = response.data.data;
+			setDataOptionCodeGroup([{ label: detail.value, value: detail.id }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataSubCodeGroup = async (id: number) => {
 		try {
 			const response = await getAllSubCodeGroupApi(id, subCodeGroupParams);
-			const areaList = response.data.data.data;
+			const subGroupList = response.data.data.data;
 			setDataOptionSubCodeGroup(
-				areaList.map(v => ({ label: v.value, value: `${v.id}` })),
+				subGroupList.map(v => ({ label: v.value, value: v.id })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataSubCodeGroupDetail = async (id: number) => {
+		try {
+			const response = await getDetailCodeGroupApi(id);
+			const detail = response.data.data;
+			setDataOptionSubCodeGroup([{ label: detail.value, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -172,8 +150,18 @@ const MasterItem = () => {
 			const response = await getAllCompanyApi(companyParams);
 			const companyList = response.data.data.data;
 			setDataOptionCompany(
-				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
+				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataCompanyDetail = async (id: number) => {
+		try {
+			const response = await getDetailCompanyApi(id);
+			const detail = response.data.data;
+			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -191,6 +179,16 @@ const MasterItem = () => {
 		}
 	};
 
+	const fetchDataColorDetail = async (id: number) => {
+		try {
+			const response = await getDetailColorApi(id);
+			const detail = response.data.data;
+			setDataOptionColor([{ label: detail.name, value: `${detail.id}` }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
 	const fetchDataList = async () => {
 		try {
 			if (params) {
@@ -200,6 +198,24 @@ const MasterItem = () => {
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
+	};
+
+	const handleInitialValue = (values: IItem) => {
+		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionCodeGroup!, setData.id_main_group)) {
+			fetchDataCodeGroupDetail(setData.id_main_group);
+		}
+		if (!checkDefaultOption(dataOptionSubCodeGroup!, setData.id_sub_group)) {
+			fetchDataSubCodeGroupDetail(setData.id_sub_group);
+		}
+		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
+			fetchDataCompanyDetail(setData.id_company);
+		}
+		if (!checkDefaultOption(dataOptionColor!, setData.warna)) {
+			fetchDataColorDetail(setData.warna);
+		}
+		setInitialValue(setData);
+		formRef.current?.setFieldsValue(setData);
 	};
 
 	useEffect(() => {
@@ -217,15 +233,14 @@ const MasterItem = () => {
 		if (mainGroupId) {
 			fetchDataSubCodeGroup(mainGroupId);
 		}
-
-		if (showModal.id) {
+		if (!showModal.id && showModal.show) {
 			setInitialValue({
 				...initialValue,
-				id_sub_group: "",
+				id_sub_group: undefined,
 			});
-			formik.setFieldValue("id_sub_group", "");
+			formik.setFieldValue("id_sub_group", undefined);
 			formRef.current?.setFieldsValue({
-				id_sub_group: "",
+				id_sub_group: undefined,
 			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -257,27 +272,16 @@ const MasterItem = () => {
 	}, [showModal]);
 
 	const handleAdd = () => {
+		fetchDataCodeGroup();
+		fetchDataCompany();
+		fetchDataColor();
 		setShowModal({ show: true });
-		setInitialValue({
-			name: "",
-			id_area: "",
-			id_company: "",
-			id_main_group: "",
-			id_sub_group: "",
-			jenis: "",
-			kapasitas: "",
-			merk: "",
-			model: "",
-			satuan: "",
-			tipe: "",
-			ukuran: "",
-			warna: "",
-		});
+		setInitialValue(undefined);
 		formik.resetForm();
 		formRef.current?.resetFields();
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -357,7 +361,13 @@ const MasterItem = () => {
 							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -373,7 +383,7 @@ const MasterItem = () => {
 											Tambah
 										</button>
 									)}
-								</>
+								</Space>
 							}
 						/>
 					</div>
@@ -404,6 +414,7 @@ const MasterItem = () => {
 				onCancel={handleCancel}
 				open={showModal.show}
 				width={800}
+				destroyOnClose
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
@@ -481,7 +492,7 @@ const MasterItem = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_company", v);
 										formRef.current?.setFieldsValue({
-											id_company: parseInt(v),
+											id_company: v,
 										});
 									}}
 									value={formik.values.id_company}

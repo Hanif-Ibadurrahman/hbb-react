@@ -1,6 +1,6 @@
 import { PaginationState } from "./paginationTypes";
 export interface IServiceDisplacement {
-	id: string;
+	id: number;
 	id_quest: string | null;
 	date: string | null;
 	remark: string | null;

@@ -14,6 +14,7 @@ import {
 	List,
 	Row,
 	Select,
+	Space,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
@@ -53,10 +54,12 @@ const ServiceRequest = () => {
 	const inputFile = useRef<HTMLInputElement | null>(null);
 	const formRef = useRef<FormInstance>(null);
 	const [showFilter, setShowFilter] = useState(false);
-	const [params, setParams] = useState<
-		IServiceRequestGetAllParams | undefined
-	>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	const [params, setParams] = useState<IServiceRequestGetAllParams | undefined>(
+		{
+			per_page: 10,
+		},
+	);
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
 	const [companyParams, setCompanyParams] = useState<
@@ -162,7 +165,7 @@ const ServiceRequest = () => {
 		}
 	};
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailServiceRequestApi(id);
 			handleInitialValue(response.data.data);
@@ -239,7 +242,7 @@ const ServiceRequest = () => {
 		onSubmit: values => {},
 	});
 
-	const handleApprove = (id: string) => {
+	const handleApprove = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -297,7 +300,7 @@ const ServiceRequest = () => {
 		formRef.current?.resetFields();
 	};
 
-	const handleReject = (id: string) => {
+	const handleReject = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -337,7 +340,7 @@ const ServiceRequest = () => {
 			});
 	};
 
-	const handleShowFile = (id: string) => {
+	const handleShowFile = (id: number) => {
 		getDetailServiceRequestApi(id).then(res => {
 			const link = res.data.data.attachment_file;
 			setLinkFile(link);
@@ -345,7 +348,7 @@ const ServiceRequest = () => {
 		});
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -474,7 +477,13 @@ const ServiceRequest = () => {
 							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -490,7 +499,7 @@ const ServiceRequest = () => {
 											Tambah
 										</button>
 									)}
-								</>
+								</Space>
 							}
 						/>
 					</div>

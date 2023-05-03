@@ -14,17 +14,17 @@ export const getAllLocationApi = (params?: ILocationGetAllParams) => {
 export const createNewLocationApi = (input: ICreateLocationRequest) => {
 	return apiWithToken.post(`/api/master/location`, input);
 };
-export const getDetailLocationApi = (id: string) => {
+export const getDetailLocationApi = (id: number) => {
 	return apiWithToken.get(`/api/master/location/${id}`);
 };
 
 export const updateLocationApi = (
-	id: string,
+	id: number,
 	input: IUpdateLocationRequest,
 ) => {
 	return apiWithToken.put(`/api/master/location/${id}`, input);
 };
 
-export const deleteLocationApi = (id: string) => {
+export const deleteLocationApi = (id: number) => {
 	return apiWithToken.delete(`/api/master/location/${id}`);
 };
