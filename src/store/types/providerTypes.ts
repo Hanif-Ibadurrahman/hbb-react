@@ -1,10 +1,14 @@
 import { PaginationState } from "./paginationTypes";
 
 export interface IProvider {
-	id: string;
+	id: number;
 	nama_penyedia: string | null;
 	jabatan: string | null;
 	nipg: string | null;
+	id_company: number | null;
+	created_at: string | null;
+	updated_at: string | null;
+	deleted_at: string | null;
 }
 
 export interface IProviderPaginateResponse extends PaginationState {
@@ -23,12 +27,14 @@ export interface ICreateProviderRequest {
 	nama_penyedia: string;
 	jabatan: string;
 	nipg: string;
+	id_company: number;
 }
 
 export interface IUpdateProviderRequest {
 	nama_penyedia: string;
 	jabatan: string;
 	nipg: string;
+	id_company: number;
 }
 
 export interface IProviderGetAllResponse {

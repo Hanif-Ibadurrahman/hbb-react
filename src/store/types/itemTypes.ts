@@ -1,10 +1,10 @@
 import { PaginationState } from "./paginationTypes";
 
 export interface IItem {
-	id: string;
-	id_area: string | null;
-	id_main_group: string | null;
-	id_sub_group: string | null;
+	id: number;
+	id_area: number | null;
+	id_main_group: number | null;
+	id_sub_group: number | null;
 	name: string | null;
 	merk: string | null;
 	tipe: string | null;
@@ -14,7 +14,7 @@ export interface IItem {
 	kapasitas: string | null;
 	ukuran: string | null;
 	satuan: string | null;
-	id_company: string | null;
+	id_company: number | null;
 }
 
 export interface IItemPaginateResponse extends PaginationState {
@@ -37,9 +37,9 @@ export interface IItemGetAllParams {
 }
 
 export interface ICreateItemRequest {
-	id_area: string;
-	id_main_group: string;
-	id_sub_group: string;
+	id_area: number;
+	id_main_group: number;
+	id_sub_group: number;
 	name: string;
 	merk: string;
 	tipe: string;
@@ -49,13 +49,13 @@ export interface ICreateItemRequest {
 	kapasitas: string;
 	ukuran: string;
 	satuan: string;
-	id_company: string;
+	id_company: number;
 }
 
 export interface IUpdateItemRequest {
-	id_area: string;
-	id_main_group: string;
-	id_sub_group: string;
+	id_area: number;
+	id_main_group: number;
+	id_sub_group: number;
 	name: string;
 	merk: string;
 	tipe: string;
@@ -65,7 +65,7 @@ export interface IUpdateItemRequest {
 	kapasitas: string;
 	ukuran: string;
 	satuan: string;
-	id_company: string;
+	id_company: number;
 }
 
 export interface IItemGetAllResponse {

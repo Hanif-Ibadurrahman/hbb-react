@@ -23,27 +23,31 @@ import {
 	FormInstance,
 	Input,
 	Select,
+	Space,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
-import { CheckAuthentication, TokenDekode } from "app/helper/authentication";
+import { CheckAuthentication } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { DefaultOptionType } from "antd/es/select";
-import { getAllCompanyApi } from "api/company";
+import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
 import { listCheckPermission } from "app/helper/permission";
+import { checkDefaultOption, removeNullFields } from "app/helper/common";
 
 const MasterBusinessUnit = () => {
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [showFilter, setShowFilter] = useState(false);
-	const [params, setParams] = useState<IBusinessUnitGetAllParams | undefined>();
+	const [params, setParams] = useState<IBusinessUnitGetAllParams | undefined>({
+		per_page: 10,
+	});
 	const [companyParams, setCompanyParams] = useState<
 		ICompanyGetAllParams | undefined
 	>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
 	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
@@ -52,16 +56,12 @@ const MasterBusinessUnit = () => {
 		sort?: string;
 		order_by?: string;
 	}>();
-	const [initialValue, setInitialValue] = useState<ICreateBusinessUnitRequest>({
-		name: "",
-		id_company: "",
-	});
+	const [initialValue, setInitialValue] =
+		useState<Partial<ICreateBusinessUnitRequest>>();
 	const [dataTable, setDataTable] = useState<IBusinessUnitPaginateResponse>();
 	const [dataOptionCompany, setDataOptionCompany] = useState<
 		DefaultOptionType[] | undefined
 	>();
-
-	const tokenDecode = TokenDekode();
 
 	const fetchDataList = async () => {
 		try {
@@ -74,7 +74,7 @@ const MasterBusinessUnit = () => {
 		}
 	};
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailBusinessUnitApi(id);
 			handleInitialValue(response.data.data);
@@ -88,18 +88,28 @@ const MasterBusinessUnit = () => {
 			const response = await getAllCompanyApi(companyParams);
 			const companyList = response.data.data.data;
 			setDataOptionCompany(
-				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
+				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
 	};
 
+	const fetchDataCompanyDetail = async (id: number) => {
+		try {
+			const response = await getDetailCompanyApi(id);
+			const detail = response.data.data;
+			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
 	const handleInitialValue = (values: IBusinessUnit) => {
-		const setData = {
-			name: values.name || "",
-			id_company: values.id_company || "",
-		};
+		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
+			fetchDataCompanyDetail(setData.id_company);
+		}
 		setInitialValue(setData);
 		formRef.current?.setFieldsValue(setData);
 	};
@@ -136,13 +146,14 @@ const MasterBusinessUnit = () => {
 	});
 
 	const handleAdd = () => {
+		fetchDataCompany();
 		setShowModal({ show: true });
-		setInitialValue({ name: "", id_company: "" });
+		setInitialValue(undefined);
 		formik.resetForm();
 		formRef.current?.resetFields();
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -222,7 +233,13 @@ const MasterBusinessUnit = () => {
 							dataSource={dataTable}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -238,7 +255,7 @@ const MasterBusinessUnit = () => {
 											Tambah
 										</button>
 									)}
-								</>
+								</Space>
 							}
 						/>
 					</div>
@@ -269,6 +286,7 @@ const MasterBusinessUnit = () => {
 				onCancel={handleCancel}
 				open={showModal.show}
 				width={800}
+				destroyOnClose
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
@@ -323,7 +341,7 @@ const MasterBusinessUnit = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_company", v);
 										formRef.current?.setFieldsValue({
-											id_company: parseInt(v),
+											id_company: v,
 										});
 									}}
 									value={formik.values.id_company}

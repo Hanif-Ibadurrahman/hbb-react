@@ -15,17 +15,17 @@ export const createNewWorkflowApi = (input: ICreateWorkflowRequest) => {
 	return apiWithToken.post(`/api/master/workflow`, input);
 };
 
-export const getDetailWorkflowApi = (id: string) => {
+export const getDetailWorkflowApi = (id: number) => {
 	return apiWithToken.get(`/api/master/workflow/${id}`);
 };
 
 export const updateWorkflowApi = (
-	id: string,
+	id: number,
 	input: IUpdateWorkflowRequest,
 ) => {
 	return apiWithToken.put(`/api/master/workflow/${id}`, input);
 };
 
-export const deleteWorkflowApi = (id: string) => {
+export const deleteWorkflowApi = (id: number) => {
 	return apiWithToken.delete(`/api/master/workflow/${id}`);
 };

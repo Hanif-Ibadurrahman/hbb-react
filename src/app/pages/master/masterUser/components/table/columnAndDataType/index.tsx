@@ -7,11 +7,11 @@ interface IColumn {
 	setShowModal: React.Dispatch<
 		React.SetStateAction<{
 			show: boolean;
-			id?: string;
+			id?: number;
 			uuid?: string;
 		}>
 	>;
-	handleDelete: (id: string) => void;
+	handleDelete: (id: number) => void;
 }
 
 export const columns = ({ setShowModal, handleDelete }: IColumn) => {
@@ -27,23 +27,28 @@ export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 			sorter: true,
 		},
 		{
+			title: "Email",
+			dataIndex: "email",
+			sorter: true,
+		},
+		{
 			title: "Satuan Kerja",
-			dataIndex: "id_satker",
+			dataIndex: "satker_name",
 			sorter: true,
 		},
 		{
 			title: "Bisnis Unit",
-			dataIndex: "id_bisnit",
+			dataIndex: "bisnis_unit_name",
 			sorter: true,
 		},
 		{
 			title: "Area",
-			dataIndex: "id_area",
+			dataIndex: "area_name",
 			sorter: true,
 		},
 		{
 			title: "Perusahaan",
-			dataIndex: "id_company",
+			dataIndex: "company_name",
 			sorter: true,
 		},
 		{

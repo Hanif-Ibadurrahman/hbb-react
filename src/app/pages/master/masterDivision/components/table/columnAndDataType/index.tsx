@@ -5,10 +5,10 @@ interface IColumn {
 	setShowModal: React.Dispatch<
 		React.SetStateAction<{
 			show: boolean;
-			id?: string;
+			id?: number;
 		}>
 	>;
-	handleDelete: (id: string) => void;
+	handleDelete: (id: number) => void;
 }
 
 export const columns = ({ setShowModal, handleDelete }: IColumn) => {
@@ -37,6 +37,13 @@ export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 			sorter: true,
 			render: (text, record, index) => {
 				return record.satker?.name;
+			},
+		},
+		{
+			title: "Perusahaan",
+			sorter: true,
+			render: (text, record, index) => {
+				return record.company?.name;
 			},
 		},
 		{

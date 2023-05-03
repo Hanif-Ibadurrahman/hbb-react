@@ -22,6 +22,7 @@ import {
 	Form,
 	FormInstance,
 	Input,
+	Space,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
@@ -38,8 +39,10 @@ const MasterSubCodeGroup = () => {
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [showFilter, setShowFilter] = useState(false);
-	const [params, setParams] = useState<ISubCodeGroupGetAllParams | undefined>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	const [params, setParams] = useState<ISubCodeGroupGetAllParams | undefined>({
+		per_page: 10,
+	});
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
 	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
@@ -48,11 +51,8 @@ const MasterSubCodeGroup = () => {
 		sort?: string;
 		order_by?: string;
 	}>();
-	const [initialValue, setInitialValue] = useState<ICreateSubCodeGroupRequest>({
-		id_main_group: "",
-		value: "",
-		code: "",
-	});
+	const [initialValue, setInitialValue] =
+		useState<Partial<ICreateSubCodeGroupRequest>>();
 	const [dataTable, setDataTable] = useState<ISubCodeGroupPaginateResponse>();
 
 	const fetchDataList = async () => {
@@ -78,7 +78,7 @@ const MasterSubCodeGroup = () => {
 		}
 	};
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailSubCodeGroupApi(id);
 			handleInitialValue(response.data.data);
@@ -125,16 +125,12 @@ const MasterSubCodeGroup = () => {
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		setInitialValue({
-			id_main_group: "",
-			value: "",
-			code: "",
-		});
+		setInitialValue(undefined);
 		formik.resetForm();
 		formRef.current?.resetFields();
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -222,7 +218,13 @@ const MasterSubCodeGroup = () => {
 							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -238,7 +240,7 @@ const MasterSubCodeGroup = () => {
 											Tambah
 										</button>
 									)}
-								</>
+								</Space>
 							}
 						/>
 					</div>
@@ -269,6 +271,7 @@ const MasterSubCodeGroup = () => {
 				onCancel={handleCancel}
 				open={showModal.show}
 				width={800}
+				destroyOnClose
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />

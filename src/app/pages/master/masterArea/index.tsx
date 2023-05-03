@@ -15,7 +15,10 @@ import {
 	IAreaPaginateResponse,
 	ICreateAreaRequest,
 } from "store/types/areaTypes";
-import { getAllBusinessUnitApi } from "api/businessUnit";
+import {
+	getAllBusinessUnitApi,
+	getDetailBusinessUnitApi,
+} from "api/businessUnit";
 import { DefaultOptionType } from "antd/es/select";
 import { IBusinessUnitGetAllParams } from "store/types/businessUnitTypes";
 import {
@@ -26,6 +29,7 @@ import {
 	FormInstance,
 	Input,
 	Select,
+	Space,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
@@ -35,15 +39,18 @@ import { ModalFilter } from "./components/modalFilter";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { getAllCompanyApi } from "api/company";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
-import { getAllEmployeeApi } from "api/employee";
+import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
 import { listCheckPermission } from "app/helper/permission";
+import { checkDefaultOption, removeNullFields } from "app/helper/common";
 
 const MasterArea = () => {
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [showFilter, setShowFilter] = useState(false);
-	const [params, setParams] = useState<IAreaGetAllParams | undefined>();
+	const [params, setParams] = useState<IAreaGetAllParams | undefined>({
+		per_page: 10,
+	});
 	const [businessUnitParams, setBusinessUnitParams] = useState<
 		IBusinessUnitGetAllParams | undefined
 	>();
@@ -53,7 +60,7 @@ const MasterArea = () => {
 	const [employeeParams, setEmployeeParams] = useState<
 		IEmployeeGetAllParams | undefined
 	>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
 	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
@@ -62,13 +69,8 @@ const MasterArea = () => {
 		sort?: string;
 		order_by?: string;
 	}>();
-	const [initialValue, setInitialValue] = useState<ICreateAreaRequest>({
-		name: "",
-		daerah: "",
-		id_bisnis_unit: "",
-		id_emp: "",
-		id_company: "",
-	});
+	const [initialValue, setInitialValue] =
+		useState<Partial<ICreateAreaRequest>>();
 	const [dataTable, setDataTable] = useState<IAreaPaginateResponse>();
 	const [dataOptionBusinessUnit, setDataOptionBusinessUnit] = useState<
 		DefaultOptionType[] | undefined
@@ -85,7 +87,7 @@ const MasterArea = () => {
 			const response = await getAllCompanyApi(companyParams);
 			const companyList = response.data.data.data;
 			setDataOptionCompany(
-				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
+				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckAuthentication(error);
@@ -97,8 +99,18 @@ const MasterArea = () => {
 			const response = await getAllEmployeeApi(employeeParams);
 			const employeeList = response.data.data.data;
 			setDataOptionEmployee(
-				employeeList.map(v => ({ label: v.emp_name, value: `${v.id}` })),
+				employeeList.map(v => ({ label: v.emp_name, value: v.id })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataEmployeeDetail = async (id: number) => {
+		try {
+			const response = await getDetailEmployeeApi(id);
+			const detail = response.data.data;
+			setDataOptionEmployee([{ label: detail.emp_name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -115,7 +127,7 @@ const MasterArea = () => {
 		}
 	};
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailAreaApi(id);
 			handleInitialValue(response.data.data);
@@ -129,28 +141,33 @@ const MasterArea = () => {
 			const response = await getAllBusinessUnitApi(businessUnitParams);
 			const businessUnitList = response.data.data.data;
 			setDataOptionBusinessUnit(
-				businessUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
+				businessUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
 	};
 
-	const handleInitialValue = (values: IArea) => {
-		setInitialValue({
-			name: values.name || "",
-			daerah: values.daerah || "",
-			id_bisnis_unit: values.bisnis_unit?.name || "",
-			id_emp: values.id_emp || "",
-			id_company: values.id_company || "",
-		});
-		formRef.current?.setFieldsValue({
-			name: values.name || "",
-			daerah: values.daerah || "",
-			id_bisnis_unit: values.bisnis_unit?.id || "",
-			id_emp: values.id_emp || "",
-			id_company: values.id_company || "",
-		});
+	const fetchDataBusinessUnitDetail = async (id: number) => {
+		try {
+			const response = await getDetailBusinessUnitApi(id);
+			const detail = response.data.data;
+			setDataOptionBusinessUnit([{ label: detail.name, value: detail.id }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const handleInitialValue = async (values: IArea) => {
+		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionEmployee!, setData.id_emp)) {
+			fetchDataEmployeeDetail(setData.id_emp);
+		}
+		if (!checkDefaultOption(dataOptionBusinessUnit!, setData.id_bisnis_unit)) {
+			fetchDataBusinessUnitDetail(setData.id_bisnis_unit);
+		}
+		setInitialValue(setData);
+		formRef.current?.setFieldsValue(setData);
 	};
 
 	useEffect(() => {
@@ -195,19 +212,15 @@ const MasterArea = () => {
 	});
 
 	const handleAdd = () => {
+		fetchDataEmployee();
+		fetchDataBusinessUnit();
 		setShowModal({ show: true });
-		setInitialValue({
-			name: "",
-			daerah: "",
-			id_emp: "",
-			id_company: "",
-			id_bisnis_unit: "",
-		});
+		setInitialValue(undefined);
 		formik.resetForm();
 		formRef.current?.resetFields();
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -287,7 +300,13 @@ const MasterArea = () => {
 							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -303,7 +322,7 @@ const MasterArea = () => {
 											Tambah
 										</button>
 									)}
-								</>
+								</Space>
 							}
 						/>
 					</div>
@@ -334,6 +353,7 @@ const MasterArea = () => {
 				onCancel={handleCancel}
 				open={showModal.show}
 				width={800}
+				destroyOnClose
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
@@ -437,7 +457,7 @@ const MasterArea = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_company", v);
 										formRef.current?.setFieldsValue({
-											id_company: parseInt(v),
+											id_company: v,
 										});
 									}}
 									value={formik.values.id_company}
@@ -471,7 +491,7 @@ const MasterArea = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_bisnis_unit", v);
 										formRef.current?.setFieldsValue({
-											id_bisnis_unit: parseInt(v),
+											id_bisnis_unit: v,
 										});
 									}}
 									value={formik.values.id_bisnis_unit}

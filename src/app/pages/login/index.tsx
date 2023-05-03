@@ -1,5 +1,5 @@
 import { loginAction } from "actions/loginAction";
-import { Form, Input, Modal } from "antd";
+import { Form, Input } from "antd";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";

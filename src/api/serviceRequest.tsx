@@ -21,12 +21,12 @@ export const createNewServiceRequestApi = (
 	});
 };
 
-export const getDetailServiceRequestApi = (id: string) => {
+export const getDetailServiceRequestApi = (id: number) => {
 	return apiWithToken.get(`/api/transaksi/permintaan/${id}`);
 };
 
 export const updateServiceRequestApi = (
-	id: string,
+	id: number,
 	input: IUpdateServiceRequestRequest,
 ) => {
 	return apiWithToken.put(`/api/transaksi/permintaan/${id}`, input, {
@@ -34,16 +34,16 @@ export const updateServiceRequestApi = (
 	});
 };
 
-export const deleteServiceRequestApi = (id: string) => {
+export const deleteServiceRequestApi = (id: number) => {
 	return apiWithToken.delete(`/api/transaksi/permintaan/${id}`);
 };
 
-export const approveServiceRequestApi = (id: string) => {
+export const approveServiceRequestApi = (id: number) => {
 	return apiWithToken.get(`/api/approval/permintaan/approve/${id}`);
 };
 
 export const rejectServiceRequestApi = (
-	id: string,
+	id: number,
 	input: { remark: string },
 ) => {
 	return apiWithToken.post(`/api/approval/permintaan/reject/${id}`, input);

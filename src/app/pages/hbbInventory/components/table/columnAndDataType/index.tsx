@@ -1,15 +1,14 @@
 import { ColumnsType } from "antd/es/table";
-import { ActionButtonTable } from "app/components/table/antd/actionButtonTable";
 import { IInventory } from "store/types/inventoryTypes";
 
 interface IColumn {
 	setShowModal: React.Dispatch<
 		React.SetStateAction<{
 			show: boolean;
-			id?: string;
+			id?: number;
 		}>
 	>;
-	handleDelete: (id: string) => void;
+	handleDelete: (id: number) => void;
 }
 
 export const columns = ({ setShowModal, handleDelete }: IColumn) => {
@@ -56,6 +55,16 @@ export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 			title: "Jenis Barang",
 			dataIndex: "inventory_type",
 			sorter: true,
+			render: (text, record, index) => {
+				switch (text) {
+					case 1:
+						return "Inventory";
+					case 2:
+						return "Hbb";
+					default:
+						return;
+				}
+			},
 		},
 		{
 			title: "Lokasi",
@@ -73,6 +82,9 @@ export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 			render: (text, record, index) => {
 				return (
 					<div style={{ display: "flex", columnGap: 5 }}>
+						<button type="button" className="btn btn-info">
+							Print
+						</button>
 						<button
 							type="button"
 							className="btn btn-primary"

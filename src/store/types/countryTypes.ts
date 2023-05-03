@@ -1,6 +1,6 @@
 import { PaginationState } from "./paginationTypes";
 export interface ICountry {
-	id: string;
+	id: number;
 	name: string | null;
 }
 export interface ICountryPaginateResponse extends PaginationState {

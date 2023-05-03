@@ -14,6 +14,7 @@ import {
 	List,
 	Row,
 	Select,
+	Space,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
@@ -55,10 +56,10 @@ const ServiceRepair = () => {
 	const inputFile = useRef<HTMLInputElement | null>(null);
 	const formRef = useRef<FormInstance>(null);
 	const [showFilter, setShowFilter] = useState(false);
-	const [params, setParams] = useState<
-		IServiceRepairGetAllParams | undefined
-	>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	const [params, setParams] = useState<IServiceRepairGetAllParams | undefined>({
+		per_page: 10,
+	});
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
 	const [inventoryParams, setInventoryParams] = useState<
@@ -187,7 +188,7 @@ const ServiceRepair = () => {
 		}
 	};
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailServiceRepairApi(id);
 			handleInitialValue(response.data.data);
@@ -269,7 +270,7 @@ const ServiceRepair = () => {
 		onSubmit: values => {},
 	});
 
-	const handleApprove = (id: string) => {
+	const handleApprove = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -327,7 +328,7 @@ const ServiceRepair = () => {
 		formRef.current?.resetFields();
 	};
 
-	const handleReject = (id: string) => {
+	const handleReject = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -367,7 +368,7 @@ const ServiceRepair = () => {
 			});
 	};
 
-	const handleShowFile = (id: string) => {
+	const handleShowFile = (id: number) => {
 		getDetailServiceRepairApi(id).then(res => {
 			const link = res.data.data.attachment_file;
 			setLinkFile(link);
@@ -375,7 +376,7 @@ const ServiceRepair = () => {
 		});
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -504,7 +505,13 @@ const ServiceRepair = () => {
 							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -520,7 +527,7 @@ const ServiceRepair = () => {
 											Tambah
 										</button>
 									)}
-								</>
+								</Space>
 							}
 						/>
 					</div>

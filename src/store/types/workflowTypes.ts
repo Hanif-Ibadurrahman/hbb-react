@@ -1,6 +1,6 @@
 import { PaginationState } from "./paginationTypes";
 export interface IWorkflow {
-	id: string;
+	id: number;
 	name: string | null;
 	description: string | null;
 	roles: string | null;

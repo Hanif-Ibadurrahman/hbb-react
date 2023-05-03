@@ -5,12 +5,12 @@ interface IColumn {
 	setShowModal: React.Dispatch<
 		React.SetStateAction<{
 			show: boolean;
-			id?: string;
+			id?: number;
 		}>
 	>;
-	handleDelete: (id: string) => void;
-	handleApprove: (id: string) => void;
-	handleReject: (id: string) => void;
+	handleDelete: (id: number) => void;
+	handleApprove: (id: number) => void;
+	handleReject: (id: number) => void;
 }
 
 export const columns = ({

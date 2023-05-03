@@ -15,17 +15,17 @@ export const createNewInventoryApi = (input: ICreateInventoryRequest) => {
 	return apiWithToken.post(`/api/inventory`, input);
 };
 
-export const getDetailInventoryApi = (id: string) => {
+export const getDetailInventoryApi = (id: number) => {
 	return apiWithToken.get(`/api/inventory/${id}`);
 };
 
 export const updateInventoryApi = (
-	id: string,
+	id: number,
 	input: IUpdateInventoryRequest,
 ) => {
 	return apiWithToken.put(`/api/inventory/${id}`, input);
 };
 
-export const deleteInventoryApi = (id: string) => {
+export const deleteInventoryApi = (id: number) => {
 	return apiWithToken.delete(`/api/inventory/${id}`);
 };

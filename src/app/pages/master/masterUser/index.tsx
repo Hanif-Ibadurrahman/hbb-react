@@ -22,6 +22,7 @@ import {
 	FormInstance,
 	Input,
 	Select,
+	Space,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
@@ -33,12 +34,19 @@ import { getAllCompanyApi } from "api/company";
 import { ModalFilter } from "./components/modalFilter";
 import { SelectWithTag } from "app/components/selectWithTag";
 import { IBusinessUnitGetAllParams } from "store/types/businessUnitTypes";
-import { getAllBusinessUnitApi } from "api/businessUnit";
+import {
+	getAllBusinessUnitApi,
+	getDetailBusinessUnitApi,
+} from "api/businessUnit";
 import { IAreaGetAllParams } from "store/types/areaTypes";
-import { getAllAreaApi } from "api/area";
+import { getAllAreaApi, getDetailAreaApi } from "api/area";
 import { IWorkUnitGetAllParams } from "store/types/workUnitTypes";
-import { getAllWorkUnitApi } from "api/workUnit";
+import { getAllWorkUnitApi, getDetailWorkUnitApi } from "api/workUnit";
 import { listCheckPermission } from "app/helper/permission";
+import { intersection } from "lodash";
+import { removeNullFields } from "app/helper/common";
+import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
+import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 
 const MasterUser = () => {
 	const { Title } = Typography;
@@ -46,7 +54,9 @@ const MasterUser = () => {
 	const formRef = useRef<FormInstance>(null);
 	const [selectedRole, setSelectedRole] = useState<string[]>();
 	const [showFilter, setShowFilter] = useState(false);
-	const [params, setParams] = useState<IUserGetAllParams | undefined>();
+	const [params, setParams] = useState<IUserGetAllParams | undefined>({
+		per_page: 10,
+	});
 	const [companyParams, setCompanyParams] = useState<
 		ICompanyGetAllParams | undefined
 	>();
@@ -57,9 +67,12 @@ const MasterUser = () => {
 	const [workUnitParams, setWorkUnitParams] = useState<
 		IWorkUnitGetAllParams | undefined
 	>();
+	const [employeeParams, setEmployeeParams] = useState<
+		IEmployeeGetAllParams | undefined
+	>();
 	const [showModal, setShowModal] = useState<{
 		show: boolean;
-		id?: string;
+		id?: number;
 		uuid?: string;
 	}>({
 		show: false,
@@ -70,17 +83,8 @@ const MasterUser = () => {
 		sort?: string;
 		order_by?: string;
 	}>();
-	const [initialValue, setInitialValue] = useState<ICreateUserRequest>({
-		username: "",
-		password: "",
-		name: "",
-		nipg: "",
-		roles: [],
-		id_company: "",
-		id_area: "",
-		id_bisnit: "",
-		id_satker: "",
-	});
+	const [initialValue, setInitialValue] =
+		useState<Partial<ICreateUserRequest>>();
 	const [dataTable, setDataTable] = useState();
 	const [dataOptionCompany, setDataOptionCompany] = useState<
 		DefaultOptionType[] | undefined
@@ -92,6 +96,9 @@ const MasterUser = () => {
 		DefaultOptionType[] | undefined
 	>();
 	const [dataOptionWorkUnit, setDataOptionWorkUnit] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionEmployee, setDataOptionEmployee] = useState<
 		DefaultOptionType[] | undefined
 	>();
 	const [dataOptionRole, setDataOptionRole] = useState<
@@ -115,7 +122,7 @@ const MasterUser = () => {
 		}
 	};
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailUserApi(id);
 			handleInitialValue(response.data.data);
@@ -124,38 +131,12 @@ const MasterUser = () => {
 		}
 	};
 
-	const handleInitialValue = (values: IUser) => {
-		console.log(values);
-		setInitialValue({
-			username: values.username || "",
-			password: values.raw_password || "",
-			name: values.name || "",
-			nipg: values.nipg || "",
-			roles: values.user_roles?.map(v => v.role_id),
-			id_company: values.id_company || "",
-			id_area: values.id_area || "",
-			id_bisnit: values.id_bisnit || "",
-			id_satker: values.id_satker || "",
-		});
-		formRef.current?.setFieldsValue({
-			username: values.username || "",
-			password: values.raw_password || "",
-			name: values.name || "",
-			nipg: values.nipg || "",
-			roles: values.user_roles?.map(v => v.role_id),
-			id_company: values.id_company || "",
-			id_area: values.id_area || "",
-			id_bisnit: values.id_bisnit || "",
-			id_satker: values.id_satker || "",
-		});
-	};
-
 	const fetchDataCompany = async () => {
 		try {
 			const response = await getAllCompanyApi(companyParams);
 			const companyList = response.data.data.data;
 			setDataOptionCompany(
-				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
+				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckAuthentication(error);
@@ -167,8 +148,18 @@ const MasterUser = () => {
 			const response = await getAllBusinessUnitApi(businessUnitParams);
 			const businessUnitList = response.data.data.data;
 			setDataOptionBusinessUnit(
-				businessUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
+				businessUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataBusinessUnitDetail = async (id: number) => {
+		try {
+			const response = await getDetailBusinessUnitApi(id);
+			const detail = response.data.data;
+			setDataOptionBusinessUnit([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -178,9 +169,17 @@ const MasterUser = () => {
 		try {
 			const response = await getAllAreaApi(areaParams);
 			const areaList = response.data.data.data;
-			setDataOptionArea(
-				areaList.map(v => ({ label: v.name, value: `${v.id}` })),
-			);
+			setDataOptionArea(areaList.map(v => ({ label: v.name, value: v.id })));
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataAreaDetail = async (id: number) => {
+		try {
+			const response = await getDetailAreaApi(id);
+			const detail = response.data.data;
+			setDataOptionArea([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -191,11 +190,55 @@ const MasterUser = () => {
 			const response = await getAllWorkUnitApi(workUnitParams);
 			const workUnitList = response.data.data.data;
 			setDataOptionWorkUnit(
-				workUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
+				workUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
+	};
+
+	const fetchDataWorkUnitDetail = async (id: number) => {
+		try {
+			const response = await getDetailWorkUnitApi(id);
+			const detail = response.data.data;
+			setDataOptionWorkUnit([{ label: detail.name, value: detail.id }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataEmployee = async () => {
+		try {
+			const response = await getAllEmployeeApi(employeeParams);
+			const employeeList = response.data.data.data;
+			setDataOptionEmployee(
+				employeeList.map(v => ({ label: v.emp_name, value: v.id })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataEmployeeDetail = async (id: number) => {
+		try {
+			const response = await getDetailEmployeeApi(id);
+			const detail = response.data.data;
+			setDataOptionEmployee([{ label: detail.emp_name, value: detail.id }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const handleInitialValue = (values: IUser) => {
+		const setData = removeNullFields(values);
+		setInitialValue({
+			...setData,
+			roles: values.user_roles.map(v => v.role_id),
+		});
+		formRef.current?.setFieldsValue({
+			...setData,
+			roles: values.user_roles.map(v => v.role_id),
+		});
 	};
 
 	useEffect(() => {
@@ -246,22 +289,12 @@ const MasterUser = () => {
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		setInitialValue({
-			username: "",
-			password: "",
-			name: "",
-			nipg: "",
-			roles: [],
-			id_company: "",
-			id_area: "",
-			id_bisnit: "",
-			id_satker: "",
-		});
+		setInitialValue(undefined);
 		formik.resetForm();
 		formRef.current?.resetFields();
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -344,6 +377,9 @@ const MasterUser = () => {
 		setShowModal({ show: false });
 	};
 
+	const isStaff =
+		intersection(selectedRole, ["User", "Kepala Satuan Kerja"]).length > 0;
+
 	return (
 		<MainLayout>
 			<section className="content">
@@ -355,7 +391,13 @@ const MasterUser = () => {
 							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -371,8 +413,9 @@ const MasterUser = () => {
 											Tambah
 										</button>
 									)}
-								</>
+								</Space>
 							}
+							scroll={{ x: 1500 }}
 						/>
 					</div>
 				</div>
@@ -402,6 +445,7 @@ const MasterUser = () => {
 				onCancel={handleCancel}
 				open={showModal.show}
 				width={800}
+				destroyOnClose
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
@@ -436,6 +480,11 @@ const MasterUser = () => {
 							{
 								required: true,
 								message: "Harap isi field ini",
+							},
+							{
+								min: 8,
+								// eslint-disable-next-line no-template-curly-in-string
+								message: "Harap isi field ini minimal ${min} karakter",
 							},
 						]}
 					>
@@ -482,6 +531,35 @@ const MasterUser = () => {
 						</div>
 					</Form.Item>
 					<Form.Item
+						name="email"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+							{
+								type: "email",
+								message: "Harap isi email yang valid",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Email <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="email"
+									className="form-control"
+									placeholder="Email"
+									onChange={formik.handleChange}
+									value={formik.values.email}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
 						name="roles"
 						rules={[
 							{
@@ -509,11 +587,12 @@ const MasterUser = () => {
 											roles: v,
 										});
 									}}
+									value={formik.values.roles}
 								/>
 							</div>
 						</div>
 					</Form.Item>
-					{selectedRole?.includes("User") && (
+					{isStaff && (
 						<Form.Item name="nipg">
 							<div className="form-group">
 								<Title level={5}>NIPG</Title>
@@ -556,7 +635,7 @@ const MasterUser = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_company", v);
 										formRef.current?.setFieldsValue({
-											id_company: parseInt(v),
+											id_company: v,
 										});
 									}}
 									value={formik.values.id_company}
@@ -590,7 +669,7 @@ const MasterUser = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_area", v);
 										formRef.current?.setFieldsValue({
-											id_area: parseInt(v),
+											id_area: v,
 										});
 									}}
 									value={formik.values.id_area}
@@ -624,7 +703,7 @@ const MasterUser = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_bisnit", v);
 										formRef.current?.setFieldsValue({
-											id_bisnit: parseInt(v),
+											id_bisnit: v,
 										});
 									}}
 									value={formik.values.id_bisnit}
@@ -632,40 +711,42 @@ const MasterUser = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item
-						name="id_satker"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Satuan Kerja <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setWorkUnitParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionWorkUnit}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_satker", v);
-										formRef.current?.setFieldsValue({
-											id_satker: parseInt(v),
-										});
-									}}
-									value={formik.values.id_satker}
-								/>
+					{isStaff && (
+						<Form.Item
+							name="id_satker"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<Title level={5}>
+									Satuan Kerja <span className="text-danger">*</span>
+								</Title>
+								<div className="controls">
+									<Select
+										showSearch
+										onSearch={v => setWorkUnitParams({ name: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionWorkUnit}
+										onChange={(v, opt) => {
+											formik.setFieldValue("id_satker", v);
+											formRef.current?.setFieldsValue({
+												id_satker: v,
+											});
+										}}
+										value={formik.values.id_satker}
+									/>
+								</div>
 							</div>
-						</div>
-					</Form.Item>
+						</Form.Item>
+					)}
 				</Form>
 			</AntdModal>
 

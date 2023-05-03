@@ -1,6 +1,6 @@
 import { PaginationState } from "./paginationTypes";
 export interface IColor {
-	id: string;
+	id: number;
 	name: string | null;
 }
 export interface IColorPaginateResponse extends PaginationState {

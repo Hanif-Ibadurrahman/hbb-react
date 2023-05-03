@@ -19,12 +19,12 @@ export const createNewServiceChangeApi = (
 	});
 };
 
-export const getDetailServiceChangeApi = (id: string) => {
+export const getDetailServiceChangeApi = (id: number) => {
 	return apiWithToken.get(`/api/transaksi/perubahan/${id}`);
 };
 
 export const updateServiceChangeApi = (
-	id: string,
+	id: number,
 	input: IUpdateServiceChangeRequest,
 ) => {
 	return apiWithToken.put(`/api/transaksi/perubahan/${id}`, input, {
@@ -32,16 +32,16 @@ export const updateServiceChangeApi = (
 	});
 };
 
-export const deleteServiceChangeApi = (id: string) => {
+export const deleteServiceChangeApi = (id: number) => {
 	return apiWithToken.delete(`/api/transaksi/perubahan/${id}`);
 };
 
-export const approveServiceChangeApi = (id: string) => {
+export const approveServiceChangeApi = (id: number) => {
 	return apiWithToken.get(`/api/approval/perubahan/approve/${id}`);
 };
 
 export const rejectServiceChangeApi = (
-	id: string,
+	id: number,
 	input: { remark: string },
 ) => {
 	return apiWithToken.post(`/api/approval/perubahan/reject/${id}`, input);

@@ -10,6 +10,7 @@ import {
 	Form,
 	FormInstance,
 	Select,
+	Space,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
@@ -54,7 +55,9 @@ const ServiceDisplacement = () => {
 	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<
 		IServiceDisplacementGetAllParams | undefined
-	>();
+	>({
+		per_page: 10,
+	});
 	const [inventoryParams, setInventoryParams] = useState<
 		IInventoryGetAllParams | undefined
 	>();
@@ -70,7 +73,7 @@ const ServiceDisplacement = () => {
 	const [locationParams, setLocationParams] = useState<
 		ILocationGetAllParams | undefined
 	>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
 	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
@@ -110,7 +113,7 @@ const ServiceDisplacement = () => {
 		}
 	};
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailServiceDisplacementApi(id);
 			handleInitialValue(response.data.data);
@@ -252,7 +255,7 @@ const ServiceDisplacement = () => {
 		onSubmit: values => {},
 	});
 
-	const handleApprove = (id: string) => {
+	const handleApprove = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -306,7 +309,7 @@ const ServiceDisplacement = () => {
 		formRef.current?.resetFields();
 	};
 
-	const handleReject = (id: string) => {
+	const handleReject = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -348,7 +351,7 @@ const ServiceDisplacement = () => {
 			});
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -441,7 +444,13 @@ const ServiceDisplacement = () => {
 							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -457,7 +466,7 @@ const ServiceDisplacement = () => {
 											Tambah
 										</button>
 									)}
-								</>
+								</Space>
 							}
 						/>
 					</div>
@@ -504,7 +513,6 @@ const ServiceDisplacement = () => {
 									<DatePicker
 										className="form-control"
 										onChange={(value, dateString) => {
-											console.log(dateString);
 											formik.setFieldValue("date", dateString);
 											formRef.current?.setFieldsValue({
 												date: dateString,

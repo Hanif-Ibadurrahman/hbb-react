@@ -19,27 +19,27 @@ export const createNewServiceDisplacementApi = (
 	return apiWithToken.post(`/api/transaksi/pemindahan`, input);
 };
 
-export const getDetailServiceDisplacementApi = (id: string) => {
+export const getDetailServiceDisplacementApi = (id: number) => {
 	return apiWithToken.get(`/api/transaksi/pemindahan/${id}`);
 };
 
 export const updateServiceDisplacementApi = (
-	id: string,
+	id: number,
 	input: IUpdateServiceDisplacementRequest,
 ) => {
 	return apiWithToken.put(`/api/transaksi/pemindahan/${id}`, input);
 };
 
-export const deleteServiceDisplacementApi = (id: string) => {
+export const deleteServiceDisplacementApi = (id: number) => {
 	return apiWithToken.delete(`/api/transaksi/pemindahan/${id}`);
 };
 
-export const approveServiceDisplacementApi = (id: string) => {
+export const approveServiceDisplacementApi = (id: number) => {
 	return apiWithToken.get(`/api/approval/pemindahan/approve/${id}`);
 };
 
 export const rejectServiceDisplacementApi = (
-	id: string,
+	id: number,
 	input: { remark: string },
 ) => {
 	return apiWithToken.post(`/api/approval/pemindahan/reject/${id}`, input);

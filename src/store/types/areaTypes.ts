@@ -1,16 +1,20 @@
 import { IBusinessUnit } from "./businessUnitTypes";
 import { PaginationState } from "./paginationTypes";
 export interface IArea {
-	id: string;
-	id_bisnis_unit: string | null;
-	id_emp: string | null;
-	id_company: string | null;
+	id: number;
+	id_bisnis_unit: number | null;
+	id_emp: number | null;
+	id_company: number | null;
 	name: string | null;
 	daerah: string | null;
 	pemegang: string | null;
-	from_opname: number | null;
+	from_opname: boolean | null;
+	created_at: string | null;
+	updated_at: string | null;
+	deleted_at: string | null;
 	bisnis_unit: IBusinessUnit | null;
 }
+
 export interface IAreaPaginateResponse extends PaginationState {
 	data: IArea[];
 }
@@ -26,16 +30,16 @@ export interface IAreaGetAllParams {
 export interface ICreateAreaRequest {
 	name: string;
 	daerah: string;
-	id_bisnis_unit: string;
-	id_company: string;
-	id_emp: string;
+	id_bisnis_unit: number;
+	id_company: number;
+	id_emp: number;
 }
 export interface IUpdateAreaRequest {
 	name: string;
 	daerah: string;
-	id_bisnis_unit: string;
-	id_company: string;
-	id_emp: string;
+	id_bisnis_unit: number;
+	id_company: number;
+	id_emp: number;
 }
 export interface IAreaGetAllResponse {
 	status: string;

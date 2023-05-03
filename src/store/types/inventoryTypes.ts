@@ -1,7 +1,7 @@
 import { PaginationState } from "./paginationTypes";
 
 export interface IInventory {
-	id: string;
+	id: number;
 	name: string | null;
 	main_group: string | null;
 	sub_group: string | null;
@@ -28,7 +28,7 @@ export interface IInventory {
 }
 
 export interface IInventoryDetail {
-	id: string;
+	id: number;
 	id_lokasi: string | null;
 	inventory_type: number;
 	year: string | null;
@@ -104,25 +104,25 @@ export interface IInventoryGetAllParams {
 }
 
 export interface ICreateInventoryRequest {
-	id_company: string;
+	id_company: number;
 	inventory_type?: number;
-	id_main_group: string;
-	id_sub_group: string;
+	id_main_group: number;
+	id_sub_group: number;
 	year?: number;
 	serial_no: string;
-	id_barang: string;
+	id_barang: number;
 	distributor: string;
 	jumlah?: number;
 	no_akuntansi: string;
 	no_bast: string;
 	date_bast: string;
-	id_country: string;
+	id_country: number;
 	year_made?: number;
 	merk: string;
 	type: string;
 	jenis: string;
 	model: string;
-	id_color: string;
+	id_color: number;
 	capacity: string;
 	size: string;
 	serial_number: string;
@@ -133,11 +133,11 @@ export interface ICreateInventoryRequest {
 	contract_no: string;
 	contract_date: string;
 	price?: number;
-	id_bisnis_unit: string;
-	id_area: string;
-	id_satker: string;
-	id_location: string;
-	id_penanggung_jawab: string;
+	id_bisnis_unit: number;
+	id_area: number;
+	id_satker: number;
+	id_location: number;
+	id_penanggung_jawab: number;
 	condition: string;
 	remark: string;
 }

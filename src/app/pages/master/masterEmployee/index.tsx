@@ -22,6 +22,7 @@ import {
 	Form,
 	FormInstance,
 	Input,
+	Space,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
@@ -29,14 +30,17 @@ import Swal from "sweetalert2";
 import { CheckAuthentication } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
 import { listCheckPermission } from "app/helper/permission";
+import { removeNullFields } from "app/helper/common";
 
 const MasterEmployee = () => {
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [showFilter, setShowFilter] = useState(false);
-	const [params, setParams] = useState<IEmployeeGetAllParams | undefined>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: string }>({
+	const [params, setParams] = useState<IEmployeeGetAllParams | undefined>({
+		per_page: 10,
+	});
+	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
 	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
@@ -45,11 +49,8 @@ const MasterEmployee = () => {
 		sort?: string;
 		order_by?: string;
 	}>();
-	const [initialValue, setInitialValue] = useState<ICreateEmployeeRequest>({
-		emp_name: "",
-		nipg: "",
-		position: "",
-	});
+	const [initialValue, setInitialValue] =
+		useState<Partial<ICreateEmployeeRequest>>();
 	const [dataTable, setDataTable] = useState<IEmployeePaginateResponse>();
 
 	const fetchDataList = async () => {
@@ -63,7 +64,7 @@ const MasterEmployee = () => {
 		}
 	};
 
-	const fetchDataDetail = async (id: string) => {
+	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailEmployeeApi(id);
 			handleInitialValue(response.data.data);
@@ -73,11 +74,7 @@ const MasterEmployee = () => {
 	};
 
 	const handleInitialValue = (values: IEmployee) => {
-		const setData = {
-			emp_name: values.emp_name || "",
-			nipg: values.nipg || "",
-			position: values.jabatan || "",
-		};
+		const setData = removeNullFields(values);
 		setInitialValue(setData);
 		formRef.current?.setFieldsValue(setData);
 	};
@@ -110,16 +107,12 @@ const MasterEmployee = () => {
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		setInitialValue({
-			emp_name: "",
-			nipg: "",
-			position: "",
-		});
+		setInitialValue(undefined);
 		formik.resetForm();
 		formRef.current?.resetFields();
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -199,7 +192,13 @@ const MasterEmployee = () => {
 							columns={columns({ setShowModal, handleDelete })}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
-								<>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
@@ -215,7 +214,7 @@ const MasterEmployee = () => {
 											Tambah
 										</button>
 									)}
-								</>
+								</Space>
 							}
 						/>
 					</div>
@@ -246,6 +245,7 @@ const MasterEmployee = () => {
 				onCancel={handleCancel}
 				open={showModal.show}
 				width={800}
+				destroyOnClose
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />

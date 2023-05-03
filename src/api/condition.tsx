@@ -15,17 +15,17 @@ export const createNewConditionApi = (input: ICreateConditionRequest) => {
 	return apiWithToken.post(`/api/master/condition`, input);
 };
 
-export const getDetailConditionApi = (id: string) => {
+export const getDetailConditionApi = (id: number) => {
 	return apiWithToken.get(`/api/master/condition/${id}`);
 };
 
 export const updateConditionApi = (
-	id: string,
+	id: number,
 	input: IUpdateConditionRequest,
 ) => {
 	return apiWithToken.put(`/api/master/condition/${id}`, input);
 };
 
-export const deleteConditionApi = (id: string) => {
+export const deleteConditionApi = (id: number) => {
 	return apiWithToken.delete(`/api/master/condition/${id}`);
 };

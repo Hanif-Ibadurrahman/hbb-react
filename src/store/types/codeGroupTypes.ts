@@ -1,6 +1,6 @@
 import { PaginationState } from "./paginationTypes";
 export interface ICodeGroup {
-	id: string;
+	id: number;
 	value: string | null;
 	code: string | null;
 }

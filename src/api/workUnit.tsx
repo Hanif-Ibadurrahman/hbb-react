@@ -11,7 +11,7 @@ export const getAllWorkUnitApi = (params?: IWorkUnitGetAllParams) => {
 	});
 };
 
-export const getDetailWorkUnitApi = (id: string) => {
+export const getDetailWorkUnitApi = (id: number) => {
 	return apiWithToken.get(`/api/master/satuan-kerja/${id}`);
 };
 
@@ -20,12 +20,12 @@ export const createNewWorkUnitApi = (input: ICreateWorkUnitRequest) => {
 };
 
 export const updateWorkUnitApi = (
-	id: string,
+	id: number,
 	input: IUpdateWorkUnitRequest,
 ) => {
 	return apiWithToken.put(`/api/master/satuan-kerja/${id}`, input);
 };
 
-export const deleteWorkUnitApi = (id: string) => {
+export const deleteWorkUnitApi = (id: number) => {
 	return apiWithToken.delete(`/api/master/satuan-kerja/${id}`);
 };
