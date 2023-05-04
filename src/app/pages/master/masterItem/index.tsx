@@ -450,7 +450,7 @@ const MasterItem = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setCodeGroupParams({ value: v })}
+									onSearch={v => setCodeGroupParams({ group: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()
@@ -484,7 +484,7 @@ const MasterItem = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setSubCodeGroupParams({ value: v })}
+									onSearch={v => setSubCodeGroupParams({ group: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()
@@ -627,7 +627,7 @@ const MasterItem = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setColorParams({ name: v })}
+									onSearch={v => setColorParams({ color: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()

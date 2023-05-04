@@ -14,6 +14,7 @@ export interface IEmployeeGetAllParams {
 	nipg?: string;
 	emp_name?: string;
 	position?: string;
+	company?: string;
 }
 export interface ICreateEmployeeRequest {
 	nipg: string;

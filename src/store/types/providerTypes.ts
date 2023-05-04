@@ -21,6 +21,7 @@ export interface IProviderGetAllParams {
 	nama_penyedia?: string;
 	nipg?: string;
 	jabatan?: string;
+	company?: string;
 }
 
 export interface ICreateProviderRequest {

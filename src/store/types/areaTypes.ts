@@ -22,8 +22,10 @@ export interface IAreaGetAllParams {
 	page?: number;
 	per_page?: number;
 	name?: string;
+	nipg?: string;
 	daerah?: string;
 	pemegang?: string;
+	pengelola?: string;
 	bisnis_unit?: string;
 	company?: string;
 }

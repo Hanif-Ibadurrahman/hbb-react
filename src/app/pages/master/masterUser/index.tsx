@@ -765,7 +765,7 @@ const MasterUser = () => {
 								<div className="controls">
 									<Select
 										showSearch
-										onSearch={v => setWorkUnitParams({ name: v })}
+										onSearch={v => setWorkUnitParams({ satker: v })}
 										filterOption={(input, option) =>
 											(`${option?.label}` ?? "")
 												.toLowerCase()

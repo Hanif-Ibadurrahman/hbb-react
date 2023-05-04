@@ -718,7 +718,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setCodeGroupParams({ value: v })}
+									onSearch={v => setCodeGroupParams({ group: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()
@@ -752,7 +752,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setSubCodeGroupParams({ value: v })}
+									onSearch={v => setSubCodeGroupParams({ group: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()
@@ -854,7 +854,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setLocationParams({ name: v })}
+									onSearch={v => setLocationParams({ lokasi: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()
@@ -922,7 +922,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setWorkUnitParams({ name: v })}
+									onSearch={v => setWorkUnitParams({ satker: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()
@@ -1213,7 +1213,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setColorParams({ name: v })}
+									onSearch={v => setColorParams({ color: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()

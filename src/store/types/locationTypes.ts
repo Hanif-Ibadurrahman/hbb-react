@@ -23,7 +23,13 @@ export interface ILocationPaginateResponse extends PaginationState {
 export interface ILocationGetAllParams {
 	page?: number;
 	per_page?: number;
-	name?: string;
+	lokasi?: string;
+	bisnis_unit?: string;
+	area?: string;
+	pegawai?: string;
+	nipg?: string;
+	satker?: string;
+	company?: string;
 }
 export interface ICreateLocationRequest {
 	id_bisnis_unit: string;

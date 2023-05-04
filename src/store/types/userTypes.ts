@@ -57,6 +57,7 @@ export interface IUserGetAllParams {
 	bisnis_unit?: string;
 	area?: string;
 	role?: string;
+	company?: string;
 }
 
 export interface ICreateUserRequest {
