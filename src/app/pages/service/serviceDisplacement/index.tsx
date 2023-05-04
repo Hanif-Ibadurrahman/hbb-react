@@ -147,7 +147,7 @@ const ServiceDisplacement = () => {
 		try {
 			const availableInventory = { ...inventoryParams, status: 1 };
 			const response = await getAllInventoryApi(availableInventory);
-			const inventoryList = response.data.data.data;
+			const inventoryList = response.data.data;
 			setDataOptionInventory(
 				inventoryList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
@@ -159,7 +159,7 @@ const ServiceDisplacement = () => {
 	const fetchDataEmployee = async () => {
 		try {
 			const response = await getAllEmployeeApi(employeeParams);
-			const employeeList = response.data.data.data;
+			const employeeList = response.data.data;
 			setDataOptionEmployee(
 				employeeList.map(v => ({ label: v.emp_name, value: `${v.id}` })),
 			);
@@ -171,7 +171,7 @@ const ServiceDisplacement = () => {
 	const fetchDataCompany = async () => {
 		try {
 			const response = await getAllCompanyApi(companyParams);
-			const companyList = response.data.data.data;
+			const companyList = response.data.data;
 			setDataOptionCompany(
 				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
@@ -183,7 +183,7 @@ const ServiceDisplacement = () => {
 	const fetchDataWorkflow = async () => {
 		try {
 			const response = await getAllWorkflowApi(workflowParams);
-			const workflowList = response.data.data.data;
+			const workflowList = response.data.data;
 			setDataOptionWorkflow(
 				workflowList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
@@ -195,7 +195,7 @@ const ServiceDisplacement = () => {
 	const fetchDataLocation = async () => {
 		try {
 			const response = await getAllLocationApi(locationParams);
-			const locationList = response.data.data.data;
+			const locationList = response.data.data;
 			setDataOptionLocation(
 				locationList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);

@@ -31,6 +31,7 @@ import { CheckAuthentication } from "app/helper/authentication";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ModalFilter } from "./components/modalFilter";
 import { listCheckPermission } from "app/helper/permission";
+import { removeNullFields } from "app/helper/common";
 
 const MasterSubCodeGroup = () => {
 	const navigate = useNavigate();
@@ -88,11 +89,7 @@ const MasterSubCodeGroup = () => {
 	};
 
 	const handleInitialValue = (values: ISubCodeGroup) => {
-		const setData = {
-			id_main_group: values.id_main_group || "",
-			value: values.value || "",
-			code: values.code || "",
-		};
+		const setData = removeNullFields(values);
 		setInitialValue(setData);
 		formRef.current?.setFieldsValue(setData);
 	};
@@ -169,6 +166,7 @@ const MasterSubCodeGroup = () => {
 		const input = {
 			...values,
 			id_main_group: location.state.mainGroupData.id,
+			id_company: location.state.mainGroupData.id_company,
 		};
 		if (showModal.id) {
 			updateSubCodeGroupApi(showModal.id, input).then(res => {
@@ -184,10 +182,6 @@ const MasterSubCodeGroup = () => {
 				});
 			});
 		} else {
-			const input = {
-				...values,
-				id_main_group: location.state.mainGroupData.id,
-			};
 			createNewSubCodeGroupApi(input).then(res => {
 				if (res.data.status === "success") {
 					setShowModal({ show: false });

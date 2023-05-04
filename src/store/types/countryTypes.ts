@@ -1,7 +1,13 @@
+import { ICompany } from "./companyTypes";
 import { PaginationState } from "./paginationTypes";
 export interface ICountry {
 	id: number;
 	name: string | null;
+	id_company: number | null;
+	created_at: string | null;
+	updated_at: string | null;
+	deleted_at: string | null;
+	company: ICompany | null;
 }
 export interface ICountryPaginateResponse extends PaginationState {
 	data: ICountry[];
@@ -13,9 +19,11 @@ export interface ICountryGetAllParams {
 }
 export interface ICreateCountryRequest {
 	name: string;
+	id_company: number;
 }
 export interface IUpdateCountryRequest {
 	name: string;
+	id_company: number;
 }
 export interface ICountryGetAllResponse {
 	status: string;

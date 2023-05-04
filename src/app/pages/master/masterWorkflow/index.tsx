@@ -101,7 +101,7 @@ const MasterWorkflow = () => {
 	const fetchDataCompany = async () => {
 		try {
 			const response = await getAllCompanyApi(companyParams);
-			const companyList = response.data.data.data;
+			const companyList = response.data.data;
 			setDataOptionCompany(
 				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);

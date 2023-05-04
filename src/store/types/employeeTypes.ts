@@ -19,11 +19,13 @@ export interface ICreateEmployeeRequest {
 	nipg: string;
 	emp_name: string;
 	position: string;
+	id_company: number;
 }
 export interface IUpdateEmployeeRequest {
 	nipg: string;
 	emp_name: string;
 	position: string;
+	id_company: number;
 }
 export interface IEmployeeGetAllResponse {
 	status: string;

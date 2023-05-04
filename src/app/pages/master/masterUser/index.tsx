@@ -44,7 +44,7 @@ import { IWorkUnitGetAllParams } from "store/types/workUnitTypes";
 import { getAllWorkUnitApi, getDetailWorkUnitApi } from "api/workUnit";
 import { listCheckPermission } from "app/helper/permission";
 import { intersection } from "lodash";
-import { removeNullFields } from "app/helper/common";
+import { checkDefaultOption, removeNullFields } from "app/helper/common";
 import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 
@@ -134,7 +134,7 @@ const MasterUser = () => {
 	const fetchDataCompany = async () => {
 		try {
 			const response = await getAllCompanyApi(companyParams);
-			const companyList = response.data.data.data;
+			const companyList = response.data.data;
 			setDataOptionCompany(
 				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
@@ -146,7 +146,7 @@ const MasterUser = () => {
 	const fetchDataBusinessUnit = async () => {
 		try {
 			const response = await getAllBusinessUnitApi(businessUnitParams);
-			const businessUnitList = response.data.data.data;
+			const businessUnitList = response.data.data;
 			setDataOptionBusinessUnit(
 				businessUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
@@ -168,7 +168,7 @@ const MasterUser = () => {
 	const fetchDataArea = async () => {
 		try {
 			const response = await getAllAreaApi(areaParams);
-			const areaList = response.data.data.data;
+			const areaList = response.data.data;
 			setDataOptionArea(areaList.map(v => ({ label: v.name, value: v.id })));
 		} catch (error: any) {
 			CheckAuthentication(error);
@@ -188,7 +188,7 @@ const MasterUser = () => {
 	const fetchDataWorkUnit = async () => {
 		try {
 			const response = await getAllWorkUnitApi(workUnitParams);
-			const workUnitList = response.data.data.data;
+			const workUnitList = response.data.data;
 			setDataOptionWorkUnit(
 				workUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
@@ -231,15 +231,34 @@ const MasterUser = () => {
 
 	const handleInitialValue = (values: IUser) => {
 		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionEmployee!, setData.id_pegawai)) {
+			fetchDataEmployeeDetail(setData.id_pegawai);
+		}
+		if (!checkDefaultOption(dataOptionWorkUnit!, setData.id_satker)) {
+			fetchDataWorkUnitDetail(setData.id_satker);
+		}
+		if (!checkDefaultOption(dataOptionArea!, setData.id_area)) {
+			fetchDataAreaDetail(setData.id_area);
+		}
+		if (!checkDefaultOption(dataOptionBusinessUnit!, setData.id_bisnis_unit)) {
+			fetchDataBusinessUnitDetail(setData.id_bisnis_unit);
+		}
 		setInitialValue({
 			...setData,
 			roles: values.user_roles.map(v => v.role_id),
+			password: values.raw_password,
 		});
 		formRef.current?.setFieldsValue({
 			...setData,
 			roles: values.user_roles.map(v => v.role_id),
+			password: values.raw_password,
 		});
 	};
+
+	useEffect(() => {
+		fetchDataEmployee();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [employeeParams]);
 
 	useEffect(() => {
 		fetchDataWorkUnit();
@@ -331,45 +350,63 @@ const MasterUser = () => {
 
 	const onFinish = (values: any) => {
 		if (showModal.uuid) {
-			updateUserApi(showModal.uuid, values).then(res => {
-				if (res.data.success === "success") {
-					setShowModal({ show: false });
-					Swal.fire({
-						icon: "success",
-						title: "User berhasil ditambahkan",
-						showConfirmButton: false,
-						timer: 3000,
-					});
-					fetchDataList();
-				} else {
+			updateUserApi(showModal.uuid, values)
+				.then(res => {
+					if (res.data.success === "success") {
+						setShowModal({ show: false });
+						Swal.fire({
+							icon: "success",
+							title: "User berhasil ditambahkan",
+							showConfirmButton: false,
+							timer: 3000,
+						});
+						fetchDataList();
+					} else {
+						Swal.fire({
+							icon: "error",
+							title: res.data.message,
+							showConfirmButton: false,
+							timer: 3000,
+						});
+					}
+				})
+				.catch((error: any) => {
 					Swal.fire({
 						icon: "error",
-						title: res.data.message,
+						title: error.response.data.message,
 						showConfirmButton: false,
 						timer: 3000,
 					});
-				}
-			});
+				});
 		} else {
-			createNewUserApi(values).then(res => {
-				if (res.data.success === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-					Swal.fire({
-						icon: "success",
-						title: res.data.message,
-						showConfirmButton: false,
-						timer: 3000,
-					});
-				} else {
+			createNewUserApi(values)
+				.then(res => {
+					if (res.data.success === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+						Swal.fire({
+							icon: "success",
+							title: res.data.message,
+							showConfirmButton: false,
+							timer: 3000,
+						});
+					} else {
+						Swal.fire({
+							icon: "error",
+							title: res.data.message,
+							showConfirmButton: false,
+							timer: 3000,
+						});
+					}
+				})
+				.catch((error: any) => {
 					Swal.fire({
 						icon: "error",
-						title: res.data.message,
+						title: error.response.data.message,
 						showConfirmButton: false,
 						timer: 3000,
 					});
-				}
-			});
+				});
 		}
 	};
 
@@ -747,6 +784,40 @@ const MasterUser = () => {
 							</div>
 						</Form.Item>
 					)}
+					<Form.Item
+						name="id_emp"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Pegawai <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setEmployeeParams({ emp_name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionEmployee}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_emp", v);
+										formRef.current?.setFieldsValue({
+											id_emp: v,
+										});
+									}}
+									value={formik.values.id_emp}
+								/>
+							</div>
+						</div>
+					</Form.Item>
 				</Form>
 			</AntdModal>
 

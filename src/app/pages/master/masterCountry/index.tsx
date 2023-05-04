@@ -23,6 +23,7 @@ import {
 	FormInstance,
 	Input,
 	Space,
+	Select,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
@@ -30,6 +31,10 @@ import Swal from "sweetalert2";
 import { CheckAuthentication } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
 import { listCheckPermission } from "app/helper/permission";
+import { ICompanyGetAllParams } from "store/types/companyTypes";
+import { DefaultOptionType } from "antd/es/select";
+import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
+import { checkDefaultOption, removeNullFields } from "app/helper/common";
 
 const MasterCountry = () => {
 	const { Title } = Typography;
@@ -39,6 +44,9 @@ const MasterCountry = () => {
 	const [params, setParams] = useState<ICountryGetAllParams | undefined>({
 		per_page: 10,
 	});
+	const [companyParams, setCompanyParams] = useState<
+		ICompanyGetAllParams | undefined
+	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
@@ -48,10 +56,12 @@ const MasterCountry = () => {
 		sort?: string;
 		order_by?: string;
 	}>();
-	const [initialValue, setInitialValue] = useState<ICreateCountryRequest>({
-		name: "",
-	});
+	const [initialValue, setInitialValue] =
+		useState<Partial<ICreateCountryRequest>>();
 	const [dataTable, setDataTable] = useState<ICountryPaginateResponse>();
+	const [dataOptionCompany, setDataOptionCompany] = useState<
+		DefaultOptionType[] | undefined
+	>();
 
 	const fetchDataList = async () => {
 		try {
@@ -73,10 +83,41 @@ const MasterCountry = () => {
 		}
 	};
 
-	const handleInitialValue = (values: ICountry) => {
-		setInitialValue({ name: values.name || "" });
-		formRef.current?.setFieldsValue({ name: values.name || "" });
+	const fetchDataCompany = async () => {
+		try {
+			const response = await getAllCompanyApi(companyParams);
+			const companyList = response.data.data;
+			setDataOptionCompany(
+				companyList.map(v => ({ label: v.name, value: v.id })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
 	};
+
+	const fetchDataCompanyDetail = async (id: number) => {
+		try {
+			const response = await getDetailCompanyApi(id);
+			const detail = response.data.data;
+			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const handleInitialValue = (values: ICountry) => {
+		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
+			fetchDataCompanyDetail(setData.id_company);
+		}
+		setInitialValue(setData);
+		formRef.current?.setFieldsValue(setData);
+	};
+
+	useEffect(() => {
+		fetchDataCompany();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [companyParams]);
 
 	useEffect(() => {
 		fetchDataList();
@@ -105,8 +146,9 @@ const MasterCountry = () => {
 	});
 
 	const handleAdd = () => {
+		fetchDataCompany();
 		setShowModal({ show: true });
-		setInitialValue({ name: "" });
+		setInitialValue(undefined);
 		formik.resetForm();
 		formRef.current?.resetFields();
 	};
@@ -269,6 +311,40 @@ const MasterCountry = () => {
 									placeholder="Nama Negara"
 									onChange={formik.handleChange}
 									value={formik.values.name}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_company"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Perusahaan <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setCompanyParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionCompany}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_company", v);
+										formRef.current?.setFieldsValue({
+											id_company: v,
+										});
+									}}
+									value={formik.values.id_company}
 								/>
 							</div>
 						</div>

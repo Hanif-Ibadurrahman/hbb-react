@@ -30,6 +30,7 @@ export interface ICreateLocationRequest {
 	id_area: string;
 	id_pegawai: string;
 	id_satker: string;
+	id_company: number;
 	name: string;
 	from_opname: boolean | null;
 }
@@ -38,6 +39,7 @@ export interface IUpdateLocationRequest {
 	id_area: string;
 	id_pegawai: string;
 	id_satker: string;
+	id_company: number;
 	name: string;
 	from_opname: boolean | null;
 }

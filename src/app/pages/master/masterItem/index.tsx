@@ -104,7 +104,7 @@ const MasterItem = () => {
 	const fetchDataCodeGroup = async () => {
 		try {
 			const response = await getAllCodeGroupApi(codeGroupParams);
-			const codeGroupList = response.data.data.data;
+			const codeGroupList = response.data.data;
 			setDataOptionCodeGroup(
 				codeGroupList.map(v => ({ label: v.value, value: v.id })),
 			);
@@ -126,7 +126,7 @@ const MasterItem = () => {
 	const fetchDataSubCodeGroup = async (id: number) => {
 		try {
 			const response = await getAllSubCodeGroupApi(id, subCodeGroupParams);
-			const subGroupList = response.data.data.data;
+			const subGroupList = response.data.data;
 			setDataOptionSubCodeGroup(
 				subGroupList.map(v => ({ label: v.value, value: v.id })),
 			);
@@ -148,7 +148,7 @@ const MasterItem = () => {
 	const fetchDataCompany = async () => {
 		try {
 			const response = await getAllCompanyApi(companyParams);
-			const companyList = response.data.data.data;
+			const companyList = response.data.data;
 			setDataOptionCompany(
 				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
@@ -170,7 +170,7 @@ const MasterItem = () => {
 	const fetchDataColor = async () => {
 		try {
 			const response = await getAllColorApi(colorParams);
-			const colorList = response.data.data.data;
+			const colorList = response.data.data;
 			setDataOptionColor(
 				colorList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
@@ -418,9 +418,19 @@ const MasterItem = () => {
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
-					<Form.Item name="id_main_group">
+					<Form.Item
+						name="id_main_group"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
 						<div className="form-group">
-							<Title level={5}>Main Group</Title>
+							<Title level={5}>
+								Main Group <span className="text-danger">*</span>
+							</Title>
 							<div className="controls">
 								<Select
 									showSearch
@@ -442,9 +452,19 @@ const MasterItem = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item name="id_sub_group">
+					<Form.Item
+						name="id_sub_group"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
 						<div className="form-group">
-							<Title level={5}>Sub Group</Title>
+							<Title level={5}>
+								Sub Group <span className="text-danger">*</span>
+							</Title>
 							<div className="controls">
 								<Select
 									showSearch

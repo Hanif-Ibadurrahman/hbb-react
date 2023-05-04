@@ -20,8 +20,10 @@ export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 		},
 		{
 			title: "Perusahaan",
-			dataIndex: "id_company",
 			sorter: true,
+			render: (text, record, index) => {
+				return record.company?.name;
+			},
 		},
 		{
 			title: "Action",
