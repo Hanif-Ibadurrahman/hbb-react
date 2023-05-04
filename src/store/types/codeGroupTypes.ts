@@ -14,8 +14,9 @@ export interface ICodeGroupPaginateResponse extends PaginationState {
 export interface ICodeGroupGetAllParams {
 	page?: number;
 	per_page?: number;
-	value?: string;
+	group?: string;
 	code?: string;
+	company?: string;
 }
 export interface ICreateCodeGroupRequest {
 	value: string;

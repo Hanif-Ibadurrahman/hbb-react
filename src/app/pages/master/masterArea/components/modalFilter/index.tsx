@@ -79,17 +79,12 @@ export const ModalFilter = ({
 						</Form.Item>
 					</Col>
 					<Col span={24}>
-						<Form.Item name="daerah" label="Daerah">
-							<SelectWithTag />
-						</Form.Item>
-					</Col>
-					<Col span={24}>
-						<Form.Item name="pengelola" label="Pengelola">
-							<SelectWithTag />
-						</Form.Item>
-					</Col>
-					<Col span={24}>
 						<Form.Item name="nipg" label="NIPG">
+							<SelectWithTag />
+						</Form.Item>
+					</Col>
+					<Col span={24}>
+						<Form.Item name="daerah" label="Daerah">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
@@ -99,7 +94,12 @@ export const ModalFilter = ({
 						</Form.Item>
 					</Col>
 					<Col span={24}>
-						<Form.Item name="id_bisnis_unit" label="Bisnis Unit">
+						<Form.Item name="pengelola" label="Pengelola">
+							<SelectWithTag />
+						</Form.Item>
+					</Col>
+					<Col span={24}>
+						<Form.Item name="bisnis_unit" label="Bisnis Unit">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>

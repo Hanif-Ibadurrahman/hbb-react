@@ -27,7 +27,7 @@ export const columns = ({
 		},
 		{
 			title: "Inventory",
-			dataIndex: "id_inventory",
+			dataIndex: "inventory_name",
 			sorter: true,
 		},
 		{
@@ -42,7 +42,7 @@ export const columns = ({
 		},
 		{
 			title: "Perusahaan",
-			dataIndex: "id_company",
+			dataIndex: "company_name",
 			sorter: true,
 		},
 		{

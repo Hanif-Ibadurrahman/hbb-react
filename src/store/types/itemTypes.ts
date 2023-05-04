@@ -34,6 +34,8 @@ export interface IItemGetAllParams {
 	warna?: string;
 	kapasitas?: string;
 	ukuran?: string;
+	satuan?: string;
+	company?: string;
 }
 
 export interface ICreateItemRequest {

@@ -16,6 +16,7 @@ export interface ICountryGetAllParams {
 	page?: number;
 	per_page?: number;
 	name?: string;
+	company?: string;
 }
 export interface ICreateCountryRequest {
 	name: string;

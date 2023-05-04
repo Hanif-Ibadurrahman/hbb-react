@@ -1,5 +1,4 @@
 import { PaginationState } from "./paginationTypes";
-
 export interface IInventory {
 	id: number;
 	name: string | null;
@@ -29,8 +28,8 @@ export interface IInventory {
 
 export interface IInventoryDetail {
 	id: number;
-	id_lokasi: string | null;
-	inventory_type: number;
+	id_lokasi: number | null;
+	inventory_type: number | null;
 	year: string | null;
 	serial_no: string | null;
 	code: string | null;
@@ -53,36 +52,36 @@ export interface IInventoryDetail {
 	no_bpkb: string | null;
 	contract_no: string | null;
 	contract_date: string | null;
-	price: number;
-	condition: number;
+	price: number | null;
+	condition: number | null;
 	remark: string | null;
 	upload: string | null;
 	location_before: string | null;
 	location: string | null;
-	status: number;
-	is_approved: boolean;
+	status: number | null;
+	is_approved: boolean | null;
 	nipg: string | null;
-	id_main_group: string | null;
-	id_sub_group: string | null;
-	approve_by: string | null;
-	jumlah: number;
+	id_main_group: number | null;
+	id_sub_group: number | null;
+	approve_by: number | null;
+	jumlah: number | null;
 	no_akuntansi: string | null;
-	id_barang: string | null;
-	id_country: string | null;
-	id_color: string | null;
+	id_barang: number | null;
+	id_country: number | null;
+	id_color: number | null;
 	id_area: string | null;
-	id_location: string | null;
+	id_location: number | null;
 	id_penanggung_jawab: string | null;
-	id_satker: string | null;
-	ever_hapus: number;
-	ever_transaksi: number;
+	id_satker: number | null;
+	ever_hapus: number | null;
+	ever_transaksi: number | null;
 	distributor: string | null;
-	ever_pindah: number;
+	ever_pindah: number | null;
 	area: string | null;
 	satker: string | null;
 	penanggung_jawab: string | null;
-	id_bisnis_unit: string | null;
-	id_company: string | null;
+	id_bisnis_unit: number | null;
+	id_company: number | null;
 }
 export interface IInventoryPaginateResponse extends PaginationState {
 	data: IInventory[];

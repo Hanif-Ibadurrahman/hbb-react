@@ -24,7 +24,6 @@ import { CheckAuthentication } from "app/helper/authentication";
 import { columns } from "./components/table/columnAndDataType";
 import {
 	ICreateInventoryRequest,
-	IInventory,
 	IInventoryDetail,
 	IInventoryGetAllParams,
 } from "store/types/inventoryTypes";
@@ -41,27 +40,34 @@ import { ICodeGroupGetAllParams } from "store/types/codeGroupTypes";
 import { ISubCodeGroupGetAllParams } from "store/types/subCodeGroupTypes";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { IItemGetAllParams } from "store/types/itemTypes";
-import { getAllCodeGroupApi } from "api/codeGroup";
-import { getAllSubCodeGroupApi } from "api/subCodeGroup";
-import { getAllCompanyApi } from "api/company";
+import { getAllCodeGroupApi, getDetailCodeGroupApi } from "api/codeGroup";
+import {
+	getAllSubCodeGroupApi,
+	getDetailSubCodeGroupApi,
+} from "api/subCodeGroup";
+import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
 import { IColorGetAllParams } from "store/types/colorTypes";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 import { IBusinessUnitGetAllParams } from "store/types/businessUnitTypes";
-import { getAllEmployeeApi } from "api/employee";
-import { getAllBusinessUnitApi } from "api/businessUnit";
+import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
+import {
+	getAllBusinessUnitApi,
+	getDetailBusinessUnitApi,
+} from "api/businessUnit";
 import { ILocationGetAllParams } from "store/types/locationTypes";
-import { getAllColorApi } from "api/color";
-import { getAllLocationApi } from "api/location";
+import { getAllColorApi, getDetailColorApi } from "api/color";
+import { getAllLocationApi, getDetailLocationApi } from "api/location";
 import { IWorkUnitGetAllParams } from "store/types/workUnitTypes";
 import { IAreaGetAllParams } from "store/types/areaTypes";
-import { getAllAreaApi } from "api/area";
-import { getAllWorkUnitApi } from "api/workUnit";
-import { getAllItemApi } from "api/item";
+import { getAllAreaApi, getDetailAreaApi } from "api/area";
+import { getAllWorkUnitApi, getDetailWorkUnitApi } from "api/workUnit";
+import { getAllItemApi, getDetailItemApi } from "api/item";
 import { IConditionGetAllParams } from "store/types/conditionTypes";
-import { getAllConditionApi } from "api/condition";
-import { getAllCountryApi } from "api/country";
+import { getAllConditionApi, getDetailConditionApi } from "api/condition";
+import { getAllCountryApi, getDetailCountryApi } from "api/country";
 import { ICountryGetAllParams } from "store/types/countryTypes";
-import { removeNullFields } from "app/helper/common";
+import { checkDefaultOption, removeNullFields } from "app/helper/common";
+import { isUndefined } from "lodash";
 
 const HbbInventory = () => {
 	dayjs.extend(customParseFormat);
@@ -180,8 +186,18 @@ const HbbInventory = () => {
 			const response = await getAllCodeGroupApi(codeGroupParams);
 			const codeGroupList = response.data.data;
 			setDataOptionCodeGroup(
-				codeGroupList.map(v => ({ label: v.value, value: `${v.id}` })),
+				codeGroupList.map(v => ({ label: v.value, value: v.id })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataCodeGroupDetail = async (id: number) => {
+		try {
+			const response = await getDetailCodeGroupApi(id);
+			const detail = response.data.data;
+			setDataOptionCodeGroup([{ label: detail.value, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -192,8 +208,18 @@ const HbbInventory = () => {
 			const response = await getAllSubCodeGroupApi(id, subCodeGroupParams);
 			const areaList = response.data.data;
 			setDataOptionSubCodeGroup(
-				areaList.map(v => ({ label: v.value, value: `${v.id}` })),
+				areaList.map(v => ({ label: v.value, value: v.id })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataSubCodeGroupDetail = async (id: number) => {
+		try {
+			const response = await getDetailSubCodeGroupApi(id);
+			const detail = response.data.data;
+			setDataOptionSubCodeGroup([{ label: detail.value, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -204,8 +230,18 @@ const HbbInventory = () => {
 			const response = await getAllCountryApi(countryParams);
 			const countryList = response.data.data;
 			setDataOptionCountry(
-				countryList.map(v => ({ label: v.name, value: `${v.id}` })),
+				countryList.map(v => ({ label: v.name, value: v.id })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataCountryDetail = async (id: number) => {
+		try {
+			const response = await getDetailCountryApi(id);
+			const detail = response.data.data;
+			setDataOptionCountry([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -214,10 +250,20 @@ const HbbInventory = () => {
 	const fetchDataEmployee = async () => {
 		try {
 			const response = await getAllEmployeeApi(employeeParams);
-			const employeeList = response.data.data;
+			const employeeList = response.data.data.data;
 			setDataOptionEmployee(
-				employeeList.map(v => ({ label: v.emp_name, value: `${v.nipg}` })),
+				employeeList.map(v => ({ label: v.emp_name, value: v.nipg })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataEmployeeDetail = async (id: number) => {
+		try {
+			const response = await getDetailEmployeeApi(id);
+			const detail = response.data.data;
+			setDataOptionEmployee([{ label: detail.emp_name, value: detail.nipg }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -226,10 +272,18 @@ const HbbInventory = () => {
 	const fetchDataItem = async () => {
 		try {
 			const response = await getAllItemApi(itemParams);
-			const itemList = response.data.data;
-			setDataOptionItem(
-				itemList.map(v => ({ label: v.name, value: `${v.id}` })),
-			);
+			const itemList = response.data.data.data;
+			setDataOptionItem(itemList.map(v => ({ label: v.name, value: v.id })));
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataItemDetail = async (id: number) => {
+		try {
+			const response = await getDetailItemApi(id);
+			const detail = response.data.data;
+			setDataOptionItem([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -240,8 +294,18 @@ const HbbInventory = () => {
 			const response = await getAllConditionApi(conditionParams);
 			const conditionList = response.data.data;
 			setDataOptionCondition(
-				conditionList.map(v => ({ label: v.name, value: `${v.id}` })),
+				conditionList.map(v => ({ label: v.name, value: v.id })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataConditionDetail = async (id: number) => {
+		try {
+			const response = await getDetailConditionApi(id);
+			const detail = response.data.data;
+			setDataOptionCondition([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -252,8 +316,18 @@ const HbbInventory = () => {
 			const response = await getAllLocationApi(locationParams);
 			const locationList = response.data.data;
 			setDataOptionLocation(
-				locationList.map(v => ({ label: v.name, value: `${v.id}` })),
+				locationList.map(v => ({ label: v.name, value: v.id })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataLocationDetail = async (id: number) => {
+		try {
+			const response = await getDetailLocationApi(id);
+			const detail = response.data.data;
+			setDataOptionLocation([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -263,9 +337,17 @@ const HbbInventory = () => {
 		try {
 			const response = await getAllColorApi(colorParams);
 			const colorList = response.data.data;
-			setDataOptionColor(
-				colorList.map(v => ({ label: v.name, value: `${v.id}` })),
-			);
+			setDataOptionColor(colorList.map(v => ({ label: v.name, value: v.id })));
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataColorDetail = async (id: number) => {
+		try {
+			const response = await getDetailColorApi(id);
+			const detail = response.data.data;
+			setDataOptionColor([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -276,8 +358,18 @@ const HbbInventory = () => {
 			const response = await getAllBusinessUnitApi(businessUnitParams);
 			const businessUnitList = response.data.data;
 			setDataOptionBusinessUnit(
-				businessUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
+				businessUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataBusinessUnitDetail = async (id: number) => {
+		try {
+			const response = await getDetailBusinessUnitApi(id);
+			const detail = response.data.data;
+			setDataOptionBusinessUnit([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -295,6 +387,16 @@ const HbbInventory = () => {
 		}
 	};
 
+	const fetchDataAreaDetail = async (id: number) => {
+		try {
+			const response = await getDetailAreaApi(id);
+			const detail = response.data.data;
+			setDataOptionArea([{ label: detail.name, value: `${detail.id}` }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
 	const fetchDataWorkUnit = async () => {
 		try {
 			const response = await getAllWorkUnitApi(workUnitParams);
@@ -307,13 +409,33 @@ const HbbInventory = () => {
 		}
 	};
 
+	const fetchDataWorkUnitDetail = async (id: number) => {
+		try {
+			const response = await getDetailWorkUnitApi(id);
+			const detail = response.data.data;
+			setDataOptionWorkUnit([{ label: detail.name, value: detail.id }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
 	const fetchDataCompany = async () => {
 		try {
 			const response = await getAllCompanyApi(companyParams);
 			const companyList = response.data.data;
 			setDataOptionCompany(
-				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
+				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataCompanyDetail = async (id: number) => {
+		try {
+			const response = await getDetailCompanyApi(id);
+			const detail = response.data.data;
+			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -321,6 +443,42 @@ const HbbInventory = () => {
 
 	const handleInitialValue = (values: IInventoryDetail) => {
 		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionCodeGroup!, setData.id_main_group)) {
+			fetchDataCodeGroupDetail(setData.id_main_group);
+		}
+		if (!checkDefaultOption(dataOptionSubCodeGroup!, setData.id_sub_group)) {
+			fetchDataSubCodeGroupDetail(setData.id_sub_group);
+		}
+		if (!checkDefaultOption(dataOptionCountry!, setData.id_country)) {
+			fetchDataCountryDetail(setData.id_country);
+		}
+		if (!checkDefaultOption(dataOptionEmployee!, setData.penanggung_jawab)) {
+			fetchDataEmployeeDetail(setData.penanggung_jawab);
+		}
+		if (!checkDefaultOption(dataOptionItem!, setData.id_barang)) {
+			fetchDataItemDetail(setData.id_barang);
+		}
+		if (!checkDefaultOption(dataOptionCondition!, setData.condition)) {
+			fetchDataConditionDetail(setData.condition);
+		}
+		if (!checkDefaultOption(dataOptionLocation!, setData.id_location)) {
+			fetchDataLocationDetail(setData.id_location);
+		}
+		if (!checkDefaultOption(dataOptionWorkUnit!, setData.id_satker)) {
+			fetchDataWorkUnitDetail(setData.id_satker);
+		}
+		if (!checkDefaultOption(dataOptionArea!, setData.id_area)) {
+			fetchDataAreaDetail(setData.id_area);
+		}
+		if (!checkDefaultOption(dataOptionBusinessUnit!, setData.id_bisnis_unit)) {
+			fetchDataBusinessUnitDetail(setData.id_bisnis_unit);
+		}
+		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
+			fetchDataCompanyDetail(setData.id_company);
+		}
+		if (!checkDefaultOption(dataOptionColor!, setData.id_color)) {
+			fetchDataColorDetail(setData.id_color);
+		}
 		setInitialValue(setData);
 		formRef.current?.setFieldsValue(setData);
 	};
@@ -380,22 +538,33 @@ const HbbInventory = () => {
 
 	useEffect(() => {
 		const mainGroupId = formik.values.id_main_group;
-		if (mainGroupId) {
+		if (mainGroupId && initialValue?.id_main_group) {
+			if (mainGroupId !== initialValue.id_main_group) {
+				formik.setFieldValue("id_sub_group", undefined);
+				formRef.current?.setFieldsValue({
+					id_sub_group: undefined,
+				});
+			}
 			fetchDataSubCodeGroup(mainGroupId);
 		}
-
-		if (!showModal.id && showModal.show) {
-			setInitialValue({
-				...initialValue,
-				id_sub_group: undefined,
-			});
+		if (mainGroupId && isUndefined(initialValue?.id_main_group)) {
+			fetchDataSubCodeGroup(mainGroupId);
 			formik.setFieldValue("id_sub_group", undefined);
 			formRef.current?.setFieldsValue({
 				id_sub_group: undefined,
 			});
 		}
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [subCodeGroupParams, formik.values.id_main_group]);
+	}, [formik.values.id_main_group]);
+
+	useEffect(() => {
+		const mainGroupId = formik.values.id_main_group;
+		if (mainGroupId) {
+			fetchDataSubCodeGroup(mainGroupId);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [subCodeGroupParams]);
 
 	useEffect(() => {
 		fetchDataCompany();
@@ -549,7 +718,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setCodeGroupParams({ value: v })}
+									onSearch={v => setCodeGroupParams({ group: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()
@@ -583,7 +752,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setSubCodeGroupParams({ value: v })}
+									onSearch={v => setSubCodeGroupParams({ group: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()
@@ -685,7 +854,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setLocationParams({ name: v })}
+									onSearch={v => setLocationParams({ lokasi: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()
@@ -753,7 +922,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setWorkUnitParams({ name: v })}
+									onSearch={v => setWorkUnitParams({ satker: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()
@@ -896,6 +1065,7 @@ const HbbInventory = () => {
 											price: parseInt(nilai),
 										});
 									}}
+									value={formik.values.price}
 								/>
 							</div>
 						</div>
@@ -922,6 +1092,7 @@ const HbbInventory = () => {
 											e.preventDefault();
 										}
 									}}
+									value={formik.values.jumlah}
 								/>
 							</div>
 						</div>
@@ -1042,7 +1213,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setColorParams({ name: v })}
+									onSearch={v => setColorParams({ color: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()
@@ -1203,6 +1374,28 @@ const HbbInventory = () => {
 									placeholder="Nomor BATS/DO"
 									onChange={formik.handleChange}
 									value={formik.values.no_bast}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item name="date_bast">
+						<div className="form-group">
+							<Title level={5}>Tanggal BAST</Title>
+							<div className="controls">
+								<DatePicker
+									className="form-control"
+									onChange={(value, dateString) => {
+										formik.setFieldValue("date_bast", dateString);
+										formRef.current?.setFieldsValue({
+											date_bast: dateString,
+										});
+									}}
+									format={"YYYY-MM-DD"}
+									value={
+										formik.values.date_bast
+											? dayjs(formik.values.date_bast, "YYYY-MM-DD")
+											: undefined
+									}
 								/>
 							</div>
 						</div>

@@ -26,10 +26,11 @@ export interface IWorkUnitPaginateResponse extends PaginationState {
 export interface IWorkUnitGetAllParams {
 	page?: number;
 	per_page?: number;
-	name?: string;
+	satker?: string;
 	bisnis_unit?: string;
 	area?: string;
 	kepala_satker?: string;
+	company?: string;
 }
 
 export interface ICreateWorkUnitRequest {

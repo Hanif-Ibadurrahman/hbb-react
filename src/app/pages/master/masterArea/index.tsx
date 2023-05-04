@@ -407,9 +407,34 @@ const MasterArea = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item name="id_emp">
+					<Form.Item name="pemegang">
 						<div className="form-group">
 							<Title level={5}>Pemegang</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="pemegang"
+									className="form-control"
+									placeholder="Pemegang"
+									onChange={formik.handleChange}
+									value={formik.values.pemegang}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_emp"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Pengelola <span className="text-danger">*</span>
+							</Title>
 							<div className="controls">
 								<Select
 									showSearch

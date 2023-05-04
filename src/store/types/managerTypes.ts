@@ -21,6 +21,7 @@ export interface IManagerGetAllParams {
 	nama_pengelola?: string;
 	nipg?: string;
 	jabatan?: string;
+	company?: string;
 }
 
 export interface ICreateManagerRequest {

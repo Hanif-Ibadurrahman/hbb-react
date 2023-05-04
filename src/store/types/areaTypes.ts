@@ -22,14 +22,17 @@ export interface IAreaGetAllParams {
 	page?: number;
 	per_page?: number;
 	name?: string;
+	nipg?: string;
 	daerah?: string;
 	pemegang?: string;
+	pengelola?: string;
 	bisnis_unit?: string;
 	company?: string;
 }
 export interface ICreateAreaRequest {
 	name: string;
 	daerah: string;
+	pemegang: string;
 	id_bisnis_unit: number;
 	id_company: number;
 	id_emp: number;
@@ -37,6 +40,7 @@ export interface ICreateAreaRequest {
 export interface IUpdateAreaRequest {
 	name: string;
 	daerah: string;
+	pemegang: string;
 	id_bisnis_unit: number;
 	id_company: number;
 	id_emp: number;

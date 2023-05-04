@@ -680,7 +680,7 @@ const ServiceDisplacement = () => {
 								<div className="controls">
 									<Select
 										showSearch
-										onSearch={v => setLocationParams({ name: v })}
+										onSearch={v => setLocationParams({ lokasi: v })}
 										filterOption={(input, option) =>
 											(`${option?.label}` ?? "")
 												.toLowerCase()

@@ -16,6 +16,7 @@ export interface IConditionGetAllParams {
 	page?: number;
 	per_page?: number;
 	name?: string;
+	company?: string;
 }
 export interface ICreateConditionRequest {
 	name: string;

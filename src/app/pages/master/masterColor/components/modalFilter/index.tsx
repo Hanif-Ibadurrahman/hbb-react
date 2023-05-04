@@ -1,6 +1,7 @@
 import { Button, Col, Drawer, Form, Row, Space } from "antd";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { Dispatch, SetStateAction } from "react";
+import { TokenDekode } from "app/helper/authentication";
+import { Dispatch, SetStateAction, useMemo } from "react";
 import { IColorGetAllParams } from "store/types/colorTypes";
 
 interface IModalFilter {
@@ -15,6 +16,22 @@ export const ModalFilter = ({
 	setParams,
 }: IModalFilter) => {
 	const [formFilter] = Form.useForm();
+	const tokenDecode = TokenDekode();
+
+	const generateContent = useMemo(() => {
+		const isSuperadmin = Object.values(tokenDecode?.user?.roles ?? {}).includes(
+			"Super Admin",
+		);
+		if (isSuperadmin) {
+			return (
+				<Col span={24}>
+					<Form.Item name="company" label="Perusahaan">
+						<SelectWithTag />
+					</Form.Item>
+				</Col>
+			);
+		}
+	}, [tokenDecode]);
 
 	const handleSubmit = v => {
 		const filterParams = Object.entries(v).reduce((res, curr) => {
@@ -57,10 +74,11 @@ export const ModalFilter = ({
 			<Form form={formFilter} layout="vertical" onFinish={handleSubmit}>
 				<Row gutter={16}>
 					<Col span={24}>
-						<Form.Item name="name" label="Warna">
+						<Form.Item name="color" label="Warna">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
+					{generateContent}
 				</Row>
 			</Form>
 		</Drawer>

@@ -29,6 +29,11 @@ export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 			sorter: true,
 		},
 		{
+			title: "Pengelola",
+			dataIndex: "pengelola_name",
+			sorter: true,
+		},
+		{
 			title: "Bisnis Unit",
 			dataIndex: "bisnis_unit",
 			sorter: true,

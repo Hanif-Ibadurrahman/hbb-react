@@ -24,5 +24,5 @@ export const updateItemApi = (id: number, input: IUpdateItemRequest) => {
 };
 
 export const deleteItemApi = (id: number) => {
-	return apiWithToken.delete(`/api/master/Item/${id}`);
+	return apiWithToken.delete(`/api/master/item/${id}`);
 };

@@ -31,7 +31,10 @@ import { DefaultOptionType } from "antd/es/select";
 import { ICodeGroupGetAllParams } from "store/types/codeGroupTypes";
 import { ISubCodeGroupGetAllParams } from "store/types/subCodeGroupTypes";
 import { getAllCodeGroupApi, getDetailCodeGroupApi } from "api/codeGroup";
-import { getAllSubCodeGroupApi } from "api/subCodeGroup";
+import {
+	getAllSubCodeGroupApi,
+	getDetailSubCodeGroupApi,
+} from "api/subCodeGroup";
 import { useFormik } from "formik";
 import { getAllColorApi, getDetailColorApi } from "api/color";
 import { IColorGetAllParams } from "store/types/colorTypes";
@@ -40,6 +43,7 @@ import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
 import { listCheckPermission } from "app/helper/permission";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
+import { isUndefined } from "lodash";
 
 const MasterItem = () => {
 	const { Title } = Typography;
@@ -137,7 +141,7 @@ const MasterItem = () => {
 
 	const fetchDataSubCodeGroupDetail = async (id: number) => {
 		try {
-			const response = await getDetailCodeGroupApi(id);
+			const response = await getDetailSubCodeGroupApi(id);
 			const detail = response.data.data;
 			setDataOptionSubCodeGroup([{ label: detail.value, value: detail.id }]);
 		} catch (error: any) {
@@ -230,21 +234,33 @@ const MasterItem = () => {
 
 	useEffect(() => {
 		const mainGroupId = formik.values.id_main_group;
-		if (mainGroupId) {
+		if (mainGroupId && initialValue?.id_main_group) {
+			if (mainGroupId !== initialValue.id_main_group) {
+				formik.setFieldValue("id_sub_group", undefined);
+				formRef.current?.setFieldsValue({
+					id_sub_group: undefined,
+				});
+			}
 			fetchDataSubCodeGroup(mainGroupId);
 		}
-		if (!showModal.id && showModal.show) {
-			setInitialValue({
-				...initialValue,
-				id_sub_group: undefined,
-			});
+		if (mainGroupId && isUndefined(initialValue?.id_main_group)) {
+			fetchDataSubCodeGroup(mainGroupId);
 			formik.setFieldValue("id_sub_group", undefined);
 			formRef.current?.setFieldsValue({
 				id_sub_group: undefined,
 			});
 		}
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [subCodeGroupParams, formik.values.id_main_group]);
+	}, [formik.values.id_main_group]);
+
+	useEffect(() => {
+		const mainGroupId = formik.values.id_main_group;
+		if (mainGroupId) {
+			fetchDataSubCodeGroup(mainGroupId);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [subCodeGroupParams]);
 
 	useEffect(() => {
 		fetchDataCompany();
@@ -434,7 +450,7 @@ const MasterItem = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setCodeGroupParams({ value: v })}
+									onSearch={v => setCodeGroupParams({ group: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()
@@ -468,7 +484,7 @@ const MasterItem = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setSubCodeGroupParams({ value: v })}
+									onSearch={v => setSubCodeGroupParams({ group: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()
@@ -611,7 +627,7 @@ const MasterItem = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setColorParams({ name: v })}
+									onSearch={v => setColorParams({ color: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()

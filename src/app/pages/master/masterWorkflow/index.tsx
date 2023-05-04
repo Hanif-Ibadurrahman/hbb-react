@@ -36,9 +36,10 @@ import { CheckAuthentication } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
 import { DefaultOptionType } from "antd/es/select";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
-import { getAllCompanyApi } from "api/company";
+import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
 import { SelectWithTag } from "app/components/selectWithTag";
 import { listCheckPermission } from "app/helper/permission";
+import { checkDefaultOption, removeNullFields } from "app/helper/common";
 
 const MasterWorkflow = () => {
 	const { Title } = Typography;
@@ -110,20 +111,28 @@ const MasterWorkflow = () => {
 		}
 	};
 
+	const fetchDataCompanyDetail = async (id: number) => {
+		try {
+			const response = await getDetailCompanyApi(id);
+			const detail = response.data.data;
+			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
 	const handleInitialValue = (values: IWorkflow) => {
+		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
+			fetchDataCompanyDetail(setData.id_company);
+		}
 		setInitialValue({
-			name: values.name || "",
-			description: values.description || "",
-			created_at: values.created_at || "",
-			id_company: values.id_company || "",
-			is_reverse: values.is_reverse,
+			...setData,
+			roles: values.roles?.split(",").map(Number),
 		});
 		formRef.current?.setFieldsValue({
-			name: values.name || "",
-			description: values.description || "",
-			created_at: values.created_at || "",
-			id_company: values.id_company || "",
-			is_reverse: values.is_reverse,
+			...setData,
+			roles: values.roles?.split(",").map(Number),
 		});
 	};
 
