@@ -43,6 +43,8 @@ import { ModalFilter } from "./components/modalFilter";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 import { listCheckPermission } from "app/helper/permission";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
+import { ICompanyGetAllParams } from "store/types/companyTypes";
+import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
 
 const MasterLocation = () => {
 	const { Title } = Typography;
@@ -61,6 +63,9 @@ const MasterLocation = () => {
 	>();
 	const [employeeParams, setEmployeeParams] = useState<
 		IEmployeeGetAllParams | undefined
+	>();
+	const [companyParams, setCompanyParams] = useState<
+		ICompanyGetAllParams | undefined
 	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
@@ -84,6 +89,9 @@ const MasterLocation = () => {
 		DefaultOptionType[] | undefined
 	>();
 	const [dataOptionEmployee, setDataOptionEmployee] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionCompany, setDataOptionCompany] = useState<
 		DefaultOptionType[] | undefined
 	>();
 
@@ -110,7 +118,7 @@ const MasterLocation = () => {
 	const fetchDataBusinessUnit = async () => {
 		try {
 			const response = await getAllBusinessUnitApi(businessUnitParams);
-			const businessUnitList = response.data.data.data;
+			const businessUnitList = response.data.data;
 			setDataOptionBusinessUnit(
 				businessUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
@@ -132,7 +140,7 @@ const MasterLocation = () => {
 	const fetchDataArea = async () => {
 		try {
 			const response = await getAllAreaApi(areaParams);
-			const areaList = response.data.data.data;
+			const areaList = response.data.data;
 			setDataOptionArea(areaList.map(v => ({ label: v.name, value: v.id })));
 		} catch (error: any) {
 			CheckAuthentication(error);
@@ -152,7 +160,7 @@ const MasterLocation = () => {
 	const fetchDataWorkUnit = async () => {
 		try {
 			const response = await getAllWorkUnitApi(workUnitParams);
-			const workUnitList = response.data.data.data;
+			const workUnitList = response.data.data;
 			setDataOptionWorkUnit(
 				workUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
@@ -193,6 +201,28 @@ const MasterLocation = () => {
 		}
 	};
 
+	const fetchDataCompany = async () => {
+		try {
+			const response = await getAllCompanyApi(companyParams);
+			const companyList = response.data.data;
+			setDataOptionCompany(
+				companyList.map(v => ({ label: v.name, value: v.id })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataCompanyDetail = async (id: number) => {
+		try {
+			const response = await getDetailCompanyApi(id);
+			const detail = response.data.data;
+			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
 	const handleInitialValue = (values: ILocation) => {
 		const setData = removeNullFields(values);
 		if (!checkDefaultOption(dataOptionBusinessUnit!, setData.id_bisnis_unit)) {
@@ -204,12 +234,20 @@ const MasterLocation = () => {
 		if (!checkDefaultOption(dataOptionWorkUnit!, setData.id_satker)) {
 			fetchDataWorkUnitDetail(setData.id_satker);
 		}
-		if (!checkDefaultOption(dataOptionWorkUnit!, setData.id_pegawai)) {
+		if (!checkDefaultOption(dataOptionEmployee!, setData.id_pegawai)) {
 			fetchDataEmployeeDetail(setData.id_pegawai);
+		}
+		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
+			fetchDataCompanyDetail(setData.id_company);
 		}
 		setInitialValue(setData);
 		formRef.current?.setFieldsValue(setData);
 	};
+
+	useEffect(() => {
+		fetchDataCompany();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [companyParams]);
 
 	useEffect(() => {
 		fetchDataBusinessUnit();
@@ -407,9 +445,19 @@ const MasterLocation = () => {
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
-					<Form.Item name="id_bisnis_unit">
+					<Form.Item
+						name="id_bisnis_unit"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
 						<div className="form-group">
-							<Title level={5}>Bisnis Unit</Title>
+							<Title level={5}>
+								Bisnis Unit <span className="text-danger">*</span>
+							</Title>
 							<div className="controls">
 								<Select
 									showSearch
@@ -431,9 +479,19 @@ const MasterLocation = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item name="id_area">
+					<Form.Item
+						name="id_area"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
 						<div className="form-group">
-							<Title level={5}>Area</Title>
+							<Title level={5}>
+								Area <span className="text-danger">*</span>
+							</Title>
 							<div className="controls">
 								<Select
 									showSearch
@@ -455,9 +513,19 @@ const MasterLocation = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item name="id_satker">
+					<Form.Item
+						name="id_satker"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
 						<div className="form-group">
-							<Title level={5}>Satuan Kerja</Title>
+							<Title level={5}>
+								Satuan Kerja <span className="text-danger">*</span>
+							</Title>
 							<div className="controls">
 								<Select
 									showSearch
@@ -504,9 +572,19 @@ const MasterLocation = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item name="id_pegawai">
+					<Form.Item
+						name="id_pegawai"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
 						<div className="form-group">
-							<Title level={5}>Penanggung Jawab</Title>
+							<Title level={5}>
+								Penanggung Jawab <span className="text-danger">*</span>
+							</Title>
 							<div className="controls">
 								<Select
 									showSearch
@@ -524,6 +602,40 @@ const MasterLocation = () => {
 										});
 									}}
 									value={formik.values.id_pegawai}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_company"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Perusahaan <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setCompanyParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionCompany}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_company", v);
+										formRef.current?.setFieldsValue({
+											id_company: v,
+										});
+									}}
+									value={formik.values.id_company}
 								/>
 							</div>
 						</div>

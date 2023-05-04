@@ -30,6 +30,7 @@ import { deleteCountryApi } from "api/country";
 import { CheckAuthentication } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
 import { listCheckPermission } from "app/helper/permission";
+import { removeNullFields } from "app/helper/common";
 
 const MasterCompany = () => {
 	const { Title } = Typography;
@@ -48,10 +49,8 @@ const MasterCompany = () => {
 		sort?: string;
 		order_by?: string;
 	}>();
-	const [initialValue, setInitialValue] = useState<ICreateCompanyRequest>({
-		name: "",
-		code: "",
-	});
+	const [initialValue, setInitialValue] =
+		useState<Partial<ICreateCompanyRequest>>();
 	const [dataTable, setDataTable] = useState<ICompanyPaginateResponse>();
 
 	const fetchDataList = async () => {
@@ -75,7 +74,7 @@ const MasterCompany = () => {
 	};
 
 	const handleInitialValue = (values: ICompany) => {
-		const setData = { name: values.name || "", code: values.code || "" };
+		const setData = removeNullFields(values);
 		setInitialValue(setData);
 		formRef.current?.setFieldsValue(setData);
 	};
@@ -108,7 +107,7 @@ const MasterCompany = () => {
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		setInitialValue({ name: "", code: "" });
+		setInitialValue(undefined);
 		formik.resetForm();
 		formRef.current?.resetFields();
 	};
@@ -150,18 +149,27 @@ const MasterCompany = () => {
 
 	const onFinish = (values: any) => {
 		if (showModal.id) {
-			updateCompanyApi(showModal.id, values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			updateCompanyApi(showModal.id, values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		} else {
 			createNewCompanyApi(values).then(res => {
 				if (res.data.status === "success") {

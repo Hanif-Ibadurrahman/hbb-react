@@ -22,6 +22,7 @@ import {
 	Form,
 	FormInstance,
 	Input,
+	Select,
 	Space,
 	Typography,
 } from "antd";
@@ -30,7 +31,10 @@ import Swal from "sweetalert2";
 import { CheckAuthentication } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
 import { listCheckPermission } from "app/helper/permission";
-import { removeNullFields } from "app/helper/common";
+import { checkDefaultOption, removeNullFields } from "app/helper/common";
+import { ICompanyGetAllParams } from "store/types/companyTypes";
+import { DefaultOptionType } from "antd/es/select";
+import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
 
 const MasterEmployee = () => {
 	const { Title } = Typography;
@@ -40,6 +44,9 @@ const MasterEmployee = () => {
 	const [params, setParams] = useState<IEmployeeGetAllParams | undefined>({
 		per_page: 10,
 	});
+	const [companyParams, setCompanyParams] = useState<
+		ICompanyGetAllParams | undefined
+	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
@@ -52,6 +59,9 @@ const MasterEmployee = () => {
 	const [initialValue, setInitialValue] =
 		useState<Partial<ICreateEmployeeRequest>>();
 	const [dataTable, setDataTable] = useState<IEmployeePaginateResponse>();
+	const [dataOptionCompany, setDataOptionCompany] = useState<
+		DefaultOptionType[] | undefined
+	>();
 
 	const fetchDataList = async () => {
 		try {
@@ -73,11 +83,41 @@ const MasterEmployee = () => {
 		}
 	};
 
+	const fetchDataCompany = async () => {
+		try {
+			const response = await getAllCompanyApi(companyParams);
+			const companyList = response.data.data;
+			setDataOptionCompany(
+				companyList.map(v => ({ label: v.name, value: v.id })),
+			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataCompanyDetail = async (id: number) => {
+		try {
+			const response = await getDetailCompanyApi(id);
+			const detail = response.data.data;
+			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
 	const handleInitialValue = (values: IEmployee) => {
 		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
+			fetchDataCompanyDetail(setData.id_company);
+		}
 		setInitialValue(setData);
 		formRef.current?.setFieldsValue(setData);
 	};
+
+	useEffect(() => {
+		fetchDataCompany();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [companyParams]);
 
 	useEffect(() => {
 		fetchDataList();
@@ -106,6 +146,7 @@ const MasterEmployee = () => {
 	});
 
 	const handleAdd = () => {
+		fetchDataCompany();
 		setShowModal({ show: true });
 		setInitialValue(undefined);
 		formik.resetForm();
@@ -310,6 +351,40 @@ const MasterEmployee = () => {
 									placeholder="Jabatan"
 									onChange={formik.handleChange}
 									value={formik.values.position}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_company"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Perusahaan <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setCompanyParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionCompany}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_company", v);
+										formRef.current?.setFieldsValue({
+											id_company: v,
+										});
+									}}
+									value={formik.values.id_company}
 								/>
 							</div>
 						</div>

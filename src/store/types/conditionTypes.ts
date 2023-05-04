@@ -1,7 +1,13 @@
+import { ICompany } from "./companyTypes";
 import { PaginationState } from "./paginationTypes";
 export interface ICondition {
 	id: number;
 	name: string | null;
+	id_company: number | null;
+	created_at: string | null;
+	updated_at: string | null;
+	deleted_at: string | null;
+	company: ICompany | null;
 }
 export interface IConditionPaginateResponse extends PaginationState {
 	data: ICondition[];
@@ -13,9 +19,11 @@ export interface IConditionGetAllParams {
 }
 export interface ICreateConditionRequest {
 	name: string;
+	id_company: number;
 }
 export interface IUpdateConditionRequest {
 	name: string;
+	id_company: number;
 }
 export interface IConditionGetAllResponse {
 	status: string;

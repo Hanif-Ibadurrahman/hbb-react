@@ -178,7 +178,7 @@ const HbbInventory = () => {
 	const fetchDataCodeGroup = async () => {
 		try {
 			const response = await getAllCodeGroupApi(codeGroupParams);
-			const codeGroupList = response.data.data.data;
+			const codeGroupList = response.data.data;
 			setDataOptionCodeGroup(
 				codeGroupList.map(v => ({ label: v.value, value: `${v.id}` })),
 			);
@@ -190,7 +190,7 @@ const HbbInventory = () => {
 	const fetchDataSubCodeGroup = async (id: number) => {
 		try {
 			const response = await getAllSubCodeGroupApi(id, subCodeGroupParams);
-			const areaList = response.data.data.data;
+			const areaList = response.data.data;
 			setDataOptionSubCodeGroup(
 				areaList.map(v => ({ label: v.value, value: `${v.id}` })),
 			);
@@ -202,7 +202,7 @@ const HbbInventory = () => {
 	const fetchDataCountry = async () => {
 		try {
 			const response = await getAllCountryApi(countryParams);
-			const countryList = response.data.data.data;
+			const countryList = response.data.data;
 			setDataOptionCountry(
 				countryList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
@@ -214,7 +214,7 @@ const HbbInventory = () => {
 	const fetchDataEmployee = async () => {
 		try {
 			const response = await getAllEmployeeApi(employeeParams);
-			const employeeList = response.data.data.data;
+			const employeeList = response.data.data;
 			setDataOptionEmployee(
 				employeeList.map(v => ({ label: v.emp_name, value: `${v.nipg}` })),
 			);
@@ -226,7 +226,7 @@ const HbbInventory = () => {
 	const fetchDataItem = async () => {
 		try {
 			const response = await getAllItemApi(itemParams);
-			const itemList = response.data.data.data;
+			const itemList = response.data.data;
 			setDataOptionItem(
 				itemList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
@@ -238,7 +238,7 @@ const HbbInventory = () => {
 	const fetchDataCondition = async () => {
 		try {
 			const response = await getAllConditionApi(conditionParams);
-			const conditionList = response.data.data.data;
+			const conditionList = response.data.data;
 			setDataOptionCondition(
 				conditionList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
@@ -250,7 +250,7 @@ const HbbInventory = () => {
 	const fetchDataLocation = async () => {
 		try {
 			const response = await getAllLocationApi(locationParams);
-			const locationList = response.data.data.data;
+			const locationList = response.data.data;
 			setDataOptionLocation(
 				locationList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
@@ -262,7 +262,7 @@ const HbbInventory = () => {
 	const fetchDataColor = async () => {
 		try {
 			const response = await getAllColorApi(colorParams);
-			const colorList = response.data.data.data;
+			const colorList = response.data.data;
 			setDataOptionColor(
 				colorList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
@@ -274,7 +274,7 @@ const HbbInventory = () => {
 	const fetchDataBusinessUnit = async () => {
 		try {
 			const response = await getAllBusinessUnitApi(businessUnitParams);
-			const businessUnitList = response.data.data.data;
+			const businessUnitList = response.data.data;
 			setDataOptionBusinessUnit(
 				businessUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
@@ -286,7 +286,7 @@ const HbbInventory = () => {
 	const fetchDataArea = async () => {
 		try {
 			const response = await getAllAreaApi(areaParams);
-			const areaList = response.data.data.data;
+			const areaList = response.data.data;
 			setDataOptionArea(
 				areaList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
@@ -298,7 +298,7 @@ const HbbInventory = () => {
 	const fetchDataWorkUnit = async () => {
 		try {
 			const response = await getAllWorkUnitApi(workUnitParams);
-			const workUnitList = response.data.data.data;
+			const workUnitList = response.data.data;
 			setDataOptionWorkUnit(
 				workUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
@@ -310,7 +310,7 @@ const HbbInventory = () => {
 	const fetchDataCompany = async () => {
 		try {
 			const response = await getAllCompanyApi(companyParams);
-			const companyList = response.data.data.data;
+			const companyList = response.data.data;
 			setDataOptionCompany(
 				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);

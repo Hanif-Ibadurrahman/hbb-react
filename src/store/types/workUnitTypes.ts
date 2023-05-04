@@ -1,5 +1,6 @@
 import { IArea } from "./areaTypes";
 import { IBusinessUnit } from "./businessUnitTypes";
+import { ICompany } from "./companyTypes";
 import { IEmployee } from "./employeeTypes";
 import { PaginationState } from "./paginationTypes";
 
@@ -14,6 +15,7 @@ export interface IWorkUnit {
 	created_at: string | null;
 	updated_at: string | null;
 	deleted_at: string | null;
+	company: ICompany | null;
 	bisnis_unit: IBusinessUnit | null;
 	area: IArea | null;
 	employee?: IEmployee | null;
