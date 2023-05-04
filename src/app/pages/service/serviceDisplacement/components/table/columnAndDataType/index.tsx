@@ -27,27 +27,27 @@ export const columns = ({
 		},
 		{
 			title: "Inventory",
-			dataIndex: "id_inventory",
+			dataIndex: "inventory_name",
 			sorter: true,
 		},
 		{
 			title: "Dari User",
-			dataIndex: "from_user",
+			dataIndex: "from_name",
 			sorter: true,
 		},
 		{
 			title: "Untuk User",
-			dataIndex: "to_user",
+			dataIndex: "to_name",
 			sorter: true,
 		},
 		{
 			title: "Perusahaan",
-			dataIndex: "id_company",
+			dataIndex: "company_name",
 			sorter: true,
 		},
 		{
 			title: "Lokasi",
-			dataIndex: "id_lokasi",
+			dataIndex: "location_name",
 			sorter: true,
 		},
 		{

@@ -34,6 +34,11 @@ export interface IServiceDisplacement {
 	updated_at: string | null;
 	deleted_at: string | null;
 	id_company: string | null;
+	from_name: string | null;
+	to_name: string | null;
+	company_name: string | null;
+	inventory_name: string | null;
+	location_name: string | null;
 }
 
 export interface IServiceDisplacementPaginateResponse extends PaginationState {

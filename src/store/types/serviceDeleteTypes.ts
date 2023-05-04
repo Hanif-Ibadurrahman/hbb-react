@@ -31,6 +31,8 @@ export interface IServiceDelete {
 	updated_at: string | null;
 	deleted_at: string | null;
 	id_approval: string | null;
+	inventory_name: string | null;
+	company_name: string | null;
 }
 
 export interface IServiceDeletePaginateResponse extends PaginationState {

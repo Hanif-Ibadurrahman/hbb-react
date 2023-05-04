@@ -1,3 +1,4 @@
+import { ICompany } from "./companyTypes";
 import { PaginationState } from "./paginationTypes";
 export interface IWorkflow {
 	id: number;
@@ -5,9 +6,11 @@ export interface IWorkflow {
 	description: string | null;
 	roles: string | null;
 	created_at: string | null;
+	updated_at: string | null;
 	deleted_at: string | null;
 	id_company: string | null;
 	is_reverse: boolean;
+	company: ICompany | null;
 }
 export interface IWorkflowPaginateResponse extends PaginationState {
 	data: IWorkflow[];
