@@ -595,6 +595,17 @@ const HbbInventory = () => {
 	}, [businessUnitParams]);
 
 	const handleAdd = () => {
+		fetchDataCountry();
+		fetchDataWorkUnit();
+		fetchDataItem();
+		fetchDataCondition();
+		fetchDataArea();
+		fetchDataLocation();
+		fetchDataCodeGroup();
+		fetchDataCompany();
+		fetchDataColor();
+		fetchDataEmployee();
+		fetchDataBusinessUnit();
 		setShowModal({ show: true });
 		setInitialValue(undefined);
 		formik.resetForm();

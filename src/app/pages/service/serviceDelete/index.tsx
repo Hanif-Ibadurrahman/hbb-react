@@ -137,7 +137,7 @@ const ServiceDelete = () => {
 		try {
 			const availableInventory = { ...inventoryParams, status: 1 };
 			const response = await getAllInventoryApi(availableInventory);
-			const inventoryList = response.data.data;
+			const inventoryList = response.data.data.data;
 			setDataOptionInventory(
 				inventoryList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
@@ -149,7 +149,7 @@ const ServiceDelete = () => {
 	const fetchDataEmployee = async () => {
 		try {
 			const response = await getAllEmployeeApi(employeeParams);
-			const employeeList = response.data.data;
+			const employeeList = response.data.data.data;
 			setDataOptionEmployee(
 				employeeList.map(v => ({ label: v.emp_name, value: `${v.id}` })),
 			);
@@ -173,7 +173,7 @@ const ServiceDelete = () => {
 	const fetchDataWorkflow = async () => {
 		try {
 			const response = await getAllWorkflowApi(workflowParams);
-			const workflowList = response.data.data;
+			const workflowList = response.data.data.data;
 			setDataOptionWorkflow(
 				workflowList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
