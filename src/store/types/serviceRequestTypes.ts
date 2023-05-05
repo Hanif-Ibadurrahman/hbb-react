@@ -5,11 +5,11 @@ export interface IServiceRequest {
 	date: string | null;
 	remark: string | null;
 	uraian: string | null;
-	approve_by: string | null;
-	status: string | null;
+	approve_by: number | null;
+	status: number | null;
 	entry_stamp: string | null;
 	edit_stamp: string | null;
-	del: string | null;
+	del: boolean | null;
 	reject: string | null;
 	date_start: string | null;
 	date_order: string | null;
@@ -19,14 +19,14 @@ export interface IServiceRequest {
 	ekskutor: string | null;
 	nama_peminta: string | null;
 	nama_pemakai: string | null;
-	id_division_head: string | null;
+	id_division_head: number | null;
 	upload: string | null;
-	id_area: string | null;
-	id_role: string | null;
-	created_by: string | null;
+	id_area: number | null;
+	id_role: number | null;
+	created_by: number | null;
 	tipe: string | null;
-	id_company: string | null;
-	id_approval: string | null;
+	id_company: number | null;
+	id_approval: number | null;
 	inventory_description: string | null;
 	spesification: string | null;
 	created_at: string | null;
@@ -52,9 +52,9 @@ export interface ICreateServiceRequestRequest {
 	condition: string;
 	nama_pemakai: string;
 	spesification: string;
-	id_company: string;
-	id_workflow: string;
-	created_by: string;
+	id_company: number;
+	id_workflow: number;
+	created_by: number;
 	files: any | null;
 }
 export interface IUpdateServiceRequestRequest {
@@ -63,9 +63,9 @@ export interface IUpdateServiceRequestRequest {
 	condition: string;
 	nama_pemakai: string;
 	spesification: string;
-	id_company: string;
-	id_workflow: string;
-	created_by: string;
+	id_company: number;
+	id_workflow: number;
+	created_by: number;
 	files: any | null;
 }
 export interface IServiceRequestGetAllResponse {

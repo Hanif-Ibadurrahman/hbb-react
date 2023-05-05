@@ -122,32 +122,11 @@ const ServiceDisplacement = () => {
 		}
 	};
 
-	const handleInitialValue = (values: IServiceDisplacement) => {
-		setInitialValue({
-			date: values.date || "",
-			id_inventory: values.id_inventory || "",
-			from_user: values.from_user || "",
-			to_user: values.to_user || "",
-			id_company: values.id_company || "",
-			id_lokasi: values.id_lokasi || "",
-			id_workflow: "",
-		});
-		formRef.current?.setFieldsValue({
-			date: values.date || "",
-			id_inventory: values.id_inventory || "",
-			from_user: values.from_user || "",
-			to_user: values.to_user || "",
-			id_company: values.id_company || "",
-			id_lokasi: values.id_lokasi || "",
-			id_workflow: "",
-		});
-	};
-
 	const fetchDataInventory = async () => {
 		try {
 			const availableInventory = { ...inventoryParams, status: 1 };
 			const response = await getAllInventoryApi(availableInventory);
-			const inventoryList = response.data.data;
+			const inventoryList = response.data.data.data;
 			setDataOptionInventory(
 				inventoryList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
@@ -159,7 +138,7 @@ const ServiceDisplacement = () => {
 	const fetchDataEmployee = async () => {
 		try {
 			const response = await getAllEmployeeApi(employeeParams);
-			const employeeList = response.data.data;
+			const employeeList = response.data.data.data;
 			setDataOptionEmployee(
 				employeeList.map(v => ({ label: v.emp_name, value: `${v.id}` })),
 			);
@@ -183,7 +162,7 @@ const ServiceDisplacement = () => {
 	const fetchDataWorkflow = async () => {
 		try {
 			const response = await getAllWorkflowApi(workflowParams);
-			const workflowList = response.data.data;
+			const workflowList = response.data.data.data;
 			setDataOptionWorkflow(
 				workflowList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
@@ -202,6 +181,27 @@ const ServiceDisplacement = () => {
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
+	};
+
+	const handleInitialValue = (values: IServiceDisplacement) => {
+		setInitialValue({
+			date: values.date || "",
+			id_inventory: values.id_inventory || "",
+			from_user: values.from_user || "",
+			to_user: values.to_user || "",
+			id_company: values.id_company || "",
+			id_lokasi: values.id_lokasi || "",
+			id_workflow: "",
+		});
+		formRef.current?.setFieldsValue({
+			date: values.date || "",
+			id_inventory: values.id_inventory || "",
+			from_user: values.from_user || "",
+			to_user: values.to_user || "",
+			id_company: values.id_company || "",
+			id_lokasi: values.id_lokasi || "",
+			id_workflow: "",
+		});
 	};
 
 	useEffect(() => {

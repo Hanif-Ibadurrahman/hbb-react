@@ -40,11 +40,12 @@ import { listCheckPermission } from "app/helper/permission";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 import { DefaultOptionType } from "antd/es/select";
-import { getAllCompanyApi } from "api/company";
-import { getAllEmployeeApi } from "api/employee";
+import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
+import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
 import { IWorkflowGetAllParams } from "store/types/workflowTypes";
-import { getAllWorkflowApi } from "api/workflow";
+import { getAllWorkflowApi, getDetailWorkflowApi } from "api/workflow";
 import { ModalFilter } from "./components/modalFilter";
+import { checkDefaultOption, removeNullFields } from "app/helper/common";
 
 const ServiceRequest = () => {
 	const { Title } = Typography;
@@ -80,17 +81,7 @@ const ServiceRequest = () => {
 		order_by?: string;
 	}>();
 	const [initialValue, setInitialValue] =
-		useState<ICreateServiceRequestRequest>({
-			inventory_description: "",
-			uraian: "",
-			condition: "",
-			created_by: "",
-			files: null,
-			id_company: "",
-			id_workflow: "",
-			nama_pemakai: "",
-			spesification: "",
-		});
+		useState<Partial<ICreateServiceRequestRequest>>();
 	const [dataTable, setDataTable] = useState<IServiceRequestPaginateResponse>();
 	const [dataOptionCompany, setDataOptionCompany] = useState<
 		DefaultOptionType[] | undefined
@@ -123,8 +114,18 @@ const ServiceRequest = () => {
 			const response = await getAllCompanyApi(companyParams);
 			const companyList = response.data.data;
 			setDataOptionCompany(
-				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
+				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataCompanyDetail = async (id: number) => {
+		try {
+			const response = await getDetailCompanyApi(id);
+			const detail = response.data.data;
+			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -133,10 +134,20 @@ const ServiceRequest = () => {
 	const fetchDataEmployee = async () => {
 		try {
 			const response = await getAllEmployeeApi(employeeParams);
-			const employeeList = response.data.data;
+			const employeeList = response.data.data.data;
 			setDataOptionEmployee(
-				employeeList.map(v => ({ label: v.emp_name, value: `${v.id}` })),
+				employeeList.map(v => ({ label: v.emp_name, value: v.id })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataEmployeeDetail = async (id: number) => {
+		try {
+			const response = await getDetailEmployeeApi(id);
+			const detail = response.data.data;
+			setDataOptionEmployee([{ label: detail.emp_name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -145,10 +156,20 @@ const ServiceRequest = () => {
 	const fetchDataWorkflow = async () => {
 		try {
 			const response = await getAllWorkflowApi(workflowParams);
-			const workflowList = response.data.data;
+			const workflowList = response.data.data.data;
 			setDataOptionWorkflow(
-				workflowList.map(v => ({ label: v.name, value: `${v.id}` })),
+				workflowList.map(v => ({ label: v.name, value: v.id })),
 			);
+		} catch (error: any) {
+			CheckAuthentication(error);
+		}
+	};
+
+	const fetchDataWorkflowDetail = async (id: number) => {
+		try {
+			const response = await getDetailWorkflowApi(id);
+			const detail = response.data.data;
+			setDataOptionWorkflow([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
 			CheckAuthentication(error);
 		}
@@ -210,28 +231,18 @@ const ServiceRequest = () => {
 	}, [showModal]);
 
 	const handleInitialValue = (values: IServiceRequest) => {
-		setInitialValue({
-			inventory_description: values.inventory_description || "",
-			uraian: values.uraian || "",
-			condition: values.condition || "",
-			created_by: values.created_by || "",
-			files: null,
-			id_company: values.id_company || "",
-			id_workflow: "",
-			nama_pemakai: values.nama_pemakai || "",
-			spesification: values.spesification || "",
-		});
-		formRef.current?.setFieldsValue({
-			inventory_description: values.inventory_description || "",
-			uraian: values.uraian || "",
-			condition: values.condition || "",
-			created_by: values.created_by || "",
-			files: null,
-			id_company: values.id_company || "",
-			id_workflow: "",
-			nama_pemakai: values.nama_pemakai || "",
-			spesification: values.spesification || "",
-		});
+		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
+			fetchDataCompanyDetail(setData.id_company);
+		}
+		if (!checkDefaultOption(dataOptionEmployee!, setData.penanggung_jawab)) {
+			fetchDataEmployeeDetail(setData.penanggung_jawab);
+		}
+		if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
+			fetchDataWorkflowDetail(setData.id_workflow);
+		}
+		setInitialValue(setData);
+		formRef.current?.setFieldsValue(setData);
 		setFiles(null);
 		setFileList(null);
 	};
@@ -282,18 +293,11 @@ const ServiceRequest = () => {
 	};
 
 	const handleAdd = () => {
+		fetchDataEmployee();
+		fetchDataCompany();
+		fetchDataWorkflow();
 		setShowModal({ show: true });
-		setInitialValue({
-			inventory_description: "",
-			uraian: "",
-			condition: "",
-			created_by: "",
-			files: null,
-			id_company: "",
-			id_workflow: "",
-			nama_pemakai: "",
-			spesification: "",
-		});
+		setInitialValue(undefined);
 		setFiles(null);
 		setFileList(null);
 		formik.resetForm();
@@ -669,7 +673,7 @@ const ServiceRequest = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_company", v);
 										formRef.current?.setFieldsValue({
-											id_company: parseInt(v),
+											id_company: v,
 										});
 									}}
 									value={formik.values.id_company}
@@ -693,7 +697,7 @@ const ServiceRequest = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("created_by", v);
 										formRef.current?.setFieldsValue({
-											created_by: parseInt(v),
+											created_by: v,
 										});
 									}}
 									value={formik.values.created_by}
@@ -727,7 +731,7 @@ const ServiceRequest = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_workflow", v);
 										formRef.current?.setFieldsValue({
-											id_workflow: parseInt(v),
+											id_workflow: v,
 										});
 									}}
 									value={formik.values.id_workflow}
