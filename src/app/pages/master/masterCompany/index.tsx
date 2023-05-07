@@ -27,7 +27,7 @@ import {
 	ICreateCompanyRequest,
 } from "store/types/companyTypes";
 import { deleteCountryApi } from "api/country";
-import { CheckAuthentication } from "app/helper/authentication";
+import { CheckResponse } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
 import { listCheckPermission } from "app/helper/permission";
 import { removeNullFields } from "app/helper/common";
@@ -60,7 +60,7 @@ const MasterCompany = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -69,7 +69,7 @@ const MasterCompany = () => {
 			const response = await getDetailCompanyApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 

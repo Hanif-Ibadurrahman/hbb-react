@@ -1,9 +1,78 @@
+import {
+	getAllItemApi,
+	getTotalHbbApi,
+	getTotalHbbValueApi,
+	getTotalInventoryApi,
+	getTotalInventoryValueApi,
+} from "api/dashboard";
 import { ColumnChart } from "app/components/chart/column";
 import { LineChart } from "app/components/chart/line";
 import { PieChart } from "app/components/chart/pie";
+import { CheckResponse } from "app/helper/authentication";
 import { MainLayout } from "app/layout/mainLayout";
+import { useEffect, useState } from "react";
 
 const Dashboard = () => {
+	const [allItem, setAllItem] = useState(0);
+	const [totalInventory, setTotalInventory] = useState(0);
+	const [totalHbb, setTotalHbb] = useState(0);
+	const [totalInventoryValue, setTotalInventoryValue] = useState(0);
+	const [totalHbbValue, setTotalHbbValue] = useState(0);
+
+	const fetchDataAllItem = async () => {
+		try {
+			const response = await getAllItemApi();
+			setAllItem(response.data.data);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataTotalInventory = async () => {
+		try {
+			const response = await getTotalInventoryApi();
+			setTotalInventory(response.data.data);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataTotalHbb = async () => {
+		try {
+			const response = await getTotalHbbApi();
+			setTotalHbb(response.data.data);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataTotalHbbValue = async () => {
+		try {
+			const response = await getTotalHbbValueApi();
+			setTotalHbbValue(response.data.data);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataTotalInventoryValue = async () => {
+		try {
+			const response = await getTotalInventoryValueApi();
+			setTotalInventoryValue(response.data.data);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	useEffect(() => {
+		fetchDataAllItem();
+		fetchDataTotalInventory();
+		fetchDataTotalHbb();
+		fetchDataTotalInventoryValue();
+		fetchDataTotalHbbValue();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	const fetchDataLine = {
 		months: ["Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
 		data: [
@@ -29,7 +98,7 @@ const Dashboard = () => {
 		<MainLayout>
 			<section className="content">
 				<div className="row">
-					<div className="col-xl-2 col-lg-6 col-12">
+					<div className="col-xl-3 col-lg-6 col-12">
 						<div className="box">
 							<div className="box-body">
 								<div className="d-flex justify-content-between">
@@ -42,11 +111,11 @@ const Dashboard = () => {
 							</div>
 						</div>
 					</div>
-					<div className="col-xl-2 col-lg-6 col-12">
+					<div className="col-xl-3 col-lg-6 col-12">
 						<div className="box">
 							<div className="box-body">
 								<div className="d-flex justify-content-between">
-									<h5 className="fw-600 text-danger my-0">2454</h5>
+									<h5 className="fw-600 text-danger my-0">{allItem}</h5>
 									{/* <div className="bg-danger rounded-circle fs-24 l-h-40 h-40 w-40 text-center">
 										<i className="fa fa-dropbox"></i>
 									</div> */}
@@ -55,12 +124,12 @@ const Dashboard = () => {
 							</div>
 						</div>
 					</div>
-					<div className="col-xl-2 col-lg-6 col-12">
+					<div className="col-xl-3 col-lg-6 col-12">
 						<div className="box">
 							<div className="box-body">
 								<div className="d-flex justify-content-between">
 									<div>
-										<h5 className="fw-600 text-info my-0">1227</h5>
+										<h5 className="fw-600 text-info my-0">{totalHbb}</h5>
 									</div>
 									{/* <div className="bg-info rounded-circle fs-24 l-h-40 h-40 w-40 text-center">
 										<i className="fa fa-dropbox"></i>
@@ -70,12 +139,14 @@ const Dashboard = () => {
 							</div>
 						</div>
 					</div>
-					<div className="col-xl-2 col-lg-6 col-12">
+					<div className="col-xl-3 col-lg-6 col-12">
 						<div className="box">
 							<div className="box-body">
 								<div className="d-flex justify-content-between">
 									<div>
-										<h5 className="fw-600 text-warning my-0">1227</h5>
+										<h5 className="fw-600 text-warning my-0">
+											{totalInventory}
+										</h5>
 									</div>
 									{/* <div className="bg-warning rounded-circle fs-24 l-h-40 h-40 w-40 text-center">
 										<i className="fa fa-dropbox"></i>
@@ -85,12 +156,14 @@ const Dashboard = () => {
 							</div>
 						</div>
 					</div>
-					<div className="col-xl-2 col-lg-6 col-12">
+					<div className="col-xl-6 col-12">
 						<div className="box">
 							<div className="box-body">
 								<div className="d-flex justify-content-between">
 									<div>
-										<h5 className="fw-600 text-success my-0">Rp 532k</h5>
+										<h5 className="fw-600 text-success my-0">
+											Rp. {totalHbbValue}
+										</h5>
 									</div>
 									{/* <div className="bg-success rounded-circle fs-24 l-h-40 h-40 w-40 text-center">
 										<i className="fa fa-dollar"></i>
@@ -100,12 +173,14 @@ const Dashboard = () => {
 							</div>
 						</div>
 					</div>
-					<div className="col-xl-2 col-lg-6 col-12">
+					<div className="col-xl-6 col-12">
 						<div className="box">
 							<div className="box-body">
 								<div className="d-flex justify-content-between">
 									<div>
-										<h5 className="fw-600 text-mute my-0">Rp 532k</h5>
+										<h5 className="fw-600 text-mute my-0">
+											Rp. {totalInventoryValue}
+										</h5>
 									</div>
 									{/* <div className="bg-mute rounded-circle fs-24 l-h-40 h-40 w-40 text-center">
 										<i className="fa fa-dollar"></i>

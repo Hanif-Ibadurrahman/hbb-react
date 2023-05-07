@@ -34,10 +34,10 @@ import {
 } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
-import { CheckAuthentication } from "app/helper/authentication";
+import { CheckResponse } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
-import { getAllCompanyApi } from "api/company";
+import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
 import { listCheckPermission } from "app/helper/permission";
@@ -90,7 +90,22 @@ const MasterArea = () => {
 				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataCompanyDetail = async (id: number) => {
+		try {
+			const response = await getDetailCompanyApi(id);
+			const detail = response.data.data;
+			setDataOptionCompany(
+				dataOptionCompany?.concat({
+					label: detail.name,
+					value: detail.id,
+				}),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
 		}
 	};
 
@@ -102,7 +117,7 @@ const MasterArea = () => {
 				employeeList.map(v => ({ label: v.emp_name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -110,9 +125,14 @@ const MasterArea = () => {
 		try {
 			const response = await getDetailEmployeeApi(id);
 			const detail = response.data.data;
-			setDataOptionEmployee([{ label: detail.emp_name, value: detail.id }]);
+			setDataOptionEmployee(
+				dataOptionEmployee?.concat({
+					label: detail.emp_name,
+					value: detail.id,
+				}),
+			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -123,7 +143,7 @@ const MasterArea = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -132,7 +152,7 @@ const MasterArea = () => {
 			const response = await getDetailAreaApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -144,7 +164,7 @@ const MasterArea = () => {
 				businessUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -152,14 +172,22 @@ const MasterArea = () => {
 		try {
 			const response = await getDetailBusinessUnitApi(id);
 			const detail = response.data.data;
-			setDataOptionBusinessUnit([{ label: detail.name, value: detail.id }]);
+			setDataOptionBusinessUnit(
+				dataOptionBusinessUnit?.concat({
+					label: detail.name,
+					value: detail.id,
+				}),
+			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
 	const handleInitialValue = async (values: IArea) => {
 		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
+			fetchDataCompanyDetail(setData.id_company);
+		}
 		if (!checkDefaultOption(dataOptionEmployee!, setData.id_emp)) {
 			fetchDataEmployeeDetail(setData.id_emp);
 		}
@@ -212,8 +240,6 @@ const MasterArea = () => {
 	});
 
 	const handleAdd = () => {
-		fetchDataEmployee();
-		fetchDataBusinessUnit();
 		setShowModal({ show: true });
 		setInitialValue(undefined);
 		formik.resetForm();
@@ -257,31 +283,49 @@ const MasterArea = () => {
 
 	const onFinish = (values: any) => {
 		if (showModal.id) {
-			updateAreaApi(showModal.id, values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			updateAreaApi(showModal.id, values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		} else {
-			createNewAreaApi(values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			createNewAreaApi(values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		}
 	};
 

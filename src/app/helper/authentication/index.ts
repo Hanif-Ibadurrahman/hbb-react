@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 import { ITokenDecode } from "store/types/loginTypes";
 import jwtDecode from "jwt-decode";
 
-export const CheckAuthentication = (error: any) => {
+export const CheckResponse = (error: any) => {
 	if (error?.response?.data?.error === "Unauthenticated") {
 		sessionStorage.clear();
 		return Swal.fire({

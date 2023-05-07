@@ -28,7 +28,7 @@ import {
 } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
-import { CheckAuthentication } from "app/helper/authentication";
+import { CheckResponse } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { DefaultOptionType } from "antd/es/select";
@@ -70,7 +70,7 @@ const MasterBusinessUnit = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -79,7 +79,7 @@ const MasterBusinessUnit = () => {
 			const response = await getDetailBusinessUnitApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -91,7 +91,7 @@ const MasterBusinessUnit = () => {
 				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -99,9 +99,11 @@ const MasterBusinessUnit = () => {
 		try {
 			const response = await getDetailCompanyApi(id);
 			const detail = response.data.data;
-			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
+			setDataOptionCompany(
+				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -190,18 +192,27 @@ const MasterBusinessUnit = () => {
 
 	const onFinish = (values: any) => {
 		if (showModal.id) {
-			updateBusinessUnitApi(showModal.id, values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			updateBusinessUnitApi(showModal.id, values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		} else {
 			createNewBusinessUnitApi(values).then(res => {
 				if (res.data.status === "success") {
@@ -213,6 +224,13 @@ const MasterBusinessUnit = () => {
 					title: res.data.message,
 					showConfirmButton: false,
 					timer: 3000,
+				}).catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
 			});
 		}

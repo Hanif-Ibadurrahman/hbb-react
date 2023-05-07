@@ -34,7 +34,7 @@ import {
 	updateServiceRequestApi,
 } from "api/serviceRequest";
 import { IServiceRequest } from "store/types/serviceRequestTypes";
-import { CheckAuthentication } from "app/helper/authentication";
+import { CheckResponse } from "app/helper/authentication";
 import { UploadOutlined } from "@ant-design/icons";
 import { listCheckPermission } from "app/helper/permission";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
@@ -117,7 +117,7 @@ const ServiceRequest = () => {
 				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -125,9 +125,11 @@ const ServiceRequest = () => {
 		try {
 			const response = await getDetailCompanyApi(id);
 			const detail = response.data.data;
-			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
+			setDataOptionCompany(
+				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -139,7 +141,7 @@ const ServiceRequest = () => {
 				employeeList.map(v => ({ label: v.emp_name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -147,9 +149,14 @@ const ServiceRequest = () => {
 		try {
 			const response = await getDetailEmployeeApi(id);
 			const detail = response.data.data;
-			setDataOptionEmployee([{ label: detail.emp_name, value: detail.id }]);
+			setDataOptionEmployee(
+				dataOptionEmployee?.concat({
+					label: detail.emp_name,
+					value: detail.id,
+				}),
+			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -161,7 +168,7 @@ const ServiceRequest = () => {
 				workflowList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -169,9 +176,11 @@ const ServiceRequest = () => {
 		try {
 			const response = await getDetailWorkflowApi(id);
 			const detail = response.data.data;
-			setDataOptionWorkflow([{ label: detail.name, value: detail.id }]);
+			setDataOptionWorkflow(
+				dataOptionWorkflow?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -182,7 +191,7 @@ const ServiceRequest = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -191,7 +200,7 @@ const ServiceRequest = () => {
 			const response = await getDetailServiceRequestApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -235,8 +244,8 @@ const ServiceRequest = () => {
 		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
 			fetchDataCompanyDetail(setData.id_company);
 		}
-		if (!checkDefaultOption(dataOptionEmployee!, setData.penanggung_jawab)) {
-			fetchDataEmployeeDetail(setData.penanggung_jawab);
+		if (!checkDefaultOption(dataOptionEmployee!, setData.created_by)) {
+			fetchDataEmployeeDetail(setData.created_by);
 		}
 		if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
 			fetchDataWorkflowDetail(setData.id_workflow);
@@ -264,8 +273,9 @@ const ServiceRequest = () => {
 
 		swalCustom
 			.fire({
-				title: "Apakah anda yakin?",
-				text: "Ingin menyetujui permintaan ini",
+				title: "Apakah anda yakin ingin menyetujui permintaan ini?",
+				text: "Ada catatan?",
+				input: "text",
 				icon: "warning",
 				showCancelButton: true,
 				confirmButtonText: "Approve",
@@ -293,9 +303,6 @@ const ServiceRequest = () => {
 	};
 
 	const handleAdd = () => {
-		fetchDataEmployee();
-		fetchDataCompany();
-		fetchDataWorkflow();
 		setShowModal({ show: true });
 		setInitialValue(undefined);
 		setFiles(null);
@@ -389,35 +396,53 @@ const ServiceRequest = () => {
 
 	const onFinish = (values: any) => {
 		if (showModal.id) {
-			updateServiceRequestApi(showModal.id, values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			updateServiceRequestApi(showModal.id, values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		} else {
 			const input = {
 				...values,
 				files: files,
 			};
-			createNewServiceRequestApi(input).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			createNewServiceRequestApi(input)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		}
 	};
 
@@ -532,6 +557,40 @@ const ServiceRequest = () => {
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
+					<Form.Item
+						name="id_company"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Perusahaan <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setCompanyParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionCompany}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_company", v);
+										formRef.current?.setFieldsValue({
+											id_company: v,
+										});
+									}}
+									value={formik.values.id_company}
+								/>
+							</div>
+						</div>
+					</Form.Item>
 					<Form.Item name="inventory_description">
 						<div className="form-group">
 							<Title level={5}>Deskipsi Inventaris</Title>
@@ -643,40 +702,6 @@ const ServiceRequest = () => {
 									placeholder="Spesifikasi"
 									onChange={formik.handleChange}
 									value={formik.values.spesification}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="id_company"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Perusahaan <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setCompanyParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionCompany}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_company", v);
-										formRef.current?.setFieldsValue({
-											id_company: v,
-										});
-									}}
-									value={formik.values.id_company}
 								/>
 							</div>
 						</div>

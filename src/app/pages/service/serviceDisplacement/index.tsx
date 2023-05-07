@@ -30,22 +30,23 @@ import {
 	updateServiceDisplacementApi,
 } from "api/serviceDisplacement";
 import { IServiceDisplacement } from "store/types/serviceDisplacementTypes";
-import { CheckAuthentication } from "app/helper/authentication";
+import { CheckResponse } from "app/helper/authentication";
 import { DefaultOptionType } from "antd/es/select";
-import { getAllCompanyApi } from "api/company";
-import { getAllWorkflowApi } from "api/workflow";
+import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
+import { getAllWorkflowApi, getDetailWorkflowApi } from "api/workflow";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { IWorkflowGetAllParams } from "store/types/workflowTypes";
 import { listCheckPermission } from "app/helper/permission";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
-import { getAllEmployeeApi } from "api/employee";
+import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
 import { ILocationGetAllParams } from "store/types/locationTypes";
-import { getAllLocationApi } from "api/location";
+import { getAllLocationApi, getDetailLocationApi } from "api/location";
 import { IInventoryGetAllParams } from "store/types/inventoryTypes";
-import { getAllInventoryApi } from "api/inventory";
+import { getAllInventoryApi, getDetailInventoryApi } from "api/inventory";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { ModalFilter } from "./components/modalFilter";
+import { checkDefaultOption, removeNullFields } from "app/helper/common";
 
 const ServiceDisplacement = () => {
 	dayjs.extend(customParseFormat);
@@ -83,7 +84,7 @@ const ServiceDisplacement = () => {
 		order_by?: string;
 	}>();
 	const [initialValue, setInitialValue] =
-		useState<ICreateServiceDisplacementRequest>();
+		useState<Partial<ICreateServiceDisplacementRequest>>();
 	const [dataTable, setDataTable] =
 		useState<IServiceDisplacementPaginateResponse>();
 	const [dataOptionInventory, setDataOptionInventory] = useState<
@@ -109,7 +110,7 @@ const ServiceDisplacement = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -118,7 +119,7 @@ const ServiceDisplacement = () => {
 			const response = await getDetailServiceDisplacementApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -128,10 +129,22 @@ const ServiceDisplacement = () => {
 			const response = await getAllInventoryApi(availableInventory);
 			const inventoryList = response.data.data.data;
 			setDataOptionInventory(
-				inventoryList.map(v => ({ label: v.name, value: `${v.id}` })),
+				inventoryList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataInventoryDetail = async (id: number) => {
+		try {
+			const response = await getDetailInventoryApi(id);
+			const detail = response.data.data;
+			setDataOptionInventory(
+				dataOptionInventory?.concat({ label: detail.name, value: detail.id }),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
 		}
 	};
 
@@ -140,10 +153,25 @@ const ServiceDisplacement = () => {
 			const response = await getAllEmployeeApi(employeeParams);
 			const employeeList = response.data.data.data;
 			setDataOptionEmployee(
-				employeeList.map(v => ({ label: v.emp_name, value: `${v.id}` })),
+				employeeList.map(v => ({ label: v.emp_name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataEmployeeDetail = async (id: number) => {
+		try {
+			const response = await getDetailEmployeeApi(id);
+			const detail = response.data.data;
+			setDataOptionEmployee(
+				dataOptionEmployee?.concat({
+					label: detail.emp_name,
+					value: detail.id,
+				}),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
 		}
 	};
 
@@ -152,10 +180,22 @@ const ServiceDisplacement = () => {
 			const response = await getAllCompanyApi(companyParams);
 			const companyList = response.data.data;
 			setDataOptionCompany(
-				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
+				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataCompanyDetail = async (id: number) => {
+		try {
+			const response = await getDetailCompanyApi(id);
+			const detail = response.data.data;
+			setDataOptionCompany(
+				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
 		}
 	};
 
@@ -164,10 +204,22 @@ const ServiceDisplacement = () => {
 			const response = await getAllWorkflowApi(workflowParams);
 			const workflowList = response.data.data.data;
 			setDataOptionWorkflow(
-				workflowList.map(v => ({ label: v.name, value: `${v.id}` })),
+				workflowList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataWorkflowDetail = async (id: number) => {
+		try {
+			const response = await getDetailWorkflowApi(id);
+			const detail = response.data.data;
+			setDataOptionWorkflow(
+				dataOptionWorkflow?.concat({ label: detail.name, value: detail.id }),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
 		}
 	};
 
@@ -176,32 +228,47 @@ const ServiceDisplacement = () => {
 			const response = await getAllLocationApi(locationParams);
 			const locationList = response.data.data;
 			setDataOptionLocation(
-				locationList.map(v => ({ label: v.name, value: `${v.id}` })),
+				locationList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataLocationDetail = async (id: number) => {
+		try {
+			const response = await getDetailLocationApi(id);
+			const detail = response.data.data;
+			setDataOptionLocation(
+				dataOptionLocation?.concat({ label: detail.name, value: detail.id }),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
 		}
 	};
 
 	const handleInitialValue = (values: IServiceDisplacement) => {
-		setInitialValue({
-			date: values.date || "",
-			id_inventory: values.id_inventory || "",
-			from_user: values.from_user || "",
-			to_user: values.to_user || "",
-			id_company: values.id_company || "",
-			id_lokasi: values.id_lokasi || "",
-			id_workflow: "",
-		});
-		formRef.current?.setFieldsValue({
-			date: values.date || "",
-			id_inventory: values.id_inventory || "",
-			from_user: values.from_user || "",
-			to_user: values.to_user || "",
-			id_company: values.id_company || "",
-			id_lokasi: values.id_lokasi || "",
-			id_workflow: "",
-		});
+		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionInventory!, setData.inventory_code)) {
+			fetchDataInventoryDetail(setData.id_inventory);
+		}
+		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
+			fetchDataCompanyDetail(setData.id_company);
+		}
+		if (!checkDefaultOption(dataOptionEmployee!, setData.from_user)) {
+			fetchDataEmployeeDetail(setData.from_user);
+		}
+		if (!checkDefaultOption(dataOptionEmployee!, setData.to_user)) {
+			fetchDataEmployeeDetail(setData.to_user);
+		}
+		if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
+			fetchDataWorkflowDetail(setData.id_workflow);
+		}
+		if (!checkDefaultOption(dataOptionLocation!, setData.id_lokasi)) {
+			fetchDataLocationDetail(setData.id_lokasi);
+		}
+		setInitialValue(setData);
+		formRef.current?.setFieldsValue(setData);
 	};
 
 	useEffect(() => {
@@ -266,8 +333,9 @@ const ServiceDisplacement = () => {
 
 		swalCustom
 			.fire({
-				title: "Apakah anda yakin?",
-				text: "Ingin menyetujui permintaan ini",
+				title: "Apakah anda yakin ingin menyetujui permintaan ini?",
+				text: "Ada catatan?",
+				input: "text",
 				icon: "warning",
 				showCancelButton: true,
 				confirmButtonText: "Approve",
@@ -296,15 +364,7 @@ const ServiceDisplacement = () => {
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		setInitialValue({
-			date: "",
-			id_inventory: "",
-			from_user: "",
-			to_user: "",
-			id_company: "",
-			id_lokasi: "",
-			id_workflow: "",
-		});
+		setInitialValue(undefined);
 		formik.resetForm();
 		formRef.current?.resetFields();
 	};
@@ -392,35 +452,53 @@ const ServiceDisplacement = () => {
 				...values,
 				tipe: "PEMINDAHAN",
 			};
-			updateServiceDisplacementApi(showModal.id, input).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			updateServiceDisplacementApi(showModal.id, input)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		} else {
 			const input = {
 				...values,
 				tipe: "PEMINDAHAN",
 			};
-			createNewServiceDisplacementApi(input).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			createNewServiceDisplacementApi(input)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		}
 	};
 
@@ -496,6 +574,40 @@ const ServiceDisplacement = () => {
 				<div className="col-12">
 					<Form form={form} ref={formRef} onFinish={onFinish}>
 						<Divider />
+						<Form.Item
+							name="id_company"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<Title level={5}>
+									Perusahaan <span className="text-danger">*</span>
+								</Title>
+								<div className="controls">
+									<Select
+										showSearch
+										onSearch={v => setCompanyParams({ name: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionCompany}
+										onChange={(v, opt) => {
+											formik.setFieldValue("id_company", v);
+											formRef.current?.setFieldsValue({
+												id_company: parseInt(v),
+											});
+										}}
+										value={formik.values.id_company}
+									/>
+								</div>
+							</div>
+						</Form.Item>
 						<Form.Item
 							name="date"
 							rules={[
@@ -626,40 +738,6 @@ const ServiceDisplacement = () => {
 											});
 										}}
 										value={formik.values.to_user}
-									/>
-								</div>
-							</div>
-						</Form.Item>
-						<Form.Item
-							name="id_company"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
-							<div className="form-group">
-								<Title level={5}>
-									Perusahaan <span className="text-danger">*</span>
-								</Title>
-								<div className="controls">
-									<Select
-										showSearch
-										onSearch={v => setCompanyParams({ name: v })}
-										filterOption={(input, option) =>
-											(`${option?.label}` ?? "")
-												.toLowerCase()
-												.includes(input.toLowerCase())
-										}
-										options={dataOptionCompany}
-										onChange={(v, opt) => {
-											formik.setFieldValue("id_company", v);
-											formRef.current?.setFieldsValue({
-												id_company: parseInt(v),
-											});
-										}}
-										value={formik.values.id_company}
 									/>
 								</div>
 							</div>

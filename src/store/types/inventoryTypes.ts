@@ -116,6 +116,7 @@ export interface ICreateInventoryRequest {
 	no_bast: string;
 	date_bast: string;
 	id_country: number;
+	id_division: number;
 	year_made?: number;
 	merk: string;
 	type: string;

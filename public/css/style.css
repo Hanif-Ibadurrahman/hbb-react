@@ -21412,7 +21412,9 @@ body .main-header .navbar .nav > li.search-box > a:hover, body .main-header .nav
 .sidebar-menu {
   list-style: none;
   margin: 0 0px;
-  padding: 0px 0px 30px 20px; }
+  padding: 0;
+    /* padding: 0px 0px 30px 20px; */
+ }
   .sidebar-menu > li {
     position: relative;
     margin: 5px 0px;

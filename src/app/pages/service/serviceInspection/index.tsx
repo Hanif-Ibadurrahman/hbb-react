@@ -34,19 +34,20 @@ import {
 	updateServiceInspectionApi,
 } from "api/serviceInspection";
 import { IServiceInspection } from "store/types/serviceInspectionTypes";
-import { CheckAuthentication } from "app/helper/authentication";
+import { CheckResponse } from "app/helper/authentication";
 import { UploadOutlined } from "@ant-design/icons";
 import { listCheckPermission } from "app/helper/permission";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 import { DefaultOptionType } from "antd/es/select";
-import { getAllCompanyApi } from "api/company";
-import { getAllEmployeeApi } from "api/employee";
+import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
+import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
 import { IWorkflowGetAllParams } from "store/types/workflowTypes";
-import { getAllWorkflowApi } from "api/workflow";
+import { getAllWorkflowApi, getDetailWorkflowApi } from "api/workflow";
 import { ModalFilter } from "./components/modalFilter";
 import { IInventoryGetAllParams } from "store/types/inventoryTypes";
-import { getAllInventoryApi } from "api/inventory";
+import { getAllInventoryApi, getDetailInventoryApi } from "api/inventory";
+import { checkDefaultOption, removeNullFields } from "app/helper/common";
 
 const ServiceInspection = () => {
 	const { Title } = Typography;
@@ -85,17 +86,7 @@ const ServiceInspection = () => {
 		order_by?: string;
 	}>();
 	const [initialValue, setInitialValue] =
-		useState<ICreateServiceInspectionRequest>({
-			inventory_code: "",
-			description: "",
-			condition: "",
-			created_by: "",
-			files: null,
-			id_company: "",
-			id_workflow: "",
-			emp_name: "",
-			spesification: "",
-		});
+		useState<Partial<ICreateServiceInspectionRequest>>();
 	const [dataTable, setDataTable] =
 		useState<IServiceInspectionPaginateResponse>();
 	const [dataOptionInventory, setDataOptionInventory] = useState<
@@ -139,7 +130,22 @@ const ServiceInspection = () => {
 				})),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataInventoryDetail = async (id: number) => {
+		try {
+			const response = await getDetailInventoryApi(id);
+			const detail = response.data.data;
+			setDataOptionInventory(
+				dataOptionInventory?.concat({
+					label: `${detail.name} - ${detail.code}`,
+					value: `${detail.code}`,
+				}),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
 		}
 	};
 
@@ -148,10 +154,22 @@ const ServiceInspection = () => {
 			const response = await getAllCompanyApi(companyParams);
 			const companyList = response.data.data;
 			setDataOptionCompany(
-				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
+				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataCompanyDetail = async (id: number) => {
+		try {
+			const response = await getDetailCompanyApi(id);
+			const detail = response.data.data;
+			setDataOptionCompany(
+				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
 		}
 	};
 
@@ -160,10 +178,25 @@ const ServiceInspection = () => {
 			const response = await getAllEmployeeApi(employeeParams);
 			const employeeList = response.data.data.data;
 			setDataOptionEmployee(
-				employeeList.map(v => ({ label: v.emp_name, value: `${v.id}` })),
+				employeeList.map(v => ({ label: v.emp_name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataEmployeeDetail = async (id: number) => {
+		try {
+			const response = await getDetailEmployeeApi(id);
+			const detail = response.data.data;
+			setDataOptionEmployee(
+				dataOptionEmployee?.concat({
+					label: detail.emp_name,
+					value: detail.id,
+				}),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
 		}
 	};
 
@@ -172,10 +205,22 @@ const ServiceInspection = () => {
 			const response = await getAllWorkflowApi(workflowParams);
 			const workflowList = response.data.data.data;
 			setDataOptionWorkflow(
-				workflowList.map(v => ({ label: v.name, value: `${v.id}` })),
+				workflowList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataWorkflowDetail = async (id: number) => {
+		try {
+			const response = await getDetailWorkflowApi(id);
+			const detail = response.data.data;
+			setDataOptionWorkflow(
+				dataOptionWorkflow?.concat({ label: detail.name, value: detail.id }),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
 		}
 	};
 
@@ -186,7 +231,7 @@ const ServiceInspection = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -195,7 +240,7 @@ const ServiceInspection = () => {
 			const response = await getDetailServiceInspectionApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -240,28 +285,21 @@ const ServiceInspection = () => {
 	}, [showModal]);
 
 	const handleInitialValue = (values: IServiceInspection) => {
-		setInitialValue({
-			inventory_code: values.inventory_code || "",
-			description: values.description || "",
-			condition: values.condition || "",
-			created_by: values.created_by || "",
-			files: null,
-			id_company: values.id_company || "",
-			id_workflow: "",
-			emp_name: values.emp_name || "",
-			spesification: values.spesification || "",
-		});
-		formRef.current?.setFieldsValue({
-			inventory_code: values.inventory_code || "",
-			description: values.description || "",
-			condition: values.condition || "",
-			created_by: values.created_by || "",
-			files: null,
-			id_company: values.id_company || "",
-			id_workflow: "",
-			emp_name: values.emp_name || "",
-			spesification: values.spesification || "",
-		});
+		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionInventory!, setData.inventory_code)) {
+			fetchDataInventoryDetail(setData.id_inventory);
+		}
+		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
+			fetchDataCompanyDetail(setData.id_company);
+		}
+		if (!checkDefaultOption(dataOptionEmployee!, setData.created_by)) {
+			fetchDataEmployeeDetail(setData.created_by);
+		}
+		if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
+			fetchDataWorkflowDetail(setData.id_workflow);
+		}
+		setInitialValue(setData);
+		formRef.current?.setFieldsValue(setData);
 		setFiles(null);
 		setFileList(null);
 	};
@@ -283,8 +321,9 @@ const ServiceInspection = () => {
 
 		swalCustom
 			.fire({
-				title: "Apakah anda yakin?",
-				text: "Ingin menyetujui permintaan ini",
+				title: "Apakah anda yakin ingin menyetujui permintaan ini?",
+				text: "Ada catatan?",
+				input: "text",
 				icon: "warning",
 				showCancelButton: true,
 				confirmButtonText: "Approve",
@@ -313,17 +352,7 @@ const ServiceInspection = () => {
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		setInitialValue({
-			inventory_code: "",
-			description: "",
-			condition: "",
-			created_by: "",
-			files: null,
-			id_company: "",
-			id_workflow: "",
-			emp_name: "",
-			spesification: "",
-		});
+		setInitialValue(undefined);
 		setFiles(null);
 		setFileList(null);
 		formik.resetForm();
@@ -415,35 +444,53 @@ const ServiceInspection = () => {
 
 	const onFinish = (values: any) => {
 		if (showModal.id) {
-			updateServiceInspectionApi(showModal.id, values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			updateServiceInspectionApi(showModal.id, values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		} else {
 			const input = {
 				...values,
 				files: files,
 			};
-			createNewServiceInspectionApi(input).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			createNewServiceInspectionApi(input)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		}
 	};
 

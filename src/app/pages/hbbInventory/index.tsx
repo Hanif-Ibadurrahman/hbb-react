@@ -20,7 +20,7 @@ import {
 } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
-import { CheckAuthentication } from "app/helper/authentication";
+import { CheckResponse } from "app/helper/authentication";
 import { columns } from "./components/table/columnAndDataType";
 import {
 	ICreateInventoryRequest,
@@ -68,6 +68,9 @@ import { getAllCountryApi, getDetailCountryApi } from "api/country";
 import { ICountryGetAllParams } from "store/types/countryTypes";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
 import { isUndefined } from "lodash";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { getAllDivisionApi, getDetailDivisionApi } from "api/division";
+import { IDivisionGetAllParams } from "store/types/divisionTypes";
 
 const HbbInventory = () => {
 	dayjs.extend(customParseFormat);
@@ -105,6 +108,9 @@ const HbbInventory = () => {
 	>();
 	const [colorParams, setColorParams] = useState<
 		IColorGetAllParams | undefined
+	>();
+	const [divisionParams, setDivisionParams] = useState<
+		IDivisionGetAllParams | undefined
 	>();
 	const [areaParams, setAreaParams] = useState<IAreaGetAllParams | undefined>();
 	const [workUnitParams, setWorkUnitParams] = useState<
@@ -160,6 +166,9 @@ const HbbInventory = () => {
 	const [dataOptionWorkUnit, setDataOptionWorkUnit] = useState<
 		DefaultOptionType[] | undefined
 	>();
+	const [dataOptionDivision, setDataOptionDivision] = useState<
+		DefaultOptionType[] | undefined
+	>();
 
 	const fetchDataList = async () => {
 		try {
@@ -168,7 +177,7 @@ const HbbInventory = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -177,7 +186,29 @@ const HbbInventory = () => {
 			const response = await getDetailInventoryApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataDivision = async () => {
+		try {
+			const response = await getAllDivisionApi(businessUnitParams);
+			const businessUnitList = response.data.data;
+			setDataOptionDivision(
+				businessUnitList.map(v => ({ label: v.name, value: v.id })),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataDivisionDetail = async (id: number) => {
+		try {
+			const response = await getDetailDivisionApi(id);
+			const detail = response.data.data;
+			setDataOptionDivision([{ label: detail.name, value: detail.id }]);
+		} catch (error: any) {
+			CheckResponse(error);
 		}
 	};
 
@@ -189,7 +220,7 @@ const HbbInventory = () => {
 				codeGroupList.map(v => ({ label: v.value, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -199,7 +230,7 @@ const HbbInventory = () => {
 			const detail = response.data.data;
 			setDataOptionCodeGroup([{ label: detail.value, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -211,7 +242,7 @@ const HbbInventory = () => {
 				areaList.map(v => ({ label: v.value, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -221,7 +252,7 @@ const HbbInventory = () => {
 			const detail = response.data.data;
 			setDataOptionSubCodeGroup([{ label: detail.value, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -233,7 +264,7 @@ const HbbInventory = () => {
 				countryList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -243,7 +274,7 @@ const HbbInventory = () => {
 			const detail = response.data.data;
 			setDataOptionCountry([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -255,7 +286,7 @@ const HbbInventory = () => {
 				employeeList.map(v => ({ label: v.emp_name, value: v.nipg })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -265,7 +296,7 @@ const HbbInventory = () => {
 			const detail = response.data.data;
 			setDataOptionEmployee([{ label: detail.emp_name, value: detail.nipg }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -275,7 +306,7 @@ const HbbInventory = () => {
 			const itemList = response.data.data.data;
 			setDataOptionItem(itemList.map(v => ({ label: v.name, value: v.id })));
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -285,7 +316,7 @@ const HbbInventory = () => {
 			const detail = response.data.data;
 			setDataOptionItem([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -297,7 +328,7 @@ const HbbInventory = () => {
 				conditionList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -307,7 +338,7 @@ const HbbInventory = () => {
 			const detail = response.data.data;
 			setDataOptionCondition([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -319,7 +350,7 @@ const HbbInventory = () => {
 				locationList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -329,7 +360,7 @@ const HbbInventory = () => {
 			const detail = response.data.data;
 			setDataOptionLocation([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -339,7 +370,7 @@ const HbbInventory = () => {
 			const colorList = response.data.data;
 			setDataOptionColor(colorList.map(v => ({ label: v.name, value: v.id })));
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -349,7 +380,7 @@ const HbbInventory = () => {
 			const detail = response.data.data;
 			setDataOptionColor([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -361,7 +392,7 @@ const HbbInventory = () => {
 				businessUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -371,7 +402,7 @@ const HbbInventory = () => {
 			const detail = response.data.data;
 			setDataOptionBusinessUnit([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -383,7 +414,7 @@ const HbbInventory = () => {
 				areaList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -393,7 +424,7 @@ const HbbInventory = () => {
 			const detail = response.data.data;
 			setDataOptionArea([{ label: detail.name, value: `${detail.id}` }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -405,7 +436,7 @@ const HbbInventory = () => {
 				workUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -415,7 +446,7 @@ const HbbInventory = () => {
 			const detail = response.data.data;
 			setDataOptionWorkUnit([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -427,7 +458,7 @@ const HbbInventory = () => {
 				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -437,12 +468,15 @@ const HbbInventory = () => {
 			const detail = response.data.data;
 			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
 	const handleInitialValue = (values: IInventoryDetail) => {
 		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionDivision!, setData.id_division)) {
+			fetchDataDivisionDetail(setData.id_division);
+		}
 		if (!checkDefaultOption(dataOptionCodeGroup!, setData.id_main_group)) {
 			fetchDataCodeGroupDetail(setData.id_main_group);
 		}
@@ -452,8 +486,8 @@ const HbbInventory = () => {
 		if (!checkDefaultOption(dataOptionCountry!, setData.id_country)) {
 			fetchDataCountryDetail(setData.id_country);
 		}
-		if (!checkDefaultOption(dataOptionEmployee!, setData.penanggung_jawab)) {
-			fetchDataEmployeeDetail(setData.penanggung_jawab);
+		if (!checkDefaultOption(dataOptionEmployee!, setData.id_penanggung_jawab)) {
+			fetchDataEmployeeDetail(setData.id_penanggung_jawab);
 		}
 		if (!checkDefaultOption(dataOptionItem!, setData.id_barang)) {
 			fetchDataItemDetail(setData.id_barang);
@@ -488,6 +522,11 @@ const HbbInventory = () => {
 		enableReinitialize: true,
 		onSubmit: values => {},
 	});
+
+	useEffect(() => {
+		fetchDataDivision();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [divisionParams]);
 
 	useEffect(() => {
 		fetchDataCountry();
@@ -649,31 +688,49 @@ const HbbInventory = () => {
 
 	const onFinish = (values: any) => {
 		if (showModal.id) {
-			updateInventoryApi(showModal.id, values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			updateInventoryApi(showModal.id, values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		} else {
-			createNewInventoryApi(values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			createNewInventoryApi(values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		}
 	};
 
@@ -683,6 +740,200 @@ const HbbInventory = () => {
 			label: `Informasi Umum`,
 			children: (
 				<>
+					<Form.Item
+						name="id_company"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Perusahaan <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setCompanyParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionCompany}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_company", v);
+										formRef.current?.setFieldsValue({
+											id_company: v,
+										});
+									}}
+									value={formik.values.id_company}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_area"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Area <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setAreaParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionArea}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_area", v);
+										formRef.current?.setFieldsValue({
+											id_area: v,
+										});
+									}}
+									value={formik.values.id_area}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_bisnis_unit"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Bisnis Unit <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setBusinessUnitParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionBusinessUnit}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_bisnis_unit", v);
+										formRef.current?.setFieldsValue({
+											id_bisnis_unit: v,
+										});
+									}}
+									value={formik.values.id_bisnis_unit}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_satker"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Satuan Kerja <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setWorkUnitParams({ satker: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionWorkUnit}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_satker", v);
+										formRef.current?.setFieldsValue({
+											id_satker: v,
+										});
+									}}
+									value={formik.values.id_satker}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_location"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Lokasi <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setLocationParams({ lokasi: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionLocation}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_location", v);
+										formRef.current?.setFieldsValue({
+											id_location: v,
+										});
+									}}
+									value={formik.values.id_location}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item name="id_division">
+						<div className="form-group">
+							<Title level={5}>Divisi</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setDivisionParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionDivision}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_division", v);
+										formRef.current?.setFieldsValue({
+											id_division: v,
+										});
+									}}
+									value={formik.values.id_division}
+								/>
+							</div>
+						</div>
+					</Form.Item>
 					<Form.Item
 						name="inventory_type"
 						rules={[
@@ -777,176 +1028,6 @@ const HbbInventory = () => {
 										});
 									}}
 									value={formik.values.id_sub_group}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="id_company"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Perusahaan <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setCompanyParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionCompany}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_company", v);
-										formRef.current?.setFieldsValue({
-											id_company: v,
-										});
-									}}
-									value={formik.values.id_company}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="id_area"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Area <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setAreaParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionArea}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_area", v);
-										formRef.current?.setFieldsValue({
-											id_area: v,
-										});
-									}}
-									value={formik.values.id_area}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="id_location"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Lokasi <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setLocationParams({ lokasi: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionLocation}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_location", v);
-										formRef.current?.setFieldsValue({
-											id_location: v,
-										});
-									}}
-									value={formik.values.id_location}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="id_bisnis_unit"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Bisnis Unit <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setBusinessUnitParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionBusinessUnit}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_bisnis_unit", v);
-										formRef.current?.setFieldsValue({
-											id_bisnis_unit: v,
-										});
-									}}
-									value={formik.values.id_bisnis_unit}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="id_satker"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Satuan Kerja <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setWorkUnitParams({ satker: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionWorkUnit}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_satker", v);
-										formRef.current?.setFieldsValue({
-											id_satker: v,
-										});
-									}}
-									value={formik.values.id_satker}
 								/>
 							</div>
 						</div>
@@ -1276,6 +1357,45 @@ const HbbInventory = () => {
 							</div>
 						</div>
 					</Form.Item>
+					<Form.List name="files">
+						{(fields, { add, remove }) => (
+							<>
+								{fields.map(field => (
+									<Space
+										key={field.key}
+										align="baseline"
+										style={{ width: "50%" }}
+									>
+										<Form.Item
+											{...field}
+											label="File"
+											name={[field.name, "file"]}
+											rules={[
+												{
+													required: true,
+													message: "Harap isi file terlebih dahulu",
+												},
+											]}
+										>
+											<Input type="file" />
+										</Form.Item>
+										<MinusCircleOutlined onClick={() => remove(field.name)} />
+									</Space>
+								))}
+
+								<Form.Item>
+									<Button
+										type="dashed"
+										onClick={() => add()}
+										block
+										icon={<PlusOutlined />}
+									>
+										Add files
+									</Button>
+								</Form.Item>
+							</>
+						)}
+					</Form.List>
 				</>
 			),
 		},

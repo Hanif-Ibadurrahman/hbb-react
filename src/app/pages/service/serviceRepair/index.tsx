@@ -34,19 +34,20 @@ import {
 	updateServiceRepairApi,
 } from "api/serviceRepair";
 import { IServiceRepair } from "store/types/serviceRepairTypes";
-import { CheckAuthentication } from "app/helper/authentication";
+import { CheckResponse } from "app/helper/authentication";
 import { UploadOutlined } from "@ant-design/icons";
 import { listCheckPermission } from "app/helper/permission";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 import { DefaultOptionType } from "antd/es/select";
-import { getAllCompanyApi } from "api/company";
-import { getAllEmployeeApi } from "api/employee";
+import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
+import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
 import { IWorkflowGetAllParams } from "store/types/workflowTypes";
-import { getAllWorkflowApi } from "api/workflow";
+import { getAllWorkflowApi, getDetailWorkflowApi } from "api/workflow";
 import { ModalFilter } from "./components/modalFilter";
 import { IInventoryGetAllParams } from "store/types/inventoryTypes";
-import { getAllInventoryApi } from "api/inventory";
+import { getAllInventoryApi, getDetailInventoryApi } from "api/inventory";
+import { checkDefaultOption, removeNullFields } from "app/helper/common";
 
 const ServiceRepair = () => {
 	const { Title } = Typography;
@@ -82,19 +83,8 @@ const ServiceRepair = () => {
 		sort?: string;
 		order_by?: string;
 	}>();
-	const [initialValue, setInitialValue] = useState<ICreateServiceRepairRequest>(
-		{
-			inventory_code: "",
-			description: "",
-			condition: "",
-			created_by: "",
-			files: null,
-			id_company: "",
-			id_workflow: "",
-			emp_name: "",
-			spesification: "",
-		},
-	);
+	const [initialValue, setInitialValue] =
+		useState<Partial<ICreateServiceRepairRequest>>();
 	const [dataTable, setDataTable] = useState<IServiceRepairPaginateResponse>();
 	const [dataOptionInventory, setDataOptionInventory] = useState<
 		DefaultOptionType[] | undefined
@@ -137,7 +127,22 @@ const ServiceRepair = () => {
 				})),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataInventoryDetail = async (id: number) => {
+		try {
+			const response = await getDetailInventoryApi(id);
+			const detail = response.data.data;
+			setDataOptionInventory(
+				dataOptionInventory?.concat({
+					label: `${detail.name} - ${detail.code}`,
+					value: `${detail.code}`,
+				}),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
 		}
 	};
 
@@ -146,10 +151,22 @@ const ServiceRepair = () => {
 			const response = await getAllCompanyApi(companyParams);
 			const companyList = response.data.data;
 			setDataOptionCompany(
-				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
+				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataCompanyDetail = async (id: number) => {
+		try {
+			const response = await getDetailCompanyApi(id);
+			const detail = response.data.data;
+			setDataOptionCompany(
+				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
 		}
 	};
 
@@ -158,10 +175,25 @@ const ServiceRepair = () => {
 			const response = await getAllEmployeeApi(employeeParams);
 			const employeeList = response.data.data.data;
 			setDataOptionEmployee(
-				employeeList.map(v => ({ label: v.emp_name, value: `${v.id}` })),
+				employeeList.map(v => ({ label: v.emp_name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataEmployeeDetail = async (id: number) => {
+		try {
+			const response = await getDetailEmployeeApi(id);
+			const detail = response.data.data;
+			setDataOptionEmployee(
+				dataOptionEmployee?.concat({
+					label: detail.emp_name,
+					value: detail.id,
+				}),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
 		}
 	};
 
@@ -170,10 +202,22 @@ const ServiceRepair = () => {
 			const response = await getAllWorkflowApi(workflowParams);
 			const workflowList = response.data.data.data;
 			setDataOptionWorkflow(
-				workflowList.map(v => ({ label: v.name, value: `${v.id}` })),
+				workflowList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataWorkflowDetail = async (id: number) => {
+		try {
+			const response = await getDetailWorkflowApi(id);
+			const detail = response.data.data;
+			setDataOptionWorkflow(
+				dataOptionWorkflow?.concat({ label: detail.name, value: detail.id }),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
 		}
 	};
 
@@ -184,7 +228,7 @@ const ServiceRepair = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -193,7 +237,7 @@ const ServiceRepair = () => {
 			const response = await getDetailServiceRepairApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -238,28 +282,21 @@ const ServiceRepair = () => {
 	}, [showModal]);
 
 	const handleInitialValue = (values: IServiceRepair) => {
-		setInitialValue({
-			inventory_code: values.inventory_code || "",
-			description: values.description || "",
-			condition: values.condition || "",
-			created_by: values.created_by || "",
-			files: null,
-			id_company: values.id_company || "",
-			id_workflow: "",
-			emp_name: values.emp_name || "",
-			spesification: values.spesification || "",
-		});
-		formRef.current?.setFieldsValue({
-			inventory_code: values.inventory_code || "",
-			description: values.description || "",
-			condition: values.condition || "",
-			created_by: values.created_by || "",
-			files: null,
-			id_company: values.id_company || "",
-			id_workflow: "",
-			emp_name: values.emp_name || "",
-			spesification: values.spesification || "",
-		});
+		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionInventory!, setData.inventory_code)) {
+			fetchDataInventoryDetail(setData.id_inventory);
+		}
+		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
+			fetchDataCompanyDetail(setData.id_company);
+		}
+		if (!checkDefaultOption(dataOptionEmployee!, setData.created_by)) {
+			fetchDataEmployeeDetail(setData.created_by);
+		}
+		if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
+			fetchDataWorkflowDetail(setData.id_workflow);
+		}
+		setInitialValue(setData);
+		formRef.current?.setFieldsValue(setData);
 		setFiles(null);
 		setFileList(null);
 	};
@@ -281,8 +318,9 @@ const ServiceRepair = () => {
 
 		swalCustom
 			.fire({
-				title: "Apakah anda yakin?",
-				text: "Ingin menyetujui permintaan ini",
+				title: "Apakah anda yakin ingin menyetujui permintaan ini?",
+				text: "Ada catatan?",
+				input: "text",
 				icon: "warning",
 				showCancelButton: true,
 				confirmButtonText: "Approve",
@@ -311,17 +349,7 @@ const ServiceRepair = () => {
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		setInitialValue({
-			inventory_code: "",
-			description: "",
-			condition: "",
-			created_by: "",
-			files: null,
-			id_company: "",
-			id_workflow: "",
-			emp_name: "",
-			spesification: "",
-		});
+		setInitialValue(undefined);
 		setFiles(null);
 		setFileList(null);
 		formik.resetForm();
@@ -413,35 +441,53 @@ const ServiceRepair = () => {
 
 	const onFinish = (values: any) => {
 		if (showModal.id) {
-			updateServiceRepairApi(showModal.id, values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			updateServiceRepairApi(showModal.id, values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		} else {
 			const input = {
 				...values,
 				files: files,
 			};
-			createNewServiceRepairApi(input).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			createNewServiceRepairApi(input)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		}
 	};
 
@@ -556,6 +602,40 @@ const ServiceRepair = () => {
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
+					<Form.Item
+						name="id_company"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Perusahaan <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setCompanyParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionCompany}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_company", v);
+										formRef.current?.setFieldsValue({
+											id_company: parseInt(v),
+										});
+									}}
+									value={formik.values.id_company}
+								/>
+							</div>
+						</div>
+					</Form.Item>
 					<Form.Item
 						name="inventory_code"
 						rules={[
@@ -696,40 +776,6 @@ const ServiceRepair = () => {
 									placeholder="Spesifikasi"
 									onChange={formik.handleChange}
 									value={formik.values.spesification}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="id_company"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Perusahaan <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setCompanyParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionCompany}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_company", v);
-										formRef.current?.setFieldsValue({
-											id_company: parseInt(v),
-										});
-									}}
-									value={formik.values.id_company}
 								/>
 							</div>
 						</div>
