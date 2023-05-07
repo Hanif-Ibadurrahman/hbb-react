@@ -31,7 +31,7 @@ import { IBusinessUnitGetAllParams } from "store/types/businessUnitTypes";
 import { IAreaGetAllParams } from "store/types/areaTypes";
 import { IWorkUnitGetAllParams } from "store/types/workUnitTypes";
 import { DefaultOptionType } from "antd/es/select";
-import { CheckAuthentication } from "app/helper/authentication";
+import { CheckResponse } from "app/helper/authentication";
 import {
 	getAllBusinessUnitApi,
 	getDetailBusinessUnitApi,
@@ -102,7 +102,7 @@ const MasterLocation = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -111,7 +111,7 @@ const MasterLocation = () => {
 			const response = await getDetailLocationApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -123,7 +123,7 @@ const MasterLocation = () => {
 				businessUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -133,7 +133,7 @@ const MasterLocation = () => {
 			const detail = response.data.data;
 			setDataOptionBusinessUnit([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -143,7 +143,7 @@ const MasterLocation = () => {
 			const areaList = response.data.data;
 			setDataOptionArea(areaList.map(v => ({ label: v.name, value: v.id })));
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -153,7 +153,7 @@ const MasterLocation = () => {
 			const detail = response.data.data;
 			setDataOptionArea([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -165,7 +165,7 @@ const MasterLocation = () => {
 				workUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -175,7 +175,7 @@ const MasterLocation = () => {
 			const detail = response.data.data;
 			setDataOptionWorkUnit([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -187,7 +187,7 @@ const MasterLocation = () => {
 				employeeList.map(v => ({ label: v.emp_name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -197,7 +197,7 @@ const MasterLocation = () => {
 			const detail = response.data.data;
 			setDataOptionEmployee([{ label: detail.emp_name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -209,7 +209,7 @@ const MasterLocation = () => {
 				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -219,7 +219,7 @@ const MasterLocation = () => {
 			const detail = response.data.data;
 			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -343,32 +343,50 @@ const MasterLocation = () => {
 
 	const onFinish = (values: any) => {
 		if (showModal.id) {
-			updateLocationApi(showModal.id, values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			updateLocationApi(showModal.id, values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		} else {
 			const input = { ...values, from_opname: 0 };
-			createNewLocationApi(input).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			createNewLocationApi(input)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		}
 	};
 
@@ -445,6 +463,40 @@ const MasterLocation = () => {
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
+					<Form.Item
+						name="id_company"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Perusahaan <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setCompanyParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionCompany}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_company", v);
+										formRef.current?.setFieldsValue({
+											id_company: v,
+										});
+									}}
+									value={formik.values.id_company}
+								/>
+							</div>
+						</div>
+					</Form.Item>
 					<Form.Item
 						name="id_bisnis_unit"
 						rules={[
@@ -602,40 +654,6 @@ const MasterLocation = () => {
 										});
 									}}
 									value={formik.values.id_pegawai}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="id_company"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Perusahaan <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setCompanyParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionCompany}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_company", v);
-										formRef.current?.setFieldsValue({
-											id_company: v,
-										});
-									}}
-									value={formik.values.id_company}
 								/>
 							</div>
 						</div>

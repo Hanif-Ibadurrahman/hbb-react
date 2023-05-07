@@ -1,4 +1,4 @@
-import { Dropdown, MenuProps, Modal } from "antd";
+import { Avatar, Dropdown, MenuProps, Modal } from "antd";
 import { logoutApi } from "api/login";
 import FeatherIcon from "feather-icons-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,20 +9,16 @@ interface IHeader {
 export const Header = ({ collapseHandler }: IHeader) => {
 	const navigate = useNavigate();
 
-	const modalAlert = () => {
-		Modal.error({
-			title: "Telah terjadi kesalahan pada saat logout",
-			content: "Mohon di tunggu beberapa saat lagi",
-		});
-	};
-
 	const handleLogout = async () => {
 		try {
 			await logoutApi();
 			sessionStorage.clear();
 			navigate("/login", { replace: true });
 		} catch (error) {
-			modalAlert();
+			Modal.error({
+				title: "Telah terjadi kesalahan pada saat logout",
+				content: "Mohon di tunggu beberapa saat lagi",
+			});
 		}
 	};
 
@@ -62,7 +58,16 @@ export const Header = ({ collapseHandler }: IHeader) => {
 				<a href="/" className="logo">
 					<div className="logo-mini w-25">
 						<span className="light-logo">
-							<img src="images/logo-icon-pgn.png" alt="logo" />
+							<img
+								src="images/logo-icon-pgn.png"
+								alt="logo"
+								style={{
+									background: "#fff",
+									border: "1px solid #ddd",
+									borderRadius: "4px",
+									padding: "5px",
+								}}
+							/>
 						</span>
 						<span className="dark-logo">
 							<img src="images/logo-icon-pgn.png" alt="logo" />

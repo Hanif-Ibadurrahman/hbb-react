@@ -28,7 +28,7 @@ import {
 } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
-import { CheckAuthentication } from "app/helper/authentication";
+import { CheckResponse } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
 import { listCheckPermission } from "app/helper/permission";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
@@ -70,7 +70,7 @@ const MasterCondition = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -79,7 +79,7 @@ const MasterCondition = () => {
 			const response = await getDetailConditionApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -91,7 +91,7 @@ const MasterCondition = () => {
 				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -101,7 +101,7 @@ const MasterCondition = () => {
 			const detail = response.data.data;
 			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 

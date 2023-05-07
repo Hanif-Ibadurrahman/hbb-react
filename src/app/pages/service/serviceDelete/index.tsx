@@ -31,20 +31,21 @@ import {
 	updateServiceDeleteApi,
 } from "api/serviceDelete";
 import { IServiceDelete } from "store/types/serviceDeleteTypes";
-import { CheckAuthentication } from "app/helper/authentication";
+import { CheckResponse } from "app/helper/authentication";
 import { DefaultOptionType } from "antd/es/select";
-import { getAllCompanyApi } from "api/company";
-import { getAllWorkflowApi } from "api/workflow";
+import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
+import { getAllWorkflowApi, getDetailWorkflowApi } from "api/workflow";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { IWorkflowGetAllParams } from "store/types/workflowTypes";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
-import { getAllEmployeeApi } from "api/employee";
+import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
 import { IInventoryGetAllParams } from "store/types/inventoryTypes";
-import { getAllInventoryApi } from "api/inventory";
+import { getAllInventoryApi, getDetailInventoryApi } from "api/inventory";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { ModalFilter } from "./components/modalFilter";
 import { listCheckPermission } from "app/helper/permission";
+import { checkDefaultOption, removeNullFields } from "app/helper/common";
 
 const ServiceDelete = () => {
 	dayjs.extend(customParseFormat);
@@ -77,7 +78,7 @@ const ServiceDelete = () => {
 		order_by?: string;
 	}>();
 	const [initialValue, setInitialValue] =
-		useState<ICreateServiceDeleteRequest>();
+		useState<Partial<ICreateServiceDeleteRequest>>();
 	const [dataTable, setDataTable] = useState<IServiceDeletePaginateResponse>();
 	const [dataOptionInventory, setDataOptionInventory] = useState<
 		DefaultOptionType[] | undefined
@@ -99,7 +100,7 @@ const ServiceDelete = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -108,29 +109,8 @@ const ServiceDelete = () => {
 			const response = await getDetailServiceDeleteApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
-	};
-
-	const handleInitialValue = (values: IServiceDelete) => {
-		setInitialValue({
-			date: values.date || "",
-			id_inventory: values.id_inventory || "",
-			reason: values.reason || "",
-			remark: values.remark || "",
-			id_company: values.id_company || "",
-			id_workflow: "",
-			created_by: values.created_by || "",
-		});
-		formRef.current?.setFieldsValue({
-			date: values.date || "",
-			id_inventory: values.id_inventory || "",
-			reason: values.reason || "",
-			remark: values.remark || "",
-			id_company: values.id_company || "",
-			id_workflow: "",
-			created_by: values.created_by || "",
-		});
 	};
 
 	const fetchDataInventory = async () => {
@@ -142,7 +122,19 @@ const ServiceDelete = () => {
 				inventoryList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataInventoryDetail = async (id: number) => {
+		try {
+			const response = await getDetailInventoryApi(id);
+			const detail = response.data.data;
+			setDataOptionInventory(
+				dataOptionInventory?.concat({ label: detail.name, value: detail.id }),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
 		}
 	};
 
@@ -154,7 +146,22 @@ const ServiceDelete = () => {
 				employeeList.map(v => ({ label: v.emp_name, value: `${v.id}` })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataEmployeeDetail = async (id: number) => {
+		try {
+			const response = await getDetailEmployeeApi(id);
+			const detail = response.data.data;
+			setDataOptionEmployee(
+				dataOptionEmployee?.concat({
+					label: detail.emp_name,
+					value: detail.id,
+				}),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
 		}
 	};
 
@@ -166,7 +173,19 @@ const ServiceDelete = () => {
 				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataCompanyDetail = async (id: number) => {
+		try {
+			const response = await getDetailCompanyApi(id);
+			const detail = response.data.data;
+			setDataOptionCompany(
+				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
 		}
 	};
 
@@ -178,8 +197,38 @@ const ServiceDelete = () => {
 				workflowList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
+	};
+
+	const fetchDataWorkflowDetail = async (id: number) => {
+		try {
+			const response = await getDetailWorkflowApi(id);
+			const detail = response.data.data;
+			setDataOptionWorkflow(
+				dataOptionWorkflow?.concat({ label: detail.name, value: detail.id }),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const handleInitialValue = (values: IServiceDelete) => {
+		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionInventory!, setData.inventory_code)) {
+			fetchDataInventoryDetail(setData.id_inventory);
+		}
+		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
+			fetchDataCompanyDetail(setData.id_company);
+		}
+		if (!checkDefaultOption(dataOptionEmployee!, setData.created_by)) {
+			fetchDataEmployeeDetail(setData.created_by);
+		}
+		if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
+			fetchDataWorkflowDetail(setData.id_workflow);
+		}
+		setInitialValue(setData);
+		formRef.current?.setFieldsValue(setData);
 	};
 
 	useEffect(() => {
@@ -239,8 +288,9 @@ const ServiceDelete = () => {
 
 		swalCustom
 			.fire({
-				title: "Apakah anda yakin?",
-				text: "Ingin menyetujui permintaan ini",
+				title: "Apakah anda yakin ingin menyetujui permintaan ini?",
+				text: "Ada catatan?",
+				input: "text",
 				icon: "warning",
 				showCancelButton: true,
 				confirmButtonText: "Approve",
@@ -269,15 +319,7 @@ const ServiceDelete = () => {
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
-		setInitialValue({
-			date: "",
-			id_inventory: "",
-			reason: "",
-			remark: "",
-			id_company: "",
-			id_workflow: "",
-			created_by: "",
-		});
+		setInitialValue(undefined);
 		formik.resetForm();
 		formRef.current?.resetFields();
 	};
@@ -359,31 +401,49 @@ const ServiceDelete = () => {
 
 	const onFinish = (values: any) => {
 		if (showModal.id) {
-			updateServiceDeleteApi(showModal.id, values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			updateServiceDeleteApi(showModal.id, values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		} else {
-			createNewServiceDeleteApi(values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			createNewServiceDeleteApi(values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		}
 	};
 
@@ -459,6 +519,40 @@ const ServiceDelete = () => {
 				<div className="col-12">
 					<Form form={form} ref={formRef} onFinish={onFinish}>
 						<Divider />
+						<Form.Item
+							name="id_company"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<Title level={5}>
+									Perusahaan <span className="text-danger">*</span>
+								</Title>
+								<div className="controls">
+									<Select
+										showSearch
+										onSearch={v => setCompanyParams({ name: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionCompany}
+										onChange={(v, opt) => {
+											formik.setFieldValue("id_company", v);
+											formRef.current?.setFieldsValue({
+												id_company: parseInt(v),
+											});
+										}}
+										value={formik.values.id_company}
+									/>
+								</div>
+							</div>
+						</Form.Item>
 						<Form.Item
 							name="date"
 							rules={[
@@ -571,40 +665,6 @@ const ServiceDelete = () => {
 										placeholder="Remark"
 										onChange={formik.handleChange}
 										value={formik.values.remark}
-									/>
-								</div>
-							</div>
-						</Form.Item>
-						<Form.Item
-							name="id_company"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
-							<div className="form-group">
-								<Title level={5}>
-									Perusahaan <span className="text-danger">*</span>
-								</Title>
-								<div className="controls">
-									<Select
-										showSearch
-										onSearch={v => setCompanyParams({ name: v })}
-										filterOption={(input, option) =>
-											(`${option?.label}` ?? "")
-												.toLowerCase()
-												.includes(input.toLowerCase())
-										}
-										options={dataOptionCompany}
-										onChange={(v, opt) => {
-											formik.setFieldValue("id_company", v);
-											formRef.current?.setFieldsValue({
-												id_company: parseInt(v),
-											});
-										}}
-										value={formik.values.id_company}
 									/>
 								</div>
 							</div>

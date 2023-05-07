@@ -35,7 +35,7 @@ import {
 import { IBusinessUnitGetAllParams } from "store/types/businessUnitTypes";
 import { IAreaGetAllParams } from "store/types/areaTypes";
 import { getAllAreaApi, getDetailAreaApi } from "api/area";
-import { CheckAuthentication } from "app/helper/authentication";
+import { CheckResponse } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
 import { listCheckPermission } from "app/helper/permission";
 import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
@@ -93,7 +93,7 @@ const MasterWorkUnit = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -102,7 +102,7 @@ const MasterWorkUnit = () => {
 			const response = await getDetailWorkUnitApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -114,7 +114,7 @@ const MasterWorkUnit = () => {
 				businessUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -124,7 +124,7 @@ const MasterWorkUnit = () => {
 			const detail = response.data.data;
 			setDataOptionBusinessUnit([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -136,7 +136,7 @@ const MasterWorkUnit = () => {
 				areaList.map(v => ({ label: v.name, value: `${v.id}` })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -146,7 +146,7 @@ const MasterWorkUnit = () => {
 			const detail = response.data.data;
 			setDataOptionArea([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -158,7 +158,7 @@ const MasterWorkUnit = () => {
 				employeeList.map(v => ({ label: v.emp_name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -168,7 +168,7 @@ const MasterWorkUnit = () => {
 			const detail = response.data.data;
 			setDataOptionEmployee([{ label: detail.emp_name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -180,7 +180,7 @@ const MasterWorkUnit = () => {
 				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -190,7 +190,7 @@ const MasterWorkUnit = () => {
 			const detail = response.data.data;
 			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -304,31 +304,49 @@ const MasterWorkUnit = () => {
 
 	const onFinish = (values: any) => {
 		if (showModal.id) {
-			updateWorkUnitApi(showModal.id, values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			updateWorkUnitApi(showModal.id, values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		} else {
-			createNewWorkUnitApi(values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			createNewWorkUnitApi(values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		}
 	};
 

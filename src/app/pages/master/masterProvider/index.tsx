@@ -27,7 +27,7 @@ import {
 } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
-import { CheckAuthentication } from "app/helper/authentication";
+import { CheckResponse } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { DefaultOptionType } from "antd/es/select";
@@ -68,7 +68,7 @@ const MasterProvider = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -77,7 +77,7 @@ const MasterProvider = () => {
 			const response = await getDetailProviderApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -89,7 +89,7 @@ const MasterProvider = () => {
 				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -99,7 +99,7 @@ const MasterProvider = () => {
 			const detail = response.data.data;
 			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -188,31 +188,49 @@ const MasterProvider = () => {
 
 	const onFinish = (values: any) => {
 		if (showModal.id) {
-			updateProviderApi(showModal.id, values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			updateProviderApi(showModal.id, values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		} else {
-			createNewProviderApi(values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			createNewProviderApi(values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		}
 	};
 

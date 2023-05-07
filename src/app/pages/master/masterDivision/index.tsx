@@ -14,7 +14,7 @@ import {
 	getDetailDivisionApi,
 	updateDivisionApi,
 } from "api/division";
-import { CheckAuthentication } from "app/helper/authentication";
+import { CheckResponse } from "app/helper/authentication";
 import {
 	Modal as AntdModal,
 	Button,
@@ -94,7 +94,7 @@ const MasterDivision = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -103,7 +103,7 @@ const MasterDivision = () => {
 			const response = await getDetailDivisionApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -115,7 +115,7 @@ const MasterDivision = () => {
 				businessUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -125,7 +125,7 @@ const MasterDivision = () => {
 			const detail = response.data.data;
 			setDataOptionBusinessUnit([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -135,7 +135,7 @@ const MasterDivision = () => {
 			const areaList = response.data.data;
 			setDataOptionArea(areaList.map(v => ({ label: v.name, value: v.id })));
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -145,7 +145,7 @@ const MasterDivision = () => {
 			const detail = response.data.data;
 			setDataOptionArea([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -157,7 +157,7 @@ const MasterDivision = () => {
 				workUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -167,7 +167,7 @@ const MasterDivision = () => {
 			const detail = response.data.data;
 			setDataOptionWorkUnit([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -179,7 +179,7 @@ const MasterDivision = () => {
 				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -189,7 +189,7 @@ const MasterDivision = () => {
 			const detail = response.data.data;
 			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -304,31 +304,49 @@ const MasterDivision = () => {
 
 	const onFinish = (values: any) => {
 		if (showModal.id) {
-			updateDivisionApi(showModal.id, values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			updateDivisionApi(showModal.id, values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		} else {
-			createNewDivisionApi(values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
+			createNewDivisionApi(values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					Swal.fire({
+						icon: "error",
+						title: error.response.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
 				});
-			});
 		}
 	};
 

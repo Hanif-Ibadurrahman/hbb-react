@@ -27,7 +27,7 @@ import {
 } from "antd";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
-import { CheckAuthentication } from "app/helper/authentication";
+import { CheckResponse } from "app/helper/authentication";
 import { DefaultOptionType } from "antd/es/select";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { getAllCompanyApi } from "api/company";
@@ -118,7 +118,7 @@ const MasterUser = () => {
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -127,7 +127,7 @@ const MasterUser = () => {
 			const response = await getDetailUserApi(id);
 			handleInitialValue(response.data.data);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -139,7 +139,7 @@ const MasterUser = () => {
 				companyList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -151,7 +151,7 @@ const MasterUser = () => {
 				businessUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -161,7 +161,7 @@ const MasterUser = () => {
 			const detail = response.data.data;
 			setDataOptionBusinessUnit([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -171,7 +171,7 @@ const MasterUser = () => {
 			const areaList = response.data.data;
 			setDataOptionArea(areaList.map(v => ({ label: v.name, value: v.id })));
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -181,7 +181,7 @@ const MasterUser = () => {
 			const detail = response.data.data;
 			setDataOptionArea([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -193,7 +193,7 @@ const MasterUser = () => {
 				workUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -203,7 +203,7 @@ const MasterUser = () => {
 			const detail = response.data.data;
 			setDataOptionWorkUnit([{ label: detail.name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -215,7 +215,7 @@ const MasterUser = () => {
 				employeeList.map(v => ({ label: v.emp_name, value: v.id })),
 			);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
@@ -225,7 +225,7 @@ const MasterUser = () => {
 			const detail = response.data.data;
 			setDataOptionEmployee([{ label: detail.emp_name, value: detail.id }]);
 		} catch (error: any) {
-			CheckAuthentication(error);
+			CheckResponse(error);
 		}
 	};
 
