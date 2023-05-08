@@ -9,8 +9,7 @@ import {
 const tokenDecode = TokenDekode();
 const permissions: string[] = Object.values(tokenDecode?.permissions || {});
 
-console.info("permissionOnToken", tokenDecode?.permissions);
-console.info("roleOnToken", tokenDecode?.user?.roles);
+console.info("token", tokenDecode);
 
 const listMaster: string[] = [
 	"user",

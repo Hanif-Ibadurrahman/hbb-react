@@ -34,7 +34,7 @@ import {
 	updateServiceReturnApi,
 } from "api/serviceReturn";
 import { IServiceReturn } from "store/types/serviceReturnTypes";
-import { CheckResponse } from "app/helper/authentication";
+import { CheckResponse, TokenDekode } from "app/helper/authentication";
 import { UploadOutlined } from "@ant-design/icons";
 import { listCheckPermission } from "app/helper/permission";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
@@ -50,6 +50,7 @@ import { getAllInventoryApi, getDetailInventoryApi } from "api/inventory";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
 
 const ServiceReturn = () => {
+	const tokenDecode = TokenDekode();
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const [fileList, setFileList] = useState<File[] | null>(null);
@@ -65,12 +66,6 @@ const ServiceReturn = () => {
 	});
 	const [inventoryParams, setInventoryParams] = useState<
 		IInventoryGetAllParams | undefined
-	>();
-	const [companyParams, setCompanyParams] = useState<
-		ICompanyGetAllParams | undefined
-	>();
-	const [employeeParams, setEmployeeParams] = useState<
-		IEmployeeGetAllParams | undefined
 	>();
 	const [workflowParams, setWorkflowParams] = useState<
 		IWorkflowGetAllParams | undefined
@@ -147,57 +142,6 @@ const ServiceReturn = () => {
 		}
 	};
 
-	const fetchDataCompany = async () => {
-		try {
-			const response = await getAllCompanyApi(companyParams);
-			const companyList = response.data.data;
-			setDataOptionCompany(
-				companyList.map(v => ({ label: v.name, value: v.id })),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataCompanyDetail = async (id: number) => {
-		try {
-			const response = await getDetailCompanyApi(id);
-			const detail = response.data.data;
-			setDataOptionCompany(
-				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataEmployee = async () => {
-		try {
-			const response = await getAllEmployeeApi(employeeParams);
-			const employeeList = response.data.data.data;
-			setDataOptionEmployee(
-				employeeList.map(v => ({ label: v.emp_name, value: v.id })),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataEmployeeDetail = async (id: number) => {
-		try {
-			const response = await getDetailEmployeeApi(id);
-			const detail = response.data.data;
-			setDataOptionEmployee(
-				dataOptionEmployee?.concat({
-					label: detail.emp_name,
-					value: detail.id,
-				}),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
 	const fetchDataWorkflow = async () => {
 		try {
 			const response = await getAllWorkflowApi(workflowParams);
@@ -253,16 +197,6 @@ const ServiceReturn = () => {
 	}, [workflowParams]);
 
 	useEffect(() => {
-		fetchDataCompany();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [companyParams]);
-
-	useEffect(() => {
-		fetchDataEmployee();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [employeeParams]);
-
-	useEffect(() => {
 		fetchDataList();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [params]);
@@ -286,12 +220,6 @@ const ServiceReturn = () => {
 		const setData = removeNullFields(values);
 		if (!checkDefaultOption(dataOptionInventory!, setData.inventory_code)) {
 			fetchDataInventoryDetail(setData.id_inventory);
-		}
-		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
-			fetchDataCompanyDetail(setData.id_company);
-		}
-		if (!checkDefaultOption(dataOptionEmployee!, setData.created_by)) {
-			fetchDataEmployeeDetail(setData.created_by);
 		}
 		if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
 			fetchDataWorkflowDetail(setData.id_workflow);
@@ -441,8 +369,14 @@ const ServiceReturn = () => {
 	};
 
 	const onFinish = (values: any) => {
+		const input = {
+			...values,
+			files: files,
+			created_by: tokenDecode?.user?.id,
+			id_company: tokenDecode?.user?.id_company,
+		};
 		if (showModal.id) {
-			updateServiceReturnApi(showModal.id, values)
+			updateServiceReturnApi(showModal.id, input)
 				.then(res => {
 					if (res.data.status === "success") {
 						setShowModal({ show: false });
@@ -464,10 +398,6 @@ const ServiceReturn = () => {
 					});
 				});
 		} else {
-			const input = {
-				...values,
-				files: files,
-			};
 			createNewServiceReturnApi(input)
 				.then(res => {
 					if (res.data.status === "success") {
@@ -492,16 +422,6 @@ const ServiceReturn = () => {
 		}
 	};
 
-	// const handleDeleteFile = (id: number) => {
-	// 	if (fileList?.length === 1) {
-	// 		setFileList([]);
-	// 	} else {
-	// 		let tempFile = fileList?.splice(id, 1);
-	// 		tempFile?.splice(id, 1);
-	// 		setFileList(tempFile);
-	// 	}
-	// };
-
 	const generateFileList = useMemo(() => {
 		if (fileList?.length) {
 			return (
@@ -519,9 +439,6 @@ const ServiceReturn = () => {
 								<Col style={{ alignItems: "center", display: "flex" }}>
 									<Button type="link">{item.fileName}</Button>
 								</Col>
-								{/* <Col style={{ alignItems: "center", display: "flex" }}>
-									<DeleteOutlined onClick={() => handleDeleteFile(index)} />
-								</Col> */}
 							</Row>
 						</List.Item>
 					)}
@@ -676,22 +593,12 @@ const ServiceReturn = () => {
 								Nama Pegawai <span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setEmployeeParams({ emp_name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionEmployee}
-									onChange={(v, opt) => {
-										const data: any = opt;
-										formik.setFieldValue("emp_name", data.label);
-										formRef.current?.setFieldsValue({
-											emp_name: data.label,
-										});
-									}}
+								<Input
+									type="text"
+									name="emp_name"
+									className="form-control"
+									placeholder="Nama Pegawai"
+									onChange={formik.handleChange}
 									value={formik.values.emp_name}
 								/>
 							</div>
@@ -718,74 +625,6 @@ const ServiceReturn = () => {
 									placeholder="Kondisi"
 									onChange={formik.handleChange}
 									value={formik.values.condition}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="id_company"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Perusahaan <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setCompanyParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionCompany}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_company", v);
-										formRef.current?.setFieldsValue({
-											id_company: parseInt(v),
-										});
-									}}
-									value={formik.values.id_company}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="created_by"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Dibuat oleh <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setEmployeeParams({ emp_name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionEmployee}
-									onChange={(v, opt) => {
-										formik.setFieldValue("created_by", v);
-										formRef.current?.setFieldsValue({
-											created_by: parseInt(v),
-										});
-									}}
-									value={formik.values.created_by}
 								/>
 							</div>
 						</div>
