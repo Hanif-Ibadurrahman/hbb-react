@@ -34,14 +34,10 @@ import {
 	updateServiceRepairApi,
 } from "api/serviceRepair";
 import { IServiceRepair } from "store/types/serviceRepairTypes";
-import { CheckResponse } from "app/helper/authentication";
+import { CheckResponse, TokenDekode } from "app/helper/authentication";
 import { UploadOutlined } from "@ant-design/icons";
 import { listCheckPermission } from "app/helper/permission";
-import { ICompanyGetAllParams } from "store/types/companyTypes";
-import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 import { DefaultOptionType } from "antd/es/select";
-import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
-import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
 import { IWorkflowGetAllParams } from "store/types/workflowTypes";
 import { getAllWorkflowApi, getDetailWorkflowApi } from "api/workflow";
 import { ModalFilter } from "./components/modalFilter";
@@ -50,6 +46,7 @@ import { getAllInventoryApi, getDetailInventoryApi } from "api/inventory";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
 
 const ServiceRepair = () => {
+	const tokenDecode = TokenDekode();
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const [fileList, setFileList] = useState<File[] | null>(null);
@@ -66,12 +63,6 @@ const ServiceRepair = () => {
 	const [inventoryParams, setInventoryParams] = useState<
 		IInventoryGetAllParams | undefined
 	>();
-	const [companyParams, setCompanyParams] = useState<
-		ICompanyGetAllParams | undefined
-	>();
-	const [employeeParams, setEmployeeParams] = useState<
-		IEmployeeGetAllParams | undefined
-	>();
 	const [workflowParams, setWorkflowParams] = useState<
 		IWorkflowGetAllParams | undefined
 	>();
@@ -87,12 +78,6 @@ const ServiceRepair = () => {
 		useState<Partial<ICreateServiceRepairRequest>>();
 	const [dataTable, setDataTable] = useState<IServiceRepairPaginateResponse>();
 	const [dataOptionInventory, setDataOptionInventory] = useState<
-		DefaultOptionType[] | undefined
-	>();
-	const [dataOptionCompany, setDataOptionCompany] = useState<
-		DefaultOptionType[] | undefined
-	>();
-	const [dataOptionEmployee, setDataOptionEmployee] = useState<
 		DefaultOptionType[] | undefined
 	>();
 	const [dataOptionWorkflow, setDataOptionWorkflow] = useState<
@@ -139,57 +124,6 @@ const ServiceRepair = () => {
 				dataOptionInventory?.concat({
 					label: `${detail.name} - ${detail.code}`,
 					value: `${detail.code}`,
-				}),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataCompany = async () => {
-		try {
-			const response = await getAllCompanyApi(companyParams);
-			const companyList = response.data.data;
-			setDataOptionCompany(
-				companyList.map(v => ({ label: v.name, value: v.id })),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataCompanyDetail = async (id: number) => {
-		try {
-			const response = await getDetailCompanyApi(id);
-			const detail = response.data.data;
-			setDataOptionCompany(
-				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataEmployee = async () => {
-		try {
-			const response = await getAllEmployeeApi(employeeParams);
-			const employeeList = response.data.data.data;
-			setDataOptionEmployee(
-				employeeList.map(v => ({ label: v.emp_name, value: v.id })),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataEmployeeDetail = async (id: number) => {
-		try {
-			const response = await getDetailEmployeeApi(id);
-			const detail = response.data.data;
-			setDataOptionEmployee(
-				dataOptionEmployee?.concat({
-					label: detail.emp_name,
-					value: detail.id,
 				}),
 			);
 		} catch (error: any) {
@@ -252,16 +186,6 @@ const ServiceRepair = () => {
 	}, [workflowParams]);
 
 	useEffect(() => {
-		fetchDataCompany();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [companyParams]);
-
-	useEffect(() => {
-		fetchDataEmployee();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [employeeParams]);
-
-	useEffect(() => {
 		fetchDataList();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [params]);
@@ -285,12 +209,6 @@ const ServiceRepair = () => {
 		const setData = removeNullFields(values);
 		if (!checkDefaultOption(dataOptionInventory!, setData.inventory_code)) {
 			fetchDataInventoryDetail(setData.id_inventory);
-		}
-		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
-			fetchDataCompanyDetail(setData.id_company);
-		}
-		if (!checkDefaultOption(dataOptionEmployee!, setData.created_by)) {
-			fetchDataEmployeeDetail(setData.created_by);
 		}
 		if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
 			fetchDataWorkflowDetail(setData.id_workflow);
@@ -440,8 +358,14 @@ const ServiceRepair = () => {
 	};
 
 	const onFinish = (values: any) => {
+		const input = {
+			...values,
+			files: files,
+			created_by: tokenDecode?.user?.id,
+			id_company: tokenDecode?.user?.id_company,
+		};
 		if (showModal.id) {
-			updateServiceRepairApi(showModal.id, values)
+			updateServiceRepairApi(showModal.id, input)
 				.then(res => {
 					if (res.data.status === "success") {
 						setShowModal({ show: false });
@@ -463,10 +387,6 @@ const ServiceRepair = () => {
 					});
 				});
 		} else {
-			const input = {
-				...values,
-				files: files,
-			};
 			createNewServiceRepairApi(input)
 				.then(res => {
 					if (res.data.status === "success") {
@@ -491,16 +411,6 @@ const ServiceRepair = () => {
 		}
 	};
 
-	// const handleDeleteFile = (id: number) => {
-	// 	if (fileList?.length === 1) {
-	// 		setFileList([]);
-	// 	} else {
-	// 		let tempFile = fileList?.splice(id, 1);
-	// 		tempFile?.splice(id, 1);
-	// 		setFileList(tempFile);
-	// 	}
-	// };
-
 	const generateFileList = useMemo(() => {
 		if (fileList?.length) {
 			return (
@@ -518,9 +428,6 @@ const ServiceRepair = () => {
 								<Col style={{ alignItems: "center", display: "flex" }}>
 									<Button type="link">{item.fileName}</Button>
 								</Col>
-								{/* <Col style={{ alignItems: "center", display: "flex" }}>
-									<DeleteOutlined onClick={() => handleDeleteFile(index)} />
-								</Col> */}
 							</Row>
 						</List.Item>
 					)}
@@ -603,40 +510,6 @@ const ServiceRepair = () => {
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
 					<Form.Item
-						name="id_company"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Perusahaan <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setCompanyParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionCompany}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_company", v);
-										formRef.current?.setFieldsValue({
-											id_company: parseInt(v),
-										});
-									}}
-									value={formik.values.id_company}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
 						name="inventory_code"
 						rules={[
 							{
@@ -709,22 +582,12 @@ const ServiceRepair = () => {
 								Nama Pegawai <span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setEmployeeParams({ emp_name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionEmployee}
-									onChange={(v, opt) => {
-										const data: any = opt;
-										formik.setFieldValue("emp_name", data.label);
-										formRef.current?.setFieldsValue({
-											emp_name: data.label,
-										});
-									}}
+								<Input
+									type="text"
+									name="emp_name"
+									className="form-control"
+									placeholder="Nama Pegawai"
+									onChange={formik.handleChange}
 									value={formik.values.emp_name}
 								/>
 							</div>
@@ -776,40 +639,6 @@ const ServiceRepair = () => {
 									placeholder="Spesifikasi"
 									onChange={formik.handleChange}
 									value={formik.values.spesification}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="created_by"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Dibuat oleh <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setEmployeeParams({ emp_name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionEmployee}
-									onChange={(v, opt) => {
-										formik.setFieldValue("created_by", v);
-										formRef.current?.setFieldsValue({
-											created_by: parseInt(v),
-										});
-									}}
-									value={formik.values.created_by}
 								/>
 							</div>
 						</div>

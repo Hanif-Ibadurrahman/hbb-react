@@ -30,15 +30,11 @@ import {
 	updateServiceDisplacementApi,
 } from "api/serviceDisplacement";
 import { IServiceDisplacement } from "store/types/serviceDisplacementTypes";
-import { CheckResponse } from "app/helper/authentication";
+import { CheckResponse, TokenDekode } from "app/helper/authentication";
 import { DefaultOptionType } from "antd/es/select";
-import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
 import { getAllWorkflowApi, getDetailWorkflowApi } from "api/workflow";
-import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { IWorkflowGetAllParams } from "store/types/workflowTypes";
 import { listCheckPermission } from "app/helper/permission";
-import { IEmployeeGetAllParams } from "store/types/employeeTypes";
-import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
 import { ILocationGetAllParams } from "store/types/locationTypes";
 import { getAllLocationApi, getDetailLocationApi } from "api/location";
 import { IInventoryGetAllParams } from "store/types/inventoryTypes";
@@ -47,9 +43,12 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { ModalFilter } from "./components/modalFilter";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
+import { IUserGetAllParams } from "store/types/userTypes";
+import { getAllUserApi, getDetailUserApi } from "api/user";
 
 const ServiceDisplacement = () => {
 	dayjs.extend(customParseFormat);
+	const tokenDecode = TokenDekode();
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
@@ -62,12 +61,7 @@ const ServiceDisplacement = () => {
 	const [inventoryParams, setInventoryParams] = useState<
 		IInventoryGetAllParams | undefined
 	>();
-	const [employeeParams, setEmployeeParams] = useState<
-		IEmployeeGetAllParams | undefined
-	>();
-	const [companyParams, setCompanyParams] = useState<
-		ICompanyGetAllParams | undefined
-	>();
+	const [userParams, setUserParams] = useState<IUserGetAllParams | undefined>();
 	const [workflowParams, setWorkflowParams] = useState<
 		IWorkflowGetAllParams | undefined
 	>();
@@ -90,10 +84,7 @@ const ServiceDisplacement = () => {
 	const [dataOptionInventory, setDataOptionInventory] = useState<
 		DefaultOptionType[] | undefined
 	>();
-	const [dataOptionEmployee, setDataOptionEmployee] = useState<
-		DefaultOptionType[] | undefined
-	>();
-	const [dataOptionCompany, setDataOptionCompany] = useState<
+	const [dataOptionUser, setDataOptionUser] = useState<
 		DefaultOptionType[] | undefined
 	>();
 	const [dataOptionWorkflow, setDataOptionWorkflow] = useState<
@@ -148,51 +139,25 @@ const ServiceDisplacement = () => {
 		}
 	};
 
-	const fetchDataEmployee = async () => {
+	const fetchDataUser = async () => {
 		try {
-			const response = await getAllEmployeeApi(employeeParams);
-			const employeeList = response.data.data.data;
-			setDataOptionEmployee(
-				employeeList.map(v => ({ label: v.emp_name, value: v.id })),
-			);
+			const response = await getAllUserApi(userParams);
+			const userList = response.data.data.data;
+			setDataOptionUser(userList.map(v => ({ label: v.name, value: v.id })));
 		} catch (error: any) {
 			CheckResponse(error);
 		}
 	};
 
-	const fetchDataEmployeeDetail = async (id: number) => {
+	const fetchDataUserDetail = async (id: number) => {
 		try {
-			const response = await getDetailEmployeeApi(id);
+			const response = await getDetailUserApi(id);
 			const detail = response.data.data;
-			setDataOptionEmployee(
-				dataOptionEmployee?.concat({
-					label: detail.emp_name,
+			setDataOptionUser(
+				dataOptionUser?.concat({
+					label: detail.name,
 					value: detail.id,
 				}),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataCompany = async () => {
-		try {
-			const response = await getAllCompanyApi(companyParams);
-			const companyList = response.data.data;
-			setDataOptionCompany(
-				companyList.map(v => ({ label: v.name, value: v.id })),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataCompanyDetail = async (id: number) => {
-		try {
-			const response = await getDetailCompanyApi(id);
-			const detail = response.data.data;
-			setDataOptionCompany(
-				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -252,14 +217,11 @@ const ServiceDisplacement = () => {
 		if (!checkDefaultOption(dataOptionInventory!, setData.inventory_code)) {
 			fetchDataInventoryDetail(setData.id_inventory);
 		}
-		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
-			fetchDataCompanyDetail(setData.id_company);
+		if (!checkDefaultOption(dataOptionUser!, setData.from_user)) {
+			fetchDataUserDetail(setData.from_user);
 		}
-		if (!checkDefaultOption(dataOptionEmployee!, setData.from_user)) {
-			fetchDataEmployeeDetail(setData.from_user);
-		}
-		if (!checkDefaultOption(dataOptionEmployee!, setData.to_user)) {
-			fetchDataEmployeeDetail(setData.to_user);
+		if (!checkDefaultOption(dataOptionUser!, setData.to_user)) {
+			fetchDataUserDetail(setData.to_user);
 		}
 		if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
 			fetchDataWorkflowDetail(setData.id_workflow);
@@ -282,14 +244,9 @@ const ServiceDisplacement = () => {
 	}, [workflowParams]);
 
 	useEffect(() => {
-		fetchDataCompany();
+		fetchDataUser();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [companyParams]);
-
-	useEffect(() => {
-		fetchDataEmployee();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [employeeParams]);
+	}, [userParams]);
 
 	useEffect(() => {
 		fetchDataLocation();
@@ -447,11 +404,12 @@ const ServiceDisplacement = () => {
 	};
 
 	const onFinish = (values: any) => {
+		const input = {
+			...values,
+			tipe: "PEMINDAHAN",
+			id_company: tokenDecode?.user?.id_company,
+		};
 		if (showModal.id) {
-			const input = {
-				...values,
-				tipe: "PEMINDAHAN",
-			};
 			updateServiceDisplacementApi(showModal.id, input)
 				.then(res => {
 					if (res.data.status === "success") {
@@ -474,10 +432,6 @@ const ServiceDisplacement = () => {
 					});
 				});
 		} else {
-			const input = {
-				...values,
-				tipe: "PEMINDAHAN",
-			};
 			createNewServiceDisplacementApi(input)
 				.then(res => {
 					if (res.data.status === "success") {
@@ -575,40 +529,6 @@ const ServiceDisplacement = () => {
 					<Form form={form} ref={formRef} onFinish={onFinish}>
 						<Divider />
 						<Form.Item
-							name="id_company"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
-							<div className="form-group">
-								<Title level={5}>
-									Perusahaan <span className="text-danger">*</span>
-								</Title>
-								<div className="controls">
-									<Select
-										showSearch
-										onSearch={v => setCompanyParams({ name: v })}
-										filterOption={(input, option) =>
-											(`${option?.label}` ?? "")
-												.toLowerCase()
-												.includes(input.toLowerCase())
-										}
-										options={dataOptionCompany}
-										onChange={(v, opt) => {
-											formik.setFieldValue("id_company", v);
-											formRef.current?.setFieldsValue({
-												id_company: parseInt(v),
-											});
-										}}
-										value={formik.values.id_company}
-									/>
-								</div>
-							</div>
-						</Form.Item>
-						<Form.Item
 							name="date"
 							rules={[
 								{
@@ -690,13 +610,13 @@ const ServiceDisplacement = () => {
 								<div className="controls">
 									<Select
 										showSearch
-										onSearch={v => setEmployeeParams({ emp_name: v })}
+										onSearch={v => setUserParams({ name: v })}
 										filterOption={(input, option) =>
 											(`${option?.label}` ?? "")
 												.toLowerCase()
 												.includes(input.toLowerCase())
 										}
-										options={dataOptionEmployee}
+										options={dataOptionUser}
 										onChange={(v, opt) => {
 											formik.setFieldValue("from_user", v);
 											formRef.current?.setFieldsValue({
@@ -724,13 +644,13 @@ const ServiceDisplacement = () => {
 								<div className="controls">
 									<Select
 										showSearch
-										onSearch={v => setEmployeeParams({ emp_name: v })}
+										onSearch={v => setUserParams({ name: v })}
 										filterOption={(input, option) =>
 											(`${option?.label}` ?? "")
 												.toLowerCase()
 												.includes(input.toLowerCase())
 										}
-										options={dataOptionEmployee}
+										options={dataOptionUser}
 										onChange={(v, opt) => {
 											formik.setFieldValue("to_user", v);
 											formRef.current?.setFieldsValue({

@@ -31,14 +31,10 @@ import {
 	updateServiceDeleteApi,
 } from "api/serviceDelete";
 import { IServiceDelete } from "store/types/serviceDeleteTypes";
-import { CheckResponse } from "app/helper/authentication";
+import { CheckResponse, TokenDekode } from "app/helper/authentication";
 import { DefaultOptionType } from "antd/es/select";
-import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
 import { getAllWorkflowApi, getDetailWorkflowApi } from "api/workflow";
-import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { IWorkflowGetAllParams } from "store/types/workflowTypes";
-import { IEmployeeGetAllParams } from "store/types/employeeTypes";
-import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
 import { IInventoryGetAllParams } from "store/types/inventoryTypes";
 import { getAllInventoryApi, getDetailInventoryApi } from "api/inventory";
 import dayjs from "dayjs";
@@ -49,6 +45,7 @@ import { checkDefaultOption, removeNullFields } from "app/helper/common";
 
 const ServiceDelete = () => {
 	dayjs.extend(customParseFormat);
+	const tokenDecode = TokenDekode();
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
@@ -58,12 +55,6 @@ const ServiceDelete = () => {
 	});
 	const [inventoryParams, setInventoryParams] = useState<
 		IInventoryGetAllParams | undefined
-	>();
-	const [employeeParams, setEmployeeParams] = useState<
-		IEmployeeGetAllParams | undefined
-	>();
-	const [companyParams, setCompanyParams] = useState<
-		ICompanyGetAllParams | undefined
 	>();
 	const [workflowParams, setWorkflowParams] = useState<
 		IWorkflowGetAllParams | undefined
@@ -138,57 +129,6 @@ const ServiceDelete = () => {
 		}
 	};
 
-	const fetchDataEmployee = async () => {
-		try {
-			const response = await getAllEmployeeApi(employeeParams);
-			const employeeList = response.data.data.data;
-			setDataOptionEmployee(
-				employeeList.map(v => ({ label: v.emp_name, value: `${v.id}` })),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataEmployeeDetail = async (id: number) => {
-		try {
-			const response = await getDetailEmployeeApi(id);
-			const detail = response.data.data;
-			setDataOptionEmployee(
-				dataOptionEmployee?.concat({
-					label: detail.emp_name,
-					value: detail.id,
-				}),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataCompany = async () => {
-		try {
-			const response = await getAllCompanyApi(companyParams);
-			const companyList = response.data.data;
-			setDataOptionCompany(
-				companyList.map(v => ({ label: v.name, value: `${v.id}` })),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataCompanyDetail = async (id: number) => {
-		try {
-			const response = await getDetailCompanyApi(id);
-			const detail = response.data.data;
-			setDataOptionCompany(
-				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
 	const fetchDataWorkflow = async () => {
 		try {
 			const response = await getAllWorkflowApi(workflowParams);
@@ -218,12 +158,6 @@ const ServiceDelete = () => {
 		if (!checkDefaultOption(dataOptionInventory!, setData.inventory_code)) {
 			fetchDataInventoryDetail(setData.id_inventory);
 		}
-		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
-			fetchDataCompanyDetail(setData.id_company);
-		}
-		if (!checkDefaultOption(dataOptionEmployee!, setData.created_by)) {
-			fetchDataEmployeeDetail(setData.created_by);
-		}
 		if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
 			fetchDataWorkflowDetail(setData.id_workflow);
 		}
@@ -240,16 +174,6 @@ const ServiceDelete = () => {
 		fetchDataWorkflow();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [workflowParams]);
-
-	useEffect(() => {
-		fetchDataCompany();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [companyParams]);
-
-	useEffect(() => {
-		fetchDataEmployee();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [employeeParams]);
 
 	useEffect(() => {
 		fetchDataList();
@@ -400,8 +324,13 @@ const ServiceDelete = () => {
 	};
 
 	const onFinish = (values: any) => {
+		const input = {
+			...values,
+			created_by: tokenDecode?.user?.id,
+			id_company: tokenDecode?.user?.id_company,
+		};
 		if (showModal.id) {
-			updateServiceDeleteApi(showModal.id, values)
+			updateServiceDeleteApi(showModal.id, input)
 				.then(res => {
 					if (res.data.status === "success") {
 						setShowModal({ show: false });
@@ -423,7 +352,7 @@ const ServiceDelete = () => {
 					});
 				});
 		} else {
-			createNewServiceDeleteApi(values)
+			createNewServiceDeleteApi(input)
 				.then(res => {
 					if (res.data.status === "success") {
 						setShowModal({ show: false });
@@ -519,40 +448,6 @@ const ServiceDelete = () => {
 				<div className="col-12">
 					<Form form={form} ref={formRef} onFinish={onFinish}>
 						<Divider />
-						<Form.Item
-							name="id_company"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
-							<div className="form-group">
-								<Title level={5}>
-									Perusahaan <span className="text-danger">*</span>
-								</Title>
-								<div className="controls">
-									<Select
-										showSearch
-										onSearch={v => setCompanyParams({ name: v })}
-										filterOption={(input, option) =>
-											(`${option?.label}` ?? "")
-												.toLowerCase()
-												.includes(input.toLowerCase())
-										}
-										options={dataOptionCompany}
-										onChange={(v, opt) => {
-											formik.setFieldValue("id_company", v);
-											formRef.current?.setFieldsValue({
-												id_company: parseInt(v),
-											});
-										}}
-										value={formik.values.id_company}
-									/>
-								</div>
-							</div>
-						</Form.Item>
 						<Form.Item
 							name="date"
 							rules={[
@@ -665,40 +560,6 @@ const ServiceDelete = () => {
 										placeholder="Remark"
 										onChange={formik.handleChange}
 										value={formik.values.remark}
-									/>
-								</div>
-							</div>
-						</Form.Item>
-						<Form.Item
-							name="created_by"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
-							<div className="form-group">
-								<Title level={5}>
-									Dibuat oleh <span className="text-danger">*</span>
-								</Title>
-								<div className="controls">
-									<Select
-										showSearch
-										onSearch={v => setEmployeeParams({ emp_name: v })}
-										filterOption={(input, option) =>
-											(`${option?.label}` ?? "")
-												.toLowerCase()
-												.includes(input.toLowerCase())
-										}
-										options={dataOptionEmployee}
-										onChange={(v, opt) => {
-											formik.setFieldValue("created_by", v);
-											formRef.current?.setFieldsValue({
-												created_by: parseInt(v),
-											});
-										}}
-										value={formik.values.created_by}
 									/>
 								</div>
 							</div>
