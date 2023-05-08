@@ -1,6 +1,6 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
 import { MainLayout } from "app/layout/mainLayout";
-import { useEffect, useRef, useState } from "react";
+import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import {
 	createNewUserApi,
@@ -52,6 +52,7 @@ const MasterUser = () => {
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
+	const inputFile = useRef<HTMLInputElement | null>(null);
 	const [selectedRole, setSelectedRole] = useState<string[]>();
 	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<IUserGetAllParams | undefined>({
@@ -313,6 +314,21 @@ const MasterUser = () => {
 		formRef.current?.resetFields();
 	};
 
+	const handleUpload = (event: SyntheticEvent) => {
+		const target = event.nativeEvent.target as HTMLInputElement;
+		const targetFiles = target.files?.item(0);
+		if (targetFiles) {
+			try {
+				Swal.fire({
+					icon: "success",
+					title: "Excel berhasil di upload",
+					showConfirmButton: false,
+					timer: 3000,
+				});
+			} catch (error) {}
+		}
+	};
+
 	const handleDelete = (id: number) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
@@ -441,6 +457,14 @@ const MasterUser = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
+									<button
+										className="btn btn-success"
+										onClick={() => {
+											inputFile.current?.click();
+										}}
+									>
+										<i className="fa fa-upload" />
+									</button>
 									{listCheckPermission.isAllowCreateMasterUser && (
 										<button
 											type="button"
@@ -452,7 +476,7 @@ const MasterUser = () => {
 									)}
 								</Space>
 							}
-							scroll={{ x: 1500 }}
+							scroll={{ x: 1800 }}
 						/>
 					</div>
 				</div>
@@ -820,6 +844,20 @@ const MasterUser = () => {
 					</Form.Item>
 				</Form>
 			</AntdModal>
+
+			<input
+				type="file"
+				style={{ display: "none" }}
+				ref={inputFile}
+				accept={".xls, .xlsx"}
+				onChange={e => handleUpload(e)}
+			/>
+
+			<ModalFilter
+				isShow={showFilter}
+				setShowModal={setShowFilter}
+				setParams={setParams}
+			/>
 
 			<ModalFilter
 				isShow={showFilter}

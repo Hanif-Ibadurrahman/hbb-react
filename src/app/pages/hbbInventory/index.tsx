@@ -320,6 +320,26 @@ const HbbInventory = () => {
 		}
 	};
 
+	const fetchDataItemDetailToField = async (id: number) => {
+		try {
+			const response = await getDetailItemApi(id);
+			const detail = response.data.data;
+			if (detail.warna) {
+				fetchDataColorDetail(detail.warna);
+			}
+			setInitialValue({
+				...initialValue,
+				...detail,
+				type: detail.tipe,
+				capacity: detail.kapasitas,
+				size: detail.ukuran,
+				id_color: detail.warna ? parseInt(detail.warna) : undefined,
+			});
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
 	const fetchDataCondition = async () => {
 		try {
 			const response = await getAllConditionApi(conditionParams);
@@ -531,7 +551,7 @@ const HbbInventory = () => {
 	useEffect(() => {
 		fetchDataCountry();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [workUnitParams]);
+	}, [countryParams]);
 
 	useEffect(() => {
 		fetchDataWorkUnit();
@@ -541,12 +561,12 @@ const HbbInventory = () => {
 	useEffect(() => {
 		fetchDataItem();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [areaParams]);
+	}, [itemParams]);
 
 	useEffect(() => {
 		fetchDataCondition();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [areaParams]);
+	}, [conditionParams]);
 
 	useEffect(() => {
 		fetchDataArea();
@@ -596,6 +616,20 @@ const HbbInventory = () => {
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [formik.values.id_main_group]);
+
+	useEffect(() => {
+		const itemId = formik.values.id_barang;
+		if (itemId && initialValue?.id_barang) {
+			if (itemId !== initialValue.id_barang) {
+				fetchDataItemDetailToField(itemId);
+			}
+		}
+
+		if (itemId && !initialValue) {
+			fetchDataItemDetailToField(itemId);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_barang]);
 
 	useEffect(() => {
 		const mainGroupId = formik.values.id_main_group;
@@ -775,166 +809,6 @@ const HbbInventory = () => {
 						</div>
 					</Form.Item>
 					<Form.Item
-						name="id_area"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Area <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setAreaParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionArea}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_area", v);
-										formRef.current?.setFieldsValue({
-											id_area: v,
-										});
-									}}
-									value={formik.values.id_area}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="id_bisnis_unit"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Bisnis Unit <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setBusinessUnitParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionBusinessUnit}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_bisnis_unit", v);
-										formRef.current?.setFieldsValue({
-											id_bisnis_unit: v,
-										});
-									}}
-									value={formik.values.id_bisnis_unit}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="id_satker"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Satuan Kerja <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setWorkUnitParams({ satker: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionWorkUnit}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_satker", v);
-										formRef.current?.setFieldsValue({
-											id_satker: v,
-										});
-									}}
-									value={formik.values.id_satker}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="id_location"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Lokasi <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setLocationParams({ lokasi: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionLocation}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_location", v);
-										formRef.current?.setFieldsValue({
-											id_location: v,
-										});
-									}}
-									value={formik.values.id_location}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item name="id_division">
-						<div className="form-group">
-							<Title level={5}>Divisi</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setDivisionParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionDivision}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_division", v);
-										formRef.current?.setFieldsValue({
-											id_division: v,
-										});
-									}}
-									value={formik.values.id_division}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
 						name="inventory_type"
 						rules={[
 							{
@@ -1028,6 +902,166 @@ const HbbInventory = () => {
 										});
 									}}
 									value={formik.values.id_sub_group}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_bisnis_unit"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Bisnis Unit <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setBusinessUnitParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionBusinessUnit}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_bisnis_unit", v);
+										formRef.current?.setFieldsValue({
+											id_bisnis_unit: v,
+										});
+									}}
+									value={formik.values.id_bisnis_unit}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_area"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Area <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setAreaParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionArea}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_area", v);
+										formRef.current?.setFieldsValue({
+											id_area: v,
+										});
+									}}
+									value={formik.values.id_area}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_satker"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Satuan Kerja <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setWorkUnitParams({ satker: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionWorkUnit}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_satker", v);
+										formRef.current?.setFieldsValue({
+											id_satker: v,
+										});
+									}}
+									value={formik.values.id_satker}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_location"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Lokasi <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setLocationParams({ lokasi: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionLocation}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_location", v);
+										formRef.current?.setFieldsValue({
+											id_location: v,
+										});
+									}}
+									value={formik.values.id_location}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item name="id_division">
+						<div className="form-group">
+							<Title level={5}>Divisi</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setDivisionParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionDivision}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_division", v);
+										formRef.current?.setFieldsValue({
+											id_division: v,
+										});
+									}}
+									value={formik.values.id_division}
 								/>
 							</div>
 						</div>
@@ -1475,6 +1509,21 @@ const HbbInventory = () => {
 									placeholder="Ukuran"
 									onChange={formik.handleChange}
 									value={formik.values.size}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item name="capacity">
+						<div className="form-group">
+							<Title level={5}>Kapasitas</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="capacity"
+									className="form-control"
+									placeholder="Kapasitas"
+									onChange={formik.handleChange}
+									value={formik.values.capacity}
 								/>
 							</div>
 						</div>
