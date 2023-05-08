@@ -83,12 +83,6 @@ const ServiceReplacement = () => {
 	const [dataOptionInventory, setDataOptionInventory] = useState<
 		DefaultOptionType[] | undefined
 	>();
-	const [dataOptionCompany, setDataOptionCompany] = useState<
-		DefaultOptionType[] | undefined
-	>();
-	const [dataOptionEmployee, setDataOptionEmployee] = useState<
-		DefaultOptionType[] | undefined
-	>();
 	const [dataOptionWorkflow, setDataOptionWorkflow] = useState<
 		DefaultOptionType[] | undefined
 	>();
