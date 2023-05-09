@@ -1,22 +1,24 @@
-import { Button, Col, Drawer, Form, Row, Space } from "antd";
+import { Button, Col, DatePicker, Drawer, Form, Row, Space } from "antd";
 import { SelectWithTag } from "app/components/selectWithTag";
 import { TokenDekode } from "app/helper/authentication";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { IInventoryGetAllParams } from "store/types/inventoryTypes";
-
 interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
 	setParams: Dispatch<SetStateAction<IInventoryGetAllParams | undefined>>;
+	options: any;
 }
 
 export const ModalFilter = ({
 	isShow,
 	setShowModal,
 	setParams,
+	options,
 }: IModalFilter) => {
 	const [formFilter] = Form.useForm();
 	const tokenDecode = TokenDekode();
+	const { RangePicker } = DatePicker;
 
 	const generateContent = useMemo(() => {
 		const isSuperadmin = Object.values(tokenDecode?.user?.roles ?? {}).includes(
@@ -26,15 +28,29 @@ export const ModalFilter = ({
 			return (
 				<Col span={12}>
 					<Form.Item name="company" label="Perusahaan">
-						<SelectWithTag />
+						<SelectWithTag
+							dataOption={options.dataOptionCompany}
+							valueOption="label"
+						/>
 					</Form.Item>
 				</Col>
 			);
 		}
-	}, [tokenDecode]);
+	}, [options.dataOptionCompany, tokenDecode?.user?.roles]);
+
+	const checkRangeValue = value => {
+		return value
+			? `${value[0].format("YYYY-MM-DD")}|${value[1].format("YYYY-MM-DD")}`
+			: undefined;
+	};
 
 	const handleSubmit = v => {
-		const filterParams = Object.entries(v).reduce((res, curr) => {
+		const values = {
+			...v,
+			rentang_waktu: checkRangeValue(v["rentang_waktu"]),
+			rentang_tahun_perolehan: checkRangeValue(v["rentang_tahun_perolehan"]),
+		};
+		const filterParams: any = Object.entries(values).reduce((res, curr) => {
 			if (curr[1]) {
 				return {
 					...res,
@@ -44,7 +60,11 @@ export const ModalFilter = ({
 				return res;
 			}
 		}, {});
-		setParams(filterParams);
+		setParams({
+			...filterParams,
+			rentang_waktu: values.rentang_waktu,
+			rentang_tahun_perolehan: values.rentang_tahun_perolehan,
+		});
 		setShowModal(false);
 	};
 
@@ -75,17 +95,29 @@ export const ModalFilter = ({
 				<Row gutter={16}>
 					<Col span={12}>
 						<Form.Item name="inventory_type" label="Jenis Barang">
-							<SelectWithTag />
+							<SelectWithTag
+								dataOption={[
+									{ value: "inventaris", label: "Inventaris" },
+									{ value: "hbb", label: "HBB" },
+								]}
+								mode="multiple"
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="id_main_group" label="Main Group">
-							<SelectWithTag />
+						<Form.Item name="main_group" label="Main Group">
+							<SelectWithTag
+								dataOption={options.dataOptionCodeGroup}
+								valueOption="label"
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="id_sub_group" label="Sub Group">
-							<SelectWithTag />
+						<Form.Item name="sub_group" label="Sub Group">
+							<SelectWithTag
+								dataOption={options.dataOptionSubCodeGroup}
+								valueOption="label"
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={12}>
@@ -94,7 +126,7 @@ export const ModalFilter = ({
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="id_barang" label="Nama Barang">
+						<Form.Item name="name" label="Nama Barang">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
@@ -114,7 +146,7 @@ export const ModalFilter = ({
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="id_country" label="Negara Pembuat">
+						<Form.Item name="country" label="Negara Pembuat">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
@@ -134,8 +166,11 @@ export const ModalFilter = ({
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="id_color" label="Warna">
-							<SelectWithTag />
+						<Form.Item name="color" label="Warna">
+							<SelectWithTag
+								dataOption={options.dataOptionColor}
+								valueOption="label"
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={12}>
@@ -184,27 +219,27 @@ export const ModalFilter = ({
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="id_bisnis_unit" label="Bisnis Unit">
+						<Form.Item name="bisnis_unit" label="Bisnis Unit">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="id_area" label="Area">
+						<Form.Item name="area" label="Area">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="id_satker" label="Satuan Kerja">
+						<Form.Item name="satker" label="Satuan Kerja">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="id_location" label="Lokasi">
+						<Form.Item name="location" label="Lokasi">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="id_penanggung_jawab" label="Penanggung Jawab">
+						<Form.Item name="penanggung_jawab" label="Penanggung Jawab">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
@@ -214,8 +249,13 @@ export const ModalFilter = ({
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="" label="Rentang Waktu">
-							<SelectWithTag />
+						<Form.Item name="rentang_waktu" label="Rentang Waktu">
+							<RangePicker style={{ width: "100%" }} format={"DD-MM-YYYY"} />
+						</Form.Item>
+					</Col>
+					<Col span={12}>
+						<Form.Item name="rentang_tahun_perolehan" label="Rentang Waktu">
+							<RangePicker style={{ width: "100%" }} format={"DD-MM-YYYY"} />
 						</Form.Item>
 					</Col>
 					<Col span={12}>

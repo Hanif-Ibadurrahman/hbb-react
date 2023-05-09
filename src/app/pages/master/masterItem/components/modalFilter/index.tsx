@@ -8,12 +8,14 @@ interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
 	setParams: Dispatch<SetStateAction<IItemGetAllParams | undefined>>;
+	options: any;
 }
 
 export const ModalFilter = ({
 	isShow,
 	setShowModal,
 	setParams,
+	options,
 }: IModalFilter) => {
 	const [formFilter] = Form.useForm();
 	const tokenDecode = TokenDekode();
@@ -26,12 +28,15 @@ export const ModalFilter = ({
 			return (
 				<Col span={12}>
 					<Form.Item name="company" label="Perusahaan">
-						<SelectWithTag />
+						<SelectWithTag
+							dataOption={options.dataOptionCompany}
+							valueOption="label"
+						/>
 					</Form.Item>
 				</Col>
 			);
 		}
-	}, [tokenDecode]);
+	}, [options.dataOptionCompany, tokenDecode?.user?.roles]);
 
 	const handleSubmit = v => {
 		const filterParams = Object.entries(v).reduce((res, curr) => {
@@ -75,12 +80,18 @@ export const ModalFilter = ({
 				<Row gutter={16}>
 					<Col span={12}>
 						<Form.Item name="main_group" label="Main Group">
-							<SelectWithTag />
+							<SelectWithTag
+								dataOption={options.dataOptionCodeGroup}
+								valueOption="label"
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={12}>
 						<Form.Item name="sub_group" label="Sub Group">
-							<SelectWithTag />
+							<SelectWithTag
+								dataOption={options.dataOptionSubCodeGroup}
+								valueOption="label"
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={12}>
@@ -110,7 +121,10 @@ export const ModalFilter = ({
 					</Col>
 					<Col span={12}>
 						<Form.Item name="warna" label="Warna">
-							<SelectWithTag />
+							<SelectWithTag
+								dataOption={options.dataOptionColor}
+								valueOption="label"
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={12}>

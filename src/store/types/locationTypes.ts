@@ -8,6 +8,7 @@ export interface ILocation {
 	id_pegawai: number | null;
 	id_satker: number | null;
 	id_company: number | null;
+	id_division: number;
 	name: string | null;
 	from_opname: boolean | null;
 	satker: IWorkUnit | null;
@@ -23,6 +24,8 @@ export interface ILocationPaginateResponse extends PaginationState {
 export interface ILocationGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	lokasi?: string;
 	bisnis_unit?: string;
 	area?: string;
@@ -37,6 +40,7 @@ export interface ICreateLocationRequest {
 	id_pegawai: string;
 	id_satker: string;
 	id_company: number;
+	id_division: number;
 	name: string;
 	from_opname: boolean | null;
 }
@@ -46,6 +50,7 @@ export interface IUpdateLocationRequest {
 	id_pegawai: string;
 	id_satker: string;
 	id_company: number;
+	id_division: number;
 	name: string;
 	from_opname: boolean | null;
 }

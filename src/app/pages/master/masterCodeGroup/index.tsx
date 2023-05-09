@@ -46,6 +46,9 @@ const MasterCodeGroup = () => {
 	const [params, setParams] = useState<ICodeGroupGetAllParams | undefined>({
 		per_page: 10,
 	});
+	const [paramsFilter, setParamsFilter] = useState<
+		ICodeGroupGetAllParams | undefined
+	>();
 	const [companyParams, setCompanyParams] = useState<
 		ICompanyGetAllParams | undefined
 	>();
@@ -101,7 +104,9 @@ const MasterCodeGroup = () => {
 		try {
 			const response = await getDetailCompanyApi(id);
 			const detail = response.data.data;
-			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
+			setDataOptionCompany(
+				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -135,6 +140,17 @@ const MasterCodeGroup = () => {
 	}, [selectedPageAndSort]);
 
 	useEffect(() => {
+		setParams({
+			page: params?.page,
+			per_page: params?.per_page,
+			order_by: params?.order_by,
+			sort: params?.sort,
+			...paramsFilter,
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [paramsFilter]);
+
+	useEffect(() => {
 		if (showModal.show && showModal.id) {
 			fetchDataDetail(showModal.id);
 		}
@@ -148,11 +164,10 @@ const MasterCodeGroup = () => {
 	});
 
 	const handleAdd = () => {
-		fetchDataCompany();
 		setShowModal({ show: true });
 		setInitialValue(undefined);
+		form.resetFields();
 		formik.resetForm();
-		formRef.current?.resetFields();
 	};
 
 	const handleDelete = (id: number) => {
@@ -401,7 +416,7 @@ const MasterCodeGroup = () => {
 			<ModalFilter
 				isShow={showFilter}
 				setShowModal={setShowFilter}
-				setParams={setParams}
+				setParams={setParamsFilter}
 			/>
 		</MainLayout>
 	);

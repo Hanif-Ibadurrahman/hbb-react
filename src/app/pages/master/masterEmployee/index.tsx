@@ -1,6 +1,6 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
 import { MainLayout } from "app/layout/mainLayout";
-import { useEffect, useRef, useState } from "react";
+import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import {
 	ICreateEmployeeRequest,
@@ -40,10 +40,14 @@ const MasterEmployee = () => {
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
+	const inputFile = useRef<HTMLInputElement | null>(null);
 	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<IEmployeeGetAllParams | undefined>({
 		per_page: 10,
 	});
+	const [paramsFilter, setParamsFilter] = useState<
+		IEmployeeGetAllParams | undefined
+	>();
 	const [companyParams, setCompanyParams] = useState<
 		ICompanyGetAllParams | undefined
 	>();
@@ -99,7 +103,9 @@ const MasterEmployee = () => {
 		try {
 			const response = await getDetailCompanyApi(id);
 			const detail = response.data.data;
-			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
+			setDataOptionCompany(
+				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -133,6 +139,17 @@ const MasterEmployee = () => {
 	}, [selectedPageAndSort]);
 
 	useEffect(() => {
+		setParams({
+			page: params?.page,
+			per_page: params?.per_page,
+			order_by: params?.order_by,
+			sort: params?.sort,
+			...paramsFilter,
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [paramsFilter]);
+
+	useEffect(() => {
 		if (showModal.show && showModal.id) {
 			fetchDataDetail(showModal.id);
 		}
@@ -146,11 +163,10 @@ const MasterEmployee = () => {
 	});
 
 	const handleAdd = () => {
-		fetchDataCompany();
 		setShowModal({ show: true });
 		setInitialValue(undefined);
 		formik.resetForm();
-		formRef.current?.resetFields();
+		form.resetFields();
 	};
 
 	const handleDelete = (id: number) => {
@@ -236,6 +252,21 @@ const MasterEmployee = () => {
 		}
 	};
 
+	const handleUpload = (event: SyntheticEvent) => {
+		const target = event.nativeEvent.target as HTMLInputElement;
+		const targetFiles = target.files?.item(0);
+		if (targetFiles) {
+			try {
+				Swal.fire({
+					icon: "success",
+					title: "Excel berhasil di upload",
+					showConfirmButton: false,
+					timer: 3000,
+				});
+			} catch (error) {}
+		}
+	};
+
 	const handleCancel = () => {
 		setShowModal({ show: false });
 	};
@@ -263,6 +294,14 @@ const MasterEmployee = () => {
 										onClick={() => setShowFilter(true)}
 									>
 										<i className="fa fa-filter" />
+									</button>
+									<button
+										className="btn btn-success"
+										onClick={() => {
+											inputFile.current?.click();
+										}}
+									>
+										<i className="fa fa-upload" />
 									</button>
 									{listCheckPermission.isAllowCreateMasterEmployee && (
 										<button
@@ -410,10 +449,18 @@ const MasterEmployee = () => {
 				</Form>
 			</AntdModal>
 
+			<input
+				type="file"
+				style={{ display: "none" }}
+				ref={inputFile}
+				accept={".xls, .xlsx"}
+				onChange={e => handleUpload(e)}
+			/>
+
 			<ModalFilter
 				isShow={showFilter}
 				setShowModal={setShowFilter}
-				setParams={setParams}
+				setParams={setParamsFilter}
 			/>
 		</MainLayout>
 	);

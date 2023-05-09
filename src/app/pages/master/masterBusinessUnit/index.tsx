@@ -44,6 +44,9 @@ const MasterBusinessUnit = () => {
 	const [params, setParams] = useState<IBusinessUnitGetAllParams | undefined>({
 		per_page: 10,
 	});
+	const [paramsFilter, setParamsFilter] = useState<
+		IBusinessUnitGetAllParams | undefined
+	>();
 	const [companyParams, setCompanyParams] = useState<
 		ICompanyGetAllParams | undefined
 	>();
@@ -135,6 +138,17 @@ const MasterBusinessUnit = () => {
 	}, [selectedPageAndSort]);
 
 	useEffect(() => {
+		setParams({
+			page: params?.page,
+			per_page: params?.per_page,
+			order_by: params?.order_by,
+			sort: params?.sort,
+			...paramsFilter,
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [paramsFilter]);
+
+	useEffect(() => {
 		if (showModal.show && showModal.id) {
 			fetchDataDetail(showModal.id);
 		}
@@ -148,11 +162,10 @@ const MasterBusinessUnit = () => {
 	});
 
 	const handleAdd = () => {
-		fetchDataCompany();
 		setShowModal({ show: true });
 		setInitialValue(undefined);
 		formik.resetForm();
-		formRef.current?.resetFields();
+		form.resetFields();
 	};
 
 	const handleDelete = (id: number) => {
@@ -373,7 +386,7 @@ const MasterBusinessUnit = () => {
 			<ModalFilter
 				isShow={showFilter}
 				setShowModal={setShowFilter}
-				setParams={setParams}
+				setParams={setParamsFilter}
 			/>
 		</MainLayout>
 	);

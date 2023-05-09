@@ -53,6 +53,8 @@ export interface IUserPaginateResponse extends PaginationState {
 export interface IUserGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	name?: string;
 	bisnis_unit?: string;
 	area?: string;

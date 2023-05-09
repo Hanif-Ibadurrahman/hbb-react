@@ -43,6 +43,9 @@ const MasterSubCodeGroup = () => {
 	const [params, setParams] = useState<ISubCodeGroupGetAllParams | undefined>({
 		per_page: 10,
 	});
+	const [paramsFilter, setParamsFilter] = useState<
+		ISubCodeGroupGetAllParams | undefined
+	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
@@ -108,6 +111,17 @@ const MasterSubCodeGroup = () => {
 	}, [selectedPageAndSort]);
 
 	useEffect(() => {
+		setParams({
+			page: params?.page,
+			per_page: params?.per_page,
+			order_by: params?.order_by,
+			sort: params?.sort,
+			...paramsFilter,
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [paramsFilter]);
+
+	useEffect(() => {
 		if (showModal.show && showModal.id) {
 			fetchDataDetail(showModal.id);
 		}
@@ -124,7 +138,7 @@ const MasterSubCodeGroup = () => {
 		setShowModal({ show: true });
 		setInitialValue(undefined);
 		formik.resetForm();
-		formRef.current?.resetFields();
+		form.resetFields();
 	};
 
 	const handleDelete = (id: number) => {
@@ -344,7 +358,7 @@ const MasterSubCodeGroup = () => {
 			<ModalFilter
 				isShow={showFilter}
 				setShowModal={setShowFilter}
-				setParams={setParams}
+				setParams={setParamsFilter}
 			/>
 		</MainLayout>
 	);

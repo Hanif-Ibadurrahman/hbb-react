@@ -15,6 +15,8 @@ export interface ICountryPaginateResponse extends PaginationState {
 export interface ICountryGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	name?: string;
 	company?: string;
 }

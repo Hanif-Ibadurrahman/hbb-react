@@ -82,6 +82,9 @@ const HbbInventory = () => {
 	const [params, setParams] = useState<IInventoryGetAllParams | undefined>({
 		per_page: 10,
 	});
+	const [paramsFilter, setParamsFilter] = useState<
+		IInventoryGetAllParams | undefined
+	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
@@ -170,6 +173,12 @@ const HbbInventory = () => {
 		DefaultOptionType[] | undefined
 	>();
 
+	const formik = useFormik({
+		initialValues: { ...initialValue },
+		enableReinitialize: true,
+		onSubmit: values => {},
+	});
+
 	const fetchDataList = async () => {
 		try {
 			if (params) {
@@ -192,10 +201,10 @@ const HbbInventory = () => {
 
 	const fetchDataDivision = async () => {
 		try {
-			const response = await getAllDivisionApi(businessUnitParams);
-			const businessUnitList = response.data.data;
+			const response = await getAllDivisionApi(divisionParams);
+			const divisionList = response.data.data;
 			setDataOptionDivision(
-				businessUnitList.map(v => ({ label: v.name, value: v.id })),
+				divisionList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -206,7 +215,9 @@ const HbbInventory = () => {
 		try {
 			const response = await getDetailDivisionApi(id);
 			const detail = response.data.data;
-			setDataOptionDivision([{ label: detail.name, value: detail.id }]);
+			setDataOptionDivision(
+				dataOptionDivision?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -228,7 +239,9 @@ const HbbInventory = () => {
 		try {
 			const response = await getDetailCodeGroupApi(id);
 			const detail = response.data.data;
-			setDataOptionCodeGroup([{ label: detail.value, value: detail.id }]);
+			setDataOptionCodeGroup(
+				dataOptionCodeGroup?.concat({ label: detail.value, value: detail.id }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -272,7 +285,9 @@ const HbbInventory = () => {
 		try {
 			const response = await getDetailCountryApi(id);
 			const detail = response.data.data;
-			setDataOptionCountry([{ label: detail.name, value: detail.id }]);
+			setDataOptionCountry(
+				dataOptionCountry?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -294,7 +309,12 @@ const HbbInventory = () => {
 		try {
 			const response = await getDetailEmployeeApi(id);
 			const detail = response.data.data;
-			setDataOptionEmployee([{ label: detail.emp_name, value: detail.nipg }]);
+			setDataOptionEmployee(
+				dataOptionEmployee?.concat({
+					label: detail.emp_name,
+					value: detail.nipg,
+				}),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -314,7 +334,9 @@ const HbbInventory = () => {
 		try {
 			const response = await getDetailItemApi(id);
 			const detail = response.data.data;
-			setDataOptionItem([{ label: detail.name, value: detail.id }]);
+			setDataOptionItem(
+				dataOptionItem?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -327,14 +349,29 @@ const HbbInventory = () => {
 			if (detail.warna) {
 				fetchDataColorDetail(detail.warna);
 			}
-			setInitialValue({
-				...initialValue,
+
+			let data = {
 				...detail,
 				type: detail.tipe,
 				capacity: detail.kapasitas,
 				size: detail.ukuran,
 				id_color: detail.warna ? parseInt(detail.warna) : undefined,
-			});
+			};
+
+			if (initialValue) {
+				data = {
+					...initialValue,
+					...data,
+				};
+			} else {
+				data = {
+					...formik.values,
+					...data,
+				};
+			}
+
+			setInitialValue(data);
+			formRef.current?.setFieldsValue(data);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -356,7 +393,9 @@ const HbbInventory = () => {
 		try {
 			const response = await getDetailConditionApi(id);
 			const detail = response.data.data;
-			setDataOptionCondition([{ label: detail.name, value: detail.id }]);
+			setDataOptionCondition(
+				dataOptionCondition?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -378,7 +417,9 @@ const HbbInventory = () => {
 		try {
 			const response = await getDetailLocationApi(id);
 			const detail = response.data.data;
-			setDataOptionLocation([{ label: detail.name, value: detail.id }]);
+			setDataOptionLocation(
+				dataOptionLocation?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -398,7 +439,9 @@ const HbbInventory = () => {
 		try {
 			const response = await getDetailColorApi(id);
 			const detail = response.data.data;
-			setDataOptionColor([{ label: detail.name, value: detail.id }]);
+			setDataOptionColor(
+				dataOptionColor?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -420,7 +463,12 @@ const HbbInventory = () => {
 		try {
 			const response = await getDetailBusinessUnitApi(id);
 			const detail = response.data.data;
-			setDataOptionBusinessUnit([{ label: detail.name, value: detail.id }]);
+			setDataOptionBusinessUnit(
+				dataOptionBusinessUnit?.concat({
+					label: detail.name,
+					value: detail.id,
+				}),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -442,7 +490,9 @@ const HbbInventory = () => {
 		try {
 			const response = await getDetailAreaApi(id);
 			const detail = response.data.data;
-			setDataOptionArea([{ label: detail.name, value: `${detail.id}` }]);
+			setDataOptionArea(
+				dataOptionArea?.concat({ label: detail.name, value: `${detail.id}` }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -464,7 +514,9 @@ const HbbInventory = () => {
 		try {
 			const response = await getDetailWorkUnitApi(id);
 			const detail = response.data.data;
-			setDataOptionWorkUnit([{ label: detail.name, value: detail.id }]);
+			setDataOptionWorkUnit(
+				dataOptionWorkUnit?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -486,7 +538,9 @@ const HbbInventory = () => {
 		try {
 			const response = await getDetailCompanyApi(id);
 			const detail = response.data.data;
-			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
+			setDataOptionCompany(
+				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -536,12 +590,6 @@ const HbbInventory = () => {
 		setInitialValue(setData);
 		formRef.current?.setFieldsValue(setData);
 	};
-
-	const formik = useFormik({
-		initialValues: { ...initialValue },
-		enableReinitialize: true,
-		onSubmit: values => {},
-	});
 
 	useEffect(() => {
 		fetchDataDivision();
@@ -658,6 +706,17 @@ const HbbInventory = () => {
 	}, [selectedPageAndSort]);
 
 	useEffect(() => {
+		setParams({
+			page: params?.page,
+			per_page: params?.per_page,
+			order_by: params?.order_by,
+			sort: params?.sort,
+			...paramsFilter,
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [paramsFilter]);
+
+	useEffect(() => {
 		fetchDataEmployee();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [employeeParams]);
@@ -668,21 +727,10 @@ const HbbInventory = () => {
 	}, [businessUnitParams]);
 
 	const handleAdd = () => {
-		fetchDataCountry();
-		fetchDataWorkUnit();
-		fetchDataItem();
-		fetchDataCondition();
-		fetchDataArea();
-		fetchDataLocation();
-		fetchDataCodeGroup();
-		fetchDataCompany();
-		fetchDataColor();
-		fetchDataEmployee();
-		fetchDataBusinessUnit();
 		setShowModal({ show: true });
 		setInitialValue(undefined);
 		formik.resetForm();
-		formRef.current?.resetFields();
+		form.resetFields();
 	};
 
 	const handleDelete = (id: number) => {
@@ -1823,7 +1871,13 @@ const HbbInventory = () => {
 			<ModalFilter
 				isShow={showFilter}
 				setShowModal={setShowFilter}
-				setParams={setParams}
+				setParams={setParamsFilter}
+				options={{
+					dataOptionCodeGroup,
+					dataOptionSubCodeGroup,
+					dataOptionColor,
+					dataOptionCompany,
+				}}
 			/>
 		</MainLayout>
 	);

@@ -18,6 +18,8 @@ export interface IBusinessUnitPaginateResponse extends PaginationState {
 export interface IBusinessUnitGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	name?: string;
 	company?: string;
 }

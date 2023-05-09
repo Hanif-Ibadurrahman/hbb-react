@@ -24,6 +24,8 @@ export interface IItemPaginateResponse extends PaginationState {
 export interface IItemGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	main_group?: string;
 	sub_group?: string;
 	name?: string;

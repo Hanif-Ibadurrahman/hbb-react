@@ -15,6 +15,8 @@ export interface IColorPaginateResponse extends PaginationState {
 export interface IColorGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	color?: string;
 	company?: string;
 }

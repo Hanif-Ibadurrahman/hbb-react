@@ -90,15 +90,39 @@ export interface IInventoryPaginateResponse extends PaginationState {
 export interface IInventoryGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
+	inventory_type?: string;
+	main_group?: string;
+	sub_group?: string;
+	year?: string;
 	name?: string;
-	tahun_perolehan?: string;
+	distributor?: string;
 	no_akuntansi?: string;
+	no_bast?: string;
+	country?: string;
+	year_made?: string;
 	merk?: string;
-	kondisi?: string;
+	model?: string;
 	color?: string;
+	capacity?: string;
 	size?: string;
+	serial_number?: string;
+	no_polisi?: string;
+	no_rangka?: string;
+	no_mesin?: string;
+	no_bpkb?: string;
+	contract_no?: string;
+	contract_date?: string;
+	bisnis_unit?: string;
+	area?: string;
+	satker?: string;
+	location?: string;
+	penanggung_jawab?: string;
+	condition?: string;
+	rentang_waktu?: string;
+	rentang_tahun_perolehan?: string;
 	code?: string;
-	serial_no?: string;
 	status?: number;
 }
 

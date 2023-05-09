@@ -11,6 +11,8 @@ export interface IEmployeePaginateResponse extends PaginationState {
 export interface IEmployeeGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	nipg?: string;
 	emp_name?: string;
 	position?: string;
