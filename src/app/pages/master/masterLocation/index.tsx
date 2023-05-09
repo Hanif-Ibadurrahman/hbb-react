@@ -45,6 +45,8 @@ import { listCheckPermission } from "app/helper/permission";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
+import { IDivisionGetAllParams } from "store/types/divisionTypes";
+import { getAllDivisionApi, getDetailDivisionApi } from "api/division";
 
 const MasterLocation = () => {
 	const { Title } = Typography;
@@ -54,6 +56,9 @@ const MasterLocation = () => {
 	const [params, setParams] = useState<ILocationGetAllParams | undefined>({
 		per_page: 10,
 	});
+	const [paramsFilter, setParamsFilter] = useState<
+		ILocationGetAllParams | undefined
+	>();
 	const [businessUnitParams, setBusinessUnitParams] = useState<
 		IBusinessUnitGetAllParams | undefined
 	>();
@@ -66,6 +71,9 @@ const MasterLocation = () => {
 	>();
 	const [companyParams, setCompanyParams] = useState<
 		ICompanyGetAllParams | undefined
+	>();
+	const [divisionParams, setDivisionParams] = useState<
+		IDivisionGetAllParams | undefined
 	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
@@ -92,6 +100,9 @@ const MasterLocation = () => {
 		DefaultOptionType[] | undefined
 	>();
 	const [dataOptionCompany, setDataOptionCompany] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionDivision, setDataOptionDivision] = useState<
 		DefaultOptionType[] | undefined
 	>();
 
@@ -131,7 +142,12 @@ const MasterLocation = () => {
 		try {
 			const response = await getDetailBusinessUnitApi(id);
 			const detail = response.data.data;
-			setDataOptionBusinessUnit([{ label: detail.name, value: detail.id }]);
+			setDataOptionBusinessUnit(
+				dataOptionBusinessUnit?.concat({
+					label: detail.name,
+					value: detail.id,
+				}),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -151,7 +167,9 @@ const MasterLocation = () => {
 		try {
 			const response = await getDetailAreaApi(id);
 			const detail = response.data.data;
-			setDataOptionArea([{ label: detail.name, value: detail.id }]);
+			setDataOptionArea(
+				dataOptionArea?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -173,7 +191,33 @@ const MasterLocation = () => {
 		try {
 			const response = await getDetailWorkUnitApi(id);
 			const detail = response.data.data;
-			setDataOptionWorkUnit([{ label: detail.name, value: detail.id }]);
+			setDataOptionWorkUnit(
+				dataOptionWorkUnit?.concat({ label: detail.name, value: detail.id }),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataDivision = async () => {
+		try {
+			const response = await getAllDivisionApi(divisionParams);
+			const divisionList = response.data.data;
+			setDataOptionDivision(
+				divisionList.map(v => ({ label: v.name, value: v.id })),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataDivisionDetail = async (id: number) => {
+		try {
+			const response = await getDetailDivisionApi(id);
+			const detail = response.data.data;
+			setDataOptionDivision(
+				dataOptionDivision?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -195,7 +239,12 @@ const MasterLocation = () => {
 		try {
 			const response = await getDetailEmployeeApi(id);
 			const detail = response.data.data;
-			setDataOptionEmployee([{ label: detail.emp_name, value: detail.id }]);
+			setDataOptionEmployee(
+				dataOptionEmployee?.concat({
+					label: detail.emp_name,
+					value: detail.id,
+				}),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -217,7 +266,9 @@ const MasterLocation = () => {
 		try {
 			const response = await getDetailCompanyApi(id);
 			const detail = response.data.data;
-			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
+			setDataOptionCompany(
+				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -225,6 +276,9 @@ const MasterLocation = () => {
 
 	const handleInitialValue = (values: ILocation) => {
 		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionDivision!, setData.id_division)) {
+			fetchDataDivisionDetail(setData.id_division);
+		}
 		if (!checkDefaultOption(dataOptionBusinessUnit!, setData.id_bisnis_unit)) {
 			fetchDataBusinessUnitDetail(setData.id_bisnis_unit);
 		}
@@ -243,6 +297,11 @@ const MasterLocation = () => {
 		setInitialValue(setData);
 		formRef.current?.setFieldsValue(setData);
 	};
+
+	useEffect(() => {
+		fetchDataDivision();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [divisionParams]);
 
 	useEffect(() => {
 		fetchDataCompany();
@@ -283,6 +342,17 @@ const MasterLocation = () => {
 	}, [selectedPageAndSort]);
 
 	useEffect(() => {
+		setParams({
+			page: params?.page,
+			per_page: params?.per_page,
+			order_by: params?.order_by,
+			sort: params?.sort,
+			...paramsFilter,
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [paramsFilter]);
+
+	useEffect(() => {
 		if (showModal.show && showModal.id) {
 			fetchDataDetail(showModal.id);
 		}
@@ -296,14 +366,10 @@ const MasterLocation = () => {
 	});
 
 	const handleAdd = () => {
-		fetchDataArea();
-		fetchDataWorkUnit();
-		fetchDataEmployee();
-		fetchDataBusinessUnit();
 		setShowModal({ show: true });
 		setInitialValue(undefined);
 		formik.resetForm();
-		formRef.current?.resetFields();
+		form.resetFields();
 	};
 
 	const handleDelete = (id: number) => {
@@ -599,6 +665,30 @@ const MasterLocation = () => {
 							</div>
 						</div>
 					</Form.Item>
+					<Form.Item name="id_division">
+						<div className="form-group">
+							<Title level={5}>Divisi</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setDivisionParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionDivision}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_division", v);
+										formRef.current?.setFieldsValue({
+											id_division: v,
+										});
+									}}
+									value={formik.values.id_division}
+								/>
+							</div>
+						</div>
+					</Form.Item>
 					<Form.Item
 						name="name"
 						rules={[
@@ -664,7 +754,7 @@ const MasterLocation = () => {
 			<ModalFilter
 				isShow={showFilter}
 				setShowModal={setShowFilter}
-				setParams={setParams}
+				setParams={setParamsFilter}
 			/>
 		</MainLayout>
 	);

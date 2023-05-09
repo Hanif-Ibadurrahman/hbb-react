@@ -18,6 +18,8 @@ export interface IWorkflowPaginateResponse extends PaginationState {
 export interface IWorkflowGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	name?: string;
 	description?: string;
 	created_at?: string;

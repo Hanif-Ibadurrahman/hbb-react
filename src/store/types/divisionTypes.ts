@@ -22,6 +22,8 @@ export interface IDivisionPaginateResponse extends PaginationState {
 export interface IDivisionGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	name?: string;
 	satker?: string;
 	kepala_satker?: string;

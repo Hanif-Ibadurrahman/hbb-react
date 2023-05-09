@@ -1,6 +1,6 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
 import { MainLayout } from "app/layout/mainLayout";
-import { SyntheticEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import {
 	createNewUserApi,
@@ -30,7 +30,7 @@ import Swal from "sweetalert2";
 import { CheckResponse } from "app/helper/authentication";
 import { DefaultOptionType } from "antd/es/select";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
-import { getAllCompanyApi } from "api/company";
+import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
 import { ModalFilter } from "./components/modalFilter";
 import { SelectWithTag } from "app/components/selectWithTag";
 import { IBusinessUnitGetAllParams } from "store/types/businessUnitTypes";
@@ -52,12 +52,14 @@ const MasterUser = () => {
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
-	const inputFile = useRef<HTMLInputElement | null>(null);
 	const [selectedRole, setSelectedRole] = useState<string[]>();
 	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<IUserGetAllParams | undefined>({
 		per_page: 10,
 	});
+	const [paramsFilter, setParamsFilter] = useState<
+		IUserGetAllParams | undefined
+	>();
 	const [companyParams, setCompanyParams] = useState<
 		ICompanyGetAllParams | undefined
 	>();
@@ -144,6 +146,21 @@ const MasterUser = () => {
 		}
 	};
 
+	const fetchDataCompanyDetail = async (id: number) => {
+		try {
+			const response = await getDetailCompanyApi(id);
+			const detail = response.data.data;
+			setDataOptionCompany(
+				dataOptionCompany?.concat({
+					label: detail.name,
+					value: detail.id,
+				}),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
 	const fetchDataBusinessUnit = async () => {
 		try {
 			const response = await getAllBusinessUnitApi(businessUnitParams);
@@ -160,7 +177,12 @@ const MasterUser = () => {
 		try {
 			const response = await getDetailBusinessUnitApi(id);
 			const detail = response.data.data;
-			setDataOptionBusinessUnit([{ label: detail.name, value: detail.id }]);
+			setDataOptionBusinessUnit(
+				dataOptionBusinessUnit?.concat({
+					label: detail.name,
+					value: detail.id,
+				}),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -180,7 +202,9 @@ const MasterUser = () => {
 		try {
 			const response = await getDetailAreaApi(id);
 			const detail = response.data.data;
-			setDataOptionArea([{ label: detail.name, value: detail.id }]);
+			setDataOptionArea(
+				dataOptionArea?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -202,7 +226,9 @@ const MasterUser = () => {
 		try {
 			const response = await getDetailWorkUnitApi(id);
 			const detail = response.data.data;
-			setDataOptionWorkUnit([{ label: detail.name, value: detail.id }]);
+			setDataOptionWorkUnit(
+				dataOptionWorkUnit?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -224,7 +250,12 @@ const MasterUser = () => {
 		try {
 			const response = await getDetailEmployeeApi(id);
 			const detail = response.data.data;
-			setDataOptionEmployee([{ label: detail.emp_name, value: detail.id }]);
+			setDataOptionEmployee(
+				dataOptionEmployee?.concat({
+					label: detail.emp_name,
+					value: detail.id,
+				}),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -232,6 +263,9 @@ const MasterUser = () => {
 
 	const handleInitialValue = (values: IUser) => {
 		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
+			fetchDataCompanyDetail(setData.id_company);
+		}
 		if (!checkDefaultOption(dataOptionEmployee!, setData.id_pegawai)) {
 			fetchDataEmployeeDetail(setData.id_pegawai);
 		}
@@ -295,6 +329,17 @@ const MasterUser = () => {
 	}, [selectedPageAndSort]);
 
 	useEffect(() => {
+		setParams({
+			page: params?.page,
+			per_page: params?.per_page,
+			order_by: params?.order_by,
+			sort: params?.sort,
+			...paramsFilter,
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [paramsFilter]);
+
+	useEffect(() => {
 		if (showModal.show && showModal.id) {
 			fetchDataDetail(showModal.id);
 		}
@@ -311,22 +356,7 @@ const MasterUser = () => {
 		setShowModal({ show: true });
 		setInitialValue(undefined);
 		formik.resetForm();
-		formRef.current?.resetFields();
-	};
-
-	const handleUpload = (event: SyntheticEvent) => {
-		const target = event.nativeEvent.target as HTMLInputElement;
-		const targetFiles = target.files?.item(0);
-		if (targetFiles) {
-			try {
-				Swal.fire({
-					icon: "success",
-					title: "Excel berhasil di upload",
-					showConfirmButton: false,
-					timer: 3000,
-				});
-			} catch (error) {}
-		}
+		form.resetFields();
 	};
 
 	const handleDelete = (id: number) => {
@@ -456,14 +486,6 @@ const MasterUser = () => {
 										onClick={() => setShowFilter(true)}
 									>
 										<i className="fa fa-filter" />
-									</button>
-									<button
-										className="btn btn-success"
-										onClick={() => {
-											inputFile.current?.click();
-										}}
-									>
-										<i className="fa fa-upload" />
 									</button>
 									{listCheckPermission.isAllowCreateMasterUser && (
 										<button
@@ -845,24 +867,10 @@ const MasterUser = () => {
 				</Form>
 			</AntdModal>
 
-			<input
-				type="file"
-				style={{ display: "none" }}
-				ref={inputFile}
-				accept={".xls, .xlsx"}
-				onChange={e => handleUpload(e)}
-			/>
-
 			<ModalFilter
 				isShow={showFilter}
 				setShowModal={setShowFilter}
-				setParams={setParams}
-			/>
-
-			<ModalFilter
-				isShow={showFilter}
-				setShowModal={setShowFilter}
-				setParams={setParams}
+				setParams={setParamsFilter}
 			/>
 		</MainLayout>
 	);

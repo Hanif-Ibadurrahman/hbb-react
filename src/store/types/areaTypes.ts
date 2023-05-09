@@ -21,6 +21,8 @@ export interface IAreaPaginateResponse extends PaginationState {
 export interface IAreaGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	name?: string;
 	nipg?: string;
 	daerah?: string;

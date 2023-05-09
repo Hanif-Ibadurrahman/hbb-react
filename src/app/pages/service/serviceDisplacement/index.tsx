@@ -323,7 +323,7 @@ const ServiceDisplacement = () => {
 		setShowModal({ show: true });
 		setInitialValue(undefined);
 		formik.resetForm();
-		formRef.current?.resetFields();
+		form.resetFields();
 	};
 
 	const handleReject = (id: number) => {

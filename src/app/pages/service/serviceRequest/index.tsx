@@ -226,7 +226,7 @@ const ServiceRequest = () => {
 		setFiles(null);
 		setFileList(null);
 		formik.resetForm();
-		formRef.current?.resetFields();
+		form.resetFields();
 	};
 
 	const handleReject = (id: number) => {
@@ -515,14 +515,14 @@ const ServiceRequest = () => {
 					>
 						<div className="form-group">
 							<Title level={5}>
-								Nama Pemakai <span className="text-danger">*</span>
+								Nama Pemakaian Akhir <span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
 								<Input
 									type="text"
 									name="nama_pemakai"
 									className="form-control"
-									placeholder="Nama Pemakai"
+									placeholder="Nama Pemakaian Akhir"
 									onChange={formik.handleChange}
 									value={formik.values.nama_pemakai}
 								/>

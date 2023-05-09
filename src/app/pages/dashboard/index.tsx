@@ -1,3 +1,4 @@
+import { Card } from "antd";
 import {
 	getAllItemApi,
 	getTotalHbbApi,
@@ -11,6 +12,7 @@ import { PieChart } from "app/components/chart/pie";
 import { CheckResponse } from "app/helper/authentication";
 import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
 	const [allItem, setAllItem] = useState(0);
@@ -112,49 +114,55 @@ const Dashboard = () => {
 						</div>
 					</div>
 					<div className="col-xl-3 col-lg-6 col-12">
-						<div className="box">
-							<div className="box-body">
-								<div className="d-flex justify-content-between">
-									<h5 className="fw-600 text-danger my-0">{allItem}</h5>
-									{/* <div className="bg-danger rounded-circle fs-24 l-h-40 h-40 w-40 text-center">
+						<Link to={"/inventaris"}>
+							<div className="box">
+								<div className="box-body">
+									<div className="d-flex justify-content-between">
+										<h5 className="fw-600 text-danger my-0">{allItem}</h5>
+										{/* <div className="bg-danger rounded-circle fs-24 l-h-40 h-40 w-40 text-center">
 										<i className="fa fa-dropbox"></i>
 									</div> */}
+									</div>
+									<p className="fs-9 mt-10">Jumlah Barang</p>
 								</div>
-								<p className="fs-9 mt-10">Jumlah Barang</p>
 							</div>
-						</div>
+						</Link>
 					</div>
 					<div className="col-xl-3 col-lg-6 col-12">
-						<div className="box">
-							<div className="box-body">
-								<div className="d-flex justify-content-between">
-									<div>
-										<h5 className="fw-600 text-info my-0">{totalHbb}</h5>
-									</div>
-									{/* <div className="bg-info rounded-circle fs-24 l-h-40 h-40 w-40 text-center">
+						<Link to={"/inventaris"}>
+							<div className="box">
+								<div className="box-body">
+									<div className="d-flex justify-content-between">
+										<div>
+											<h5 className="fw-600 text-info my-0">{totalHbb}</h5>
+										</div>
+										{/* <div className="bg-info rounded-circle fs-24 l-h-40 h-40 w-40 text-center">
 										<i className="fa fa-dropbox"></i>
 									</div> */}
+									</div>
+									<p className="fs-9 mt-10">Total HBB</p>
 								</div>
-								<p className="fs-9 mt-10">Total HBB</p>
 							</div>
-						</div>
+						</Link>
 					</div>
 					<div className="col-xl-3 col-lg-6 col-12">
-						<div className="box">
-							<div className="box-body">
-								<div className="d-flex justify-content-between">
-									<div>
-										<h5 className="fw-600 text-warning my-0">
-											{totalInventory}
-										</h5>
-									</div>
-									{/* <div className="bg-warning rounded-circle fs-24 l-h-40 h-40 w-40 text-center">
+						<Link to={"/inventaris"}>
+							<div className="box">
+								<div className="box-body">
+									<div className="d-flex justify-content-between">
+										<div>
+											<h5 className="fw-600 text-warning my-0">
+												{totalInventory}
+											</h5>
+										</div>
+										{/* <div className="bg-warning rounded-circle fs-24 l-h-40 h-40 w-40 text-center">
 										<i className="fa fa-dropbox"></i>
 									</div> */}
+									</div>
+									<p className="fs-9 mt-10">Total Inventaris</p>
 								</div>
-								<p className="fs-9 mt-10">Total Inventaris</p>
 							</div>
-						</div>
+						</Link>
 					</div>
 					<div className="col-xl-6 col-12">
 						<div className="box">

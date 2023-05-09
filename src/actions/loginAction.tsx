@@ -15,6 +15,8 @@ export const loginAction = (data: ILoginRequest) => {
 			});
 			const response = await loginApi(data);
 
+			document.cookie = `token=${response.data.token}; SameSite=lax; Secure`;
+
 			sessionStorage.clear();
 			sessionStorage.setItem("Token", response.data.token);
 

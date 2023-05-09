@@ -13,6 +13,8 @@ export interface ICompanyPaginateResponse extends PaginationState {
 export interface ICompanyGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	name?: string;
 	code?: string;
 }

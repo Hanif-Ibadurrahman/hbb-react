@@ -52,6 +52,9 @@ const MasterWorkUnit = () => {
 	const [params, setParams] = useState<IWorkUnitGetAllParams | undefined>({
 		per_page: 10,
 	});
+	const [paramsFilter, setParamsFilter] = useState<
+		IWorkUnitGetAllParams | undefined
+	>();
 	const [companyParams, setCompanyParams] = useState<
 		ICompanyGetAllParams | undefined
 	>();
@@ -122,7 +125,12 @@ const MasterWorkUnit = () => {
 		try {
 			const response = await getDetailBusinessUnitApi(id);
 			const detail = response.data.data;
-			setDataOptionBusinessUnit([{ label: detail.name, value: detail.id }]);
+			setDataOptionBusinessUnit(
+				dataOptionBusinessUnit?.concat({
+					label: detail.name,
+					value: detail.id,
+				}),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -144,7 +152,9 @@ const MasterWorkUnit = () => {
 		try {
 			const response = await getDetailAreaApi(id);
 			const detail = response.data.data;
-			setDataOptionArea([{ label: detail.name, value: detail.id }]);
+			setDataOptionArea(
+				dataOptionArea?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -166,7 +176,12 @@ const MasterWorkUnit = () => {
 		try {
 			const response = await getDetailEmployeeApi(id);
 			const detail = response.data.data;
-			setDataOptionEmployee([{ label: detail.emp_name, value: detail.id }]);
+			setDataOptionEmployee(
+				dataOptionEmployee?.concat({
+					label: detail.emp_name,
+					value: detail.id,
+				}),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -188,7 +203,9 @@ const MasterWorkUnit = () => {
 		try {
 			const response = await getDetailCompanyApi(id);
 			const detail = response.data.data;
-			setDataOptionCompany([{ label: detail.name, value: detail.id }]);
+			setDataOptionCompany(
+				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -246,6 +263,17 @@ const MasterWorkUnit = () => {
 	}, [selectedPageAndSort]);
 
 	useEffect(() => {
+		setParams({
+			page: params?.page,
+			per_page: params?.per_page,
+			order_by: params?.order_by,
+			sort: params?.sort,
+			...paramsFilter,
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [paramsFilter]);
+
+	useEffect(() => {
 		if (showModal.show && showModal.id) {
 			fetchDataDetail(showModal.id);
 		}
@@ -259,12 +287,9 @@ const MasterWorkUnit = () => {
 	});
 
 	const handleAdd = () => {
-		fetchDataEmployee();
-		fetchDataArea();
-		fetchDataBusinessUnit();
 		setShowModal({ show: true });
 		setInitialValue(undefined);
-		formRef.current?.resetFields();
+		form.resetFields();
 	};
 
 	const handleDelete = (id: number) => {
@@ -569,7 +594,7 @@ const MasterWorkUnit = () => {
 			<ModalFilter
 				isShow={showFilter}
 				setShowModal={setShowFilter}
-				setParams={setParams}
+				setParams={setParamsFilter}
 			/>
 		</MainLayout>
 	);

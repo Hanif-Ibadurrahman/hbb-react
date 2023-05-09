@@ -18,6 +18,8 @@ export interface IManagerPaginateResponse extends PaginationState {
 export interface IManagerGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	nama_pengelola?: string;
 	nipg?: string;
 	jabatan?: string;

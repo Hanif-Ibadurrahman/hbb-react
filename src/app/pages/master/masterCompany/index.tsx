@@ -2,9 +2,9 @@ import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAnd
 import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
-import { ICountryGetAllParams } from "store/types/countryTypes";
 import {
 	createNewCompanyApi,
+	deleteCompanyApi,
 	getAllCompanyApi,
 	getDetailCompanyApi,
 	updateCompanyApi,
@@ -23,10 +23,10 @@ import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import {
 	ICompany,
+	ICompanyGetAllParams,
 	ICompanyPaginateResponse,
 	ICreateCompanyRequest,
 } from "store/types/companyTypes";
-import { deleteCountryApi } from "api/country";
 import { CheckResponse } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
 import { listCheckPermission } from "app/helper/permission";
@@ -37,9 +37,12 @@ const MasterCompany = () => {
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
 	const [showFilter, setShowFilter] = useState(false);
-	const [params, setParams] = useState<ICountryGetAllParams | undefined>({
+	const [params, setParams] = useState<ICompanyGetAllParams | undefined>({
 		per_page: 10,
 	});
+	const [paramsFilter, setParamsFilter] = useState<
+		ICompanyGetAllParams | undefined
+	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
@@ -93,6 +96,17 @@ const MasterCompany = () => {
 	}, [selectedPageAndSort]);
 
 	useEffect(() => {
+		setParams({
+			page: params?.page,
+			per_page: params?.per_page,
+			order_by: params?.order_by,
+			sort: params?.sort,
+			...paramsFilter,
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [paramsFilter]);
+
+	useEffect(() => {
 		if (showModal.show && showModal.id) {
 			fetchDataDetail(showModal.id);
 		}
@@ -109,7 +123,7 @@ const MasterCompany = () => {
 		setShowModal({ show: true });
 		setInitialValue(undefined);
 		formik.resetForm();
-		formRef.current?.resetFields();
+		form.resetFields();
 	};
 
 	const handleDelete = (id: number) => {
@@ -133,7 +147,7 @@ const MasterCompany = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					deleteCountryApi(id).then(res => {
+					deleteCompanyApi(id).then(res => {
 						if (res.data.status === "success") {
 							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
 							fetchDataList();
@@ -324,7 +338,7 @@ const MasterCompany = () => {
 			<ModalFilter
 				isShow={showFilter}
 				setShowModal={setShowFilter}
-				setParams={setParams}
+				setParams={setParamsFilter}
 			/>
 		</MainLayout>
 	);

@@ -15,6 +15,8 @@ export interface IConditionPaginateResponse extends PaginationState {
 export interface IConditionGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	name?: string;
 	company?: string;
 }

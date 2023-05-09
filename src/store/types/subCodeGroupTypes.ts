@@ -16,6 +16,8 @@ export interface ISubCodeGroupPaginateResponse extends PaginationState {
 export interface ISubCodeGroupGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	group?: string;
 	code?: string;
 }
