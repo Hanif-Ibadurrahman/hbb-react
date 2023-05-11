@@ -82,6 +82,12 @@ export interface IInventoryDetail {
 	penanggung_jawab: string | null;
 	id_bisnis_unit: number | null;
 	id_company: number | null;
+	id_division: number | null;
+	company: string | null;
+	main_group: string | null;
+	sub_group: string | null;
+	bisnis_unit: string | null;
+	division: string | null;
 }
 export interface IInventoryPaginateResponse extends PaginationState {
 	data: IInventory[];

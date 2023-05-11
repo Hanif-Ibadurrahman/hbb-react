@@ -45,6 +45,7 @@ import { ModalFilter } from "./components/modalFilter";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
 import { IUserGetAllParams } from "store/types/userTypes";
 import { getAllUserApi, getDetailUserApi } from "api/user";
+import ModalDetail from "../components/modalDetail";
 
 const ServiceDisplacement = () => {
 	dayjs.extend(customParseFormat);
@@ -71,6 +72,12 @@ const ServiceDisplacement = () => {
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
+	const [showModalDetail, setShowModalDetail] = useState<{
+		show: boolean;
+		id?: number;
+	}>({
+		show: false,
+	});
 	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
 		page?: number;
 		per_page?: number;
@@ -93,6 +100,10 @@ const ServiceDisplacement = () => {
 	const [dataOptionLocation, setDataOptionLocation] = useState<
 		DefaultOptionType[] | undefined
 	>();
+
+	const handleSelectedRow = record => {
+		setShowModalDetail({ show: true, id: record.id_inventory });
+	};
 
 	const fetchDataList = async () => {
 		try {
@@ -500,6 +511,7 @@ const ServiceDisplacement = () => {
 									)}
 								</Space>
 							}
+							handleSelectedRow={handleSelectedRow}
 						/>
 					</div>
 				</div>
@@ -524,6 +536,7 @@ const ServiceDisplacement = () => {
 				onCancel={handleCancel}
 				open={showModal.show}
 				width={800}
+				destroyOnClose
 			>
 				<div className="col-12">
 					<Form form={form} ref={formRef} onFinish={onFinish}>
@@ -733,6 +746,11 @@ const ServiceDisplacement = () => {
 					</Form>
 				</div>
 			</AntdModal>
+
+			<ModalDetail
+				showModal={showModalDetail}
+				setShowModal={setShowModalDetail}
+			/>
 
 			<ModalFilter
 				isShow={showFilter}

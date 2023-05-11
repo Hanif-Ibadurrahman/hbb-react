@@ -42,6 +42,7 @@ import { IWorkflowGetAllParams } from "store/types/workflowTypes";
 import { getAllWorkflowApi, getDetailWorkflowApi } from "api/workflow";
 import { ModalFilter } from "./components/modalFilter";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
+import ModalDetail from "../components/modalDetail";
 
 const ServiceRequest = () => {
 	const tokenDecode = TokenDekode();
@@ -58,6 +59,12 @@ const ServiceRequest = () => {
 		},
 	);
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
+		show: false,
+	});
+	const [showModalDetail, setShowModalDetail] = useState<{
+		show: boolean;
+		id?: number;
+	}>({
 		show: false,
 	});
 	const [workflowParams, setWorkflowParams] = useState<
@@ -77,6 +84,10 @@ const ServiceRequest = () => {
 	const [dataOptionWorkflow, setDataOptionWorkflow] = useState<
 		DefaultOptionType[] | undefined
 	>();
+
+	const handleSelectedRow = record => {
+		setShowModalDetail({ show: true, id: record.id_inventory });
+	};
 
 	const handleFile = (event: SyntheticEvent) => {
 		const target = event.nativeEvent.target as HTMLInputElement;
@@ -439,6 +450,7 @@ const ServiceRequest = () => {
 									)}
 								</Space>
 							}
+							handleSelectedRow={handleSelectedRow}
 						/>
 					</div>
 				</div>
@@ -463,6 +475,7 @@ const ServiceRequest = () => {
 				onCancel={handleCancel}
 				open={showModal.show}
 				width={800}
+				destroyOnClose
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
@@ -644,6 +657,7 @@ const ServiceRequest = () => {
 				title={"File"}
 				open={showModalFile}
 				onCancel={() => setShowModalFile(false)}
+				destroyOnClose
 			>
 				<List
 					itemLayout="horizontal"
@@ -669,6 +683,11 @@ const ServiceRequest = () => {
 					)}
 				/>
 			</AntdModal>
+
+			<ModalDetail
+				showModal={showModalDetail}
+				setShowModal={setShowModalDetail}
+			/>
 
 			<ModalFilter
 				isShow={showFilter}

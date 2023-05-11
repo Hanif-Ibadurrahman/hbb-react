@@ -42,6 +42,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import { ModalFilter } from "./components/modalFilter";
 import { listCheckPermission } from "app/helper/permission";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
+import ModalDetail from "../components/modalDetail";
 
 const ServiceDelete = () => {
 	dayjs.extend(customParseFormat);
@@ -60,6 +61,12 @@ const ServiceDelete = () => {
 		IWorkflowGetAllParams | undefined
 	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
+		show: false,
+	});
+	const [showModalDetail, setShowModalDetail] = useState<{
+		show: boolean;
+		id?: number;
+	}>({
 		show: false,
 	});
 	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
@@ -83,6 +90,10 @@ const ServiceDelete = () => {
 	const [dataOptionWorkflow, setDataOptionWorkflow] = useState<
 		DefaultOptionType[] | undefined
 	>();
+
+	const handleSelectedRow = record => {
+		setShowModalDetail({ show: true, id: record.id_inventory });
+	};
 
 	const fetchDataList = async () => {
 		try {
@@ -430,6 +441,7 @@ const ServiceDelete = () => {
 									)}
 								</Space>
 							}
+							handleSelectedRow={handleSelectedRow}
 						/>
 					</div>
 				</div>
@@ -454,6 +466,7 @@ const ServiceDelete = () => {
 				onCancel={handleCancel}
 				open={showModal.show}
 				width={800}
+				destroyOnClose
 			>
 				<div className="col-12">
 					<Form form={form} ref={formRef} onFinish={onFinish}>
@@ -611,6 +624,11 @@ const ServiceDelete = () => {
 					</Form>
 				</div>
 			</AntdModal>
+
+			<ModalDetail
+				showModal={showModalDetail}
+				setShowModal={setShowModalDetail}
+			/>
 
 			<ModalFilter
 				isShow={showFilter}

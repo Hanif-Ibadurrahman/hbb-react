@@ -22,6 +22,7 @@ interface ITablePaginate {
 		x?: string | number | true;
 		y?: string | number;
 	};
+	handleSelectedRow?: (record: any) => void;
 }
 
 export const TablePaginateAndSort = ({
@@ -32,6 +33,7 @@ export const TablePaginateAndSort = ({
 	contentHeader,
 	setSelectedPageAndSort,
 	scroll,
+	handleSelectedRow,
 }: ITablePaginate) => {
 	const [data, setData] = useState<any>();
 	const [pagination, setPagination] = useState<PaginationProps>();
@@ -77,6 +79,15 @@ export const TablePaginateAndSort = ({
 						scroll={scroll}
 						onChange={(pagination, filters, sorter, extra) => {
 							handleTable(sorter);
+						}}
+						onRow={record => {
+							return {
+								onClick: () => {
+									if (handleSelectedRow) {
+										handleSelectedRow(record);
+									}
+								},
+							};
 						}}
 					/>
 					<div

@@ -37,17 +37,14 @@ import { IServiceReturn } from "store/types/serviceReturnTypes";
 import { CheckResponse, TokenDekode } from "app/helper/authentication";
 import { UploadOutlined } from "@ant-design/icons";
 import { listCheckPermission } from "app/helper/permission";
-import { ICompanyGetAllParams } from "store/types/companyTypes";
-import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 import { DefaultOptionType } from "antd/es/select";
-import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
-import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
 import { IWorkflowGetAllParams } from "store/types/workflowTypes";
 import { getAllWorkflowApi, getDetailWorkflowApi } from "api/workflow";
 import { ModalFilter } from "./components/modalFilter";
 import { IInventoryGetAllParams } from "store/types/inventoryTypes";
 import { getAllInventoryApi, getDetailInventoryApi } from "api/inventory";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
+import ModalDetail from "../components/modalDetail";
 
 const ServiceReturn = () => {
 	const tokenDecode = TokenDekode();
@@ -62,6 +59,12 @@ const ServiceReturn = () => {
 		per_page: 10,
 	});
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
+		show: false,
+	});
+	const [showModalDetail, setShowModalDetail] = useState<{
+		show: boolean;
+		id?: number;
+	}>({
 		show: false,
 	});
 	const [inventoryParams, setInventoryParams] = useState<
@@ -85,15 +88,13 @@ const ServiceReturn = () => {
 	const [dataOptionInventory, setDataOptionInventory] = useState<
 		DefaultOptionType[] | undefined
 	>();
-	const [dataOptionCompany, setDataOptionCompany] = useState<
-		DefaultOptionType[] | undefined
-	>();
-	const [dataOptionEmployee, setDataOptionEmployee] = useState<
-		DefaultOptionType[] | undefined
-	>();
 	const [dataOptionWorkflow, setDataOptionWorkflow] = useState<
 		DefaultOptionType[] | undefined
 	>();
+
+	const handleSelectedRow = record => {
+		setShowModalDetail({ show: true, id: record.id_inventory });
+	};
 
 	const handleFile = (event: SyntheticEvent) => {
 		const target = event.nativeEvent.target as HTMLInputElement;
@@ -495,6 +496,7 @@ const ServiceReturn = () => {
 									)}
 								</Space>
 							}
+							handleSelectedRow={handleSelectedRow}
 						/>
 					</div>
 				</div>
@@ -519,6 +521,7 @@ const ServiceReturn = () => {
 				onCancel={handleCancel}
 				open={showModal.show}
 				width={800}
+				destroyOnClose
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
@@ -694,6 +697,7 @@ const ServiceReturn = () => {
 				title={"File"}
 				open={showModalFile}
 				onCancel={() => setShowModalFile(false)}
+				destroyOnClose
 			>
 				<List
 					itemLayout="horizontal"
@@ -719,6 +723,11 @@ const ServiceReturn = () => {
 					)}
 				/>
 			</AntdModal>
+
+			<ModalDetail
+				showModal={showModalDetail}
+				setShowModal={setShowModalDetail}
+			/>
 
 			<ModalFilter
 				isShow={showFilter}

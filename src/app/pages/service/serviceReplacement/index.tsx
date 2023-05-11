@@ -44,6 +44,7 @@ import { ModalFilter } from "./components/modalFilter";
 import { IInventoryGetAllParams } from "store/types/inventoryTypes";
 import { getAllInventoryApi, getDetailInventoryApi } from "api/inventory";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
+import ModalDetail from "../components/modalDetail";
 
 const ServiceReplacement = () => {
 	const tokenDecode = TokenDekode();
@@ -60,6 +61,12 @@ const ServiceReplacement = () => {
 		per_page: 10,
 	});
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
+		show: false,
+	});
+	const [showModalDetail, setShowModalDetail] = useState<{
+		show: boolean;
+		id?: number;
+	}>({
 		show: false,
 	});
 	const [inventoryParams, setInventoryParams] = useState<
@@ -86,6 +93,10 @@ const ServiceReplacement = () => {
 	const [dataOptionWorkflow, setDataOptionWorkflow] = useState<
 		DefaultOptionType[] | undefined
 	>();
+
+	const handleSelectedRow = record => {
+		setShowModalDetail({ show: true, id: record.id_inventory });
+	};
 
 	const handleFile = (event: SyntheticEvent) => {
 		const target = event.nativeEvent.target as HTMLInputElement;
@@ -487,6 +498,7 @@ const ServiceReplacement = () => {
 									)}
 								</Space>
 							}
+							handleSelectedRow={handleSelectedRow}
 						/>
 					</div>
 				</div>
@@ -511,6 +523,7 @@ const ServiceReplacement = () => {
 				onCancel={handleCancel}
 				open={showModal.show}
 				width={800}
+				destroyOnClose
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
@@ -711,6 +724,7 @@ const ServiceReplacement = () => {
 				title={"File"}
 				open={showModalFile}
 				onCancel={() => setShowModalFile(false)}
+				destroyOnClose
 			>
 				<List
 					itemLayout="horizontal"
@@ -736,6 +750,11 @@ const ServiceReplacement = () => {
 					)}
 				/>
 			</AntdModal>
+
+			<ModalDetail
+				showModal={showModalDetail}
+				setShowModal={setShowModalDetail}
+			/>
 
 			<ModalFilter
 				isShow={showFilter}
