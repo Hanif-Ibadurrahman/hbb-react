@@ -2,6 +2,7 @@ import {
 	IInventoryGetAllParams,
 	ICreateInventoryRequest,
 	IUpdateInventoryRequest,
+	ICheckSerialNumberParams,
 } from "store/types/inventoryTypes";
 import { apiWithToken } from ".";
 
@@ -28,4 +29,10 @@ export const updateInventoryApi = (
 
 export const deleteInventoryApi = (id: number) => {
 	return apiWithToken.delete(`/api/inventory/${id}`);
+};
+
+export const getSerialNumberApi = (params?: ICheckSerialNumberParams) => {
+	return apiWithToken.get(`/api/inventory/check-no-urut`, {
+		params: params,
+	});
 };

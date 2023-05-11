@@ -18,6 +18,10 @@ export interface IEmployeeGetAllParams {
 	position?: string;
 	company?: string;
 }
+
+export interface IUploadExcelEmployeeRequest {
+	file: any | null;
+}
 export interface ICreateEmployeeRequest {
 	nipg: string;
 	emp_name: string;

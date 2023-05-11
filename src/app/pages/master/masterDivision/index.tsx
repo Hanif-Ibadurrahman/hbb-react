@@ -310,14 +310,18 @@ const MasterDivision = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					deleteDivisionApi(id).then(res => {
-						if (res.data.status === "success") {
-							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
-							fetchDataList();
-						} else {
-							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
-						}
-					});
+					deleteDivisionApi(id)
+						.then(res => {
+							if (res.data.status === "success") {
+								swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
+								fetchDataList();
+							} else {
+								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+							}
+						})
+						.catch((error: any) => {
+							CheckResponse(error);
+						});
 				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					swalCustom.fire("Batal", "Data ini batal dihapus", "error");
 				}
@@ -340,12 +344,7 @@ const MasterDivision = () => {
 					});
 				})
 				.catch((error: any) => {
-					Swal.fire({
-						icon: "error",
-						title: error.response.data.message,
-						showConfirmButton: false,
-						timer: 3000,
-					});
+					CheckResponse(error);
 				});
 		} else {
 			createNewDivisionApi(values)
@@ -362,12 +361,7 @@ const MasterDivision = () => {
 					});
 				})
 				.catch((error: any) => {
-					Swal.fire({
-						icon: "error",
-						title: error.response.data.message,
-						showConfirmButton: false,
-						timer: 3000,
-					});
+					CheckResponse(error);
 				});
 		}
 	};
@@ -444,28 +438,36 @@ const MasterDivision = () => {
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
-					<Form.Item name="id_area">
+					<Form.Item
+						name="id_company"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
 						<div className="form-group">
 							<Title level={5}>
-								Area <span className="text-danger">*</span>
+								Perusahaan <span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setAreaParams({ name: v })}
+									onSearch={v => setCompanyParams({ name: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()
 											.includes(input.toLowerCase())
 									}
-									options={dataOptionArea}
+									options={dataOptionCompany}
 									onChange={(v, opt) => {
-										formik.setFieldValue("id_area", v);
+										formik.setFieldValue("id_company", v);
 										formRef.current?.setFieldsValue({
-											id_area: v,
+											id_company: v,
 										});
 									}}
-									value={formik.values.id_area}
+									value={formik.values.id_company}
 								/>
 							</div>
 						</div>
@@ -492,6 +494,32 @@ const MasterDivision = () => {
 										});
 									}}
 									value={formik.values.id_bisnis_unit}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item name="id_area">
+						<div className="form-group">
+							<Title level={5}>
+								Area <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setAreaParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionArea}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_area", v);
+										formRef.current?.setFieldsValue({
+											id_area: v,
+										});
+									}}
+									value={formik.values.id_area}
 								/>
 							</div>
 						</div>
@@ -543,40 +571,6 @@ const MasterDivision = () => {
 									placeholder="Nama Divisi"
 									onChange={formik.handleChange}
 									value={formik.values.name}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="id_company"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Perusahaan <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setCompanyParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionCompany}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_company", v);
-										formRef.current?.setFieldsValue({
-											id_company: v,
-										});
-									}}
-									value={formik.values.id_company}
 								/>
 							</div>
 						</div>

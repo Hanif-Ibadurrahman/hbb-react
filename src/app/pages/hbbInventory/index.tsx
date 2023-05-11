@@ -23,6 +23,7 @@ import Swal from "sweetalert2";
 import { CheckResponse } from "app/helper/authentication";
 import { columns } from "./components/table/columnAndDataType";
 import {
+	ICheckSerialNumberParams,
 	ICreateInventoryRequest,
 	IInventoryDetail,
 	IInventoryGetAllParams,
@@ -32,6 +33,7 @@ import {
 	deleteInventoryApi,
 	getAllInventoryApi,
 	getDetailInventoryApi,
+	getSerialNumberApi,
 	updateInventoryApi,
 } from "api/inventory";
 import { ModalFilter } from "./components/modalFilter";
@@ -88,6 +90,9 @@ const HbbInventory = () => {
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
+	const [checkSerialNumberParams, setCheckSerialNumberParams] = useState<
+		ICheckSerialNumberParams | undefined
+	>();
 	const [codeGroupParams, setCodeGroupParams] = useState<
 		ICodeGroupGetAllParams | undefined
 	>();
@@ -184,6 +189,24 @@ const HbbInventory = () => {
 			if (params) {
 				const response = await getAllInventoryApi(params);
 				setDataTable(response.data.data);
+			}
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataSerialNumber = async () => {
+		try {
+			if (
+				checkSerialNumberParams?.id_main_group &&
+				checkSerialNumberParams?.id_sub_group &&
+				checkSerialNumberParams?.year
+			) {
+				const response = await getSerialNumberApi(checkSerialNumberParams);
+				formik.setFieldValue("serial_no", response.data.data);
+				formRef.current?.setFieldsValue({
+					serial_no: response.data.data,
+				});
 			}
 		} catch (error: any) {
 			CheckResponse(error);
@@ -346,11 +369,14 @@ const HbbInventory = () => {
 		try {
 			const response = await getDetailItemApi(id);
 			const detail = response.data.data;
+			delete detail.id_area;
+
 			if (detail.warna) {
 				fetchDataColorDetail(detail.warna);
 			}
 
 			let data = {
+				...formik.values,
 				...detail,
 				type: detail.tipe,
 				capacity: detail.kapasitas,
@@ -360,13 +386,8 @@ const HbbInventory = () => {
 
 			if (initialValue) {
 				data = {
+					...data,
 					...initialValue,
-					...data,
-				};
-			} else {
-				data = {
-					...formik.values,
-					...data,
 				};
 			}
 
@@ -592,6 +613,11 @@ const HbbInventory = () => {
 	};
 
 	useEffect(() => {
+		fetchDataSerialNumber();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [checkSerialNumberParams]);
+
+	useEffect(() => {
 		fetchDataDivision();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [divisionParams]);
@@ -784,12 +810,7 @@ const HbbInventory = () => {
 					});
 				})
 				.catch((error: any) => {
-					Swal.fire({
-						icon: "error",
-						title: error.response.data.message,
-						showConfirmButton: false,
-						timer: 3000,
-					});
+					CheckResponse(error);
 				});
 		} else {
 			createNewInventoryApi(values)
@@ -806,12 +827,7 @@ const HbbInventory = () => {
 					});
 				})
 				.catch((error: any) => {
-					Swal.fire({
-						icon: "error",
-						title: error.response.data.message,
-						showConfirmButton: false,
-						timer: 3000,
-					});
+					CheckResponse(error);
 				});
 		}
 	};
@@ -910,6 +926,10 @@ const HbbInventory = () => {
 									}
 									options={dataOptionCodeGroup}
 									onChange={(v, opt) => {
+										setCheckSerialNumberParams({
+											...checkSerialNumberParams,
+											id_main_group: v,
+										});
 										formik.setFieldValue("id_main_group", v);
 										formRef.current?.setFieldsValue({
 											id_main_group: v,
@@ -944,6 +964,10 @@ const HbbInventory = () => {
 									}
 									options={dataOptionSubCodeGroup}
 									onChange={(v, opt) => {
+										setCheckSerialNumberParams({
+											...checkSerialNumberParams,
+											id_sub_group: v,
+										});
 										formik.setFieldValue("id_sub_group", v);
 										formRef.current?.setFieldsValue({
 											id_sub_group: v,
@@ -1149,31 +1173,6 @@ const HbbInventory = () => {
 						</div>
 					</Form.Item>
 					<Form.Item
-						name="serial_no"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Nomor Urut <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Input
-									type="text"
-									name="serial_no"
-									className="form-control"
-									placeholder="Nomor Urut"
-									onChange={formik.handleChange}
-									value={formik.values.serial_no}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
 						name="year"
 						rules={[
 							{
@@ -1191,6 +1190,10 @@ const HbbInventory = () => {
 									className="form-control"
 									picker="year"
 									onChange={(value, dateString) => {
+										setCheckSerialNumberParams({
+											...checkSerialNumberParams,
+											year: dateString,
+										});
 										formik.setFieldValue("year", dateString);
 										formRef.current?.setFieldsValue({
 											year: dateString,
@@ -1201,6 +1204,31 @@ const HbbInventory = () => {
 											? dayjs(formik.values.year, "YYYY")
 											: undefined
 									}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="serial_no"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Nomor Urut <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Input
+									readOnly
+									type="text"
+									name="serial_no"
+									className="form-control"
+									placeholder="Otomatis terisi ketika sudah pilih main-group, sub-group & tahun perolehan"
+									value={formik.values.serial_no}
 								/>
 							</div>
 						</div>
@@ -1830,7 +1858,7 @@ const HbbInventory = () => {
 							dataSource={dataTable}
 							setSelectedRow={setSelectedRow}
 							setSelectedPageAndSort={setSelectedPageAndSort}
-							scroll={{ x: 1500 }}
+							scroll={{ x: 1800 }}
 						/>
 					</div>
 				</div>

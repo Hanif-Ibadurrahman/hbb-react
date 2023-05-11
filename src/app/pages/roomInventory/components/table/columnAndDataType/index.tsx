@@ -1,42 +1,36 @@
 import { ColumnsType } from "antd/es/table";
+import { IRoomInventory } from "store/types/roomInventoryTypes";
 
-export interface IDataType {
-	no: string;
-	satuan_kerja: string;
-	lokasi: string;
-	name_barang: string;
-	main_group: string;
-	sub_group: string;
-	kondisi: string;
-}
-
-export const columns: ColumnsType<IDataType> = [
-	{
-		title: "No. HBB/Inventaris",
-		dataIndex: "no",
-	},
-	{
-		title: "Satuan Kerja",
-		dataIndex: "satuan_kerja",
-	},
-	{
-		title: "Lokasi",
-		dataIndex: "lokasi",
-	},
-	{
-		title: "Nama Barang",
-		dataIndex: "name_barang",
-	},
-	{
-		title: "Main Group",
-		dataIndex: "main_group",
-	},
-	{
-		title: "Sub Group",
-		dataIndex: "sub_group",
-	},
-	{
-		title: "Kondisi",
-		dataIndex: "kondisi",
-	},
-];
+export const columns = () => {
+	const columnType: ColumnsType<IRoomInventory> = [
+		{
+			title: "No. HBB/Inventaris",
+			dataIndex: "code",
+		},
+		{
+			title: "Satuan Kerja",
+			dataIndex: "satker",
+		},
+		{
+			title: "Lokasi",
+			dataIndex: "location",
+		},
+		{
+			title: "Nama Barang",
+			dataIndex: "name",
+		},
+		{
+			title: "Main Group",
+			dataIndex: "main_group",
+		},
+		{
+			title: "Sub Group",
+			dataIndex: "sub_group",
+		},
+		{
+			title: "Kondisi",
+			dataIndex: "condition_name",
+		},
+	];
+	return columnType;
+};

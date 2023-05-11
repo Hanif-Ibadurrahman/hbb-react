@@ -41,7 +41,7 @@ export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 		},
 		{
 			title: "Warna",
-			dataIndex: "warna",
+			dataIndex: "color_name",
 			sorter: true,
 		},
 		{

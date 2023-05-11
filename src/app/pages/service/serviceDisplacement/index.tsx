@@ -301,18 +301,22 @@ const ServiceDisplacement = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					approveServiceDisplacementApi(id).then(res => {
-						if (res.data.status === "success") {
-							swalCustom.fire(
-								"Approve",
-								"Data ini telah disetujui.",
-								"success",
-							);
-							fetchDataList();
-						} else {
-							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
-						}
-					});
+					approveServiceDisplacementApi(id)
+						.then(res => {
+							if (res.data.status === "success") {
+								swalCustom.fire(
+									"Approve",
+									"Data ini telah disetujui.",
+									"success",
+								);
+								fetchDataList();
+							} else {
+								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+							}
+						})
+						.catch((error: any) => {
+							CheckResponse(error);
+						});
 				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					swalCustom.fire("Batal", "Permintaan ini batal disetujui", "error");
 				}
@@ -348,8 +352,8 @@ const ServiceDisplacement = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					rejectServiceDisplacementApi(id, { remark: result.value }).then(
-						res => {
+					rejectServiceDisplacementApi(id, { remark: result.value })
+						.then(res => {
 							if (res.data.status === "success") {
 								swalCustom.fire(
 									"Reject",
@@ -360,8 +364,10 @@ const ServiceDisplacement = () => {
 							} else {
 								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
 							}
-						},
-					);
+						})
+						.catch((error: any) => {
+							CheckResponse(error);
+						});
 				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					swalCustom.fire("Batal", "Permintaan ini batal direject", "error");
 				}
@@ -389,14 +395,18 @@ const ServiceDisplacement = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					deleteServiceDisplacementApi(id).then(res => {
-						if (res.data.status === "success") {
-							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
-							fetchDataList();
-						} else {
-							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
-						}
-					});
+					deleteServiceDisplacementApi(id)
+						.then(res => {
+							if (res.data.status === "success") {
+								swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
+								fetchDataList();
+							} else {
+								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+							}
+						})
+						.catch((error: any) => {
+							CheckResponse(error);
+						});
 				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					swalCustom.fire("Batal", "Data ini batal dihapus", "error");
 				}
@@ -424,12 +434,7 @@ const ServiceDisplacement = () => {
 					});
 				})
 				.catch((error: any) => {
-					Swal.fire({
-						icon: "error",
-						title: error.response.data.message,
-						showConfirmButton: false,
-						timer: 3000,
-					});
+					CheckResponse(error);
 				});
 		} else {
 			createNewServiceDisplacementApi(input)
@@ -446,12 +451,7 @@ const ServiceDisplacement = () => {
 					});
 				})
 				.catch((error: any) => {
-					Swal.fire({
-						icon: "error",
-						title: error.response.data.message,
-						showConfirmButton: false,
-						timer: 3000,
-					});
+					CheckResponse(error);
 				});
 		}
 	};

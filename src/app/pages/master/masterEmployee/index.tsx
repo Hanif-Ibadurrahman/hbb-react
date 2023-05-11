@@ -14,6 +14,7 @@ import {
 	getAllEmployeeApi,
 	getDetailEmployeeApi,
 	updateEmployeeApi,
+	uploadExcelEmployeeApi,
 } from "api/employee";
 import {
 	Modal as AntdModal,
@@ -190,14 +191,18 @@ const MasterEmployee = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					deleteEmployeeApi(id).then(res => {
-						if (res.data.status === "success") {
-							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
-							fetchDataList();
-						} else {
-							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
-						}
-					});
+					deleteEmployeeApi(id)
+						.then(res => {
+							if (res.data.status === "success") {
+								swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
+								fetchDataList();
+							} else {
+								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+							}
+						})
+						.catch((error: any) => {
+							CheckResponse(error);
+						});
 				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					swalCustom.fire("Batal", "Data ini batal dihapus", "error");
 				}
@@ -220,12 +225,7 @@ const MasterEmployee = () => {
 					});
 				})
 				.catch((error: any) => {
-					Swal.fire({
-						icon: "error",
-						title: error.response.data.message,
-						showConfirmButton: false,
-						timer: 3000,
-					});
+					CheckResponse(error);
 				});
 		} else {
 			createNewEmployeeApi(values)
@@ -242,12 +242,7 @@ const MasterEmployee = () => {
 					});
 				})
 				.catch((error: any) => {
-					Swal.fire({
-						icon: "error",
-						title: error.response.data.message,
-						showConfirmButton: false,
-						timer: 3000,
-					});
+					CheckResponse(error);
 				});
 		}
 	};
@@ -256,14 +251,18 @@ const MasterEmployee = () => {
 		const target = event.nativeEvent.target as HTMLInputElement;
 		const targetFiles = target.files?.item(0);
 		if (targetFiles) {
-			try {
-				Swal.fire({
-					icon: "success",
-					title: "Excel berhasil di upload",
-					showConfirmButton: false,
-					timer: 3000,
+			uploadExcelEmployeeApi({ file: targetFiles })
+				.then(res => {
+					Swal.fire({
+						icon: res.data.status,
+						title: res.data.message,
+						showConfirmButton: false,
+						timer: 3000,
+					});
+				})
+				.catch((error: any) => {
+					CheckResponse(error);
 				});
-			} catch (error) {}
 		}
 	};
 

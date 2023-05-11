@@ -2,6 +2,7 @@ import {
 	IEmployeeGetAllParams,
 	ICreateEmployeeRequest,
 	IUpdateEmployeeRequest,
+	IUploadExcelEmployeeRequest,
 } from "store/types/employeeTypes";
 import { apiWithToken } from ".";
 
@@ -28,4 +29,10 @@ export const updateEmployeeApi = (
 
 export const deleteEmployeeApi = (id: number) => {
 	return apiWithToken.delete(`/api/master/employee/${id}`);
+};
+
+export const uploadExcelEmployeeApi = (input: IUploadExcelEmployeeRequest) => {
+	return apiWithToken.post(`/api/master/employee/import-excel`, input, {
+		headers: { "Content-Type": "multipart/form-data" },
+	});
 };

@@ -380,14 +380,18 @@ const MasterUser = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					deleteUserApi(id).then(res => {
-						if (res.data.success === "success") {
-							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
-							fetchDataList();
-						} else {
-							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
-						}
-					});
+					deleteUserApi(id)
+						.then(res => {
+							if (res.data.success === "success") {
+								swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
+								fetchDataList();
+							} else {
+								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+							}
+						})
+						.catch((error: any) => {
+							CheckResponse(error);
+						});
 				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					swalCustom.fire("Batal", "Data ini batal dihapus", "error");
 				}
@@ -417,12 +421,7 @@ const MasterUser = () => {
 					}
 				})
 				.catch((error: any) => {
-					Swal.fire({
-						icon: "error",
-						title: error.response.data.message,
-						showConfirmButton: false,
-						timer: 3000,
-					});
+					CheckResponse(error);
 				});
 		} else {
 			createNewUserApi(values)
@@ -446,12 +445,7 @@ const MasterUser = () => {
 					}
 				})
 				.catch((error: any) => {
-					Swal.fire({
-						icon: "error",
-						title: error.response.data.message,
-						showConfirmButton: false,
-						timer: 3000,
-					});
+					CheckResponse(error);
 				});
 		}
 	};
@@ -530,8 +524,42 @@ const MasterUser = () => {
 				width={800}
 				destroyOnClose
 			>
-				<Form form={form} ref={formRef} onFinish={onFinish}>
+				<Form form={form} ref={formRef} onFinish={onFinish} autoComplete="off">
 					<Divider />
+					<Form.Item
+						name="id_company"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Perusahaan <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setCompanyParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionCompany}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_company", v);
+										formRef.current?.setFieldsValue({
+											id_company: v,
+										});
+									}}
+									value={formik.values.id_company}
+								/>
+							</div>
+						</div>
+					</Form.Item>
 					<Form.Item
 						name="username"
 						rules={[
@@ -565,9 +593,12 @@ const MasterUser = () => {
 								message: "Harap isi field ini",
 							},
 							{
-								min: 8,
+								pattern: new RegExp(
+									"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",
+								),
 								// eslint-disable-next-line no-template-curly-in-string
-								message: "Harap isi field ini minimal ${min} karakter",
+								message:
+									"Password minimal 12 karakter, terdiri dari kombinasi huruf kapital, huruf kecil, angka dan karakter khusus. Contoh: Jakarta2023!",
 							},
 						]}
 					>
@@ -692,40 +723,6 @@ const MasterUser = () => {
 							</div>
 						</Form.Item>
 					)}
-					<Form.Item
-						name="id_company"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Perusahaan <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setCompanyParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionCompany}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_company", v);
-										formRef.current?.setFieldsValue({
-											id_company: v,
-										});
-									}}
-									value={formik.values.id_company}
-								/>
-							</div>
-						</div>
-					</Form.Item>
 					<Form.Item
 						name="id_area"
 						rules={[

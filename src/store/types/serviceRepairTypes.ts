@@ -33,7 +33,7 @@ export interface IServiceRepair {
 	inventory_code: string | null;
 	spesification: string | null;
 	emp_name: string | null;
-	created_at: string;
+	created_at: string | null;
 	updated_at: string | null;
 	deleted_at: string | null;
 	created_by: string | null;
