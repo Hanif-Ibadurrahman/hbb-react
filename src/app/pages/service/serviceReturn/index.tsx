@@ -258,18 +258,22 @@ const ServiceReturn = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					approveServiceReturnApi(id).then(res => {
-						if (res.data.status === "success") {
-							swalCustom.fire(
-								"Approve",
-								"Data ini telah disetujui.",
-								"success",
-							);
-							fetchDataList();
-						} else {
-							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
-						}
-					});
+					approveServiceReturnApi(id)
+						.then(res => {
+							if (res.data.status === "success") {
+								swalCustom.fire(
+									"Approve",
+									"Data ini telah disetujui.",
+									"success",
+								);
+								fetchDataList();
+							} else {
+								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+							}
+						})
+						.catch((error: any) => {
+							CheckResponse(error);
+						});
 				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					swalCustom.fire("Batal", "Permintaan ini batal disetujui", "error");
 				}
@@ -307,18 +311,22 @@ const ServiceReturn = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					rejectServiceReturnApi(id, { remark: result.value }).then(res => {
-						if (res.data.status === "success") {
-							swalCustom.fire(
-								"Reject",
-								"Permintaan ini telah direject.",
-								"success",
-							);
-							fetchDataList();
-						} else {
-							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
-						}
-					});
+					rejectServiceReturnApi(id, { remark: result.value })
+						.then(res => {
+							if (res.data.status === "success") {
+								swalCustom.fire(
+									"Reject",
+									"Permintaan ini telah direject.",
+									"success",
+								);
+								fetchDataList();
+							} else {
+								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+							}
+						})
+						.catch((error: any) => {
+							CheckResponse(error);
+						});
 				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					swalCustom.fire("Batal", "Permintaan ini batal direject", "error");
 				}
@@ -354,14 +362,18 @@ const ServiceReturn = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					deleteServiceReturnApi(id).then(res => {
-						if (res.data.status === "success") {
-							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
-							fetchDataList();
-						} else {
-							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
-						}
-					});
+					deleteServiceReturnApi(id)
+						.then(res => {
+							if (res.data.status === "success") {
+								swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
+								fetchDataList();
+							} else {
+								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+							}
+						})
+						.catch((error: any) => {
+							CheckResponse(error);
+						});
 				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					swalCustom.fire("Batal", "Data ini batal dihapus", "error");
 				}
@@ -390,12 +402,7 @@ const ServiceReturn = () => {
 					});
 				})
 				.catch((error: any) => {
-					Swal.fire({
-						icon: "error",
-						title: error.response.data.message,
-						showConfirmButton: false,
-						timer: 3000,
-					});
+					CheckResponse(error);
 				});
 		} else {
 			createNewServiceReturnApi(input)
@@ -412,12 +419,7 @@ const ServiceReturn = () => {
 					});
 				})
 				.catch((error: any) => {
-					Swal.fire({
-						icon: "error",
-						title: error.response.data.message,
-						showConfirmButton: false,
-						timer: 3000,
-					});
+					CheckResponse(error);
 				});
 		}
 	};

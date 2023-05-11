@@ -1,3 +1,4 @@
+import { ICompany } from "./companyTypes";
 import { PaginationState } from "./paginationTypes";
 
 export interface IItem {
@@ -15,6 +16,15 @@ export interface IItem {
 	ukuran: string | null;
 	satuan: string | null;
 	id_company: number | null;
+	created_at: string | null;
+	updated_at: string | null;
+	deleted_at: string | null;
+	color_name: string | null;
+	main_group_code: string | null;
+	main_group: string | null;
+	sub_group_code: string | null;
+	sub_group: string | null;
+	company: ICompany | null;
 }
 
 export interface IItemPaginateResponse extends PaginationState {

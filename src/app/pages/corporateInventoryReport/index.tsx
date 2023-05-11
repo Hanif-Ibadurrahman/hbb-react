@@ -1,21 +1,110 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
 import { MainLayout } from "app/layout/mainLayout";
-import { useState } from "react";
-import { PaginationState } from "store/types/paginationTypes";
+import { useEffect, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
-import { SideModal } from "app/components/modal/sideModal";
-import { SelectWithTag } from "app/components/selectWithTag";
-import { DatePicker } from "antd";
+import { ModalFilter } from "./components/modalFilter";
+import { ICorporateInventoryReportGetAllParams } from "store/types/corporateInventoryReportTypes";
+import {
+	exportCorporateInventoryReportApi,
+	getAllCorporateInventoryReportApi,
+} from "api/corporateInventoryReport";
+import { CheckResponse } from "app/helper/authentication";
+import { Space } from "antd";
+import { ICompanyGetAllParams } from "store/types/companyTypes";
+import { DefaultOptionType } from "antd/es/select";
+import { getAllCompanyApi } from "api/company";
+import { useFormik } from "formik";
+import { omit } from "lodash";
 
 const CorporateInventoryReport = () => {
-	const { RangePicker } = DatePicker;
+	const [showFilter, setShowFilter] = useState(false);
+	const [params, setParams] = useState<
+		ICorporateInventoryReportGetAllParams | undefined
+	>({
+		per_page: 10,
+	});
+	const [initialValue, setInitialValue] =
+		useState<Partial<ICorporateInventoryReportGetAllParams>>();
+	const [paramsFilter, setParamsFilter] = useState<
+		ICorporateInventoryReportGetAllParams | undefined
+	>();
+	const [companyParams, setCompanyParams] = useState<
+		ICompanyGetAllParams | undefined
+	>();
 	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
 		page?: number;
 		per_page?: number;
 		sort?: string;
 		order_by?: string;
 	}>();
-	const [fetchData, setFetchData] = useState<PaginationState>();
+	const [dataTable, setDataTable] = useState();
+	const [dataOptionCompany, setDataOptionCompany] = useState<
+		DefaultOptionType[] | undefined
+	>();
+
+	const formik = useFormik({
+		initialValues: { ...initialValue },
+		enableReinitialize: true,
+		onSubmit: values => {},
+	});
+
+	const fetchDataList = async () => {
+		try {
+			if (params) {
+				if (params.type_export === "excel") {
+					const filter = omit(params, ["page", "per_page", "type_export"]);
+					await exportCorporateInventoryReportApi(filter);
+				}
+
+				const new_params = omit(params, ["type_export"]);
+				const response = await getAllCorporateInventoryReportApi(new_params);
+				setDataTable(response.data.data);
+			}
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataCompany = async () => {
+		try {
+			const response = await getAllCompanyApi(companyParams);
+			const companyList = response.data.data;
+			setDataOptionCompany(
+				companyList.map(v => ({ label: v.name, value: v.id })),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	useEffect(() => {
+		fetchDataList();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [params]);
+
+	useEffect(() => {
+		fetchDataCompany();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [companyParams]);
+
+	useEffect(() => {
+		setParams({
+			...params,
+			...selectedPageAndSort,
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedPageAndSort]);
+
+	useEffect(() => {
+		setParams({
+			page: params?.page,
+			per_page: params?.per_page,
+			order_by: params?.order_by,
+			sort: params?.sort,
+			...paramsFilter,
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [paramsFilter]);
 
 	return (
 		<MainLayout>
@@ -24,13 +113,23 @@ const CorporateInventoryReport = () => {
 					<div className="col-12">
 						<TablePaginateAndSort
 							title="Laporan Inventaris Koorporat"
-							dataSource={fetchData}
-							columns={columns}
+							dataSource={dataTable}
+							columns={columns()}
 							contentHeader={
-								<div className="btn-group">
-									<button className="btn btn-secondary">Excel</button>
-									<button className="btn btn-secondary">PDF</button>
-								</div>
+								<Space
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
+								>
+									<button
+										className="btn btn-secondary"
+										onClick={() => setShowFilter(true)}
+									>
+										<i className="fa fa-filter" />
+									</button>
+								</Space>
 							}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 						/>
@@ -38,25 +137,18 @@ const CorporateInventoryReport = () => {
 				</div>
 			</section>
 
-			<SideModal
-				title="Filter"
-				contentFooter={
-					<button
-						type="button"
-						className="btn btn-primary"
-						data-bs-dismiss="modal"
-					>
-						Filter
-					</button>
-				}
-			>
-				<h6 className="box-title mt-10 d-block mb-10">Tanggal</h6>
-				<RangePicker style={{ width: "100%" }} format={"DD-MM-YYYY"} />
-				<h6 className="box-title mt-10 d-block mb-10">Jenis Barang</h6>
-				<SelectWithTag />
-				<h6 className="box-title mt-10 d-block mb-10">Export</h6>
-				<SelectWithTag />
-			</SideModal>
+			<ModalFilter
+				isShow={showFilter}
+				setShowModal={setShowFilter}
+				setParams={setParamsFilter}
+				formik={formik}
+				setParamsOption={{
+					setCompanyParams,
+				}}
+				options={{
+					dataOptionCompany,
+				}}
+			/>
 		</MainLayout>
 	);
 };

@@ -393,14 +393,18 @@ const MasterLocation = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					deleteLocationApi(id).then(res => {
-						if (res.data.status === "success") {
-							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
-							fetchDataList();
-						} else {
-							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
-						}
-					});
+					deleteLocationApi(id)
+						.then(res => {
+							if (res.data.status === "success") {
+								swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
+								fetchDataList();
+							} else {
+								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+							}
+						})
+						.catch((error: any) => {
+							CheckResponse(error);
+						});
 				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					swalCustom.fire("Batal", "Data ini batal dihapus", "error");
 				}
@@ -423,12 +427,7 @@ const MasterLocation = () => {
 					});
 				})
 				.catch((error: any) => {
-					Swal.fire({
-						icon: "error",
-						title: error.response.data.message,
-						showConfirmButton: false,
-						timer: 3000,
-					});
+					CheckResponse(error);
 				});
 		} else {
 			const input = { ...values, from_opname: 0 };
@@ -446,12 +445,7 @@ const MasterLocation = () => {
 					});
 				})
 				.catch((error: any) => {
-					Swal.fire({
-						icon: "error",
-						title: error.response.data.message,
-						showConfirmButton: false,
-						timer: 3000,
-					});
+					CheckResponse(error);
 				});
 		}
 	};

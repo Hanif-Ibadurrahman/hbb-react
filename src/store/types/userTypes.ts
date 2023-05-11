@@ -3,14 +3,14 @@ export interface IRoles {
 	id: number;
 	name: string | null;
 	guard_name: string | null;
-	created_at: string;
+	created_at: string | null;
 	updated_at: string | null;
 }
 export interface IUserRoles {
 	id: number;
 	user_id: number;
 	role_id: number;
-	created_at: string;
+	created_at: string | null;
 	updated_at: string | null;
 	roles: IRoles;
 }

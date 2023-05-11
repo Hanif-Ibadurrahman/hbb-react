@@ -189,14 +189,18 @@ const MasterBusinessUnit = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					deleteBusinessUnitApi(id).then(res => {
-						if (res.data.status === "success") {
-							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
-							fetchDataList();
-						} else {
-							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
-						}
-					});
+					deleteBusinessUnitApi(id)
+						.then(res => {
+							if (res.data.status === "success") {
+								swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
+								fetchDataList();
+							} else {
+								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+							}
+						})
+						.catch((error: any) => {
+							CheckResponse(error);
+						});
 				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					swalCustom.fire("Batal", "Data ini batal dihapus", "error");
 				}
@@ -219,33 +223,25 @@ const MasterBusinessUnit = () => {
 					});
 				})
 				.catch((error: any) => {
-					Swal.fire({
-						icon: "error",
-						title: error.response.data.message,
-						showConfirmButton: false,
-						timer: 3000,
-					});
+					CheckResponse(error);
 				});
 		} else {
-			createNewBusinessUnitApi(values).then(res => {
-				if (res.data.status === "success") {
-					setShowModal({ show: false });
-					fetchDataList();
-				}
-				Swal.fire({
-					icon: res.data.status,
-					title: res.data.message,
-					showConfirmButton: false,
-					timer: 3000,
-				}).catch((error: any) => {
+			createNewBusinessUnitApi(values)
+				.then(res => {
+					if (res.data.status === "success") {
+						setShowModal({ show: false });
+						fetchDataList();
+					}
 					Swal.fire({
-						icon: "error",
-						title: error.response.data.message,
+						icon: res.data.status,
+						title: res.data.message,
 						showConfirmButton: false,
 						timer: 3000,
 					});
+				})
+				.catch((error: any) => {
+					CheckResponse(error);
 				});
-			});
 		}
 	};
 

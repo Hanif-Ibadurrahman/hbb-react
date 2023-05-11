@@ -281,14 +281,18 @@ const MasterArea = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					deleteAreaApi(id).then(res => {
-						if (res.data.status === "success") {
-							swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
-							fetchDataList();
-						} else {
-							swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
-						}
-					});
+					deleteAreaApi(id)
+						.then(res => {
+							if (res.data.status === "success") {
+								swalCustom.fire("Delete", "Data ini telah dihapus.", "success");
+								fetchDataList();
+							} else {
+								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+							}
+						})
+						.catch((error: any) => {
+							CheckResponse(error);
+						});
 				} else if (result.dismiss === Swal.DismissReason.cancel) {
 					swalCustom.fire("Batal", "Data ini batal dihapus", "error");
 				}
@@ -311,12 +315,7 @@ const MasterArea = () => {
 					});
 				})
 				.catch((error: any) => {
-					Swal.fire({
-						icon: "error",
-						title: error.response.data.message,
-						showConfirmButton: false,
-						timer: 3000,
-					});
+					CheckResponse(error);
 				});
 		} else {
 			createNewAreaApi(values)
@@ -333,12 +332,7 @@ const MasterArea = () => {
 					});
 				})
 				.catch((error: any) => {
-					Swal.fire({
-						icon: "error",
-						title: error.response.data.message,
-						showConfirmButton: false,
-						timer: 3000,
-					});
+					CheckResponse(error);
 				});
 		}
 	};
@@ -415,6 +409,74 @@ const MasterArea = () => {
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
+					<Form.Item
+						name="id_company"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Perusahaan <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setCompanyParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionCompany}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_company", v);
+										formRef.current?.setFieldsValue({
+											id_company: v,
+										});
+									}}
+									value={formik.values.id_company}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_bisnis_unit"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Bisnis Unit <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setBusinessUnitParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionBusinessUnit}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_bisnis_unit", v);
+										formRef.current?.setFieldsValue({
+											id_bisnis_unit: v,
+										});
+									}}
+									value={formik.values.id_bisnis_unit}
+								/>
+							</div>
+						</div>
+					</Form.Item>
 					<Form.Item
 						name="name"
 						rules={[
@@ -510,74 +572,6 @@ const MasterArea = () => {
 										});
 									}}
 									value={formik.values.id_emp}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="id_company"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Perusahaan <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setCompanyParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionCompany}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_company", v);
-										formRef.current?.setFieldsValue({
-											id_company: v,
-										});
-									}}
-									value={formik.values.id_company}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="id_bisnis_unit"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Bisnis Unit <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setBusinessUnitParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionBusinessUnit}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_bisnis_unit", v);
-										formRef.current?.setFieldsValue({
-											id_bisnis_unit: v,
-										});
-									}}
-									value={formik.values.id_bisnis_unit}
 								/>
 							</div>
 						</div>

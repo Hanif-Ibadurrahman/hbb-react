@@ -205,6 +205,12 @@ export interface IUpdateInventoryRequest {
 	remark: string;
 }
 
+export interface ICheckSerialNumberParams {
+	id_main_group?: number;
+	id_sub_group?: number;
+	year?: string;
+}
+
 export interface IInventoryGetAllResponse {
 	status: string;
 	message: string;

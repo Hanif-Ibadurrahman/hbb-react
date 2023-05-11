@@ -11,6 +11,13 @@ export const CheckResponse = (error: any) => {
 			showConfirmButton: false,
 			timer: 3000,
 		});
+	} else {
+		return Swal.fire({
+			icon: "error",
+			title: error.response.data.message,
+			showConfirmButton: false,
+			timer: 3000,
+		});
 	}
 };
 
