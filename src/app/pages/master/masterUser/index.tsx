@@ -524,7 +524,7 @@ const MasterUser = () => {
 				width={800}
 				destroyOnClose
 			>
-				<Form form={form} ref={formRef} onFinish={onFinish} autoComplete="off">
+				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
 					<Form.Item
 						name="id_company"
@@ -581,6 +581,7 @@ const MasterUser = () => {
 									placeholder="Username"
 									onChange={formik.handleChange}
 									value={formik.values.username}
+									autoComplete="off"
 								/>
 							</div>
 						</div>
@@ -615,6 +616,7 @@ const MasterUser = () => {
 									placeholder="Password"
 									onChange={formik.handleChange}
 									value={formik.values.password}
+									autoComplete="off"
 								/>
 							</div>
 						</div>

@@ -19,3 +19,7 @@ export const getTotalInventoryValueApi = () => {
 export const getTotalHbbValueApi = () => {
 	return apiWithToken.get(`/api/dashboard/total-nilai-hbb`);
 };
+
+export const getTotalTaskApi = () => {
+	return apiWithToken.get(`/api/dashboard/task`);
+};

@@ -5,6 +5,7 @@ import {
 	getTotalHbbValueApi,
 	getTotalInventoryApi,
 	getTotalInventoryValueApi,
+	getTotalTaskApi,
 } from "api/dashboard";
 import { ColumnChart } from "app/components/chart/column";
 import { LineChart } from "app/components/chart/line";
@@ -20,6 +21,7 @@ const Dashboard = () => {
 	const [totalHbb, setTotalHbb] = useState(0);
 	const [totalInventoryValue, setTotalInventoryValue] = useState(0);
 	const [totalHbbValue, setTotalHbbValue] = useState(0);
+	const [totalTask, setTotalTask] = useState(0);
 
 	const fetchDataAllItem = async () => {
 		try {
@@ -66,12 +68,22 @@ const Dashboard = () => {
 		}
 	};
 
+	const fetchDataTotalTask = async () => {
+		try {
+			const response = await getTotalTaskApi();
+			setTotalTask(response.data.data);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
 	useEffect(() => {
 		fetchDataAllItem();
 		fetchDataTotalInventory();
 		fetchDataTotalHbb();
 		fetchDataTotalInventoryValue();
 		fetchDataTotalHbbValue();
+		fetchDataTotalTask();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -104,7 +116,7 @@ const Dashboard = () => {
 						<div className="box">
 							<div className="box-body">
 								<div className="d-flex justify-content-between">
-									<h5 className="fw-600 text-primary my-0">10+</h5>
+									<h5 className="fw-600 text-primary my-0">{totalTask}</h5>
 									{/* <div className="bg-primary rounded-circle fs-24 l-h-40 h-40 w-40 text-center">
 										<i className="fa fa-tasks"></i>
 									</div> */}
