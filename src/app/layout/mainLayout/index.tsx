@@ -2,13 +2,10 @@ import { ControlSidebar } from "app/components/controlSidebar";
 import { Footer } from "app/components/footer";
 import { Header } from "app/components/header";
 import { Sidebar } from "app/components/sidebar";
-import React, { useState } from "react";
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
 
-interface IMainLayout {
-	children: React.ReactNode;
-}
-
-export const MainLayout = ({ children }: IMainLayout) => {
+export const MainLayout = () => {
 	const [selectedMenu, setSelectedMenu] = useState<string>("");
 
 	const collapseHandler = (thisKey: string) => {
@@ -29,7 +26,9 @@ export const MainLayout = ({ children }: IMainLayout) => {
 				<Sidebar />
 
 				<div className="content-wrapper">
-					<div className="container-full">{children}</div>
+					<div className="container-full">
+						<Outlet />
+					</div>
 				</div>
 
 				<Footer />

@@ -342,7 +342,7 @@ const MasterArea = () => {
 	};
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -584,7 +584,7 @@ const MasterArea = () => {
 				setShowModal={setShowFilter}
 				setParams={setParamsFilter}
 			/>
-		</MainLayout>
+		</>
 	);
 };
 

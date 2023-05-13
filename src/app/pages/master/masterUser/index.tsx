@@ -114,6 +114,12 @@ const MasterUser = () => {
 		{ value: 5, label: "User" },
 	]);
 
+	const formik = useFormik({
+		initialValues: { ...initialValue },
+		enableReinitialize: true,
+		onSubmit: values => {},
+	});
+
 	const fetchDataList = async () => {
 		try {
 			if (params) {
@@ -246,16 +252,24 @@ const MasterUser = () => {
 		}
 	};
 
-	const fetchDataEmployeeDetail = async (id: number) => {
+	const fetchDataEmployeeDetail = async (id: number, isAutoFill?: boolean) => {
 		try {
 			const response = await getDetailEmployeeApi(id);
 			const detail = response.data.data;
-			setDataOptionEmployee(
-				dataOptionEmployee?.concat({
-					label: detail.emp_name,
-					value: detail.id,
-				}),
-			);
+
+			if (isAutoFill) {
+				formik.setFieldValue("nipg", detail.nipg);
+				formRef.current?.setFieldsValue({
+					nipg: detail.nipg,
+				});
+			} else {
+				setDataOptionEmployee(
+					dataOptionEmployee?.concat({
+						label: detail.emp_name,
+						value: detail.id,
+					}),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -321,6 +335,14 @@ const MasterUser = () => {
 	}, [params]);
 
 	useEffect(() => {
+		const id = formik.values.id_emp;
+		if (id) {
+			fetchDataEmployeeDetail(id, true);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_emp]);
+
+	useEffect(() => {
 		setParams({
 			...params,
 			...selectedPageAndSort,
@@ -345,12 +367,6 @@ const MasterUser = () => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showModal]);
-
-	const formik = useFormik({
-		initialValues: { ...initialValue },
-		enableReinitialize: true,
-		onSubmit: values => {},
-	});
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
@@ -458,7 +474,7 @@ const MasterUser = () => {
 		intersection(selectedRole, ["User", "Kepala Satuan Kerja"]).length > 0;
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -599,7 +615,7 @@ const MasterUser = () => {
 								),
 								// eslint-disable-next-line no-template-curly-in-string
 								message:
-									"Password minimal 12 karakter, terdiri dari kombinasi huruf kapital, huruf kecil, angka dan karakter khusus. Contoh: Jakarta2023!",
+									"Password minimal 8 karakter, terdiri dari kombinasi huruf kapital, huruf kecil, angka dan karakter khusus. Contoh: Bali2023!",
 							},
 						]}
 					>
@@ -708,57 +724,6 @@ const MasterUser = () => {
 							</div>
 						</div>
 					</Form.Item>
-					{isStaff && (
-						<Form.Item name="nipg">
-							<div className="form-group">
-								<Title level={5}>NIPG</Title>
-								<div className="controls">
-									<Input
-										type="text"
-										name="nipg"
-										className="form-control"
-										placeholder="NIPG"
-										onChange={formik.handleChange}
-										value={formik.values.nipg}
-									/>
-								</div>
-							</div>
-						</Form.Item>
-					)}
-					<Form.Item
-						name="id_area"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Area <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setAreaParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionArea}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_area", v);
-										formRef.current?.setFieldsValue({
-											id_area: v,
-										});
-									}}
-									value={formik.values.id_area}
-								/>
-							</div>
-						</div>
-					</Form.Item>
 					<Form.Item
 						name="id_bisnit"
 						rules={[
@@ -789,6 +754,40 @@ const MasterUser = () => {
 										});
 									}}
 									value={formik.values.id_bisnit}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_area"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Area <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setAreaParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionArea}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_area", v);
+										formRef.current?.setFieldsValue({
+											id_area: v,
+										});
+									}}
+									value={formik.values.id_area}
 								/>
 							</div>
 						</div>
@@ -863,6 +862,23 @@ const MasterUser = () => {
 							</div>
 						</div>
 					</Form.Item>
+					{isStaff && (
+						<Form.Item name="nipg">
+							<div className="form-group">
+								<Title level={5}>NIPG</Title>
+								<div className="controls">
+									<Input
+										type="text"
+										name="nipg"
+										className="form-control"
+										placeholder="NIPG"
+										onChange={formik.handleChange}
+										value={formik.values.nipg}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+					)}
 				</Form>
 			</AntdModal>
 
@@ -871,7 +887,7 @@ const MasterUser = () => {
 				setShowModal={setShowFilter}
 				setParams={setParamsFilter}
 			/>
-		</MainLayout>
+		</>
 	);
 };
 

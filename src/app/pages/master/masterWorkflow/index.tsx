@@ -293,7 +293,7 @@ const MasterWorkflow = () => {
 	}, [flow, selectedFlow]);
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -504,7 +504,7 @@ const MasterWorkflow = () => {
 				setShowModal={setShowFilter}
 				setParams={setParamsFilter}
 			/>
-		</MainLayout>
+		</>
 	);
 };
 

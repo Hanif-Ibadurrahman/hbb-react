@@ -18,7 +18,7 @@ const ServiceTicketHistory = () => {
 	const { RangePicker } = DatePicker;
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -49,7 +49,7 @@ const ServiceTicketHistory = () => {
 				<h6 className="box-title mt-10 d-block mb-10">Nomor</h6>
 				<RangePicker style={{ width: "100%" }} />
 			</SideModal>
-		</MainLayout>
+		</>
 	);
 };
 

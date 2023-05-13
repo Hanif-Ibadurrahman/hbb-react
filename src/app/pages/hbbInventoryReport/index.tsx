@@ -268,7 +268,7 @@ const HbbInventoryReport = () => {
 	}, [businessUnitParams]);
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -322,7 +322,7 @@ const HbbInventoryReport = () => {
 					dataOptionCompany,
 				}}
 			/>
-		</MainLayout>
+		</>
 	);
 };
 

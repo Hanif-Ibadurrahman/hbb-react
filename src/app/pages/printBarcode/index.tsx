@@ -14,7 +14,7 @@ const PrintBarcode = () => {
 	const [fetchData, setFetchData] = useState<PaginationState>();
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -27,7 +27,7 @@ const PrintBarcode = () => {
 					</div>
 				</div>
 			</section>
-		</MainLayout>
+		</>
 	);
 };
 

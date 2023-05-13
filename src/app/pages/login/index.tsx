@@ -13,7 +13,7 @@ const Login = () => {
 
 	useEffect(() => {
 		if (token) {
-			navigate("/", { replace: true });
+			navigate("/dashboard", { replace: true });
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -21,7 +21,7 @@ const Login = () => {
 	const onFinish = async (values: any) => {
 		try {
 			await dispatch(loginAction(values));
-			window.location.href = "/";
+			window.location.href = "/dashboard";
 		} catch (error) {
 			Swal.fire({
 				icon: "error",

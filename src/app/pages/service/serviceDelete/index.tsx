@@ -81,12 +81,6 @@ const ServiceDelete = () => {
 	const [dataOptionInventory, setDataOptionInventory] = useState<
 		DefaultOptionType[] | undefined
 	>();
-	const [dataOptionEmployee, setDataOptionEmployee] = useState<
-		DefaultOptionType[] | undefined
-	>();
-	const [dataOptionCompany, setDataOptionCompany] = useState<
-		DefaultOptionType[] | undefined
-	>();
 	const [dataOptionWorkflow, setDataOptionWorkflow] = useState<
 		DefaultOptionType[] | undefined
 	>();
@@ -121,7 +115,7 @@ const ServiceDelete = () => {
 			const response = await getAllInventoryApi(availableInventory);
 			const inventoryList = response.data.data.data;
 			setDataOptionInventory(
-				inventoryList.map(v => ({ label: v.name, value: `${v.id}` })),
+				inventoryList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -145,7 +139,7 @@ const ServiceDelete = () => {
 			const response = await getAllWorkflowApi(workflowParams);
 			const workflowList = response.data.data.data;
 			setDataOptionWorkflow(
-				workflowList.map(v => ({ label: v.name, value: `${v.id}` })),
+				workflowList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -402,7 +396,7 @@ const ServiceDelete = () => {
 	};
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -529,7 +523,7 @@ const ServiceDelete = () => {
 										onChange={(v, opt) => {
 											formik.setFieldValue("id_inventory", v);
 											formRef.current?.setFieldsValue({
-												id_inventory: parseInt(v),
+												id_inventory: v,
 											});
 										}}
 										value={formik.values.id_inventory}
@@ -613,7 +607,7 @@ const ServiceDelete = () => {
 										onChange={(v, opt) => {
 											formik.setFieldValue("id_workflow", v);
 											formRef.current?.setFieldsValue({
-												id_workflow: parseInt(v),
+												id_workflow: v,
 											});
 										}}
 										value={formik.values.id_workflow}
@@ -635,7 +629,7 @@ const ServiceDelete = () => {
 				setShowModal={setShowFilter}
 				setParams={setParams}
 			/>
-		</MainLayout>
+		</>
 	);
 };
 

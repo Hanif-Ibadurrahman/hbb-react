@@ -109,7 +109,7 @@ const Dashboard = () => {
 	};
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-xl-3 col-lg-6 col-12">
@@ -249,7 +249,7 @@ const Dashboard = () => {
 					</div>
 				</div>
 			</section>
-		</MainLayout>
+		</>
 	);
 };
 

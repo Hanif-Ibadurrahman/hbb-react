@@ -18,7 +18,7 @@ const Displacement = () => {
 	const [fetchData, setFetchData] = useState<PaginationState>();
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -163,7 +163,7 @@ const Displacement = () => {
 				<h6 className="box-title mt-10 d-block mb-10">Kapasitas</h6>
 				<SelectWithTag />
 			</SideModal>
-		</MainLayout>
+		</>
 	);
 };
 

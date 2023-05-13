@@ -1,6 +1,5 @@
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { MainLayout } from "app/layout/mainLayout";
 import { TableSelectionPaginateAndSort } from "app/components/table/antd/tableSelectionPaginateAndSort";
 import { useEffect, useState, useRef } from "react";
 import {
@@ -1816,7 +1815,7 @@ const HbbInventory = () => {
 	};
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -1907,7 +1906,7 @@ const HbbInventory = () => {
 					dataOptionCompany,
 				}}
 			/>
-		</MainLayout>
+		</>
 	);
 };
 

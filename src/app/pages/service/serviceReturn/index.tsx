@@ -456,7 +456,7 @@ const ServiceReturn = () => {
 	};
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -660,7 +660,7 @@ const ServiceReturn = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_workflow", v);
 										formRef.current?.setFieldsValue({
-											id_workflow: parseInt(v),
+											id_workflow: v,
 										});
 									}}
 									value={formik.values.id_workflow}
@@ -734,7 +734,7 @@ const ServiceReturn = () => {
 				setShowModal={setShowFilter}
 				setParams={setParams}
 			/>
-		</MainLayout>
+		</>
 	);
 };
 
