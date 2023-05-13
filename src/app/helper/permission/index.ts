@@ -1,4 +1,4 @@
-import { intersection } from "lodash";
+import { intersection, isNull } from "lodash";
 import { TokenDekode } from "../authentication";
 import {
 	convertListToCRUDPermissionMaster,
@@ -6,10 +6,15 @@ import {
 	generateCheckPermissions,
 } from "../common";
 
-const tokenDecode = TokenDekode();
-const permissions: string[] = Object.values(tokenDecode?.permissions || {});
-
+export const tokenDecode = TokenDekode();
 console.info("token", tokenDecode);
+
+export const permissions: string[] = Object.values(
+	tokenDecode?.permissions || {},
+);
+export const roles: string[] = Object.values(tokenDecode?.user?.roles || {});
+export const isSuperadminGlobal =
+	roles.includes("Super Admin") && isNull(tokenDecode?.user?.id_company);
 
 const listMaster: string[] = [
 	"user",

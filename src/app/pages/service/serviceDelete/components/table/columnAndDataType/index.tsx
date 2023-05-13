@@ -21,8 +21,9 @@ export const columns = ({
 }: IColumn) => {
 	const columnType: ColumnsType<IServiceDelete> = [
 		{
-			title: "Tanggal",
-			dataIndex: "date",
+			title: "No Transaksi",
+			dataIndex: "id",
+			align: "center",
 			sorter: true,
 		},
 		{
@@ -38,6 +39,11 @@ export const columns = ({
 		{
 			title: "Remark",
 			dataIndex: "remark",
+			sorter: true,
+		},
+		{
+			title: "Tanggal",
+			dataIndex: "date",
 			sorter: true,
 		},
 		{

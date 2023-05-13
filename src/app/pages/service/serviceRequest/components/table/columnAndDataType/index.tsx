@@ -25,6 +25,12 @@ export const columns = ({
 }: IColumn) => {
 	const columnType: ColumnsType<IServiceRequest> = [
 		{
+			title: "No Transaksi",
+			dataIndex: "id",
+			align: "center",
+			sorter: true,
+		},
+		{
 			title: "Deskripsi Inventaris",
 			dataIndex: "inventory_description",
 			sorter: true,

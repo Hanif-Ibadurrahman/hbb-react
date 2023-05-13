@@ -1,5 +1,4 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
-import { MainLayout } from "app/layout/mainLayout";
 import { useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import { PaginationState } from "store/types/paginationTypes";

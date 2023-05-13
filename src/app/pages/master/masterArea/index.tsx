@@ -1,5 +1,4 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
-import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import {
@@ -579,11 +578,11 @@ const MasterArea = () => {
 				</Form>
 			</AntdModal>
 
-			<ModalFilter
+			{/* <ModalFilter
 				isShow={showFilter}
 				setShowModal={setShowFilter}
 				setParams={setParamsFilter}
-			/>
+			/> */}
 		</>
 	);
 };

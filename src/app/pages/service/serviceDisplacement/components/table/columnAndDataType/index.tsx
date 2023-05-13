@@ -24,8 +24,9 @@ export const columns = ({
 }: IColumn) => {
 	const columnType: ColumnsType<IServiceDisplacement> = [
 		{
-			title: "Tanggal",
-			dataIndex: "date",
+			title: "No Transaksi",
+			dataIndex: "id",
+			align: "center",
 			sorter: true,
 		},
 		{
@@ -44,15 +45,21 @@ export const columns = ({
 			sorter: true,
 		},
 		{
-			title: "Perusahaan",
-			dataIndex: "company_name",
-			sorter: true,
-		},
-		{
 			title: "Lokasi",
 			dataIndex: "location_name",
 			sorter: true,
 		},
+		{
+			title: "Tanggal",
+			dataIndex: "date",
+			sorter: true,
+		},
+		{
+			title: "Perusahaan",
+			dataIndex: "company_name",
+			sorter: true,
+		},
+
 		{
 			title: "Action",
 			dataIndex: "id",

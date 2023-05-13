@@ -1,6 +1,6 @@
 import { Button, Col, Drawer, Form, Row, Space } from "antd";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { TokenDekode } from "app/helper/authentication";
+import { isSuperadminGlobal } from "app/helper/permission";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { IAreaGetAllParams } from "store/types/areaTypes";
 
@@ -8,30 +8,31 @@ interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
 	setParams: Dispatch<SetStateAction<IAreaGetAllParams | undefined>>;
+	options: any;
 }
 
 export const ModalFilter = ({
 	isShow,
 	setShowModal,
 	setParams,
+	options,
 }: IModalFilter) => {
 	const [formFilter] = Form.useForm();
-	const tokenDecode = TokenDekode();
 
 	const generateContent = useMemo(() => {
-		const isSuperadmin = Object.values(tokenDecode?.user?.roles ?? {}).includes(
-			"Super Admin",
-		);
-		if (isSuperadmin) {
+		if (isSuperadminGlobal) {
 			return (
 				<Col span={24}>
 					<Form.Item name="company" label="Perusahaan">
-						<SelectWithTag />
+						<SelectWithTag
+							dataOption={options.dataOptionCompany}
+							valueOption="label"
+						/>
 					</Form.Item>
 				</Col>
 			);
 		}
-	}, [tokenDecode]);
+	}, [options.dataOptionCompany]);
 
 	const handleSubmit = v => {
 		const filterParams = Object.entries(v).reduce((res, curr) => {

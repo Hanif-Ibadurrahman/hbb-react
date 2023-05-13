@@ -22,6 +22,7 @@ export interface IBusinessUnitGetAllParams {
 	sort?: string;
 	name?: string;
 	company?: string;
+	id_company?: number;
 }
 
 export interface ICreateBusinessUnitRequest {

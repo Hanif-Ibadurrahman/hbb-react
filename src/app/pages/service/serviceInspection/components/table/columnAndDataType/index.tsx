@@ -25,6 +25,12 @@ export const columns = ({
 }: IColumn) => {
 	const columnType: ColumnsType<IServiceInspection> = [
 		{
+			title: "No Transaksi",
+			dataIndex: "id",
+			align: "center",
+			sorter: true,
+		},
+		{
 			title: "Kode Inventaris",
 			dataIndex: "inventory_code",
 			sorter: true,

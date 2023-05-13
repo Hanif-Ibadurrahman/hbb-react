@@ -58,7 +58,7 @@ export const Sidebar = () => {
 									}`}
 									onClick={() => seletedMenuHandler("layanan", true)}
 								>
-									<Link to={""}>
+									<Link to={"#"}>
 										<FeatherIcon icon={"smile"} />
 										<span>Layanan HBB</span>
 										<span className="pull-right-container">
@@ -180,7 +180,7 @@ export const Sidebar = () => {
 								}`}
 								onClick={() => seletedMenuHandler("reporting", true)}
 							>
-								<Link to={""}>
+								<Link to={"#"}>
 									<FeatherIcon icon={"monitor"} />
 									<span>Reporting</span>
 									<span className="pull-right-container">
@@ -248,7 +248,7 @@ export const Sidebar = () => {
 									}`}
 									onClick={() => seletedMenuHandler("master", true)}
 								>
-									<Link to={""}>
+									<Link to={"#"}>
 										<FeatherIcon icon={"database"} />
 										<span>Master</span>
 										<span className="pull-right-container">
@@ -446,7 +446,7 @@ export const Sidebar = () => {
 								}`}
 								onClick={() => seletedMenuHandler("tiket-layanan", true)}
 							>
-								<Link to="">
+								<Link to="#">
 									<FeatherIcon icon={"clipboard"} />
 									<span>Tiket Layanan</span>
 									<span className="pull-right-container">

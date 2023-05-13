@@ -29,10 +29,14 @@ export interface ILocationGetAllParams {
 	lokasi?: string;
 	bisnis_unit?: string;
 	area?: string;
+	satker?: string;
 	pegawai?: string;
 	nipg?: string;
-	satker?: string;
 	company?: string;
+	id_company?: number;
+	id_bisnis_unit?: number;
+	id_area?: number;
+	id_division?: number;
 }
 export interface ICreateLocationRequest {
 	id_bisnis_unit: string;
