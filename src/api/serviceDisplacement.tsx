@@ -35,7 +35,7 @@ export const deleteServiceDisplacementApi = (id: number) => {
 };
 
 export const approveServiceDisplacementApi = (id: number) => {
-	return apiWithToken.get(`/api/approval/pemindahan/approve/${id}`);
+	return apiWithToken.post(`/api/approval/pemindahan/approve/${id}`);
 };
 
 export const rejectServiceDisplacementApi = (

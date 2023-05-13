@@ -37,7 +37,7 @@ export const deleteServiceRepairApi = (id: number) => {
 };
 
 export const approveServiceRepairApi = (id: number) => {
-	return apiWithToken.get(`/api/approval/perbaikan/approve/${id}`);
+	return apiWithToken.post(`/api/approval/perbaikan/approve/${id}`);
 };
 
 export const rejectServiceRepairApi = (
