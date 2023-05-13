@@ -6,12 +6,13 @@ export interface IServiceChange {
 	description: string | null;
 	attachment_file: string | null;
 	emp_name: string | null;
-	spesification: string | null;
-	status: string | null;
 	condition: string | null;
 	id_company: string | null;
 	id_approval: string | null;
 	created_by: string | null;
+	status: string | null;
+	spesification: string | null;
+	id_inventory: number | null;
 	created_at: string | null;
 	updated_at: string | null;
 	deleted_at: string | null;
@@ -37,9 +38,9 @@ export interface ICreateServiceChangeRequest {
 	description: string;
 	condition: string;
 	emp_name: string;
-	id_company: string;
-	id_workflow: string;
-	created_by: string;
+	id_company: number;
+	id_workflow: number;
+	created_by: number;
 	files: any | null;
 }
 
@@ -49,9 +50,9 @@ export interface IUpdateServiceChangeRequest {
 	description: string;
 	condition: string;
 	emp_name: string;
-	id_company: string;
-	id_workflow: string;
-	created_by: string;
+	id_company: number;
+	id_workflow: number;
+	created_by: number;
 	files: any | null;
 }
 
