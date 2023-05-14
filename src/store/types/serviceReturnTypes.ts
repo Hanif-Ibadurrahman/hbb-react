@@ -14,6 +14,13 @@ export interface IServiceReturn {
 	deleted_at: string | null;
 	status: number | null;
 	id_inventory: number | null;
+	transaction_uuid: string | null;
+	company_name: string | null;
+	inventory_name: string | null;
+	pending_status: string | null;
+	current_approver: number | null;
+	reject_status: string | null;
+	is_closed_by: string | null;
 }
 
 export interface IServiceReturnPaginateResponse extends PaginationState {

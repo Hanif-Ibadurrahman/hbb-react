@@ -470,6 +470,7 @@ const ServiceInspection = () => {
 								handleApprove,
 								handleReject,
 								handleShowFile,
+								tokenDecode,
 							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={

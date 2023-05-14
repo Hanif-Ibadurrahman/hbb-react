@@ -37,6 +37,13 @@ export interface IServiceRepair {
 	updated_at: string | null;
 	deleted_at: string | null;
 	created_by: string | null;
+	transaction_uuid: string | null;
+	company_name: string | null;
+	inventory_name: string | null;
+	pending_status: string | null;
+	current_approver: number | null;
+	reject_status: string | null;
+	is_closed_by: string | null;
 }
 
 export interface IServiceRepairPaginateResponse extends PaginationState {

@@ -468,6 +468,7 @@ const ServiceReturn = () => {
 								handleApprove,
 								handleReject,
 								handleShowFile,
+								tokenDecode,
 							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={

@@ -1,6 +1,7 @@
 import { Button } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { listCheckPermission } from "app/helper/permission";
+import { ITokenDecode } from "store/types/loginTypes";
 import { IServiceReplacement } from "store/types/serviceReplacementTypes";
 
 interface IColumn {
@@ -14,6 +15,7 @@ interface IColumn {
 	handleApprove: (id: number) => void;
 	handleReject: (id: number) => void;
 	handleShowFile: (id: number) => void;
+	tokenDecode?: ITokenDecode;
 }
 
 export const columns = ({
@@ -22,6 +24,7 @@ export const columns = ({
 	handleApprove,
 	handleReject,
 	handleShowFile,
+	tokenDecode,
 }: IColumn) => {
 	const columnType: ColumnsType<IServiceReplacement> = [
 		{

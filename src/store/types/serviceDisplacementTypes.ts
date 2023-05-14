@@ -34,6 +34,7 @@ export interface IServiceDisplacement {
 	updated_at: string | null;
 	deleted_at: string | null;
 	id_company: string | null;
+	transaction_uuid: string | null;
 	from_name: string | null;
 	to_name: string | null;
 	company_name: string | null;

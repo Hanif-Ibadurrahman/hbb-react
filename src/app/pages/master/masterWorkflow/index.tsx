@@ -37,7 +37,11 @@ import { DefaultOptionType } from "antd/es/select";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { listCheckPermission } from "app/helper/permission";
+import {
+	isSuperadminGlobal,
+	listCheckPermission,
+	tokenDecode,
+} from "app/helper/permission";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
 
 const MasterWorkflow = () => {
@@ -229,6 +233,9 @@ const MasterWorkflow = () => {
 	};
 
 	const onFinish = (values: any) => {
+		if (!isSuperadminGlobal) {
+			values = { ...values, id_company: tokenDecode?.user?.id_company };
+		}
 		if (showModal.id) {
 			updateWorkflowApi(showModal.id, values)
 				.then(res => {
@@ -359,6 +366,42 @@ const MasterWorkflow = () => {
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
+					{isSuperadminGlobal && (
+						<Form.Item
+							name="id_company"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<Title level={5}>
+									Perusahaan <span className="text-danger">*</span>
+								</Title>
+								<div className="controls">
+									<Select
+										showSearch
+										onSearch={v => setCompanyParams({ name: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionCompany}
+										onChange={(v, opt) => {
+											formik.setFieldValue("id_company", v);
+											formRef.current?.setFieldsValue({
+												id_company: v,
+											});
+										}}
+										value={formik.values.id_company}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+					)}
 					<Form.Item
 						name="name"
 						rules={[
@@ -398,40 +441,6 @@ const MasterWorkflow = () => {
 						</div>
 					</Form.Item>
 					<Form.Item
-						name="id_company"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Perusahaan <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setCompanyParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionCompany}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_company", v);
-										formRef.current?.setFieldsValue({
-											id_company: parseInt(v),
-										});
-									}}
-									value={formik.values.id_company}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
 						name="roles"
 						rules={[
 							{
@@ -465,7 +474,6 @@ const MasterWorkflow = () => {
 						</div>
 					</Form.Item>
 					{generateStepApprocal}
-
 					<Form.Item
 						name="is_reverse"
 						rules={[
@@ -502,6 +510,12 @@ const MasterWorkflow = () => {
 				isShow={showFilter}
 				setShowModal={setShowFilter}
 				setParams={setParamsFilter}
+				setParamsOption={{
+					setCompanyParams,
+				}}
+				options={{
+					dataOptionCompany,
+				}}
 			/>
 		</>
 	);

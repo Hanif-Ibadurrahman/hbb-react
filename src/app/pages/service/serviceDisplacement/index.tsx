@@ -483,6 +483,7 @@ const ServiceDisplacement = () => {
 								handleDelete,
 								handleApprove,
 								handleReject,
+								tokenDecode,
 							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={

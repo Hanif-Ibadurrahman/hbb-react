@@ -8,6 +8,7 @@ interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
 	setParams: Dispatch<SetStateAction<IAreaGetAllParams | undefined>>;
+	setParamsOption: any;
 	options: any;
 }
 
@@ -15,6 +16,7 @@ export const ModalFilter = ({
 	isShow,
 	setShowModal,
 	setParams,
+	setParamsOption,
 	options,
 }: IModalFilter) => {
 	const [formFilter] = Form.useForm();
@@ -25,6 +27,13 @@ export const ModalFilter = ({
 				<Col span={24}>
 					<Form.Item name="company" label="Perusahaan">
 						<SelectWithTag
+							showSearch
+							onSearch={v => setParamsOption.setCompanyParams({ name: v })}
+							filterOption={(input, option) =>
+								(`${option?.label}` ?? "")
+									.toLowerCase()
+									.includes(input.toLowerCase())
+							}
 							dataOption={options.dataOptionCompany}
 							valueOption="label"
 						/>
@@ -32,6 +41,7 @@ export const ModalFilter = ({
 				</Col>
 			);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [options.dataOptionCompany]);
 
 	const handleSubmit = v => {
@@ -101,7 +111,19 @@ export const ModalFilter = ({
 					</Col>
 					<Col span={24}>
 						<Form.Item name="bisnis_unit" label="Bisnis Unit">
-							<SelectWithTag />
+							<SelectWithTag
+								showSearch
+								onSearch={v =>
+									setParamsOption.setBusinessUnitParams({ name: v })
+								}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								options={options.dataOptionBusinessUnit}
+								valueOption="label"
+							/>
 						</Form.Item>
 					</Col>
 					{generateContent}

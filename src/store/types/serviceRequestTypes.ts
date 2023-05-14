@@ -34,6 +34,12 @@ export interface IServiceRequest {
 	deleted_at: string | null;
 	attachment_file: string | null;
 	condition: string | null;
+	transaction_uuid: string | null;
+	company_name: string | null;
+	pending_status: string | null;
+	current_approver: number | null;
+	reject_status: string | null;
+	is_closed_by: string | null;
 }
 export interface IServiceRequestPaginateResponse extends PaginationState {
 	data: IServiceRequest[];

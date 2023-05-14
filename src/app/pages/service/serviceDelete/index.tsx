@@ -407,6 +407,7 @@ const ServiceDelete = () => {
 								handleDelete,
 								handleApprove,
 								handleReject,
+								tokenDecode,
 							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={

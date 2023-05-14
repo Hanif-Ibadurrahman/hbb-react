@@ -1,38 +1,49 @@
 import { Button, Col, Drawer, Form, Row, Space } from "antd";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { TokenDekode } from "app/helper/authentication";
+import { isSuperadminGlobal } from "app/helper/permission";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { IDivisionGetAllParams } from "store/types/divisionTypes";
 interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
 	setParams: Dispatch<SetStateAction<IDivisionGetAllParams | undefined>>;
+	setParamsOption: any;
+	options: any;
 }
 
 export const ModalFilter = ({
 	isShow,
 	setShowModal,
 	setParams,
+	setParamsOption,
+	options,
 }: IModalFilter) => {
 	const [formFilter] = Form.useForm();
-	const tokenDecode = TokenDekode();
 
 	const generateContent = useMemo(() => {
-		const isSuperadmin = Object.values(tokenDecode?.user?.roles ?? {}).includes(
-			"Super Admin",
-		);
-		if (isSuperadmin) {
+		if (isSuperadminGlobal) {
 			return (
 				<Row gutter={16}>
 					<Col span={24}>
 						<Form.Item name="company" label="Perusahaan">
-							<SelectWithTag />
+							<SelectWithTag
+								showSearch
+								onSearch={v => setParamsOption.setCompanyParams({ name: v })}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								dataOption={options.dataOptionCompany}
+								valueOption="label"
+							/>
 						</Form.Item>
 					</Col>
 				</Row>
 			);
 		}
-	}, [tokenDecode]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [options.dataOptionCompany]);
 
 	const handleSubmit = v => {
 		const filterParams = Object.entries(v).reduce((res, curr) => {

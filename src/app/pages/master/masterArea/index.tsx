@@ -39,7 +39,11 @@ import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
-import { listCheckPermission } from "app/helper/permission";
+import {
+	isSuperadminGlobal,
+	listCheckPermission,
+	tokenDecode,
+} from "app/helper/permission";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
 
 const MasterArea = () => {
@@ -83,6 +87,12 @@ const MasterArea = () => {
 	const [dataOptionEmployee, setDataOptionEmployee] = useState<
 		DefaultOptionType[] | undefined
 	>();
+
+	const formik = useFormik({
+		initialValues: { ...initialValue },
+		enableReinitialize: true,
+		onSubmit: values => {},
+	});
 
 	const fetchDataCompany = async () => {
 		try {
@@ -160,7 +170,10 @@ const MasterArea = () => {
 
 	const fetchDataBusinessUnit = async () => {
 		try {
-			const response = await getAllBusinessUnitApi(businessUnitParams);
+			const response = await getAllBusinessUnitApi({
+				...businessUnitParams,
+				id_company: formik.values.id_company,
+			});
 			const businessUnitList = response.data.data;
 			setDataOptionBusinessUnit(
 				businessUnitList.map(v => ({ label: v.name, value: v.id })),
@@ -246,11 +259,18 @@ const MasterArea = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showModal]);
 
-	const formik = useFormik({
-		initialValues: { ...initialValue },
-		enableReinitialize: true,
-		onSubmit: values => {},
-	});
+	useEffect(() => {
+		const companyId = formik.values.id_company;
+		if (companyId) {
+			const isInitialValueUndefined = initialValue?.id_company === undefined;
+			if (isInitialValueUndefined || companyId !== initialValue.id_company) {
+				formik.setFieldValue("id_bisnis_unit", undefined);
+				formRef.current?.setFieldsValue({ id_bisnis_unit: undefined });
+			}
+			fetchDataBusinessUnit();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_company]);
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
@@ -299,6 +319,9 @@ const MasterArea = () => {
 	};
 
 	const onFinish = (values: any) => {
+		if (!isSuperadminGlobal) {
+			values = { ...values, id_company: tokenDecode?.user?.id_company };
+		}
 		if (showModal.id) {
 			updateAreaApi(showModal.id, values)
 				.then(res => {
@@ -408,40 +431,42 @@ const MasterArea = () => {
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
-					<Form.Item
-						name="id_company"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Perusahaan <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setCompanyParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionCompany}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_company", v);
-										formRef.current?.setFieldsValue({
-											id_company: v,
-										});
-									}}
-									value={formik.values.id_company}
-								/>
+					{isSuperadminGlobal && (
+						<Form.Item
+							name="id_company"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<Title level={5}>
+									Perusahaan <span className="text-danger">*</span>
+								</Title>
+								<div className="controls">
+									<Select
+										showSearch
+										onSearch={v => setCompanyParams({ name: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionCompany}
+										onChange={(v, opt) => {
+											formik.setFieldValue("id_company", v);
+											formRef.current?.setFieldsValue({
+												id_company: v,
+											});
+										}}
+										value={formik.values.id_company}
+									/>
+								</div>
 							</div>
-						</div>
-					</Form.Item>
+						</Form.Item>
+					)}
 					<Form.Item
 						name="id_bisnis_unit"
 						rules={[
@@ -578,11 +603,19 @@ const MasterArea = () => {
 				</Form>
 			</AntdModal>
 
-			{/* <ModalFilter
+			<ModalFilter
 				isShow={showFilter}
 				setShowModal={setShowFilter}
 				setParams={setParamsFilter}
-			/> */}
+				setParamsOption={{
+					setBusinessUnitParams,
+					setCompanyParams,
+				}}
+				options={{
+					dataOptionBusinessUnit,
+					dataOptionCompany,
+				}}
+			/>
 		</>
 	);
 };

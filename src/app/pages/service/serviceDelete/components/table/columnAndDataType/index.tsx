@@ -1,5 +1,6 @@
 import { ColumnsType } from "antd/es/table";
 import { listCheckPermission } from "app/helper/permission";
+import { ITokenDecode } from "store/types/loginTypes";
 import { IServiceDelete } from "store/types/serviceDeleteTypes";
 interface IColumn {
 	setShowModal: React.Dispatch<
@@ -11,6 +12,7 @@ interface IColumn {
 	handleDelete: (id: number) => void;
 	handleApprove: (id: number) => void;
 	handleReject: (id: number) => void;
+	tokenDecode?: ITokenDecode;
 }
 
 export const columns = ({
@@ -18,6 +20,7 @@ export const columns = ({
 	handleDelete,
 	handleApprove,
 	handleReject,
+	tokenDecode,
 }: IColumn) => {
 	const columnType: ColumnsType<IServiceDelete> = [
 		{
@@ -57,29 +60,31 @@ export const columns = ({
 			render: (text, record, index) => {
 				return (
 					<div style={{ display: "flex", columnGap: 5 }}>
-						{listCheckPermission.isAllowApproveServicePenghapusan && (
-							<button
-								type="button"
-								className="btn btn-success"
-								onClick={() => {
-									handleApprove(text);
-								}}
-							>
-								Approve
-							</button>
-						)}
-						{listCheckPermission.isAllowRejectServicePenghapusan && (
-							<button
-								type="button"
-								className="btn"
-								style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
-								onClick={() => {
-									handleReject(text);
-								}}
-							>
-								Reject
-							</button>
-						)}
+						{listCheckPermission.isAllowApproveServicePenghapusan &&
+							record.current_approver === tokenDecode?.user?.id && (
+								<button
+									type="button"
+									className="btn btn-success"
+									onClick={() => {
+										handleApprove(text);
+									}}
+								>
+									Approve
+								</button>
+							)}
+						{listCheckPermission.isAllowRejectServicePenghapusan &&
+							record.current_approver === tokenDecode?.user?.id && (
+								<button
+									type="button"
+									className="btn"
+									style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
+									onClick={() => {
+										handleReject(text);
+									}}
+								>
+									Reject
+								</button>
+							)}
 						{listCheckPermission.isAllowUpdateServicePenghapusan && (
 							<button
 								type="button"

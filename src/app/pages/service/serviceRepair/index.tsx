@@ -467,6 +467,7 @@ const ServiceRepair = () => {
 								handleApprove,
 								handleReject,
 								handleShowFile,
+								tokenDecode,
 							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={

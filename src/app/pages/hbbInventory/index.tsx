@@ -637,17 +637,6 @@ const HbbInventory = () => {
 	};
 
 	useEffect(() => {
-		const companyId = tokenDecode?.user?.id_company;
-		if (companyId) {
-			formik.setFieldValue("id_company", companyId);
-			formRef.current?.setFieldsValue({
-				id_company: companyId,
-			});
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [tokenDecode?.user?.id_company]);
-
-	useEffect(() => {
 		fetchDataSerialNumber();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [checkSerialNumberParams]);
@@ -779,19 +768,6 @@ const HbbInventory = () => {
 	}, [formik.values.id_bisnis_unit]);
 
 	useEffect(() => {
-		const areaId = formik.values.id_area;
-		if (areaId) {
-			const isInitialValueUndefined = initialValue?.id_area === undefined;
-			if (isInitialValueUndefined || areaId !== initialValue.id_area) {
-				formik.setFieldValue("id_satker", undefined);
-				formRef.current?.setFieldsValue({ id_satker: undefined });
-			}
-			fetchDataWorkUnit();
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [formik.values.id_area]);
-
-	useEffect(() => {
 		const workUnitId = formik.values.id_satker;
 		if (workUnitId) {
 			const isInitialValueUndefined = initialValue?.id_satker === undefined;
@@ -913,6 +889,9 @@ const HbbInventory = () => {
 	};
 
 	const onFinish = (values: any) => {
+		if (!isSuperadminGlobal) {
+			values = { ...values, id_company: tokenDecode?.user?.id_company };
+		}
 		if (showModal.id) {
 			updateInventoryApi(showModal.id, values)
 				.then(res => {
@@ -2023,13 +2002,21 @@ const HbbInventory = () => {
 				setParamsOption={{
 					setCodeGroupParams,
 					setSubCodeGroupParams,
-					setColorParams,
+					setBusinessUnitParams,
+					setAreaParams,
+					setWorkUnitParams,
+					setLocationParams,
+					setConditionParams,
 					setCompanyParams,
 				}}
 				options={{
 					dataOptionCodeGroup,
 					dataOptionSubCodeGroup,
-					dataOptionColor,
+					dataOptionBusinessUnit,
+					dataOptionArea,
+					dataOptionWorkUnit,
+					dataOptionLocation,
+					dataOptionCondition,
 					dataOptionCompany,
 				}}
 			/>

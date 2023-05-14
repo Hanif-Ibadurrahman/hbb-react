@@ -114,7 +114,7 @@ export const ModalFilter = ({
 						<Form.Item name="main_group" label="Main Group">
 							<SelectWithTag
 								showSearch
-								onSearch={v => setParamsOption.setCodeGroupParams({ name: v })}
+								onSearch={v => setParamsOption.setCodeGroupParams({ group: v })}
 								filterOption={(input, option) =>
 									(`${option?.label}` ?? "")
 										.toLowerCase()
@@ -130,7 +130,7 @@ export const ModalFilter = ({
 							<SelectWithTag
 								showSearch
 								onSearch={v =>
-									setParamsOption.setSubCodeGroupParams({ name: v })
+									setParamsOption.setSubCodeGroupParams({ group: v })
 								}
 								filterOption={(input, option) =>
 									(`${option?.label}` ?? "")
@@ -189,10 +189,7 @@ export const ModalFilter = ({
 					</Col>
 					<Col span={12}>
 						<Form.Item name="color" label="Warna">
-							<SelectWithTag
-								dataOption={options.dataOptionColor}
-								valueOption="label"
-							/>
+							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={12}>
@@ -242,22 +239,64 @@ export const ModalFilter = ({
 					</Col>
 					<Col span={12}>
 						<Form.Item name="bisnis_unit" label="Bisnis Unit">
-							<SelectWithTag />
+							<SelectWithTag
+								showSearch
+								onSearch={v =>
+									setParamsOption.setBusinessUnitParams({ name: v })
+								}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								options={options.dataOptionBusinessUnit}
+								valueOption="label"
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={12}>
 						<Form.Item name="area" label="Area">
-							<SelectWithTag />
+							<SelectWithTag
+								showSearch
+								onSearch={v => setParamsOption.setAreaParams({ name: v })}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								options={options.dataOptionArea}
+								valueOption="label"
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={12}>
 						<Form.Item name="satker" label="Satuan Kerja">
-							<SelectWithTag />
+							<SelectWithTag
+								showSearch
+								onSearch={v => setParamsOption.setWorkUnitParams({ satker: v })}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								options={options.dataOptionWorkUnit}
+								valueOption="label"
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={12}>
 						<Form.Item name="location" label="Lokasi">
-							<SelectWithTag />
+							<SelectWithTag
+								showSearch
+								onSearch={v => setParamsOption.setLocationParams({ lokasi: v })}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								options={options.dataOptionLocation}
+								valueOption="label"
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={12}>
@@ -267,7 +306,17 @@ export const ModalFilter = ({
 					</Col>
 					<Col span={12}>
 						<Form.Item name="condition" label="Kondisi">
-							<SelectWithTag />
+							<SelectWithTag
+								showSearch
+								onSearch={v => setParamsOption.setConditionParams({ name: v })}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								options={options.dataOptionCondition}
+								valueOption="label"
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={12}>
