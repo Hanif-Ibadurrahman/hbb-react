@@ -105,14 +105,13 @@ export const Header = ({ collapseHandler }: IHeader) => {
 				<div className="navbar-custom-menu r-side">
 					<ul className="nav navbar-nav">
 						<li className="btn-group dropdown notifications-menu">
-							<a
-								href="/"
+							<Link
+								to="#"
 								className="waves-effect waves-light dropdown-toggle btn-info-light"
-								data-bs-toggle="dropdown"
 								title="Notifications"
 							>
 								<FeatherIcon icon={"bell"} />
-							</a>
+							</Link>
 							<ul className="dropdown-menu animated bounceIn">
 								<li className="header">
 									<div className="p-20">
@@ -128,7 +127,6 @@ export const Header = ({ collapseHandler }: IHeader) => {
 										</div>
 									</div>
 								</li>
-
 								<li>
 									<ul className="menu sm-scrol">
 										<li>
@@ -185,11 +183,11 @@ export const Header = ({ collapseHandler }: IHeader) => {
 
 						<li className="dropdown user user-menu">
 							<Dropdown menu={{ items }} placement="bottomLeft">
-								<div data-bs-toggle="dropdown" title="User">
+								<div title="User">
 									<img
 										src="images/avatar/avatar-1.png"
 										className="avatar rounded-10 bg-primary-light h-40 w-40"
-										alt=""
+										alt="user"
 									/>
 								</div>
 							</Dropdown>

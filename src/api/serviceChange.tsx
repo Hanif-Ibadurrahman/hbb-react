@@ -36,8 +36,11 @@ export const deleteServiceChangeApi = (id: number) => {
 	return apiWithToken.delete(`/api/transaksi/perubahan/${id}`);
 };
 
-export const approveServiceChangeApi = (id: number) => {
-	return apiWithToken.post(`/api/approval/perubahan/approve/${id}`);
+export const approveServiceChangeApi = (
+	id: number,
+	input: { remark: string },
+) => {
+	return apiWithToken.post(`/api/approval/perubahan/approve/${id}`, input);
 };
 
 export const rejectServiceChangeApi = (

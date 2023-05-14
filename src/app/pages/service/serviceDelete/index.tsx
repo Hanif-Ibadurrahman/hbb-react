@@ -227,7 +227,7 @@ const ServiceDelete = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					approveServiceDeleteApi(id)
+					approveServiceDeleteApi(id, { remark: result.value })
 						.then(res => {
 							if (res.data.status === "success") {
 								swalCustom.fire(

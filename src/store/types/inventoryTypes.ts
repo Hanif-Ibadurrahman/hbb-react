@@ -176,6 +176,7 @@ export interface ICreateInventoryRequest {
 	id_penanggung_jawab: number;
 	condition: string;
 	remark: string;
+	files: any | null;
 }
 
 export interface IUpdateInventoryRequest {
