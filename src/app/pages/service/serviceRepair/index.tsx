@@ -257,7 +257,7 @@ const ServiceRepair = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					approveServiceRepairApi(id)
+					approveServiceRepairApi(id, { remark: result.value })
 						.then(res => {
 							if (res.data.status === "success") {
 								swalCustom.fire(

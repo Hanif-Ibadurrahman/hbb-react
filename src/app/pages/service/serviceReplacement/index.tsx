@@ -260,7 +260,7 @@ const ServiceReplacement = () => {
 			})
 			.then(result => {
 				if (result.isConfirmed) {
-					approveServiceReplacementApi(id)
+					approveServiceReplacementApi(id, { remark: result.value })
 						.then(res => {
 							if (res.data.status === "success") {
 								swalCustom.fire(

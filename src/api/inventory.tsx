@@ -13,7 +13,9 @@ export const getAllInventoryApi = (params?: IInventoryGetAllParams) => {
 };
 
 export const createNewInventoryApi = (input: ICreateInventoryRequest) => {
-	return apiWithToken.post(`/api/inventory`, input);
+	return apiWithToken.post(`/api/inventory`, input, {
+		headers: { "Content-Type": "multipart/form-data" },
+	});
 };
 
 export const getDetailInventoryApi = (id: number) => {
