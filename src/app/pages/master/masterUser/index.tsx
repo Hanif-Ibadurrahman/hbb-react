@@ -1,5 +1,4 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
-import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import {
@@ -42,7 +41,11 @@ import { IAreaGetAllParams } from "store/types/areaTypes";
 import { getAllAreaApi, getDetailAreaApi } from "api/area";
 import { IWorkUnitGetAllParams } from "store/types/workUnitTypes";
 import { getAllWorkUnitApi, getDetailWorkUnitApi } from "api/workUnit";
-import { listCheckPermission } from "app/helper/permission";
+import {
+	isSuperadminGlobal,
+	listCheckPermission,
+	tokenDecode,
+} from "app/helper/permission";
 import { intersection } from "lodash";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
 import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
@@ -114,6 +117,12 @@ const MasterUser = () => {
 		{ value: 5, label: "User" },
 	]);
 
+	const formik = useFormik({
+		initialValues: { ...initialValue },
+		enableReinitialize: true,
+		onSubmit: values => {},
+	});
+
 	const fetchDataList = async () => {
 		try {
 			if (params) {
@@ -163,7 +172,10 @@ const MasterUser = () => {
 
 	const fetchDataBusinessUnit = async () => {
 		try {
-			const response = await getAllBusinessUnitApi(businessUnitParams);
+			const response = await getAllBusinessUnitApi({
+				...businessUnitParams,
+				id_company: formik.values.id_company,
+			});
 			const businessUnitList = response.data.data;
 			setDataOptionBusinessUnit(
 				businessUnitList.map(v => ({ label: v.name, value: v.id })),
@@ -190,7 +202,11 @@ const MasterUser = () => {
 
 	const fetchDataArea = async () => {
 		try {
-			const response = await getAllAreaApi(areaParams);
+			const response = await getAllAreaApi({
+				...areaParams,
+				id_company: formik.values.id_company,
+				id_bisnis_unit: formik.values.id_bisnit,
+			});
 			const areaList = response.data.data;
 			setDataOptionArea(areaList.map(v => ({ label: v.name, value: v.id })));
 		} catch (error: any) {
@@ -212,7 +228,12 @@ const MasterUser = () => {
 
 	const fetchDataWorkUnit = async () => {
 		try {
-			const response = await getAllWorkUnitApi(workUnitParams);
+			const response = await getAllWorkUnitApi({
+				...workUnitParams,
+				id_company: formik.values.id_company,
+				id_bisnis_unit: formik.values.id_bisnit,
+				id_area: formik.values.id_area,
+			});
 			const workUnitList = response.data.data;
 			setDataOptionWorkUnit(
 				workUnitList.map(v => ({ label: v.name, value: v.id })),
@@ -246,16 +267,24 @@ const MasterUser = () => {
 		}
 	};
 
-	const fetchDataEmployeeDetail = async (id: number) => {
+	const fetchDataEmployeeDetail = async (id: number, isAutoFill?: boolean) => {
 		try {
 			const response = await getDetailEmployeeApi(id);
 			const detail = response.data.data;
-			setDataOptionEmployee(
-				dataOptionEmployee?.concat({
-					label: detail.emp_name,
-					value: detail.id,
-				}),
-			);
+
+			if (isAutoFill) {
+				formik.setFieldValue("nipg", detail.nipg);
+				formRef.current?.setFieldsValue({
+					nipg: detail.nipg,
+				});
+			} else {
+				setDataOptionEmployee(
+					dataOptionEmployee?.concat({
+						label: detail.emp_name,
+						value: detail.id,
+					}),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -266,8 +295,8 @@ const MasterUser = () => {
 		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
 			fetchDataCompanyDetail(setData.id_company);
 		}
-		if (!checkDefaultOption(dataOptionEmployee!, setData.id_pegawai)) {
-			fetchDataEmployeeDetail(setData.id_pegawai);
+		if (!checkDefaultOption(dataOptionEmployee!, setData.id_emp)) {
+			fetchDataEmployeeDetail(setData.id_emp);
 		}
 		if (!checkDefaultOption(dataOptionWorkUnit!, setData.id_satker)) {
 			fetchDataWorkUnitDetail(setData.id_satker);
@@ -275,8 +304,8 @@ const MasterUser = () => {
 		if (!checkDefaultOption(dataOptionArea!, setData.id_area)) {
 			fetchDataAreaDetail(setData.id_area);
 		}
-		if (!checkDefaultOption(dataOptionBusinessUnit!, setData.id_bisnis_unit)) {
-			fetchDataBusinessUnitDetail(setData.id_bisnis_unit);
+		if (!checkDefaultOption(dataOptionBusinessUnit!, setData.id_bisnit)) {
+			fetchDataBusinessUnitDetail(setData.id_bisnit);
 		}
 		setInitialValue({
 			...setData,
@@ -321,6 +350,14 @@ const MasterUser = () => {
 	}, [params]);
 
 	useEffect(() => {
+		const id = formik.values.id_emp;
+		if (id) {
+			fetchDataEmployeeDetail(id, true);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_emp]);
+
+	useEffect(() => {
 		setParams({
 			...params,
 			...selectedPageAndSort,
@@ -346,11 +383,34 @@ const MasterUser = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showModal]);
 
-	const formik = useFormik({
-		initialValues: { ...initialValue },
-		enableReinitialize: true,
-		onSubmit: values => {},
-	});
+	useEffect(() => {
+		const companyId = formik.values.id_company;
+		if (companyId) {
+			const isInitialValueUndefined = initialValue?.id_company === undefined;
+			if (isInitialValueUndefined || companyId !== initialValue.id_company) {
+				formik.setFieldValue("id_bisnis_unit", undefined);
+				formRef.current?.setFieldsValue({ id_bisnis_unit: undefined });
+			}
+			fetchDataBusinessUnit();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_company]);
+
+	useEffect(() => {
+		const businessUnitId = formik.values.id_bisnit;
+		if (businessUnitId) {
+			const isInitialValueUndefined = initialValue?.id_bisnit === undefined;
+			if (
+				isInitialValueUndefined ||
+				businessUnitId !== initialValue.id_bisnit
+			) {
+				formik.setFieldValue("id_area", undefined);
+				formRef.current?.setFieldsValue({ id_area: undefined });
+			}
+			fetchDataArea();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_bisnit]);
 
 	const handleAdd = () => {
 		setShowModal({ show: true });
@@ -399,6 +459,9 @@ const MasterUser = () => {
 	};
 
 	const onFinish = (values: any) => {
+		if (!isSuperadminGlobal) {
+			values = { ...values, id_company: tokenDecode?.user?.id_company };
+		}
 		if (showModal.uuid) {
 			updateUserApi(showModal.uuid, values)
 				.then(res => {
@@ -458,7 +521,7 @@ const MasterUser = () => {
 		intersection(selectedRole, ["User", "Kepala Satuan Kerja"]).length > 0;
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -526,40 +589,42 @@ const MasterUser = () => {
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
-					<Form.Item
-						name="id_company"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Perusahaan <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setCompanyParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionCompany}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_company", v);
-										formRef.current?.setFieldsValue({
-											id_company: v,
-										});
-									}}
-									value={formik.values.id_company}
-								/>
+					{isSuperadminGlobal && (
+						<Form.Item
+							name="id_company"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<Title level={5}>
+									Perusahaan <span className="text-danger">*</span>
+								</Title>
+								<div className="controls">
+									<Select
+										showSearch
+										onSearch={v => setCompanyParams({ name: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionCompany}
+										onChange={(v, opt) => {
+											formik.setFieldValue("id_company", v);
+											formRef.current?.setFieldsValue({
+												id_company: v,
+											});
+										}}
+										value={formik.values.id_company}
+									/>
+								</div>
 							</div>
-						</div>
-					</Form.Item>
+						</Form.Item>
+					)}
 					<Form.Item
 						name="username"
 						rules={[
@@ -599,7 +664,7 @@ const MasterUser = () => {
 								),
 								// eslint-disable-next-line no-template-curly-in-string
 								message:
-									"Password minimal 12 karakter, terdiri dari kombinasi huruf kapital, huruf kecil, angka dan karakter khusus. Contoh: Jakarta2023!",
+									"Password minimal 8 karakter, terdiri dari kombinasi huruf kapital, huruf kecil, angka dan karakter khusus. Contoh: Bali2023!",
 							},
 						]}
 					>
@@ -708,57 +773,6 @@ const MasterUser = () => {
 							</div>
 						</div>
 					</Form.Item>
-					{isStaff && (
-						<Form.Item name="nipg">
-							<div className="form-group">
-								<Title level={5}>NIPG</Title>
-								<div className="controls">
-									<Input
-										type="text"
-										name="nipg"
-										className="form-control"
-										placeholder="NIPG"
-										onChange={formik.handleChange}
-										value={formik.values.nipg}
-									/>
-								</div>
-							</div>
-						</Form.Item>
-					)}
-					<Form.Item
-						name="id_area"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Area <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setAreaParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionArea}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_area", v);
-										formRef.current?.setFieldsValue({
-											id_area: v,
-										});
-									}}
-									value={formik.values.id_area}
-								/>
-							</div>
-						</div>
-					</Form.Item>
 					<Form.Item
 						name="id_bisnit"
 						rules={[
@@ -789,6 +803,40 @@ const MasterUser = () => {
 										});
 									}}
 									value={formik.values.id_bisnit}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="id_area"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Area <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setAreaParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionArea}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_area", v);
+										formRef.current?.setFieldsValue({
+											id_area: v,
+										});
+									}}
+									value={formik.values.id_area}
 								/>
 							</div>
 						</div>
@@ -863,6 +911,23 @@ const MasterUser = () => {
 							</div>
 						</div>
 					</Form.Item>
+					{isStaff && (
+						<Form.Item name="nipg">
+							<div className="form-group">
+								<Title level={5}>NIPG</Title>
+								<div className="controls">
+									<Input
+										type="text"
+										name="nipg"
+										className="form-control"
+										placeholder="NIPG"
+										onChange={formik.handleChange}
+										value={formik.values.nipg}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+					)}
 				</Form>
 			</AntdModal>
 
@@ -870,8 +935,17 @@ const MasterUser = () => {
 				isShow={showFilter}
 				setShowModal={setShowFilter}
 				setParams={setParamsFilter}
+				setParamsOption={{
+					setBusinessUnitParams,
+					setCompanyParams,
+				}}
+				options={{
+					dataOptionBusinessUnit,
+					dataOptionRole,
+					dataOptionCompany,
+				}}
 			/>
-		</MainLayout>
+		</>
 	);
 };
 

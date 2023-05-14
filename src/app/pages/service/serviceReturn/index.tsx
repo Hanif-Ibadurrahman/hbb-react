@@ -1,5 +1,4 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
-import { MainLayout } from "app/layout/mainLayout";
 import { SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import {
@@ -456,7 +455,7 @@ const ServiceReturn = () => {
 	};
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -469,6 +468,7 @@ const ServiceReturn = () => {
 								handleApprove,
 								handleReject,
 								handleShowFile,
+								tokenDecode,
 							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
@@ -660,7 +660,7 @@ const ServiceReturn = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_workflow", v);
 										formRef.current?.setFieldsValue({
-											id_workflow: parseInt(v),
+											id_workflow: v,
 										});
 									}}
 									value={formik.values.id_workflow}
@@ -734,7 +734,7 @@ const ServiceReturn = () => {
 				setShowModal={setShowFilter}
 				setParams={setParams}
 			/>
-		</MainLayout>
+		</>
 	);
 };
 

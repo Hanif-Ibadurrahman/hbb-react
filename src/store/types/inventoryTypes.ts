@@ -1,6 +1,5 @@
 import { PaginationState } from "./paginationTypes";
 export interface IInventory {
-	id: number;
 	name: string | null;
 	main_group: string | null;
 	sub_group: string | null;
@@ -22,8 +21,13 @@ export interface IInventory {
 	status: number | null;
 	kondisi: string | null;
 	remark: string | null;
+	id: number;
 	nipg: string | null;
 	code: string | null;
+	main_group_name: string | null;
+	sub_group_name: string | null;
+	bu_name: string | null;
+	company_name: string | null;
 }
 
 export interface IInventoryDetail {
@@ -82,6 +86,8 @@ export interface IInventoryDetail {
 	penanggung_jawab: string | null;
 	id_bisnis_unit: number | null;
 	id_company: number | null;
+
+	// Not yet added for modal detail inventory
 	id_division: number | null;
 	company: string | null;
 	main_group: string | null;

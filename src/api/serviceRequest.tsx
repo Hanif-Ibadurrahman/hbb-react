@@ -39,7 +39,7 @@ export const deleteServiceRequestApi = (id: number) => {
 };
 
 export const approveServiceRequestApi = (id: number) => {
-	return apiWithToken.get(`/api/approval/permintaan/approve/${id}`);
+	return apiWithToken.post(`/api/approval/permintaan/approve/${id}`);
 };
 
 export const rejectServiceRequestApi = (

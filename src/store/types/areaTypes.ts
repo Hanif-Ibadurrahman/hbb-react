@@ -30,6 +30,8 @@ export interface IAreaGetAllParams {
 	pengelola?: string;
 	bisnis_unit?: string;
 	company?: string;
+	id_company?: number;
+	id_bisnis_unit?: number;
 }
 export interface ICreateAreaRequest {
 	name: string;

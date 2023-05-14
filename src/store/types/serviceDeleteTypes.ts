@@ -9,7 +9,7 @@ export interface IServiceDelete {
 	reason: string | null;
 	remark: string | null;
 	approve_by: string | null;
-	status: string | null;
+	status: number | null;
 	check: number | null;
 	retire_date: string | null;
 	date_start: string | null;
@@ -21,18 +21,23 @@ export interface IServiceDelete {
 	reject: string | null;
 	description: string | null;
 	approved_date: string | null;
-	from_mobile: boolean;
+	from_mobile: boolean | null;
 	entry_stamp: string | null;
 	edit_stamp: string | null;
 	del: boolean | null;
-	id_company: string | null;
-	created_by: string | null;
+	id_company: number | null;
+	created_by: number | null;
 	created_at: string | null;
 	updated_at: string | null;
 	deleted_at: string | null;
-	id_approval: string | null;
-	inventory_name: string | null;
+	id_approval: number | null;
+	transaction_uuid: string | null;
 	company_name: string | null;
+	inventory_name: string | null;
+	pending_status: string | null;
+	current_approver: number | null;
+	reject_status: string | null;
+	is_closed_by: string | null;
 }
 
 export interface IServiceDeletePaginateResponse extends PaginationState {
@@ -48,23 +53,23 @@ export interface IServiceDeleteGetAllParams {
 }
 
 export interface ICreateServiceDeleteRequest {
-	id_inventory: string;
+	id_inventory: number;
 	date: string;
 	reason: string;
 	remark: string;
-	id_company: string;
-	created_by: string;
-	id_workflow: string;
+	id_company: number;
+	created_by: number;
+	id_workflow: number;
 }
 
 export interface IUpdateServiceDeleteRequest {
-	id_inventory: string;
+	id_inventory: number;
 	date: string;
 	reason: string;
 	remark: string;
-	id_company: string;
-	created_by: string;
-	id_workflow: string;
+	id_company: number;
+	created_by: number;
+	id_workflow: number;
 }
 
 export interface IServiceDeleteGetAllResponse {

@@ -33,6 +33,9 @@ export interface IWorkUnitGetAllParams {
 	area?: string;
 	kepala_satker?: string;
 	company?: string;
+	id_company?: number;
+	id_bisnis_unit?: number;
+	id_area?: number;
 }
 
 export interface ICreateWorkUnitRequest {

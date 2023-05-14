@@ -1,5 +1,4 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
-import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import { ModalFilter } from "./components/modalFilter";
@@ -107,7 +106,7 @@ const CorporateInventoryReport = () => {
 	}, [paramsFilter]);
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -141,7 +140,6 @@ const CorporateInventoryReport = () => {
 				isShow={showFilter}
 				setShowModal={setShowFilter}
 				setParams={setParamsFilter}
-				formik={formik}
 				setParamsOption={{
 					setCompanyParams,
 				}}
@@ -149,7 +147,7 @@ const CorporateInventoryReport = () => {
 					dataOptionCompany,
 				}}
 			/>
-		</MainLayout>
+		</>
 	);
 };
 

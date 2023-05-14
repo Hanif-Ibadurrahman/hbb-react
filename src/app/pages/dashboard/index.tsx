@@ -11,7 +11,6 @@ import { ColumnChart } from "app/components/chart/column";
 import { LineChart } from "app/components/chart/line";
 import { PieChart } from "app/components/chart/pie";
 import { CheckResponse } from "app/helper/authentication";
-import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -109,7 +108,7 @@ const Dashboard = () => {
 	};
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-xl-3 col-lg-6 col-12">
@@ -249,7 +248,7 @@ const Dashboard = () => {
 					</div>
 				</div>
 			</section>
-		</MainLayout>
+		</>
 	);
 };
 

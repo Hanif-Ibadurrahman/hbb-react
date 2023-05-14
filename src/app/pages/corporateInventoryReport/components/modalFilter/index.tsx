@@ -9,7 +9,7 @@ import {
 	Select,
 	Space,
 } from "antd";
-import { TokenDekode } from "app/helper/authentication";
+import { isSuperadminGlobal } from "app/helper/permission";
 import { Dispatch, SetStateAction, useMemo, useRef } from "react";
 import { ICorporateInventoryReportGetAllParams } from "store/types/corporateInventoryReportTypes";
 
@@ -19,7 +19,6 @@ interface IModalFilter {
 	setParams: Dispatch<
 		SetStateAction<ICorporateInventoryReportGetAllParams | undefined>
 	>;
-	formik: any;
 	setParamsOption: any;
 	options: any;
 }
@@ -28,20 +27,15 @@ export const ModalFilter = ({
 	isShow,
 	setShowModal,
 	setParams,
-	formik,
 	setParamsOption,
 	options,
 }: IModalFilter) => {
 	const [formFilter] = Form.useForm();
 	const formFilterRef = useRef<FormInstance>(null);
-	const tokenDecode = TokenDekode();
 	const { RangePicker } = DatePicker;
 
 	const generateContent = useMemo(() => {
-		const isSuperadmin = Object.values(tokenDecode?.user?.roles ?? {}).includes(
-			"Super Admin",
-		);
-		if (isSuperadmin) {
+		if (isSuperadminGlobal) {
 			return (
 				<Col span={12}>
 					<Form.Item name="id_company" label="Perusahaan">
@@ -60,7 +54,7 @@ export const ModalFilter = ({
 			);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [options.dataOptionCompany, tokenDecode?.user?.roles]);
+	}, [options.dataOptionCompany]);
 
 	const checkRangeValue = value => {
 		return value

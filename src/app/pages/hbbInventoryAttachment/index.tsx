@@ -1,5 +1,4 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
-import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import { ModalFilter } from "./components/modalFilter";
@@ -268,7 +267,7 @@ const HbbInventoryAttachment = () => {
 	}, [businessUnitParams]);
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -322,7 +321,7 @@ const HbbInventoryAttachment = () => {
 					dataOptionCompany,
 				}}
 			/>
-		</MainLayout>
+		</>
 	);
 };
 

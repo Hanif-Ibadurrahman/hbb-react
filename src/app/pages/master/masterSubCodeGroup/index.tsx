@@ -1,5 +1,4 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
-import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import {
@@ -228,7 +227,7 @@ const MasterSubCodeGroup = () => {
 	};
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -354,7 +353,7 @@ const MasterSubCodeGroup = () => {
 				setShowModal={setShowFilter}
 				setParams={setParamsFilter}
 			/>
-		</MainLayout>
+		</>
 	);
 };
 

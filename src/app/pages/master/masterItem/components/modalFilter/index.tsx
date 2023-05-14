@@ -1,6 +1,6 @@
 import { Button, Col, Drawer, Form, Row, Space } from "antd";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { TokenDekode } from "app/helper/authentication";
+import { isSuperadminGlobal } from "app/helper/permission";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { IItemGetAllParams } from "store/types/itemTypes";
 
@@ -8,6 +8,7 @@ interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
 	setParams: Dispatch<SetStateAction<IItemGetAllParams | undefined>>;
+	setParamsOption: any;
 	options: any;
 }
 
@@ -15,20 +16,24 @@ export const ModalFilter = ({
 	isShow,
 	setShowModal,
 	setParams,
+	setParamsOption,
 	options,
 }: IModalFilter) => {
 	const [formFilter] = Form.useForm();
-	const tokenDecode = TokenDekode();
 
 	const generateContent = useMemo(() => {
-		const isSuperadmin = Object.values(tokenDecode?.user?.roles ?? {}).includes(
-			"Super Admin",
-		);
-		if (isSuperadmin) {
+		if (isSuperadminGlobal) {
 			return (
 				<Col span={12}>
 					<Form.Item name="company" label="Perusahaan">
 						<SelectWithTag
+							showSearch
+							onSearch={v => setParamsOption.setCompanyParams({ name: v })}
+							filterOption={(input, option) =>
+								(`${option?.label}` ?? "")
+									.toLowerCase()
+									.includes(input.toLowerCase())
+							}
 							dataOption={options.dataOptionCompany}
 							valueOption="label"
 						/>
@@ -36,7 +41,8 @@ export const ModalFilter = ({
 				</Col>
 			);
 		}
-	}, [options.dataOptionCompany, tokenDecode?.user?.roles]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [options.dataOptionCompany]);
 
 	const handleSubmit = v => {
 		const filterParams = Object.entries(v).reduce((res, curr) => {
@@ -81,6 +87,13 @@ export const ModalFilter = ({
 					<Col span={12}>
 						<Form.Item name="main_group" label="Main Group">
 							<SelectWithTag
+								showSearch
+								onSearch={v => setParamsOption.setCodeGroupParams({ group: v })}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
 								dataOption={options.dataOptionCodeGroup}
 								valueOption="label"
 							/>
@@ -89,6 +102,15 @@ export const ModalFilter = ({
 					<Col span={12}>
 						<Form.Item name="sub_group" label="Sub Group">
 							<SelectWithTag
+								showSearch
+								onSearch={v =>
+									setParamsOption.setSubCodeGroupParams({ group: v })
+								}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
 								dataOption={options.dataOptionSubCodeGroup}
 								valueOption="label"
 							/>
@@ -122,6 +144,13 @@ export const ModalFilter = ({
 					<Col span={12}>
 						<Form.Item name="warna" label="Warna">
 							<SelectWithTag
+								showSearch
+								onSearch={v => setParamsOption.setColorParams({ color: v })}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
 								dataOption={options.dataOptionColor}
 								valueOption="label"
 							/>

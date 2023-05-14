@@ -27,6 +27,10 @@ export interface IDivisionGetAllParams {
 	name?: string;
 	satker?: string;
 	kepala_satker?: string;
+	id_company?: number;
+	id_bisnis_unit?: number;
+	id_area?: number;
+	id_satker?: number;
 }
 export interface ICreateDivisionRequest {
 	name: string;

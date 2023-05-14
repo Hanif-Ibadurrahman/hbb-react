@@ -1,5 +1,6 @@
 import { ColumnsType } from "antd/es/table";
 import { listCheckPermission } from "app/helper/permission";
+import { ITokenDecode } from "store/types/loginTypes";
 import { IServiceDisplacement } from "store/types/serviceDisplacementTypes";
 interface IColumn {
 	setShowModal: React.Dispatch<
@@ -11,6 +12,7 @@ interface IColumn {
 	handleDelete: (id: number) => void;
 	handleApprove: (id: number) => void;
 	handleReject: (id: number) => void;
+	tokenDecode?: ITokenDecode;
 }
 
 export const columns = ({
@@ -18,11 +20,13 @@ export const columns = ({
 	handleDelete,
 	handleApprove,
 	handleReject,
+	tokenDecode,
 }: IColumn) => {
 	const columnType: ColumnsType<IServiceDisplacement> = [
 		{
-			title: "Tanggal",
-			dataIndex: "date",
+			title: "No Transaksi",
+			dataIndex: "id",
+			align: "center",
 			sorter: true,
 		},
 		{
@@ -41,44 +45,52 @@ export const columns = ({
 			sorter: true,
 		},
 		{
-			title: "Perusahaan",
-			dataIndex: "company_name",
-			sorter: true,
-		},
-		{
 			title: "Lokasi",
 			dataIndex: "location_name",
 			sorter: true,
 		},
+		{
+			title: "Tanggal",
+			dataIndex: "date",
+			sorter: true,
+		},
+		{
+			title: "Perusahaan",
+			dataIndex: "company_name",
+			sorter: true,
+		},
+
 		{
 			title: "Action",
 			dataIndex: "id",
 			render: (text, record, index) => {
 				return (
 					<div style={{ display: "flex", columnGap: 5 }}>
-						{listCheckPermission.isAllowApproveServicePemindahan && (
-							<button
-								type="button"
-								className="btn btn-success"
-								onClick={() => {
-									handleApprove(text);
-								}}
-							>
-								Approve
-							</button>
-						)}
-						{listCheckPermission.isAllowRejectServicePemindahan && (
-							<button
-								type="button"
-								className="btn"
-								style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
-								onClick={() => {
-									handleReject(text);
-								}}
-							>
-								Reject
-							</button>
-						)}
+						{listCheckPermission.isAllowApproveServicePemindahan &&
+							record.current_approver === tokenDecode?.user?.id && (
+								<button
+									type="button"
+									className="btn btn-success"
+									onClick={() => {
+										handleApprove(text);
+									}}
+								>
+									Approve
+								</button>
+							)}
+						{listCheckPermission.isAllowRejectServicePemindahan &&
+							record.current_approver === tokenDecode?.user?.id && (
+								<button
+									type="button"
+									className="btn"
+									style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
+									onClick={() => {
+										handleReject(text);
+									}}
+								>
+									Reject
+								</button>
+							)}
 						{listCheckPermission.isAllowUpdateServicePemindahan && (
 							<button
 								type="button"

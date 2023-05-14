@@ -21,10 +21,10 @@ export interface IServiceDisplacement {
 	id_lokasi: string | null;
 	reject: string | null;
 	description: string | null;
-	from_mobile: boolean;
+	from_mobile: boolean | null;
 	entry_stamp: string | null;
 	edit_stamp: string | null;
-	del: boolean;
+	del: boolean | null;
 	tipe: string | null;
 	id_permintaan: string | null;
 	id_approval: string | null;
@@ -34,11 +34,16 @@ export interface IServiceDisplacement {
 	updated_at: string | null;
 	deleted_at: string | null;
 	id_company: string | null;
+	transaction_uuid: string | null;
 	from_name: string | null;
 	to_name: string | null;
 	company_name: string | null;
 	inventory_name: string | null;
 	location_name: string | null;
+	pending_status: string | null;
+	current_approver: number | null;
+	reject_status: string | null;
+	is_closed_by: string | null;
 }
 
 export interface IServiceDisplacementPaginateResponse extends PaginationState {
@@ -53,23 +58,23 @@ export interface IServiceDisplacementGetAllParams {
 
 export interface ICreateServiceDisplacementRequest {
 	date: string;
-	id_company: string;
-	id_inventory: string;
-	id_workflow: string;
-	from_user: string;
-	to_user: string;
-	id_lokasi: string;
+	id_company: number;
+	id_inventory: number;
+	id_workflow: number;
+	from_user: number;
+	to_user: number;
+	id_lokasi: number;
 	tipe?: string;
 }
 
 export interface IUpdateServiceDisplacementRequest {
 	date: string;
-	id_company: string;
-	id_inventory: string;
-	id_workflow: string;
-	from_user: string;
-	to_user: string;
-	id_lokasi: string;
+	id_company: number;
+	id_inventory: number;
+	id_workflow: number;
+	from_user: number;
+	to_user: number;
+	id_lokasi: number;
 	tipe?: string;
 }
 

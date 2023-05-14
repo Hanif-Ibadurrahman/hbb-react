@@ -1,5 +1,4 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
-import { MainLayout } from "app/layout/mainLayout";
 import { SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import {
@@ -455,7 +454,7 @@ const ServiceRepair = () => {
 	};
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -468,6 +467,7 @@ const ServiceRepair = () => {
 								handleApprove,
 								handleReject,
 								handleShowFile,
+								tokenDecode,
 							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
@@ -758,7 +758,7 @@ const ServiceRepair = () => {
 				setShowModal={setShowFilter}
 				setParams={setParams}
 			/>
-		</MainLayout>
+		</>
 	);
 };
 

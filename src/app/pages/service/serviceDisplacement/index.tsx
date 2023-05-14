@@ -1,5 +1,4 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
-import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import {
@@ -472,7 +471,7 @@ const ServiceDisplacement = () => {
 	};
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -484,6 +483,7 @@ const ServiceDisplacement = () => {
 								handleDelete,
 								handleApprove,
 								handleReject,
+								tokenDecode,
 							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
@@ -599,7 +599,7 @@ const ServiceDisplacement = () => {
 										onChange={(v, opt) => {
 											formik.setFieldValue("id_inventory", v);
 											formRef.current?.setFieldsValue({
-												id_inventory: parseInt(v),
+												id_inventory: v,
 											});
 										}}
 										value={formik.values.id_inventory}
@@ -633,7 +633,7 @@ const ServiceDisplacement = () => {
 										onChange={(v, opt) => {
 											formik.setFieldValue("from_user", v);
 											formRef.current?.setFieldsValue({
-												from_user: parseInt(v),
+												from_user: v,
 											});
 										}}
 										value={formik.values.from_user}
@@ -667,7 +667,7 @@ const ServiceDisplacement = () => {
 										onChange={(v, opt) => {
 											formik.setFieldValue("to_user", v);
 											formRef.current?.setFieldsValue({
-												to_user: parseInt(v),
+												to_user: v,
 											});
 										}}
 										value={formik.values.to_user}
@@ -701,7 +701,7 @@ const ServiceDisplacement = () => {
 										onChange={(v, opt) => {
 											formik.setFieldValue("id_lokasi", v);
 											formRef.current?.setFieldsValue({
-												id_lokasi: parseInt(v),
+												id_lokasi: v,
 											});
 										}}
 										value={formik.values.id_lokasi}
@@ -735,7 +735,7 @@ const ServiceDisplacement = () => {
 										onChange={(v, opt) => {
 											formik.setFieldValue("id_workflow", v);
 											formRef.current?.setFieldsValue({
-												id_workflow: parseInt(v),
+												id_workflow: v,
 											});
 										}}
 										value={formik.values.id_workflow}
@@ -757,7 +757,7 @@ const ServiceDisplacement = () => {
 				setShowModal={setShowFilter}
 				setParams={setParams}
 			/>
-		</MainLayout>
+		</>
 	);
 };
 

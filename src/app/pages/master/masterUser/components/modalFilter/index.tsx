@@ -1,6 +1,6 @@
 import { Button, Col, Drawer, Form, Row, Space } from "antd";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { TokenDekode } from "app/helper/authentication";
+import { isSuperadminGlobal } from "app/helper/permission";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { IUserGetAllParams } from "store/types/userTypes";
 
@@ -8,30 +8,41 @@ interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
 	setParams: Dispatch<SetStateAction<IUserGetAllParams | undefined>>;
+	setParamsOption: any;
+	options: any;
 }
 
 export const ModalFilter = ({
 	isShow,
 	setShowModal,
 	setParams,
+	setParamsOption,
+	options,
 }: IModalFilter) => {
 	const [formFilter] = Form.useForm();
-	const tokenDecode = TokenDekode();
 
 	const generateContent = useMemo(() => {
-		const isSuperadmin = Object.values(tokenDecode?.user?.roles ?? {}).includes(
-			"Super Admin",
-		);
-		if (isSuperadmin) {
+		if (isSuperadminGlobal) {
 			return (
 				<Col span={24}>
 					<Form.Item name="company" label="Perusahaan">
-						<SelectWithTag />
+						<SelectWithTag
+							showSearch
+							onSearch={v => setParamsOption.setCompanyParams({ name: v })}
+							filterOption={(input, option) =>
+								(`${option?.label}` ?? "")
+									.toLowerCase()
+									.includes(input.toLowerCase())
+							}
+							dataOption={options.dataOptionCompany}
+							valueOption="label"
+						/>
 					</Form.Item>
 				</Col>
 			);
 		}
-	}, [tokenDecode]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [options.dataOptionCompany]);
 
 	const handleSubmit = v => {
 		const filterParams = Object.entries(v).reduce((res, curr) => {
@@ -80,7 +91,19 @@ export const ModalFilter = ({
 					</Col>
 					<Col span={24}>
 						<Form.Item name="bisnis_unit" label="Bisnis Unit">
-							<SelectWithTag />
+							<SelectWithTag
+								showSearch
+								onSearch={v =>
+									setParamsOption.setBusinessUnitParams({ name: v })
+								}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								options={options.dataOptionBusinessUnit}
+								valueOption="label"
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={24}>
@@ -90,7 +113,10 @@ export const ModalFilter = ({
 					</Col>
 					<Col span={24}>
 						<Form.Item name="role" label="Role">
-							<SelectWithTag />
+							<SelectWithTag
+								options={options.dataOptionRole}
+								valueOption="label"
+							/>
 						</Form.Item>
 					</Col>
 					{generateContent}

@@ -1,5 +1,4 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
-import { MainLayout } from "app/layout/mainLayout";
 import { SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import {
@@ -42,7 +41,6 @@ import { IWorkflowGetAllParams } from "store/types/workflowTypes";
 import { getAllWorkflowApi, getDetailWorkflowApi } from "api/workflow";
 import { ModalFilter } from "./components/modalFilter";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
-import ModalDetail from "../components/modalDetail";
 
 const ServiceRequest = () => {
 	const tokenDecode = TokenDekode();
@@ -84,10 +82,6 @@ const ServiceRequest = () => {
 	const [dataOptionWorkflow, setDataOptionWorkflow] = useState<
 		DefaultOptionType[] | undefined
 	>();
-
-	const handleSelectedRow = record => {
-		setShowModalDetail({ show: true, id: record.id_inventory });
-	};
 
 	const handleFile = (event: SyntheticEvent) => {
 		const target = event.nativeEvent.target as HTMLInputElement;
@@ -410,7 +404,7 @@ const ServiceRequest = () => {
 	};
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -423,6 +417,7 @@ const ServiceRequest = () => {
 								handleApprove,
 								handleReject,
 								handleShowFile,
+								tokenDecode,
 							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
@@ -450,7 +445,6 @@ const ServiceRequest = () => {
 									)}
 								</Space>
 							}
-							handleSelectedRow={handleSelectedRow}
 						/>
 					</div>
 				</div>
@@ -684,17 +678,12 @@ const ServiceRequest = () => {
 				/>
 			</AntdModal>
 
-			<ModalDetail
-				showModal={showModalDetail}
-				setShowModal={setShowModalDetail}
-			/>
-
 			<ModalFilter
 				isShow={showFilter}
 				setShowModal={setShowFilter}
 				setParams={setParams}
 			/>
-		</MainLayout>
+		</>
 	);
 };
 

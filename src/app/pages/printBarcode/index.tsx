@@ -1,5 +1,4 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
-import { MainLayout } from "app/layout/mainLayout";
 import { useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import { PaginationState } from "store/types/paginationTypes";
@@ -14,7 +13,7 @@ const PrintBarcode = () => {
 	const [fetchData, setFetchData] = useState<PaginationState>();
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -27,7 +26,7 @@ const PrintBarcode = () => {
 					</div>
 				</div>
 			</section>
-		</MainLayout>
+		</>
 	);
 };
 

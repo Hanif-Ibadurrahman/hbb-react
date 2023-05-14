@@ -1,5 +1,4 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
-import { MainLayout } from "app/layout/mainLayout";
 import { SyntheticEvent, useEffect, useMemo, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import {
@@ -147,7 +146,7 @@ const ServiceChange = () => {
 			const response = await getAllWorkflowApi(workflowParams);
 			const workflowList = response.data.data.data;
 			setDataOptionWorkflow(
-				workflowList.map(v => ({ label: v.name, value: `${v.id}` })),
+				workflowList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -455,7 +454,7 @@ const ServiceChange = () => {
 	};
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -468,6 +467,7 @@ const ServiceChange = () => {
 								handleApprove,
 								handleReject,
 								handleShowFile,
+								tokenDecode,
 							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
@@ -684,7 +684,7 @@ const ServiceChange = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_workflow", v);
 										formRef.current?.setFieldsValue({
-											id_workflow: parseInt(v),
+											id_workflow: v,
 										});
 									}}
 									value={formik.values.id_workflow}
@@ -758,7 +758,7 @@ const ServiceChange = () => {
 				setShowModal={setShowFilter}
 				setParams={setParams}
 			/>
-		</MainLayout>
+		</>
 	);
 };
 

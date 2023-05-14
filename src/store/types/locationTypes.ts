@@ -8,7 +8,7 @@ export interface ILocation {
 	id_pegawai: number | null;
 	id_satker: number | null;
 	id_company: number | null;
-	id_division: number;
+	id_division: number | null;
 	name: string | null;
 	from_opname: boolean | null;
 	satker: IWorkUnit | null;
@@ -29,26 +29,30 @@ export interface ILocationGetAllParams {
 	lokasi?: string;
 	bisnis_unit?: string;
 	area?: string;
+	satker?: string;
 	pegawai?: string;
 	nipg?: string;
-	satker?: string;
 	company?: string;
+	id_company?: number;
+	id_bisnis_unit?: number;
+	id_area?: number;
+	id_division?: number;
 }
 export interface ICreateLocationRequest {
-	id_bisnis_unit: string;
-	id_area: string;
-	id_pegawai: string;
-	id_satker: string;
+	id_bisnis_unit: number;
+	id_area: number;
+	id_pegawai: number;
+	id_satker: number;
 	id_company: number;
 	id_division: number;
 	name: string;
 	from_opname: boolean | null;
 }
 export interface IUpdateLocationRequest {
-	id_bisnis_unit: string;
-	id_area: string;
-	id_pegawai: string;
-	id_satker: string;
+	id_bisnis_unit: number;
+	id_area: number;
+	id_pegawai: number;
+	id_satker: number;
 	id_company: number;
 	id_division: number;
 	name: string;

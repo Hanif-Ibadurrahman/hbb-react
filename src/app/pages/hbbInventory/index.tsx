@@ -1,6 +1,5 @@
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { MainLayout } from "app/layout/mainLayout";
 import { TableSelectionPaginateAndSort } from "app/components/table/antd/tableSelectionPaginateAndSort";
 import { useEffect, useState, useRef } from "react";
 import {
@@ -73,6 +72,7 @@ import { isUndefined } from "lodash";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { getAllDivisionApi, getDetailDivisionApi } from "api/division";
 import { IDivisionGetAllParams } from "store/types/divisionTypes";
+import { isSuperadminGlobal, tokenDecode } from "app/helper/permission";
 
 const HbbInventory = () => {
 	dayjs.extend(customParseFormat);
@@ -224,7 +224,13 @@ const HbbInventory = () => {
 
 	const fetchDataDivision = async () => {
 		try {
-			const response = await getAllDivisionApi(divisionParams);
+			const response = await getAllDivisionApi({
+				...divisionParams,
+				id_company: formik.values.id_company,
+				id_bisnis_unit: formik.values.id_bisnis_unit,
+				id_area: formik.values.id_area,
+				id_satker: formik.values.id_satker,
+			});
 			const divisionList = response.data.data;
 			setDataOptionDivision(
 				divisionList.map(v => ({ label: v.name, value: v.id })),
@@ -424,7 +430,13 @@ const HbbInventory = () => {
 
 	const fetchDataLocation = async () => {
 		try {
-			const response = await getAllLocationApi(locationParams);
+			const response = await getAllLocationApi({
+				...locationParams,
+				id_company: formik.values.id_company,
+				id_bisnis_unit: formik.values.id_bisnis_unit,
+				id_area: formik.values.id_area,
+				id_division: formik.values.id_division,
+			});
 			const locationList = response.data.data;
 			setDataOptionLocation(
 				locationList.map(v => ({ label: v.name, value: v.id })),
@@ -470,7 +482,10 @@ const HbbInventory = () => {
 
 	const fetchDataBusinessUnit = async () => {
 		try {
-			const response = await getAllBusinessUnitApi(businessUnitParams);
+			const response = await getAllBusinessUnitApi({
+				...businessUnitParams,
+				id_company: formik.values.id_company,
+			});
 			const businessUnitList = response.data.data;
 			setDataOptionBusinessUnit(
 				businessUnitList.map(v => ({ label: v.name, value: v.id })),
@@ -497,7 +512,11 @@ const HbbInventory = () => {
 
 	const fetchDataArea = async () => {
 		try {
-			const response = await getAllAreaApi(areaParams);
+			const response = await getAllAreaApi({
+				...areaParams,
+				id_company: formik.values.id_company,
+				id_bisnis_unit: formik.values.id_bisnis_unit,
+			});
 			const areaList = response.data.data;
 			setDataOptionArea(
 				areaList.map(v => ({ label: v.name, value: `${v.id}` })),
@@ -521,10 +540,15 @@ const HbbInventory = () => {
 
 	const fetchDataWorkUnit = async () => {
 		try {
-			const response = await getAllWorkUnitApi(workUnitParams);
+			const response = await getAllWorkUnitApi({
+				...workUnitParams,
+				id_company: formik.values.id_company,
+				id_bisnis_unit: formik.values.id_bisnis_unit,
+				id_area: formik.values.id_area,
+			});
 			const workUnitList = response.data.data;
 			setDataOptionWorkUnit(
-				workUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
+				workUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -692,6 +716,14 @@ const HbbInventory = () => {
 	}, [formik.values.id_main_group]);
 
 	useEffect(() => {
+		const mainGroupId = formik.values.id_main_group;
+		if (mainGroupId) {
+			fetchDataSubCodeGroup(mainGroupId);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [subCodeGroupParams]);
+
+	useEffect(() => {
 		const itemId = formik.values.id_barang;
 		if (itemId && initialValue?.id_barang) {
 			if (itemId !== initialValue.id_barang) {
@@ -706,12 +738,74 @@ const HbbInventory = () => {
 	}, [formik.values.id_barang]);
 
 	useEffect(() => {
-		const mainGroupId = formik.values.id_main_group;
-		if (mainGroupId) {
-			fetchDataSubCodeGroup(mainGroupId);
+		const companyId = formik.values.id_company;
+		if (companyId) {
+			const isInitialValueUndefined = initialValue?.id_company === undefined;
+			if (isInitialValueUndefined || companyId !== initialValue.id_company) {
+				formik.setFieldValue("id_bisnis_unit", undefined);
+				formRef.current?.setFieldsValue({ id_bisnis_unit: undefined });
+			}
+			fetchDataBusinessUnit();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [subCodeGroupParams]);
+	}, [formik.values.id_company]);
+
+	useEffect(() => {
+		const businessUnitId = formik.values.id_bisnis_unit;
+		if (businessUnitId) {
+			const isInitialValueUndefined =
+				initialValue?.id_bisnis_unit === undefined;
+			if (
+				isInitialValueUndefined ||
+				businessUnitId !== initialValue.id_bisnis_unit
+			) {
+				formik.setFieldValue("id_area", undefined);
+				formRef.current?.setFieldsValue({ id_area: undefined });
+			}
+			fetchDataArea();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_bisnis_unit]);
+
+	useEffect(() => {
+		const workUnitId = formik.values.id_satker;
+		if (workUnitId) {
+			const isInitialValueUndefined = initialValue?.id_satker === undefined;
+			if (isInitialValueUndefined || workUnitId !== initialValue.id_satker) {
+				formik.setFieldValue("id_division", undefined);
+				formRef.current?.setFieldsValue({ id_division: undefined });
+			}
+			fetchDataDivision();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_satker]);
+
+	useEffect(() => {
+		const areaId = formik.values.id_area;
+		const divisionId = formik.values.id_division;
+
+		const resetLocation = () => {
+			formik.setFieldValue("id_location", undefined);
+			formRef.current?.setFieldsValue({ id_location: undefined });
+		};
+
+		if (areaId) {
+			const isInitialValueUndefined = initialValue?.id_area === undefined;
+			if (isInitialValueUndefined || areaId !== initialValue.id_area) {
+				resetLocation();
+			}
+			fetchDataLocation();
+		}
+
+		if (divisionId) {
+			const isInitialValueUndefined = initialValue?.id_satker === undefined;
+			if (isInitialValueUndefined || divisionId !== initialValue.id_satker) {
+				resetLocation();
+			}
+			fetchDataLocation();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_area, formik.values.id_division]);
 
 	useEffect(() => {
 		fetchDataCompany();
@@ -795,6 +889,9 @@ const HbbInventory = () => {
 	};
 
 	const onFinish = (values: any) => {
+		if (!isSuperadminGlobal) {
+			values = { ...values, id_company: tokenDecode?.user?.id_company };
+		}
 		if (showModal.id) {
 			updateInventoryApi(showModal.id, values)
 				.then(res => {
@@ -838,40 +935,42 @@ const HbbInventory = () => {
 			label: `Informasi Umum`,
 			children: (
 				<>
-					<Form.Item
-						name="id_company"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Perusahaan <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setCompanyParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionCompany}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_company", v);
-										formRef.current?.setFieldsValue({
-											id_company: v,
-										});
-									}}
-									value={formik.values.id_company}
-								/>
+					{isSuperadminGlobal && (
+						<Form.Item
+							name="id_company"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<Title level={5}>
+									Perusahaan <span className="text-danger">*</span>
+								</Title>
+								<div className="controls">
+									<Select
+										showSearch
+										onSearch={v => setCompanyParams({ name: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionCompany}
+										onChange={(v, opt) => {
+											formik.setFieldValue("id_company", v);
+											formRef.current?.setFieldsValue({
+												id_company: v,
+											});
+										}}
+										value={formik.values.id_company}
+									/>
+								</div>
 							</div>
-						</div>
-					</Form.Item>
+						</Form.Item>
+					)}
 					<Form.Item
 						name="inventory_type"
 						rules={[
@@ -1080,6 +1179,30 @@ const HbbInventory = () => {
 							</div>
 						</div>
 					</Form.Item>
+					<Form.Item name="id_division">
+						<div className="form-group">
+							<Title level={5}>Divisi</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setDivisionParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionDivision}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_division", v);
+										formRef.current?.setFieldsValue({
+											id_division: v,
+										});
+									}}
+									value={formik.values.id_division}
+								/>
+							</div>
+						</div>
+					</Form.Item>
 					<Form.Item
 						name="id_location"
 						rules={[
@@ -1110,30 +1233,6 @@ const HbbInventory = () => {
 										});
 									}}
 									value={formik.values.id_location}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item name="id_division">
-						<div className="form-group">
-							<Title level={5}>Divisi</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setDivisionParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionDivision}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_division", v);
-										formRef.current?.setFieldsValue({
-											id_division: v,
-										});
-									}}
-									value={formik.values.id_division}
 								/>
 							</div>
 						</div>
@@ -1816,7 +1915,7 @@ const HbbInventory = () => {
 	};
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -1900,14 +1999,28 @@ const HbbInventory = () => {
 				isShow={showFilter}
 				setShowModal={setShowFilter}
 				setParams={setParamsFilter}
+				setParamsOption={{
+					setCodeGroupParams,
+					setSubCodeGroupParams,
+					setBusinessUnitParams,
+					setAreaParams,
+					setWorkUnitParams,
+					setLocationParams,
+					setConditionParams,
+					setCompanyParams,
+				}}
 				options={{
 					dataOptionCodeGroup,
 					dataOptionSubCodeGroup,
-					dataOptionColor,
+					dataOptionBusinessUnit,
+					dataOptionArea,
+					dataOptionWorkUnit,
+					dataOptionLocation,
+					dataOptionCondition,
 					dataOptionCompany,
 				}}
 			/>
-		</MainLayout>
+		</>
 	);
 };
 

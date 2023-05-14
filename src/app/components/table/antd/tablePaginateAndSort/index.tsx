@@ -82,7 +82,7 @@ export const TablePaginateAndSort = ({
 						}}
 						onRow={record => {
 							return {
-								onClick: () => {
+								onDoubleClick: () => {
 									if (handleSelectedRow) {
 										handleSelectedRow(record);
 									}

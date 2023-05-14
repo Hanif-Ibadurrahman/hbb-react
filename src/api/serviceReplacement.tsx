@@ -39,7 +39,7 @@ export const deleteServiceReplacementApi = (id: number) => {
 };
 
 export const approveServiceReplacementApi = (id: number) => {
-	return apiWithToken.get(`/api/approval/penggantian/approve/${id}`);
+	return apiWithToken.post(`/api/approval/penggantian/approve/${id}`);
 };
 
 export const rejectServiceReplacementApi = (

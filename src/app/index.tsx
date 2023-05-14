@@ -35,77 +35,88 @@ import { ServiceChangePage } from "./pages/service/serviceChange/serviceChangePa
 import { ServiceInspectionPage } from "./pages/service/serviceInspection/serviceInspectionPage";
 import { ServiceDeletePage } from "./pages/service/serviceDelete/serviceDeletePage";
 import { MasterWorkflowPage } from "./pages/master/masterWorkflow/masterWorkflowPage";
+import { MainLayout } from "./layout/mainLayout";
 
 export function App() {
 	return (
 		<Router>
 			<Routes>
-				<Route index element={<DashboardPage />}></Route>
-				<Route path="dashboard" element={<DashboardPage />} />
-				<Route path="inventaris" element={<HbbInventoryPage />} />
-				<Route path="permintaan-layanan" element={<ServiceRequestPage />} />
-				<Route path="permintaan-perbaikan" element={<ServiceRepairPage />} />
-				<Route
-					path="permintaan-pemindahan"
-					element={<ServiceDisplacementPage />}
-				/>
-				<Route path="permintaan-pengembalian" element={<ServiceReturnPage />} />
-				<Route
-					path="permintaan-penggantian"
-					element={<ServiceReplacementPage />}
-				/>
-				<Route path="permintaan-perubahan" element={<ServiceChangePage />} />
-				<Route
-					path="permintaan-pemeriksaan"
-					element={<ServiceInspectionPage />}
-				/>
-				<Route path="permintaan-penghapusan" element={<ServiceDeletePage />} />
-				<Route path="cetak-barcode" element={<PrintBarcodePage />} />
-				<Route
-					path="daftar-inventaris-ruangan"
-					element={<RoomInventoryPage />}
-				/>
-				<Route
-					path="laporan-hbb-dan-inventaris"
-					element={<HbbInventoryReportPage />}
-				/>
-				<Route
-					path="lampiran-hbb-dan-inventaris"
-					element={<HbbInventarisAttachmentPage />}
-				/>
-				<Route
-					path="laporan-inventaris-koorporat"
-					element={<CorporateInventoryReportPage />}
-				/>
-				<Route
-					path="formulir-izin-keluar-dan-masuk-gudang"
-					element={<WarehouseCheckInOutPage />}
-				/>
-				<Route path="master-area" element={<MasterAreaPage />} />
-				<Route path="master-barang" element={<MasterItemPage />} />
-				<Route path="master-bisnis-unit" element={<MasterBusinessUnitPage />} />
-				<Route path="master-divisi" element={<MasterDivisionPage />} />
-				<Route path="master-kode-group" element={<MasterCodeGroupPage />} />
-				<Route
-					path="master-sub-main-group"
-					element={<MasterSubCodeGroupPage />}
-				/>
-				<Route path="master-kondisi" element={<MasterConditionPage />} />
-				<Route path="master-lokasi" element={<MasterLocationPage />} />
-				<Route path="master-negara" element={<MasterCountryPage />} />
-				<Route path="master-pegawai" element={<MasterEmployeePage />} />
-				<Route path="master-pengelola" element={<MasterManagerPage />} />
-				<Route path="master-penyedia" element={<MasterProviderPage />} />
-				<Route path="master-perusahaan" element={<MasterCompanyPage />} />
-				<Route path="master-satuan-kerja" element={<MasterWorkUnitPage />} />
-				<Route path="master-user" element={<MasterUserPage />} />
-				<Route path="master-warna" element={<MasterColorPage />} />
-				<Route path="master-workflow" element={<MasterWorkflowPage />} />
-				<Route
-					path="riwayat-tiket-layanan"
-					element={<ServiceTicketHistoryPage />}
-				/>
-				<Route path="pemindahan" element={<DisplacementPage />} />
+				<Route path="/" element={<MainLayout />}>
+					<Route path="dashboard" element={<DashboardPage />} />
+					<Route path="inventaris" element={<HbbInventoryPage />} />
+					<Route path="permintaan-layanan" element={<ServiceRequestPage />} />
+					<Route path="permintaan-perbaikan" element={<ServiceRepairPage />} />
+					<Route
+						path="permintaan-pemindahan"
+						element={<ServiceDisplacementPage />}
+					/>
+					<Route
+						path="permintaan-pengembalian"
+						element={<ServiceReturnPage />}
+					/>
+					<Route
+						path="permintaan-penggantian"
+						element={<ServiceReplacementPage />}
+					/>
+					<Route path="permintaan-perubahan" element={<ServiceChangePage />} />
+					<Route
+						path="permintaan-pemeriksaan"
+						element={<ServiceInspectionPage />}
+					/>
+					<Route
+						path="permintaan-penghapusan"
+						element={<ServiceDeletePage />}
+					/>
+					<Route path="cetak-barcode" element={<PrintBarcodePage />} />
+					<Route
+						path="daftar-inventaris-ruangan"
+						element={<RoomInventoryPage />}
+					/>
+					<Route
+						path="laporan-hbb-dan-inventaris"
+						element={<HbbInventoryReportPage />}
+					/>
+					<Route
+						path="lampiran-hbb-dan-inventaris"
+						element={<HbbInventarisAttachmentPage />}
+					/>
+					<Route
+						path="laporan-inventaris-koorporat"
+						element={<CorporateInventoryReportPage />}
+					/>
+					<Route
+						path="formulir-izin-keluar-dan-masuk-gudang"
+						element={<WarehouseCheckInOutPage />}
+					/>
+					<Route path="master-area" element={<MasterAreaPage />} />
+					<Route path="master-barang" element={<MasterItemPage />} />
+					<Route
+						path="master-bisnis-unit"
+						element={<MasterBusinessUnitPage />}
+					/>
+					<Route path="master-divisi" element={<MasterDivisionPage />} />
+					<Route path="master-kode-group" element={<MasterCodeGroupPage />} />
+					<Route
+						path="master-sub-main-group"
+						element={<MasterSubCodeGroupPage />}
+					/>
+					<Route path="master-kondisi" element={<MasterConditionPage />} />
+					<Route path="master-lokasi" element={<MasterLocationPage />} />
+					<Route path="master-negara" element={<MasterCountryPage />} />
+					<Route path="master-pegawai" element={<MasterEmployeePage />} />
+					<Route path="master-pengelola" element={<MasterManagerPage />} />
+					<Route path="master-penyedia" element={<MasterProviderPage />} />
+					<Route path="master-perusahaan" element={<MasterCompanyPage />} />
+					<Route path="master-satuan-kerja" element={<MasterWorkUnitPage />} />
+					<Route path="master-user" element={<MasterUserPage />} />
+					<Route path="master-warna" element={<MasterColorPage />} />
+					<Route path="master-workflow" element={<MasterWorkflowPage />} />
+					<Route
+						path="riwayat-tiket-layanan"
+						element={<ServiceTicketHistoryPage />}
+					/>
+					<Route path="pemindahan" element={<DisplacementPage />} />
+				</Route>
 				<Route path="login" element={<LoginPage />} />
 			</Routes>
 		</Router>

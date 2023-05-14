@@ -1,5 +1,4 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
-import { MainLayout } from "app/layout/mainLayout";
 import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import {
@@ -33,6 +32,7 @@ import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { DefaultOptionType } from "antd/es/select";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
+import { isSuperadminGlobal, tokenDecode } from "app/helper/permission";
 
 const MasterManager = () => {
 	const { Title } = Typography;
@@ -204,6 +204,9 @@ const MasterManager = () => {
 	};
 
 	const onFinish = (values: any) => {
+		if (!isSuperadminGlobal) {
+			values = { ...values, id_company: tokenDecode?.user?.id_company };
+		}
 		if (showModal.id) {
 			updateManagerApi(showModal.id, values)
 				.then(res => {
@@ -246,7 +249,7 @@ const MasterManager = () => {
 	};
 
 	return (
-		<MainLayout>
+		<>
 			<section className="content">
 				<div className="row">
 					<div className="col-12">
@@ -313,6 +316,42 @@ const MasterManager = () => {
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
+					{isSuperadminGlobal && (
+						<Form.Item
+							name="id_company"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<Title level={5}>
+									Perusahaan <span className="text-danger">*</span>
+								</Title>
+								<div className="controls">
+									<Select
+										showSearch
+										onSearch={v => setCompanyParams({ name: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionCompany}
+										onChange={(v, opt) => {
+											formik.setFieldValue("id_company", v);
+											formRef.current?.setFieldsValue({
+												id_company: v,
+											});
+										}}
+										value={formik.values.id_company}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+					)}
 					<Form.Item
 						name="nama_pengelola"
 						rules={[
@@ -388,40 +427,6 @@ const MasterManager = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item
-						name="id_company"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Perusahaan <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setCompanyParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionCompany}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_company", v);
-										formRef.current?.setFieldsValue({
-											id_company: v,
-										});
-									}}
-									value={formik.values.id_company}
-								/>
-							</div>
-						</div>
-					</Form.Item>
 				</Form>
 			</AntdModal>
 
@@ -429,8 +434,14 @@ const MasterManager = () => {
 				isShow={showFilter}
 				setShowModal={setShowFilter}
 				setParams={setParamsFilter}
+				setParamsOption={{
+					setCompanyParams,
+				}}
+				options={{
+					dataOptionCompany,
+				}}
 			/>
-		</MainLayout>
+		</>
 	);
 };
 

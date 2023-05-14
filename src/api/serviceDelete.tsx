@@ -33,7 +33,7 @@ export const deleteServiceDeleteApi = (id: number) => {
 };
 
 export const approveServiceDeleteApi = (id: number) => {
-	return apiWithToken.get(`/api/approval/penghapusan/approve/${id}`);
+	return apiWithToken.post(`/api/approval/penghapusan/approve/${id}`);
 };
 
 export const rejectServiceDeleteApi = (
