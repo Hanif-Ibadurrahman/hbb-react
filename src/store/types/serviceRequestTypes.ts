@@ -47,6 +47,8 @@ export interface IServiceRequestPaginateResponse extends PaginationState {
 export interface IServiceRequestGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	uraian?: string;
 	condition?: string;
 	nama_pemakai?: string;

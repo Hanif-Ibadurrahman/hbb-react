@@ -53,6 +53,8 @@ export interface IServiceDisplacementPaginateResponse extends PaginationState {
 export interface IServiceDisplacementGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	date?: string;
 }
 

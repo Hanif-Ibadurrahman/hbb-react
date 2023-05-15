@@ -53,6 +53,8 @@ export interface IServiceRepairPaginateResponse extends PaginationState {
 export interface IServiceRepairGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	inventory_code?: string;
 	description?: string;
 	condition?: string;

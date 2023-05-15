@@ -1,43 +1,45 @@
-import { Modal } from "antd";
 import { ColumnsType } from "antd/es/table";
+import { IServiceTicketHistory } from "store/types/serviceTicketHistoryTypes";
 
-export interface IDataType {
-	nomor: string;
-	tanggal: string;
-}
-
-export const columns: ColumnsType<IDataType> = [
-	{
-		title: "Nomor",
-		dataIndex: "nomor",
-		sorter: true,
-	},
-	{
-		title: "Tanggal",
-		dataIndex: "tanggal",
-		sorter: true,
-	},
-	{
-		title: "Action",
-		render: (text, record, index) => {
-			return (
-				<button
-					type="button"
-					className="btn"
-					style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
-					onClick={() => {
-						Modal.confirm({
-							title: "Hapus Data",
-							content: "Apakah anda yakin ingin menghapus ini?",
-							cancelText: "Batal",
-							okText: "Hapus",
-							okType: "danger",
-						});
-					}}
-				>
-					Delete
-				</button>
-			);
+export const columns = () => {
+	const columnType: ColumnsType<IServiceTicketHistory> = [
+		{
+			title: "Nomor",
+			dataIndex: "id",
+			sorter: true,
 		},
-	},
-];
+		{
+			title: "Tipe",
+			dataIndex: "type",
+			sorter: true,
+		},
+		{
+			title: "Oleh",
+			dataIndex: "name",
+			sorter: true,
+		},
+		{
+			title: "Tanggal",
+			dataIndex: "created_at",
+			sorter: true,
+		},
+		{
+			title: "Action",
+			dataIndex: "id",
+			render: (text, record, index) => {
+				return (
+					<div style={{ display: "flex", columnGap: 5 }}>
+						<button
+							type="button"
+							className="btn btn-primary"
+							onClick={() => {}}
+						>
+							Detail
+						</button>
+					</div>
+				);
+			},
+		},
+	];
+	return columnType;
+};
