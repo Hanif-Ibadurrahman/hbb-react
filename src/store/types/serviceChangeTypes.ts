@@ -32,6 +32,8 @@ export interface IServiceChangePaginateResponse extends PaginationState {
 export interface IServiceChangeGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	inventory_code?: string;
 	description?: string;
 	condition?: string;

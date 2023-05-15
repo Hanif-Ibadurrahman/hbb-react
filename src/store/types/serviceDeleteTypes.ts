@@ -47,6 +47,8 @@ export interface IServiceDeletePaginateResponse extends PaginationState {
 export interface IServiceDeleteGetAllParams {
 	page?: number;
 	per_page?: number;
+	order_by?: string;
+	sort?: string;
 	date?: string;
 	reason?: string;
 	remark?: string;
