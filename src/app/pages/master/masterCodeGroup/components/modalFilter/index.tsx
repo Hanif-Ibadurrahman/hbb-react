@@ -3,7 +3,6 @@ import { SelectWithTag } from "app/components/selectWithTag";
 import { isSuperadminGlobal } from "app/helper/permission";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { ICodeGroupGetAllParams } from "store/types/codeGroupTypes";
-
 interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -84,6 +83,7 @@ export const ModalFilter = ({
 		>
 			<Form form={formFilter} layout="vertical" onFinish={handleSubmit}>
 				<Row gutter={16}>
+					{generateContent}
 					<Col span={24}>
 						<Form.Item name="group" label="Group">
 							<SelectWithTag />
@@ -94,7 +94,6 @@ export const ModalFilter = ({
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
-					{generateContent}
 				</Row>
 			</Form>
 		</Drawer>

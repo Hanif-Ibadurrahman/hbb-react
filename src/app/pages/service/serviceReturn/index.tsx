@@ -417,6 +417,7 @@ const ServiceReturn = () => {
 						showConfirmButton: false,
 						timer: 3000,
 					});
+					fetchDataInventory();
 				})
 				.catch((error: any) => {
 					CheckResponse(error);
@@ -497,6 +498,7 @@ const ServiceReturn = () => {
 								</Space>
 							}
 							handleSelectedRow={handleSelectedRow}
+							scroll={{ x: 1800 }}
 						/>
 					</div>
 				</div>

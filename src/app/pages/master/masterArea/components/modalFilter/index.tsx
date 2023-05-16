@@ -84,13 +84,26 @@ export const ModalFilter = ({
 		>
 			<Form form={formFilter} layout="vertical" onFinish={handleSubmit}>
 				<Row gutter={16}>
+					{generateContent}
 					<Col span={24}>
-						<Form.Item name="name" label="Nama Area">
-							<SelectWithTag />
+						<Form.Item name="bisnis_unit" label="Bisnis Unit">
+							<SelectWithTag
+								showSearch
+								onSearch={v =>
+									setParamsOption.setBusinessUnitParams({ name: v })
+								}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								options={options.dataOptionBusinessUnit}
+								valueOption="label"
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={24}>
-						<Form.Item name="nipg" label="NIPG">
+						<Form.Item name="name" label="Nama Area">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
@@ -109,24 +122,6 @@ export const ModalFilter = ({
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
-					<Col span={24}>
-						<Form.Item name="bisnis_unit" label="Bisnis Unit">
-							<SelectWithTag
-								showSearch
-								onSearch={v =>
-									setParamsOption.setBusinessUnitParams({ name: v })
-								}
-								filterOption={(input, option) =>
-									(`${option?.label}` ?? "")
-										.toLowerCase()
-										.includes(input.toLowerCase())
-								}
-								options={options.dataOptionBusinessUnit}
-								valueOption="label"
-							/>
-						</Form.Item>
-					</Col>
-					{generateContent}
 				</Row>
 			</Form>
 		</Drawer>

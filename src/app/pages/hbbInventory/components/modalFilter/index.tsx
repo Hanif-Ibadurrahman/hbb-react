@@ -325,7 +325,10 @@ export const ModalFilter = ({
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="rentang_tahun_perolehan" label="Rentang Waktu">
+						<Form.Item
+							name="rentang_tahun_perolehan"
+							label="Rentang Waktu Perolehan"
+						>
 							<RangePicker style={{ width: "100%" }} format={"DD-MM-YYYY"} />
 						</Form.Item>
 					</Col>

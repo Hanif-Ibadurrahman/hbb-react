@@ -35,6 +35,7 @@ export interface IServiceDelete {
 	company_name: string | null;
 	inventory_name: string | null;
 	pending_status: string | null;
+	current_flow: number | null;
 	current_approver: number | null;
 	reject_status: string | null;
 	is_closed_by: string | null;
