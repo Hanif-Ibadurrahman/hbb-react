@@ -23,3 +23,11 @@ export const getTotalHbbValueApi = () => {
 export const getTotalTaskApi = () => {
 	return apiWithToken.get(`/api/dashboard/task`);
 };
+
+export const getNotificationApi = () => {
+	return apiWithToken.get(`/api/dashboard/notification`);
+};
+
+export const deleteNotificationApi = (id: number) => {
+	return apiWithToken.delete(`/api/dashboard/notification/${id}`);
+};

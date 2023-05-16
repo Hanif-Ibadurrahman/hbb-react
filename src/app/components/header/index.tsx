@@ -1,13 +1,45 @@
-import { Avatar, Dropdown, MenuProps, Modal } from "antd";
+import { Badge, Dropdown, MenuProps, Modal, notification } from "antd";
+import { getNotificationApi } from "api/dashboard";
 import { logoutApi } from "api/login";
+import { CheckResponse } from "app/helper/authentication";
 import FeatherIcon from "feather-icons-react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { INotification } from "store/types/dashboard";
+import { BellOutlined } from "@ant-design/icons";
 interface IHeader {
 	collapseHandler: (thisKey: string) => void;
 }
 
 export const Header = ({ collapseHandler }: IHeader) => {
+	const [api, contextHolder] = notification.useNotification();
 	const navigate = useNavigate();
+	const [dataNotification, setDataNotification] = useState<INotification[]>();
+
+	const fetchDataNotification = async () => {
+		try {
+			const response = await getNotificationApi();
+			setDataNotification(response.data.data);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const openNotification = () => {
+		// eslint-disable-next-line array-callback-return
+		dataNotification?.map(value => {
+			api.open({
+				message: value.type,
+				description: value.note,
+				icon: <BellOutlined style={{ color: "#108ee9" }} />,
+			});
+		});
+	};
+
+	useEffect(() => {
+		fetchDataNotification();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const handleLogout = async () => {
 		try {
@@ -58,16 +90,7 @@ export const Header = ({ collapseHandler }: IHeader) => {
 				<a href="/" className="logo">
 					<div className="logo-mini w-25">
 						<span className="light-logo">
-							<img
-								src="images/logo-icon-pgn.png"
-								alt="logo"
-								style={{
-									background: "#fff",
-									border: "1px solid #ddd",
-									borderRadius: "4px",
-									padding: "5px",
-								}}
-							/>
+							<img src="images/logo-icon-pgn-outline.png" alt="logo" />
 						</span>
 						<span className="dark-logo">
 							<img src="images/logo-icon-pgn.png" alt="logo" />
@@ -105,80 +128,17 @@ export const Header = ({ collapseHandler }: IHeader) => {
 				<div className="navbar-custom-menu r-side">
 					<ul className="nav navbar-nav">
 						<li className="btn-group dropdown notifications-menu">
+							{contextHolder}
 							<Link
 								to="#"
 								className="waves-effect waves-light dropdown-toggle btn-info-light"
 								title="Notifications"
+								onClick={openNotification}
 							>
-								<FeatherIcon icon={"bell"} />
+								<Badge count={dataNotification?.length}>
+									<FeatherIcon icon={"bell"} />
+								</Badge>
 							</Link>
-							<ul className="dropdown-menu animated bounceIn">
-								<li className="header">
-									<div className="p-20">
-										<div className="flexbox">
-											<div>
-												<h4 className="mb-0 mt-0">Notifications</h4>
-											</div>
-											<div>
-												<a href="/" className="text-danger">
-													Clear All
-												</a>
-											</div>
-										</div>
-									</div>
-								</li>
-								<li>
-									<ul className="menu sm-scrol">
-										<li>
-											<a href="/">
-												<i className="fa fa-users text-info"></i> Curabitur id
-												eros quis nunc suscipit blandit.
-											</a>
-										</li>
-										<li>
-											<a href="/">
-												<i className="fa fa-warning text-warning"></i> Duis
-												malesuada justo eu sapien elementum, in semper diam
-												posuere.
-											</a>
-										</li>
-										<li>
-											<a href="/">
-												<i className="fa fa-users text-danger"></i> Donec at
-												nisi sit amet tortor commodo porttitor pretium a erat.
-											</a>
-										</li>
-										<li>
-											<a href="/">
-												<i className="fa fa-shopping-cart text-success"></i> In
-												gravida mauris et nisi
-											</a>
-										</li>
-										<li>
-											<a href="/">
-												<i className="fa fa-user text-danger"></i> Praesent eu
-												lacus in libero dictum fermentum.
-											</a>
-										</li>
-										<li>
-											<a href="/">
-												<i className="fa fa-user text-primary"></i> Nunc
-												fringilla lorem
-											</a>
-										</li>
-										<li>
-											<a href="/">
-												<i className="fa fa-user text-success"></i> Nullam
-												euismod dolor ut quam interdum, at scelerisque ipsum
-												imperdiet.
-											</a>
-										</li>
-									</ul>
-								</li>
-								<li className="footer">
-									<a href="/">View all</a>
-								</li>
-							</ul>
 						</li>
 
 						<li className="dropdown user user-menu">
