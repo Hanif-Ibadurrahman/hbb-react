@@ -18,6 +18,7 @@ export interface ICodeGroupGetAllParams {
 	sort?: string;
 	group?: string;
 	code?: string;
+	id_company?: number;
 	company?: string;
 }
 export interface ICreateCodeGroupRequest {

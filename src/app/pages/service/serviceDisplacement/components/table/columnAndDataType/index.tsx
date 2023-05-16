@@ -55,11 +55,15 @@ export const columns = ({
 			sorter: true,
 		},
 		{
+			title: "Tahap Approve",
+			dataIndex: "pending_status",
+			sorter: true,
+		},
+		{
 			title: "Perusahaan",
 			dataIndex: "company_name",
 			sorter: true,
 		},
-
 		{
 			title: "Action",
 			dataIndex: "id",

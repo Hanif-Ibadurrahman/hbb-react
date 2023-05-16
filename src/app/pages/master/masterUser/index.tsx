@@ -245,11 +245,16 @@ const MasterUser = () => {
 
 	const fetchDataWorkUnitDetail = async (id: number) => {
 		try {
-			const response = await getDetailWorkUnitApi(id);
-			const detail = response.data.data;
-			setDataOptionWorkUnit(
-				dataOptionWorkUnit?.concat({ label: detail.name, value: detail.id }),
-			);
+			if (id) {
+				const response = await getDetailWorkUnitApi(id);
+				const detail = response.data.data;
+				setDataOptionWorkUnit(
+					dataOptionWorkUnit?.concat({
+						label: detail.name,
+						value: detail.id,
+					}),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}

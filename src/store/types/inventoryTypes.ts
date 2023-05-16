@@ -86,14 +86,16 @@ export interface IInventoryDetail {
 	penanggung_jawab: string | null;
 	id_bisnis_unit: number | null;
 	id_company: number | null;
-
-	// Not yet added for modal detail inventory
 	id_division: number | null;
-	company: string | null;
 	main_group: string | null;
 	sub_group: string | null;
-	bisnis_unit: string | null;
-	division: string | null;
+	tahun_perolehan: string | null;
+	kondisi: string | null;
+	main_group_name: string | null;
+	sub_group_name: string | null;
+	bu_name: string | null;
+	company_name: string | null;
+	division_name: string | null;
 }
 export interface IInventoryPaginateResponse extends PaginationState {
 	data: IInventory[];
@@ -104,7 +106,7 @@ export interface IInventoryGetAllParams {
 	per_page?: number;
 	order_by?: string;
 	sort?: string;
-	inventory_type?: string;
+	inventory_type?: number;
 	main_group?: string;
 	sub_group?: string;
 	year?: string;

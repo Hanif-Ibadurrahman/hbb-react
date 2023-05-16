@@ -140,7 +140,7 @@ const Dashboard = () => {
 						</Link>
 					</div>
 					<div className="col-xl-3 col-lg-6 col-12">
-						<Link to={"/inventaris"}>
+						<Link to={"/inventaris"} state={{ inventory_type: 2 }}>
 							<div className="box">
 								<div className="box-body">
 									<div className="d-flex justify-content-between">
@@ -157,7 +157,7 @@ const Dashboard = () => {
 						</Link>
 					</div>
 					<div className="col-xl-3 col-lg-6 col-12">
-						<Link to={"/inventaris"}>
+						<Link to={"/inventaris"} state={{ inventory_type: 1 }}>
 							<div className="box">
 								<div className="box-body">
 									<div className="d-flex justify-content-between">

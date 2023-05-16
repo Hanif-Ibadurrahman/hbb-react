@@ -20,6 +20,8 @@ export interface ISubCodeGroupGetAllParams {
 	sort?: string;
 	group?: string;
 	code?: string;
+	company?: string;
+	id_company?: number;
 }
 export interface ICreateSubCodeGroupRequest {
 	id_main_group: number;
