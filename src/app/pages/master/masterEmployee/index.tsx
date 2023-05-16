@@ -36,9 +36,9 @@ import {
 	tokenDecode,
 } from "app/helper/permission";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
-import { ICompanyGetAllParams } from "store/types/companyTypes";
+import { ICompany, ICompanyGetAllParams } from "store/types/companyTypes";
 import { DefaultOptionType } from "antd/es/select";
-import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
+import { getAllCompanyApi } from "api/company";
 
 const MasterEmployee = () => {
 	const { Title } = Typography;
@@ -103,12 +103,10 @@ const MasterEmployee = () => {
 		}
 	};
 
-	const fetchDataCompanyDetail = async (id: number) => {
+	const setCompanyDetail = async (data: ICompany) => {
 		try {
-			const response = await getDetailCompanyApi(id);
-			const detail = response.data.data;
 			setDataOptionCompany(
-				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
+				dataOptionCompany?.concat({ label: data.name, value: data.id }),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -117,11 +115,14 @@ const MasterEmployee = () => {
 
 	const handleInitialValue = (values: IEmployee) => {
 		const setData = removeNullFields(values);
-		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
-			fetchDataCompanyDetail(setData.id_company);
+		if (!checkDefaultOption(dataOptionCompany!, setData.company?.id)) {
+			setCompanyDetail(setData.company);
 		}
-		setInitialValue(setData);
-		formRef.current?.setFieldsValue(setData);
+		setInitialValue({ ...setData, id_company: setData.company.id });
+		formRef.current?.setFieldsValue({
+			...setData,
+			id_company: setData.company.id,
+		});
 	};
 
 	useEffect(() => {
@@ -265,6 +266,7 @@ const MasterEmployee = () => {
 						showConfirmButton: false,
 						timer: 3000,
 					});
+					fetchDataList();
 				})
 				.catch((error: any) => {
 					CheckResponse(error);

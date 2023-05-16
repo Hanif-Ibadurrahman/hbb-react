@@ -19,6 +19,7 @@ export interface IConditionGetAllParams {
 	sort?: string;
 	name?: string;
 	company?: string;
+	id_company?: number;
 }
 export interface ICreateConditionRequest {
 	name: string;

@@ -1,16 +1,20 @@
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { TableSelectionPaginateAndSort } from "app/components/table/antd/tableSelectionPaginateAndSort";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, SyntheticEvent, useMemo } from "react";
 import {
 	Modal as AntdModal,
 	Button,
+	Col,
 	DatePicker,
 	Divider,
 	Form,
 	FormInstance,
+	Image,
 	Input,
 	InputNumber,
+	List,
+	Row,
 	Select,
 	Space,
 	Tabs,
@@ -69,16 +73,22 @@ import { getAllCountryApi, getDetailCountryApi } from "api/country";
 import { ICountryGetAllParams } from "store/types/countryTypes";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
 import { isUndefined } from "lodash";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { getAllDivisionApi, getDetailDivisionApi } from "api/division";
 import { IDivisionGetAllParams } from "store/types/divisionTypes";
 import { isSuperadminGlobal, tokenDecode } from "app/helper/permission";
+import { useLocation } from "react-router-dom";
+import { UploadOutlined } from "@ant-design/icons";
 
 const HbbInventory = () => {
 	dayjs.extend(customParseFormat);
 	const { Title } = Typography;
 	const { TextArea } = Input;
+	const location = useLocation();
 	const [form] = Form.useForm();
+	const [fileList, setFileList] = useState<File[] | null>(null);
+	const [files, setFiles] = useState<FileList | null>(null);
+	const inputFile = useRef<HTMLInputElement | null>(null);
+	const [linkFile, setLinkFile] = useState<string[]>();
 	const formRef = useRef<FormInstance>(null);
 	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<IInventoryGetAllParams | undefined>({
@@ -184,10 +194,86 @@ const HbbInventory = () => {
 		onSubmit: values => {},
 	});
 
+	const handleFile = (event: SyntheticEvent) => {
+		const target = event.nativeEvent.target as HTMLInputElement;
+		const targetFiles = target.files;
+		if (targetFiles) {
+			setFiles(targetFiles);
+			let tempFiles: File[] = [];
+			for (let i = 0; i < targetFiles.length; i++) {
+				const temp = targetFiles.item(i);
+				if (temp) {
+					tempFiles.push(temp);
+				}
+			}
+			setFileList(tempFiles);
+		}
+	};
+
+	const generateFileList = useMemo(() => {
+		if (fileList?.length) {
+			return (
+				<List
+					itemLayout="horizontal"
+					dataSource={fileList.map(v => ({ fileName: v.name, size: v.size }))}
+					renderItem={(item, index) => (
+						<List.Item>
+							<Row
+								style={{
+									width: "100%",
+									justifyContent: "space-between",
+								}}
+							>
+								<Col style={{ alignItems: "center", display: "flex" }}>
+									<Button type="link">{item.fileName}</Button>
+								</Col>
+							</Row>
+						</List.Item>
+					)}
+				/>
+			);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [fileList]);
+
+	const showFile = useMemo(() => {
+		if (linkFile?.length) {
+			return (
+				<List
+					itemLayout="horizontal"
+					dataSource={linkFile?.map(v => ({ link: v }))}
+					renderItem={(item, index) => (
+						<List.Item>
+							<Row
+								style={{
+									width: "100%",
+									justifyContent: "space-around",
+								}}
+							>
+								<Col style={{ alignItems: "center", display: "flex" }}>
+									<Button type="link" href={item.link}>{`File - ${
+										index + 1
+									}`}</Button>
+								</Col>
+								<Col style={{ alignItems: "center", display: "flex" }}>
+									<Image width={100} src={item.link} />
+								</Col>
+							</Row>
+						</List.Item>
+					)}
+				/>
+			);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [linkFile]);
+
 	const fetchDataList = async () => {
 		try {
 			if (params) {
-				const response = await getAllInventoryApi(params);
+				const response = await getAllInventoryApi({
+					inventory_type: location.state?.inventory_type,
+					...params,
+				});
 				setDataTable(response.data.data);
 			}
 		} catch (error: any) {
@@ -242,11 +328,13 @@ const HbbInventory = () => {
 
 	const fetchDataDivisionDetail = async (id: number) => {
 		try {
-			const response = await getDetailDivisionApi(id);
-			const detail = response.data.data;
-			setDataOptionDivision(
-				dataOptionDivision?.concat({ label: detail.name, value: detail.id }),
-			);
+			if (id) {
+				const response = await getDetailDivisionApi(id);
+				const detail = response.data.data;
+				setDataOptionDivision(
+					dataOptionDivision?.concat({ label: detail.name, value: detail.id }),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -254,7 +342,10 @@ const HbbInventory = () => {
 
 	const fetchDataCodeGroup = async () => {
 		try {
-			const response = await getAllCodeGroupApi(codeGroupParams);
+			const response = await getAllCodeGroupApi({
+				...codeGroupParams,
+				id_company: formik.values.id_company,
+			});
 			const codeGroupList = response.data.data;
 			setDataOptionCodeGroup(
 				codeGroupList.map(v => ({ label: v.value, value: v.id })),
@@ -278,7 +369,10 @@ const HbbInventory = () => {
 
 	const fetchDataSubCodeGroup = async (id: number) => {
 		try {
-			const response = await getAllSubCodeGroupApi(id, subCodeGroupParams);
+			const response = await getAllSubCodeGroupApi(id, {
+				...subCodeGroupParams,
+				id_company: formik.values.id_company,
+			});
 			const areaList = response.data.data;
 			setDataOptionSubCodeGroup(
 				areaList.map(v => ({ label: v.value, value: v.id })),
@@ -300,7 +394,9 @@ const HbbInventory = () => {
 
 	const fetchDataCountry = async () => {
 		try {
-			const response = await getAllCountryApi(countryParams);
+			const response = await getAllCountryApi({
+				...countryParams,
+			});
 			const countryList = response.data.data;
 			setDataOptionCountry(
 				countryList.map(v => ({ label: v.name, value: v.id })),
@@ -324,7 +420,10 @@ const HbbInventory = () => {
 
 	const fetchDataEmployee = async () => {
 		try {
-			const response = await getAllEmployeeApi(employeeParams);
+			const response = await getAllEmployeeApi({
+				...employeeParams,
+				id_company: formik.values.id_company,
+			});
 			const employeeList = response.data.data.data;
 			setDataOptionEmployee(
 				employeeList.map(v => ({ label: v.emp_name, value: v.nipg })),
@@ -351,7 +450,9 @@ const HbbInventory = () => {
 
 	const fetchDataItem = async () => {
 		try {
-			const response = await getAllItemApi(itemParams);
+			const response = await getAllItemApi({
+				...itemParams,
+			});
 			const itemList = response.data.data.data;
 			setDataOptionItem(itemList.map(v => ({ label: v.name, value: v.id })));
 		} catch (error: any) {
@@ -375,6 +476,7 @@ const HbbInventory = () => {
 		try {
 			const response = await getDetailItemApi(id);
 			const detail = response.data.data;
+			delete detail.id_company;
 			delete detail.id_area;
 
 			if (detail.warna) {
@@ -406,7 +508,10 @@ const HbbInventory = () => {
 
 	const fetchDataCondition = async () => {
 		try {
-			const response = await getAllConditionApi(conditionParams);
+			const response = await getAllConditionApi({
+				...conditionParams,
+				id_company: formik.values.id_company,
+			});
 			const conditionList = response.data.data;
 			setDataOptionCondition(
 				conditionList.map(v => ({ label: v.name, value: v.id })),
@@ -632,6 +737,7 @@ const HbbInventory = () => {
 		if (!checkDefaultOption(dataOptionColor!, setData.id_color)) {
 			fetchDataColorDetail(setData.id_color);
 		}
+		setLinkFile(setData.upload);
 		setInitialValue(setData);
 		formRef.current?.setFieldsValue(setData);
 	};
@@ -740,12 +846,26 @@ const HbbInventory = () => {
 	useEffect(() => {
 		const companyId = formik.values.id_company;
 		if (companyId) {
-			const isInitialValueUndefined = initialValue?.id_company === undefined;
-			if (isInitialValueUndefined || companyId !== initialValue.id_company) {
+			const isUndefinedCompanyId = initialValue?.id_company === undefined;
+			if (isUndefinedCompanyId || companyId !== initialValue.id_company) {
+				formik.setFieldValue("id_main_group", undefined);
+				formRef.current?.setFieldsValue({ id_main_group: undefined });
 				formik.setFieldValue("id_bisnis_unit", undefined);
 				formRef.current?.setFieldsValue({ id_bisnis_unit: undefined });
+				formik.setFieldValue("condition", undefined);
+				formRef.current?.setFieldsValue({ condition: undefined });
+				formik.setFieldValue("id_color", undefined);
+				formRef.current?.setFieldsValue({ id_color: undefined });
+				formik.setFieldValue("id_penanggung_jawab", undefined);
+				formRef.current?.setFieldsValue({
+					id_penanggung_jawab: undefined,
+				});
 			}
+			fetchDataCodeGroup();
 			fetchDataBusinessUnit();
+			fetchDataCondition();
+			fetchDataColor();
+			fetchDataEmployee();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [formik.values.id_company]);
@@ -849,6 +969,9 @@ const HbbInventory = () => {
 	const handleAdd = () => {
 		setShowModal({ show: true });
 		setInitialValue(undefined);
+		setFiles(null);
+		setFileList(null);
+		setLinkFile(undefined);
 		formik.resetForm();
 		form.resetFields();
 	};
@@ -892,6 +1015,7 @@ const HbbInventory = () => {
 		if (!isSuperadminGlobal) {
 			values = { ...values, id_company: tokenDecode?.user?.id_company };
 		}
+		values = { ...values, files: files };
 		if (showModal.id) {
 			updateInventoryApi(showModal.id, values)
 				.then(res => {
@@ -1566,45 +1690,28 @@ const HbbInventory = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.List name="files">
-						{(fields, { add, remove }) => (
-							<>
-								{fields.map(field => (
-									<Space
-										key={field.key}
-										align="baseline"
-										style={{ width: "50%" }}
-									>
-										<Form.Item
-											{...field}
-											label="File"
-											name={[field.name, "file"]}
-											rules={[
-												{
-													required: true,
-													message: "Harap isi file terlebih dahulu",
-												},
-											]}
-										>
-											<Input type="file" />
-										</Form.Item>
-										<MinusCircleOutlined onClick={() => remove(field.name)} />
-									</Space>
-								))}
-
-								<Form.Item>
-									<Button
-										type="dashed"
-										onClick={() => add()}
-										block
-										icon={<PlusOutlined />}
-									>
-										Add files
-									</Button>
-								</Form.Item>
-							</>
-						)}
-					</Form.List>
+					<Form.Item name="files">
+						<Button
+							type="primary"
+							shape="round"
+							style={{ width: "100%" }}
+							icon={<UploadOutlined />}
+							onClick={() => {
+								inputFile.current?.click();
+							}}
+						>
+							Add File
+						</Button>
+						{generateFileList}
+						<input
+							type="file"
+							style={{ display: "none" }}
+							ref={inputFile}
+							accept={".jpg, .jpeg, .png"}
+							onChange={e => handleFile(e)}
+							multiple
+						/>
+					</Form.Item>
 				</>
 			),
 		},
@@ -1908,6 +2015,11 @@ const HbbInventory = () => {
 				</>
 			),
 		},
+		{
+			key: "4",
+			label: `File`,
+			children: <>{showFile}</>,
+		},
 	];
 
 	const handleCancel = () => {
@@ -1991,7 +2103,14 @@ const HbbInventory = () => {
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
-					<Tabs defaultActiveKey="1" items={itemTab} />
+					<Tabs
+						defaultActiveKey="1"
+						items={
+							showModal.show && showModal.id
+								? itemTab
+								: itemTab.filter(v => v.key !== "4")
+						}
+					/>
 				</Form>
 			</AntdModal>
 

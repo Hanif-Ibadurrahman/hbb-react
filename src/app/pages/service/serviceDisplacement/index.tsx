@@ -151,7 +151,7 @@ const ServiceDisplacement = () => {
 
 	const fetchDataUser = async () => {
 		try {
-			const response = await getAllUserApi(userParams);
+			const response = await getAllUserApi({ ...userParams, role: "user" });
 			const userList = response.data.data.data;
 			setDataOptionUser(userList.map(v => ({ label: v.name, value: v.id })));
 		} catch (error: any) {

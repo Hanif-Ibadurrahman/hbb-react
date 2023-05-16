@@ -103,8 +103,8 @@ export const ModalFilter = ({
 						<Form.Item name="inventory_type" label="Jenis Barang">
 							<SelectWithTag
 								dataOption={[
-									{ value: "inventaris", label: "Inventaris" },
-									{ value: "hbb", label: "HBB" },
+									{ value: 1, label: "Inventaris" },
+									{ value: 2, label: "HBB" },
 								]}
 								mode="multiple"
 							/>
