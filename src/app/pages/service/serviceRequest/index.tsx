@@ -419,7 +419,6 @@ const ServiceRequest = () => {
 								handleShowFile,
 								tokenDecode,
 							})}
-							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
 								<Space
 									style={{
@@ -445,6 +444,8 @@ const ServiceRequest = () => {
 									)}
 								</Space>
 							}
+							setSelectedPageAndSort={setSelectedPageAndSort}
+							scroll={{ x: 1800 }}
 						/>
 					</div>
 				</div>

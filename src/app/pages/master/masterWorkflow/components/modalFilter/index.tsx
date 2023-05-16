@@ -84,17 +84,12 @@ export const ModalFilter = ({
 		>
 			<Form form={formFilter} layout="vertical" onFinish={handleSubmit}>
 				<Row gutter={16}>
+					{generateContent}
 					<Col span={24}>
 						<Form.Item name="name" label="Nama Workflow">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
-					<Col span={24}>
-						<Form.Item name="description" label="Deskripsi">
-							<SelectWithTag />
-						</Form.Item>
-					</Col>
-					{generateContent}
 				</Row>
 			</Form>
 		</Drawer>

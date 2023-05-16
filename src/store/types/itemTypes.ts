@@ -48,6 +48,7 @@ export interface IItemGetAllParams {
 	ukuran?: string;
 	satuan?: string;
 	company?: string;
+	id_company?: number;
 }
 
 export interface ICreateItemRequest {

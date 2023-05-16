@@ -396,6 +396,7 @@ const HbbInventory = () => {
 		try {
 			const response = await getAllCountryApi({
 				...countryParams,
+				id_company: formik.values.id_company,
 			});
 			const countryList = response.data.data;
 			setDataOptionCountry(
@@ -452,6 +453,7 @@ const HbbInventory = () => {
 		try {
 			const response = await getAllItemApi({
 				...itemParams,
+				id_company: formik.values.id_company,
 			});
 			const itemList = response.data.data.data;
 			setDataOptionItem(itemList.map(v => ({ label: v.name, value: v.id })));
@@ -565,7 +567,10 @@ const HbbInventory = () => {
 
 	const fetchDataColor = async () => {
 		try {
-			const response = await getAllColorApi(colorParams);
+			const response = await getAllColorApi({
+				...colorParams,
+				id_company: formik.values.id_company,
+			});
 			const colorList = response.data.data;
 			setDataOptionColor(colorList.map(v => ({ label: v.name, value: v.id })));
 		} catch (error: any) {
@@ -854,6 +859,10 @@ const HbbInventory = () => {
 				formRef.current?.setFieldsValue({ id_bisnis_unit: undefined });
 				formik.setFieldValue("condition", undefined);
 				formRef.current?.setFieldsValue({ condition: undefined });
+				formik.setFieldValue("id_barang", undefined);
+				formRef.current?.setFieldsValue({ id_barang: undefined });
+				formik.setFieldValue("id_country", undefined);
+				formRef.current?.setFieldsValue({ id_country: undefined });
 				formik.setFieldValue("id_color", undefined);
 				formRef.current?.setFieldsValue({ id_color: undefined });
 				formik.setFieldValue("id_penanggung_jawab", undefined);
@@ -864,6 +873,8 @@ const HbbInventory = () => {
 			fetchDataCodeGroup();
 			fetchDataBusinessUnit();
 			fetchDataCondition();
+			fetchDataItem();
+			fetchDataCountry();
 			fetchDataColor();
 			fetchDataEmployee();
 		}
@@ -886,6 +897,19 @@ const HbbInventory = () => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [formik.values.id_bisnis_unit]);
+
+	useEffect(() => {
+		const areaId = formik.values.id_area;
+		if (areaId) {
+			const isInitialValueUndefined = initialValue?.id_satker === undefined;
+			if (isInitialValueUndefined || areaId !== initialValue.id_satker) {
+				formik.setFieldValue("id_division", undefined);
+				formRef.current?.setFieldsValue({ id_division: undefined });
+			}
+			fetchDataDivision();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_satker]);
 
 	useEffect(() => {
 		const workUnitId = formik.values.id_satker;
@@ -913,7 +937,10 @@ const HbbInventory = () => {
 			const isInitialValueUndefined = initialValue?.id_area === undefined;
 			if (isInitialValueUndefined || areaId !== initialValue.id_area) {
 				resetLocation();
+				formik.setFieldValue("id_satker", undefined);
+				formRef.current?.setFieldsValue({ id_setker: undefined });
 			}
+			fetchDataWorkUnit();
 			fetchDataLocation();
 		}
 
@@ -1479,10 +1506,6 @@ const HbbInventory = () => {
 											e.preventDefault();
 										}
 									}}
-									// formatter={value =>
-									// 	`${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-									// }
-									// parser={value => value!.replace(/\$\s?|(,*)/g, "")}
 									onChange={v => {
 										const nilai: any = v;
 										formik.setFieldValue("price", nilai);

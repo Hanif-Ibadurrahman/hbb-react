@@ -84,6 +84,12 @@ export const ModalFilter = ({
 		>
 			<Form form={formFilter} layout="vertical" onFinish={handleSubmit}>
 				<Row gutter={16}>
+					{generateContent}
+					<Col span={12}>
+						<Form.Item name="name" label="Nama Barang">
+							<SelectWithTag />
+						</Form.Item>
+					</Col>
 					<Col span={12}>
 						<Form.Item name="main_group" label="Main Group">
 							<SelectWithTag
@@ -117,8 +123,18 @@ export const ModalFilter = ({
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="name" label="Nama Barang">
-							<SelectWithTag />
+						<Form.Item name="warna" label="Warna">
+							<SelectWithTag
+								showSearch
+								onSearch={v => setParamsOption.setColorParams({ color: v })}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								dataOption={options.dataOptionColor}
+								valueOption="label"
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={12}>
@@ -142,21 +158,6 @@ export const ModalFilter = ({
 						</Form.Item>
 					</Col>
 					<Col span={12}>
-						<Form.Item name="warna" label="Warna">
-							<SelectWithTag
-								showSearch
-								onSearch={v => setParamsOption.setColorParams({ color: v })}
-								filterOption={(input, option) =>
-									(`${option?.label}` ?? "")
-										.toLowerCase()
-										.includes(input.toLowerCase())
-								}
-								dataOption={options.dataOptionColor}
-								valueOption="label"
-							/>
-						</Form.Item>
-					</Col>
-					<Col span={12}>
 						<Form.Item name="kapasitas" label="Kapasital">
 							<SelectWithTag />
 						</Form.Item>
@@ -171,7 +172,6 @@ export const ModalFilter = ({
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
-					{generateContent}
 				</Row>
 			</Form>
 		</Drawer>

@@ -1,6 +1,5 @@
 import { Button, Col, Drawer, Form, Row, Space } from "antd";
 import { SelectWithTag } from "app/components/selectWithTag";
-import { TokenDekode } from "app/helper/authentication";
 import { isSuperadminGlobal } from "app/helper/permission";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { IManagerGetAllParams } from "store/types/managerTypes";
@@ -21,7 +20,6 @@ export const ModalFilter = ({
 	options,
 }: IModalFilter) => {
 	const [formFilter] = Form.useForm();
-	const tokenDecode = TokenDekode();
 
 	const generateContent = useMemo(() => {
 		if (isSuperadminGlobal) {
@@ -86,6 +84,7 @@ export const ModalFilter = ({
 		>
 			<Form form={formFilter} layout="vertical" onFinish={handleSubmit}>
 				<Row gutter={16}>
+					{generateContent}
 					<Col span={24}>
 						<Form.Item name="nama_pengelola" label="Nama Pengelola">
 							<SelectWithTag />
@@ -101,7 +100,6 @@ export const ModalFilter = ({
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
-					{generateContent}
 				</Row>
 			</Form>
 		</Drawer>

@@ -19,6 +19,7 @@ export interface IColorGetAllParams {
 	sort?: string;
 	color?: string;
 	company?: string;
+	id_company?: number;
 }
 export interface ICreateColorRequest {
 	name: string;

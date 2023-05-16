@@ -19,6 +19,7 @@ export interface ICountryGetAllParams {
 	sort?: string;
 	name?: string;
 	company?: string;
+	id_company?: number;
 }
 export interface ICreateCountryRequest {
 	name: string;

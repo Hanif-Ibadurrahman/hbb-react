@@ -419,6 +419,7 @@ const ServiceReplacement = () => {
 						showConfirmButton: false,
 						timer: 3000,
 					});
+					fetchDataInventory();
 				})
 				.catch((error: any) => {
 					CheckResponse(error);
@@ -470,6 +471,7 @@ const ServiceReplacement = () => {
 								handleApprove,
 								handleReject,
 								handleShowFile,
+								tokenDecode,
 							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
@@ -498,6 +500,7 @@ const ServiceReplacement = () => {
 								</Space>
 							}
 							handleSelectedRow={handleSelectedRow}
+							scroll={{ x: 1800 }}
 						/>
 					</div>
 				</div>

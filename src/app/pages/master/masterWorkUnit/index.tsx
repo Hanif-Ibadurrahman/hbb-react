@@ -329,6 +329,7 @@ const MasterWorkUnit = () => {
 	const handleAdd = () => {
 		setShowModal({ show: true });
 		setInitialValue(undefined);
+		formik.resetForm();
 		form.resetFields();
 	};
 
@@ -634,6 +635,12 @@ const MasterWorkUnit = () => {
 				isShow={showFilter}
 				setShowModal={setShowFilter}
 				setParams={setParamsFilter}
+				setParamsOption={{
+					setCompanyParams,
+				}}
+				options={{
+					dataOptionCompany,
+				}}
 			/>
 		</>
 	);

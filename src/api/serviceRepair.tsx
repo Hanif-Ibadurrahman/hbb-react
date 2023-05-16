@@ -27,6 +27,7 @@ export const updateServiceRepairApi = (
 	id: number,
 	input: IUpdateServiceRepairRequest,
 ) => {
+	input = { ...input, _method: "PUT" };
 	return apiWithToken.put(`/api/transaksi/perbaikan/${id}`, input, {
 		headers: { "Content-Type": "multipart/form-data" },
 	});

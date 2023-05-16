@@ -240,11 +240,13 @@ const MasterLocation = () => {
 
 	const fetchDataDivisionDetail = async (id: number) => {
 		try {
-			const response = await getDetailDivisionApi(id);
-			const detail = response.data.data;
-			setDataOptionDivision(
-				dataOptionDivision?.concat({ label: detail.name, value: detail.id }),
-			);
+			if (id) {
+				const response = await getDetailDivisionApi(id);
+				const detail = response.data.data;
+				setDataOptionDivision(
+					dataOptionDivision?.concat({ label: detail.name, value: detail.id }),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}

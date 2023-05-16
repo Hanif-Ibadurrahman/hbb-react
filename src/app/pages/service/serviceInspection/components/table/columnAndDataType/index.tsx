@@ -77,9 +77,42 @@ export const columns = ({
 			sorter: true,
 		},
 		{
-			title: "Tahap Approve",
-			dataIndex: "pending_status",
+			title: "Status",
 			sorter: true,
+			render: (text, record, index) => {
+				const isNewAndNotApproved =
+					record.current_flow === 1 && record.reject_status === null;
+				const isFinished = record.is_closed_by !== null;
+				const isRejected = record.reject_status !== null;
+				if (isNewAndNotApproved) {
+					return <Button type="primary">New</Button>;
+				} else if (isFinished) {
+					return (
+						<Button type="primary" style={{ background: "#43d854" }}>
+							Finish
+						</Button>
+					);
+				} else if (isRejected) {
+					return (
+						<Button type="primary" danger>
+							Reject
+						</Button>
+					);
+				} else {
+					return (
+						<Button type="primary" style={{ background: "#fac13a" }}>
+							Open
+						</Button>
+					);
+				}
+			},
+		},
+		{
+			title: "Approve/Reject",
+			sorter: true,
+			render: (text, record, index) => {
+				return record.pending_status || record.reject_status;
+			},
 		},
 		{
 			title: "Perusahaan",
@@ -90,6 +123,9 @@ export const columns = ({
 			title: "Action",
 			dataIndex: "id",
 			render: (text, record, index) => {
+				const isNewAndNotApproved =
+					record.current_flow === 1 && record.reject_status === null;
+				const isRejected = record.reject_status !== null;
 				return (
 					<div style={{ display: "flex", columnGap: 5 }}>
 						{listCheckPermission.isAllowApproveServicePemeriksaan &&
@@ -117,29 +153,31 @@ export const columns = ({
 									Reject
 								</button>
 							)}
-						{listCheckPermission.isAllowUpdateServicePemeriksaan && (
-							<button
-								type="button"
-								className="btn btn-primary"
-								onClick={() => {
-									setShowModal({ show: true, id: text });
-								}}
-							>
-								Edit
-							</button>
-						)}
-						{listCheckPermission.isAllowDeleteServicePemeriksaan && (
-							<button
-								type="button"
-								className="btn"
-								style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
-								onClick={() => {
-									handleDelete(text);
-								}}
-							>
-								Delete
-							</button>
-						)}
+						{listCheckPermission.isAllowUpdateServicePemeriksaan &&
+							(isNewAndNotApproved || isRejected) && (
+								<button
+									type="button"
+									className="btn btn-primary"
+									onClick={() => {
+										setShowModal({ show: true, id: text });
+									}}
+								>
+									Edit
+								</button>
+							)}
+						{listCheckPermission.isAllowDeleteServicePemeriksaan &&
+							isNewAndNotApproved && (
+								<button
+									type="button"
+									className="btn"
+									style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
+									onClick={() => {
+										handleDelete(text);
+									}}
+								>
+									Delete
+								</button>
+							)}
 					</div>
 				);
 			},

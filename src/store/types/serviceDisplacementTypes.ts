@@ -41,6 +41,7 @@ export interface IServiceDisplacement {
 	inventory_name: string | null;
 	location_name: string | null;
 	pending_status: string | null;
+	current_flow: number | null;
 	current_approver: number | null;
 	reject_status: string | null;
 	is_closed_by: string | null;
