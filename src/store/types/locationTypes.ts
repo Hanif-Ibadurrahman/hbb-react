@@ -7,15 +7,15 @@ export interface ILocation {
 	id_area: number | null;
 	id_pegawai: number | null;
 	id_satker: number | null;
-	id_company: number | null;
-	id_division: number | null;
 	name: string | null;
 	from_opname: boolean | null;
-	satker: IWorkUnit | null;
-	employee: IEmployee | null;
+	id_company: number | null;
 	created_at: string | null;
 	updated_at: string | null;
 	deleted_at: string | null;
+	id_division: number | null;
+	satker: IWorkUnit | null;
+	employee: IEmployee | null;
 }
 
 export interface ILocationPaginateResponse extends PaginationState {

@@ -42,8 +42,16 @@ import { getAllWorkflowApi, getDetailWorkflowApi } from "api/workflow";
 import { ModalFilter } from "./components/modalFilter";
 import { IInventoryGetAllParams } from "store/types/inventoryTypes";
 import { getAllInventoryApi, getDetailInventoryApi } from "api/inventory";
-import { checkDefaultOption, removeNullFields } from "app/helper/common";
+import {
+	changeValueToRole,
+	checkDefaultOption,
+	removeNullFields,
+} from "app/helper/common";
 import ModalDetail from "../components/modalDetail";
+import { getAllLocationApi, getDetailLocationApi } from "api/location";
+import { ILocationGetAllParams } from "store/types/locationTypes";
+import { IAreaGetAllParams } from "store/types/areaTypes";
+import { getAllAreaApi, getDetailAreaApi } from "api/area";
 
 const ServiceReplacement = () => {
 	const tokenDecode = TokenDekode();
@@ -71,6 +79,13 @@ const ServiceReplacement = () => {
 	const [inventoryParams, setInventoryParams] = useState<
 		IInventoryGetAllParams | undefined
 	>();
+	const [availableInventoryParams, setAvailableInventoryParams] = useState<
+		IInventoryGetAllParams | undefined
+	>();
+	const [areaParams, setAreaParams] = useState<IAreaGetAllParams | undefined>();
+	const [locationParams, setLocationParams] = useState<
+		ILocationGetAllParams | undefined
+	>();
 	const [workflowParams, setWorkflowParams] = useState<
 		IWorkflowGetAllParams | undefined
 	>();
@@ -89,9 +104,23 @@ const ServiceReplacement = () => {
 	const [dataOptionInventory, setDataOptionInventory] = useState<
 		DefaultOptionType[] | undefined
 	>();
+	const [dataOptionAvailableInventory, setDataOptionAvailableInventory] =
+		useState<DefaultOptionType[] | undefined>();
+	const [dataOptionArea, setDataOptionArea] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionLocation, setDataOptionLocation] = useState<
+		DefaultOptionType[] | undefined
+	>();
 	const [dataOptionWorkflow, setDataOptionWorkflow] = useState<
 		DefaultOptionType[] | undefined
 	>();
+
+	const formik = useFormik({
+		initialValues: { ...initialValue },
+		enableReinitialize: true,
+		onSubmit: values => {},
+	});
 
 	const handleSelectedRow = record => {
 		setShowModalDetail({ show: true, id: record.id_inventory });
@@ -115,7 +144,7 @@ const ServiceReplacement = () => {
 
 	const fetchDataInventory = async () => {
 		try {
-			const availableInventory = { ...inventoryParams, status: 1 };
+			const availableInventory = { ...inventoryParams };
 			const response = await getAllInventoryApi(availableInventory);
 			const inventoryList = response.data.data.data;
 			setDataOptionInventory(
@@ -144,12 +173,99 @@ const ServiceReplacement = () => {
 		}
 	};
 
+	const fetchDataAvailableInventory = async () => {
+		try {
+			const availableInventory = {
+				...availableInventoryParams,
+				status: 1,
+				id_location: formik.values.id_location,
+			};
+			const response = await getAllInventoryApi(availableInventory);
+			const inventoryList = response.data.data.data;
+			setDataOptionAvailableInventory(
+				inventoryList.map(v => ({
+					label: `${v.name} - ${v.code}`,
+					value: `${v.code}`,
+				})),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataAvailableInventoryDetail = async (id: number) => {
+		try {
+			const response = await getDetailInventoryApi(id);
+			const detail = response.data.data;
+			setDataOptionAvailableInventory(
+				dataOptionInventory?.concat({
+					label: `${detail.name} - ${detail.code}`,
+					value: `${detail.code}`,
+				}),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataArea = async () => {
+		try {
+			const response = await getAllAreaApi(areaParams);
+			const areaList = response.data.data;
+			setDataOptionArea(areaList.map(v => ({ label: v.name, value: v.id })));
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataAreaDetail = async (id: number) => {
+		try {
+			const response = await getDetailAreaApi(id);
+			const detail = response.data.data;
+			setDataOptionArea(
+				dataOptionArea?.concat({ label: detail.name, value: detail.id }),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataLocation = async () => {
+		try {
+			const response = await getAllLocationApi({
+				...locationParams,
+				id_area: formik.values.id_area,
+			});
+			const locationList = response.data.data;
+			setDataOptionLocation(
+				locationList.map(v => ({ label: v.name, value: v.id })),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataLocationDetail = async (id: number) => {
+		try {
+			const response = await getDetailLocationApi(id);
+			const detail = response.data.data;
+			setDataOptionLocation(
+				dataOptionLocation?.concat({ label: detail.name, value: detail.id }),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
 	const fetchDataWorkflow = async () => {
 		try {
 			const response = await getAllWorkflowApi(workflowParams);
 			const workflowList = response.data.data.data;
 			setDataOptionWorkflow(
-				workflowList.map(v => ({ label: v.name, value: v.id })),
+				workflowList.map(v => ({
+					label: `${v.name} [${changeValueToRole(v.roles)}]`,
+					value: v.id,
+				})),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -161,7 +277,10 @@ const ServiceReplacement = () => {
 			const response = await getDetailWorkflowApi(id);
 			const detail = response.data.data;
 			setDataOptionWorkflow(
-				dataOptionWorkflow?.concat({ label: detail.name, value: detail.id }),
+				dataOptionWorkflow?.concat({
+					label: `${detail.name} [${changeValueToRole(detail.roles)}]`,
+					value: detail.id,
+				}),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -188,10 +307,45 @@ const ServiceReplacement = () => {
 		}
 	};
 
+	const handleInitialValue = (values: IServiceReplacement) => {
+		const setData = removeNullFields(values);
+		if (!checkDefaultOption(dataOptionInventory!, setData.inventory_code)) {
+			fetchDataInventoryDetail(setData.id_inventory);
+		}
+		if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
+			fetchDataWorkflowDetail(setData.id_workflow);
+		}
+		if (!checkDefaultOption(dataOptionArea!, setData.id_area)) {
+			fetchDataAreaDetail(setData.id_area);
+		}
+		if (!checkDefaultOption(dataOptionLocation!, setData.id_location)) {
+			fetchDataLocationDetail(setData.id_location);
+		}
+		setInitialValue(setData);
+		formRef.current?.setFieldsValue(setData);
+		setFiles(null);
+		setFileList(null);
+	};
+
 	useEffect(() => {
 		fetchDataInventory();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [inventoryParams]);
+
+	useEffect(() => {
+		fetchDataArea();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [areaParams]);
+
+	useEffect(() => {
+		fetchDataLocation();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [locationParams]);
+
+	useEffect(() => {
+		fetchDataAvailableInventory();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [availableInventoryParams]);
 
 	useEffect(() => {
 		fetchDataWorkflow();
@@ -218,25 +372,18 @@ const ServiceReplacement = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showModal]);
 
-	const handleInitialValue = (values: IServiceReplacement) => {
-		const setData = removeNullFields(values);
-		if (!checkDefaultOption(dataOptionInventory!, setData.inventory_code)) {
-			fetchDataInventoryDetail(setData.id_inventory);
+	useEffect(() => {
+		const areaId = formik.values.id_area;
+		if (areaId) {
+			const isInitialValueUndefined = initialValue?.id_area === undefined;
+			if (isInitialValueUndefined || areaId !== initialValue.id_area) {
+				formik.setFieldValue("id_location", undefined);
+				formRef.current?.setFieldsValue({ id_location: undefined });
+			}
+			fetchDataLocation();
 		}
-		if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
-			fetchDataWorkflowDetail(setData.id_workflow);
-		}
-		setInitialValue(setData);
-		formRef.current?.setFieldsValue(setData);
-		setFiles(null);
-		setFileList(null);
-	};
-
-	const formik = useFormik({
-		initialValues: { ...initialValue },
-		enableReinitialize: true,
-		onSubmit: values => {},
-	});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_area]);
 
 	const handleApprove = (id: number) => {
 		const swalCustom = Swal.mixin({
@@ -540,7 +687,8 @@ const ServiceReplacement = () => {
 					>
 						<div className="form-group">
 							<Title level={5}>
-								Kode Inventaris <span className="text-danger">*</span>
+								No HBB/Inventaris yang dikembalikan
+								<span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
 								<Select
@@ -552,6 +700,89 @@ const ServiceReplacement = () => {
 											.includes(input.toLowerCase())
 									}
 									options={dataOptionInventory}
+									onChange={(v, opt) => {
+										formik.setFieldValue("inventory_code", v);
+										formRef.current?.setFieldsValue({
+											inventory_code: v,
+										});
+									}}
+									value={formik.values.inventory_code}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item name="id_area">
+						<div className="form-group">
+							<Title level={5}>Area</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setAreaParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionArea}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_area", v);
+										formRef.current?.setFieldsValue({
+											id_area: v,
+										});
+									}}
+									value={formik.values.id_area}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item name="id_location">
+						<div className="form-group">
+							<Title level={5}>Lokasi</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setLocationParams({ lokasi: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionLocation}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_location", v);
+										formRef.current?.setFieldsValue({
+											id_location: v,
+										});
+									}}
+									value={formik.values.id_location}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="inventory_code"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								No HBB/Inventaris yang diminta
+								<span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setAvailableInventoryParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionAvailableInventory}
 									onChange={(v, opt) => {
 										formik.setFieldValue("inventory_code", v);
 										formRef.current?.setFieldsValue({
@@ -599,14 +830,14 @@ const ServiceReplacement = () => {
 					>
 						<div className="form-group">
 							<Title level={5}>
-								Nama Pemakaian Akhir <span className="text-danger">*</span>
+								Nama Pemakai Akhir <span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
 								<Input
 									type="text"
 									name="emp_name"
 									className="form-control"
-									placeholder="Nama Pemakaian Akhir"
+									placeholder="Nama Pemakai Akhir"
 									onChange={formik.handleChange}
 									value={formik.values.emp_name}
 								/>
@@ -689,7 +920,7 @@ const ServiceReplacement = () => {
 									onChange={(v, opt) => {
 										formik.setFieldValue("id_workflow", v);
 										formRef.current?.setFieldsValue({
-											id_workflow: parseInt(v),
+											id_workflow: v,
 										});
 									}}
 									value={formik.values.id_workflow}
@@ -728,29 +959,18 @@ const ServiceReplacement = () => {
 				onCancel={() => setShowModalFile(false)}
 				destroyOnClose
 			>
-				<List
-					itemLayout="horizontal"
-					dataSource={linkFile?.map(v => ({ link: v }))}
-					renderItem={(item, index) => (
-						<List.Item>
-							<Row
-								style={{
-									width: "100%",
-									justifyContent: "space-around",
-								}}
-							>
-								<Col style={{ alignItems: "center", display: "flex" }}>
-									<Button type="link" href={item.link}>{`File - ${
-										index + 1
-									}`}</Button>
-								</Col>
-								<Col style={{ alignItems: "center", display: "flex" }}>
-									<Image width={100} src={item.link} />
-								</Col>
-							</Row>
-						</List.Item>
-					)}
-				/>
+				<Row
+					gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+					style={{ alignItems: "center" }}
+				>
+					{linkFile?.map(link => {
+						return (
+							<Col className="gutter-row" span={6}>
+								<Image width={100} src={link} />
+							</Col>
+						);
+					})}
+				</Row>
 			</AntdModal>
 
 			<ModalDetail

@@ -26,7 +26,10 @@ export const updateInventoryApi = (
 	id: number,
 	input: IUpdateInventoryRequest,
 ) => {
-	return apiWithToken.put(`/api/inventory/${id}`, input);
+	input = { ...input, _method: "PUT" };
+	return apiWithToken.post(`/api/inventory/${id}`, input, {
+		headers: { "Content-Type": "multipart/form-data" },
+	});
 };
 
 export const deleteInventoryApi = (id: number) => {

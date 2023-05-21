@@ -45,6 +45,9 @@ export interface IServiceRepair {
 	current_approver: number | null;
 	reject_status: string | null;
 	is_closed_by: string | null;
+
+	//not yet added
+	transaction_no: string | null;
 }
 
 export interface IServiceRepairPaginateResponse extends PaginationState {

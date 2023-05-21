@@ -1,4 +1,5 @@
-import { Card } from "antd";
+import { Select } from "antd";
+import { DefaultOptionType } from "antd/es/select";
 import {
 	getAllItemApi,
 	getTotalHbbApi,
@@ -7,12 +8,15 @@ import {
 	getTotalInventoryValueApi,
 	getTotalTaskApi,
 } from "api/dashboard";
+import { getAllLocationApi } from "api/location";
 import { ColumnChart } from "app/components/chart/column";
 import { LineChart } from "app/components/chart/line";
 import { PieChart } from "app/components/chart/pie";
 import { CheckResponse } from "app/helper/authentication";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ILocationGetAllParams } from "store/types/locationTypes";
+import ModalTask from "./components/modalTask";
 
 const Dashboard = () => {
 	const [allItem, setAllItem] = useState(0);
@@ -21,6 +25,12 @@ const Dashboard = () => {
 	const [totalInventoryValue, setTotalInventoryValue] = useState(0);
 	const [totalHbbValue, setTotalHbbValue] = useState(0);
 	const [totalTask, setTotalTask] = useState(0);
+	const [locationParams, setLocationParams] = useState<
+		ILocationGetAllParams | undefined
+	>();
+	const [dataOptionLocation, setDataOptionLocation] = useState<
+		DefaultOptionType[] | undefined
+	>();
 
 	const fetchDataAllItem = async () => {
 		try {
@@ -76,6 +86,20 @@ const Dashboard = () => {
 		}
 	};
 
+	const fetchDataLocation = async () => {
+		try {
+			const response = await getAllLocationApi({
+				...locationParams,
+			});
+			const locationList = response.data.data;
+			setDataOptionLocation(
+				locationList.map(v => ({ label: v.name, value: v.id })),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
 	useEffect(() => {
 		fetchDataAllItem();
 		fetchDataTotalInventory();
@@ -85,6 +109,11 @@ const Dashboard = () => {
 		fetchDataTotalTask();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	useEffect(() => {
+		fetchDataLocation();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [locationParams]);
 
 	const fetchDataLine = {
 		months: ["Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
@@ -102,9 +131,14 @@ const Dashboard = () => {
 		],
 	};
 
-	const fetchDataPie = {
+	const fetchDataPieCondition = {
 		label: ["Baik", "Rusak", "Hilang"],
 		data: [2000, 400, 54],
+	};
+
+	const fetchDataPieAvailable = {
+		label: ["Aktif", "Gudang"],
+		data: [54, 2400],
 	};
 
 	return (
@@ -237,17 +271,46 @@ const Dashboard = () => {
 					</div>
 					<div className="col-xl-12 col-12">
 						<div className="box">
-							<div className="box-body analytics-info">
-								<h4 className="box-title">Kondisi Barang</h4>
-								<PieChart
-									series={fetchDataPie.data}
-									labels={fetchDataPie.label}
-								/>
+							<div className="box-header with-border">
+								<div
+									style={{ display: "flex", justifyContent: "space-between" }}
+								>
+									<h4 className="box-title">Kondisi & Kesediaan Barang</h4>
+									<Select
+										showSearch
+										onSearch={v => setLocationParams({ lokasi: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionLocation}
+										onChange={(v, opt) => {}}
+										style={{ width: 200 }}
+										placeholder={"Pilih lokasi"}
+									/>
+								</div>
+							</div>
+							<div className="box-body">
+								<div
+									style={{ display: "flex", justifyContent: "space-around" }}
+								>
+									<PieChart
+										series={fetchDataPieCondition.data}
+										labels={fetchDataPieCondition.label}
+									/>
+									<PieChart
+										series={fetchDataPieAvailable.data}
+										labels={fetchDataPieAvailable.label}
+									/>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</section>
+
+			<ModalTask />
 		</>
 	);
 };

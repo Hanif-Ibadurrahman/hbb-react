@@ -40,7 +40,11 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { ModalFilter } from "./components/modalFilter";
 import { listCheckPermission } from "app/helper/permission";
-import { checkDefaultOption, removeNullFields } from "app/helper/common";
+import {
+	changeValueToRole,
+	checkDefaultOption,
+	removeNullFields,
+} from "app/helper/common";
 import ModalDetail from "../components/modalDetail";
 
 const ServiceDelete = () => {
@@ -84,6 +88,12 @@ const ServiceDelete = () => {
 		DefaultOptionType[] | undefined
 	>();
 
+	const formik = useFormik({
+		initialValues: { ...initialValue },
+		enableReinitialize: true,
+		onSubmit: values => {},
+	});
+
 	const handleSelectedRow = record => {
 		setShowModalDetail({ show: true, id: record.id_inventory });
 	};
@@ -110,11 +120,18 @@ const ServiceDelete = () => {
 
 	const fetchDataInventory = async () => {
 		try {
-			const availableInventory = { ...inventoryParams, status: 1 };
+			const availableInventory = {
+				...inventoryParams,
+				status: 1,
+				inventory_type: formik.values.inventory_type,
+			};
 			const response = await getAllInventoryApi(availableInventory);
 			const inventoryList = response.data.data.data;
 			setDataOptionInventory(
-				inventoryList.map(v => ({ label: v.name, value: v.id })),
+				inventoryList.map(v => ({
+					label: `${v.name} - ${v.code}`,
+					value: v.id,
+				})),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -126,7 +143,10 @@ const ServiceDelete = () => {
 			const response = await getDetailInventoryApi(id);
 			const detail = response.data.data;
 			setDataOptionInventory(
-				dataOptionInventory?.concat({ label: detail.name, value: detail.id }),
+				dataOptionInventory?.concat({
+					label: `${detail.name} - ${detail.code}`,
+					value: detail.id,
+				}),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -138,7 +158,10 @@ const ServiceDelete = () => {
 			const response = await getAllWorkflowApi(workflowParams);
 			const workflowList = response.data.data.data;
 			setDataOptionWorkflow(
-				workflowList.map(v => ({ label: v.name, value: v.id })),
+				workflowList.map(v => ({
+					label: `${v.name} [${changeValueToRole(v.roles)}]`,
+					value: v.id,
+				})),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -150,7 +173,10 @@ const ServiceDelete = () => {
 			const response = await getDetailWorkflowApi(id);
 			const detail = response.data.data;
 			setDataOptionWorkflow(
-				dataOptionWorkflow?.concat({ label: detail.name, value: detail.id }),
+				dataOptionWorkflow?.concat({
+					label: `${detail.name} [${changeValueToRole(detail.roles)}]`,
+					value: detail.id,
+				}),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -199,11 +225,19 @@ const ServiceDelete = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showModal]);
 
-	const formik = useFormik({
-		initialValues: { ...initialValue },
-		enableReinitialize: true,
-		onSubmit: values => {},
-	});
+	useEffect(() => {
+		const type = formik.values.inventory_type;
+		if (type) {
+			const isInitialValueUndefined =
+				initialValue?.inventory_type === undefined;
+			if (isInitialValueUndefined || type !== initialValue.inventory_type) {
+				formik.setFieldValue("id_inventory", undefined);
+				formRef.current?.setFieldsValue({ id_inventory: undefined });
+			}
+			fetchDataInventory();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.inventory_type]);
 
 	const handleApprove = (id: number) => {
 		const swalCustom = Swal.mixin({
@@ -467,6 +501,60 @@ const ServiceDelete = () => {
 				<div className="col-12">
 					<Form form={form} ref={formRef} onFinish={onFinish}>
 						<Divider />
+						<Form.Item name="inventory_type">
+							<div className="form-group">
+								<Title level={5}>Jenis Barang</Title>
+								<div className="controls">
+									<Select
+										options={[
+											{ value: 1, label: "Inventaris" },
+											{ value: 2, label: "HBB" },
+										]}
+										onChange={(v, opt) => {
+											formik.setFieldValue("inventory_type", v);
+											formRef.current?.setFieldsValue({
+												inventory_type: v,
+											});
+										}}
+										value={formik.values.inventory_type}
+									/>
+								</div>
+							</div>
+						</Form.Item>
+						<Form.Item
+							name="id_inventory"
+							rules={[
+								{
+									required: true,
+									message: "Harap isi field ini",
+								},
+							]}
+						>
+							<div className="form-group">
+								<Title level={5}>
+									No HBB/Inventaris <span className="text-danger">*</span>
+								</Title>
+								<div className="controls">
+									<Select
+										showSearch
+										onSearch={v => setInventoryParams({ name: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionInventory}
+										onChange={(v, opt) => {
+											formik.setFieldValue("id_inventory", v);
+											formRef.current?.setFieldsValue({
+												id_inventory: v,
+											});
+										}}
+										value={formik.values.id_inventory}
+									/>
+								</div>
+							</div>
+						</Form.Item>
 						<Form.Item
 							name="date"
 							rules={[
@@ -500,7 +588,7 @@ const ServiceDelete = () => {
 							</div>
 						</Form.Item>
 						<Form.Item
-							name="id_inventory"
+							name="condition"
 							rules={[
 								{
 									required: true,
@@ -510,25 +598,16 @@ const ServiceDelete = () => {
 						>
 							<div className="form-group">
 								<Title level={5}>
-									Inventaris <span className="text-danger">*</span>
+									Kondisi <span className="text-danger">*</span>
 								</Title>
 								<div className="controls">
-									<Select
-										showSearch
-										onSearch={v => setInventoryParams({ name: v })}
-										filterOption={(input, option) =>
-											(`${option?.label}` ?? "")
-												.toLowerCase()
-												.includes(input.toLowerCase())
-										}
-										options={dataOptionInventory}
-										onChange={(v, opt) => {
-											formik.setFieldValue("id_inventory", v);
-											formRef.current?.setFieldsValue({
-												id_inventory: v,
-											});
-										}}
-										value={formik.values.id_inventory}
+									<Input
+										type="text"
+										name="condition"
+										className="form-control"
+										placeholder="Kondisi"
+										onChange={formik.handleChange}
+										value={formik.values.condition}
 									/>
 								</div>
 							</div>
@@ -554,31 +633,6 @@ const ServiceDelete = () => {
 										placeholder="Alasan"
 										onChange={formik.handleChange}
 										value={formik.values.reason}
-									/>
-								</div>
-							</div>
-						</Form.Item>
-						<Form.Item
-							name="remark"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
-							<div className="form-group">
-								<Title level={5}>
-									Remark <span className="text-danger">*</span>
-								</Title>
-								<div className="controls">
-									<Input
-										type="text"
-										name="remark"
-										className="form-control"
-										placeholder="Remark"
-										onChange={formik.handleChange}
-										value={formik.values.remark}
 									/>
 								</div>
 							</div>

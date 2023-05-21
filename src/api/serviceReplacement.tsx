@@ -30,7 +30,7 @@ export const updateServiceReplacementApi = (
 	input: IUpdateServiceReplacementRequest,
 ) => {
 	input = { ...input, _method: "PUT" };
-	return apiWithToken.put(`/api/transaksi/penggantian/${id}`, input, {
+	return apiWithToken.post(`/api/transaksi/penggantian/${id}`, input, {
 		headers: { "Content-Type": "multipart/form-data" },
 	});
 };

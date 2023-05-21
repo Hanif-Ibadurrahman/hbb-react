@@ -41,7 +41,11 @@ import { getAllInventoryApi, getDetailInventoryApi } from "api/inventory";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { ModalFilter } from "./components/modalFilter";
-import { checkDefaultOption, removeNullFields } from "app/helper/common";
+import {
+	changeValueToRole,
+	checkDefaultOption,
+	removeNullFields,
+} from "app/helper/common";
 import { IUserGetAllParams } from "store/types/userTypes";
 import { getAllUserApi, getDetailUserApi } from "api/user";
 import ModalDetail from "../components/modalDetail";
@@ -130,7 +134,10 @@ const ServiceDisplacement = () => {
 			const response = await getAllInventoryApi(availableInventory);
 			const inventoryList = response.data.data.data;
 			setDataOptionInventory(
-				inventoryList.map(v => ({ label: v.name, value: v.id })),
+				inventoryList.map(v => ({
+					label: `${v.name} - ${v.code}`,
+					value: v.id,
+				})),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -142,7 +149,10 @@ const ServiceDisplacement = () => {
 			const response = await getDetailInventoryApi(id);
 			const detail = response.data.data;
 			setDataOptionInventory(
-				dataOptionInventory?.concat({ label: detail.name, value: detail.id }),
+				dataOptionInventory?.concat({
+					label: `${detail.name} - ${detail.code}`,
+					value: detail.id,
+				}),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -179,7 +189,10 @@ const ServiceDisplacement = () => {
 			const response = await getAllWorkflowApi(workflowParams);
 			const workflowList = response.data.data.data;
 			setDataOptionWorkflow(
-				workflowList.map(v => ({ label: v.name, value: v.id })),
+				workflowList.map(v => ({
+					label: `${v.name} [${changeValueToRole(v.roles)}]`,
+					value: v.id,
+				})),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -191,7 +204,10 @@ const ServiceDisplacement = () => {
 			const response = await getDetailWorkflowApi(id);
 			const detail = response.data.data;
 			setDataOptionWorkflow(
-				dataOptionWorkflow?.concat({ label: detail.name, value: detail.id }),
+				dataOptionWorkflow?.concat({
+					label: `${detail.name} [${changeValueToRole(detail.roles)}]`,
+					value: detail.id,
+				}),
 			);
 		} catch (error: any) {
 			CheckResponse(error);

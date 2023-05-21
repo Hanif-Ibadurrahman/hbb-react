@@ -26,7 +26,7 @@ import { MasterProviderPage } from "./pages/master/masterProvider/masterProvider
 import { MasterSubCodeGroupPage } from "./pages/master/masterSubCodeGroup/masterSubCodeGroupPage";
 import { MasterWorkUnitPage } from "./pages/master/masterWorkUnit/masterWorkUnitPage";
 import { MasterUserPage } from "./pages/master/masterUser/masterUserPage";
-import { ServiceDisplacementPage } from "./pages/service/serviceDisplacement/serviceDisplacemenetPage";
+// import { ServiceDisplacementPage } from "./pages/service/serviceDisplacement/serviceDisplacemenetPage";
 import { ServiceRequestPage } from "./pages/service/serviceRequest/serviceRequestPage";
 import { ServiceRepairPage } from "./pages/service/serviceRepair/serviceRepairPage";
 import { ServiceReturnPage } from "./pages/service/serviceReturn/serviceReturnPage";
@@ -46,10 +46,10 @@ export function App() {
 					<Route path="inventaris" element={<HbbInventoryPage />} />
 					<Route path="permintaan-layanan" element={<ServiceRequestPage />} />
 					<Route path="permintaan-perbaikan" element={<ServiceRepairPage />} />
-					<Route
+					{/* <Route
 						path="permintaan-pemindahan"
 						element={<ServiceDisplacementPage />}
-					/>
+					/> */}
 					<Route
 						path="permintaan-pengembalian"
 						element={<ServiceReturnPage />}

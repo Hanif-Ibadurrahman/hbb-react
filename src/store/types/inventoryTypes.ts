@@ -106,6 +106,8 @@ export interface IInventoryGetAllParams {
 	per_page?: number;
 	order_by?: string;
 	sort?: string;
+	id_area?: number;
+	id_location?: number;
 	inventory_type?: number;
 	main_group?: string;
 	sub_group?: string;
@@ -218,6 +220,7 @@ export interface IUpdateInventoryRequest {
 	id_penanggung_jawab: string;
 	condition: string;
 	remark: string;
+	_method: string;
 }
 
 export interface ICheckSerialNumberParams {

@@ -1,14 +1,15 @@
+import { ICompany } from "./companyTypes";
 import { PaginationState } from "./paginationTypes";
-
 export interface IProvider {
 	id: number;
 	nama_penyedia: string | null;
-	jabatan: string | null;
 	nipg: string | null;
+	jabatan: string | null;
 	id_company: number | null;
 	created_at: string | null;
 	updated_at: string | null;
 	deleted_at: string | null;
+	company: ICompany | null;
 }
 
 export interface IProviderPaginateResponse extends PaginationState {

@@ -30,6 +30,13 @@ export const columns = ({ setShowModal }: IColumn) => {
 			sorter: true,
 		},
 		{
+			title: "Perusahaan",
+			sorter: true,
+			render: (text, record, index) => {
+				return record.company?.name;
+			},
+		},
+		{
 			title: "Action",
 			dataIndex: "id",
 			render: (text, record, index) => {

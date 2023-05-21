@@ -239,29 +239,18 @@ const HbbInventory = () => {
 	const showFile = useMemo(() => {
 		if (linkFile?.length) {
 			return (
-				<List
-					itemLayout="horizontal"
-					dataSource={linkFile?.map(v => ({ link: v }))}
-					renderItem={(item, index) => (
-						<List.Item>
-							<Row
-								style={{
-									width: "100%",
-									justifyContent: "space-around",
-								}}
-							>
-								<Col style={{ alignItems: "center", display: "flex" }}>
-									<Button type="link" href={item.link}>{`File - ${
-										index + 1
-									}`}</Button>
-								</Col>
-								<Col style={{ alignItems: "center", display: "flex" }}>
-									<Image width={100} src={item.link} />
-								</Col>
-							</Row>
-						</List.Item>
-					)}
-				/>
+				<Row
+					gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+					style={{ alignItems: "center" }}
+				>
+					{linkFile.map(link => {
+						return (
+							<Col className="gutter-row" span={6}>
+								<Image width={100} src={link} />
+							</Col>
+						);
+					})}
+				</Row>
 			);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -742,6 +731,8 @@ const HbbInventory = () => {
 		if (!checkDefaultOption(dataOptionColor!, setData.id_color)) {
 			fetchDataColorDetail(setData.id_color);
 		}
+		setFiles(null);
+		setFileList(null);
 		setLinkFile(setData.upload);
 		setInitialValue(setData);
 		formRef.current?.setFieldsValue(setData);

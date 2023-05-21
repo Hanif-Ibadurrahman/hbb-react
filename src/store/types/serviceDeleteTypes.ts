@@ -4,6 +4,7 @@ export interface IServiceDelete {
 	id: number;
 	id_quest: string | null;
 	nipg: string | null;
+	inventory_type: number | null;
 	id_inventory: string | null;
 	date: string | null;
 	reason: string | null;
@@ -32,6 +33,7 @@ export interface IServiceDelete {
 	deleted_at: string | null;
 	id_approval: number | null;
 	transaction_uuid: string | null;
+	condition: string | null;
 	company_name: string | null;
 	inventory_name: string | null;
 	pending_status: string | null;
@@ -39,6 +41,9 @@ export interface IServiceDelete {
 	current_approver: number | null;
 	reject_status: string | null;
 	is_closed_by: string | null;
+
+	//not yet added
+	transaction_no: string | null;
 }
 
 export interface IServiceDeletePaginateResponse extends PaginationState {
@@ -56,20 +61,22 @@ export interface IServiceDeleteGetAllParams {
 }
 
 export interface ICreateServiceDeleteRequest {
+	inventory_type: number;
 	id_inventory: number;
 	date: string;
 	reason: string;
-	remark: string;
+	condition: string;
 	id_company: number;
 	created_by: number;
 	id_workflow: number;
 }
 
 export interface IUpdateServiceDeleteRequest {
+	inventory_type: number;
 	id_inventory: number;
 	date: string;
 	reason: string;
-	remark: string;
+	condition: string;
 	id_company: number;
 	created_by: number;
 	id_workflow: number;

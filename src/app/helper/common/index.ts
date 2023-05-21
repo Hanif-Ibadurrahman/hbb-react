@@ -1,6 +1,14 @@
 import { DefaultOptionType } from "antd/es/select";
 import { intersection } from "lodash";
 
+export const valueAndLabelRole = [
+	{ value: 1, label: "Super Admin" },
+	{ value: 2, label: "Pengelola" },
+	{ value: 3, label: "Admin Area" },
+	{ value: 4, label: "Kepala Satuan Kerja" },
+	{ value: 5, label: "User" },
+];
+
 export const generateRandomHex = (length: number) => {
 	const chars = "0123456789abcdef";
 	let result = "";
@@ -9,6 +17,15 @@ export const generateRandomHex = (length: number) => {
 		result += chars[randomIndex];
 	}
 	return result;
+};
+
+export const changeValueToRole = (value: string) => {
+	const roleName = value.split(",").map(value => {
+		const role = valueAndLabelRole.find(role => role.value === Number(value));
+		return role ? role.label : "Unknown Role";
+	});
+
+	return roleName.join(" - ");
 };
 
 export const checkDefaultOption = (
