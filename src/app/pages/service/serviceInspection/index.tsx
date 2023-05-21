@@ -42,7 +42,11 @@ import { getAllWorkflowApi, getDetailWorkflowApi } from "api/workflow";
 import { ModalFilter } from "./components/modalFilter";
 import { IInventoryGetAllParams } from "store/types/inventoryTypes";
 import { getAllInventoryApi, getDetailInventoryApi } from "api/inventory";
-import { checkDefaultOption, removeNullFields } from "app/helper/common";
+import {
+	changeValueToRole,
+	checkDefaultOption,
+	removeNullFields,
+} from "app/helper/common";
 import ModalDetail from "../components/modalDetail";
 
 const ServiceInspection = () => {
@@ -149,7 +153,10 @@ const ServiceInspection = () => {
 			const response = await getAllWorkflowApi(workflowParams);
 			const workflowList = response.data.data.data;
 			setDataOptionWorkflow(
-				workflowList.map(v => ({ label: v.name, value: v.id })),
+				workflowList.map(v => ({
+					label: `${v.name} [${changeValueToRole(v.roles)}]`,
+					value: v.id,
+				})),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -161,7 +168,10 @@ const ServiceInspection = () => {
 			const response = await getDetailWorkflowApi(id);
 			const detail = response.data.data;
 			setDataOptionWorkflow(
-				dataOptionWorkflow?.concat({ label: detail.name, value: detail.id }),
+				dataOptionWorkflow?.concat({
+					label: `${detail.name} [${changeValueToRole(detail.roles)}]`,
+					value: detail.id,
+				}),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -540,7 +550,7 @@ const ServiceInspection = () => {
 					>
 						<div className="form-group">
 							<Title level={5}>
-								Kode Inventaris <span className="text-danger">*</span>
+								No HBB/Inventaris <span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
 								<Select
@@ -599,14 +609,14 @@ const ServiceInspection = () => {
 					>
 						<div className="form-group">
 							<Title level={5}>
-								Nama Pemakaian Akhir <span className="text-danger">*</span>
+								Nama Pemakai Akhir <span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
 								<Input
 									type="text"
 									name="emp_name"
 									className="form-control"
-									placeholder="Nama Pemakaian Akhir"
+									placeholder="Nama Pemakai Akhir"
 									onChange={formik.handleChange}
 									value={formik.values.emp_name}
 								/>
@@ -728,29 +738,18 @@ const ServiceInspection = () => {
 				onCancel={() => setShowModalFile(false)}
 				destroyOnClose
 			>
-				<List
-					itemLayout="horizontal"
-					dataSource={linkFile?.map(v => ({ link: v }))}
-					renderItem={(item, index) => (
-						<List.Item>
-							<Row
-								style={{
-									width: "100%",
-									justifyContent: "space-around",
-								}}
-							>
-								<Col style={{ alignItems: "center", display: "flex" }}>
-									<Button type="link" href={item.link}>{`File - ${
-										index + 1
-									}`}</Button>
-								</Col>
-								<Col style={{ alignItems: "center", display: "flex" }}>
-									<Image width={100} src={item.link} />
-								</Col>
-							</Row>
-						</List.Item>
-					)}
-				/>
+				<Row
+					gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+					style={{ alignItems: "center" }}
+				>
+					{linkFile?.map(link => {
+						return (
+							<Col className="gutter-row" span={6}>
+								<Image width={100} src={link} />
+							</Col>
+						);
+					})}
+				</Row>
 			</AntdModal>
 
 			<ModalDetail

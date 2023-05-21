@@ -29,12 +29,12 @@ export const columns = ({
 	const columnType: ColumnsType<IServiceReplacement> = [
 		{
 			title: "No Transaksi",
-			dataIndex: "id",
+			dataIndex: "transaction_no",
 			align: "center",
 			sorter: true,
 		},
 		{
-			title: "Kode Inventaris",
+			title: "No HBB/Inventaris",
 			dataIndex: "inventory_code",
 			sorter: true,
 		},

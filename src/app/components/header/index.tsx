@@ -1,5 +1,6 @@
-import { Badge, Dropdown, MenuProps, Modal, notification } from "antd";
-import { getNotificationApi } from "api/dashboard";
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import { Badge, Button, Dropdown, MenuProps, Space, notification } from "antd";
+import { deleteNotificationApi, getNotificationApi } from "api/dashboard";
 import { logoutApi } from "api/login";
 import { CheckResponse } from "app/helper/authentication";
 import FeatherIcon from "feather-icons-react";
@@ -7,6 +8,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { INotification } from "store/types/dashboard";
 import { BellOutlined } from "@ant-design/icons";
+import { tokenDecode } from "app/helper/permission";
 interface IHeader {
 	collapseHandler: (thisKey: string) => void;
 }
@@ -25,12 +27,37 @@ export const Header = ({ collapseHandler }: IHeader) => {
 		}
 	};
 
+	const deleteNotification = async (id: number) => {
+		try {
+			await deleteNotificationApi(id).then(() => {
+				fetchDataNotification();
+			});
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
 	const openNotification = () => {
 		// eslint-disable-next-line array-callback-return
 		dataNotification?.map(value => {
 			api.open({
 				message: value.type,
 				description: value.note,
+				btn: (
+					<Button
+						type="primary"
+						danger
+						size="small"
+						onClick={() => {
+							api.destroy(value.id);
+							deleteNotification(value.id);
+						}}
+					>
+						Don't show again
+					</Button>
+				),
+				key: value.id,
+				duration: 30,
 				icon: <BellOutlined style={{ color: "#108ee9" }} />,
 			});
 		});
@@ -47,32 +74,29 @@ export const Header = ({ collapseHandler }: IHeader) => {
 			sessionStorage.clear();
 			navigate("/login", { replace: true });
 		} catch (error) {
-			Modal.error({
-				title: "Telah terjadi kesalahan pada saat logout",
-				content: "Mohon di tunggu beberapa saat lagi",
-			});
+			navigate("/login", { replace: true });
 		}
 	};
 
 	const items: MenuProps["items"] = [
-		{
-			key: "1",
-			label: (
-				// eslint-disable-next-line jsx-a11y/anchor-is-valid
-				<a className="dropdown-item">
-					<i className="ti-user text-muted me-2"></i> Profile
-				</a>
-			),
-		},
-		{
-			key: "2",
-			label: (
-				// eslint-disable-next-line jsx-a11y/anchor-is-valid
-				<a className="dropdown-item">
-					<i className="ti-settings text-muted me-2"></i> Email
-				</a>
-			),
-		},
+		// {
+		// 	key: "1",
+		// 	label: (
+		// 		// eslint-disable-next-line jsx-a11y/anchor-is-valid
+		// 		<a className="dropdown-item">
+		// 			<i className="ti-user text-muted me-2"></i> Profile
+		// 		</a>
+		// 	),
+		// },
+		// {
+		// 	key: "2",
+		// 	label: (
+		// 		// eslint-disable-next-line jsx-a11y/anchor-is-valid
+		// 		<a className="dropdown-item">
+		// 			<i className="ti-settings text-muted me-2"></i> Email
+		// 		</a>
+		// 	),
+		// },
 		{
 			key: "3",
 			label: (
@@ -144,11 +168,18 @@ export const Header = ({ collapseHandler }: IHeader) => {
 						<li className="dropdown user user-menu">
 							<Dropdown menu={{ items }} placement="bottomLeft">
 								<div title="User">
-									<img
-										src="images/avatar/avatar-1.png"
-										className="avatar rounded-10 bg-primary-light h-40 w-40"
-										alt="user"
-									/>
+									<Space>
+										<img
+											src="images/avatar/avatar-1.png"
+											className="avatar rounded-10 bg-primary-light h-40 w-40"
+											alt="user"
+										/>
+										<a href="#">
+											<p className="fw-bold">
+												{tokenDecode?.user?.name?.toUpperCase()}
+											</p>
+										</a>
+									</Space>
 								</div>
 							</Dropdown>
 						</li>

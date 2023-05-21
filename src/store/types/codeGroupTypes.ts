@@ -4,6 +4,9 @@ export interface ICodeGroup {
 	id: number;
 	value: string | null;
 	code: string | null;
+	created_at: string | null;
+	updated_at: string | null;
+	deleted_at: string | null;
 	id_company: number | null;
 	company: ICompany | null;
 }

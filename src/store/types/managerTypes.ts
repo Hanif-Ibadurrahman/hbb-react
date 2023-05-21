@@ -1,3 +1,4 @@
+import { ICompany } from "./companyTypes";
 import { PaginationState } from "./paginationTypes";
 
 export interface IManager {
@@ -9,6 +10,7 @@ export interface IManager {
 	created_at: string | null;
 	updated_at: string | null;
 	deleted_at: string | null;
+	company: ICompany | null;
 }
 
 export interface IManagerPaginateResponse extends PaginationState {

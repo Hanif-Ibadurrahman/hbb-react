@@ -23,6 +23,11 @@ export interface IServiceReplacement {
 	current_approver: number | null;
 	reject_status: string | null;
 	is_closed_by: string | null;
+
+	// not yet added
+	id_area: number | null;
+	id_location: number | null;
+	transaction_no: string | null;
 }
 
 export interface IServiceReplacementPaginateResponse extends PaginationState {
@@ -47,10 +52,14 @@ export interface ICreateServiceReplacementRequest {
 	description: string;
 	condition: string;
 	emp_name: string;
-	id_company: string;
-	id_workflow: string;
-	created_by: string;
+	id_company: number;
+	id_workflow: number;
+	created_by: number;
 	files: any | null;
+
+	// not yet added
+	id_area: number;
+	id_location: number;
 }
 
 export interface IUpdateServiceReplacementRequest {
@@ -59,11 +68,15 @@ export interface IUpdateServiceReplacementRequest {
 	description: string;
 	condition: string;
 	emp_name: string;
-	id_company: string;
-	id_workflow: string;
-	created_by: string;
+	id_company: number;
+	id_workflow: number;
+	created_by: number;
 	files: any | null;
 	_method: string;
+
+	// not yet added
+	id_area: number;
+	id_location: number;
 }
 
 export interface IServiceReplacementGetAllResponse {

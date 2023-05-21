@@ -57,7 +57,7 @@ export const ModalFilter = ({
 			<Form form={formFilter} layout="vertical" onFinish={handleSubmit}>
 				<Row gutter={16}>
 					<Col span={24}>
-						<Form.Item name="inventory_code" label="Kode Inventaris">
+						<Form.Item name="inventory_code" label="No HBB/Inventaris">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>

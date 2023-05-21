@@ -3,7 +3,6 @@ import { ColumnsType } from "antd/es/table";
 import { listCheckPermission } from "app/helper/permission";
 import { ITokenDecode } from "store/types/loginTypes";
 import { IServiceChange } from "store/types/serviceChangeTypes";
-
 interface IColumn {
 	setShowModal: React.Dispatch<
 		React.SetStateAction<{
@@ -29,12 +28,12 @@ export const columns = ({
 	const columnType: ColumnsType<IServiceChange> = [
 		{
 			title: "No Transaksi",
-			dataIndex: "id",
+			dataIndex: "transaction_no",
 			align: "center",
 			sorter: true,
 		},
 		{
-			title: "Kode Inventaris",
+			title: "No HBB/Inventaris",
 			dataIndex: "inventory_code",
 			sorter: true,
 		},

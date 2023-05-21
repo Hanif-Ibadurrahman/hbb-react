@@ -94,7 +94,7 @@ export const Sidebar = () => {
 												</Link>
 											</li>
 										)}
-										{listCheckPermission.isAllowReadServicePemindahan && (
+										{/* {listCheckPermission.isAllowReadServicePemindahan && (
 											<li>
 												<Link to={"/permintaan-pemindahan"}>
 													<i className="icon-Commit">
@@ -104,7 +104,7 @@ export const Sidebar = () => {
 													Pemindahan
 												</Link>
 											</li>
-										)}
+										)} */}
 										{listCheckPermission.isAllowReadServicePengembalian && (
 											<li>
 												<Link to={"/permintaan-pengembalian"}>

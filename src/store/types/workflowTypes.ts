@@ -4,6 +4,7 @@ export interface IWorkflow {
 	id: number;
 	name: string | null;
 	description: string | null;
+	type: string | null;
 	roles: string | null;
 	created_at: string | null;
 	updated_at: string | null;
@@ -28,6 +29,7 @@ export interface IWorkflowGetAllParams {
 export interface ICreateWorkflowRequest {
 	name: string;
 	description: string;
+	type: string;
 	created_at: string;
 	id_company: string;
 	roles?: number[];
@@ -36,6 +38,7 @@ export interface ICreateWorkflowRequest {
 export interface IUpdateWorkflowRequest {
 	name: string;
 	description: string;
+	type: string;
 	created_at: string;
 	id_company: string;
 	roles?: string[];

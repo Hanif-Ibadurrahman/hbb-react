@@ -28,7 +28,7 @@ export const updateServiceReturnApi = (
 	input: IUpdateServiceReturnRequest,
 ) => {
 	input = { ...input, _method: "PUT" };
-	return apiWithToken.put(`/api/transaksi/pengembalian/${id}`, input, {
+	return apiWithToken.post(`/api/transaksi/pengembalian/${id}`, input, {
 		headers: { "Content-Type": "multipart/form-data" },
 	});
 };

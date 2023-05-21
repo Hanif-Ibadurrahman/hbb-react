@@ -3,10 +3,10 @@ import { PaginationState } from "./paginationTypes";
 export interface ICountry {
 	id: number;
 	name: string | null;
-	id_company: number | null;
 	created_at: string | null;
 	updated_at: string | null;
 	deleted_at: string | null;
+	id_company: number | null;
 	company: ICompany | null;
 }
 export interface ICountryPaginateResponse extends PaginationState {

@@ -30,7 +30,7 @@ export const updateServiceInspectionApi = (
 	input: IUpdateServiceInspectionRequest,
 ) => {
 	input = { ...input, _method: "PUT" };
-	return apiWithToken.put(`/api/transaksi/pemeriksaan/${id}`, input, {
+	return apiWithToken.post(`/api/transaksi/pemeriksaan/${id}`, input, {
 		headers: { "Content-Type": "multipart/form-data" },
 	});
 };

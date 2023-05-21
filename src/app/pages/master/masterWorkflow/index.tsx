@@ -1,5 +1,5 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import {
 	createNewWorkflowApi,
@@ -25,8 +25,6 @@ import {
 	RadioChangeEvent,
 	Select,
 	Space,
-	StepProps,
-	Steps,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
@@ -36,20 +34,22 @@ import { ModalFilter } from "./components/modalFilter";
 import { DefaultOptionType } from "antd/es/select";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
-import { SelectWithTag } from "app/components/selectWithTag";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import {
 	isSuperadminGlobal,
 	listCheckPermission,
 	tokenDecode,
 } from "app/helper/permission";
-import { checkDefaultOption, removeNullFields } from "app/helper/common";
+import {
+	checkDefaultOption,
+	removeNullFields,
+	valueAndLabelRole,
+} from "app/helper/common";
 
 const MasterWorkflow = () => {
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
-	const [flow, setFlow] = useState<string[]>();
-	const [selectedFlow, setSelectedFlow] = useState(0);
 	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<IWorkflowGetAllParams | undefined>({
 		per_page: 10,
@@ -77,13 +77,7 @@ const MasterWorkflow = () => {
 	>();
 	const [dataOptionRole, setDataOptionRole] = useState<
 		DefaultOptionType[] | undefined
-	>([
-		{ value: 1, label: "Super Admin" },
-		{ value: 2, label: "Pengelola" },
-		{ value: 3, label: "Admin Area" },
-		{ value: 4, label: "Kepala Satuan Kerja" },
-		{ value: 5, label: "User" },
-	]);
+	>(valueAndLabelRole);
 
 	const fetchDataList = async () => {
 		try {
@@ -277,27 +271,6 @@ const MasterWorkflow = () => {
 		setShowModal({ show: false });
 	};
 
-	const generateStepApprocal = useMemo(() => {
-		const items: StepProps[] | undefined = flow?.map((value, index) => ({
-			title: `Step Approve ${index + 1}`,
-			subTitle: "",
-			status: "process",
-			description: value,
-		}));
-
-		return (
-			<Steps
-				type="navigation"
-				current={selectedFlow}
-				onChange={setSelectedFlow}
-				size="small"
-				className="site-navigation-steps"
-				items={items}
-			/>
-		);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [flow, selectedFlow]);
-
 	return (
 		<>
 			<section className="content">
@@ -333,6 +306,7 @@ const MasterWorkflow = () => {
 									)}
 								</Space>
 							}
+							scroll={{ x: 1800 }}
 						/>
 					</div>
 				</div>
@@ -426,9 +400,19 @@ const MasterWorkflow = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item name="description">
+					<Form.Item
+						name="description"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
 						<div className="form-group">
-							<Title level={5}>Deskripsi</Title>
+							<Title level={5}>
+								Deskripsi <span className="text-danger">*</span>
+							</Title>
 							<div className="controls">
 								<Input
 									type="text"
@@ -436,6 +420,41 @@ const MasterWorkflow = () => {
 									className="form-control"
 									onChange={formik.handleChange}
 									value={formik.values.description}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="type"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Tipe Workflow <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									options={[
+										{ value: "permintaan", label: "Permintaan" },
+										{ value: "perbaikan", label: "Perbaikan" },
+										{ value: "pengembalian", label: "Pengembalian" },
+										{ value: "penggantian", label: "Penggantian" },
+										{ value: "perubahan", label: "Perubahan" },
+										{ value: "pemeriksaan", label: "Pemeriksaan" },
+										{ value: "penghapusan", label: "Penghapusan" },
+									]}
+									onChange={(v, opt) => {
+										formik.setFieldValue("type", v);
+										formRef.current?.setFieldsValue({
+											type: v,
+										});
+									}}
+									value={formik.values.type}
 								/>
 							</div>
 						</div>
@@ -454,26 +473,54 @@ const MasterWorkflow = () => {
 								Roles <span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
-								<SelectWithTag
-									mode="multiple"
-									dataOption={dataOptionRole}
-									onChange={(v, opt) => {
-										setFlow(
-											opt.map(o => {
-												return o.label;
-											}),
-										);
-										formik.setFieldValue("roles", v);
-										formRef.current?.setFieldsValue({
-											roles: v,
-										});
-									}}
-									value={formik.values.roles}
-								/>
+								<Form.List name="roles">
+									{(fields, { add, remove }) => (
+										<>
+											{fields.map(field => (
+												<Space
+													key={field.key}
+													align="baseline"
+													style={{
+														width: "50%",
+													}}
+												>
+													<Form.Item
+														{...field}
+														label={"Role"}
+														rules={[
+															{
+																required: true,
+																message: "Harap isi field ini",
+															},
+														]}
+													>
+														<Select
+															options={dataOptionRole}
+															style={{ width: 180 }}
+														/>
+													</Form.Item>
+													<MinusCircleOutlined
+														onClick={() => remove(field.name)}
+													/>
+												</Space>
+											))}
+
+											<Form.Item>
+												<Button
+													type="dashed"
+													onClick={() => add()}
+													block
+													icon={<PlusOutlined />}
+												>
+													Add roles
+												</Button>
+											</Form.Item>
+										</>
+									)}
+								</Form.List>
 							</div>
 						</div>
 					</Form.Item>
-					{generateStepApprocal}
 					<Form.Item
 						name="is_reverse"
 						rules={[

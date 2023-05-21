@@ -47,7 +47,11 @@ import {
 	tokenDecode,
 } from "app/helper/permission";
 import { intersection } from "lodash";
-import { checkDefaultOption, removeNullFields } from "app/helper/common";
+import {
+	checkDefaultOption,
+	removeNullFields,
+	valueAndLabelRole,
+} from "app/helper/common";
 import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 
@@ -109,13 +113,7 @@ const MasterUser = () => {
 	>();
 	const [dataOptionRole, setDataOptionRole] = useState<
 		DefaultOptionType[] | undefined
-	>([
-		{ value: 1, label: "Super Admin" },
-		{ value: 2, label: "Pengelola" },
-		{ value: 3, label: "Admin Area" },
-		{ value: 4, label: "Kepala Satuan Kerja" },
-		{ value: 5, label: "User" },
-	]);
+	>(valueAndLabelRole);
 
 	const formik = useFormik({
 		initialValues: { ...initialValue },

@@ -1,15 +1,25 @@
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { useEffect, useState, useRef, Dispatch, SetStateAction } from "react";
+import {
+	useEffect,
+	useState,
+	useRef,
+	Dispatch,
+	SetStateAction,
+	useMemo,
+} from "react";
 import {
 	Modal as AntdModal,
 	Button,
+	Col,
 	DatePicker,
 	Divider,
 	Form,
 	FormInstance,
+	Image,
 	Input,
 	InputNumber,
+	Row,
 	Select,
 	Tabs,
 	TabsProps,
@@ -40,6 +50,7 @@ const ModalDetail = ({ showModal, setShowModal }: IModalDetail) => {
 	const { TextArea } = Input;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
+	const [linkFile, setLinkFile] = useState<string[]>();
 	const [initialValue, setInitialValue] =
 		useState<NonNullable<IInventoryDetail>>();
 
@@ -61,6 +72,7 @@ const ModalDetail = ({ showModal, setShowModal }: IModalDetail) => {
 	const handleInitialValue = (values: IInventoryDetail) => {
 		const setData = removeNullFields(values);
 		setInitialValue(setData);
+		setLinkFile(setData.upload);
 		formRef.current?.setFieldsValue(setData);
 	};
 
@@ -70,6 +82,26 @@ const ModalDetail = ({ showModal, setShowModal }: IModalDetail) => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showModal]);
+
+	const showFile = useMemo(() => {
+		if (linkFile?.length) {
+			return (
+				<Row
+					gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+					style={{ alignItems: "center" }}
+				>
+					{linkFile.map(link => {
+						return (
+							<Col className="gutter-row" span={6}>
+								<Image width={100} src={link} />
+							</Col>
+						);
+					})}
+				</Row>
+			);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [linkFile]);
 
 	const itemTab: TabsProps["items"] = [
 		{
@@ -626,6 +658,11 @@ const ModalDetail = ({ showModal, setShowModal }: IModalDetail) => {
 					</Form.Item>
 				</>
 			),
+		},
+		{
+			key: "4",
+			label: `File`,
+			children: <>{showFile}</>,
 		},
 	];
 

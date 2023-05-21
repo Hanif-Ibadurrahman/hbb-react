@@ -90,7 +90,7 @@ export const ModalFilter = ({
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
-					<Col span={12}>
+					<Col span={24}>
 						<Form.Item name="date" label="Tanggal">
 							<RangePicker style={{ width: "100%" }} format={"DD-MM-YYYY"} />
 						</Form.Item>

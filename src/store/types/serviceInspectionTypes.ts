@@ -23,6 +23,9 @@ export interface IServiceInspection {
 	current_approver: number | null;
 	reject_status: string | null;
 	is_closed_by: string | null;
+
+	//not yet added
+	transaction_no: string | null;
 }
 
 export interface IServiceInspectionPaginateResponse extends PaginationState {
