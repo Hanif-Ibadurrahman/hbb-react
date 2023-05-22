@@ -24,14 +24,22 @@ const Displacement = () => {
 						<TableSelectionPaginateAndSort
 							title={"Pemindahan"}
 							contentHeader={
-								<button
-									type="button"
-									className="btn btn-primary"
-									data-bs-toggle="modal"
-									data-bs-target="#modal_pindah"
+								<div
+									style={{
+										display: "flex",
+										justifyContent: "end",
+										marginBottom: "1em",
+									}}
 								>
-									Pindah Barang
-								</button>
+									<button
+										type="button"
+										className="btn btn-primary"
+										data-bs-toggle="modal"
+										data-bs-target="#modal_pindah"
+									>
+										Pindah Barang
+									</button>
+								</div>
 							}
 							columns={columns}
 							rowKey={"name_barang"}
