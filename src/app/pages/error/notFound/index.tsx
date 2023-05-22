@@ -1,5 +1,6 @@
 import BackgroundImage from "assets/image/backgroundNotFound.jpg";
 import Image from "assets/image/404.jpg";
+import { Link } from "react-router-dom";
 
 const NotFound = () => {
 	return (
@@ -10,8 +11,7 @@ const NotFound = () => {
 				backgroundPosition: "center",
 				backgroundSize: "cover",
 				backgroundRepeat: "no-repeat",
-				width: "100vw",
-				height: "100vh",
+				height: "80vh",
 			}}
 		>
 			<div className="error-page h-p100">
@@ -23,9 +23,9 @@ const NotFound = () => {
 								<h1>Page Not Found !</h1>
 								<h3>looks like, page doesn't exist</h3>
 								<div className="my-30">
-									<a href="/" className="btn btn-danger">
+									<Link to={"/dashboard"} className="btn btn-danger">
 										Back to dashboard
-									</a>
+									</Link>
 								</div>
 							</div>
 						</div>
