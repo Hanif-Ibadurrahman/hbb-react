@@ -1,6 +1,7 @@
 import { Button } from "antd";
 import { ColumnsType } from "antd/es/table";
-import { redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
+import FeatherIcon from "feather-icons-react";
 
 export const columns = () => {
 	const columnType: ColumnsType<any> = [
@@ -22,50 +23,23 @@ export const columns = () => {
 		},
 		{
 			title: "Action",
+			align: "center",
 			render: (text, record, index) => {
 				switch (record.inventory_type) {
 					case "PERBAIKAN":
-						return (
-							<Button type="link" href="/permintaan-perbaikan">
-								Menuju page
-							</Button>
-						);
+						return <Link to={"/permintaan-perbaikan"}>Menuju page</Link>;
 					case "PERMINTAAN":
-						return (
-							<Button type="link" href="/permintaan-layanan">
-								Menuju page
-							</Button>
-						);
+						return <Link to={"/permintaan-layanan"}>Menuju page</Link>;
 					case "PENGEMBALIAN":
-						return (
-							<Button type="link" href="/permintaan-pengembalian">
-								Menuju page
-							</Button>
-						);
+						return <Link to={"/permintaan-pengembalian"}>Menuju page</Link>;
 					case "PENGGANTIAN":
-						return (
-							<Button type="link" href="/permintaan-penggantian">
-								Menuju page
-							</Button>
-						);
+						return <Link to={"/permintaan-penggantian"}>Menuju page</Link>;
 					case "PERUBAHAN":
-						return (
-							<Button type="link" href="/permintaan-perubahan">
-								Menuju page
-							</Button>
-						);
+						return <Link to={"/permintaan-perubahan"}>Menuju page</Link>;
 					case "PEMERIKSAAN":
-						return (
-							<Button type="link" href="/permintaan-pemeriksaan">
-								Menuju page
-							</Button>
-						);
+						return <Link to={"/permintaan-pemeriksaan"}>Menuju page</Link>;
 					case "PENGHAPUSAN":
-						return (
-							<Button type="link" href="/permintaan-penghapusan">
-								Menuju page
-							</Button>
-						);
+						return <Link to={"/permintaan-penghapusan"}>Menuju page</Link>;
 					default:
 						return (
 							<Button type="primary" danger>
