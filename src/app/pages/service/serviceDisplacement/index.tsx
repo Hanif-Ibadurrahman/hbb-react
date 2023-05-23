@@ -186,7 +186,10 @@ const ServiceDisplacement = () => {
 
 	const fetchDataWorkflow = async () => {
 		try {
-			const response = await getAllWorkflowApi(workflowParams);
+			const response = await getAllWorkflowApi({
+				...workflowParams,
+				type: "pemindahan",
+			});
 			const workflowList = response.data.data.data;
 			setDataOptionWorkflow(
 				workflowList.map(v => ({

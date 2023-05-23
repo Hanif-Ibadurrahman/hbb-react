@@ -97,7 +97,7 @@ export const ModalFilter = ({
 										.toLowerCase()
 										.includes(input.toLowerCase())
 								}
-								options={options.dataOptionBusinessUnit}
+								dataOption={options.dataOptionBusinessUnit}
 								valueOption="label"
 							/>
 						</Form.Item>
@@ -112,7 +112,7 @@ export const ModalFilter = ({
 										.toLowerCase()
 										.includes(input.toLowerCase())
 								}
-								options={options.dataOptionArea}
+								dataOption={options.dataOptionArea}
 								valueOption="label"
 							/>
 						</Form.Item>
@@ -127,7 +127,7 @@ export const ModalFilter = ({
 										.toLowerCase()
 										.includes(input.toLowerCase())
 								}
-								options={options.dataOptionWorkUnit}
+								dataOption={options.dataOptionWorkUnit}
 								valueOption="label"
 							/>
 						</Form.Item>

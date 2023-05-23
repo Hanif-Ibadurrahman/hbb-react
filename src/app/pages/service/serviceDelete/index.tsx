@@ -155,7 +155,10 @@ const ServiceDelete = () => {
 
 	const fetchDataWorkflow = async () => {
 		try {
-			const response = await getAllWorkflowApi(workflowParams);
+			const response = await getAllWorkflowApi({
+				...workflowParams,
+				type: "penghapusan",
+			});
 			const workflowList = response.data.data.data;
 			setDataOptionWorkflow(
 				workflowList.map(v => ({

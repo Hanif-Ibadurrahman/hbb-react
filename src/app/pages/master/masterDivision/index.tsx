@@ -646,9 +646,15 @@ const MasterDivision = () => {
 				setShowModal={setShowFilter}
 				setParams={setParamsFilter}
 				setParamsOption={{
+					setBusinessUnitParams,
+					setAreaParams,
+					setWorkUnitParams,
 					setCompanyParams,
 				}}
 				options={{
+					dataOptionBusinessUnit,
+					dataOptionArea,
+					dataOptionWorkUnit,
 					dataOptionCompany,
 				}}
 			/>

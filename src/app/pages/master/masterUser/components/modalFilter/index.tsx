@@ -97,7 +97,7 @@ export const ModalFilter = ({
 										.toLowerCase()
 										.includes(input.toLowerCase())
 								}
-								options={options.dataOptionBusinessUnit}
+								dataOption={options.dataOptionBusinessUnit}
 								valueOption="label"
 							/>
 						</Form.Item>
@@ -110,7 +110,7 @@ export const ModalFilter = ({
 					<Col span={24}>
 						<Form.Item name="role" label="Role">
 							<SelectWithTag
-								options={options.dataOptionRole}
+								dataOption={options.dataOptionRole}
 								valueOption="label"
 							/>
 						</Form.Item>

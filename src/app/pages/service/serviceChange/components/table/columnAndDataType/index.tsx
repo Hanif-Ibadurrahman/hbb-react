@@ -28,7 +28,7 @@ export const columns = ({
 	const columnType: ColumnsType<IServiceChange> = [
 		{
 			title: "No Transaksi",
-			dataIndex: "transaction_no",
+			dataIndex: "nomor_urut",
 			align: "center",
 			sorter: true,
 		},

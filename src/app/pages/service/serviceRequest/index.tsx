@@ -45,6 +45,16 @@ import {
 	checkDefaultOption,
 	removeNullFields,
 } from "app/helper/common";
+import { IInventoryInWarehouseParams } from "store/types/inventoryTypes";
+import { IAreaGetAllParams } from "store/types/areaTypes";
+import { ILocationGetAllParams } from "store/types/locationTypes";
+import {
+	getAllInventoryInWarehouseApi,
+	getDetailInventoryApi,
+} from "api/inventory";
+import { getAllAreaApi } from "api/area";
+import { getAllLocationApi } from "api/location";
+import { SelectWithTag } from "app/components/selectWithTag";
 
 const ServiceRequest = () => {
 	const tokenDecode = TokenDekode();
@@ -60,6 +70,13 @@ const ServiceRequest = () => {
 			per_page: 10,
 		},
 	);
+	const [inventoryInWarehouseParams, setInventoryInWarehouseParams] = useState<
+		IInventoryInWarehouseParams | undefined
+	>();
+	const [areaParams, setAreaParams] = useState<IAreaGetAllParams | undefined>();
+	const [locationParams, setLocationParams] = useState<
+		ILocationGetAllParams | undefined
+	>();
 	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
 		show: false,
 	});
@@ -80,6 +97,20 @@ const ServiceRequest = () => {
 	const [dataOptionWorkflow, setDataOptionWorkflow] = useState<
 		DefaultOptionType[] | undefined
 	>();
+	const [dataOptionInventoryInWarehouse, setDataOptionInventoryInWarehouse] =
+		useState<DefaultOptionType[] | undefined>();
+	const [dataOptionArea, setDataOptionArea] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionLocation, setDataOptionLocation] = useState<
+		DefaultOptionType[] | undefined
+	>();
+
+	const formik = useFormik({
+		initialValues: { ...initialValue },
+		enableReinitialize: true,
+		onSubmit: values => {},
+	});
 
 	const handleFile = (event: SyntheticEvent) => {
 		const target = event.nativeEvent.target as HTMLInputElement;
@@ -97,9 +128,74 @@ const ServiceRequest = () => {
 		}
 	};
 
+	const fetchDataArea = async () => {
+		try {
+			const response = await getAllAreaApi(areaParams);
+			const areaList = response.data.data;
+			setDataOptionArea(areaList.map(v => ({ label: v.name, value: v.name })));
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataLocation = async () => {
+		try {
+			const response = await getAllLocationApi({
+				...locationParams,
+				area: formik.values.area?.toString().toLowerCase(),
+			});
+			const locationList = response.data.data;
+			setDataOptionLocation(
+				locationList.map(v => ({ label: v.name, value: v.name })),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataInventoryInWarehouse = async () => {
+		try {
+			const availableInventory = {
+				search: formik.values.location?.toString().toLowerCase(),
+			};
+			const response = await getAllInventoryInWarehouseApi(availableInventory);
+			const inventoryList = response.data.data.data;
+			setDataOptionInventoryInWarehouse(
+				inventoryList.map(v => ({
+					label: `${v.name} - ${v.code}`,
+					value: `${v.code}`,
+				})),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataInventoryDetail = async (search: string) => {
+		try {
+			const response = await getAllInventoryInWarehouseApi({ search });
+			const detail = response.data.data;
+			setDataOptionInventoryInWarehouse(
+				dataOptionInventoryInWarehouse?.concat({
+					label: `${detail.name} - ${detail.code}`,
+					value: `${detail.code}`,
+				}),
+			);
+			formik.setFieldValue("area", detail.area_name);
+			formRef.current?.setFieldsValue({ area: detail.area_name });
+			formik.setFieldValue("location", detail.lokasi_name);
+			formRef.current?.setFieldsValue({ location: detail.lokasi_name });
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
 	const fetchDataWorkflow = async () => {
 		try {
-			const response = await getAllWorkflowApi(workflowParams);
+			const response = await getAllWorkflowApi({
+				...workflowParams,
+				type: "permintaan",
+			});
 			const workflowList = response.data.data.data;
 			setDataOptionWorkflow(
 				workflowList.map(v => ({
@@ -148,6 +244,26 @@ const ServiceRequest = () => {
 	};
 
 	useEffect(() => {
+		fetchDataInventoryInWarehouse();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [inventoryInWarehouseParams]);
+
+	useEffect(() => {
+		fetchDataArea();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [areaParams]);
+
+	useEffect(() => {
+		fetchDataArea();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [areaParams]);
+
+	useEffect(() => {
+		fetchDataLocation();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [locationParams]);
+
+	useEffect(() => {
 		fetchDataWorkflow();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [workflowParams]);
@@ -172,22 +288,50 @@ const ServiceRequest = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showModal]);
 
+	useEffect(() => {
+		const area = formik.values.area;
+		if (area) {
+			const isInitialValueUndefined = initialValue?.area === undefined;
+			if (isInitialValueUndefined || area !== initialValue.area) {
+				formik.setFieldValue("location", undefined);
+				formRef.current?.setFieldsValue({ location: undefined });
+			}
+			fetchDataLocation();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.area]);
+
+	useEffect(() => {
+		const location = formik.values.location;
+		if (location) {
+			const isInitialValueUndefined = initialValue?.location === undefined;
+			if (isInitialValueUndefined || location !== initialValue.location) {
+				formik.setFieldValue("inventory_code", undefined);
+				formRef.current?.setFieldsValue({ inventory_code: undefined });
+			}
+			fetchDataInventoryInWarehouse();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.location]);
+
 	const handleInitialValue = (values: IServiceRequest) => {
 		const setData = removeNullFields(values);
 		if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
 			fetchDataWorkflowDetail(setData.id_workflow);
+		}
+		if (
+			!checkDefaultOption(
+				dataOptionInventoryInWarehouse!,
+				setData.inventory_code,
+			)
+		) {
+			fetchDataInventoryDetail(setData.inventory_code);
 		}
 		setInitialValue(setData);
 		formRef.current?.setFieldsValue(setData);
 		setFiles(null);
 		setFileList(null);
 	};
-
-	const formik = useFormik({
-		initialValues: { ...initialValue },
-		enableReinitialize: true,
-		onSubmit: values => {},
-	});
 
 	const handleApprove = (id: number) => {
 		const swalCustom = Swal.mixin({
@@ -478,6 +622,89 @@ const ServiceRequest = () => {
 			>
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
+					<Form.Item name="area">
+						<div className="form-group">
+							<Title level={5}>Area</Title>
+							<div className="controls">
+								<SelectWithTag
+									showSearch
+									onSearch={v => setAreaParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									dataOption={dataOptionArea}
+									onChange={(v, opt) => {
+										formik.setFieldValue("area", v.slice(0, 1));
+										formRef.current?.setFieldsValue({
+											area: v.slice(0, 1),
+										});
+									}}
+									value={formik.values.area}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item name="location">
+						<div className="form-group">
+							<Title level={5}>Lokasi</Title>
+							<div className="controls">
+								<SelectWithTag
+									showSearch
+									onSearch={v => setLocationParams({ lokasi: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									dataOption={dataOptionLocation}
+									onChange={(v, opt) => {
+										formik.setFieldValue("location", v.slice(0, 1));
+										formRef.current?.setFieldsValue({
+											location: v.slice(0, 1),
+										});
+									}}
+									value={formik.values.location}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
+						name="inventory_code"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								No HBB/Inventaris
+								<span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setInventoryInWarehouseParams({ search: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionInventoryInWarehouse}
+									onChange={(v, opt) => {
+										formik.setFieldValue("inventory_code", v);
+										formRef.current?.setFieldsValue({
+											inventory_code: v,
+										});
+									}}
+									value={formik.values.inventory_code}
+								/>
+							</div>
+						</div>
+					</Form.Item>
 					<Form.Item name="inventory_description">
 						<div className="form-group">
 							<Title level={5}>Deskripsi Inventaris</Title>
@@ -564,31 +791,6 @@ const ServiceRequest = () => {
 									placeholder="Kondisi"
 									onChange={formik.handleChange}
 									value={formik.values.condition}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
-						name="spesification"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Spesifikasi <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Input
-									type="text"
-									name="spesification"
-									className="form-control"
-									placeholder="Spesifikasi"
-									onChange={formik.handleChange}
-									value={formik.values.spesification}
 								/>
 							</div>
 						</div>

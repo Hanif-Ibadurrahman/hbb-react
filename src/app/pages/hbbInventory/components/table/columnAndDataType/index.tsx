@@ -58,7 +58,7 @@ export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 			render: (text, record, index) => {
 				switch (text) {
 					case 1:
-						return "Inventory";
+						return "Inventaris";
 					case 2:
 						return "Hbb";
 					default:

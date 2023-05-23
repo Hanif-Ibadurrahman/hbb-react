@@ -1,5 +1,4 @@
 import { PaginationState } from "./paginationTypes";
-
 export interface IServiceReplacement {
 	id: number;
 	inventory_code: string | null;
@@ -24,10 +23,7 @@ export interface IServiceReplacement {
 	reject_status: string | null;
 	is_closed_by: string | null;
 
-	// not yet added
-	id_area: number | null;
-	id_location: number | null;
-	transaction_no: string | null;
+	nomor_urut: string | null;
 }
 
 export interface IServiceReplacementPaginateResponse extends PaginationState {
@@ -48,6 +44,7 @@ export interface IServiceReplacementGetAllParams {
 
 export interface ICreateServiceReplacementRequest {
 	inventory_code: string;
+	inventory_return: string;
 	spesification: string;
 	description: string;
 	condition: string;
@@ -58,12 +55,13 @@ export interface ICreateServiceReplacementRequest {
 	files: any | null;
 
 	// not yet added
-	id_area: number;
-	id_location: number;
+	area: string;
+	location: string;
 }
 
 export interface IUpdateServiceReplacementRequest {
 	inventory_code: string;
+	inventory_return: string;
 	spesification: string;
 	description: string;
 	condition: string;
@@ -75,8 +73,8 @@ export interface IUpdateServiceReplacementRequest {
 	_method: string;
 
 	// not yet added
-	id_area: number;
-	id_location: number;
+	area: string;
+	location: string;
 }
 
 export interface IServiceReplacementGetAllResponse {

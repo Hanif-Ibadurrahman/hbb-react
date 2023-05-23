@@ -23,23 +23,21 @@ export const ModalFilter = ({
 	const generateContent = useMemo(() => {
 		if (isSuperadminGlobal) {
 			return (
-				<Row gutter={16}>
-					<Col span={24}>
-						<Form.Item name="company" label="Perusahaan">
-							<SelectWithTag
-								showSearch
-								onSearch={v => setParamsOption.setCompanyParams({ name: v })}
-								filterOption={(input, option) =>
-									(`${option?.label}` ?? "")
-										.toLowerCase()
-										.includes(input.toLowerCase())
-								}
-								dataOption={options.dataOptionCompany}
-								valueOption="label"
-							/>
-						</Form.Item>
-					</Col>
-				</Row>
+				<Col span={24}>
+					<Form.Item name="company" label="Perusahaan">
+						<SelectWithTag
+							showSearch
+							onSearch={v => setParamsOption.setCompanyParams({ name: v })}
+							filterOption={(input, option) =>
+								(`${option?.label}` ?? "")
+									.toLowerCase()
+									.includes(input.toLowerCase())
+							}
+							dataOption={options.dataOptionCompany}
+							valueOption="label"
+						/>
+					</Form.Item>
+				</Col>
 			);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -87,17 +85,54 @@ export const ModalFilter = ({
 				<Row gutter={16}>
 					{generateContent}
 					<Col span={24}>
+						<Form.Item name="bisnis_unit" label="Bisnis Unit">
+							<SelectWithTag
+								showSearch
+								onSearch={v =>
+									setParamsOption.setBusinessUnitParams({ name: v })
+								}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								dataOption={options.dataOptionBusinessUnit}
+								valueOption="label"
+							/>
+						</Form.Item>
+					</Col>
+					<Col span={24}>
+						<Form.Item name="area" label="Area">
+							<SelectWithTag
+								showSearch
+								onSearch={v => setParamsOption.setAreaParams({ name: v })}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								dataOption={options.dataOptionArea}
+								valueOption="label"
+							/>
+						</Form.Item>
+					</Col>
+					<Col span={24}>
+						<Form.Item name="satker" label="Satuan Kerja">
+							<SelectWithTag
+								showSearch
+								onSearch={v => setParamsOption.setWorkUnitParams({ satker: v })}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								dataOption={options.dataOptionWorkUnit}
+								valueOption="label"
+							/>
+						</Form.Item>
+					</Col>
+					<Col span={24}>
 						<Form.Item name="name" label="Nama Divisi">
-							<SelectWithTag />
-						</Form.Item>
-					</Col>
-					<Col span={24}>
-						<Form.Item name="satker" label="Nama Satuan Kerja">
-							<SelectWithTag />
-						</Form.Item>
-					</Col>
-					<Col span={24}>
-						<Form.Item name="kepala_satker" label="Nama Kepala Satuan Kerja">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>

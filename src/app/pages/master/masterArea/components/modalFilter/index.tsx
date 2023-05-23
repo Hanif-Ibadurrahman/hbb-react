@@ -97,7 +97,7 @@ export const ModalFilter = ({
 										.toLowerCase()
 										.includes(input.toLowerCase())
 								}
-								options={options.dataOptionBusinessUnit}
+								dataOption={options.dataOptionBusinessUnit}
 								valueOption="label"
 							/>
 						</Form.Item>

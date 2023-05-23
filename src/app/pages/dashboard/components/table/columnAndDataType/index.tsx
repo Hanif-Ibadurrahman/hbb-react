@@ -14,10 +14,6 @@ export const columns = () => {
 			dataIndex: "inventory_type",
 		},
 		{
-			title: "Catatan",
-			dataIndex: "note",
-		},
-		{
 			title: "Tanggal dibuat",
 			dataIndex: "created_at",
 		},
