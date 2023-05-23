@@ -147,7 +147,10 @@ const ServiceRepair = () => {
 
 	const fetchDataWorkflow = async () => {
 		try {
-			const response = await getAllWorkflowApi(workflowParams);
+			const response = await getAllWorkflowApi({
+				...workflowParams,
+				type: "perbaikan",
+			});
 			const workflowList = response.data.data.data;
 			setDataOptionWorkflow(
 				workflowList.map(v => ({

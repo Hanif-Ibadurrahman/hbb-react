@@ -99,6 +99,7 @@ export const ModalFilter = ({
 		>
 			<Form form={formFilter} layout="vertical" onFinish={handleSubmit}>
 				<Row gutter={16}>
+					{generateContent}
 					<Col span={12}>
 						<Form.Item name="inventory_type" label="Jenis Barang">
 							<SelectWithTag
@@ -189,7 +190,17 @@ export const ModalFilter = ({
 					</Col>
 					<Col span={12}>
 						<Form.Item name="color" label="Warna">
-							<SelectWithTag />
+							<SelectWithTag
+								showSearch
+								onSearch={v => setParamsOption.setColorParams({ color: v })}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								dataOption={options.dataOptionColor}
+								valueOption="label"
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={12}>
@@ -249,7 +260,7 @@ export const ModalFilter = ({
 										.toLowerCase()
 										.includes(input.toLowerCase())
 								}
-								options={options.dataOptionBusinessUnit}
+								dataOption={options.dataOptionBusinessUnit}
 								valueOption="label"
 							/>
 						</Form.Item>
@@ -264,7 +275,7 @@ export const ModalFilter = ({
 										.toLowerCase()
 										.includes(input.toLowerCase())
 								}
-								options={options.dataOptionArea}
+								dataOption={options.dataOptionArea}
 								valueOption="label"
 							/>
 						</Form.Item>
@@ -279,7 +290,7 @@ export const ModalFilter = ({
 										.toLowerCase()
 										.includes(input.toLowerCase())
 								}
-								options={options.dataOptionWorkUnit}
+								dataOption={options.dataOptionWorkUnit}
 								valueOption="label"
 							/>
 						</Form.Item>
@@ -294,7 +305,7 @@ export const ModalFilter = ({
 										.toLowerCase()
 										.includes(input.toLowerCase())
 								}
-								options={options.dataOptionLocation}
+								dataOption={options.dataOptionLocation}
 								valueOption="label"
 							/>
 						</Form.Item>
@@ -314,7 +325,7 @@ export const ModalFilter = ({
 										.toLowerCase()
 										.includes(input.toLowerCase())
 								}
-								options={options.dataOptionCondition}
+								dataOption={options.dataOptionCondition}
 								valueOption="label"
 							/>
 						</Form.Item>
@@ -337,7 +348,6 @@ export const ModalFilter = ({
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
-					{generateContent}
 				</Row>
 			</Form>
 		</Drawer>

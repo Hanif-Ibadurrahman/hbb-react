@@ -42,8 +42,7 @@ export interface IServiceDelete {
 	reject_status: string | null;
 	is_closed_by: string | null;
 
-	//not yet added
-	transaction_no: string | null;
+	nomor_urut: string | null;
 }
 
 export interface IServiceDeletePaginateResponse extends PaginationState {

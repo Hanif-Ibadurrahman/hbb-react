@@ -49,6 +49,8 @@ export interface IItemGetAllParams {
 	satuan?: string;
 	company?: string;
 	id_company?: number;
+	id_main_group?: number;
+	id_sub_group?: number;
 }
 
 export interface ICreateItemRequest {

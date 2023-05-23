@@ -362,9 +362,9 @@ const HbbInventory = () => {
 				...subCodeGroupParams,
 				id_company: formik.values.id_company,
 			});
-			const areaList = response.data.data;
+			const subGroupList = response.data.data;
 			setDataOptionSubCodeGroup(
-				areaList.map(v => ({ label: v.value, value: v.id })),
+				subGroupList.map(v => ({ label: v.value, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -443,6 +443,8 @@ const HbbInventory = () => {
 			const response = await getAllItemApi({
 				...itemParams,
 				id_company: formik.values.id_company,
+				id_main_group: formik.values.id_main_group,
+				id_sub_group: formik.values.id_sub_group,
 			});
 			const itemList = response.data.data.data;
 			setDataOptionItem(itemList.map(v => ({ label: v.name, value: v.id })));
@@ -467,6 +469,8 @@ const HbbInventory = () => {
 		try {
 			const response = await getDetailItemApi(id);
 			const detail = response.data.data;
+			delete detail.id_main_group;
+			delete detail.id_sub_group;
 			delete detail.id_company;
 			delete detail.id_area;
 
@@ -531,7 +535,6 @@ const HbbInventory = () => {
 				id_company: formik.values.id_company,
 				id_bisnis_unit: formik.values.id_bisnis_unit,
 				id_area: formik.values.id_area,
-				id_division: formik.values.id_division,
 			});
 			const locationList = response.data.data;
 			setDataOptionLocation(
@@ -814,6 +817,8 @@ const HbbInventory = () => {
 			});
 		}
 
+		fetchDataItem();
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [formik.values.id_main_group]);
 
@@ -890,19 +895,6 @@ const HbbInventory = () => {
 	}, [formik.values.id_bisnis_unit]);
 
 	useEffect(() => {
-		const areaId = formik.values.id_area;
-		if (areaId) {
-			const isInitialValueUndefined = initialValue?.id_satker === undefined;
-			if (isInitialValueUndefined || areaId !== initialValue.id_satker) {
-				formik.setFieldValue("id_division", undefined);
-				formRef.current?.setFieldsValue({ id_division: undefined });
-			}
-			fetchDataDivision();
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [formik.values.id_satker]);
-
-	useEffect(() => {
 		const workUnitId = formik.values.id_satker;
 		if (workUnitId) {
 			const isInitialValueUndefined = initialValue?.id_satker === undefined;
@@ -917,33 +909,33 @@ const HbbInventory = () => {
 
 	useEffect(() => {
 		const areaId = formik.values.id_area;
-		const divisionId = formik.values.id_division;
-
-		const resetLocation = () => {
-			formik.setFieldValue("id_location", undefined);
-			formRef.current?.setFieldsValue({ id_location: undefined });
-		};
 
 		if (areaId) {
 			const isInitialValueUndefined = initialValue?.id_area === undefined;
 			if (isInitialValueUndefined || areaId !== initialValue.id_area) {
-				resetLocation();
+				formik.setFieldValue("id_location", undefined);
+				formRef.current?.setFieldsValue({ id_location: undefined });
 				formik.setFieldValue("id_satker", undefined);
-				formRef.current?.setFieldsValue({ id_setker: undefined });
+				formRef.current?.setFieldsValue({ id_satker: undefined });
 			}
 			fetchDataWorkUnit();
 			fetchDataLocation();
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_area]);
 
-		if (divisionId) {
-			const isInitialValueUndefined = initialValue?.id_satker === undefined;
-			if (isInitialValueUndefined || divisionId !== initialValue.id_satker) {
-				resetLocation();
+	useEffect(() => {
+		const subGroupId = formik.values.id_sub_group;
+		if (subGroupId) {
+			const isInitialValueUndefined = initialValue?.id_sub_group === undefined;
+			if (isInitialValueUndefined || subGroupId !== initialValue.id_sub_group) {
+				formik.setFieldValue("id_barang", undefined);
+				formRef.current?.setFieldsValue({ id_barang: undefined });
 			}
-			fetchDataLocation();
+			fetchDataItem();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [formik.values.id_area, formik.values.id_division]);
+	}, [formik.values.id_sub_group]);
 
 	useEffect(() => {
 		fetchDataCompany();
@@ -1321,30 +1313,6 @@ const HbbInventory = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item name="id_division">
-						<div className="form-group">
-							<Title level={5}>Divisi</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setDivisionParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionDivision}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_division", v);
-										formRef.current?.setFieldsValue({
-											id_division: v,
-										});
-									}}
-									value={formik.values.id_division}
-								/>
-							</div>
-						</div>
-					</Form.Item>
 					<Form.Item
 						name="id_location"
 						rules={[
@@ -1375,6 +1343,30 @@ const HbbInventory = () => {
 										});
 									}}
 									value={formik.values.id_location}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item name="id_division">
+						<div className="form-group">
+							<Title level={5}>Divisi</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setDivisionParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionDivision}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_division", v);
+										formRef.current?.setFieldsValue({
+											id_division: v,
+										});
+									}}
+									value={formik.values.id_division}
 								/>
 							</div>
 						</div>
@@ -2139,6 +2131,7 @@ const HbbInventory = () => {
 					setAreaParams,
 					setWorkUnitParams,
 					setLocationParams,
+					setColorParams,
 					setConditionParams,
 					setCompanyParams,
 				}}
@@ -2149,6 +2142,7 @@ const HbbInventory = () => {
 					dataOptionArea,
 					dataOptionWorkUnit,
 					dataOptionLocation,
+					dataOptionColor,
 					dataOptionCondition,
 					dataOptionCompany,
 				}}

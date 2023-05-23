@@ -113,7 +113,10 @@ const MasterItem = () => {
 
 	const fetchDataCodeGroup = async () => {
 		try {
-			const response = await getAllCodeGroupApi(codeGroupParams);
+			const response = await getAllCodeGroupApi({
+				...codeGroupParams,
+				id_company: formik.values.id_company,
+			});
 			const codeGroupList = response.data.data;
 			setDataOptionCodeGroup(
 				codeGroupList.map(v => ({ label: v.value, value: v.id })),
@@ -137,7 +140,10 @@ const MasterItem = () => {
 
 	const fetchDataSubCodeGroup = async (id: number) => {
 		try {
-			const response = await getAllSubCodeGroupApi(id, subCodeGroupParams);
+			const response = await getAllSubCodeGroupApi(id, {
+				...subCodeGroupParams,
+				id_company: formik.values.id_company,
+			});
 			const subGroupList = response.data.data;
 			setDataOptionSubCodeGroup(
 				subGroupList.map(v => ({ label: v.value, value: v.id })),
@@ -188,7 +194,10 @@ const MasterItem = () => {
 
 	const fetchDataColor = async () => {
 		try {
-			const response = await getAllColorApi(colorParams);
+			const response = await getAllColorApi({
+				...colorParams,
+				id_company: formik.values.id_company,
+			});
 			const colorList = response.data.data;
 			setDataOptionColor(
 				colorList.map(v => ({ label: v.name, value: `${v.id}` })),
@@ -314,6 +323,22 @@ const MasterItem = () => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showModal]);
+
+	useEffect(() => {
+		const companyId = formik.values.id_company;
+		if (companyId) {
+			const isUndefinedCompanyId = initialValue?.id_company === undefined;
+			if (isUndefinedCompanyId || companyId !== initialValue.id_company) {
+				formik.setFieldValue("id_main_group", undefined);
+				formRef.current?.setFieldsValue({ id_main_group: undefined });
+				formik.setFieldValue("warna", undefined);
+				formRef.current?.setFieldsValue({ warna: undefined });
+			}
+			fetchDataCodeGroup();
+			fetchDataColor();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_company]);
 
 	const handleAdd = () => {
 		setShowModal({ show: true });

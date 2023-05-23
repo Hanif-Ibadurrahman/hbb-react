@@ -14,11 +14,6 @@ interface IColumn {
 export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 	const columnType: ColumnsType<IDivision> = [
 		{
-			title: "Nama Divisi",
-			dataIndex: "name",
-			sorter: true,
-		},
-		{
 			title: "Bisnis Unit",
 			sorter: true,
 			render: (text, record, index) => {
@@ -38,6 +33,11 @@ export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 			render: (text, record, index) => {
 				return record.satker?.name;
 			},
+		},
+		{
+			title: "Nama Divisi",
+			dataIndex: "name",
+			sorter: true,
 		},
 		{
 			title: "Perusahaan",

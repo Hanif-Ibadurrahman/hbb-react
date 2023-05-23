@@ -147,7 +147,10 @@ const ServiceChange = () => {
 
 	const fetchDataWorkflow = async () => {
 		try {
-			const response = await getAllWorkflowApi(workflowParams);
+			const response = await getAllWorkflowApi({
+				...workflowParams,
+				type: "perubahan",
+			});
 			const workflowList = response.data.data.data;
 			setDataOptionWorkflow(
 				workflowList.map(v => ({

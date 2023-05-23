@@ -23,8 +23,9 @@ export interface IWorkflowGetAllParams {
 	sort?: string;
 	name?: string;
 	description?: string;
-	created_at?: string;
 	roles?: number[];
+	type?: string;
+	created_at?: string;
 }
 export interface ICreateWorkflowRequest {
 	name: string;

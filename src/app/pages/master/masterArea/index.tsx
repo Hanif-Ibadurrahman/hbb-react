@@ -123,7 +123,10 @@ const MasterArea = () => {
 
 	const fetchDataEmployee = async () => {
 		try {
-			const response = await getAllEmployeeApi(employeeParams);
+			const response = await getAllEmployeeApi({
+				...employeeParams,
+				id_company: formik.values.id_company,
+			});
 			const employeeList = response.data.data.data;
 			setDataOptionEmployee(
 				employeeList.map(v => ({ label: v.emp_name, value: v.id })),
@@ -266,8 +269,11 @@ const MasterArea = () => {
 			if (isInitialValueUndefined || companyId !== initialValue.id_company) {
 				formik.setFieldValue("id_bisnis_unit", undefined);
 				formRef.current?.setFieldsValue({ id_bisnis_unit: undefined });
+				formik.setFieldValue("id_emp", undefined);
+				formRef.current?.setFieldsValue({ id_emp: undefined });
 			}
 			fetchDataBusinessUnit();
+			fetchDataEmployee();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [formik.values.id_company]);

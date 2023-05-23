@@ -52,6 +52,7 @@ import { getAllLocationApi, getDetailLocationApi } from "api/location";
 import { ILocationGetAllParams } from "store/types/locationTypes";
 import { IAreaGetAllParams } from "store/types/areaTypes";
 import { getAllAreaApi, getDetailAreaApi } from "api/area";
+import { SelectWithTag } from "app/components/selectWithTag";
 
 const ServiceReplacement = () => {
 	const tokenDecode = TokenDekode();
@@ -178,7 +179,8 @@ const ServiceReplacement = () => {
 			const availableInventory = {
 				...availableInventoryParams,
 				status: 1,
-				id_location: formik.values.id_location,
+				area: formik.values.area?.toString().toLowerCase(),
+				location: formik.values.location?.toString().toLowerCase(),
 			};
 			const response = await getAllInventoryApi(availableInventory);
 			const inventoryList = response.data.data.data;
@@ -212,19 +214,7 @@ const ServiceReplacement = () => {
 		try {
 			const response = await getAllAreaApi(areaParams);
 			const areaList = response.data.data;
-			setDataOptionArea(areaList.map(v => ({ label: v.name, value: v.id })));
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataAreaDetail = async (id: number) => {
-		try {
-			const response = await getDetailAreaApi(id);
-			const detail = response.data.data;
-			setDataOptionArea(
-				dataOptionArea?.concat({ label: detail.name, value: detail.id }),
-			);
+			setDataOptionArea(areaList.map(v => ({ label: v.name, value: v.name })));
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -234,23 +224,11 @@ const ServiceReplacement = () => {
 		try {
 			const response = await getAllLocationApi({
 				...locationParams,
-				id_area: formik.values.id_area,
+				area: formik.values.area?.toString().toLowerCase(),
 			});
 			const locationList = response.data.data;
 			setDataOptionLocation(
-				locationList.map(v => ({ label: v.name, value: v.id })),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataLocationDetail = async (id: number) => {
-		try {
-			const response = await getDetailLocationApi(id);
-			const detail = response.data.data;
-			setDataOptionLocation(
-				dataOptionLocation?.concat({ label: detail.name, value: detail.id }),
+				locationList.map(v => ({ label: v.name, value: v.name })),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -259,7 +237,10 @@ const ServiceReplacement = () => {
 
 	const fetchDataWorkflow = async () => {
 		try {
-			const response = await getAllWorkflowApi(workflowParams);
+			const response = await getAllWorkflowApi({
+				...workflowParams,
+				type: "penggantian",
+			});
 			const workflowList = response.data.data.data;
 			setDataOptionWorkflow(
 				workflowList.map(v => ({
@@ -315,12 +296,6 @@ const ServiceReplacement = () => {
 		if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
 			fetchDataWorkflowDetail(setData.id_workflow);
 		}
-		if (!checkDefaultOption(dataOptionArea!, setData.id_area)) {
-			fetchDataAreaDetail(setData.id_area);
-		}
-		if (!checkDefaultOption(dataOptionLocation!, setData.id_location)) {
-			fetchDataLocationDetail(setData.id_location);
-		}
 		setInitialValue(setData);
 		formRef.current?.setFieldsValue(setData);
 		setFiles(null);
@@ -373,17 +348,31 @@ const ServiceReplacement = () => {
 	}, [showModal]);
 
 	useEffect(() => {
-		const areaId = formik.values.id_area;
-		if (areaId) {
-			const isInitialValueUndefined = initialValue?.id_area === undefined;
-			if (isInitialValueUndefined || areaId !== initialValue.id_area) {
-				formik.setFieldValue("id_location", undefined);
-				formRef.current?.setFieldsValue({ id_location: undefined });
+		const area = formik.values.area;
+		if (area) {
+			const isInitialValueUndefined = initialValue?.area === undefined;
+			if (isInitialValueUndefined || area !== initialValue.area) {
+				formik.setFieldValue("location", undefined);
+				formRef.current?.setFieldsValue({ location: undefined });
 			}
+			fetchDataAvailableInventory();
 			fetchDataLocation();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [formik.values.id_area]);
+	}, [formik.values.area]);
+
+	useEffect(() => {
+		const location = formik.values.location;
+		if (location) {
+			const isInitialValueUndefined = initialValue?.location === undefined;
+			if (isInitialValueUndefined || location !== initialValue.location) {
+				formik.setFieldValue("inventory_code", undefined);
+				formRef.current?.setFieldsValue({ inventory_code: undefined });
+			}
+			fetchDataAvailableInventory();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.location]);
 
 	const handleApprove = (id: number) => {
 		const swalCustom = Swal.mixin({
@@ -677,7 +666,7 @@ const ServiceReplacement = () => {
 				<Form form={form} ref={formRef} onFinish={onFinish}>
 					<Divider />
 					<Form.Item
-						name="inventory_code"
+						name="inventory_return"
 						rules={[
 							{
 								required: true,
@@ -701,21 +690,21 @@ const ServiceReplacement = () => {
 									}
 									options={dataOptionInventory}
 									onChange={(v, opt) => {
-										formik.setFieldValue("inventory_code", v);
+										formik.setFieldValue("inventory_return", v);
 										formRef.current?.setFieldsValue({
-											inventory_code: v,
+											inventory_return: v,
 										});
 									}}
-									value={formik.values.inventory_code}
+									value={formik.values.inventory_return}
 								/>
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item name="id_area">
+					<Form.Item name="area">
 						<div className="form-group">
 							<Title level={5}>Area</Title>
 							<div className="controls">
-								<Select
+								<SelectWithTag
 									showSearch
 									onSearch={v => setAreaParams({ name: v })}
 									filterOption={(input, option) =>
@@ -723,23 +712,23 @@ const ServiceReplacement = () => {
 											.toLowerCase()
 											.includes(input.toLowerCase())
 									}
-									options={dataOptionArea}
+									dataOption={dataOptionArea}
 									onChange={(v, opt) => {
-										formik.setFieldValue("id_area", v);
+										formik.setFieldValue("area", v.slice(0, 1));
 										formRef.current?.setFieldsValue({
-											id_area: v,
+											area: v.slice(0, 1),
 										});
 									}}
-									value={formik.values.id_area}
+									value={formik.values.area}
 								/>
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item name="id_location">
+					<Form.Item name="location">
 						<div className="form-group">
 							<Title level={5}>Lokasi</Title>
 							<div className="controls">
-								<Select
+								<SelectWithTag
 									showSearch
 									onSearch={v => setLocationParams({ lokasi: v })}
 									filterOption={(input, option) =>
@@ -747,14 +736,14 @@ const ServiceReplacement = () => {
 											.toLowerCase()
 											.includes(input.toLowerCase())
 									}
-									options={dataOptionLocation}
+									dataOption={dataOptionLocation}
 									onChange={(v, opt) => {
-										formik.setFieldValue("id_location", v);
+										formik.setFieldValue("location", v.slice(0, 1));
 										formRef.current?.setFieldsValue({
-											id_location: v,
+											location: v.slice(0, 1),
 										});
 									}}
-									value={formik.values.id_location}
+									value={formik.values.location}
 								/>
 							</div>
 						</div>

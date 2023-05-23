@@ -142,6 +142,10 @@ export interface IInventoryGetAllParams {
 	status?: number;
 }
 
+export interface IInventoryInWarehouseParams {
+	search?: string;
+}
+
 export interface ICreateInventoryRequest {
 	id_company: number;
 	inventory_type?: number;

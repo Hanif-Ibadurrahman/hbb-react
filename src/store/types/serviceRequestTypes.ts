@@ -42,8 +42,7 @@ export interface IServiceRequest {
 	reject_status: string | null;
 	is_closed_by: string | null;
 
-	//not yet added
-	transaction_no: string | null;
+	nomor_urut: string | null;
 }
 export interface IServiceRequestPaginateResponse extends PaginationState {
 	data: IServiceRequest[];
@@ -59,6 +58,7 @@ export interface IServiceRequestGetAllParams {
 	spesification?: string;
 }
 export interface ICreateServiceRequestRequest {
+	inventory_code: string;
 	inventory_description: string;
 	uraian: string;
 	condition: string;
@@ -68,8 +68,13 @@ export interface ICreateServiceRequestRequest {
 	id_workflow: number;
 	created_by: number;
 	files: any | null;
+
+	// not yet added
+	area: string;
+	location: string;
 }
 export interface IUpdateServiceRequestRequest {
+	inventory_code: string;
 	inventory_description: string;
 	uraian: string;
 	condition: string;
@@ -80,6 +85,10 @@ export interface IUpdateServiceRequestRequest {
 	created_by: number;
 	files: any | null;
 	_method: string;
+
+	// not yet added
+	area: string;
+	location: string;
 }
 export interface IServiceRequestGetAllResponse {
 	status: string;
