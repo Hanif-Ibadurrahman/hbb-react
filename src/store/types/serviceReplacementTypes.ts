@@ -45,7 +45,6 @@ export interface IServiceReplacementGetAllParams {
 export interface ICreateServiceReplacementRequest {
 	inventory_code: string;
 	inventory_return: string;
-	spesification: string;
 	description: string;
 	condition: string;
 	emp_name: string;
@@ -62,7 +61,6 @@ export interface ICreateServiceReplacementRequest {
 export interface IUpdateServiceReplacementRequest {
 	inventory_code: string;
 	inventory_return: string;
-	spesification: string;
 	description: string;
 	condition: string;
 	emp_name: string;

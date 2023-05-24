@@ -67,7 +67,7 @@ export function App() {
 						path="permintaan-penghapusan"
 						element={<ServiceDeletePage />}
 					/>
-					<Route path="cetak-barcode" element={<PrintBarcodePage />} />
+					{/* <Route path="cetak-barcode" element={<PrintBarcodePage />} /> */}
 					<Route
 						path="daftar-inventaris-ruangan"
 						element={<RoomInventoryPage />}

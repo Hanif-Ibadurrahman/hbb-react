@@ -45,7 +45,6 @@ export interface ICreateServiceReturnRequest {
 	inventory_code: string;
 	description: string;
 	condition: string;
-	emp_name: string;
 	id_company: number;
 	id_workflow: number;
 	created_by: number;
@@ -56,7 +55,6 @@ export interface IUpdateServiceReturnRequest {
 	inventory_code: string;
 	description: string;
 	condition: string;
-	emp_name: string;
 	id_company: number;
 	id_workflow: number;
 	created_by: number;

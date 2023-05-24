@@ -4,6 +4,7 @@ import {
 	IUpdateInventoryRequest,
 	ICheckSerialNumberParams,
 	IInventoryInWarehouseParams,
+	IInventoryPrintQRParams,
 } from "store/types/inventoryTypes";
 import { apiWithToken } from ".";
 
@@ -47,6 +48,15 @@ export const getAllInventoryInWarehouseApi = (
 	params?: IInventoryInWarehouseParams,
 ) => {
 	return apiWithToken.get(`/api/master/get-inventory-in-gudang`, {
+		params: params,
+	});
+};
+
+export const getQRcodeApi = (
+	type: string,
+	params?: IInventoryPrintQRParams,
+) => {
+	return apiWithToken.get(`/api/barcode/${type}`, {
 		params: params,
 	});
 };

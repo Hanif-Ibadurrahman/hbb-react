@@ -83,7 +83,14 @@ export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 				return (
 					<div style={{ display: "flex", columnGap: 5 }}>
 						<button type="button" className="btn btn-info">
-							Print
+							<a
+								href={`${process.env.REACT_APP_API_URL}/api/barcode/pdf?codes=${record.code}`}
+								style={{ color: "#ffffff" }}
+								rel="noreferrer"
+								target="_blank"
+							>
+								Print
+							</a>
 						</button>
 						<button
 							type="button"

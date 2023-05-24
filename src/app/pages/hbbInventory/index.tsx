@@ -36,6 +36,7 @@ import {
 	deleteInventoryApi,
 	getAllInventoryApi,
 	getDetailInventoryApi,
+	getQRcodeApi,
 	getSerialNumberApi,
 	updateInventoryApi,
 } from "api/inventory";
@@ -1063,6 +1064,18 @@ const HbbInventory = () => {
 		}
 	};
 
+	const handleMultiplePrint = () => {
+		getQRcodeApi("pdf", {
+			codes: selectedRow.map(v => v.code).toString(),
+		})
+			.then(res => {
+				return res;
+			})
+			.catch((error: any) => {
+				CheckResponse(error);
+			});
+	};
+
 	const itemTab: TabsProps["items"] = [
 		{
 			key: "1",
@@ -2053,13 +2066,34 @@ const HbbInventory = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
-									<button
+									{/* <button
 										type="button"
 										className="btn"
 										disabled={!selectedRow.length}
 										style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
 									>
 										Hapus
+									</button> */}
+									<button
+										type="button"
+										className="btn btn-success"
+										disabled={!selectedRow.length}
+									>
+										<a
+											href={`${
+												process.env.REACT_APP_API_URL
+											}/api/barcode/pdf?codes=${selectedRow
+												.map(v => v.code)
+												.toString()}`}
+											style={{ color: "#ffffff" }}
+											rel="noreferrer"
+											target="_blank"
+										>
+											Print
+											{selectedRow.length
+												? ` - ${selectedRow.length} barang`
+												: ""}
+										</a>
 									</button>
 									<button
 										type="button"

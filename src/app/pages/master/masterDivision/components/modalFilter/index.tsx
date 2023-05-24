@@ -24,7 +24,7 @@ export const ModalFilter = ({
 		if (isSuperadminGlobal) {
 			return (
 				<Col span={24}>
-					<Form.Item name="company" label="Perusahaan">
+					<Form.Item name="id_company" label="Perusahaan">
 						<SelectWithTag
 							showSearch
 							onSearch={v => setParamsOption.setCompanyParams({ name: v })}
@@ -34,7 +34,6 @@ export const ModalFilter = ({
 									.includes(input.toLowerCase())
 							}
 							dataOption={options.dataOptionCompany}
-							valueOption="label"
 						/>
 					</Form.Item>
 				</Col>
@@ -85,7 +84,7 @@ export const ModalFilter = ({
 				<Row gutter={16}>
 					{generateContent}
 					<Col span={24}>
-						<Form.Item name="bisnis_unit" label="Bisnis Unit">
+						<Form.Item name="id_bisnis_unit" label="Bisnis Unit">
 							<SelectWithTag
 								showSearch
 								onSearch={v =>
@@ -97,12 +96,11 @@ export const ModalFilter = ({
 										.includes(input.toLowerCase())
 								}
 								dataOption={options.dataOptionBusinessUnit}
-								valueOption="label"
 							/>
 						</Form.Item>
 					</Col>
 					<Col span={24}>
-						<Form.Item name="area" label="Area">
+						<Form.Item name="id_area" label="Area">
 							<SelectWithTag
 								showSearch
 								onSearch={v => setParamsOption.setAreaParams({ name: v })}
@@ -112,12 +110,11 @@ export const ModalFilter = ({
 										.includes(input.toLowerCase())
 								}
 								dataOption={options.dataOptionArea}
-								valueOption="label"
 							/>
 						</Form.Item>
 					</Col>
 					<Col span={24}>
-						<Form.Item name="satker" label="Satuan Kerja">
+						<Form.Item name="id_satker" label="Satuan Kerja">
 							<SelectWithTag
 								showSearch
 								onSearch={v => setParamsOption.setWorkUnitParams({ satker: v })}
@@ -127,7 +124,6 @@ export const ModalFilter = ({
 										.includes(input.toLowerCase())
 								}
 								dataOption={options.dataOptionWorkUnit}
-								valueOption="label"
 							/>
 						</Form.Item>
 					</Col>

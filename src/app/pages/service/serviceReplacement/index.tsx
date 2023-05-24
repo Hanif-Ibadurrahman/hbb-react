@@ -859,31 +859,6 @@ const ServiceReplacement = () => {
 						</div>
 					</Form.Item>
 					<Form.Item
-						name="spesification"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Spesifikasi <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Input
-									type="text"
-									name="spesification"
-									className="form-control"
-									placeholder="Spesifikasi"
-									onChange={formik.handleChange}
-									value={formik.values.spesification}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
 						name="id_workflow"
 						rules={[
 							{

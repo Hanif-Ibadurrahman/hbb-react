@@ -600,31 +600,6 @@ const ServiceReturn = () => {
 						</div>
 					</Form.Item>
 					<Form.Item
-						name="emp_name"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
-						<div className="form-group">
-							<Title level={5}>
-								Nama Pemakai Akhir <span className="text-danger">*</span>
-							</Title>
-							<div className="controls">
-								<Input
-									type="text"
-									name="emp_name"
-									className="form-control"
-									placeholder="Nama Pemakai Akhir"
-									onChange={formik.handleChange}
-									value={formik.values.emp_name}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-					<Form.Item
 						name="condition"
 						rules={[
 							{

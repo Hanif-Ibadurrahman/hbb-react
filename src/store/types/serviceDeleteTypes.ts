@@ -62,7 +62,6 @@ export interface IServiceDeleteGetAllParams {
 export interface ICreateServiceDeleteRequest {
 	inventory_type: number;
 	id_inventory: number;
-	date: string;
 	reason: string;
 	condition: string;
 	id_company: number;
@@ -73,7 +72,6 @@ export interface ICreateServiceDeleteRequest {
 export interface IUpdateServiceDeleteRequest {
 	inventory_type: number;
 	id_inventory: number;
-	date: string;
 	reason: string;
 	condition: string;
 	id_company: number;
