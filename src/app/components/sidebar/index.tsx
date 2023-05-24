@@ -163,7 +163,7 @@ export const Sidebar = () => {
 									</ul>
 								</li>
 							)}
-							<li
+							{/* <li
 								className={`treeview ${
 									selectedMenu.key === "cetak-barcode" ? "menu-open" : ""
 								}`}
@@ -173,7 +173,7 @@ export const Sidebar = () => {
 									<FeatherIcon icon={"printer"} />
 									<span>Cetak Barcode</span>
 								</Link>
-							</li>
+							</li> */}
 							<li
 								className={`treeview ${
 									selectedMenu.key === "reporting" ? "menu-open" : ""

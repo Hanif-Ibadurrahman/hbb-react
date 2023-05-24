@@ -559,38 +559,6 @@ const ServiceDelete = () => {
 							</div>
 						</Form.Item>
 						<Form.Item
-							name="date"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
-							<div className="form-group">
-								<Title level={5}>
-									Tanggal <span className="text-danger">*</span>
-								</Title>
-								<div className="controls">
-									<DatePicker
-										className="form-control"
-										onChange={(value, dateString) => {
-											formik.setFieldValue("date", dateString);
-											formRef.current?.setFieldsValue({
-												date: dateString,
-											});
-										}}
-										format={"YYYY-MM-DD"}
-										value={
-											formik.values.date
-												? dayjs(formik.values.date, "YYYY-MM-DD")
-												: undefined
-										}
-									/>
-								</div>
-							</div>
-						</Form.Item>
-						<Form.Item
 							name="condition"
 							rules={[
 								{

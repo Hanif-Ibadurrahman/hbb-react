@@ -28,7 +28,7 @@ import {
 } from "store/types/companyTypes";
 import { CheckResponse } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
-import { listCheckPermission } from "app/helper/permission";
+import { isSuperadminGlobal, listCheckPermission } from "app/helper/permission";
 import { removeNullFields } from "app/helper/common";
 
 const MasterCompany = () => {
@@ -230,15 +230,16 @@ const MasterCompany = () => {
 									>
 										<i className="fa fa-filter" />
 									</button>
-									{listCheckPermission.isAllowCreateMasterCompany && (
-										<button
-											type="button"
-											className="btn btn-primary"
-											onClick={handleAdd}
-										>
-											Tambah
-										</button>
-									)}
+									{isSuperadminGlobal &&
+										listCheckPermission.isAllowCreateMasterCompany && (
+											<button
+												type="button"
+												className="btn btn-primary"
+												onClick={handleAdd}
+											>
+												Tambah
+											</button>
+										)}
 								</Space>
 							}
 						/>

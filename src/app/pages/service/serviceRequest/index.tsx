@@ -48,10 +48,7 @@ import {
 import { IInventoryInWarehouseParams } from "store/types/inventoryTypes";
 import { IAreaGetAllParams } from "store/types/areaTypes";
 import { ILocationGetAllParams } from "store/types/locationTypes";
-import {
-	getAllInventoryInWarehouseApi,
-	getDetailInventoryApi,
-} from "api/inventory";
+import { getAllInventoryInWarehouseApi } from "api/inventory";
 import { getAllAreaApi } from "api/area";
 import { getAllLocationApi } from "api/location";
 import { SelectWithTag } from "app/components/selectWithTag";
@@ -130,9 +127,12 @@ const ServiceRequest = () => {
 
 	const fetchDataArea = async () => {
 		try {
-			const response = await getAllAreaApi(areaParams);
+			// const response = await getAllAreaApi(areaParams);
+			const response = await getAllInventoryInWarehouseApi();
 			const areaList = response.data.data;
-			setDataOptionArea(areaList.map(v => ({ label: v.name, value: v.name })));
+			setDataOptionArea(
+				areaList.map(v => ({ label: v.area_name, value: v.area_name })),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -140,13 +140,19 @@ const ServiceRequest = () => {
 
 	const fetchDataLocation = async () => {
 		try {
-			const response = await getAllLocationApi({
-				...locationParams,
-				area: formik.values.area?.toString().toLowerCase(),
+			// const response = await getAllLocationApi({
+			// 	...locationParams,
+			// 	area: formik.values.area?.toString().toLowerCase(),
+			// });
+			const response = await getAllInventoryInWarehouseApi({
+				search: formik.values.area?.toString().toLowerCase(),
 			});
 			const locationList = response.data.data;
 			setDataOptionLocation(
-				locationList.map(v => ({ label: v.name, value: v.name })),
+				locationList.map(v => ({
+					label: v.lokasi_name,
+					value: v.lokasi_name,
+				})),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -159,7 +165,7 @@ const ServiceRequest = () => {
 				search: formik.values.location?.toString().toLowerCase(),
 			};
 			const response = await getAllInventoryInWarehouseApi(availableInventory);
-			const inventoryList = response.data.data.data;
+			const inventoryList = response.data.data;
 			setDataOptionInventoryInWarehouse(
 				inventoryList.map(v => ({
 					label: `${v.name} - ${v.code}`,

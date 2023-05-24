@@ -101,6 +101,10 @@ export interface IInventoryPaginateResponse extends PaginationState {
 	data: IInventory[];
 }
 
+export interface IInventoryPrintQRParams {
+	codes?: string;
+}
+
 export interface IInventoryGetAllParams {
 	page?: number;
 	per_page?: number;
