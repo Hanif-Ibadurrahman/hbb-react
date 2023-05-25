@@ -3,13 +3,13 @@ name: Development Deployment
 on:
   pull_request:
     types: [closed]
-    branches: 
+    branches:
       - master
   workflow_dispatch:
 
 jobs:
-  building-dev: 
-    runs-on: ubuntu-latest
+  building-dev:
+    runs-on: [self-hosted]
     steps:
       - name: Fetch Doppler Secrets
         uses: DopplerHQ/secrets-fetch-action@v1.1.0
@@ -34,7 +34,7 @@ jobs:
           password: ${{ secrets.docker_reg_password }}
       - name: Build and Push
         uses: docker/build-push-action@v4
-        env: 
+        env:
           REACT_APP_PUBLIC_URL: ${{ env.REACT_APP_PUBLIC_URL }}
           REACT_APP_API_URL: ${{ env.REACT_APP_API_URL }}
         with:
@@ -46,7 +46,7 @@ jobs:
           tags: registry.anargya-tech.id/${{secrets.doppler_project}}-dev:latest
           cache-from: type=registry,ref=registry.anargya-tech.id/${{secrets.doppler_project}}-dev:buildcache
           cache-to: type=registry,ref=registry.anargya-tech.id/${{secrets.doppler_project}}-dev:buildcache,mode=max
-  building-prod: 
+  building-prod:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch Doppler Secrets
@@ -72,7 +72,7 @@ jobs:
           password: ${{ secrets.docker_reg_password }}
       - name: Build and Push
         uses: docker/build-push-action@v4
-        env: 
+        env:
           REACT_APP_PUBLIC_URL: ${{ env.REACT_APP_PUBLIC_URL }}
           REACT_APP_API_URL: ${{ env.REACT_APP_API_URL }}
         with:
@@ -96,6 +96,3 @@ jobs:
       doppler_token: ${{secrets.doppler_token_dev}}
       doppler_project: ${{secrets.doppler_project}}
       doppler_config: dev
-
-      
-
