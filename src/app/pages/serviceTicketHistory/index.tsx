@@ -1,7 +1,10 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
 import { useEffect, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
-import { getAllServiceTicketHistoryApi } from "api/serviceTicketHistory";
+import {
+	getAllServiceTicketHistoryApi,
+	getDetailServiceTicketHistoryApi,
+} from "api/serviceTicketHistory";
 import {
 	IServiceTicketHistoryGetAllParams,
 	IServiceTicketHistoryPaginateResponse,
@@ -26,6 +29,12 @@ const ServiceTicketHistory = () => {
 	const [companyParams, setCompanyParams] = useState<
 		ICompanyGetAllParams | undefined
 	>();
+	const [showModalDetail, setShowModalDetail] = useState<{
+		show: boolean;
+		id?: number;
+	}>({
+		show: false,
+	});
 	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
 		page?: number;
 		per_page?: number;
@@ -54,11 +63,40 @@ const ServiceTicketHistory = () => {
 		try {
 			if (params) {
 				const response = await getAllServiceTicketHistoryApi(params);
-				setDataTable(response.data.data.data);
+				setDataTable(response.data);
 			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
+	};
+
+	const fetchDataDetail = async (id: number) => {
+		try {
+			const response = await getDetailServiceTicketHistoryApi(id);
+			handleInitialValue(response.data.data);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const handleInitialValue = values => {
+		console.log(values);
+		// const setData = removeNullFields(values);
+		// if (
+		// 	!checkDefaultOption(dataOptionAvailableInventory!, setData.inventory_code)
+		// ) {
+		// 	fetchDataInventoryDetail(setData.id_inventory);
+		// }
+		// if (!checkDefaultOption(dataOptionInventory!, setData.inventory_return)) {
+		// 	fetchDataInventoryDetail(setData.id_inventory_return);
+		// }
+		// if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
+		// 	fetchDataWorkflowDetail(setData.id_workflow);
+		// }
+		// setInitialValue(setData);
+		// formRef.current?.setFieldsValue(setData);
+		// setFiles(null);
+		// setFileList(null);
 	};
 
 	useEffect(() => {
@@ -90,6 +128,13 @@ const ServiceTicketHistory = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [paramsFilter]);
 
+	useEffect(() => {
+		if (showModalDetail.show && showModalDetail.id) {
+			fetchDataDetail(showModalDetail.id);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [showModalDetail]);
+
 	return (
 		<>
 			<section className="content">
@@ -98,7 +143,9 @@ const ServiceTicketHistory = () => {
 						<TablePaginateAndSort
 							title="Riwayat"
 							dataSource={dataTable}
-							columns={columns()}
+							columns={columns({
+								setShowModalDetail,
+							})}
 							setSelectedPageAndSort={setSelectedPageAndSort}
 							contentHeader={
 								<Space

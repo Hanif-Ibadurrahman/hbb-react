@@ -1,17 +1,70 @@
 import { Button } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
-import FeatherIcon from "feather-icons-react";
 
 export const columns = () => {
 	const columnType: ColumnsType<any> = [
 		{
 			title: "No Transaksi",
-			dataIndex: "transaction_no",
+			dataIndex: "nomor_urut",
 		},
 		{
 			title: "Tipe Transaksi",
-			dataIndex: "inventory_type",
+			dataIndex: "transaction_type",
+			// align: "center",
+			render: (text, record, index) => {
+				return record.transaction_type.toUpperCase();
+				// switch (record.transaction_type) {
+				// 	case "perbaikan":
+				// 		return (
+				// 			<Button style={{ backgroundColor: "#ffff00", color: "#ffffff" }}>
+				// 				PERBAIKAN
+				// 			</Button>
+				// 		);
+				// 	case "permintaan":
+				// 		return (
+				// 			<Button style={{ backgroundColor: "#008000", color: "#ffffff" }}>
+				// 				PERMINTAAN
+				// 			</Button>
+				// 		);
+				// 	case "pengembalian":
+				// 		return (
+				// 			<Button style={{ backgroundColor: "#0000ff", color: "#ffffff" }}>
+				// 				PENGEMBALIAN
+				// 			</Button>
+				// 		);
+				// 	case "penggantian":
+				// 		return (
+				// 			<Button style={{ backgroundColor: "#ee82ee ", color: "#ffffff" }}>
+				// 				PENGGANTIAN
+				// 			</Button>
+				// 		);
+				// 	case "perubahan":
+				// 		return (
+				// 			<Button style={{ backgroundColor: "#4b0082", color: "#ffffff" }}>
+				// 				PERUBAHAN
+				// 			</Button>
+				// 		);
+				// 	case "pemeriksaan":
+				// 		return (
+				// 			<Button style={{ backgroundColor: "#ffa500", color: "#ffffff" }}>
+				// 				PEMERIKSAAN
+				// 			</Button>
+				// 		);
+				// 	case "penghapusan":
+				// 		return (
+				// 			<Button style={{ backgroundColor: "#ff0000", color: "#ffffff" }}>
+				// 				PENGHAPUSAN
+				// 			</Button>
+				// 		);
+				// 	default:
+				// 		return (
+				// 			<Button type="primary" danger>
+				// 				Tipe Transaksi Tidak Tersedia
+				// 			</Button>
+				// 		);
+				// }
+			},
 		},
 		{
 			title: "Tanggal dibuat",
@@ -19,22 +72,21 @@ export const columns = () => {
 		},
 		{
 			title: "Action",
-			align: "center",
 			render: (text, record, index) => {
-				switch (record.inventory_type) {
-					case "PERBAIKAN":
+				switch (record.transaction_type) {
+					case "perbaikan":
 						return <Link to={"/permintaan-perbaikan"}>Menuju page</Link>;
-					case "PERMINTAAN":
+					case "permintaan":
 						return <Link to={"/permintaan-layanan"}>Menuju page</Link>;
-					case "PENGEMBALIAN":
+					case "pengembalian":
 						return <Link to={"/permintaan-pengembalian"}>Menuju page</Link>;
-					case "PENGGANTIAN":
+					case "penggantian":
 						return <Link to={"/permintaan-penggantian"}>Menuju page</Link>;
-					case "PERUBAHAN":
+					case "perubahan":
 						return <Link to={"/permintaan-perubahan"}>Menuju page</Link>;
-					case "PEMERIKSAAN":
+					case "pemeriksaan":
 						return <Link to={"/permintaan-pemeriksaan"}>Menuju page</Link>;
-					case "PENGHAPUSAN":
+					case "penghapusan":
 						return <Link to={"/permintaan-penghapusan"}>Menuju page</Link>;
 					default:
 						return (

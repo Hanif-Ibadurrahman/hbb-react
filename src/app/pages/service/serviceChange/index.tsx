@@ -315,6 +315,10 @@ const ServiceChange = () => {
 				title: "Apakah anda yakin ingin menolak permintaan ini?",
 				text: "Alasan penolakan",
 				input: "text",
+				inputAttributes: {
+					required: "true",
+				},
+				validationMessage: "Harap isi alasan penolakan",
 				icon: "warning",
 				showCancelButton: true,
 				confirmButtonText: "Reject",
@@ -584,14 +588,15 @@ const ServiceChange = () => {
 					>
 						<div className="form-group">
 							<Title level={5}>
-								Deskripsi <span className="text-danger">*</span>
+								Deskripsi HBB/Inventaris
+								<span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
 								<Input
 									type="text"
 									name="description"
 									className="form-control"
-									placeholder="Deskripsi"
+									placeholder="Deskripsi HBB/Inventaris"
 									onChange={formik.handleChange}
 									value={formik.values.description}
 								/>

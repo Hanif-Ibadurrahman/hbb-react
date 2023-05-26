@@ -15,6 +15,8 @@ export const permissions: string[] = Object.values(
 export const roles: string[] = Object.values(tokenDecode?.user?.roles || {});
 export const isSuperadminGlobal =
 	roles.includes("Super Admin") && isNull(tokenDecode?.user?.id_company);
+export const isUser = roles.includes("User");
+export const isHeadOfWorkUnit = roles.includes("Kepala Satuan Kerja");
 
 const listMaster: string[] = [
 	"user",

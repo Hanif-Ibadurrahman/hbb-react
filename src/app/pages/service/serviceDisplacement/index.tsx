@@ -373,6 +373,10 @@ const ServiceDisplacement = () => {
 				title: "Apakah anda yakin ingin menolak permintaan ini?",
 				text: "Alasan penolakan",
 				input: "text",
+				inputAttributes: {
+					required: "true",
+				},
+				validationMessage: "Harap isi alasan penolakan",
 				icon: "warning",
 				showCancelButton: true,
 				confirmButtonText: "Reject",

@@ -49,9 +49,8 @@ import { IInventoryInWarehouseParams } from "store/types/inventoryTypes";
 import { IAreaGetAllParams } from "store/types/areaTypes";
 import { ILocationGetAllParams } from "store/types/locationTypes";
 import { getAllInventoryInWarehouseApi } from "api/inventory";
-import { getAllAreaApi } from "api/area";
-import { getAllLocationApi } from "api/location";
 import { SelectWithTag } from "app/components/selectWithTag";
+import { uniqBy } from "lodash";
 
 const ServiceRequest = () => {
 	const tokenDecode = TokenDekode();
@@ -129,7 +128,7 @@ const ServiceRequest = () => {
 		try {
 			// const response = await getAllAreaApi(areaParams);
 			const response = await getAllInventoryInWarehouseApi();
-			const areaList = response.data.data;
+			const areaList: any[] = uniqBy(response.data.data, "area_name");
 			setDataOptionArea(
 				areaList.map(v => ({ label: v.area_name, value: v.area_name })),
 			);
@@ -147,7 +146,8 @@ const ServiceRequest = () => {
 			const response = await getAllInventoryInWarehouseApi({
 				search: formik.values.area?.toString().toLowerCase(),
 			});
-			const locationList = response.data.data;
+			const locationList: any[] = uniqBy(response.data.data, "area_name");
+
 			setDataOptionLocation(
 				locationList.map(v => ({
 					label: v.lokasi_name,
@@ -406,6 +406,10 @@ const ServiceRequest = () => {
 				title: "Apakah anda yakin ingin menolak permintaan ini?",
 				text: "Alasan penolakan",
 				input: "text",
+				inputAttributes: {
+					required: "true",
+				},
+				validationMessage: "Harap isi alasan penolakan",
 				icon: "warning",
 				showCancelButton: true,
 				confirmButtonText: "Reject",
@@ -713,13 +717,13 @@ const ServiceRequest = () => {
 					</Form.Item>
 					<Form.Item name="inventory_description">
 						<div className="form-group">
-							<Title level={5}>Deskripsi Inventaris</Title>
+							<Title level={5}>Deskripsi HBB/Inventaris</Title>
 							<div className="controls">
 								<Input
 									type="text"
 									name="inventory_description"
 									className="form-control"
-									placeholder="Deskripsi Inventaris"
+									placeholder="Deskripsi HBB/Inventaris"
 									onChange={formik.handleChange}
 									value={formik.values.inventory_description}
 								/>

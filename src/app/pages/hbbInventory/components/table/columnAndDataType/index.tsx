@@ -1,4 +1,5 @@
 import { ColumnsType } from "antd/es/table";
+import { isHeadOfWorkUnit, isUser } from "app/helper/permission";
 import { IInventory } from "store/types/inventoryTypes";
 
 interface IColumn {
@@ -6,6 +7,7 @@ interface IColumn {
 		React.SetStateAction<{
 			show: boolean;
 			id?: number;
+			isEdit?: boolean;
 		}>
 	>;
 	handleDelete: (id: number) => void;
@@ -82,35 +84,48 @@ export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 			render: (text, record, index) => {
 				return (
 					<div style={{ display: "flex", columnGap: 5 }}>
-						<button type="button" className="btn btn-info">
-							<a
-								href={`${process.env.REACT_APP_API_URL}/api/barcode/pdf?codes=${record.code}`}
-								style={{ color: "#ffffff" }}
-								rel="noreferrer"
-								target="_blank"
-							>
-								Print
-							</a>
-						</button>
 						<button
 							type="button"
-							className="btn btn-primary"
+							className="btn btn-warning"
 							onClick={() => {
-								setShowModal({ show: true, id: text });
+								setShowModal({ show: true, id: text, isEdit: false });
 							}}
 						>
-							Edit
+							Detail
 						</button>
-						<button
-							type="button"
-							className="btn"
-							style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
-							onClick={() => {
-								handleDelete(text);
-							}}
-						>
-							Delete
-						</button>
+						{!isUser && !isHeadOfWorkUnit && (
+							<>
+								<button type="button" className="btn btn-info">
+									<a
+										href={`${process.env.REACT_APP_API_URL}/api/barcode/pdf?codes=${record.code}`}
+										style={{ color: "#ffffff" }}
+										rel="noreferrer"
+										target="_blank"
+									>
+										Print
+									</a>
+								</button>
+								<button
+									type="button"
+									className="btn btn-primary"
+									onClick={() => {
+										setShowModal({ show: true, id: text, isEdit: true });
+									}}
+								>
+									Edit
+								</button>
+								<button
+									type="button"
+									className="btn"
+									style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
+									onClick={() => {
+										handleDelete(text);
+									}}
+								>
+									Delete
+								</button>
+							</>
+						)}
 					</div>
 				);
 			},

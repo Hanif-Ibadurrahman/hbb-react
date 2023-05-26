@@ -87,7 +87,17 @@ export const ModalFilter = ({
 				<Row gutter={16}>
 					<Col span={24}>
 						<Form.Item name="type" label="Tipe">
-							<SelectWithTag />
+							<SelectWithTag
+								dataOption={[
+									{ label: "Permintaan", value: "permintaan" },
+									{ label: "Perubahan", value: "perubahan" },
+									{ label: "Penggantian", value: "penggantian" },
+									{ label: "Pemeriksaan", value: "pemeriksaan" },
+									{ label: "Perbaikan", value: "perbaikan" },
+									{ label: "Pengembalian", value: "pengembalian" },
+									{ label: "Penghapusan", value: "penghapusan" },
+								]}
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={24}>

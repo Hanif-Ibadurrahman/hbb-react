@@ -15,15 +15,18 @@ export interface IServiceReplacement {
 	updated_at: string | null;
 	deleted_at: string | null;
 	transaction_uuid: string | null;
+	nomor_urut: string | null;
+	inventory_return: string | null;
+	id_inventory_return: number | null;
+	id_inventory_obtained: number | null;
 	company_name: string | null;
 	inventory_name: string | null;
+	total_flow: number | null;
 	pending_status: string | null;
 	current_flow: number | null;
 	current_approver: number | null;
 	reject_status: string | null;
 	is_closed_by: string | null;
-
-	nomor_urut: string | null;
 }
 
 export interface IServiceReplacementPaginateResponse extends PaginationState {

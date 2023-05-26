@@ -6,6 +6,7 @@ import {
 	getTotalHbbValueApi,
 	getTotalInventoryApi,
 	getTotalInventoryValueApi,
+	getTotalItemPerMonthApi,
 	getTotalTaskApi,
 } from "api/dashboard";
 import { getAllLocationApi } from "api/location";
@@ -17,6 +18,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ILocationGetAllParams } from "store/types/locationTypes";
 import ModalTask from "./components/modalTask";
+import { convertToMonthNames } from "app/helper/common";
 
 const Dashboard = () => {
 	const [allItem, setAllItem] = useState(0);
@@ -24,7 +26,11 @@ const Dashboard = () => {
 	const [totalHbb, setTotalHbb] = useState(0);
 	const [totalInventoryValue, setTotalInventoryValue] = useState(0);
 	const [totalHbbValue, setTotalHbbValue] = useState(0);
-	const [totalTask, setTotalTask] = useState(0);
+	const [dataTask, setDataTask] = useState<{
+		total_task: number;
+		list_task: any[];
+	}>({ total_task: 0, list_task: [] });
+	const [dataChartItem, setDataChartItem] = useState([]);
 	const [locationParams, setLocationParams] = useState<
 		ILocationGetAllParams | undefined
 	>();
@@ -80,7 +86,16 @@ const Dashboard = () => {
 	const fetchDataTotalTask = async () => {
 		try {
 			const response = await getTotalTaskApi();
-			setTotalTask(response.data.data);
+			setDataTask(response.data.data);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataTotalItemPerMonth = async () => {
+		try {
+			const response = await getTotalItemPerMonthApi();
+			setDataChartItem(response.data.data);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -107,6 +122,7 @@ const Dashboard = () => {
 		fetchDataTotalInventoryValue();
 		fetchDataTotalHbbValue();
 		fetchDataTotalTask();
+		fetchDataTotalItemPerMonth();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -116,7 +132,7 @@ const Dashboard = () => {
 	}, [locationParams]);
 
 	const fetchDataLine = {
-		months: ["Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
+		months: convertToMonthNames([1, 2, 3, 4, 5, 6, 7, 8, 9]),
 		data: [
 			{ name: "HBB", data: [44, 55, 57, 56, 61, 58, 63, 60, 66] },
 			{ name: "Inventaris", data: [76, 85, 101, 98, 87, 105, 91, 114, 94] },
@@ -124,11 +140,8 @@ const Dashboard = () => {
 	};
 
 	const fetchDataColumn = {
-		months: ["Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"],
-		data: [
-			{ name: "HBB", data: [44, 55, 57, 56, 61, 58, 63, 60, 66] },
-			{ name: "Inventaris", data: [76, 85, 101, 98, 87, 105, 91, 114, 94] },
-		],
+		months: convertToMonthNames([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
+		data: dataChartItem,
 	};
 
 	const fetchDataPieCondition = {
@@ -149,7 +162,9 @@ const Dashboard = () => {
 						<div className="box">
 							<div className="box-body">
 								<div className="d-flex justify-content-between">
-									<h5 className="fw-600 text-primary my-0">{totalTask}</h5>
+									<h5 className="fw-600 text-primary my-0">
+										{dataTask?.total_task}
+									</h5>
 									{/* <div className="bg-primary rounded-circle fs-24 l-h-40 h-40 w-40 text-center">
 										<i className="fa fa-tasks"></i>
 									</div> */}
@@ -310,7 +325,7 @@ const Dashboard = () => {
 				</div>
 			</section>
 
-			<ModalTask />
+			<ModalTask dataTable={dataTask.list_task} />
 		</>
 	);
 };

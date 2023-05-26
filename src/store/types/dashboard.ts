@@ -3,7 +3,6 @@ export interface INotification {
 	type: string | null;
 	note: string | null;
 }
-
 export interface INotificationGetAllResponse {
 	status: string;
 	message: string;
