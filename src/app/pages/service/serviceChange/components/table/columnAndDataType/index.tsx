@@ -38,7 +38,7 @@ export const columns = ({
 			sorter: true,
 		},
 		{
-			title: "Deskripsi",
+			title: "Deskripsi HBB/Inventaris",
 			dataIndex: "description",
 			sorter: true,
 		},
@@ -61,18 +61,13 @@ export const columns = ({
 			},
 		},
 		{
-			title: "Nama Pegawai",
+			title: "Nama Pemakai Akhir",
 			dataIndex: "emp_name",
 			sorter: true,
 		},
 		{
 			title: "Kondisi",
 			dataIndex: "condition",
-			sorter: true,
-		},
-		{
-			title: "Spesifikasi",
-			dataIndex: "spesification",
 			sorter: true,
 		},
 		{

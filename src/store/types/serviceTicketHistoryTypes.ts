@@ -4,6 +4,7 @@ export interface IServiceTicketHistory {
 	id: number;
 	type: string | null;
 	name: string | null;
+	nomor_urut: string | null;
 	created_at: string | null;
 }
 

@@ -31,3 +31,11 @@ export const getNotificationApi = () => {
 export const deleteNotificationApi = (id: number) => {
 	return apiWithToken.delete(`/api/dashboard/notification/${id}`);
 };
+
+export const getTotalItemPerMonthApi = () => {
+	return apiWithToken.get(`/api/dashboard/chart-jumlah-barang-perbulan`);
+};
+
+export const getTaskListApi = () => {
+	return apiWithToken.get(`/api/dashboard/task-list`);
+};

@@ -290,8 +290,13 @@ const ServiceReplacement = () => {
 
 	const handleInitialValue = (values: IServiceReplacement) => {
 		const setData = removeNullFields(values);
-		if (!checkDefaultOption(dataOptionInventory!, setData.inventory_code)) {
+		if (
+			!checkDefaultOption(dataOptionAvailableInventory!, setData.inventory_code)
+		) {
 			fetchDataInventoryDetail(setData.id_inventory);
+		}
+		if (!checkDefaultOption(dataOptionInventory!, setData.inventory_return)) {
+			fetchDataInventoryDetail(setData.id_inventory_return);
 		}
 		if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
 			fetchDataWorkflowDetail(setData.id_workflow);
@@ -441,6 +446,10 @@ const ServiceReplacement = () => {
 				title: "Apakah anda yakin ingin menolak permintaan ini?",
 				text: "Alasan penolakan",
 				input: "text",
+				inputAttributes: {
+					required: "true",
+				},
+				validationMessage: "Harap isi alasan penolakan",
 				icon: "warning",
 				showCancelButton: true,
 				confirmButtonText: "Reject",
@@ -636,7 +645,7 @@ const ServiceReplacement = () => {
 								</Space>
 							}
 							handleSelectedRow={handleSelectedRow}
-							scroll={{ x: 1800 }}
+							scroll={{ x: 2100 }}
 						/>
 					</div>
 				</div>
@@ -794,14 +803,14 @@ const ServiceReplacement = () => {
 					>
 						<div className="form-group">
 							<Title level={5}>
-								Deskripsi <span className="text-danger">*</span>
+								Deskripsi HBB/Inventaris<span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
 								<Input
 									type="text"
 									name="description"
 									className="form-control"
-									placeholder="Deskripsi"
+									placeholder="Deskripsi HBB/Inventaris"
 									onChange={formik.handleChange}
 									value={formik.values.description}
 								/>

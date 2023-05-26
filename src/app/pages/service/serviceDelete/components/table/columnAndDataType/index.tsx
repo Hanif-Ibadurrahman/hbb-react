@@ -31,7 +31,22 @@ export const columns = ({
 			sorter: true,
 		},
 		{
-			title: "Inventory",
+			title: "Jenis Barang",
+			dataIndex: "inventory_type",
+			sorter: true,
+			render: (text, record, index) => {
+				switch (text) {
+					case 1:
+						return "Inventaris";
+					case 2:
+						return "Hbb";
+					default:
+						return;
+				}
+			},
+		},
+		{
+			title: "No. HBB/Inventaris",
 			dataIndex: "inventory_name",
 			sorter: true,
 		},
@@ -43,11 +58,6 @@ export const columns = ({
 		{
 			title: "Alasan",
 			dataIndex: "reason",
-			sorter: true,
-		},
-		{
-			title: "Tanggal",
-			dataIndex: "date",
 			sorter: true,
 		},
 		{

@@ -76,7 +76,12 @@ import { checkDefaultOption, removeNullFields } from "app/helper/common";
 import { isUndefined } from "lodash";
 import { getAllDivisionApi, getDetailDivisionApi } from "api/division";
 import { IDivisionGetAllParams } from "store/types/divisionTypes";
-import { isSuperadminGlobal, tokenDecode } from "app/helper/permission";
+import {
+	isHeadOfWorkUnit,
+	isSuperadminGlobal,
+	isUser,
+	tokenDecode,
+} from "app/helper/permission";
 import { useLocation } from "react-router-dom";
 import { UploadOutlined } from "@ant-design/icons";
 
@@ -98,7 +103,11 @@ const HbbInventory = () => {
 	const [paramsFilter, setParamsFilter] = useState<
 		IInventoryGetAllParams | undefined
 	>();
-	const [showModal, setShowModal] = useState<{ show: boolean; id?: number }>({
+	const [showModal, setShowModal] = useState<{
+		show: boolean;
+		id?: number;
+		isEdit?: boolean;
+	}>({
 		show: false,
 	});
 	const [checkSerialNumberParams, setCheckSerialNumberParams] = useState<
@@ -1064,17 +1073,9 @@ const HbbInventory = () => {
 		}
 	};
 
-	const handleMultiplePrint = () => {
-		getQRcodeApi("pdf", {
-			codes: selectedRow.map(v => v.code).toString(),
-		})
-			.then(res => {
-				return res;
-			})
-			.catch((error: any) => {
-				CheckResponse(error);
-			});
-	};
+	const isDisableInput = isUndefined(showModal.isEdit)
+		? false
+		: !showModal.isEdit;
 
 	const itemTab: TabsProps["items"] = [
 		{
@@ -1099,6 +1100,7 @@ const HbbInventory = () => {
 								<div className="controls">
 									<Select
 										showSearch
+										disabled={isDisableInput}
 										onSearch={v => setCompanyParams({ name: v })}
 										filterOption={(input, option) =>
 											(`${option?.label}` ?? "")
@@ -1133,6 +1135,7 @@ const HbbInventory = () => {
 							</Title>
 							<div className="controls">
 								<Select
+									disabled={isDisableInput}
 									options={[
 										{ value: 1, label: "Inventaris" },
 										{ value: 2, label: "HBB" },
@@ -1164,6 +1167,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
+									disabled={isDisableInput}
 									onSearch={v => setCodeGroupParams({ group: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
@@ -1202,6 +1206,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
+									disabled={isDisableInput}
 									onSearch={v => setSubCodeGroupParams({ group: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
@@ -1240,6 +1245,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
+									disabled={isDisableInput}
 									onSearch={v => setBusinessUnitParams({ name: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
@@ -1274,6 +1280,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
+									disabled={isDisableInput}
 									onSearch={v => setAreaParams({ name: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
@@ -1308,6 +1315,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
+									disabled={isDisableInput}
 									onSearch={v => setWorkUnitParams({ satker: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
@@ -1342,6 +1350,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
+									disabled={isDisableInput}
 									onSearch={v => setLocationParams({ lokasi: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
@@ -1366,6 +1375,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
+									disabled={isDisableInput}
 									onSearch={v => setDivisionParams({ name: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
@@ -1400,6 +1410,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
+									disabled={isDisableInput}
 									onSearch={v => setItemParams({ name: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
@@ -1433,6 +1444,7 @@ const HbbInventory = () => {
 							</Title>
 							<div className="controls">
 								<DatePicker
+									disabled={isDisableInput}
 									className="form-control"
 									picker="year"
 									onChange={(value, dateString) => {
@@ -1494,6 +1506,7 @@ const HbbInventory = () => {
 							</Title>
 							<div className="controls">
 								<InputNumber
+									disabled={isDisableInput}
 									addonBefore="Rp"
 									name="price"
 									style={{ width: "100%" }}
@@ -1529,6 +1542,7 @@ const HbbInventory = () => {
 							</Title>
 							<div className="controls">
 								<InputNumber
+									disabled={isDisableInput}
 									min={1}
 									style={{ width: "100%" }}
 									onKeyPress={e => {
@@ -1557,6 +1571,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
+									disabled={isDisableInput}
 									onSearch={v => setCountryParams({ name: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
@@ -1590,6 +1605,7 @@ const HbbInventory = () => {
 							</Title>
 							<div className="controls">
 								<DatePicker
+									disabled={isDisableInput}
 									className="form-control"
 									picker="year"
 									onChange={(value, dateString) => {
@@ -1623,6 +1639,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
+									disabled={isDisableInput}
 									onSearch={v => setConditionParams({ name: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
@@ -1657,6 +1674,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
+									disabled={isDisableInput}
 									onSearch={v => setColorParams({ color: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
@@ -1691,6 +1709,7 @@ const HbbInventory = () => {
 							<div className="controls">
 								<Select
 									showSearch
+									disabled={isDisableInput}
 									onSearch={v => setEmployeeParams({ emp_name: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
@@ -1709,28 +1728,30 @@ const HbbInventory = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item name="files">
-						<Button
-							type="primary"
-							shape="round"
-							style={{ width: "100%" }}
-							icon={<UploadOutlined />}
-							onClick={() => {
-								inputFile.current?.click();
-							}}
-						>
-							Add File
-						</Button>
-						{generateFileList}
-						<input
-							type="file"
-							style={{ display: "none" }}
-							ref={inputFile}
-							accept={".jpg, .jpeg, .png"}
-							onChange={e => handleFile(e)}
-							multiple
-						/>
-					</Form.Item>
+					{(isUndefined(showModal.isEdit) || showModal.isEdit) && (
+						<Form.Item name="files">
+							<Button
+								type="primary"
+								shape="round"
+								style={{ width: "100%" }}
+								icon={<UploadOutlined />}
+								onClick={() => {
+									inputFile.current?.click();
+								}}
+							>
+								Add File
+							</Button>
+							{generateFileList}
+							<input
+								type="file"
+								style={{ display: "none" }}
+								ref={inputFile}
+								accept={".jpg, .jpeg, .png"}
+								onChange={e => handleFile(e)}
+								multiple
+							/>
+						</Form.Item>
+					)}
 				</>
 			),
 		},
@@ -1748,6 +1769,7 @@ const HbbInventory = () => {
 									name="merk"
 									className="form-control"
 									placeholder="Merk"
+									disabled={isDisableInput}
 									onChange={formik.handleChange}
 									value={formik.values.merk}
 								/>
@@ -1763,6 +1785,7 @@ const HbbInventory = () => {
 									name="model"
 									className="form-control"
 									placeholder="Model"
+									disabled={isDisableInput}
 									onChange={formik.handleChange}
 									value={formik.values.model}
 								/>
@@ -1778,6 +1801,7 @@ const HbbInventory = () => {
 									name="jenis"
 									className="form-control"
 									placeholder="Jenis"
+									disabled={isDisableInput}
 									onChange={formik.handleChange}
 									value={formik.values.jenis}
 								/>
@@ -1793,6 +1817,7 @@ const HbbInventory = () => {
 									name="type"
 									className="form-control"
 									placeholder="Tipe"
+									disabled={isDisableInput}
 									onChange={formik.handleChange}
 									value={formik.values.type}
 								/>
@@ -1808,6 +1833,7 @@ const HbbInventory = () => {
 									name="size"
 									className="form-control"
 									placeholder="Ukuran"
+									disabled={isDisableInput}
 									onChange={formik.handleChange}
 									value={formik.values.size}
 								/>
@@ -1823,6 +1849,7 @@ const HbbInventory = () => {
 									name="capacity"
 									className="form-control"
 									placeholder="Kapasitas"
+									disabled={isDisableInput}
 									onChange={formik.handleChange}
 									value={formik.values.capacity}
 								/>
@@ -1838,6 +1865,7 @@ const HbbInventory = () => {
 									name="no_akuntansi"
 									className="form-control"
 									placeholder="Nomor Akuntansi"
+									disabled={isDisableInput}
 									onChange={formik.handleChange}
 									value={formik.values.no_akuntansi}
 								/>
@@ -1853,6 +1881,7 @@ const HbbInventory = () => {
 									name="no_bast"
 									className="form-control"
 									placeholder="Nomor BATS/DO"
+									disabled={isDisableInput}
 									onChange={formik.handleChange}
 									value={formik.values.no_bast}
 								/>
@@ -1864,6 +1893,7 @@ const HbbInventory = () => {
 							<Title level={5}>Tanggal BAST</Title>
 							<div className="controls">
 								<DatePicker
+									disabled={isDisableInput}
 									className="form-control"
 									onChange={(value, dateString) => {
 										formik.setFieldValue("date_bast", dateString);
@@ -1890,6 +1920,7 @@ const HbbInventory = () => {
 									name="serial_number"
 									className="form-control"
 									placeholder="Nomor Seri"
+									disabled={isDisableInput}
 									onChange={formik.handleChange}
 									value={formik.values.serial_number}
 								/>
@@ -1905,6 +1936,7 @@ const HbbInventory = () => {
 									name="no_polisi"
 									className="form-control"
 									placeholder="Nomor Polisi"
+									disabled={isDisableInput}
 									onChange={formik.handleChange}
 									value={formik.values.no_polisi}
 								/>
@@ -1920,6 +1952,7 @@ const HbbInventory = () => {
 									name="no_rangka"
 									className="form-control"
 									placeholder="Nomor Rangka"
+									disabled={isDisableInput}
 									onChange={formik.handleChange}
 									value={formik.values.no_rangka}
 								/>
@@ -1935,6 +1968,7 @@ const HbbInventory = () => {
 									name="no_mesin"
 									className="form-control"
 									placeholder="Nomor Mesin"
+									disabled={isDisableInput}
 									onChange={formik.handleChange}
 									value={formik.values.no_mesin}
 								/>
@@ -1950,6 +1984,7 @@ const HbbInventory = () => {
 									name="no_bpkb"
 									className="form-control"
 									placeholder="Nomor BPKB"
+									disabled={isDisableInput}
 									onChange={formik.handleChange}
 									value={formik.values.no_bpkb}
 								/>
@@ -1965,6 +2000,7 @@ const HbbInventory = () => {
 									name="remark"
 									className="form-control"
 									placeholder="Keterangan"
+									disabled={isDisableInput}
 									onChange={formik.handleChange}
 									value={formik.values.remark}
 								/>
@@ -1988,6 +2024,7 @@ const HbbInventory = () => {
 									name="distributor"
 									className="form-control"
 									placeholder="Distributor"
+									disabled={isDisableInput}
 									onChange={formik.handleChange}
 									value={formik.values.distributor}
 								/>
@@ -2003,6 +2040,7 @@ const HbbInventory = () => {
 									name="contract_no"
 									className="form-control"
 									placeholder="Nomor Akuntansi"
+									disabled={isDisableInput}
 									onChange={formik.handleChange}
 									value={formik.values.contract_no}
 								/>
@@ -2014,6 +2052,7 @@ const HbbInventory = () => {
 							<Title level={5}>Tanggal Kontrak</Title>
 							<div className="controls">
 								<DatePicker
+									disabled={isDisableInput}
 									className="form-control"
 									onChange={(value, dateString) => {
 										formik.setFieldValue("contract_date", dateString);
@@ -2074,34 +2113,38 @@ const HbbInventory = () => {
 									>
 										Hapus
 									</button> */}
-									<button
-										type="button"
-										className="btn btn-success"
-										disabled={!selectedRow.length}
-									>
-										<a
-											href={`${
-												process.env.REACT_APP_API_URL
-											}/api/barcode/pdf?codes=${selectedRow
-												.map(v => v.code)
-												.toString()}`}
-											style={{ color: "#ffffff" }}
-											rel="noreferrer"
-											target="_blank"
-										>
-											Print
-											{selectedRow.length
-												? ` - ${selectedRow.length} barang`
-												: ""}
-										</a>
-									</button>
-									<button
-										type="button"
-										className="btn btn-primary"
-										onClick={handleAdd}
-									>
-										Tambah
-									</button>
+									{!isUser && !isHeadOfWorkUnit && (
+										<>
+											<button
+												type="button"
+												className="btn btn-success"
+												disabled={!selectedRow.length}
+											>
+												<a
+													href={`${
+														process.env.REACT_APP_API_URL
+													}/api/barcode/pdf?codes=${selectedRow
+														.map(v => v.code)
+														.toString()}`}
+													style={{ color: "#ffffff" }}
+													rel="noreferrer"
+													target="_blank"
+												>
+													Print
+													{selectedRow.length
+														? ` - ${selectedRow.length} barang`
+														: ""}
+												</a>
+											</button>
+											<button
+												type="button"
+												className="btn btn-primary"
+												onClick={handleAdd}
+											>
+												Tambah
+											</button>
+										</>
+									)}
 								</Space>
 							}
 							columns={columns({ setShowModal, handleDelete })}
@@ -2118,7 +2161,11 @@ const HbbInventory = () => {
 			<AntdModal
 				title={
 					<Title level={3}>
-						{showModal.show && showModal.id ? "Edit Data" : "Tambah Data"}
+						{showModal.show && showModal.id
+							? showModal.isEdit
+								? "Edit Data"
+								: "Detail Data"
+							: "Tambah Data"}
 					</Title>
 				}
 				footer={
@@ -2126,14 +2173,16 @@ const HbbInventory = () => {
 						<Button shape="round" size="large" onClick={handleCancel}>
 							Close
 						</Button>
-						<Button
-							type="primary"
-							size="large"
-							shape="round"
-							onClick={form.submit}
-						>
-							Save
-						</Button>
+						{showModal.isEdit && (
+							<Button
+								type="primary"
+								size="large"
+								shape="round"
+								onClick={form.submit}
+							>
+								Save
+							</Button>
+						)}
 					</div>
 				}
 				onCancel={handleCancel}

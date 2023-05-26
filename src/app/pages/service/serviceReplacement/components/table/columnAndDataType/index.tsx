@@ -34,12 +34,17 @@ export const columns = ({
 			sorter: true,
 		},
 		{
-			title: "No HBB/Inventaris",
+			title: "No HBB/Inventaris yang dikembalikan",
+			dataIndex: "inventory_return",
+			sorter: true,
+		},
+		{
+			title: "No HBB/Inventaris yang diminta",
 			dataIndex: "inventory_code",
 			sorter: true,
 		},
 		{
-			title: "Deskripsi",
+			title: "Deskripsi HBB/Inventaris",
 			dataIndex: "description",
 			sorter: true,
 		},
@@ -62,7 +67,7 @@ export const columns = ({
 			},
 		},
 		{
-			title: "Nama Pegawai",
+			title: "Nama Pemakai Akhir",
 			dataIndex: "emp_name",
 			sorter: true,
 		},

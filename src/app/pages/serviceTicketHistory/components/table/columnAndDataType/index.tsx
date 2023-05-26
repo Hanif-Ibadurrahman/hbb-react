@@ -1,11 +1,20 @@
 import { ColumnsType } from "antd/es/table";
 import { IServiceTicketHistory } from "store/types/serviceTicketHistoryTypes";
 
-export const columns = () => {
+interface IColumn {
+	setShowModalDetail: React.Dispatch<
+		React.SetStateAction<{
+			show: boolean;
+			id?: number;
+		}>
+	>;
+}
+
+export const columns = ({ setShowModalDetail }: IColumn) => {
 	const columnType: ColumnsType<IServiceTicketHistory> = [
 		{
-			title: "Nomor",
-			dataIndex: "id",
+			title: "No Transaksi",
+			dataIndex: "nomor_urut",
 			sorter: true,
 		},
 		{
@@ -32,7 +41,9 @@ export const columns = () => {
 						<button
 							type="button"
 							className="btn btn-primary"
-							onClick={() => {}}
+							onClick={() => {
+								setShowModalDetail({ show: true, id: text });
+							}}
 						>
 							Detail
 						</button>

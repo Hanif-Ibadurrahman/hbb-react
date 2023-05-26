@@ -9,6 +9,25 @@ export const valueAndLabelRole = [
 	{ value: 5, label: "User" },
 ];
 
+export const convertToMonthNames = (months: number[]): string[] => {
+	const monthNames: string[] = [
+		"Januari",
+		"Februari",
+		"Maret",
+		"April",
+		"Mai",
+		"Juni",
+		"Juli",
+		"Agustus",
+		"September",
+		"Oktober",
+		"November",
+		"Desember",
+	];
+
+	return months.map((month: number) => monthNames[month - 1]);
+};
+
 export const generateRandomHex = (length: number) => {
 	const chars = "0123456789abcdef";
 	let result = "";
