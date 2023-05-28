@@ -33,6 +33,7 @@ export interface IServiceDelete {
 	deleted_at: string | null;
 	id_approval: number | null;
 	transaction_uuid: string | null;
+	no_urut: number | null;
 	condition: string | null;
 	company_name: string | null;
 	inventory_name: string | null;
@@ -41,8 +42,6 @@ export interface IServiceDelete {
 	current_approver: number | null;
 	reject_status: string | null;
 	is_closed_by: string | null;
-
-	nomor_urut: string | null;
 }
 
 export interface IServiceDeletePaginateResponse extends PaginationState {

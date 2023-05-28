@@ -48,9 +48,11 @@ import {
 	removeNullFields,
 } from "app/helper/common";
 import ModalDetail from "../components/modalDetail";
+import { useNavigate } from "react-router-dom";
 
 const ServiceInspection = () => {
 	const tokenDecode = TokenDekode();
+	const navigate = useNavigate();
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const [fileList, setFileList] = useState<File[] | null>(null);
@@ -251,7 +253,7 @@ const ServiceInspection = () => {
 		onSubmit: values => {},
 	});
 
-	const handleApprove = (id: number) => {
+	const handleApprove = (id: number, record: any) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -281,7 +283,13 @@ const ServiceInspection = () => {
 									"Data ini telah disetujui.",
 									"success",
 								);
-								fetchDataList();
+								const isLastFlow: boolean =
+									record.total_flow - 1 === record.current_flow;
+								if (isLastFlow) {
+									navigate("/riwayat-tiket-layanan", { replace: true });
+								} else {
+									fetchDataList();
+								}
 							} else {
 								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
 							}

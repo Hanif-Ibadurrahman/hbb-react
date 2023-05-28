@@ -38,6 +38,7 @@ export interface IServiceRepair {
 	deleted_at: string | null;
 	created_by: string | null;
 	transaction_uuid: string | null;
+	no_urut: number | null;
 	company_name: string | null;
 	inventory_name: string | null;
 	pending_status: string | null;
@@ -45,8 +46,6 @@ export interface IServiceRepair {
 	current_approver: number | null;
 	reject_status: string | null;
 	is_closed_by: string | null;
-
-	nomor_urut: string | null;
 }
 
 export interface IServiceRepairPaginateResponse extends PaginationState {

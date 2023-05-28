@@ -4,7 +4,6 @@ import { columns } from "./components/table/columnAndDataType";
 import {
 	Modal as AntdModal,
 	Button,
-	DatePicker,
 	Divider,
 	Form,
 	FormInstance,
@@ -46,9 +45,11 @@ import {
 	removeNullFields,
 } from "app/helper/common";
 import ModalDetail from "../components/modalDetail";
+import { useNavigate } from "react-router-dom";
 
 const ServiceDelete = () => {
 	dayjs.extend(customParseFormat);
+	const navigate = useNavigate();
 	const tokenDecode = TokenDekode();
 	const { Title } = Typography;
 	const [form] = Form.useForm();
@@ -242,7 +243,7 @@ const ServiceDelete = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [formik.values.inventory_type]);
 
-	const handleApprove = (id: number) => {
+	const handleApprove = (id: number, record: any) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -272,7 +273,13 @@ const ServiceDelete = () => {
 									"Data ini telah disetujui.",
 									"success",
 								);
-								fetchDataList();
+								const isLastFlow: boolean =
+									record.total_flow - 1 === record.current_flow;
+								if (isLastFlow) {
+									navigate("/riwayat-tiket-layanan", { replace: true });
+								} else {
+									fetchDataList();
+								}
 							} else {
 								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
 							}

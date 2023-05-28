@@ -35,14 +35,13 @@ export interface IServiceRequest {
 	attachment_file: string | null;
 	condition: string | null;
 	transaction_uuid: string | null;
+	no_urut: number | null;
 	company_name: string | null;
 	pending_status: string | null;
 	current_flow: number | null;
 	current_approver: number | null;
 	reject_status: string | null;
 	is_closed_by: string | null;
-
-	nomor_urut: string | null;
 }
 export interface IServiceRequestPaginateResponse extends PaginationState {
 	data: IServiceRequest[];

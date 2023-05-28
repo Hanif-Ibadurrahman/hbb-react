@@ -1,6 +1,10 @@
 import { DefaultOptionType } from "antd/es/select";
 import { intersection } from "lodash";
 
+export type NonNullableInterface<T> = {
+	[P in keyof T]: NonNullable<T[P]>;
+};
+
 export const valueAndLabelRole = [
 	{ value: 1, label: "Super Admin" },
 	{ value: 2, label: "Pengelola" },

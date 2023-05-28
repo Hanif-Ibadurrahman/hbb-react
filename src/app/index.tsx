@@ -6,7 +6,7 @@ import { HbbInventoryPage } from "./pages/hbbInventory/hbbInventoryPage";
 import { HbbInventarisAttachmentPage } from "./pages/hbbInventoryAttachment/hbbInventoryAttachmentPage";
 import { HbbInventoryReportPage } from "./pages/hbbInventoryReport/hbbInventoryReportPage";
 import { LoginPage } from "./pages/login/loginPage";
-import { PrintBarcodePage } from "./pages/printBarcode/printBarcodePage";
+// import { PrintBarcodePage } from "./pages/printBarcode/printBarcodePage";
 import { RoomInventoryPage } from "./pages/roomInventory/roomInventoryPage";
 import { ServiceTicketHistoryPage } from "./pages/serviceTicketHistory/serviceTicketHistoryPage";
 import { WarehouseCheckInOutPage } from "./pages/warehouseCheckInOut/warehouseCheckinOutPage";

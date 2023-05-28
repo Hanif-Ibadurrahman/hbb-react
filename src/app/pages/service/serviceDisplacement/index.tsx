@@ -49,10 +49,12 @@ import {
 import { IUserGetAllParams } from "store/types/userTypes";
 import { getAllUserApi, getDetailUserApi } from "api/user";
 import ModalDetail from "../components/modalDetail";
+import { useNavigate } from "react-router-dom";
 
 const ServiceDisplacement = () => {
 	dayjs.extend(customParseFormat);
 	const tokenDecode = TokenDekode();
+	const navigate = useNavigate();
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
@@ -308,7 +310,7 @@ const ServiceDisplacement = () => {
 		onSubmit: values => {},
 	});
 
-	const handleApprove = (id: number) => {
+	const handleApprove = (id: number, record: any) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -338,7 +340,13 @@ const ServiceDisplacement = () => {
 									"Data ini telah disetujui.",
 									"success",
 								);
-								fetchDataList();
+								const isLastFlow: boolean =
+									record.total_flow - 1 === record.current_flow;
+								if (isLastFlow) {
+									navigate("/riwayat-tiket-layanan", { replace: true });
+								} else {
+									fetchDataList();
+								}
 							} else {
 								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
 							}

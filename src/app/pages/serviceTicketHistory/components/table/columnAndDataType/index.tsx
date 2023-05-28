@@ -14,13 +14,16 @@ export const columns = ({ setShowModalDetail }: IColumn) => {
 	const columnType: ColumnsType<IServiceTicketHistory> = [
 		{
 			title: "No Transaksi",
-			dataIndex: "nomor_urut",
+			dataIndex: "no_urut",
 			sorter: true,
 		},
 		{
-			title: "Tipe",
+			title: "Tipe Transaksi",
 			dataIndex: "type",
 			sorter: true,
+			render: (text, record, index) => {
+				return text?.toUpperCase();
+			},
 		},
 		{
 			title: "Oleh",

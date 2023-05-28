@@ -3,7 +3,6 @@ import { SelectWithTag } from "app/components/selectWithTag";
 import { isSuperadminGlobal } from "app/helper/permission";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { IAreaGetAllParams } from "store/types/areaTypes";
-
 interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
