@@ -15,7 +15,7 @@ export interface IServiceReplacement {
 	updated_at: string | null;
 	deleted_at: string | null;
 	transaction_uuid: string | null;
-	nomor_urut: string | null;
+	no_urut: number | null;
 	inventory_return: string | null;
 	id_inventory_return: number | null;
 	id_inventory_obtained: number | null;
@@ -76,6 +76,10 @@ export interface IUpdateServiceReplacementRequest {
 	// not yet added
 	area: string;
 	location: string;
+}
+
+export interface IUpdateFormApprovalRequest {
+	id_inventory_obtained: number | null;
 }
 
 export interface IServiceReplacementGetAllResponse {

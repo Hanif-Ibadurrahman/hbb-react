@@ -11,7 +11,7 @@ interface IColumn {
 		}>
 	>;
 	handleDelete: (id: number) => void;
-	handleApprove: (id: number) => void;
+	handleApprove: (id: number, record: any) => void;
 	handleReject: (id: number) => void;
 	handleShowFile: (id: number) => void;
 	tokenDecode?: ITokenDecode;
@@ -28,7 +28,7 @@ export const columns = ({
 	const columnType: ColumnsType<IServiceChange> = [
 		{
 			title: "No Transaksi",
-			dataIndex: "nomor_urut",
+			dataIndex: "no_urut",
 			align: "center",
 			sorter: true,
 		},
@@ -128,7 +128,7 @@ export const columns = ({
 									type="button"
 									className="btn btn-success"
 									onClick={() => {
-										handleApprove(text);
+										handleApprove(text, record);
 									}}
 								>
 									Approve

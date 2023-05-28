@@ -35,6 +35,7 @@ export interface IServiceDisplacement {
 	deleted_at: string | null;
 	id_company: string | null;
 	transaction_uuid: string | null;
+	no_urut: number | null;
 	from_name: string | null;
 	to_name: string | null;
 	company_name: string | null;
@@ -45,8 +46,6 @@ export interface IServiceDisplacement {
 	current_approver: number | null;
 	reject_status: string | null;
 	is_closed_by: string | null;
-
-	nomor_urut: string | null;
 }
 
 export interface IServiceDisplacementPaginateResponse extends PaginationState {

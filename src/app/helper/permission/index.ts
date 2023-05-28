@@ -17,6 +17,7 @@ export const isSuperadminGlobal =
 	roles.includes("Super Admin") && isNull(tokenDecode?.user?.id_company);
 export const isUser = roles.includes("User");
 export const isHeadOfWorkUnit = roles.includes("Kepala Satuan Kerja");
+export const isAdminArea = roles.includes("Admin Area");
 
 const listMaster: string[] = [
 	"user",

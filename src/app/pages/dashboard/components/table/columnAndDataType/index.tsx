@@ -6,7 +6,7 @@ export const columns = () => {
 	const columnType: ColumnsType<any> = [
 		{
 			title: "No Transaksi",
-			dataIndex: "nomor_urut",
+			dataIndex: "no_urut",
 		},
 		{
 			title: "Tipe Transaksi",

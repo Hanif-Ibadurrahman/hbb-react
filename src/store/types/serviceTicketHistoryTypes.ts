@@ -4,7 +4,7 @@ export interface IServiceTicketHistory {
 	id: number;
 	type: string | null;
 	name: string | null;
-	nomor_urut: string | null;
+	no_urut: number | null;
 	created_at: string | null;
 }
 

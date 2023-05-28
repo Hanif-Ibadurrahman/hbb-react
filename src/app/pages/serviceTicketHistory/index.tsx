@@ -15,6 +15,7 @@ import { CheckResponse } from "app/helper/authentication";
 import { ModalFilter } from "./components/modalFilter";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { getAllCompanyApi } from "api/company";
+import ModalDetail from "./components/modalDetail";
 
 const ServiceTicketHistory = () => {
 	const [showFilter, setShowFilter] = useState(false);
@@ -23,6 +24,7 @@ const ServiceTicketHistory = () => {
 	>({
 		per_page: 10,
 	});
+	const [dataDetail, setDataDetail] = useState();
 	const [paramsFilter, setParamsFilter] = useState<
 		IServiceTicketHistoryGetAllParams | undefined
 	>();
@@ -73,30 +75,10 @@ const ServiceTicketHistory = () => {
 	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailServiceTicketHistoryApi(id);
-			handleInitialValue(response.data.data);
+			setDataDetail(response.data.data);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
-	};
-
-	const handleInitialValue = values => {
-		console.log(values);
-		// const setData = removeNullFields(values);
-		// if (
-		// 	!checkDefaultOption(dataOptionAvailableInventory!, setData.inventory_code)
-		// ) {
-		// 	fetchDataInventoryDetail(setData.id_inventory);
-		// }
-		// if (!checkDefaultOption(dataOptionInventory!, setData.inventory_return)) {
-		// 	fetchDataInventoryDetail(setData.id_inventory_return);
-		// }
-		// if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
-		// 	fetchDataWorkflowDetail(setData.id_workflow);
-		// }
-		// setInitialValue(setData);
-		// formRef.current?.setFieldsValue(setData);
-		// setFiles(null);
-		// setFileList(null);
 	};
 
 	useEffect(() => {
@@ -167,6 +149,12 @@ const ServiceTicketHistory = () => {
 					</div>
 				</div>
 			</section>
+
+			<ModalDetail
+				dataDetail={dataDetail}
+				showModal={showModalDetail.show}
+				setShowModal={setShowModalDetail}
+			/>
 
 			<ModalFilter
 				isShow={showFilter}

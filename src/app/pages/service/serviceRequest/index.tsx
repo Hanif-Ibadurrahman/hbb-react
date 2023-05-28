@@ -51,9 +51,11 @@ import { ILocationGetAllParams } from "store/types/locationTypes";
 import { getAllInventoryInWarehouseApi } from "api/inventory";
 import { SelectWithTag } from "app/components/selectWithTag";
 import { uniqBy } from "lodash";
+import { useNavigate } from "react-router-dom";
 
 const ServiceRequest = () => {
 	const tokenDecode = TokenDekode();
+	const navigate = useNavigate();
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const [fileList, setFileList] = useState<File[] | null>(null);
@@ -127,6 +129,8 @@ const ServiceRequest = () => {
 	const fetchDataArea = async () => {
 		try {
 			// const response = await getAllAreaApi(areaParams);
+			// const areaList = response.data.data;
+			// setDataOptionArea(areaList.map(v => ({ label: v.name, value: v.name })));
 			const response = await getAllInventoryInWarehouseApi();
 			const areaList: any[] = uniqBy(response.data.data, "area_name");
 			setDataOptionArea(
@@ -143,11 +147,14 @@ const ServiceRequest = () => {
 			// 	...locationParams,
 			// 	area: formik.values.area?.toString().toLowerCase(),
 			// });
+			// const locationList = response.data.data;
+			// setDataOptionLocation(
+			// 	locationList.map(v => ({ label: v.name, value: v.name })),
+			// );
 			const response = await getAllInventoryInWarehouseApi({
 				search: formik.values.area?.toString().toLowerCase(),
 			});
 			const locationList: any[] = uniqBy(response.data.data, "area_name");
-
 			setDataOptionLocation(
 				locationList.map(v => ({
 					label: v.lokasi_name,
@@ -339,7 +346,7 @@ const ServiceRequest = () => {
 		setFileList(null);
 	};
 
-	const handleApprove = (id: number) => {
+	const handleApprove = (id: number, record: any) => {
 		const swalCustom = Swal.mixin({
 			customClass: {
 				confirmButton: "btn btn-success m-1",
@@ -369,7 +376,13 @@ const ServiceRequest = () => {
 									"Data ini telah disetujui.",
 									"success",
 								);
-								fetchDataList();
+								const isLastFlow: boolean =
+									record.total_flow - 1 === record.current_flow;
+								if (isLastFlow) {
+									navigate("/riwayat-tiket-layanan", { replace: true });
+								} else {
+									fetchDataList();
+								}
 							} else {
 								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
 							}

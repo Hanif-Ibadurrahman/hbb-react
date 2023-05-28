@@ -35,29 +35,39 @@ import {
 import { IServiceReplacement } from "store/types/serviceReplacementTypes";
 import { CheckResponse, TokenDekode } from "app/helper/authentication";
 import { UploadOutlined } from "@ant-design/icons";
-import { listCheckPermission } from "app/helper/permission";
+import { isAdminArea, listCheckPermission } from "app/helper/permission";
 import { DefaultOptionType } from "antd/es/select";
 import { IWorkflowGetAllParams } from "store/types/workflowTypes";
 import { getAllWorkflowApi, getDetailWorkflowApi } from "api/workflow";
 import { ModalFilter } from "./components/modalFilter";
-import { IInventoryGetAllParams } from "store/types/inventoryTypes";
-import { getAllInventoryApi, getDetailInventoryApi } from "api/inventory";
+import {
+	IInventoryGetAllParams,
+	IInventoryInWarehouseParams,
+} from "store/types/inventoryTypes";
+import {
+	getAllInventoryApi,
+	getAllInventoryInWarehouseApi,
+	getDetailInventoryApi,
+} from "api/inventory";
 import {
 	changeValueToRole,
 	checkDefaultOption,
 	removeNullFields,
 } from "app/helper/common";
 import ModalDetail from "../components/modalDetail";
-import { getAllLocationApi, getDetailLocationApi } from "api/location";
 import { ILocationGetAllParams } from "store/types/locationTypes";
 import { IAreaGetAllParams } from "store/types/areaTypes";
-import { getAllAreaApi, getDetailAreaApi } from "api/area";
 import { SelectWithTag } from "app/components/selectWithTag";
+import { useNavigate } from "react-router-dom";
+import ModalForm from "./components/modalForm";
+import { uniqBy } from "lodash";
 
 const ServiceReplacement = () => {
 	const tokenDecode = TokenDekode();
+	const navigate = useNavigate();
 	const { Title } = Typography;
 	const [form] = Form.useForm();
+	const [dataForm, setDataForm] = useState();
 	const [fileList, setFileList] = useState<File[] | null>(null);
 	const [files, setFiles] = useState<FileList | null>(null);
 	const inputFile = useRef<HTMLInputElement | null>(null);
@@ -77,11 +87,12 @@ const ServiceReplacement = () => {
 	}>({
 		show: false,
 	});
+	const [showModalForm, setShowModalForm] = useState<boolean>(false);
 	const [inventoryParams, setInventoryParams] = useState<
 		IInventoryGetAllParams | undefined
 	>();
 	const [availableInventoryParams, setAvailableInventoryParams] = useState<
-		IInventoryGetAllParams | undefined
+		IInventoryInWarehouseParams | undefined
 	>();
 	const [areaParams, setAreaParams] = useState<IAreaGetAllParams | undefined>();
 	const [locationParams, setLocationParams] = useState<
@@ -145,8 +156,8 @@ const ServiceReplacement = () => {
 
 	const fetchDataInventory = async () => {
 		try {
-			const availableInventory = { ...inventoryParams };
-			const response = await getAllInventoryApi(availableInventory);
+			const inventory = { ...inventoryParams };
+			const response = await getAllInventoryApi(inventory);
 			const inventoryList = response.data.data.data;
 			setDataOptionInventory(
 				inventoryList.map(v => ({
@@ -176,13 +187,17 @@ const ServiceReplacement = () => {
 
 	const fetchDataAvailableInventory = async () => {
 		try {
+			// const availableInventory = {
+			// 	...availableInventoryParams,
+			// 	status: 1,
+			// 	area: formik.values.area?.toString().toLowerCase(),
+			// 	location: formik.values.location?.toString().toLowerCase(),
+			// };
+			// const response = await getAllInventoryApi(availableInventory);
 			const availableInventory = {
-				...availableInventoryParams,
-				status: 1,
-				area: formik.values.area?.toString().toLowerCase(),
-				location: formik.values.location?.toString().toLowerCase(),
+				search: formik.values.location?.toString().toLowerCase(),
 			};
-			const response = await getAllInventoryApi(availableInventory);
+			const response = await getAllInventoryInWarehouseApi(availableInventory);
 			const inventoryList = response.data.data.data;
 			setDataOptionAvailableInventory(
 				inventoryList.map(v => ({
@@ -212,9 +227,14 @@ const ServiceReplacement = () => {
 
 	const fetchDataArea = async () => {
 		try {
-			const response = await getAllAreaApi(areaParams);
-			const areaList = response.data.data;
-			setDataOptionArea(areaList.map(v => ({ label: v.name, value: v.name })));
+			// const response = await getAllAreaApi(areaParams);
+			// const areaList = response.data.data;
+			// setDataOptionArea(areaList.map(v => ({ label: v.name, value: v.name })));
+			const response = await getAllInventoryInWarehouseApi();
+			const areaList: any[] = uniqBy(response.data.data, "area_name");
+			setDataOptionArea(
+				areaList.map(v => ({ label: v.area_name, value: v.area_name })),
+			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -222,13 +242,23 @@ const ServiceReplacement = () => {
 
 	const fetchDataLocation = async () => {
 		try {
-			const response = await getAllLocationApi({
-				...locationParams,
-				area: formik.values.area?.toString().toLowerCase(),
+			// const response = await getAllLocationApi({
+			// 	...locationParams,
+			// 	area: formik.values.area?.toString().toLowerCase(),
+			// });
+			// const locationList = response.data.data;
+			// setDataOptionLocation(
+			// 	locationList.map(v => ({ label: v.name, value: v.name })),
+			// );
+			const response = await getAllInventoryInWarehouseApi({
+				search: formik.values.area?.toString().toLowerCase(),
 			});
-			const locationList = response.data.data;
+			const locationList: any[] = uniqBy(response.data.data, "area_name");
 			setDataOptionLocation(
-				locationList.map(v => ({ label: v.name, value: v.name })),
+				locationList.map(v => ({
+					label: v.lokasi_name,
+					value: v.lokasi_name,
+				})),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -293,7 +323,7 @@ const ServiceReplacement = () => {
 		if (
 			!checkDefaultOption(dataOptionAvailableInventory!, setData.inventory_code)
 		) {
-			fetchDataInventoryDetail(setData.id_inventory);
+			fetchDataAvailableInventoryDetail(setData.id_inventory);
 		}
 		if (!checkDefaultOption(dataOptionInventory!, setData.inventory_return)) {
 			fetchDataInventoryDetail(setData.id_inventory_return);
@@ -379,48 +409,59 @@ const ServiceReplacement = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [formik.values.location]);
 
-	const handleApprove = (id: number) => {
-		const swalCustom = Swal.mixin({
-			customClass: {
-				confirmButton: "btn btn-success m-1",
-				cancelButton: "btn btn-danger m-1",
-			},
-			buttonsStyling: false,
-		});
-
-		swalCustom
-			.fire({
-				title: "Apakah anda yakin ingin menyetujui permintaan ini?",
-				text: "Ada catatan?",
-				input: "text",
-				icon: "warning",
-				showCancelButton: true,
-				confirmButtonText: "Approve",
-				cancelButtonText: "Cancel",
-				reverseButtons: true,
-			})
-			.then(result => {
-				if (result.isConfirmed) {
-					approveServiceReplacementApi(id, { remark: result.value })
-						.then(res => {
-							if (res.data.status === "success") {
-								swalCustom.fire(
-									"Approve",
-									"Data ini telah disetujui.",
-									"success",
-								);
-								fetchDataList();
-							} else {
-								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
-							}
-						})
-						.catch((error: any) => {
-							CheckResponse(error);
-						});
-				} else if (result.dismiss === Swal.DismissReason.cancel) {
-					swalCustom.fire("Batal", "Permintaan ini batal disetujui", "error");
-				}
+	const handleApprove = (id: number, record: any) => {
+		if (isAdminArea) {
+			setDataForm(record);
+			setShowModalForm(true);
+		} else {
+			const swalCustom = Swal.mixin({
+				customClass: {
+					confirmButton: "btn btn-success m-1",
+					cancelButton: "btn btn-danger m-1",
+				},
+				buttonsStyling: false,
 			});
+
+			swalCustom
+				.fire({
+					title: "Apakah anda yakin ingin menyetujui permintaan ini?",
+					text: "Ada catatan?",
+					input: "text",
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonText: "Approve",
+					cancelButtonText: "Cancel",
+					reverseButtons: true,
+				})
+				.then(result => {
+					if (result.isConfirmed) {
+						approveServiceReplacementApi(id, { remark: result.value })
+							.then(res => {
+								if (res.data.status === "success") {
+									swalCustom.fire(
+										"Approve",
+										"Data ini telah disetujui.",
+										"success",
+									);
+									const isLastFlow: boolean =
+										record.total_flow - 1 === record.current_flow;
+									if (isLastFlow) {
+										navigate("/riwayat-tiket-layanan", { replace: true });
+									} else {
+										fetchDataList();
+									}
+								} else {
+									swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+								}
+							})
+							.catch((error: any) => {
+								CheckResponse(error);
+							});
+					} else if (result.dismiss === Swal.DismissReason.cancel) {
+						swalCustom.fire("Batal", "Permintaan ini batal disetujui", "error");
+					}
+				});
+		}
 	};
 
 	const handleAdd = () => {
@@ -602,6 +643,10 @@ const ServiceReplacement = () => {
 		setShowModal({ show: false });
 	};
 
+	const updateDataList = () => {
+		fetchDataList();
+	};
+
 	return (
 		<>
 			<section className="content">
@@ -645,7 +690,7 @@ const ServiceReplacement = () => {
 								</Space>
 							}
 							handleSelectedRow={handleSelectedRow}
-							scroll={{ x: 2100 }}
+							scroll={{ x: 2200 }}
 						/>
 					</div>
 				</div>
@@ -774,7 +819,7 @@ const ServiceReplacement = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setAvailableInventoryParams({ name: v })}
+									onSearch={v => setAvailableInventoryParams({ search: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()
@@ -949,6 +994,13 @@ const ServiceReplacement = () => {
 			<ModalDetail
 				showModal={showModalDetail}
 				setShowModal={setShowModalDetail}
+			/>
+
+			<ModalForm
+				dataForm={dataForm}
+				showModal={showModalForm}
+				setShowModal={setShowModalForm}
+				updateDataList={updateDataList}
 			/>
 
 			<ModalFilter

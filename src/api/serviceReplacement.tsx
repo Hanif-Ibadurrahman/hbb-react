@@ -2,6 +2,7 @@ import {
 	IServiceReplacementGetAllParams,
 	ICreateServiceReplacementRequest,
 	IUpdateServiceReplacementRequest,
+	IUpdateFormApprovalRequest,
 } from "store/types/serviceReplacementTypes";
 import { apiWithToken } from ".";
 
@@ -33,6 +34,16 @@ export const updateServiceReplacementApi = (
 	return apiWithToken.post(`/api/transaksi/penggantian/${id}`, input, {
 		headers: { "Content-Type": "multipart/form-data" },
 	});
+};
+
+export const updateFormApprovalApi = (
+	id: number,
+	input: IUpdateFormApprovalRequest,
+) => {
+	return apiWithToken.put(
+		`/api/transaksi/penggantian/update-form-approval/${id}`,
+		input,
+	);
 };
 
 export const deleteServiceReplacementApi = (id: number) => {
