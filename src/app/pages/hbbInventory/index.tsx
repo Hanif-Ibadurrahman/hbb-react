@@ -2173,7 +2173,7 @@ const HbbInventory = () => {
 						<Button shape="round" size="large" onClick={handleCancel}>
 							Close
 						</Button>
-						{showModal.isEdit && (
+						{(isUndefined(showModal.isEdit) || showModal.isEdit) && (
 							<Button
 								type="primary"
 								size="large"
