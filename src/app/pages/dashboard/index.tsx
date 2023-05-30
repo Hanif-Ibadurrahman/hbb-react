@@ -8,6 +8,7 @@ import {
 	getTotalInventoryValueApi,
 	getTotalItemPerMonthApi,
 	getTotalTaskApi,
+	getTotalValuePerMonthApi,
 } from "api/dashboard";
 import { getAllLocationApi } from "api/location";
 import { ColumnChart } from "app/components/chart/column";
@@ -31,6 +32,7 @@ const Dashboard = () => {
 		list_task: any[];
 	}>({ total_task: 0, list_task: [] });
 	const [dataChartItem, setDataChartItem] = useState([]);
+	const [dataChartValue, setDataChartValue] = useState([]);
 	const [locationParams, setLocationParams] = useState<
 		ILocationGetAllParams | undefined
 	>();
@@ -101,6 +103,15 @@ const Dashboard = () => {
 		}
 	};
 
+	const fetchDataTotalValuePerMonth = async () => {
+		try {
+			const response = await getTotalValuePerMonthApi();
+			setDataChartValue(response.data.data);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
 	const fetchDataLocation = async () => {
 		try {
 			const response = await getAllLocationApi({
@@ -123,6 +134,7 @@ const Dashboard = () => {
 		fetchDataTotalHbbValue();
 		fetchDataTotalTask();
 		fetchDataTotalItemPerMonth();
+		fetchDataTotalValuePerMonth();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -132,11 +144,8 @@ const Dashboard = () => {
 	}, [locationParams]);
 
 	const fetchDataLine = {
-		months: convertToMonthNames([1, 2, 3, 4, 5, 6, 7, 8, 9]),
-		data: [
-			{ name: "HBB", data: [44, 55, 57, 56, 61, 58, 63, 60, 66] },
-			{ name: "Inventaris", data: [76, 85, 101, 98, 87, 105, 91, 114, 94] },
-		],
+		months: convertToMonthNames([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
+		data: dataChartValue,
 	};
 
 	const fetchDataColumn = {

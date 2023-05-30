@@ -156,7 +156,7 @@ const ServiceReplacement = () => {
 
 	const fetchDataInventory = async () => {
 		try {
-			const inventory = { ...inventoryParams };
+			const inventory = { ...inventoryParams, status: 1 };
 			const response = await getAllInventoryApi(inventory);
 			const inventoryList = response.data.data.data;
 			setDataOptionInventory(
@@ -198,7 +198,7 @@ const ServiceReplacement = () => {
 				search: formik.values.location?.toString().toLowerCase(),
 			};
 			const response = await getAllInventoryInWarehouseApi(availableInventory);
-			const inventoryList = response.data.data.data;
+			const inventoryList = response.data.data;
 			setDataOptionAvailableInventory(
 				inventoryList.map(v => ({
 					label: `${v.name} - ${v.code}`,
