@@ -323,6 +323,7 @@ const MasterUser = () => {
 			roles: values.user_roles.map(v => v.role_id),
 			password: values.raw_password,
 		});
+		setSelectedRole(values.user_roles.map(v => v.roles.name || ""));
 	};
 
 	useEffect(() => {
@@ -934,23 +935,21 @@ const MasterUser = () => {
 							</div>
 						</div>
 					</Form.Item>
-					{isStaff && (
-						<Form.Item name="nipg">
-							<div className="form-group">
-								<Title level={5}>NIPG</Title>
-								<div className="controls">
-									<Input
-										type="text"
-										name="nipg"
-										className="form-control"
-										placeholder="NIPG"
-										onChange={formik.handleChange}
-										value={formik.values.nipg}
-									/>
-								</div>
+					<Form.Item name="nipg">
+						<div className="form-group">
+							<Title level={5}>NIPG</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="nipg"
+									className="form-control"
+									placeholder="NIPG"
+									onChange={formik.handleChange}
+									value={formik.values.nipg}
+								/>
 							</div>
-						</Form.Item>
-					)}
+						</div>
+					</Form.Item>
 				</Form>
 			</AntdModal>
 
