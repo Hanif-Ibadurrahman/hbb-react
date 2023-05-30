@@ -52,7 +52,7 @@ export const deleteServiceReplacementApi = (id: number) => {
 
 export const approveServiceReplacementApi = (
 	id: number,
-	input: { remark: string },
+	input: { id_inventory_obtained?: number; remark: string },
 ) => {
 	return apiWithToken.post(`/api/approval/penggantian/approve/${id}`, input);
 };

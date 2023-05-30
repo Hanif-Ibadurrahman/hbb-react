@@ -170,21 +170,6 @@ const ServiceReplacement = () => {
 		}
 	};
 
-	const fetchDataInventoryDetail = async (id: number) => {
-		try {
-			const response = await getDetailInventoryApi(id);
-			const detail = response.data.data;
-			setDataOptionInventory(
-				dataOptionInventory?.concat({
-					label: `${detail.name} - ${detail.code}`,
-					value: `${detail.code}`,
-				}),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
 	const fetchDataAvailableInventory = async () => {
 		try {
 			// const availableInventory = {
@@ -210,16 +195,33 @@ const ServiceReplacement = () => {
 		}
 	};
 
-	const fetchDataAvailableInventoryDetail = async (id: number) => {
+	const fetchAndSetData = async (setData: any) => {
 		try {
-			const response = await getDetailInventoryApi(id);
+			const response = await getDetailInventoryApi(setData.id_inventory);
 			const detail = response.data.data;
-			setDataOptionAvailableInventory(
-				dataOptionInventory?.concat({
-					label: `${detail.name} - ${detail.code}`,
-					value: `${detail.code}`,
-				}),
-			);
+			if (
+				!checkDefaultOption(
+					dataOptionAvailableInventory!,
+					setData.inventory_code,
+				)
+			) {
+				setDataOptionAvailableInventory(
+					dataOptionAvailableInventory?.concat({
+						label: `${detail.name} - ${detail.code}`,
+						value: `${detail.code}`,
+					}),
+				);
+			}
+			setInitialValue({
+				...setData,
+				area: detail.area,
+				location: detail.location,
+			});
+			formRef.current?.setFieldsValue({
+				...setData,
+				area: detail.area,
+				location: detail.location,
+			});
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -320,19 +322,18 @@ const ServiceReplacement = () => {
 
 	const handleInitialValue = (values: IServiceReplacement) => {
 		const setData = removeNullFields(values);
-		if (
-			!checkDefaultOption(dataOptionAvailableInventory!, setData.inventory_code)
-		) {
-			fetchDataAvailableInventoryDetail(setData.id_inventory);
-		}
 		if (!checkDefaultOption(dataOptionInventory!, setData.inventory_return)) {
-			fetchDataInventoryDetail(setData.id_inventory_return);
+			setDataOptionInventory(
+				dataOptionInventory?.concat({
+					label: `${setData.inventory_return_name} - ${setData.inventory_return_code}`,
+					value: `${setData.inventory_return}`,
+				}),
+			);
 		}
 		if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
 			fetchDataWorkflowDetail(setData.id_workflow);
 		}
-		setInitialValue(setData);
-		formRef.current?.setFieldsValue(setData);
+		fetchAndSetData(setData);
 		setFiles(null);
 		setFileList(null);
 	};
@@ -507,7 +508,7 @@ const ServiceReplacement = () => {
 									"Permintaan ini telah direject.",
 									"success",
 								);
-								fetchDataList();
+								navigate("/riwayat-tiket-layanan", { replace: true });
 							} else {
 								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
 							}

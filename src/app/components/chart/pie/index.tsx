@@ -4,12 +4,19 @@ interface IPieChart {
 	title?: string;
 	series: ApexAxisChartSeries | ApexNonAxisChartSeries;
 	labels?: string[];
+	width?: string | number;
+	height?: string | number;
 }
 
-export const PieChart = ({ title, series, labels }: IPieChart) => {
+export const PieChart = ({
+	title,
+	series,
+	labels,
+	width,
+	height,
+}: IPieChart) => {
 	const options: ApexCharts.ApexOptions = {
 		chart: {
-			width: 380,
 			type: "pie",
 		},
 		labels: labels,
@@ -26,11 +33,7 @@ export const PieChart = ({ title, series, labels }: IPieChart) => {
 		},
 		responsive: [
 			{
-				breakpoint: 480,
 				options: {
-					chart: {
-						width: 200,
-					},
 					legend: {
 						position: "bottom",
 					},
@@ -46,6 +49,12 @@ export const PieChart = ({ title, series, labels }: IPieChart) => {
 	};
 
 	return (
-		<ReactApexChart options={options} series={series} type="pie" width={380} />
+		<ReactApexChart
+			options={options}
+			series={series}
+			type="pie"
+			width={width}
+			height={height}
+		/>
 	);
 };

@@ -1037,24 +1037,34 @@ code {
 .bg-none {
   background: none !important; }
 
-@media (max-width: 991px) {
-  .bg-none-lg {
-    background: none !important; } }
 @media (max-width: 1024px) {
   .bg-none-tl {
-    background: none !important; } }
+    background: none !important;
+  }
+}
 @media (max-width: 991px) {
+  .bg-none-lg {
+    background: none !important; 
+  }
   .bg-none-md {
-    background: none !important; } }
+    background: none !important;
+  }
+}
 @media (max-width: 767px) {
   .bg-none-sm {
-    background: none !important; } }
+    background: none !important; 
+  } 
+}
 @media (max-width: 575px) {
   .bg-none-xs {
-    background: none !important; } }
+    background: none !important; 
+  } 
+}
 @media (max-width: 370px) {
   .bg-none-small {
-    background: none !important; } }
+    background: none !important; 
+  } 
+}
 .input-group-prepend, .input-group-append {
   display: flex; }
 

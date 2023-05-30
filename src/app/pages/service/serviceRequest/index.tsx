@@ -184,25 +184,6 @@ const ServiceRequest = () => {
 		}
 	};
 
-	const fetchDataInventoryDetail = async (search: string) => {
-		try {
-			const response = await getAllInventoryInWarehouseApi({ search });
-			const detail = response.data.data;
-			setDataOptionInventoryInWarehouse(
-				dataOptionInventoryInWarehouse?.concat({
-					label: `${detail.name} - ${detail.code}`,
-					value: `${detail.code}`,
-				}),
-			);
-			formik.setFieldValue("area", detail.area_name);
-			formRef.current?.setFieldsValue({ area: detail.area_name });
-			formik.setFieldValue("location", detail.lokasi_name);
-			formRef.current?.setFieldsValue({ location: detail.lokasi_name });
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
 	const fetchDataWorkflow = async () => {
 		try {
 			const response = await getAllWorkflowApi({
@@ -332,16 +313,22 @@ const ServiceRequest = () => {
 		if (!checkDefaultOption(dataOptionWorkflow!, setData.id_workflow)) {
 			fetchDataWorkflowDetail(setData.id_workflow);
 		}
-		if (
-			!checkDefaultOption(
-				dataOptionInventoryInWarehouse!,
-				setData.inventory_code,
-			)
-		) {
-			fetchDataInventoryDetail(setData.inventory_code);
-		}
-		setInitialValue(setData);
-		formRef.current?.setFieldsValue(setData);
+
+		setDataOptionInventoryInWarehouse(
+			dataOptionInventoryInWarehouse?.concat({
+				label: `${setData.inventory_name} - ${setData.inventory_code}`,
+				value: `${setData.inventory_code}`,
+			}),
+		);
+
+		const input = {
+			...setData,
+			area: setData.area_name,
+			location: setData.lokasi_name,
+		};
+
+		setInitialValue(input);
+		formRef.current?.setFieldsValue(input);
 		setFiles(null);
 		setFileList(null);
 	};
@@ -397,6 +384,7 @@ const ServiceRequest = () => {
 	};
 
 	const handleAdd = () => {
+		fetchDataInventoryInWarehouse();
 		setShowModal({ show: true });
 		setInitialValue(undefined);
 		setFiles(null);
@@ -439,7 +427,7 @@ const ServiceRequest = () => {
 									"Permintaan ini telah direject.",
 									"success",
 								);
-								fetchDataList();
+								navigate("/riwayat-tiket-layanan", { replace: true });
 							} else {
 								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
 							}
