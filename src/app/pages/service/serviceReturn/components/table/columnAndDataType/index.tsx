@@ -3,7 +3,6 @@ import { ColumnsType } from "antd/es/table";
 import { listCheckPermission } from "app/helper/permission";
 import { ITokenDecode } from "store/types/loginTypes";
 import { IServiceReturn } from "store/types/serviceReturnTypes";
-
 interface IColumn {
 	setShowModal: React.Dispatch<
 		React.SetStateAction<{
@@ -60,11 +59,6 @@ export const columns = ({
 					"Tidak ada"
 				);
 			},
-		},
-		{
-			title: "Nama Pegawai",
-			dataIndex: "emp_name",
-			sorter: true,
 		},
 		{
 			title: "Kondisi",
