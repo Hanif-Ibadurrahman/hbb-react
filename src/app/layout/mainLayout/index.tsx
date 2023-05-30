@@ -17,7 +17,7 @@ export const MainLayout = () => {
 	return (
 		<div
 			className={`light-skin sidebar-mini theme-primary fixed ${
-				selectedMenu ? "sidebar-collapse" : ""
+				selectedMenu ? "sidebar-collapse sidebar-open" : ""
 			}`}
 		>
 			<div className="wrapper">

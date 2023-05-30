@@ -18,6 +18,7 @@ export const isSuperadminGlobal =
 export const isUser = roles.includes("User");
 export const isHeadOfWorkUnit = roles.includes("Kepala Satuan Kerja");
 export const isAdminArea = roles.includes("Admin Area");
+export const isManager = roles.includes("Pengelola");
 
 const listMaster: string[] = [
 	"user",

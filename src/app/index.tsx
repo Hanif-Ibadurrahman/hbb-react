@@ -36,6 +36,7 @@ import { ServiceInspectionPage } from "./pages/service/serviceInspection/service
 import { ServiceDeletePage } from "./pages/service/serviceDelete/serviceDeletePage";
 import { MasterWorkflowPage } from "./pages/master/masterWorkflow/masterWorkflowPage";
 import { MainLayout } from "./layout/mainLayout";
+import "./app.css";
 
 export function App() {
 	return (

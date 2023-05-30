@@ -1,0 +1,22 @@
+@media (max-width: 1024px) {
+}
+
+@media (max-width: 991px) {
+    
+}
+
+@media (max-width: 767px) {
+    .logo-mini {
+            width: 15% !important;
+    }
+
+    nav li::before {
+        display: none;
+    }
+}
+
+@media (max-width: 575px) {
+}
+
+@media (max-width: 370px) {
+}

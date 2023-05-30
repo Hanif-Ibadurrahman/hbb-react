@@ -293,13 +293,13 @@ const Dashboard = () => {
 							</div>
 						</div>
 					</div>
-					<div className="col-xl-12 col-12">
+					<div className="col-xl-6 col-12">
 						<div className="box">
 							<div className="box-header with-border">
 								<div
 									style={{ display: "flex", justifyContent: "space-between" }}
 								>
-									<h4 className="box-title">Kondisi & Kesediaan Barang</h4>
+									<h4 className="box-title">Kondisi Barang</h4>
 									<Select
 										showSearch
 										onSearch={v => setLocationParams({ lokasi: v })}
@@ -310,24 +310,48 @@ const Dashboard = () => {
 										}
 										options={dataOptionLocation}
 										onChange={(v, opt) => {}}
-										style={{ width: 200 }}
+										style={{ width: "25%" }}
 										placeholder={"Pilih lokasi"}
 									/>
 								</div>
 							</div>
 							<div className="box-body">
+								<PieChart
+									series={fetchDataPieCondition.data}
+									labels={fetchDataPieCondition.label}
+									width={364}
+								/>
+							</div>
+						</div>
+					</div>
+					<div className="col-xl-6 col-12">
+						<div className="box">
+							<div className="box-header with-border">
 								<div
-									style={{ display: "flex", justifyContent: "space-around" }}
+									style={{ display: "flex", justifyContent: "space-between" }}
 								>
-									<PieChart
-										series={fetchDataPieCondition.data}
-										labels={fetchDataPieCondition.label}
-									/>
-									<PieChart
-										series={fetchDataPieAvailable.data}
-										labels={fetchDataPieAvailable.label}
+									<h4 className="box-title">Kesediaan Barang</h4>
+									<Select
+										showSearch
+										onSearch={v => setLocationParams({ lokasi: v })}
+										filterOption={(input, option) =>
+											(`${option?.label}` ?? "")
+												.toLowerCase()
+												.includes(input.toLowerCase())
+										}
+										options={dataOptionLocation}
+										onChange={(v, opt) => {}}
+										style={{ width: "25%" }}
+										placeholder={"Pilih lokasi"}
 									/>
 								</div>
+							</div>
+							<div className="box-body">
+								<PieChart
+									series={fetchDataPieAvailable.data}
+									labels={fetchDataPieAvailable.label}
+									width={380}
+								/>
 							</div>
 						</div>
 					</div>

@@ -6,19 +6,18 @@ import {
 	Form,
 	FormInstance,
 	Input,
+	Select,
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
 import { NonNullableInterface, removeNullFields } from "app/helper/common";
 import { IServiceReplacement } from "store/types/serviceReplacementTypes";
-import { SelectWithTag } from "app/components/selectWithTag";
 import { IInventoryInWarehouseParams } from "store/types/inventoryTypes";
 import { getAllInventoryInWarehouseApi } from "api/inventory";
 import { CheckResponse } from "app/helper/authentication";
 import { DefaultOptionType } from "antd/es/select";
 import Swal from "sweetalert2";
-import { updateFormApprovalApi } from "api/serviceReplacement";
-
+import { approveServiceReplacementApi } from "api/serviceReplacement";
 interface IModalForm {
 	dataForm: any;
 	showModal: boolean;
@@ -33,7 +32,7 @@ const ModalForm = ({
 	updateDataList,
 }: IModalForm) => {
 	const { Title } = Typography;
-	const [modalform] = Form.useForm();
+	const [modalForm] = Form.useForm();
 	const modalFormRef = useRef<FormInstance>(null);
 	const [initialValue, setInitialValue] =
 		useState<NonNullableInterface<IServiceReplacement>>();
@@ -44,7 +43,7 @@ const ModalForm = ({
 		useState<DefaultOptionType[] | undefined>();
 
 	const formikModalForm = useFormik({
-		initialValues: { ...initialValue },
+		initialValues: { ...initialValue, remark: "" },
 		enableReinitialize: true,
 		onSubmit: values => {},
 	});
@@ -54,7 +53,7 @@ const ModalForm = ({
 			const response = await getAllInventoryInWarehouseApi(
 				availableInventoryParams,
 			);
-			const inventoryList = response.data.data.data;
+			const inventoryList = response.data.data;
 			setDataOptionAvailableInventory(
 				inventoryList.map(v => ({
 					label: `${v.name} - ${v.code}`,
@@ -72,30 +71,31 @@ const ModalForm = ({
 	}, [availableInventoryParams]);
 
 	useEffect(() => {
-		const inventory = formikModalForm.values.id_inventory_obtained;
-		if (!inventory) {
-			formikModalForm.setFieldValue("id_inventory_obtained", undefined);
-			modalFormRef.current?.setFieldsValue({
-				id_inventory_obtained: undefined,
-			});
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [formikModalForm.values.id_inventory_obtained]);
-
-	useEffect(() => {
 		if (dataForm) {
 			const setData = removeNullFields(dataForm);
-			setInitialValue(setData);
-			modalFormRef.current?.setFieldsValue(setData);
+			const input = {
+				...setData,
+				id_inventory_obtained: setData.id_inventory,
+			};
+			setDataOptionAvailableInventory(
+				dataOptionAvailableInventory?.concat({
+					label: `${setData.inventory_name} - ${setData.inventory_code}`,
+					value: setData.id_inventory,
+				}),
+			);
+			setInitialValue(input);
+			modalFormRef.current?.setFieldsValue(input);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dataForm]);
 
 	const onFinish = (values: any) => {
 		const input = {
-			id_inventory_obtained: values.id_inventory_obtained ?? null,
+			...values,
+			id_inventory_obtained:
+				values?.id_inventory_obtained !== dataForm.id_inventory ? null : null,
 		};
-		updateFormApprovalApi(dataForm.id, input)
+		approveServiceReplacementApi(dataForm.id, input)
 			.then(res => {
 				if (res.data.status === "success") {
 					setShowModal(false);
@@ -125,7 +125,12 @@ const ModalForm = ({
 					>
 						Close
 					</Button>
-					<Button type="primary" onClick={modalform.submit}>
+					<Button
+						shape="round"
+						size="large"
+						type="primary"
+						onClick={modalForm.submit}
+					>
 						Approve
 					</Button>
 				</div>
@@ -135,7 +140,7 @@ const ModalForm = ({
 			width={800}
 			destroyOnClose
 		>
-			<Form form={modalform} ref={modalFormRef} onFinish={onFinish}>
+			<Form form={modalForm} ref={modalFormRef} onFinish={onFinish}>
 				<Divider />
 				<Form.Item name="no_urut">
 					<div className="form-group">
@@ -158,19 +163,16 @@ const ModalForm = ({
 								disabled
 								type="text"
 								className="form-control"
-								value={formikModalForm.values.inventory_code}
+								value={`${formikModalForm.values.inventory_name} - ${formikModalForm.values.inventory_code}`}
 							/>
 						</div>
 					</div>
 				</Form.Item>
 				<Form.Item name="id_inventory_obtained">
 					<div className="form-group">
-						<Title level={5}>
-							HBB/Inventaris pengganti
-							<span className="text-danger">*</span>
-						</Title>
+						<Title level={5}>HBB/Inventaris yang akan diberikan</Title>
 						<div className="controls">
-							<SelectWithTag
+							<Select
 								showSearch
 								onSearch={v => setAvailableInventoryParams({ search: v })}
 								filterOption={(input, option) =>
@@ -178,14 +180,11 @@ const ModalForm = ({
 										.toLowerCase()
 										.includes(input.toLowerCase())
 								}
-								dataOption={dataOptionAvailableInventory}
+								options={dataOptionAvailableInventory}
 								onChange={(v, opt) => {
-									formikModalForm.setFieldValue(
-										"id_inventory_obtained",
-										v.slice(0, 1),
-									);
+									formikModalForm.setFieldValue("id_inventory_obtained", v);
 									modalFormRef.current?.setFieldsValue({
-										id_inventory_obtained: v.slice(0, 1),
+										id_inventory_obtained: v,
 									});
 								}}
 								value={formikModalForm.values.id_inventory_obtained}
@@ -228,6 +227,21 @@ const ModalForm = ({
 								type="text"
 								className="form-control"
 								value={formikModalForm.values.condition}
+							/>
+						</div>
+					</div>
+				</Form.Item>
+				<Form.Item name="remark">
+					<div className="form-group">
+						<Title level={5}>Catatan</Title>
+						<div className="controls">
+							<Input
+								type="text"
+								name="remark"
+								className="form-control"
+								placeholder="Catatan"
+								onChange={formikModalForm.handleChange}
+								value={formikModalForm.values.remark}
 							/>
 						</div>
 					</div>

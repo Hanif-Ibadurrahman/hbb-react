@@ -334,7 +334,7 @@ const ServiceDelete = () => {
 									"Permintaan ini telah direject.",
 									"success",
 								);
-								fetchDataList();
+								navigate("/riwayat-tiket-layanan", { replace: true });
 							} else {
 								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
 							}
