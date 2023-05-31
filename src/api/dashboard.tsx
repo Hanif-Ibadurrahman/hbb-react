@@ -36,6 +36,10 @@ export const getTotalItemPerMonthApi = () => {
 	return apiWithToken.get(`/api/dashboard/chart-jumlah-barang-perbulan`);
 };
 
+export const getConditionItemApi = () => {
+	return apiWithToken.get(`/api/dashboard/chart-kondisi-hbb-inventaris`);
+};
+
 export const getTotalValuePerMonthApi = () => {
 	return apiWithToken.get(`/api/dashboard/chart-total-nilai-hbb-inventaris`);
 };
