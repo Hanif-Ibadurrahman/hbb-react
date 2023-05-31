@@ -46,44 +46,44 @@ jobs:
           tags: registry.anargya-tech.id/${{secrets.doppler_project}}-dev:latest
           cache-from: type=registry,ref=registry.anargya-tech.id/${{secrets.doppler_project}}-dev:buildcache
           cache-to: type=registry,ref=registry.anargya-tech.id/${{secrets.doppler_project}}-dev:buildcache,mode=max
-  building-prod:
-    runs-on: [self-hosted]
-    steps:
-      - name: Fetch Doppler Secrets
-        uses: DopplerHQ/secrets-fetch-action@v1.1.0
-        id: doppler
-        with:
-          doppler-token: ${{secrets.doppler_token_prod}}
-          doppler-project: ${{secrets.doppler_project}}
-          doppler-config: prd
-          inject-env-vars: true
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Chown user
-        run: |
-          sudo chown -R $USER:$USER $GITHUB_WORKSPACE
-      - name: Check out Repo
-        uses: actions/checkout@v3
-      - name: Login to docker registry
-        uses: docker/login-action@v2
-        with:
-          registry: ${{ secrets.docker_reg_host }}
-          username: ${{ secrets.docker_reg_username }}
-          password: ${{ secrets.docker_reg_password }}
-      - name: Build and Push
-        uses: docker/build-push-action@v4
-        env:
-          REACT_APP_PUBLIC_URL: ${{ env.REACT_APP_PUBLIC_URL }}
-          REACT_APP_API_URL: ${{ env.REACT_APP_API_URL }}
-        with:
-          context: .
-          build-args: |
-            REACT_APP_PUBLIC_URL=${{ env.REACT_APP_PUBLIC_URL }}
-            REACT_APP_API_URL=${{ env.REACT_APP_API_URL }}
-          push: true
-          tags: registry.anargya-tech.id/${{secrets.doppler_project}}-prod:latest
-          cache-from: type=registry,ref=registry.anargya-tech.id/${{secrets.doppler_project}}-prod:buildcache
-          cache-to: type=registry,ref=registry.anargya-tech.id/${{secrets.doppler_project}}-prod:buildcache,mode=max
+  # building-prod:
+  #   runs-on: [self-hosted]
+  #   steps:
+  #     - name: Fetch Doppler Secrets
+  #       uses: DopplerHQ/secrets-fetch-action@v1.1.0
+  #       id: doppler
+  #       with:
+  #         doppler-token: ${{secrets.doppler_token_prod}}
+  #         doppler-project: ${{secrets.doppler_project}}
+  #         doppler-config: prd
+  #         inject-env-vars: true
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2
+  #     - name: Chown user
+  #       run: |
+  #         sudo chown -R $USER:$USER $GITHUB_WORKSPACE
+  #     - name: Check out Repo
+  #       uses: actions/checkout@v3
+  #     - name: Login to docker registry
+  #       uses: docker/login-action@v2
+  #       with:
+  #         registry: ${{ secrets.docker_reg_host }}
+  #         username: ${{ secrets.docker_reg_username }}
+  #         password: ${{ secrets.docker_reg_password }}
+  #     - name: Build and Push
+  #       uses: docker/build-push-action@v4
+  #       env:
+  #         REACT_APP_PUBLIC_URL: ${{ env.REACT_APP_PUBLIC_URL }}
+  #         REACT_APP_API_URL: ${{ env.REACT_APP_API_URL }}
+  #       with:
+  #         context: .
+  #         build-args: |
+  #           REACT_APP_PUBLIC_URL=${{ env.REACT_APP_PUBLIC_URL }}
+  #           REACT_APP_API_URL=${{ env.REACT_APP_API_URL }}
+  #         push: true
+  #         tags: registry.anargya-tech.id/${{secrets.doppler_project}}-prod:latest
+  #         cache-from: type=registry,ref=registry.anargya-tech.id/${{secrets.doppler_project}}-prod:buildcache
+  #         cache-to: type=registry,ref=registry.anargya-tech.id/${{secrets.doppler_project}}-prod:buildcache,mode=max
   deploy_web:
     needs: [building-dev]
     uses: AnargyaAptana/action/.github/workflows/ssh-deploy-dev.yml@master
