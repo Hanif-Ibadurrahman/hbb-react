@@ -1,3 +1,4 @@
+import { Button } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { IServiceTicketHistory } from "store/types/serviceTicketHistoryTypes";
 
@@ -15,6 +16,7 @@ export const columns = ({ setShowModalDetail }: IColumn) => {
 		{
 			title: "No Transaksi",
 			dataIndex: "no_urut",
+			align: "center",
 			sorter: true,
 		},
 		{
@@ -23,6 +25,26 @@ export const columns = ({ setShowModalDetail }: IColumn) => {
 			sorter: true,
 			render: (text, record, index) => {
 				return text?.toUpperCase();
+			},
+		},
+		{
+			title: "Status",
+			dataIndex: "status",
+			sorter: true,
+			render: (text, record, index) => {
+				if (text === "selesai") {
+					return (
+						<Button type="primary" style={{ background: "#43d854" }}>
+							Finish
+						</Button>
+					);
+				} else {
+					return (
+						<Button type="primary" danger>
+							Reject
+						</Button>
+					);
+				}
 			},
 		},
 		{
