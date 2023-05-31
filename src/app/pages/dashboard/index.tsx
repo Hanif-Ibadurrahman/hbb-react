@@ -2,6 +2,7 @@ import { Select } from "antd";
 import { DefaultOptionType } from "antd/es/select";
 import {
 	getAllItemApi,
+	getConditionItemApi,
 	getTotalHbbApi,
 	getTotalHbbValueApi,
 	getTotalInventoryApi,
@@ -33,6 +34,13 @@ const Dashboard = () => {
 	}>({ total_task: 0, list_task: [] });
 	const [dataChartItem, setDataChartItem] = useState([]);
 	const [dataChartValue, setDataChartValue] = useState([]);
+	const [dataConditionItem, setDataConditionItem] = useState<{
+		label: string[];
+		data: number[];
+	}>({
+		label: [],
+		data: [],
+	});
 	const [locationParams, setLocationParams] = useState<
 		ILocationGetAllParams | undefined
 	>();
@@ -103,6 +111,15 @@ const Dashboard = () => {
 		}
 	};
 
+	const fetchDataConditionItem = async () => {
+		try {
+			const response = await getConditionItemApi();
+			setDataConditionItem(response.data.data);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
 	const fetchDataTotalValuePerMonth = async () => {
 		try {
 			const response = await getTotalValuePerMonthApi();
@@ -135,6 +152,7 @@ const Dashboard = () => {
 		fetchDataTotalTask();
 		fetchDataTotalItemPerMonth();
 		fetchDataTotalValuePerMonth();
+		fetchDataConditionItem();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -153,10 +171,7 @@ const Dashboard = () => {
 		data: dataChartItem,
 	};
 
-	const fetchDataPieCondition = {
-		label: ["Baik", "Rusak", "Hilang"],
-		data: [2000, 400, 54],
-	};
+	const fetchDataPieCondition = dataConditionItem;
 
 	const fetchDataPieAvailable = {
 		label: ["Aktif", "Gudang"],
@@ -300,7 +315,7 @@ const Dashboard = () => {
 									style={{ display: "flex", justifyContent: "space-between" }}
 								>
 									<h4 className="box-title">Kondisi Barang</h4>
-									<Select
+									{/* <Select
 										showSearch
 										onSearch={v => setLocationParams({ lokasi: v })}
 										filterOption={(input, option) =>
@@ -312,14 +327,16 @@ const Dashboard = () => {
 										onChange={(v, opt) => {}}
 										style={{ width: "25%" }}
 										placeholder={"Pilih lokasi"}
-									/>
+									/> */}
 								</div>
 							</div>
 							<div className="box-body">
 								<PieChart
 									series={fetchDataPieCondition.data}
-									labels={fetchDataPieCondition.label}
-									width={364}
+									labels={fetchDataPieCondition.label.map(text =>
+										text.replace(/^\w/, c => c.toUpperCase()),
+									)}
+									width={411}
 								/>
 							</div>
 						</div>
@@ -331,7 +348,7 @@ const Dashboard = () => {
 									style={{ display: "flex", justifyContent: "space-between" }}
 								>
 									<h4 className="box-title">Kesediaan Barang</h4>
-									<Select
+									{/* <Select
 										showSearch
 										onSearch={v => setLocationParams({ lokasi: v })}
 										filterOption={(input, option) =>
@@ -343,7 +360,7 @@ const Dashboard = () => {
 										onChange={(v, opt) => {}}
 										style={{ width: "25%" }}
 										placeholder={"Pilih lokasi"}
-									/>
+									/> */}
 								</div>
 							</div>
 							<div className="box-body">
