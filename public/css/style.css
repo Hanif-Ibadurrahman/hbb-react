@@ -20831,7 +20831,6 @@ Height property
 
   .navbar-collapse .main-header .navbar-right {
     margin: 7.5px -15px; }
-
   .navbar-custom-menu .navbar-nav li > a.dropdown-toggle {
     padding: 0px 14px; }
   .navbar-custom-menu .navbar-nav > li:last-child > a {
@@ -31877,7 +31876,7 @@ button.btn.dropdown-toggle:after {
 @media (min-width: 576px) {
   .card-columns {
     column-count: 3;
-    column-gap: calc($default-gutter-width / 2);
+    column-gap: calc(var(--default-gutter-width) / 2);
     orphans: 1;
     widows: 1; }
     .card-columns .card {
