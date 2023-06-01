@@ -71,11 +71,11 @@ export const Header = ({ collapseHandler }: IHeader) => {
 	const handleLogout = async () => {
 		try {
 			await logoutApi();
-			sessionStorage.clear();
-			navigate("/login", { replace: true });
-		} catch (error) {
-			navigate("/login", { replace: true });
+		} catch (error: any) {
+			CheckResponse(error);
 		}
+		sessionStorage.clear();
+		navigate("/login", { replace: true });
 	};
 
 	const items: MenuProps["items"] = [
