@@ -19,4 +19,12 @@
 }
 
 @media (max-width: 370px) {
+    .main-header .navbar-custom-menu .navbar-nav>li>a.dropdown-toggle {
+        margin: 4px 5px;
+    }
+
+    .navbar-custom-menu .navbar-nav li>a.dropdown-toggle{
+        height: auto;
+        width: auto;
+    }
 }
