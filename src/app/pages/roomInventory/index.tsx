@@ -96,7 +96,10 @@ const RoomInventory = () => {
 			if (params) {
 				if (params.type_export === "excel") {
 					const filter = omit(params, ["page", "per_page", "type_export"]);
-					await exportRoomInventoryApi(filter);
+					const response = await exportRoomInventoryApi(filter);
+					const url = response.data.data;
+					const newTab = window.open(url, "_blank");
+					newTab?.focus();
 				}
 
 				const new_params = omit(params, ["type_export"]);

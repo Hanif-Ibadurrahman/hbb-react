@@ -230,7 +230,7 @@ export const Sidebar = () => {
 											Laporan Inventaris Koorporat
 										</Link>
 									</li>
-									<li>
+									{/* <li>
 										<Link to={"/formulir-izin-keluar-dan-masuk-gudang"}>
 											<i className="icon-Commit">
 												<span className="path1"></span>
@@ -238,7 +238,7 @@ export const Sidebar = () => {
 											</i>
 											Formulir Izin Keluar dan <br /> Masuk Gudang
 										</Link>
-									</li>
+									</li> */}
 								</ul>
 							</li>
 							{isAllowShowMasterModule() && (
@@ -469,7 +469,7 @@ export const Sidebar = () => {
 											Riwayat Tiket Layanan
 										</Link>
 									</li>
-									<li>
+									{/* <li>
 										<Link to="/pemindahan">
 											<i className="icon-Commit">
 												<span className="path1"></span>
@@ -477,7 +477,7 @@ export const Sidebar = () => {
 											</i>
 											Pemindahan
 										</Link>
-									</li>
+									</li> */}
 								</ul>
 							</li>
 						</ul>

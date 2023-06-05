@@ -254,6 +254,7 @@ export const ModalFilter = ({
 								options={[
 									{ value: undefined, label: "" },
 									{ value: "excel", label: "Excel" },
+									{ value: "pdf", label: "Pdf" },
 								]}
 							/>
 						</Form.Item>

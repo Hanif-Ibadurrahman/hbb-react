@@ -84,6 +84,7 @@ export const ModalFilter = ({
 		>
 			<Form form={formFilter} layout="vertical" onFinish={handleSubmit}>
 				<Row gutter={16}>
+					{generateContent}
 					<Col span={24}>
 						<Form.Item name="type" label="Tipe">
 							<SelectWithTag
@@ -104,7 +105,11 @@ export const ModalFilter = ({
 							<RangePicker style={{ width: "100%" }} format={"DD-MM-YYYY"} />
 						</Form.Item>
 					</Col>
-					{generateContent}
+					<Col span={24}>
+						<Form.Item name="requester" label="Requester">
+							<SelectWithTag />
+						</Form.Item>
+					</Col>
 				</Row>
 			</Form>
 		</Drawer>

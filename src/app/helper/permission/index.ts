@@ -6,6 +6,10 @@ import {
 	generateCheckPermissions,
 } from "../common";
 
+const cookies = document.cookie.split(";");
+const tokenCookie = cookies.find(cookie => cookie.trim().startsWith("token="));
+export const token = tokenCookie?.slice(7);
+
 export const tokenDecode = TokenDekode();
 console.info("token", tokenDecode);
 

@@ -1,15 +1,20 @@
 import ReactApexChart from "react-apexcharts";
-
 interface IColumnChart {
 	series: ApexAxisChartSeries | ApexNonAxisChartSeries;
 	categories: any;
+	width?: string | number;
+	height?: string | number;
 }
 
-export const ColumnChart = ({ series, categories }: IColumnChart) => {
+export const ColumnChart = ({
+	series,
+	categories,
+	width,
+	height,
+}: IColumnChart) => {
 	const options: ApexCharts.ApexOptions = {
 		chart: {
 			type: "bar",
-			height: 350,
 		},
 		plotOptions: {
 			bar: {
@@ -50,5 +55,13 @@ export const ColumnChart = ({ series, categories }: IColumnChart) => {
 		},
 	};
 
-	return <ReactApexChart options={options} series={series} type="bar" />;
+	return (
+		<ReactApexChart
+			options={options}
+			series={series}
+			type="bar"
+			width={width}
+			height={height}
+		/>
+	);
 };

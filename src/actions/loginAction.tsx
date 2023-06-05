@@ -15,17 +15,14 @@ export const loginAction = (data: ILoginRequest) => {
 			});
 			const response = await loginApi(data);
 
-			document.cookie = `token=${response.data.token}; SameSite=lax; Secure`;
+			const dataDecode: ITokenDecode = jwtDecode(response.data.token);
 
-			sessionStorage.clear();
-			sessionStorage.setItem("Token", response.data.token);
+			document.cookie = `token=${response.data.token}; max-age=${dataDecode.expires_in}; SameSite=lax; Secure`;
 
 			dispatch({
 				type: LOGIN_SUCCESS,
 				payload: response.data.token,
 			});
-
-			const dataDecode: ITokenDecode = jwtDecode(response.data.token);
 
 			dispatch({
 				type: DECODE_TOKEN,

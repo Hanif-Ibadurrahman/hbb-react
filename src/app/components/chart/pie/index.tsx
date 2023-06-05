@@ -1,8 +1,7 @@
 import ReactApexChart from "react-apexcharts";
-
 interface IPieChart {
 	title?: string;
-	series: ApexAxisChartSeries | ApexNonAxisChartSeries;
+	series?: ApexAxisChartSeries | ApexNonAxisChartSeries;
 	labels?: string[];
 	width?: string | number;
 	height?: string | number;
@@ -18,6 +17,18 @@ export const PieChart = ({
 	const options: ApexCharts.ApexOptions = {
 		chart: {
 			type: "pie",
+		},
+		noData: {
+			text: "No Data",
+			align: "center",
+			verticalAlign: "middle",
+			offsetX: 0,
+			offsetY: 0,
+			style: {
+				color: undefined,
+				fontSize: "14px",
+				fontFamily: undefined,
+			},
 		},
 		labels: labels,
 		fill: {

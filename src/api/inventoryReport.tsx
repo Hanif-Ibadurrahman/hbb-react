@@ -12,7 +12,10 @@ export const getAllInventoryReportApi = (
 export const exportInventoryReportApi = (
 	params?: IInventoryReportGetAllParams,
 ) => {
-	return apiWithToken.get(`/api/reporting/laporan-hbb-inventaris/export`, {
-		params: params,
-	});
+	return apiWithToken.get(
+		`/api/reporting/laporan-hbb-inventaris/generate-link`,
+		{
+			params: params,
+		},
+	);
 };
