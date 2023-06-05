@@ -145,6 +145,7 @@ const ServiceTicketHistory = () => {
 									</button>
 								</Space>
 							}
+							scroll={{ x: 1800 }}
 						/>
 					</div>
 				</div>

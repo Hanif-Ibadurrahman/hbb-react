@@ -12,7 +12,7 @@ export const getAllRoomInventoryApi = (params?: IRoomInventoryGetAllParams) => {
 
 export const exportRoomInventoryApi = (params?: IRoomInventoryGetAllParams) => {
 	return apiWithToken.get(
-		`/api/reporting/laporan-daftar-hbb-inventaris-ruangan/export`,
+		`/api/reporting/laporan-daftar-hbb-inventaris-ruangan/generate-link`,
 		{
 			params: params,
 		},

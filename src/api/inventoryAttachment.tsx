@@ -13,7 +13,7 @@ export const exportInventoryAttachmentApi = (
 	params?: IInventoryAttachmentGetAllParams,
 ) => {
 	return apiWithToken.get(
-		`/api/reporting/lampiran-hbb-inventaris-semester/export`,
+		`/api/reporting/lampiran-hbb-inventaris-semester/generate-link`,
 		{
 			params: params,
 		},

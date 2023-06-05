@@ -47,3 +47,7 @@ export const getTotalValuePerMonthApi = () => {
 export const getTaskListApi = () => {
 	return apiWithToken.get(`/api/dashboard/task-list`);
 };
+
+export const getStatusAvailableItemApi = () => {
+	return apiWithToken.get(`/api/dashboard/chart-status-kesediaan-barang`);
+};

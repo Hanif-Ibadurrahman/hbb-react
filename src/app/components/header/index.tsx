@@ -74,7 +74,9 @@ export const Header = ({ collapseHandler }: IHeader) => {
 		} catch (error: any) {
 			CheckResponse(error);
 		}
-		sessionStorage.clear();
+		document.cookie = `token=;`;
+		document.cookie = `laravel_session=;`;
+		document.cookie = `XSRF-TOKEN=;`;
 		navigate("/login", { replace: true });
 	};
 

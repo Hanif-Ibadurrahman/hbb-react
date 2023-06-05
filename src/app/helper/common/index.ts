@@ -19,7 +19,7 @@ export const convertToMonthNames = (months: number[]): string[] => {
 		"Februari",
 		"Maret",
 		"April",
-		"Mai",
+		"Mei",
 		"Juni",
 		"Juli",
 		"Agustus",

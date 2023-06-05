@@ -5,13 +5,18 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import BackgroundImage from "assets/image/background.jpg";
 import { useEffect } from "react";
+import { token } from "app/helper/permission";
 
 const Login = () => {
-	const token = sessionStorage.getItem("Token");
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		const cookies = document.cookie.split(";");
+		const tokenCookie = cookies.find(cookie =>
+			cookie.trim().startsWith("token="),
+		);
+		const token = tokenCookie?.slice(7);
 		if (token) {
 			navigate("/dashboard", { replace: true });
 		}

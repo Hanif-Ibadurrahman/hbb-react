@@ -30,6 +30,11 @@ describe("Login actions", () => {
 
 		const result = await loginAction(data)(dispatch);
 
+		Object.defineProperty(window.document, "cookie", {
+			writable: true,
+			value: token,
+		});
+
 		expect(loginApi).toHaveBeenCalledWith(data);
 		expect(dispatch).toHaveBeenCalledWith({
 			type: SET_LOGIN_DATA,
@@ -44,7 +49,7 @@ describe("Login actions", () => {
 			payload: decodedToken,
 		});
 		expect(result).toEqual(decodedToken);
-		expect(sessionStorage.getItem("Token")).toEqual(token);
+		expect(document.cookie).toEqual(token);
 	});
 
 	it("dispatches LOGIN_FAILED action when the API call fails", async () => {

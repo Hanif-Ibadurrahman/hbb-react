@@ -13,7 +13,7 @@ export const exportCorporateInventoryReportApi = (
 	params?: ICorporateInventoryReportGetAllParams,
 ) => {
 	return apiWithToken.get(
-		`/api/reporting/laporan-hbb-inventaris-korporat/export`,
+		`/api/reporting/laporan-hbb-inventaris-korporat/generate-link`,
 		{
 			params: params,
 		},

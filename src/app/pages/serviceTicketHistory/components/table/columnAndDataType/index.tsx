@@ -1,7 +1,6 @@
 import { Button } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { IServiceTicketHistory } from "store/types/serviceTicketHistoryTypes";
-
 interface IColumn {
 	setShowModalDetail: React.Dispatch<
 		React.SetStateAction<{
@@ -48,7 +47,7 @@ export const columns = ({ setShowModalDetail }: IColumn) => {
 			},
 		},
 		{
-			title: "Oleh",
+			title: "Requester",
 			dataIndex: "name",
 			sorter: true,
 		},

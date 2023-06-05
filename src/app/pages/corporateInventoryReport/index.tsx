@@ -52,7 +52,10 @@ const CorporateInventoryReport = () => {
 			if (params) {
 				if (params.type_export === "excel") {
 					const filter = omit(params, ["page", "per_page", "type_export"]);
-					await exportCorporateInventoryReportApi(filter);
+					const response = await exportCorporateInventoryReportApi(filter);
+					const url = response.data.data;
+					const newTab = window.open(url, "_blank");
+					newTab?.focus();
 				}
 
 				const new_params = omit(params, ["type_export"]);

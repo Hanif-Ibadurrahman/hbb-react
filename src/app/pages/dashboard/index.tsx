@@ -3,6 +3,7 @@ import { DefaultOptionType } from "antd/es/select";
 import {
 	getAllItemApi,
 	getConditionItemApi,
+	getStatusAvailableItemApi,
 	getTotalHbbApi,
 	getTotalHbbValueApi,
 	getTotalInventoryApi,
@@ -35,8 +36,15 @@ const Dashboard = () => {
 	const [dataChartItem, setDataChartItem] = useState([]);
 	const [dataChartValue, setDataChartValue] = useState([]);
 	const [dataConditionItem, setDataConditionItem] = useState<{
-		label: string[];
-		data: number[];
+		label?: string[];
+		data?: number[];
+	}>({
+		label: [],
+		data: [],
+	});
+	const [dataStatusAvailableItem, setDataStatusAvailableItem] = useState<{
+		label?: string[];
+		data?: number[];
 	}>({
 		label: [],
 		data: [],
@@ -143,6 +151,15 @@ const Dashboard = () => {
 		}
 	};
 
+	const fetchStatusAvailableItem = async () => {
+		try {
+			const response = await getStatusAvailableItemApi();
+			setDataStatusAvailableItem(response.data.data);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
 	useEffect(() => {
 		fetchDataAllItem();
 		fetchDataTotalInventory();
@@ -153,6 +170,7 @@ const Dashboard = () => {
 		fetchDataTotalItemPerMonth();
 		fetchDataTotalValuePerMonth();
 		fetchDataConditionItem();
+		fetchStatusAvailableItem();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -173,10 +191,7 @@ const Dashboard = () => {
 
 	const fetchDataPieCondition = dataConditionItem;
 
-	const fetchDataPieAvailable = {
-		label: ["Aktif", "Gudang"],
-		data: [54, 2400],
-	};
+	const fetchDataPieAvailable = dataStatusAvailableItem;
 
 	return (
 		<>
@@ -333,10 +348,10 @@ const Dashboard = () => {
 							<div className="box-body">
 								<PieChart
 									series={fetchDataPieCondition.data}
-									labels={fetchDataPieCondition.label.map(text =>
+									labels={fetchDataPieCondition?.label?.map(text =>
 										text.replace(/^\w/, c => c.toUpperCase()),
 									)}
-									width={411}
+									height={250}
 								/>
 							</div>
 						</div>
@@ -367,7 +382,7 @@ const Dashboard = () => {
 								<PieChart
 									series={fetchDataPieAvailable.data}
 									labels={fetchDataPieAvailable.label}
-									width={380}
+									height={250}
 								/>
 							</div>
 						</div>

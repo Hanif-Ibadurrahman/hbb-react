@@ -3,12 +3,18 @@ import ReactApexChart from "react-apexcharts";
 interface ILineChart {
 	series: ApexAxisChartSeries | ApexNonAxisChartSeries;
 	categories: any;
+	width?: string | number;
+	height?: string | number;
 }
 
-export const LineChart = ({ series, categories }: ILineChart) => {
+export const LineChart = ({
+	series,
+	categories,
+	width,
+	height,
+}: ILineChart) => {
 	const options: ApexCharts.ApexOptions = {
 		chart: {
-			height: 350,
 			type: "line",
 		},
 		dataLabels: {
@@ -41,5 +47,13 @@ export const LineChart = ({ series, categories }: ILineChart) => {
 		},
 	};
 
-	return <ReactApexChart options={options} series={series} type="line" />;
+	return (
+		<ReactApexChart
+			options={options}
+			series={series}
+			type="line"
+			width={width}
+			height={height}
+		/>
+	);
 };

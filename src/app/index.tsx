@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { DashboardPage } from "./pages/dashboard/dashboardPage";
 import { CorporateInventoryReportPage } from "./pages/corporateInventoryReport/corporateInventoryReportPage";
-import { DisplacementPage } from "./pages/displacement/displacementPage";
+// import { DisplacementPage } from "./pages/displacement/displacementPage";
 import { HbbInventoryPage } from "./pages/hbbInventory/hbbInventoryPage";
 import { HbbInventarisAttachmentPage } from "./pages/hbbInventoryAttachment/hbbInventoryAttachmentPage";
 import { HbbInventoryReportPage } from "./pages/hbbInventoryReport/hbbInventoryReportPage";
@@ -85,10 +85,10 @@ export function App() {
 						path="laporan-inventaris-koorporat"
 						element={<CorporateInventoryReportPage />}
 					/>
-					<Route
+					{/* <Route
 						path="formulir-izin-keluar-dan-masuk-gudang"
 						element={<WarehouseCheckInOutPage />}
-					/>
+					/> */}
 					<Route path="master-area" element={<MasterAreaPage />} />
 					<Route path="master-barang" element={<MasterItemPage />} />
 					<Route
@@ -116,7 +116,7 @@ export function App() {
 						path="riwayat-tiket-layanan"
 						element={<ServiceTicketHistoryPage />}
 					/>
-					<Route path="pemindahan" element={<DisplacementPage />} />
+					{/* <Route path="pemindahan" element={<DisplacementPage />} /> */}
 				</Route>
 				<Route path="login" element={<LoginPage />} />
 			</Routes>
