@@ -290,6 +290,7 @@ const MasterCondition = () => {
 									)}
 								</Space>
 							}
+							scroll={{ x: 1800 }}
 						/>
 					</div>
 				</div>

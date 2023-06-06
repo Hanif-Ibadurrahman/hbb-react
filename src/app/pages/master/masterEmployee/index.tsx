@@ -321,6 +321,7 @@ const MasterEmployee = () => {
 									)}
 								</Space>
 							}
+							scroll={{ x: 1800 }}
 						/>
 					</div>
 				</div>
