@@ -36,7 +36,6 @@ import {
 	deleteInventoryApi,
 	getAllInventoryApi,
 	getDetailInventoryApi,
-	getQRcodeApi,
 	getSerialNumberApi,
 	updateInventoryApi,
 } from "api/inventory";
@@ -46,35 +45,29 @@ import { ICodeGroupGetAllParams } from "store/types/codeGroupTypes";
 import { ISubCodeGroupGetAllParams } from "store/types/subCodeGroupTypes";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { IItemGetAllParams } from "store/types/itemTypes";
-import { getAllCodeGroupApi, getDetailCodeGroupApi } from "api/codeGroup";
-import {
-	getAllSubCodeGroupApi,
-	getDetailSubCodeGroupApi,
-} from "api/subCodeGroup";
-import { getAllCompanyApi, getDetailCompanyApi } from "api/company";
+import { getAllCodeGroupApi } from "api/codeGroup";
+import { getAllSubCodeGroupApi } from "api/subCodeGroup";
+import { getAllCompanyApi } from "api/company";
 import { IColorGetAllParams } from "store/types/colorTypes";
 import { IEmployeeGetAllParams } from "store/types/employeeTypes";
 import { IBusinessUnitGetAllParams } from "store/types/businessUnitTypes";
-import { getAllEmployeeApi, getDetailEmployeeApi } from "api/employee";
-import {
-	getAllBusinessUnitApi,
-	getDetailBusinessUnitApi,
-} from "api/businessUnit";
+import { getAllEmployeeApi } from "api/employee";
+import { getAllBusinessUnitApi } from "api/businessUnit";
 import { ILocationGetAllParams } from "store/types/locationTypes";
 import { getAllColorApi, getDetailColorApi } from "api/color";
-import { getAllLocationApi, getDetailLocationApi } from "api/location";
+import { getAllLocationApi } from "api/location";
 import { IWorkUnitGetAllParams } from "store/types/workUnitTypes";
 import { IAreaGetAllParams } from "store/types/areaTypes";
-import { getAllAreaApi, getDetailAreaApi } from "api/area";
-import { getAllWorkUnitApi, getDetailWorkUnitApi } from "api/workUnit";
+import { getAllAreaApi } from "api/area";
+import { getAllWorkUnitApi } from "api/workUnit";
 import { getAllItemApi, getDetailItemApi } from "api/item";
 import { IConditionGetAllParams } from "store/types/conditionTypes";
 import { getAllConditionApi, getDetailConditionApi } from "api/condition";
-import { getAllCountryApi, getDetailCountryApi } from "api/country";
+import { getAllCountryApi } from "api/country";
 import { ICountryGetAllParams } from "store/types/countryTypes";
 import { checkDefaultOption, removeNullFields } from "app/helper/common";
 import { isUndefined } from "lodash";
-import { getAllDivisionApi, getDetailDivisionApi } from "api/division";
+import { getAllDivisionApi } from "api/division";
 import { IDivisionGetAllParams } from "store/types/divisionTypes";
 import {
 	isHeadOfWorkUnit,
@@ -325,20 +318,6 @@ const HbbInventory = () => {
 		}
 	};
 
-	const fetchDataDivisionDetail = async (id: number) => {
-		try {
-			if (id) {
-				const response = await getDetailDivisionApi(id);
-				const detail = response.data.data;
-				setDataOptionDivision(
-					dataOptionDivision?.concat({ label: detail.name, value: detail.id }),
-				);
-			}
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
 	const fetchDataCodeGroup = async () => {
 		try {
 			const response = await getAllCodeGroupApi({
@@ -348,18 +327,6 @@ const HbbInventory = () => {
 			const codeGroupList = response.data.data;
 			setDataOptionCodeGroup(
 				codeGroupList.map(v => ({ label: v.value, value: v.id })),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataCodeGroupDetail = async (id: number) => {
-		try {
-			const response = await getDetailCodeGroupApi(id);
-			const detail = response.data.data;
-			setDataOptionCodeGroup(
-				dataOptionCodeGroup?.concat({ label: detail.value, value: detail.id }),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -381,16 +348,6 @@ const HbbInventory = () => {
 		}
 	};
 
-	const fetchDataSubCodeGroupDetail = async (id: number) => {
-		try {
-			const response = await getDetailSubCodeGroupApi(id);
-			const detail = response.data.data;
-			setDataOptionSubCodeGroup([{ label: detail.value, value: detail.id }]);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
 	const fetchDataCountry = async () => {
 		try {
 			const response = await getAllCountryApi({
@@ -400,18 +357,6 @@ const HbbInventory = () => {
 			const countryList = response.data.data;
 			setDataOptionCountry(
 				countryList.map(v => ({ label: v.name, value: v.id })),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataCountryDetail = async (id: number) => {
-		try {
-			const response = await getDetailCountryApi(id);
-			const detail = response.data.data;
-			setDataOptionCountry(
-				dataOptionCountry?.concat({ label: detail.name, value: detail.id }),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -433,21 +378,6 @@ const HbbInventory = () => {
 		}
 	};
 
-	const fetchDataEmployeeDetail = async (id: number) => {
-		try {
-			const response = await getDetailEmployeeApi(id);
-			const detail = response.data.data;
-			setDataOptionEmployee(
-				dataOptionEmployee?.concat({
-					label: detail.emp_name,
-					value: detail.nipg,
-				}),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
 	const fetchDataItem = async () => {
 		try {
 			const response = await getAllItemApi({
@@ -458,18 +388,6 @@ const HbbInventory = () => {
 			});
 			const itemList = response.data.data.data;
 			setDataOptionItem(itemList.map(v => ({ label: v.name, value: v.id })));
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataItemDetail = async (id: number) => {
-		try {
-			const response = await getDetailItemApi(id);
-			const detail = response.data.data;
-			setDataOptionItem(
-				dataOptionItem?.concat({ label: detail.name, value: detail.id }),
-			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -555,18 +473,6 @@ const HbbInventory = () => {
 		}
 	};
 
-	const fetchDataLocationDetail = async (id: number) => {
-		try {
-			const response = await getDetailLocationApi(id);
-			const detail = response.data.data;
-			setDataOptionLocation(
-				dataOptionLocation?.concat({ label: detail.name, value: detail.id }),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
 	const fetchDataColor = async () => {
 		try {
 			const response = await getAllColorApi({
@@ -607,21 +513,6 @@ const HbbInventory = () => {
 		}
 	};
 
-	const fetchDataBusinessUnitDetail = async (id: number) => {
-		try {
-			const response = await getDetailBusinessUnitApi(id);
-			const detail = response.data.data;
-			setDataOptionBusinessUnit(
-				dataOptionBusinessUnit?.concat({
-					label: detail.name,
-					value: detail.id,
-				}),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
 	const fetchDataArea = async () => {
 		try {
 			const response = await getAllAreaApi({
@@ -632,18 +523,6 @@ const HbbInventory = () => {
 			const areaList = response.data.data;
 			setDataOptionArea(
 				areaList.map(v => ({ label: v.name, value: `${v.id}` })),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataAreaDetail = async (id: number) => {
-		try {
-			const response = await getDetailAreaApi(id);
-			const detail = response.data.data;
-			setDataOptionArea(
-				dataOptionArea?.concat({ label: detail.name, value: `${detail.id}` }),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -667,18 +546,6 @@ const HbbInventory = () => {
 		}
 	};
 
-	const fetchDataWorkUnitDetail = async (id: number) => {
-		try {
-			const response = await getDetailWorkUnitApi(id);
-			const detail = response.data.data;
-			setDataOptionWorkUnit(
-				dataOptionWorkUnit?.concat({ label: detail.name, value: detail.id }),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
 	const fetchDataCompany = async () => {
 		try {
 			const response = await getAllCompanyApi(companyParams);
@@ -691,58 +558,109 @@ const HbbInventory = () => {
 		}
 	};
 
-	const fetchDataCompanyDetail = async (id: number) => {
-		try {
-			const response = await getDetailCompanyApi(id);
-			const detail = response.data.data;
-			setDataOptionCompany(
-				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
 	const handleInitialValue = (values: IInventoryDetail) => {
 		const setData = removeNullFields(values);
 		if (!checkDefaultOption(dataOptionDivision!, setData.id_division)) {
-			fetchDataDivisionDetail(setData.id_division);
+			setDataOptionDivision(
+				dataOptionDivision?.concat({
+					label: setData.division_name,
+					value: setData.id_division,
+				}),
+			);
 		}
 		if (!checkDefaultOption(dataOptionCodeGroup!, setData.id_main_group)) {
-			fetchDataCodeGroupDetail(setData.id_main_group);
+			setDataOptionCodeGroup(
+				dataOptionCodeGroup?.concat({
+					label: setData.main_group,
+					value: setData.id_main_group,
+				}),
+			);
 		}
 		if (!checkDefaultOption(dataOptionSubCodeGroup!, setData.id_sub_group)) {
-			fetchDataSubCodeGroupDetail(setData.id_sub_group);
+			setDataOptionSubCodeGroup([
+				{ label: setData.sub_group, value: setData.id_sub_group },
+			]);
 		}
 		if (!checkDefaultOption(dataOptionCountry!, setData.id_country)) {
-			fetchDataCountryDetail(setData.id_country);
+			setDataOptionCountry(
+				dataOptionCountry?.concat({
+					label: setData.country,
+					value: setData.id_country,
+				}),
+			);
 		}
 		if (!checkDefaultOption(dataOptionEmployee!, setData.id_penanggung_jawab)) {
-			fetchDataEmployeeDetail(setData.id_penanggung_jawab);
+			setDataOptionEmployee(
+				dataOptionEmployee?.concat({
+					label: setData.penanggung_jawab,
+					value: setData.id_penanggung_jawab,
+				}),
+			);
 		}
 		if (!checkDefaultOption(dataOptionItem!, setData.id_barang)) {
-			fetchDataItemDetail(setData.id_barang);
+			setDataOptionItem(
+				dataOptionItem?.concat({
+					label: setData.name,
+					value: setData.id_barang,
+				}),
+			);
 		}
 		if (!checkDefaultOption(dataOptionCondition!, setData.condition)) {
 			fetchDataConditionDetail(setData.condition);
+			setDataOptionCondition(
+				dataOptionCondition?.concat({
+					label: setData.kondisi,
+					value: setData.condition,
+				}),
+			);
 		}
 		if (!checkDefaultOption(dataOptionLocation!, setData.id_location)) {
-			fetchDataLocationDetail(setData.id_location);
+			setDataOptionLocation(
+				dataOptionLocation?.concat({
+					label: setData.location,
+					value: setData.id_location,
+				}),
+			);
 		}
 		if (!checkDefaultOption(dataOptionWorkUnit!, setData.id_satker)) {
-			fetchDataWorkUnitDetail(setData.id_satker);
+			setDataOptionWorkUnit(
+				dataOptionWorkUnit?.concat({
+					label: setData.satker,
+					value: setData.id_satker,
+				}),
+			);
 		}
 		if (!checkDefaultOption(dataOptionArea!, setData.id_area)) {
-			fetchDataAreaDetail(setData.id_area);
+			setDataOptionArea(
+				dataOptionArea?.concat({
+					label: setData.area,
+					value: setData.id_area,
+				}),
+			);
 		}
 		if (!checkDefaultOption(dataOptionBusinessUnit!, setData.id_bisnis_unit)) {
-			fetchDataBusinessUnitDetail(setData.id_bisnis_unit);
+			setDataOptionBusinessUnit(
+				dataOptionBusinessUnit?.concat({
+					label: setData.bu_name,
+					value: setData.id_bisnis_unit,
+				}),
+			);
 		}
 		if (!checkDefaultOption(dataOptionCompany!, setData.id_company)) {
-			fetchDataCompanyDetail(setData.id_company);
+			setDataOptionCompany(
+				dataOptionCompany?.concat({
+					label: setData.company_name,
+					value: setData.id_company,
+				}),
+			);
 		}
 		if (!checkDefaultOption(dataOptionColor!, setData.id_color)) {
-			fetchDataColorDetail(setData.id_color);
+			setDataOptionColor(
+				dataOptionColor?.concat({
+					label: setData.color,
+					value: setData.id_color,
+				}),
+			);
 		}
 		setFiles(null);
 		setFileList(null);

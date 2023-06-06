@@ -275,21 +275,23 @@ const MasterUser = () => {
 
 	const fetchDataEmployeeDetail = async (id: number, isAutoFill?: boolean) => {
 		try {
-			const response = await getDetailEmployeeApi(id);
-			const detail = response.data.data;
+			if (id) {
+				const response = await getDetailEmployeeApi(id);
+				const detail = response.data.data;
 
-			if (isAutoFill) {
-				formik.setFieldValue("nipg", detail.nipg);
-				formRef.current?.setFieldsValue({
-					nipg: detail.nipg,
-				});
-			} else {
-				setDataOptionEmployee(
-					dataOptionEmployee?.concat({
-						label: detail.emp_name,
-						value: detail.id,
-					}),
-				);
+				if (isAutoFill) {
+					formik.setFieldValue("nipg", detail.nipg);
+					formRef.current?.setFieldsValue({
+						nipg: detail.nipg,
+					});
+				} else {
+					setDataOptionEmployee(
+						dataOptionEmployee?.concat({
+							label: detail.emp_name,
+							value: detail.id,
+						}),
+					);
+				}
 			}
 		} catch (error: any) {
 			CheckResponse(error);
@@ -901,19 +903,9 @@ const MasterUser = () => {
 							</div>
 						</Form.Item>
 					)}
-					<Form.Item
-						name="id_emp"
-						rules={[
-							{
-								required: true,
-								message: "Harap isi field ini",
-							},
-						]}
-					>
+					<Form.Item name="id_emp">
 						<div className="form-group">
-							<Title level={5}>
-								Pegawai <span className="text-danger">*</span>
-							</Title>
+							<Title level={5}>Pegawai</Title>
 							<div className="controls">
 								<Select
 									showSearch

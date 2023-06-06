@@ -577,7 +577,7 @@ const MasterLocation = () => {
 									)}
 								</Space>
 							}
-							scroll={{ x: 1500 }}
+							scroll={{ x: 1800 }}
 						/>
 					</div>
 				</div>

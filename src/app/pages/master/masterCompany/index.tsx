@@ -242,6 +242,7 @@ const MasterCompany = () => {
 										)}
 								</Space>
 							}
+							scroll={{ x: 1800 }}
 						/>
 					</div>
 				</div>
