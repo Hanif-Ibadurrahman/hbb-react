@@ -134,6 +134,7 @@ const CorporateInventoryReport = () => {
 								</Space>
 							}
 							setSelectedPageAndSort={setSelectedPageAndSort}
+							scroll={{ x: 1800 }}
 						/>
 					</div>
 				</div>
