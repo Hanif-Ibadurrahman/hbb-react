@@ -204,14 +204,16 @@ const ServiceRequest = () => {
 
 	const fetchDataWorkflowDetail = async (id: number) => {
 		try {
-			const response = await getDetailWorkflowApi(id);
-			const detail = response.data.data;
-			setDataOptionWorkflow(
-				dataOptionWorkflow?.concat({
-					label: `${detail.name} [${changeValueToRole(detail.roles)}]`,
-					value: detail.id,
-				}),
-			);
+			if (id) {
+				const response = await getDetailWorkflowApi(id);
+				const detail = response.data.data;
+				setDataOptionWorkflow(
+					dataOptionWorkflow?.concat({
+						label: `${detail.name} [${changeValueToRole(detail.roles)}]`,
+						value: detail.id,
+					}),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}

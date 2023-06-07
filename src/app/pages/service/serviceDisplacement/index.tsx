@@ -148,14 +148,16 @@ const ServiceDisplacement = () => {
 
 	const fetchDataInventoryDetail = async (id: number) => {
 		try {
-			const response = await getDetailInventoryApi(id);
-			const detail = response.data.data;
-			setDataOptionInventory(
-				dataOptionInventory?.concat({
-					label: `${detail.name} - ${detail.code}`,
-					value: detail.id,
-				}),
-			);
+			if (id) {
+				const response = await getDetailInventoryApi(id);
+				const detail = response.data.data;
+				setDataOptionInventory(
+					dataOptionInventory?.concat({
+						label: `${detail.name} - ${detail.code}`,
+						value: detail.id,
+					}),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -173,14 +175,16 @@ const ServiceDisplacement = () => {
 
 	const fetchDataUserDetail = async (id: number) => {
 		try {
-			const response = await getDetailUserApi(id);
-			const detail = response.data.data;
-			setDataOptionUser(
-				dataOptionUser?.concat({
-					label: detail.name,
-					value: detail.id,
-				}),
-			);
+			if (id) {
+				const response = await getDetailUserApi(id);
+				const detail = response.data.data;
+				setDataOptionUser(
+					dataOptionUser?.concat({
+						label: detail.name,
+						value: detail.id,
+					}),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -206,14 +210,16 @@ const ServiceDisplacement = () => {
 
 	const fetchDataWorkflowDetail = async (id: number) => {
 		try {
-			const response = await getDetailWorkflowApi(id);
-			const detail = response.data.data;
-			setDataOptionWorkflow(
-				dataOptionWorkflow?.concat({
-					label: `${detail.name} [${changeValueToRole(detail.roles)}]`,
-					value: detail.id,
-				}),
-			);
+			if (id) {
+				const response = await getDetailWorkflowApi(id);
+				const detail = response.data.data;
+				setDataOptionWorkflow(
+					dataOptionWorkflow?.concat({
+						label: `${detail.name} [${changeValueToRole(detail.roles)}]`,
+						value: detail.id,
+					}),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -233,11 +239,13 @@ const ServiceDisplacement = () => {
 
 	const fetchDataLocationDetail = async (id: number) => {
 		try {
-			const response = await getDetailLocationApi(id);
-			const detail = response.data.data;
-			setDataOptionLocation(
-				dataOptionLocation?.concat({ label: detail.name, value: detail.id }),
-			);
+			if (id) {
+				const response = await getDetailLocationApi(id);
+				const detail = response.data.data;
+				setDataOptionLocation(
+					dataOptionLocation?.concat({ label: detail.name, value: detail.id }),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}

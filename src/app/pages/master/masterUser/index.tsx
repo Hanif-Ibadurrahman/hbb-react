@@ -155,14 +155,16 @@ const MasterUser = () => {
 
 	const fetchDataCompanyDetail = async (id: number) => {
 		try {
-			const response = await getDetailCompanyApi(id);
-			const detail = response.data.data;
-			setDataOptionCompany(
-				dataOptionCompany?.concat({
-					label: detail.name,
-					value: detail.id,
-				}),
-			);
+			if (id) {
+				const response = await getDetailCompanyApi(id);
+				const detail = response.data.data;
+				setDataOptionCompany(
+					dataOptionCompany?.concat({
+						label: detail.name,
+						value: detail.id,
+					}),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -185,14 +187,16 @@ const MasterUser = () => {
 
 	const fetchDataBusinessUnitDetail = async (id: number) => {
 		try {
-			const response = await getDetailBusinessUnitApi(id);
-			const detail = response.data.data;
-			setDataOptionBusinessUnit(
-				dataOptionBusinessUnit?.concat({
-					label: detail.name,
-					value: detail.id,
-				}),
-			);
+			if (id) {
+				const response = await getDetailBusinessUnitApi(id);
+				const detail = response.data.data;
+				setDataOptionBusinessUnit(
+					dataOptionBusinessUnit?.concat({
+						label: detail.name,
+						value: detail.id,
+					}),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -214,11 +218,13 @@ const MasterUser = () => {
 
 	const fetchDataAreaDetail = async (id: number) => {
 		try {
-			const response = await getDetailAreaApi(id);
-			const detail = response.data.data;
-			setDataOptionArea(
-				dataOptionArea?.concat({ label: detail.name, value: detail.id }),
-			);
+			if (id) {
+				const response = await getDetailAreaApi(id);
+				const detail = response.data.data;
+				setDataOptionArea(
+					dataOptionArea?.concat({ label: detail.name, value: detail.id }),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -903,7 +909,15 @@ const MasterUser = () => {
 							</div>
 						</Form.Item>
 					)}
-					<Form.Item name="id_emp">
+					<Form.Item
+						name="id_emp"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
 						<div className="form-group">
 							<Title level={5}>Pegawai</Title>
 							<div className="controls">

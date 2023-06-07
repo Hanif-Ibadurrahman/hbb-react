@@ -446,11 +446,13 @@ const HbbInventory = () => {
 
 	const fetchDataConditionDetail = async (id: number) => {
 		try {
-			const response = await getDetailConditionApi(id);
-			const detail = response.data.data;
-			setDataOptionCondition(
-				dataOptionCondition?.concat({ label: detail.name, value: detail.id }),
-			);
+			if (id) {
+				const response = await getDetailConditionApi(id);
+				const detail = response.data.data;
+				setDataOptionCondition(
+					dataOptionCondition?.concat({ label: detail.name, value: detail.id }),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -488,11 +490,13 @@ const HbbInventory = () => {
 
 	const fetchDataColorDetail = async (id: number) => {
 		try {
-			const response = await getDetailColorApi(id);
-			const detail = response.data.data;
-			setDataOptionColor(
-				dataOptionColor?.concat({ label: detail.name, value: detail.id }),
-			);
+			if (id) {
+				const response = await getDetailColorApi(id);
+				const detail = response.data.data;
+				setDataOptionColor(
+					dataOptionColor?.concat({ label: detail.name, value: detail.id }),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}

@@ -128,11 +128,16 @@ const MasterItem = () => {
 
 	const fetchDataCodeGroupDetail = async (id: number) => {
 		try {
-			const response = await getDetailCodeGroupApi(id);
-			const detail = response.data.data;
-			setDataOptionCodeGroup(
-				dataOptionCodeGroup?.concat({ label: detail.value, value: detail.id }),
-			);
+			if (id) {
+				const response = await getDetailCodeGroupApi(id);
+				const detail = response.data.data;
+				setDataOptionCodeGroup(
+					dataOptionCodeGroup?.concat({
+						label: detail.value,
+						value: detail.id,
+					}),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -155,14 +160,16 @@ const MasterItem = () => {
 
 	const fetchDataSubCodeGroupDetail = async (id: number) => {
 		try {
-			const response = await getDetailSubCodeGroupApi(id);
-			const detail = response.data.data;
-			setDataOptionSubCodeGroup(
-				dataOptionSubCodeGroup?.concat({
-					label: detail.value,
-					value: detail.id,
-				}),
-			);
+			if (id) {
+				const response = await getDetailSubCodeGroupApi(id);
+				const detail = response.data.data;
+				setDataOptionSubCodeGroup(
+					dataOptionSubCodeGroup?.concat({
+						label: detail.value,
+						value: detail.id,
+					}),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -182,11 +189,13 @@ const MasterItem = () => {
 
 	const fetchDataCompanyDetail = async (id: number) => {
 		try {
-			const response = await getDetailCompanyApi(id);
-			const detail = response.data.data;
-			setDataOptionCompany(
-				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
-			);
+			if (id) {
+				const response = await getDetailCompanyApi(id);
+				const detail = response.data.data;
+				setDataOptionCompany(
+					dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -209,11 +218,16 @@ const MasterItem = () => {
 
 	const fetchDataColorDetail = async (id: number) => {
 		try {
-			const response = await getDetailColorApi(id);
-			const detail = response.data.data;
-			setDataOptionColor(
-				dataOptionColor?.concat({ label: detail.name, value: `${detail.id}` }),
-			);
+			if (id) {
+				const response = await getDetailColorApi(id);
+				const detail = response.data.data;
+				setDataOptionColor(
+					dataOptionColor?.concat({
+						label: detail.name,
+						value: `${detail.id}`,
+					}),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
