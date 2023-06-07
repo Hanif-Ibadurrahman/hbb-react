@@ -141,14 +141,16 @@ const ServiceDelete = () => {
 
 	const fetchDataInventoryDetail = async (id: number) => {
 		try {
-			const response = await getDetailInventoryApi(id);
-			const detail = response.data.data;
-			setDataOptionInventory(
-				dataOptionInventory?.concat({
-					label: `${detail.name} - ${detail.code}`,
-					value: detail.id,
-				}),
-			);
+			if (id) {
+				const response = await getDetailInventoryApi(id);
+				const detail = response.data.data;
+				setDataOptionInventory(
+					dataOptionInventory?.concat({
+						label: `${detail.name} - ${detail.code}`,
+						value: detail.id,
+					}),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -174,14 +176,16 @@ const ServiceDelete = () => {
 
 	const fetchDataWorkflowDetail = async (id: number) => {
 		try {
-			const response = await getDetailWorkflowApi(id);
-			const detail = response.data.data;
-			setDataOptionWorkflow(
-				dataOptionWorkflow?.concat({
-					label: `${detail.name} [${changeValueToRole(detail.roles)}]`,
-					value: detail.id,
-				}),
-			);
+			if (id) {
+				const response = await getDetailWorkflowApi(id);
+				const detail = response.data.data;
+				setDataOptionWorkflow(
+					dataOptionWorkflow?.concat({
+						label: `${detail.name} [${changeValueToRole(detail.roles)}]`,
+						value: detail.id,
+					}),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}

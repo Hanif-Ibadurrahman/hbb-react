@@ -108,14 +108,16 @@ const MasterArea = () => {
 
 	const fetchDataCompanyDetail = async (id: number) => {
 		try {
-			const response = await getDetailCompanyApi(id);
-			const detail = response.data.data;
-			setDataOptionCompany(
-				dataOptionCompany?.concat({
-					label: detail.name,
-					value: detail.id,
-				}),
-			);
+			if (id) {
+				const response = await getDetailCompanyApi(id);
+				const detail = response.data.data;
+				setDataOptionCompany(
+					dataOptionCompany?.concat({
+						label: detail.name,
+						value: detail.id,
+					}),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -138,14 +140,16 @@ const MasterArea = () => {
 
 	const fetchDataEmployeeDetail = async (id: number) => {
 		try {
-			const response = await getDetailEmployeeApi(id);
-			const detail = response.data.data;
-			setDataOptionEmployee(
-				dataOptionEmployee?.concat({
-					label: detail.emp_name,
-					value: detail.id,
-				}),
-			);
+			if (id) {
+				const response = await getDetailEmployeeApi(id);
+				const detail = response.data.data;
+				setDataOptionEmployee(
+					dataOptionEmployee?.concat({
+						label: detail.emp_name,
+						value: detail.id,
+					}),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -188,14 +192,16 @@ const MasterArea = () => {
 
 	const fetchDataBusinessUnitDetail = async (id: number) => {
 		try {
-			const response = await getDetailBusinessUnitApi(id);
-			const detail = response.data.data;
-			setDataOptionBusinessUnit(
-				dataOptionBusinessUnit?.concat({
-					label: detail.name,
-					value: detail.id,
-				}),
-			);
+			if (id) {
+				const response = await getDetailBusinessUnitApi(id);
+				const detail = response.data.data;
+				setDataOptionBusinessUnit(
+					dataOptionBusinessUnit?.concat({
+						label: detail.name,
+						value: detail.id,
+					}),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}

@@ -96,11 +96,13 @@ const MasterManager = () => {
 
 	const fetchDataCompanyDetail = async (id: number) => {
 		try {
-			const response = await getDetailCompanyApi(id);
-			const detail = response.data.data;
-			setDataOptionCompany(
-				dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
-			);
+			if (id) {
+				const response = await getDetailCompanyApi(id);
+				const detail = response.data.data;
+				setDataOptionCompany(
+					dataOptionCompany?.concat({ label: detail.name, value: detail.id }),
+				);
+			}
 		} catch (error: any) {
 			CheckResponse(error);
 		}
