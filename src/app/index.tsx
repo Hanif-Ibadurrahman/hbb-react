@@ -9,7 +9,7 @@ import { LoginPage } from "./pages/login/loginPage";
 // import { PrintBarcodePage } from "./pages/printBarcode/printBarcodePage";
 import { RoomInventoryPage } from "./pages/roomInventory/roomInventoryPage";
 import { ServiceTicketHistoryPage } from "./pages/serviceTicketHistory/serviceTicketHistoryPage";
-import { WarehouseCheckInOutPage } from "./pages/warehouseCheckInOut/warehouseCheckinOutPage";
+// import { WarehouseCheckInOutPage } from "./pages/warehouseCheckInOut/warehouseCheckinOutPage";
 import { MasterAreaPage } from "./pages/master/masterArea/masterAreaPage";
 import { MasterBusinessUnitPage } from "./pages/master/masterBusinessUnit/masterBusinessUnitPage";
 import { MasterCodeGroupPage } from "./pages/master/masterCodeGroup/masterCodeGroupPage";
