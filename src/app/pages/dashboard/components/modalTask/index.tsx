@@ -23,7 +23,12 @@ const ModalTask = ({ dataTable }: IModalTask) => {
 			width={1200}
 			destroyOnClose
 		>
-			<Table columns={columns()} dataSource={dataTable} pagination={false} />
+			<Table
+				columns={columns()}
+				dataSource={dataTable}
+				pagination={false}
+				scroll={{ x: 1800 }}
+			/>
 		</AntdModal>
 	);
 };
