@@ -1,5 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Badge, Button, Dropdown, MenuProps, Space, notification } from "antd";
+import {
+	Badge,
+	Button,
+	Dropdown,
+	MenuProps,
+	Space,
+	Typography,
+	notification,
+} from "antd";
 import { deleteNotificationApi, getNotificationApi } from "api/dashboard";
 import { logoutApi } from "api/login";
 import { CheckResponse } from "app/helper/authentication";
@@ -14,6 +22,8 @@ interface IHeader {
 }
 
 export const Header = ({ collapseHandler }: IHeader) => {
+	const { Text } = Typography;
+	const [ellipsis, setEllipsis] = useState(true);
 	const [api, contextHolder] = notification.useNotification();
 	const navigate = useNavigate();
 	const [dataNotification, setDataNotification] = useState<INotification[]>();
@@ -169,7 +179,7 @@ export const Header = ({ collapseHandler }: IHeader) => {
 
 						<li className="dropdown user user-menu">
 							<Dropdown menu={{ items }} placement="bottomLeft">
-								<div title="User">
+								<div title={tokenDecode?.user?.name?.toUpperCase()}>
 									<Space>
 										<img
 											src="images/avatar/avatar-1.png"
@@ -178,7 +188,14 @@ export const Header = ({ collapseHandler }: IHeader) => {
 										/>
 										<a href="#">
 											<p className="fw-bold">
-												{tokenDecode?.user?.name?.toUpperCase()}
+												<Text
+													style={{ width: 100 }}
+													ellipsis={{
+														tooltip: "",
+													}}
+												>
+													{tokenDecode?.user?.name?.toUpperCase()}
+												</Text>
 											</p>
 										</a>
 									</Space>
