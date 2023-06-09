@@ -549,9 +549,6 @@ const MasterUser = () => {
 		setShowModal({ show: false });
 	};
 
-	const isStaff =
-		intersection(selectedRole, ["User", "Kepala Satuan Kerja"]).length > 0;
-
 	return (
 		<>
 			<section className="content">
@@ -873,42 +870,40 @@ const MasterUser = () => {
 							</div>
 						</div>
 					</Form.Item>
-					{isStaff && (
-						<Form.Item
-							name="id_satker"
-							rules={[
-								{
-									required: true,
-									message: "Harap isi field ini",
-								},
-							]}
-						>
-							<div className="form-group">
-								<Title level={5}>
-									Satuan Kerja <span className="text-danger">*</span>
-								</Title>
-								<div className="controls">
-									<Select
-										showSearch
-										onSearch={v => setWorkUnitParams({ satker: v })}
-										filterOption={(input, option) =>
-											(`${option?.label}` ?? "")
-												.toLowerCase()
-												.includes(input.toLowerCase())
-										}
-										options={dataOptionWorkUnit}
-										onChange={(v, opt) => {
-											formik.setFieldValue("id_satker", v);
-											formRef.current?.setFieldsValue({
-												id_satker: v,
-											});
-										}}
-										value={formik.values.id_satker}
-									/>
-								</div>
+					<Form.Item
+						name="id_satker"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Satuan Kerja <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									onSearch={v => setWorkUnitParams({ satker: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionWorkUnit}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_satker", v);
+										formRef.current?.setFieldsValue({
+											id_satker: v,
+										});
+									}}
+									value={formik.values.id_satker}
+								/>
 							</div>
-						</Form.Item>
-					)}
+						</div>
+					</Form.Item>
 					<Form.Item
 						name="id_emp"
 						rules={[
