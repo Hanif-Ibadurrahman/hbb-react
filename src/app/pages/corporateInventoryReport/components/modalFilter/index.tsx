@@ -37,7 +37,7 @@ export const ModalFilter = ({
 	const generateContent = useMemo(() => {
 		if (isSuperadminGlobal) {
 			return (
-				<Col span={12}>
+				<Col span={24}>
 					<Form.Item name="id_company" label="Perusahaan">
 						<Select
 							showSearch
@@ -95,7 +95,7 @@ export const ModalFilter = ({
 	return (
 		<Drawer
 			title="Filter"
-			size="large"
+			size="default"
 			onClose={handleCancel}
 			open={isShow}
 			bodyStyle={{ paddingBottom: 80 }}
@@ -118,7 +118,8 @@ export const ModalFilter = ({
 				onFinish={handleSubmit}
 			>
 				<Row gutter={16}>
-					<Col span={12}>
+					{generateContent}
+					<Col span={24}>
 						<Form.Item name="inventory_type" label="Jenis Barang">
 							<Select
 								options={[
@@ -128,13 +129,12 @@ export const ModalFilter = ({
 							/>
 						</Form.Item>
 					</Col>
-					{generateContent}
-					<Col span={12}>
+					<Col span={24}>
 						<Form.Item name="rentang_waktu" label="Tanggal">
 							<RangePicker style={{ width: "100%" }} format={"DD-MM-YYYY"} />
 						</Form.Item>
 					</Col>
-					<Col span={12}>
+					<Col span={24}>
 						<Form.Item name="type_export" label="Export">
 							<Select
 								options={[

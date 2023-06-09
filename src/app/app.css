@@ -14,7 +14,7 @@
 
     div.row > div.col-9 > h2.text-primary{
         font-size: 30px;
-   }
+    }
 }
 
 @media (max-width: 575px) {}

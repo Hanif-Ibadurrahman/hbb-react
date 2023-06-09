@@ -23,7 +23,6 @@ interface IHeader {
 
 export const Header = ({ collapseHandler }: IHeader) => {
 	const { Text } = Typography;
-	const [ellipsis, setEllipsis] = useState(true);
 	const [api, contextHolder] = notification.useNotification();
 	const navigate = useNavigate();
 	const [dataNotification, setDataNotification] = useState<INotification[]>();

@@ -24,7 +24,7 @@ export const ModalFilter = ({
 	const generateContent = useMemo(() => {
 		if (isSuperadminGlobal) {
 			return (
-				<Col span={12}>
+				<Col span={24}>
 					<Form.Item name="company" label="Perusahaan">
 						<SelectWithTag
 							showSearch
@@ -66,7 +66,7 @@ export const ModalFilter = ({
 	return (
 		<Drawer
 			title="Filter"
-			size="large"
+			size="default"
 			onClose={handleCancel}
 			open={isShow}
 			bodyStyle={{ paddingBottom: 80 }}
@@ -85,12 +85,12 @@ export const ModalFilter = ({
 			<Form form={formFilter} layout="vertical" onFinish={handleSubmit}>
 				<Row gutter={16}>
 					{generateContent}
-					<Col span={12}>
+					<Col span={24}>
 						<Form.Item name="name" label="Nama Barang">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
-					<Col span={12}>
+					<Col span={24}>
 						<Form.Item name="main_group" label="Main Group">
 							<SelectWithTag
 								showSearch
@@ -105,7 +105,7 @@ export const ModalFilter = ({
 							/>
 						</Form.Item>
 					</Col>
-					<Col span={12}>
+					<Col span={24}>
 						<Form.Item name="sub_group" label="Sub Group">
 							<SelectWithTag
 								showSearch
@@ -122,7 +122,7 @@ export const ModalFilter = ({
 							/>
 						</Form.Item>
 					</Col>
-					<Col span={12}>
+					<Col span={24}>
 						<Form.Item name="warna" label="Warna">
 							<SelectWithTag
 								showSearch
@@ -137,37 +137,37 @@ export const ModalFilter = ({
 							/>
 						</Form.Item>
 					</Col>
-					<Col span={12}>
+					<Col span={24}>
 						<Form.Item name="merk" label="Merk">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
-					<Col span={12}>
+					<Col span={24}>
 						<Form.Item name="tipe" label="Tipe">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
-					<Col span={12}>
+					<Col span={24}>
 						<Form.Item name="jenis" label="Jenis">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
-					<Col span={12}>
+					<Col span={24}>
 						<Form.Item name="model" label="Model">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
-					<Col span={12}>
+					<Col span={24}>
 						<Form.Item name="kapasitas" label="Kapasital">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
-					<Col span={12}>
+					<Col span={24}>
 						<Form.Item name="ukuran" label="Ukuran">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
-					<Col span={12}>
+					<Col span={24}>
 						<Form.Item name="satuan" label="Satuan">
 							<SelectWithTag />
 						</Form.Item>

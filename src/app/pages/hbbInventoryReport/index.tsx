@@ -99,7 +99,7 @@ const HbbInventoryReport = () => {
 				if (params.type_export === "excel") {
 					const filter = omit(params, ["page", "per_page", "type_export"]);
 					const response = await exportInventoryReportApi(filter);
-					const url = response.data.data;
+					const url = response.data.data.replace(/\\/g, "");
 					const newTab = window.open(url, "_blank");
 					newTab?.focus();
 				}
