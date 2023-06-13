@@ -17,6 +17,7 @@ export const loginAction = (data: ILoginRequest) => {
 
 			const dataDecode: ITokenDecode = jwtDecode(response.data.token);
 
+			// To prevent the CSRF attack, you can add the SameSite=Lax attribute to the cookies
 			document.cookie = `token=${response.data.token}; max-age=${dataDecode.expires_in}; SameSite=lax; Secure`;
 
 			dispatch({

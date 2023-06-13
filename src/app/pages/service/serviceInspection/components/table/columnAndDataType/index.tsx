@@ -39,7 +39,7 @@ export const columns = ({
 			sorter: true,
 		},
 		{
-			title: "Deskripsi HBB?inventaris",
+			title: "Deskripsi HBB/inventaris",
 			dataIndex: "description",
 			sorter: true,
 		},
