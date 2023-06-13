@@ -77,11 +77,6 @@ export const columns = ({
 			sorter: true,
 		},
 		{
-			title: "Spesifikasi",
-			dataIndex: "spesification",
-			sorter: true,
-		},
-		{
 			title: "Status",
 			sorter: true,
 			render: (text, record, index) => {
