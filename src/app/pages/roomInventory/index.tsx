@@ -98,7 +98,7 @@ const RoomInventory = () => {
 					const filter = omit(params, ["page", "per_page", "type_export"]);
 					const response = await exportRoomInventoryApi(filter);
 					const url = response.data.data.replace(/\\/g, "");
-					const newTab = window.open(url, "_blank");
+					const newTab = window.open(url, "Download");
 					newTab?.focus();
 				}
 
