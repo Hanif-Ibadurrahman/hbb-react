@@ -98,8 +98,9 @@ const RoomInventory = () => {
 					const filter = omit(params, ["page", "per_page", "type_export"]);
 					const response = await exportRoomInventoryApi(filter);
 					const url = response.data.data.replace(/\\/g, "");
-					const newTab = window.open(url, "Download");
-					newTab?.focus();
+					window.location.href = url;
+					// const newTab = window.open(url, "Download");
+					// newTab?.focus();
 				}
 
 				const new_params = omit(params, ["type_export"]);
@@ -270,6 +271,7 @@ const RoomInventory = () => {
 	return (
 		<>
 			<section className="content">
+				<a style={{ display: "none" }} id="download"></a>
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort
