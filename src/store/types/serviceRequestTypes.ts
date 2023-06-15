@@ -51,10 +51,10 @@ export interface IServiceRequestGetAllParams {
 	per_page?: number;
 	order_by?: string;
 	sort?: string;
-	uraian?: string;
-	condition?: string;
+	inventory_code?: string;
+	inventory_description?: string;
 	nama_pemakai?: string;
-	spesification?: string;
+	condition?: string;
 }
 export interface ICreateServiceRequestRequest {
 	inventory_code: string;

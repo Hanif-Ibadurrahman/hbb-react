@@ -8,6 +8,14 @@ export interface IServiceTicketHistory {
 	created_at: string | null;
 }
 
+export interface IApprovalLog {
+	name: string;
+	is_approved: boolean;
+	is_rejected: boolean;
+	created_at: string;
+	updated_at: string | null;
+}
+
 export interface IServiceTicketHistoryPaginateResponse extends PaginationState {
 	data: IServiceTicketHistory[];
 }

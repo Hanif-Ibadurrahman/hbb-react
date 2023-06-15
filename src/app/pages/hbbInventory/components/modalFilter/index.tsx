@@ -1,4 +1,13 @@
-import { Button, Col, DatePicker, Drawer, Form, Row, Space } from "antd";
+import {
+	Button,
+	Col,
+	DatePicker,
+	Drawer,
+	Form,
+	Row,
+	Slider,
+	Space,
+} from "antd";
 import { SelectWithTag } from "app/components/selectWithTag";
 import { isSuperadminGlobal } from "app/helper/permission";
 import { Dispatch, SetStateAction, useMemo } from "react";
@@ -44,17 +53,23 @@ export const ModalFilter = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [options.dataOptionCompany]);
 
-	const checkRangeValue = value => {
+	const checkRangeDate = value => {
 		return value
 			? `${value[0].format("YYYY-MM-DD")}|${value[1].format("YYYY-MM-DD")}`
 			: undefined;
 	};
 
+	const checkRangePrice = value => {
+		return value ? `${value[0]}|${value[1]}` : undefined;
+	};
+
 	const handleSubmit = v => {
+		console.log(v);
 		const values = {
 			...v,
-			rentang_waktu: checkRangeValue(v["rentang_waktu"]),
-			rentang_tahun_perolehan: checkRangeValue(v["rentang_tahun_perolehan"]),
+			rentang_harga: checkRangePrice(v["rentang_harga"]),
+			rentang_waktu: checkRangeDate(v["rentang_waktu"]),
+			rentang_tahun_perolehan: checkRangeDate(v["rentang_tahun_perolehan"]),
 		};
 		const filterParams: any = Object.entries(values).reduce((res, curr) => {
 			if (curr[1]) {
@@ -327,6 +342,15 @@ export const ModalFilter = ({
 								}
 								dataOption={options.dataOptionCondition}
 								valueOption="label"
+							/>
+						</Form.Item>
+					</Col>
+					<Col span={24}>
+						<Form.Item name="rentang_harga" label="Rentang Harga">
+							<Slider
+								range={{ draggableTrack: true }}
+								min={0}
+								max={1000000000}
 							/>
 						</Form.Item>
 					</Col>

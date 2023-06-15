@@ -142,6 +142,7 @@ export interface IInventoryGetAllParams {
 	condition?: string;
 	rentang_waktu?: string;
 	rentang_tahun_perolehan?: string;
+	rentang_harga?: string;
 	code?: string;
 	status?: number;
 }

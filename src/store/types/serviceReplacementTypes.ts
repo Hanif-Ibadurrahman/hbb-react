@@ -39,6 +39,7 @@ export interface IServiceReplacementGetAllParams {
 	order_by?: string;
 	sort?: string;
 	inventory_code?: string;
+	inventory_return?: string;
 	description?: string;
 	condition?: string;
 	emp_name?: string;

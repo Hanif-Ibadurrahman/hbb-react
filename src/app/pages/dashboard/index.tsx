@@ -42,6 +42,7 @@ const Dashboard = () => {
 		label: [],
 		data: [],
 	});
+	const [isShowModalTask, setIsShowModalTask] = useState<boolean>(false);
 	const [dataStatusAvailableItem, setDataStatusAvailableItem] = useState<{
 		label?: string[];
 		data?: number[];
@@ -179,6 +180,12 @@ const Dashboard = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [locationParams]);
 
+	useEffect(() => {
+		if (dataTask.list_task.length) {
+			setIsShowModalTask(true);
+		}
+	}, [dataTask]);
+
 	const fetchDataLine = {
 		months: convertToMonthNames([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]),
 		data: dataChartValue,
@@ -198,19 +205,21 @@ const Dashboard = () => {
 			<section className="content">
 				<div className="row">
 					<div className="col-xl-3 col-lg-6 col-12">
-						<div className="box">
-							<div className="box-body">
-								<div className="d-flex justify-content-between">
-									<h5 className="fw-600 text-primary my-0">
-										{dataTask?.total_task}
-									</h5>
-									{/* <div className="bg-primary rounded-circle fs-24 l-h-40 h-40 w-40 text-center">
+						<Link to={""} onClick={() => setIsShowModalTask(true)}>
+							<div className="box">
+								<div className="box-body">
+									<div className="d-flex justify-content-between">
+										<h5 className="fw-600 text-primary my-0">
+											{dataTask?.total_task}
+										</h5>
+										{/* <div className="bg-primary rounded-circle fs-24 l-h-40 h-40 w-40 text-center">
 										<i className="fa fa-tasks"></i>
 									</div> */}
+									</div>
+									<p className="fs-9 mt-10">Task</p>
 								</div>
-								<p className="fs-9 mt-10">Task</p>
 							</div>
-						</div>
+						</Link>
 					</div>
 					<div className="col-xl-3 col-lg-6 col-12">
 						<Link to={"/inventaris"}>
@@ -390,7 +399,11 @@ const Dashboard = () => {
 				</div>
 			</section>
 
-			<ModalTask dataTable={dataTask.list_task} />
+			<ModalTask
+				dataTable={dataTask.list_task}
+				isShowModal={isShowModalTask}
+				setIsShowModal={setIsShowModalTask}
+			/>
 		</>
 	);
 };

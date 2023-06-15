@@ -12,3 +12,7 @@ export const getAllServiceTicketHistoryApi = (
 export const getDetailServiceTicketHistoryApi = (id: number) => {
 	return apiWithToken.get(`api/transaksi/riwayat-transaksi/${id}`);
 };
+
+export const getApprovalLogApi = (id: number) => {
+	return apiWithToken.get(`api/approval/log-approval/${id}`);
+};
