@@ -71,11 +71,6 @@ export const ModalFilter = ({
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
-					<Col span={24}>
-						<Form.Item name="emp_name" label="Nama Pegawai">
-							<SelectWithTag />
-						</Form.Item>
-					</Col>
 				</Row>
 			</Form>
 		</Drawer>

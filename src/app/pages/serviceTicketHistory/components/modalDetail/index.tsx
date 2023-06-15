@@ -19,10 +19,15 @@ import {
 	Tabs,
 	TabsProps,
 	Typography,
+	Timeline,
 } from "antd";
 import { useFormik } from "formik";
 import { removeNullFields } from "app/helper/common";
-
+import { getApprovalLogApi } from "api/serviceTicketHistory";
+import { CheckResponse } from "app/helper/authentication";
+import { IApprovalLog } from "store/types/serviceTicketHistoryTypes";
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 interface IModalDetail {
 	dataDetail: any;
 	showModal: boolean;
@@ -35,9 +40,11 @@ interface IModalDetail {
 }
 
 const ModalDetail = ({ dataDetail, showModal, setShowModal }: IModalDetail) => {
-	const { Title } = Typography;
+	dayjs.extend(localizedFormat);
+	const { Title, Text } = Typography;
 	const [form] = Form.useForm();
 	const [linkFile, setLinkFile] = useState<string[]>();
+	const [approvalLog, setApprovalLog] = useState<IApprovalLog[]>();
 	const formRef = useRef<FormInstance>(null);
 	const [initialValue, setInitialValue] = useState<{
 		inventory_code?: string;
@@ -57,9 +64,19 @@ const ModalDetail = ({ dataDetail, showModal, setShowModal }: IModalDetail) => {
 		onSubmit: values => {},
 	});
 
+	const fetchDataApprovalLog = async (id: number) => {
+		try {
+			const response = await getApprovalLogApi(id);
+			setApprovalLog(response.data.data);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
 	useEffect(() => {
 		if (dataDetail) {
 			const setData = removeNullFields(dataDetail);
+			fetchDataApprovalLog(setData.id);
 			setInitialValue(setData);
 			setLinkFile(setData.attachment_file);
 			formRef.current?.setFieldsValue(setData);
@@ -86,6 +103,67 @@ const ModalDetail = ({ dataDetail, showModal, setShowModal }: IModalDetail) => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [linkFile]);
+
+	const contentApprovalLog = (data: IApprovalLog[]) => {
+		if (data) {
+			return data.map((value, index) => {
+				if (index) {
+					return {
+						color: value.is_approved
+							? "green"
+							: value.is_rejected
+							? "red"
+							: "gray",
+						children: (
+							<>
+								<p>Approval stage {index}</p>
+								{value.is_approved ? (
+									<p>
+										<Text type="success">Approved</Text> by {value.name}
+									</p>
+								) : value.is_rejected ? (
+									<p>
+										<Text type="danger">Rejected</Text> by {value.name}
+									</p>
+								) : (
+									<p>Waiting approval from {value.name}</p>
+								)}
+								<p>
+									{value.is_approved || value.is_rejected
+										? dayjs(value.updated_at).format("LLLL")
+										: null}
+								</p>
+							</>
+						),
+					};
+				} else {
+					return {
+						color: "green",
+						children: (
+							<>
+								<p>Requested</p>
+								<p>
+									<Text type="success">Requested</Text> by {value.name}
+								</p>
+								<p>
+									{value.created_at
+										? dayjs(value.created_at).format("LLLL")
+										: null}
+								</p>
+							</>
+						),
+					};
+				}
+			});
+		}
+	};
+
+	const showLog = useMemo(() => {
+		if (approvalLog?.length) {
+			return <Timeline items={contentApprovalLog(approvalLog)}></Timeline>;
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [approvalLog]);
 
 	const itemTab: TabsProps["items"] = [
 		{
@@ -200,7 +278,12 @@ const ModalDetail = ({ dataDetail, showModal, setShowModal }: IModalDetail) => {
 			),
 		},
 		{
-			key: "4",
+			key: "2",
+			label: `Log`,
+			children: <>{showLog}</>,
+		},
+		{
+			key: "3",
 			label: `File`,
 			children: <>{showFile}</>,
 		},

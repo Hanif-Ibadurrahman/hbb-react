@@ -1,17 +1,24 @@
-import { Button } from "antd";
+import { Button, Space } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
 
-export const columns = () => {
+interface IColomn {
+	handleApprove: (record: any) => void;
+	handleReject: (record: any) => void;
+}
+
+export const columns = ({ handleApprove, handleReject }: IColomn) => {
 	const columnType: ColumnsType<any> = [
 		{
 			title: "No Transaksi",
+			width: 130,
+			align: "center",
 			dataIndex: "no_urut",
 		},
 		{
 			title: "Tipe Transaksi",
 			dataIndex: "transaction_type",
-			// align: "center",
+			width: 150,
 			render: (text, record, index) => {
 				return record.transaction_type.toUpperCase();
 				// switch (record.transaction_type) {
@@ -69,32 +76,107 @@ export const columns = () => {
 		{
 			title: "Tanggal dibuat",
 			dataIndex: "created_at",
+			width: 180,
 		},
 		{
 			title: "Action",
 			render: (text, record, index) => {
+				let content;
 				switch (record.transaction_type) {
 					case "perbaikan":
-						return <Link to={"/permintaan-perbaikan"}>Menuju page</Link>;
+						content = (
+							<Link to={"/permintaan-perbaikan"}>
+								<button type="button" className="btn btn-secondary">
+									Menuju page
+								</button>
+							</Link>
+						);
+						break;
 					case "permintaan":
-						return <Link to={"/permintaan-layanan"}>Menuju page</Link>;
+						content = (
+							<Link to={"/permintaan-layanan"}>
+								<button type="button" className="btn btn-secondary">
+									Menuju page
+								</button>
+							</Link>
+						);
+						break;
 					case "pengembalian":
-						return <Link to={"/permintaan-pengembalian"}>Menuju page</Link>;
+						content = (
+							<Link to={"/permintaan-pengembalian"}>
+								<button type="button" className="btn btn-secondary">
+									Menuju page
+								</button>
+							</Link>
+						);
+						break;
 					case "penggantian":
-						return <Link to={"/permintaan-penggantian"}>Menuju page</Link>;
+						content = (
+							<Link to={"/permintaan-penggantian"}>
+								<button type="button" className="btn btn-secondary">
+									Menuju page
+								</button>
+							</Link>
+						);
+						break;
 					case "perubahan":
-						return <Link to={"/permintaan-perubahan"}>Menuju page</Link>;
+						content = (
+							<Link to={"/permintaan-perubahan"}>
+								<button type="button" className="btn btn-secondary">
+									Menuju page
+								</button>
+							</Link>
+						);
+						break;
 					case "pemeriksaan":
-						return <Link to={"/permintaan-pemeriksaan"}>Menuju page</Link>;
+						content = (
+							<Link to={"/permintaan-pemeriksaan"}>
+								<button type="button" className="btn btn-secondary">
+									Menuju page
+								</button>
+							</Link>
+						);
+						break;
 					case "penghapusan":
-						return <Link to={"/permintaan-penghapusan"}>Menuju page</Link>;
+						content = (
+							<Link to={"/permintaan-penghapusan"}>
+								<button type="button" className="btn btn-secondary">
+									Menuju page
+								</button>
+							</Link>
+						);
+						break;
 					default:
-						return (
+						content = (
 							<Button type="primary" danger>
 								Tipe Transaksi Tidak Tersedia
 							</Button>
 						);
 				}
+				return (
+					<Space>
+						<button
+							type="button"
+							className="btn btn-success"
+							onClick={() => {
+								handleApprove(record);
+							}}
+						>
+							Approve
+						</button>
+						<button
+							type="button"
+							className="btn"
+							style={{ backgroundColor: "#ff4d4f", color: "#ffffff" }}
+							onClick={() => {
+								handleReject(record);
+							}}
+						>
+							Reject
+						</button>
+						{content}
+					</Space>
+				);
 			},
 		},
 	];

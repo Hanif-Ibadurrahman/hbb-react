@@ -64,22 +64,17 @@ export const ModalFilter = ({
 						</Form.Item>
 					</Col>
 					<Col span={24}>
-						<Form.Item name="description" label="Deskripsi">
+						<Form.Item name="description" label="Deskripsi HBB/Inventaris">
+							<SelectWithTag />
+						</Form.Item>
+					</Col>
+					<Col span={24}>
+						<Form.Item name="emp_name" label="Nama Pemakai Akhir">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>
 					<Col span={24}>
 						<Form.Item name="condition" label="Kondisi">
-							<SelectWithTag />
-						</Form.Item>
-					</Col>
-					<Col span={24}>
-						<Form.Item name="emp_name" label="Nama Pegawai">
-							<SelectWithTag />
-						</Form.Item>
-					</Col>
-					<Col span={24}>
-						<Form.Item name="spesification" label="Spesifikasi">
 							<SelectWithTag />
 						</Form.Item>
 					</Col>

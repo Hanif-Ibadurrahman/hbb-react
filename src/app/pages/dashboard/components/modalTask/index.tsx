@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { Modal as AntdModal, Table, Typography } from "antd";
 import { columns } from "../table/columnAndDataType";
 
 interface IModalTask {
 	dataTable: any;
+	isShowModal: boolean;
+	setIsShowModal: Dispatch<SetStateAction<boolean>>;
 }
 
-const ModalTask = ({ dataTable }: IModalTask) => {
+const ModalTask = ({ dataTable, isShowModal, setIsShowModal }: IModalTask) => {
 	const { Title } = Typography;
-	const [isShowModal, setIsShowModal] = useState<boolean>(false);
+	const handleApprove = record => {};
 
-	useEffect(() => {
-		setIsShowModal(dataTable.length ? true : false);
-	}, [dataTable]);
+	const handleReject = record => {};
 
 	return (
 		<AntdModal
@@ -20,14 +20,14 @@ const ModalTask = ({ dataTable }: IModalTask) => {
 			onCancel={() => setIsShowModal(false)}
 			footer
 			open={isShowModal}
-			width={1200}
+			width={850}
 			destroyOnClose
 		>
 			<Table
-				columns={columns()}
+				columns={columns({ handleApprove, handleReject })}
 				dataSource={dataTable}
 				pagination={false}
-				scroll={{ x: 1800 }}
+				scroll={{ x: 850 }}
 			/>
 		</AntdModal>
 	);

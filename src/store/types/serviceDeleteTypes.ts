@@ -53,8 +53,10 @@ export interface IServiceDeleteGetAllParams {
 	per_page?: number;
 	order_by?: string;
 	sort?: string;
+	inventory_code?: string;
+	condition?: string;
 	date?: string;
-	reason?: string;
+	emp_name?: string;
 	remark?: string;
 }
 

@@ -1256,6 +1256,31 @@ const HbbInventory = () => {
 							</div>
 						</div>
 					</Form.Item>
+					<Form.Item name="id_division">
+						<div className="form-group">
+							<Title level={5}>Divisi</Title>
+							<div className="controls">
+								<Select
+									showSearch
+									disabled={isDisableInput}
+									onSearch={v => setDivisionParams({ name: v })}
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionDivision}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_division", v);
+										formRef.current?.setFieldsValue({
+											id_division: v,
+										});
+									}}
+									value={formik.values.id_division}
+								/>
+							</div>
+						</div>
+					</Form.Item>
 					<Form.Item
 						name="id_location"
 						rules={[
@@ -1291,31 +1316,7 @@ const HbbInventory = () => {
 							</div>
 						</div>
 					</Form.Item>
-					<Form.Item name="id_division">
-						<div className="form-group">
-							<Title level={5}>Divisi</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									disabled={isDisableInput}
-									onSearch={v => setDivisionParams({ name: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionDivision}
-									onChange={(v, opt) => {
-										formik.setFieldValue("id_division", v);
-										formRef.current?.setFieldsValue({
-											id_division: v,
-										});
-									}}
-									value={formik.values.id_division}
-								/>
-							</div>
-						</div>
-					</Form.Item>
+
 					<Form.Item
 						name="id_barang"
 						rules={[
