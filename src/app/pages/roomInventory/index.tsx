@@ -32,8 +32,7 @@ const RoomInventory = () => {
 	const [params, setParams] = useState<IRoomInventoryGetAllParams | undefined>({
 		per_page: 10,
 	});
-	const [initialValue, setInitialValue] =
-		useState<Partial<IRoomInventoryGetAllParams>>();
+	const [initialValue, _] = useState<Partial<IRoomInventoryGetAllParams>>();
 	const [paramsFilter, setParamsFilter] = useState<
 		IRoomInventoryGetAllParams | undefined
 	>();
@@ -98,8 +97,15 @@ const RoomInventory = () => {
 					const filter = omit(params, ["page", "per_page", "type_export"]);
 					const response = await exportRoomInventoryApi(filter);
 					const url = response.data.data.replace(/\\/g, "");
-					window.location.href = url;
-					// const newTab = window.open(url, "Download");
+					const anchor = document.createElement("a");
+					anchor.href = url;
+					anchor.click();
+
+					/////////////////////////////
+					// window.location.href = url;
+
+					////////////////////////////
+					// const newTab = window.open(url, "_blank");
 					// newTab?.focus();
 				}
 
@@ -271,7 +277,6 @@ const RoomInventory = () => {
 	return (
 		<>
 			<section className="content">
-				<a style={{ display: "none" }} id="download"></a>
 				<div className="row">
 					<div className="col-12">
 						<TablePaginateAndSort

@@ -100,8 +100,9 @@ const HbbInventoryReport = () => {
 					const filter = omit(params, ["page", "per_page", "type_export"]);
 					const response = await exportInventoryReportApi(filter);
 					const url = response.data.data.replace(/\\/g, "");
-					const newTab = window.open(url, "_blank");
-					newTab?.focus();
+					const anchor = document.createElement("a");
+					anchor.href = url;
+					anchor.click();
 				}
 
 				const new_params = omit(params, ["type_export"]);
