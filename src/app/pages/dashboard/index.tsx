@@ -1,4 +1,3 @@
-import { Select } from "antd";
 import { DefaultOptionType } from "antd/es/select";
 import {
 	getAllItemApi,
@@ -50,10 +49,8 @@ const Dashboard = () => {
 		label: [],
 		data: [],
 	});
-	const [locationParams, setLocationParams] = useState<
-		ILocationGetAllParams | undefined
-	>();
-	const [dataOptionLocation, setDataOptionLocation] = useState<
+	const [locationParams] = useState<ILocationGetAllParams | undefined>();
+	const [_, setDataOptionLocation] = useState<
 		DefaultOptionType[] | undefined
 	>();
 

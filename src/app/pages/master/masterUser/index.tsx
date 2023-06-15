@@ -46,7 +46,6 @@ import {
 	listCheckPermission,
 	tokenDecode,
 } from "app/helper/permission";
-import { intersection } from "lodash";
 import {
 	checkDefaultOption,
 	removeNullFields,
@@ -59,7 +58,6 @@ const MasterUser = () => {
 	const { Title } = Typography;
 	const [form] = Form.useForm();
 	const formRef = useRef<FormInstance>(null);
-	const [selectedRole, setSelectedRole] = useState<string[]>();
 	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<IUserGetAllParams | undefined>({
 		per_page: 10,
@@ -111,9 +109,9 @@ const MasterUser = () => {
 	const [dataOptionEmployee, setDataOptionEmployee] = useState<
 		DefaultOptionType[] | undefined
 	>();
-	const [dataOptionRole, setDataOptionRole] = useState<
-		DefaultOptionType[] | undefined
-	>(valueAndLabelRole);
+	const [dataOptionRole, _] = useState<DefaultOptionType[] | undefined>(
+		valueAndLabelRole,
+	);
 
 	const formik = useFormik({
 		initialValues: { ...initialValue },
@@ -331,7 +329,6 @@ const MasterUser = () => {
 			roles: values.user_roles.map(v => v.role_id),
 			password: values.raw_password,
 		});
-		setSelectedRole(values.user_roles.map(v => v.roles.name || ""));
 	};
 
 	useEffect(() => {
@@ -787,11 +784,6 @@ const MasterUser = () => {
 									mode="multiple"
 									dataOption={dataOptionRole}
 									onChange={(v, opt) => {
-										setSelectedRole(
-											opt.map(v => {
-												return v.label;
-											}),
-										);
 										formik.setFieldValue("roles", v);
 										formRef.current?.setFieldsValue({
 											roles: v,
