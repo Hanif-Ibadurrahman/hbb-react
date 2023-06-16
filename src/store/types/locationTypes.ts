@@ -16,6 +16,7 @@ export interface ILocation {
 	id_division: number | null;
 	satker: IWorkUnit | null;
 	employee: IEmployee | null;
+	is_stock_warehouse: boolean | null;
 }
 
 export interface ILocationPaginateResponse extends PaginationState {
@@ -47,6 +48,7 @@ export interface ICreateLocationRequest {
 	id_division: number;
 	name: string;
 	from_opname: boolean | null;
+	is_stock_warehouse: boolean | null;
 }
 export interface IUpdateLocationRequest {
 	id_bisnis_unit: number;
@@ -57,6 +59,7 @@ export interface IUpdateLocationRequest {
 	id_division: number;
 	name: string;
 	from_opname: boolean | null;
+	is_stock_warehouse: boolean | null;
 }
 export interface ILocationGetAllResponse {
 	status: string;
