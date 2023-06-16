@@ -20,6 +20,8 @@ import {
 	Form,
 	FormInstance,
 	Input,
+	Radio,
+	RadioChangeEvent,
 	Select,
 	Space,
 	Typography,
@@ -528,7 +530,11 @@ const MasterLocation = () => {
 					CheckResponse(error);
 				});
 		} else {
-			const input = { ...values, from_opname: 0 };
+			const input = {
+				...values,
+				is_stock_warehouse: Number(values.is_stock_warehouse),
+				from_opname: 0,
+			};
 			createNewLocationApi(input)
 				.then(res => {
 					if (res.data.status === "success") {
@@ -838,6 +844,29 @@ const MasterLocation = () => {
 										});
 									}}
 									value={formik.values.id_pegawai}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item name="is_stock_warehouse">
+						<div className="form-group">
+							<Title level={5}>Jenis Gudang</Title>
+							<div className="controls">
+								<Radio.Group
+									options={[
+										{ label: "Gudang Stok Barang", value: 1 },
+										{ label: "Gudang Penghapusan", value: 0 },
+									]}
+									onChange={(e: RadioChangeEvent) => {
+										const v = e.target.value;
+										formik.setFieldValue("is_stock_warehouse", v);
+										formRef.current?.setFieldsValue({
+											is_stock_warehouse: v,
+										});
+									}}
+									value={formik.values.is_stock_warehouse}
+									optionType="button"
+									buttonStyle="solid"
 								/>
 							</div>
 						</div>

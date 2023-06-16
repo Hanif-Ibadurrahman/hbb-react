@@ -73,16 +73,19 @@ const ModalForm = ({
 	useEffect(() => {
 		if (dataForm) {
 			const setData = removeNullFields(dataForm);
-			const input = {
-				...setData,
-				id_inventory_obtained: setData.id_inventory,
-			};
+
 			setDataOptionAvailableInventory(
 				dataOptionAvailableInventory?.concat({
 					label: `${setData.inventory_name} - ${setData.inventory_code}`,
 					value: setData.id_inventory,
 				}),
 			);
+
+			const input = {
+				...setData,
+				id_inventory_obtained: setData.id_inventory,
+			};
+
 			setInitialValue(input);
 			modalFormRef.current?.setFieldsValue(input);
 		}
@@ -93,7 +96,9 @@ const ModalForm = ({
 		const input = {
 			...values,
 			id_inventory_obtained:
-				values?.id_inventory_obtained !== dataForm.id_inventory ? null : null,
+				values?.id_inventory_obtained === dataForm.id_inventory
+					? null
+					: values?.id_inventory_obtained,
 		};
 		approveServiceReplacementApi(dataForm.id, input)
 			.then(res => {
