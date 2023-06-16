@@ -44,8 +44,18 @@ export const ModalFilter = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [options.dataOptionCompany]);
 
+	const checkRangeValue = value => {
+		return value
+			? `${value[0].format("YYYY-MM-DD")}|${value[1].format("YYYY-MM-DD")}`
+			: undefined;
+	};
+
 	const handleSubmit = v => {
-		const filterParams = Object.entries(v).reduce((res, curr) => {
+		const values = {
+			...v,
+			date: checkRangeValue(v["date"]),
+		};
+		const filterParams = Object.entries(values).reduce((res, curr) => {
 			if (curr[1]) {
 				return {
 					...res,
