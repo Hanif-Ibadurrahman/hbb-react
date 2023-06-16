@@ -83,6 +83,9 @@ const HbbInventory = () => {
 	const { Title } = Typography;
 	const { TextArea } = Input;
 	const location = useLocation();
+	const [tempDataGetList, setTempDataGetList] = useState<
+		{ key: string; data: any }[]
+	>([]);
 	const [form] = Form.useForm();
 	const [fileList, setFileList] = useState<File[] | null>(null);
 	const [files, setFiles] = useState<FileList | null>(null);
@@ -467,6 +470,9 @@ const HbbInventory = () => {
 				id_area: formik.values.id_area,
 			});
 			const locationList = response.data.data;
+			const dataTemp = { key: "location", data: locationList };
+			const filter = tempDataGetList?.filter(temp => temp.key === "location");
+			setTempDataGetList(filter.concat(dataTemp));
 			setDataOptionLocation(
 				locationList.map(v => ({ label: v.name, value: v.id })),
 			);
@@ -855,6 +861,32 @@ const HbbInventory = () => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [formik.values.id_area]);
+
+	useEffect(() => {
+		const locationId = formik.values.id_location;
+
+		if (locationId) {
+			const isInitialValueUndefined = initialValue?.id_area === undefined;
+			if (isInitialValueUndefined || locationId !== initialValue.id_location) {
+				const data = tempDataGetList
+					.find(temp => temp.key === "location")
+					?.data.find(d => d.id === locationId);
+				if (!checkDefaultOption(dataOptionEmployee!, data.employee.id)) {
+					setDataOptionEmployee(
+						dataOptionEmployee?.concat({
+							label: data.employee.emp_name,
+							value: data.employee.id,
+						}),
+					);
+				}
+				formik.setFieldValue("id_penanggung_jawab", data.employee.id);
+				formRef.current?.setFieldsValue({
+					id_penanggung_jawab: data.employee.id,
+				});
+			}
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_location]);
 
 	useEffect(() => {
 		const subGroupId = formik.values.id_sub_group;

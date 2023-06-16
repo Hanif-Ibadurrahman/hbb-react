@@ -97,12 +97,12 @@ const RoomInventory = () => {
 					const filter = omit(params, ["page", "per_page", "type_export"]);
 					const response = await exportRoomInventoryApi(filter);
 					const url = response.data.data.replace(/\\/g, "");
-					const anchor = document.createElement("a");
-					anchor.href = url;
-					anchor.click();
+					window.location.href = url;
 
 					/////////////////////////////
-					// window.location.href = url;
+					// const anchor = document.createElement("a");
+					// anchor.href = url;
+					// anchor.click();
 
 					////////////////////////////
 					// const newTab = window.open(url, "_blank");
