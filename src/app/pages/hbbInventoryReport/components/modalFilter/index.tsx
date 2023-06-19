@@ -121,6 +121,7 @@ export const ModalFilter = ({
 				onFinish={handleSubmit}
 			>
 				<Row gutter={16}>
+					{generateContent}
 					<Col span={24}>
 						<Form.Item name="inventory_type" label="Jenis Barang">
 							<Select
@@ -241,13 +242,12 @@ export const ModalFilter = ({
 							/>
 						</Form.Item>
 					</Col>
-					{generateContent}
 					<Col span={24}>
 						<Form.Item name="rentang_waktu" label="Tanggal">
 							<RangePicker style={{ width: "100%" }} format={"DD-MM-YYYY"} />
 						</Form.Item>
 					</Col>
-					<Col span={24}>
+					{/* <Col span={24}>
 						<Form.Item name="type_export" label="Export">
 							<Select
 								options={[
@@ -257,7 +257,7 @@ export const ModalFilter = ({
 								]}
 							/>
 						</Form.Item>
-					</Col>
+					</Col> */}
 				</Row>
 			</Form>
 		</Drawer>

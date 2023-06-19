@@ -36,6 +36,9 @@ const RoomInventory = () => {
 	const [paramsFilter, setParamsFilter] = useState<
 		IRoomInventoryGetAllParams | undefined
 	>();
+	const [paramsForExport, setParamsForExport] = useState<
+		IRoomInventoryGetAllParams | undefined
+	>();
 	const [areaParams, setAreaParams] = useState<IAreaGetAllParams | undefined>();
 	const [codeGroupParams, setCodeGroupParams] = useState<
 		ICodeGroupGetAllParams | undefined
@@ -93,21 +96,30 @@ const RoomInventory = () => {
 	const fetchDataList = async () => {
 		try {
 			if (params) {
-				if (params.type_export === "excel") {
-					const filter = omit(params, ["page", "per_page", "type_export"]);
-					const response = await exportRoomInventoryApi(filter);
-					const url = response.data.data.replace(/\\/g, "");
-					window.location.href = url;
+				// if (params.type_export === "excel") {
+				// 	const filter = omit(params, ["page", "per_page", "type_export"]);
+				// 	const response = await exportRoomInventoryApi(filter);
+				// 	const url = response.data.data.replace(/\\/g, "");
+				// 	window.location.href = url;
 
-					/////////////////////////////
-					// const anchor = document.createElement("a");
-					// anchor.href = url;
-					// anchor.click();
+				/////////////////////////////
+				// const anchor = document.createElement("a");
+				// anchor.href = url;
+				// anchor.click();
 
-					////////////////////////////
-					// const newTab = window.open(url, "_blank");
-					// newTab?.focus();
-				}
+				////////////////////////////
+				// const newTab = window.open(url, "_blank");
+				// newTab?.focus();
+				// }
+
+				const filter = omit(params, [
+					"page",
+					"per_page",
+					"type_export",
+					"order_by",
+					"sort",
+				]);
+				setParamsForExport(filter);
 
 				const new_params = omit(params, ["type_export"]);
 				const response = await getAllRoomInventoryApi(new_params);
@@ -274,6 +286,15 @@ const RoomInventory = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [businessUnitParams]);
 
+	const handleExport = async (type: string) => {
+		if (type === "excel") {
+			const response = await exportRoomInventoryApi(paramsForExport);
+			const url = response.data.data.replace(/\\/g, "");
+			window.location.href = url;
+		} else {
+		}
+	};
+
 	return (
 		<>
 			<section className="content">
@@ -287,10 +308,24 @@ const RoomInventory = () => {
 								<Space
 									style={{
 										display: "flex",
-										justifyContent: "end",
+										justifyContent: "space-between",
 										marginBottom: "1em",
 									}}
 								>
+									<Space>
+										<button
+											className="btn btn-secondary"
+											onClick={() => handleExport("excel")}
+										>
+											Excel
+										</button>
+										<button
+											className="btn btn-secondary"
+											onClick={() => handleExport("pdf")}
+										>
+											Pdf
+										</button>
+									</Space>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
