@@ -10,6 +10,7 @@ import {
 	Space,
 } from "antd";
 import { TokenDekode } from "app/helper/authentication";
+import { FormikProps } from "formik";
 import { Dispatch, SetStateAction, useMemo, useRef } from "react";
 import { IRoomInventoryGetAllParams } from "store/types/roomInventoryTypes";
 
@@ -17,7 +18,7 @@ interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
 	setParams: Dispatch<SetStateAction<IRoomInventoryGetAllParams | undefined>>;
-	formik: any;
+	formik: FormikProps<Partial<IRoomInventoryGetAllParams>>;
 	setParamsOption: any;
 	options: any;
 }

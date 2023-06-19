@@ -1,5 +1,5 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import {
 	getAllServiceTicketHistoryApi,
@@ -117,6 +117,35 @@ const ServiceTicketHistory = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showModalDetail]);
 
+	const handleDownload = useMemo(() => {
+		const baseUrl = `${process.env.REACT_APP_API_URL}/api/reporting/rekapitulasi-transaksi/export`;
+		const params: string[] = [];
+
+		for (const [key, value] of Object.entries(paramsFilter || {})) {
+			if (value !== undefined) {
+				// params.push(`${key}=${encodeURIComponent(value)}`);
+				params.push(`${key}=${value}`);
+			}
+		}
+
+		const paramsString = params.length ? `?${params.join("&")}` : "";
+		const url = `${baseUrl}${paramsString}`;
+
+		return (
+			<button className="btn btn-secondary">
+				<a
+					href={url}
+					style={{ color: "#ffffff" }}
+					rel="noreferrer"
+					target="_blank"
+				>
+					Print
+				</a>
+			</button>
+		);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [params]);
+
 	return (
 		<>
 			<section className="content">
@@ -133,10 +162,11 @@ const ServiceTicketHistory = () => {
 								<Space
 									style={{
 										display: "flex",
-										justifyContent: "end",
+										justifyContent: "space-between",
 										marginBottom: "1em",
 									}}
 								>
+									<Space>{handleDownload}</Space>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}
