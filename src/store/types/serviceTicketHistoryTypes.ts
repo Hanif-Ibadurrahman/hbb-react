@@ -30,6 +30,7 @@ export interface IServiceTicketHistoryGetAllParams {
 	sort?: string;
 	type?: string;
 	date?: string;
+	requester?: string;
 }
 
 export interface IServiceTicketHistoryGetAllResponse {

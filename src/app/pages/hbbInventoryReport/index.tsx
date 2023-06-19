@@ -158,7 +158,12 @@ const HbbInventoryReport = () => {
 
 	const fetchDataLocation = async () => {
 		try {
-			const response = await getAllLocationApi(locationParams);
+			const response = await getAllLocationApi({
+				...locationParams,
+				id_company: formik.values.id_company,
+				id_bisnis_unit: formik.values.id_bisnis_unit,
+				id_area: formik.values.id_area,
+			});
 			const locationList = response.data.data;
 			setDataOptionLocation(
 				locationList.map(v => ({ label: v.name, value: v.id })),
@@ -170,7 +175,10 @@ const HbbInventoryReport = () => {
 
 	const fetchDataBusinessUnit = async () => {
 		try {
-			const response = await getAllBusinessUnitApi(businessUnitParams);
+			const response = await getAllBusinessUnitApi({
+				...businessUnitParams,
+				id_company: formik.values.id_company,
+			});
 			const businessUnitList = response.data.data;
 			setDataOptionBusinessUnit(
 				businessUnitList.map(v => ({ label: v.name, value: v.id })),
@@ -182,7 +190,11 @@ const HbbInventoryReport = () => {
 
 	const fetchDataArea = async () => {
 		try {
-			const response = await getAllAreaApi(areaParams);
+			const response = await getAllAreaApi({
+				...areaParams,
+				id_company: formik.values.id_company,
+				id_bisnis_unit: formik.values.id_bisnis_unit,
+			});
 			const areaList = response.data.data;
 			setDataOptionArea(
 				areaList.map(v => ({ label: v.name, value: `${v.id}` })),
@@ -194,10 +206,15 @@ const HbbInventoryReport = () => {
 
 	const fetchDataWorkUnit = async () => {
 		try {
-			const response = await getAllWorkUnitApi(workUnitParams);
+			const response = await getAllWorkUnitApi({
+				...workUnitParams,
+				id_company: formik.values.id_company,
+				id_bisnis_unit: formik.values.id_bisnis_unit,
+				id_area: formik.values.id_area,
+			});
 			const workUnitList = response.data.data;
 			setDataOptionWorkUnit(
-				workUnitList.map(v => ({ label: v.name, value: `${v.id}` })),
+				workUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -242,6 +259,20 @@ const HbbInventoryReport = () => {
 	}, [codeGroupParams]);
 
 	useEffect(() => {
+		const companyId = formik.values.id_company;
+		if (companyId) {
+			const isUndefinedCompanyId = initialValue?.id_company === undefined;
+			if (isUndefinedCompanyId || companyId !== initialValue.id_company) {
+				formik.setFieldValue("id_main_group", undefined);
+				formik.setFieldValue("id_bisnis_unit", undefined);
+			}
+			fetchDataCodeGroup();
+			fetchDataBusinessUnit();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_company]);
+
+	useEffect(() => {
 		const mainGroupId = formik.values.id_main_group;
 		if (mainGroupId) {
 			fetchDataSubCodeGroup(mainGroupId);
@@ -250,6 +281,37 @@ const HbbInventoryReport = () => {
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [formik.values.id_main_group]);
+
+	useEffect(() => {
+		const businessUnitId = formik.values.id_bisnis_unit;
+		if (businessUnitId) {
+			const isInitialValueUndefined =
+				initialValue?.id_bisnis_unit === undefined;
+			if (
+				isInitialValueUndefined ||
+				businessUnitId !== initialValue.id_bisnis_unit
+			) {
+				formik.setFieldValue("id_area", undefined);
+			}
+			fetchDataArea();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_bisnis_unit]);
+
+	useEffect(() => {
+		const areaId = formik.values.id_area;
+
+		if (areaId) {
+			const isInitialValueUndefined = initialValue?.id_area === undefined;
+			if (isInitialValueUndefined || areaId !== initialValue.id_area) {
+				formik.setFieldValue("id_location", undefined);
+				formik.setFieldValue("id_satker", undefined);
+			}
+			fetchDataWorkUnit();
+			fetchDataLocation();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_area]);
 
 	useEffect(() => {
 		const mainGroupId = formik.values.id_main_group;
