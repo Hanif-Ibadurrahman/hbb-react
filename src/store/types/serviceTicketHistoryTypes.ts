@@ -2,6 +2,7 @@ import { PaginationState } from "./paginationTypes";
 
 export interface IServiceTicketHistory {
 	id: number;
+	id_approval: number | null;
 	type: string | null;
 	name: string | null;
 	no_urut: number | null;
