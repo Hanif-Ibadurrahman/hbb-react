@@ -16,3 +16,27 @@ export const getDetailServiceTicketHistoryApi = (id: number) => {
 export const getApprovalLogApi = (id: number) => {
 	return apiWithToken.get(`api/approval/log-approval/${id}`);
 };
+
+export const getReplacementFormApi = (id: number) => {
+	return apiWithToken.get(`api/reporting/formulir-transaksi/penggantian/${id}`);
+};
+
+export const getReturnFormApi = (id: number) => {
+	return apiWithToken.get(
+		`api/reporting/formulir-transaksi/pengembalian/${id}`,
+	);
+};
+
+export const getRequestFormApi = (id: number) => {
+	return apiWithToken.get(`api/reporting/formulir-transaksi/permintaan/${id}`);
+};
+
+export const getRepairFormApi = (id: number) => {
+	return apiWithToken.get(`api/reporting/formulir-transaksi/perbaikan/${id}`);
+};
+
+export const getDeleteFormApi = (id: number) => {
+	return apiWithToken.get(
+		`api/reporting/formulir-transaksi/usulan-penghapusan/${id}`,
+	);
+};
