@@ -21,8 +21,10 @@ import { Link } from "react-router-dom";
 import { ILocationGetAllParams } from "store/types/locationTypes";
 import ModalTask from "./components/modalTask";
 import { convertToMonthNames } from "app/helper/common";
+import ModalForm from "./components/modalForm";
 
 const Dashboard = () => {
+	const [dataForm, setDataForm] = useState();
 	const [allItem, setAllItem] = useState(0);
 	const [totalInventory, setTotalInventory] = useState(0);
 	const [totalHbb, setTotalHbb] = useState(0);
@@ -41,6 +43,7 @@ const Dashboard = () => {
 		label: [],
 		data: [],
 	});
+	const [showModalForm, setShowModalForm] = useState<boolean>(false);
 	const [isShowModalTask, setIsShowModalTask] = useState<boolean>(false);
 	const [dataStatusAvailableItem, setDataStatusAvailableItem] = useState<{
 		label?: string[];
@@ -196,6 +199,10 @@ const Dashboard = () => {
 	const fetchDataPieCondition = dataConditionItem;
 
 	const fetchDataPieAvailable = dataStatusAvailableItem;
+
+	const updateDataList = () => {
+		fetchDataTotalTask();
+	};
 
 	return (
 		<>
@@ -400,6 +407,14 @@ const Dashboard = () => {
 				dataTable={dataTask.list_task}
 				isShowModal={isShowModalTask}
 				setIsShowModal={setIsShowModalTask}
+				setShowModalForm={setShowModalForm}
+			/>
+
+			<ModalForm
+				dataForm={dataForm}
+				showModal={showModalForm}
+				setShowModal={setShowModalForm}
+				updateDataList={updateDataList}
 			/>
 		</>
 	);

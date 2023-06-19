@@ -155,7 +155,7 @@ export const columns = ({ handleApprove, handleReject }: IColomn) => {
 				}
 				return (
 					<Space>
-						<button
+						{/* <button
 							type="button"
 							className="btn btn-success"
 							onClick={() => {
@@ -163,7 +163,7 @@ export const columns = ({ handleApprove, handleReject }: IColomn) => {
 							}}
 						>
 							Approve
-						</button>
+						</button> */}
 						<button
 							type="button"
 							className="btn"

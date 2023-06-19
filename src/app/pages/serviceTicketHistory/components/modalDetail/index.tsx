@@ -76,7 +76,7 @@ const ModalDetail = ({ dataDetail, showModal, setShowModal }: IModalDetail) => {
 	useEffect(() => {
 		if (dataDetail) {
 			const setData = removeNullFields(dataDetail);
-			fetchDataApprovalLog(setData.id);
+			fetchDataApprovalLog(setData.id_approval);
 			setInitialValue(setData);
 			setLinkFile(setData.attachment_file);
 			formRef.current?.setFieldsValue(setData);
