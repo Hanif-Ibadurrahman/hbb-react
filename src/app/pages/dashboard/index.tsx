@@ -24,7 +24,7 @@ import { convertToMonthNames } from "app/helper/common";
 import ModalForm from "./components/modalForm";
 
 const Dashboard = () => {
-	const [dataForm, setDataForm] = useState();
+	const [dataForm, setDataForm] = useState<any>();
 	const [allItem, setAllItem] = useState(0);
 	const [totalInventory, setTotalInventory] = useState(0);
 	const [totalHbb, setTotalHbb] = useState(0);
@@ -405,6 +405,8 @@ const Dashboard = () => {
 
 			<ModalTask
 				dataTable={dataTask.list_task}
+				updateDataList={updateDataList}
+				setDataForm={setDataForm}
 				isShowModal={isShowModalTask}
 				setIsShowModal={setIsShowModalTask}
 				setShowModalForm={setShowModalForm}

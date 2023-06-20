@@ -21,56 +21,6 @@ export const columns = ({ handleApprove, handleReject }: IColomn) => {
 			width: 150,
 			render: (text, record, index) => {
 				return record.transaction_type.toUpperCase();
-				// switch (record.transaction_type) {
-				// 	case "perbaikan":
-				// 		return (
-				// 			<Button style={{ backgroundColor: "#ffff00", color: "#ffffff" }}>
-				// 				PERBAIKAN
-				// 			</Button>
-				// 		);
-				// 	case "permintaan":
-				// 		return (
-				// 			<Button style={{ backgroundColor: "#008000", color: "#ffffff" }}>
-				// 				PERMINTAAN
-				// 			</Button>
-				// 		);
-				// 	case "pengembalian":
-				// 		return (
-				// 			<Button style={{ backgroundColor: "#0000ff", color: "#ffffff" }}>
-				// 				PENGEMBALIAN
-				// 			</Button>
-				// 		);
-				// 	case "penggantian":
-				// 		return (
-				// 			<Button style={{ backgroundColor: "#ee82ee ", color: "#ffffff" }}>
-				// 				PENGGANTIAN
-				// 			</Button>
-				// 		);
-				// 	case "perubahan":
-				// 		return (
-				// 			<Button style={{ backgroundColor: "#4b0082", color: "#ffffff" }}>
-				// 				PERUBAHAN
-				// 			</Button>
-				// 		);
-				// 	case "pemeriksaan":
-				// 		return (
-				// 			<Button style={{ backgroundColor: "#ffa500", color: "#ffffff" }}>
-				// 				PEMERIKSAAN
-				// 			</Button>
-				// 		);
-				// 	case "penghapusan":
-				// 		return (
-				// 			<Button style={{ backgroundColor: "#ff0000", color: "#ffffff" }}>
-				// 				PENGHAPUSAN
-				// 			</Button>
-				// 		);
-				// 	default:
-				// 		return (
-				// 			<Button type="primary" danger>
-				// 				Tipe Transaksi Tidak Tersedia
-				// 			</Button>
-				// 		);
-				// }
 			},
 		},
 		{
@@ -155,7 +105,7 @@ export const columns = ({ handleApprove, handleReject }: IColomn) => {
 				}
 				return (
 					<Space>
-						{/* <button
+						<button
 							type="button"
 							className="btn btn-success"
 							onClick={() => {
@@ -163,7 +113,7 @@ export const columns = ({ handleApprove, handleReject }: IColomn) => {
 							}}
 						>
 							Approve
-						</button> */}
+						</button>
 						<button
 							type="button"
 							className="btn"
