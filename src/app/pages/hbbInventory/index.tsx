@@ -875,13 +875,13 @@ const HbbInventory = () => {
 					setDataOptionEmployee(
 						dataOptionEmployee?.concat({
 							label: data.employee.emp_name,
-							value: data.employee.id,
+							value: data.employee.nipg,
 						}),
 					);
 				}
-				formik.setFieldValue("id_penanggung_jawab", data.employee.id);
+				formik.setFieldValue("id_penanggung_jawab", data.employee.nipg);
 				formRef.current?.setFieldsValue({
-					id_penanggung_jawab: data.employee.id,
+					id_penanggung_jawab: data.employee.nipg,
 				});
 			}
 		}
