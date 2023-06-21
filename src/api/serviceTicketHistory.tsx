@@ -1,4 +1,7 @@
-import { IServiceTicketHistoryGetAllParams } from "store/types/serviceTicketHistoryTypes";
+import {
+	IExportRecapitulationParams,
+	IServiceTicketHistoryGetAllParams,
+} from "store/types/serviceTicketHistoryTypes";
 import { apiWithToken } from ".";
 
 export const getAllServiceTicketHistoryApi = (
@@ -24,6 +27,17 @@ export const getReplacementFormApi = (id: number) => {
 export const getReturnFormApi = (id: number) => {
 	return apiWithToken.get(
 		`api/reporting/formulir-transaksi/pengembalian/${id}`,
+	);
+};
+
+export const exportRecapitulationApi = (
+	params?: IExportRecapitulationParams,
+) => {
+	return apiWithToken.get(
+		`api/reporting/rekapitulasi-transaksi/generate-link`,
+		{
+			params: params,
+		},
 	);
 };
 
