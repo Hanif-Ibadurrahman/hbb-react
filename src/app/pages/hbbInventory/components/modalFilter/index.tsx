@@ -64,7 +64,6 @@ export const ModalFilter = ({
 	};
 
 	const handleSubmit = v => {
-		console.log(v);
 		const values = {
 			...v,
 			rentang_harga: checkRangePrice(v["rentang_harga"]),

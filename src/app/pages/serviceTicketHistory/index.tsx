@@ -2,6 +2,7 @@ import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAnd
 import { useEffect, useMemo, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import {
+	exportRecapitulationApi,
 	getAllServiceTicketHistoryApi,
 	getDetailServiceTicketHistoryApi,
 } from "api/serviceTicketHistory";
@@ -16,6 +17,7 @@ import { ModalFilter } from "./components/modalFilter";
 import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { getAllCompanyApi } from "api/company";
 import ModalDetail from "./components/modalDetail";
+import { omit } from "lodash";
 
 const ServiceTicketHistory = () => {
 	const [showFilter, setShowFilter] = useState(false);
@@ -26,6 +28,9 @@ const ServiceTicketHistory = () => {
 	});
 	const [dataDetail, setDataDetail] = useState();
 	const [paramsFilter, setParamsFilter] = useState<
+		IServiceTicketHistoryGetAllParams | undefined
+	>();
+	const [paramsForExport, setParamsForExport] = useState<
 		IServiceTicketHistoryGetAllParams | undefined
 	>();
 	const [companyParams, setCompanyParams] = useState<
@@ -64,6 +69,9 @@ const ServiceTicketHistory = () => {
 	const fetchDataList = async () => {
 		try {
 			if (params) {
+				const filter = omit(params, ["page", "per_page", "order_by", "sort"]);
+				setParamsForExport(filter);
+
 				const response = await getAllServiceTicketHistoryApi(params);
 				setDataTable(response.data);
 			}
@@ -117,34 +125,53 @@ const ServiceTicketHistory = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showModalDetail]);
 
-	const handleDownload = useMemo(() => {
-		const baseUrl = `${process.env.REACT_APP_API_URL}/api/reporting/rekapitulasi-transaksi/export`;
-		const params: string[] = [];
+	// const handleDownload = useMemo(() => {
+	// 	const baseUrl = `${process.env.REACT_APP_API_URL}/api/reporting/rekapitulasi-transaksi/export`;
+	// 	const params: string[] = [];
 
-		for (const [key, value] of Object.entries(paramsFilter || {})) {
-			if (value !== undefined) {
-				// params.push(`${key}=${encodeURIComponent(value)}`);
-				params.push(`${key}=${value}`);
-			}
-		}
+	// 	for (const [key, value] of Object.entries(paramsFilter || {})) {
+	// 		if (value !== undefined) {
+	// 			// params.push(`${key}=${encodeURIComponent(value)}`);
+	// 			params.push(`${key}=${value}`);
+	// 		}
+	// 	}
 
-		const paramsString = params.length ? `?${params.join("&")}` : "";
-		const url = `${baseUrl}${paramsString}`;
+	// 	const paramsString = params.length ? `?${params.join("&")}` : "";
+	// 	const url = `${baseUrl}${paramsString}`;
 
-		return (
-			<button className="btn btn-secondary">
-				<a
-					href={url}
-					style={{ color: "#ffffff" }}
-					rel="noreferrer"
-					target="_blank"
-				>
-					Print
-				</a>
-			</button>
-		);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [params]);
+	// 	return (
+	// 		<button className="btn btn-secondary">
+	// 			<a
+	// 				href={url}
+	// 				style={{ color: "#ffffff" }}
+	// 				rel="noreferrer"
+	// 				target="_blank"
+	// 			>
+	// 				Print
+	// 			</a>
+	// 		</button>
+	// 	);
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [params]);
+
+	const checkRangeValue = value => {
+		return value
+			? {
+					tanggal_awal: value.split("|")[0],
+					tanggal_akhir: value.split("|")[1],
+			  }
+			: undefined;
+	};
+
+	const handleExport = async () => {
+		const filter = {
+			requestor: paramsForExport?.requester,
+			...checkRangeValue(paramsForExport?.date),
+		};
+		const response = await exportRecapitulationApi(filter);
+		const url = response.data.data.replace(/\\/g, "");
+		window.location.href = url;
+	};
 
 	return (
 		<>
@@ -166,7 +193,14 @@ const ServiceTicketHistory = () => {
 										marginBottom: "1em",
 									}}
 								>
-									<Space>{handleDownload}</Space>
+									<Space>
+										<button
+											className="btn btn-secondary"
+											onClick={handleExport}
+										>
+											Print
+										</button>
+									</Space>
 									<button
 										className="btn btn-secondary"
 										onClick={() => setShowFilter(true)}

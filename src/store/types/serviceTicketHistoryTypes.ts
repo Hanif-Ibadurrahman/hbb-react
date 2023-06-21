@@ -33,6 +33,14 @@ export interface IServiceTicketHistoryGetAllParams {
 	requester?: string;
 }
 
+export interface IExportRecapitulationParams {
+	id_bisnis_unit?: number;
+	type?: string;
+	tanggal_awal?: string;
+	tanggal_akhir?: string;
+	requestor?: string;
+}
+
 export interface IServiceTicketHistoryGetAllResponse {
 	status: string;
 	message: string;
