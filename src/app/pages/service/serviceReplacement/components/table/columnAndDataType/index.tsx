@@ -40,8 +40,10 @@ export const columns = ({
 		},
 		{
 			title: "No HBB/Inventaris yang diminta",
-			dataIndex: "inventory_obtained_code",
 			sorter: true,
+			render: (text, record, index) => {
+				return record.inventory_obtained_code ?? record.inventory_code;
+			},
 		},
 		{
 			title: "Deskripsi HBB/Inventaris",
