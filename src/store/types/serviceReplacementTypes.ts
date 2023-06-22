@@ -19,6 +19,7 @@ export interface IServiceReplacement {
 	inventory_return: string | null;
 	id_inventory_return: number | null;
 	id_inventory_obtained: number | null;
+	inventory_obtained_code: string | null;
 	company_name: string | null;
 	inventory_name: string | null;
 	total_flow: number | null;

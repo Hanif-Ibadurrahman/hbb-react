@@ -40,7 +40,7 @@ export const columns = ({
 		},
 		{
 			title: "No HBB/Inventaris yang diminta",
-			dataIndex: "inventory_code",
+			dataIndex: "inventory_obtained_code",
 			sorter: true,
 		},
 		{
