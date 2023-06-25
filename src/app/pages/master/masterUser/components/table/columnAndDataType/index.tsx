@@ -17,13 +17,18 @@ interface IColumn {
 export const columns = ({ setShowModal, handleDelete }: IColumn) => {
 	const columnType: ColumnsType<IUser> = [
 		{
-			title: "Nama User",
+			title: "Nama",
 			dataIndex: "name",
 			sorter: true,
 		},
 		{
 			title: "NIPG",
 			dataIndex: "nipg",
+			sorter: true,
+		},
+		{
+			title: "Username",
+			dataIndex: "username",
 			sorter: true,
 		},
 		{

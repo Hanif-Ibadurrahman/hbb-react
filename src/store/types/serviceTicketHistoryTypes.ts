@@ -30,6 +30,7 @@ export interface IServiceTicketHistoryGetAllParams {
 	sort?: string;
 	type?: string;
 	date?: string;
+	id_bisnis_unit?: number;
 	requester?: string;
 }
 

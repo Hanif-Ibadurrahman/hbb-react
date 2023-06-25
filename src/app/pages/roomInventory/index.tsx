@@ -240,6 +240,11 @@ const RoomInventory = () => {
 	}, [params]);
 
 	useEffect(() => {
+		fetchDataBusinessUnit();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [businessUnitParams]);
+
+	useEffect(() => {
 		fetchDataWorkUnit();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [workUnitParams]);
@@ -345,11 +350,6 @@ const RoomInventory = () => {
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [paramsFilter]);
-
-	useEffect(() => {
-		fetchDataBusinessUnit();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [businessUnitParams]);
 
 	const handleExport = async (type: string) => {
 		if (type === "excel") {

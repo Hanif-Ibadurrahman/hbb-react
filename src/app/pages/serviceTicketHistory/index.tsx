@@ -1,5 +1,5 @@
 import { TablePaginateAndSort } from "app/components/table/antd/tablePaginateAndSort";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { columns } from "./components/table/columnAndDataType";
 import {
 	exportRecapitulationApi,
@@ -18,6 +18,9 @@ import { ICompanyGetAllParams } from "store/types/companyTypes";
 import { getAllCompanyApi } from "api/company";
 import ModalDetail from "./components/modalDetail";
 import { omit } from "lodash";
+import { useFormik } from "formik";
+import { getAllBusinessUnitApi } from "api/businessUnit";
+import { IBusinessUnitGetAllParams } from "store/types/businessUnitTypes";
 
 const ServiceTicketHistory = () => {
 	const [showFilter, setShowFilter] = useState(false);
@@ -26,6 +29,8 @@ const ServiceTicketHistory = () => {
 	>({
 		per_page: 10,
 	});
+	const [initialValue, _] =
+		useState<Partial<IServiceTicketHistoryGetAllParams>>();
 	const [dataDetail, setDataDetail] = useState();
 	const [paramsFilter, setParamsFilter] = useState<
 		IServiceTicketHistoryGetAllParams | undefined
@@ -35,6 +40,9 @@ const ServiceTicketHistory = () => {
 	>();
 	const [companyParams, setCompanyParams] = useState<
 		ICompanyGetAllParams | undefined
+	>();
+	const [businessUnitParams, setBusinessUnitParams] = useState<
+		IBusinessUnitGetAllParams | undefined
 	>();
 	const [showModalDetail, setShowModalDetail] = useState<{
 		show: boolean;
@@ -53,6 +61,15 @@ const ServiceTicketHistory = () => {
 	const [dataOptionCompany, setDataOptionCompany] = useState<
 		DefaultOptionType[] | undefined
 	>();
+	const [dataOptionBusinessUnit, setDataOptionBusinessUnit] = useState<
+		DefaultOptionType[] | undefined
+	>();
+
+	const formik = useFormik({
+		initialValues: { ...initialValue },
+		enableReinitialize: true,
+		onSubmit: values => {},
+	});
 
 	const fetchDataCompany = async () => {
 		try {
@@ -60,6 +77,18 @@ const ServiceTicketHistory = () => {
 			const companyList = response.data.data;
 			setDataOptionCompany(
 				companyList.map(v => ({ label: v.name, value: v.id })),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataBusinessUnit = async () => {
+		try {
+			const response = await getAllBusinessUnitApi(businessUnitParams);
+			const businessUnitList = response.data.data;
+			setDataOptionBusinessUnit(
+				businessUnitList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -93,6 +122,11 @@ const ServiceTicketHistory = () => {
 		fetchDataCompany();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [companyParams]);
+
+	useEffect(() => {
+		fetchDataBusinessUnit();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [businessUnitParams]);
 
 	useEffect(() => {
 		fetchDataList();
@@ -165,6 +199,7 @@ const ServiceTicketHistory = () => {
 
 	const handleExport = async () => {
 		const filter = {
+			...paramsForExport,
 			requestor: paramsForExport?.requester,
 			...checkRangeValue(paramsForExport?.date),
 		};
@@ -198,7 +233,7 @@ const ServiceTicketHistory = () => {
 											className="btn btn-secondary"
 											onClick={handleExport}
 										>
-											Print
+											Print Pdf Rekapitulasi
 										</button>
 									</Space>
 									<button
@@ -225,11 +260,14 @@ const ServiceTicketHistory = () => {
 				isShow={showFilter}
 				setShowModal={setShowFilter}
 				setParams={setParamsFilter}
+				formik={formik}
 				setParamsOption={{
 					setCompanyParams,
+					setBusinessUnitParams,
 				}}
 				options={{
 					dataOptionCompany,
+					dataOptionBusinessUnit,
 				}}
 			/>
 		</>

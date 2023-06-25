@@ -1,12 +1,25 @@
-import { Button, Col, DatePicker, Drawer, Form, Row, Space } from "antd";
+import {
+	Button,
+	Col,
+	DatePicker,
+	Drawer,
+	Form,
+	Row,
+	Space,
+	Select,
+} from "antd";
 import { SelectWithTag } from "app/components/selectWithTag";
 import { isSuperadminGlobal } from "app/helper/permission";
+import { FormikProps } from "formik";
 import { Dispatch, SetStateAction, useMemo } from "react";
-import { IAreaGetAllParams } from "store/types/areaTypes";
+import { IServiceTicketHistoryGetAllParams } from "store/types/serviceTicketHistoryTypes";
 interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
-	setParams: Dispatch<SetStateAction<IAreaGetAllParams | undefined>>;
+	setParams: Dispatch<
+		SetStateAction<IServiceTicketHistoryGetAllParams | undefined>
+	>;
+	formik: FormikProps<Partial<IServiceTicketHistoryGetAllParams>>;
 	setParamsOption: any;
 	options: any;
 }
@@ -15,6 +28,7 @@ export const ModalFilter = ({
 	isShow,
 	setShowModal,
 	setParams,
+	formik,
 	setParamsOption,
 	options,
 }: IModalFilter) => {
@@ -113,6 +127,25 @@ export const ModalFilter = ({
 					<Col span={24}>
 						<Form.Item name="date" label="Tanggal">
 							<RangePicker style={{ width: "100%" }} format={"DD-MM-YYYY"} />
+						</Form.Item>
+					</Col>
+					<Col span={24}>
+						<Form.Item name="id_bisnis_unit" label="Bisnis Unit">
+							<Select
+								showSearch
+								onSearch={v =>
+									setParamsOption.setBusinessUnitParams({ name: v })
+								}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								options={options.dataOptionBusinessUnit}
+								onChange={(v, opt) => {
+									formik.setFieldValue("id_bisnis_unit", v);
+								}}
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={24}>
