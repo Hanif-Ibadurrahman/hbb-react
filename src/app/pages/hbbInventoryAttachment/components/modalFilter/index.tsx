@@ -11,13 +11,14 @@ import {
 } from "antd";
 import { TokenDekode } from "app/helper/authentication";
 import { changeDateFormat } from "app/helper/dateHelper";
+import { FormikProps } from "formik";
 import { Dispatch, SetStateAction, useMemo, useRef } from "react";
 import { IInventoryReportGetAllParams } from "store/types/inventoryReportTypes";
 interface IModalFilter {
 	isShow: boolean;
 	setShowModal: Dispatch<SetStateAction<boolean>>;
 	setParams: Dispatch<SetStateAction<IInventoryReportGetAllParams | undefined>>;
-	formik: any;
+	formik: FormikProps<Partial<IInventoryReportGetAllParams>>;
 	setParamsOption: any;
 	options: any;
 }

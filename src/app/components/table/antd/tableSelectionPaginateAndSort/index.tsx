@@ -109,7 +109,13 @@ export const TableSelectionPaginateAndSort = ({
 							marginTop: 20,
 						}}
 					>
-						<Pagination {...pagination} onChange={handlePaginate}></Pagination>
+						<Pagination
+							{...pagination}
+							showTotal={(total, range) =>
+								`${range[0]} - ${range[1]} of ${total} entries`
+							}
+							onChange={handlePaginate}
+						></Pagination>
 					</div>
 				</div>
 			</div>

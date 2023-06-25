@@ -86,6 +86,7 @@ export const Header = ({ collapseHandler }: IHeader) => {
 		document.cookie = `token=;`;
 		document.cookie = `laravel_session=;`;
 		document.cookie = `XSRF-TOKEN=;`;
+		sessionStorage.clear();
 		navigate("/login", { replace: true });
 	};
 

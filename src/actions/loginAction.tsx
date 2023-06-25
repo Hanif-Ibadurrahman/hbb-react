@@ -20,6 +20,9 @@ export const loginAction = (data: ILoginRequest) => {
 			// To prevent the CSRF attack, you can add the SameSite=Lax attribute to the cookies
 			document.cookie = `token=${response.data.token}; max-age=${dataDecode.expires_in}; SameSite=lax; Secure`;
 
+			sessionStorage.clear();
+			sessionStorage.setItem("token", response.data.token);
+
 			dispatch({
 				type: LOGIN_SUCCESS,
 				payload: response.data.token,
