@@ -15,14 +15,20 @@ export const AppAuth = ({ children }: IAppAuth) => {
 	const tokenSession = sessionStorage.getItem("token");
 	const redirectLogin = useRef(false);
 
-	if (checkToken === "") {
-		if (tokenSession === null && !isLoginPage && !redirectLogin.current) {
-			redirectLogin.current = true;
-			window.location.href = "/login";
-		} else if (tokenSession !== null) {
-			const dataDecode: ITokenDecode = jwtDecode(tokenSession);
-			document.cookie = `token=${tokenSession}; max-age=${dataDecode.expires_in}; SameSite=lax; Secure`;
-		}
+	if (checkToken === "" && tokenSession !== null) {
+		const dataDecode: ITokenDecode = jwtDecode(tokenSession);
+		document.cookie = `token=${tokenSession}; max-age=${dataDecode.expires_in}; SameSite=lax; Secure`;
+		window.location.reload();
+	}
+
+	if (
+		checkToken === "" &&
+		tokenSession === null &&
+		!isLoginPage &&
+		!redirectLogin.current
+	) {
+		redirectLogin.current = true;
+		window.location.href = "/login";
 	}
 
 	return <>{children}</>;
