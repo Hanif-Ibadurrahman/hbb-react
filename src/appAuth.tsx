@@ -18,7 +18,6 @@ export const AppAuth = ({ children }: IAppAuth) => {
 	if (checkToken === "" && tokenSession !== null) {
 		const dataDecode: ITokenDecode = jwtDecode(tokenSession);
 		document.cookie = `token=${tokenSession}; max-age=${dataDecode.expires_in}; SameSite=lax; Secure`;
-		window.location.reload();
 	}
 
 	if (
