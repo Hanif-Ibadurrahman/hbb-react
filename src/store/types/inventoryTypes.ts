@@ -110,6 +110,7 @@ export interface IInventoryGetAllParams {
 	per_page?: number;
 	order_by?: string;
 	sort?: string;
+	search?: string;
 	id_area?: number;
 	id_location?: number;
 	inventory_type?: number;

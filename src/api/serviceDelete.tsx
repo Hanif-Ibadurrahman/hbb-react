@@ -45,3 +45,11 @@ export const rejectServiceDeleteApi = (
 ) => {
 	return apiWithToken.post(`/api/approval/penghapusan/reject/${id}`, input);
 };
+
+export const getAllReasonRequestDeleteApi = () => {
+	return apiWithToken.get(`/api/transaksi/penghapusan/keterangan/penghapusan`);
+};
+
+export const getAllConditionRequestDeleteApi = () => {
+	return apiWithToken.get(`/api/transaksi/penghapusan/keterangan/kondisi`);
+};

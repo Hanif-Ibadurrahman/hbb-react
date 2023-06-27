@@ -23,6 +23,8 @@ import {
 	approveServiceDeleteApi,
 	createNewServiceDeleteApi,
 	deleteServiceDeleteApi,
+	getAllConditionRequestDeleteApi,
+	getAllReasonRequestDeleteApi,
 	getAllServiceDeleteApi,
 	getDetailServiceDeleteApi,
 	rejectServiceDeleteApi,
@@ -86,6 +88,12 @@ const ServiceDelete = () => {
 		DefaultOptionType[] | undefined
 	>();
 	const [dataOptionWorkflow, setDataOptionWorkflow] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionCondition, setDataOptionCondition] = useState<
+		DefaultOptionType[] | undefined
+	>();
+	const [dataOptionReason, setDataOptionReason] = useState<
 		DefaultOptionType[] | undefined
 	>();
 
@@ -191,6 +199,36 @@ const ServiceDelete = () => {
 		}
 	};
 
+	const fetchDataCondition = async () => {
+		try {
+			const response = await getAllConditionRequestDeleteApi();
+			const conditionList = response.data.data;
+			setDataOptionCondition(
+				conditionList.map(v => ({
+					label: v.name,
+					value: v.name,
+				})),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataReason = async () => {
+		try {
+			const response = await getAllReasonRequestDeleteApi();
+			const reasonList = response.data.data;
+			setDataOptionReason(
+				reasonList.map(v => ({
+					label: v.name,
+					value: v.name,
+				})),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
 	const handleInitialValue = (values: IServiceDelete) => {
 		const setData = removeNullFields(values);
 		if (!checkDefaultOption(dataOptionInventory!, setData.inventory_code)) {
@@ -204,6 +242,11 @@ const ServiceDelete = () => {
 	};
 
 	useEffect(() => {
+		fetchDataList();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [params]);
+
+	useEffect(() => {
 		fetchDataInventory();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [inventoryParams]);
@@ -214,9 +257,14 @@ const ServiceDelete = () => {
 	}, [workflowParams]);
 
 	useEffect(() => {
-		fetchDataList();
+		fetchDataCondition();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [params]);
+	}, []);
+
+	useEffect(() => {
+		fetchDataReason();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	useEffect(() => {
 		setParams({
@@ -555,7 +603,7 @@ const ServiceDelete = () => {
 								<div className="controls">
 									<Select
 										showSearch
-										onSearch={v => setInventoryParams({ name: v })}
+										onSearch={v => setInventoryParams({ search: v })}
 										filterOption={(input, option) =>
 											(`${option?.label}` ?? "")
 												.toLowerCase()
@@ -587,12 +635,14 @@ const ServiceDelete = () => {
 									Kondisi <span className="text-danger">*</span>
 								</Title>
 								<div className="controls">
-									<Input
-										type="text"
-										name="condition"
-										className="form-control"
-										placeholder="Kondisi"
-										onChange={formik.handleChange}
+									<Select
+										options={dataOptionCondition}
+										onChange={(v, opt) => {
+											formik.setFieldValue("condition", v);
+											formRef.current?.setFieldsValue({
+												condition: v,
+											});
+										}}
 										value={formik.values.condition}
 									/>
 								</div>
@@ -612,12 +662,14 @@ const ServiceDelete = () => {
 									Alasan <span className="text-danger">*</span>
 								</Title>
 								<div className="controls">
-									<Input
-										type="text"
-										name="reason"
-										className="form-control"
-										placeholder="Alasan"
-										onChange={formik.handleChange}
+									<Select
+										options={dataOptionReason}
+										onChange={(v, opt) => {
+											formik.setFieldValue("reason", v);
+											formRef.current?.setFieldsValue({
+												reason: v,
+											});
+										}}
 										value={formik.values.reason}
 									/>
 								</div>

@@ -739,7 +739,7 @@ const ServiceReplacement = () => {
 							<div className="controls">
 								<Select
 									showSearch
-									onSearch={v => setInventoryParams({ name: v })}
+									onSearch={v => setInventoryParams({ search: v })}
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()
