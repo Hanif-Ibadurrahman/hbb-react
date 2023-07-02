@@ -651,9 +651,11 @@ const MasterWorkUnit = () => {
 				setShowModal={setShowFilter}
 				setParams={setParamsFilter}
 				setParamsOption={{
+					setBusinessUnitParams,
 					setCompanyParams,
 				}}
 				options={{
+					dataOptionBusinessUnit,
 					dataOptionCompany,
 				}}
 			/>

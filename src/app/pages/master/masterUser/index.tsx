@@ -766,6 +766,21 @@ const MasterUser = () => {
 							</div>
 						</div>
 					</Form.Item>
+					<Form.Item name="jabatan">
+						<div className="form-group">
+							<Title level={5}>Jabatan</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="jabatan"
+									className="form-control"
+									placeholder="Jabatan"
+									onChange={formik.handleChange}
+									value={formik.values.jabatan}
+								/>
+							</div>
+						</div>
+					</Form.Item>
 					<Form.Item
 						name="roles"
 						rules={[

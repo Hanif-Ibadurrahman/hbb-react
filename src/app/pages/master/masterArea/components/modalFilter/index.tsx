@@ -86,7 +86,7 @@ export const ModalFilter = ({
 				<Row gutter={16}>
 					{generateContent}
 					<Col span={24}>
-						<Form.Item name="bisnis_unit" label="Bisnis Unit">
+						<Form.Item name="id_bisnis_unit" label="Bisnis Unit">
 							<SelectWithTag
 								showSearch
 								onSearch={v =>
@@ -98,7 +98,6 @@ export const ModalFilter = ({
 										.includes(input.toLowerCase())
 								}
 								dataOption={options.dataOptionBusinessUnit}
-								valueOption="label"
 							/>
 						</Form.Item>
 					</Col>

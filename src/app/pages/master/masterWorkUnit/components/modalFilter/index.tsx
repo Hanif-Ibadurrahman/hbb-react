@@ -86,8 +86,19 @@ export const ModalFilter = ({
 				<Row gutter={16}>
 					{generateContent}
 					<Col span={24}>
-						<Form.Item name="bisnis_unit" label="Bisnis Unit">
-							<SelectWithTag />
+						<Form.Item name="id_bisnis_unit" label="Bisnis Unit">
+							<SelectWithTag
+								showSearch
+								onSearch={v =>
+									setParamsOption.setBusinessUnitParams({ name: v })
+								}
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								dataOption={options.dataOptionBusinessUnit}
+							/>
 						</Form.Item>
 					</Col>
 					<Col span={24}>
