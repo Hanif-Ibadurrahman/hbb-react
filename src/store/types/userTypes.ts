@@ -31,19 +31,20 @@ export interface IUser {
 	entry_stamp: string | null;
 	edit_stamp: string | null;
 	del: boolean;
-	user_uuid: number | null;
 	id_company: number | null;
+	id_emp: number | null;
+	email: string | null;
 	created_at: string | null;
 	updated_at: string | null;
 	deleted_at: string | null;
-	user_roles: IUserRoles[];
-	id_emp: number | null;
-	email: string | null;
+	user_uuid: number | null;
+	jabatan: string | null;
 	company_name: string | null;
 	bisnis_unit_name: string | null;
 	area_name: string | null;
 	satker_name: string | null;
 	emp_name: string | null;
+	user_roles: IUserRoles[];
 }
 
 export interface IUserPaginateResponse extends PaginationState {
@@ -68,6 +69,7 @@ export interface ICreateUserRequest {
 	password: string;
 	name: string;
 	nipg: string;
+	jabatan: string;
 	roles: number[];
 	id_company: number;
 	id_bisnit: number;
@@ -82,6 +84,7 @@ export interface IUpdateUserRequest {
 	password: string;
 	name: string;
 	nipg: string;
+	jabatan: string;
 	roles: number[];
 	id_company: number;
 	id_bisnit: number;

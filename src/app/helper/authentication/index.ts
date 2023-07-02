@@ -5,6 +5,8 @@ import { token } from "../permission";
 
 export const CheckResponse = (error: any) => {
 	if (error?.response?.data?.error === "Unauthenticated") {
+		sessionStorage.clear();
+
 		document.cookie = `token=;`;
 		document.cookie = `laravel_session=;`;
 		document.cookie = `XSRF-TOKEN=;`;
