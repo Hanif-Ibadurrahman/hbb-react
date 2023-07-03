@@ -159,35 +159,6 @@ const ServiceTicketHistory = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showModalDetail]);
 
-	// const handleDownload = useMemo(() => {
-	// 	const baseUrl = `${process.env.REACT_APP_API_URL}/api/reporting/rekapitulasi-transaksi/export`;
-	// 	const params: string[] = [];
-
-	// 	for (const [key, value] of Object.entries(paramsFilter || {})) {
-	// 		if (value !== undefined) {
-	// 			// params.push(`${key}=${encodeURIComponent(value)}`);
-	// 			params.push(`${key}=${value}`);
-	// 		}
-	// 	}
-
-	// 	const paramsString = params.length ? `?${params.join("&")}` : "";
-	// 	const url = `${baseUrl}${paramsString}`;
-
-	// 	return (
-	// 		<button className="btn btn-secondary">
-	// 			<a
-	// 				href={url}
-	// 				style={{ color: "#ffffff" }}
-	// 				rel="noreferrer"
-	// 				target="_blank"
-	// 			>
-	// 				Print
-	// 			</a>
-	// 		</button>
-	// 	);
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, [params]);
-
 	const checkRangeValue = value => {
 		return value
 			? {

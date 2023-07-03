@@ -124,6 +124,9 @@ const ServiceReplacement = () => {
 	const [dataOptionLocation, setDataOptionLocation] = useState<
 		DefaultOptionType[] | undefined
 	>();
+	const [dataOptionFinalLocation, setDataOptionFinalLocation] = useState<
+		DefaultOptionType[] | undefined
+	>();
 	const [dataOptionWorkflow, setDataOptionWorkflow] = useState<
 		DefaultOptionType[] | undefined
 	>();
@@ -172,13 +175,6 @@ const ServiceReplacement = () => {
 
 	const fetchDataAvailableInventory = async () => {
 		try {
-			// const availableInventory = {
-			// 	...availableInventoryParams,
-			// 	status: 1,
-			// 	area: formik.values.area?.toString().toLowerCase(),
-			// 	location: formik.values.location?.toString().toLowerCase(),
-			// };
-			// const response = await getAllInventoryApi(availableInventory);
 			const availableInventory = {
 				search: formik.values.location?.toString().toLowerCase(),
 			};
@@ -229,9 +225,6 @@ const ServiceReplacement = () => {
 
 	const fetchDataArea = async () => {
 		try {
-			// const response = await getAllAreaApi(areaParams);
-			// const areaList = response.data.data;
-			// setDataOptionArea(areaList.map(v => ({ label: v.name, value: v.name })));
 			const response = await getAllInventoryInWarehouseApi();
 			const areaList: any[] = uniqBy(response.data.data, "area_name");
 			setDataOptionArea(
@@ -244,23 +237,27 @@ const ServiceReplacement = () => {
 
 	const fetchDataLocation = async () => {
 		try {
-			// const response = await getAllLocationApi({
-			// 	...locationParams,
-			// 	area: formik.values.area?.toString().toLowerCase(),
-			// });
-			// const locationList = response.data.data;
-			// setDataOptionLocation(
-			// 	locationList.map(v => ({ label: v.name, value: v.name })),
-			// );
 			const response = await getAllInventoryInWarehouseApi({
 				search: formik.values.area?.toString().toLowerCase(),
 			});
-			const locationList: any[] = uniqBy(response.data.data, "area_name");
+			const locationList: any[] = uniqBy(response.data.data, "lokasi_id");
 			setDataOptionLocation(
 				locationList.map(v => ({
 					label: v.lokasi_name,
 					value: v.lokasi_name,
 				})),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
+	const fetchDataFinalLocation = async () => {
+		try {
+			const response = await getAllInventoryInWarehouseApi();
+			const locationList: any[] = uniqBy(response.data.data, "lokasi_id");
+			setDataOptionFinalLocation(
+				locationList.map(v => ({ label: v.lokasi_name, value: v.lokasi_id })),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -354,6 +351,11 @@ const ServiceReplacement = () => {
 		fetchDataLocation();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [locationParams]);
+
+	useEffect(() => {
+		fetchDataFinalLocation();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	useEffect(() => {
 		fetchDataAvailableInventory();
@@ -866,6 +868,31 @@ const ServiceReplacement = () => {
 						</div>
 					</Form.Item>
 					<Form.Item
+						name="condition"
+						rules={[
+							{
+								required: true,
+								message: "Harap isi field ini",
+							},
+						]}
+					>
+						<div className="form-group">
+							<Title level={5}>
+								Kondisi <span className="text-danger">*</span>
+							</Title>
+							<div className="controls">
+								<Input
+									type="text"
+									name="condition"
+									className="form-control"
+									placeholder="Kondisi"
+									onChange={formik.handleChange}
+									value={formik.values.condition}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+					<Form.Item
 						name="emp_name"
 						rules={[
 							{
@@ -891,7 +918,7 @@ const ServiceReplacement = () => {
 						</div>
 					</Form.Item>
 					<Form.Item
-						name="condition"
+						name="id_final_location"
 						rules={[
 							{
 								required: true,
@@ -900,17 +927,22 @@ const ServiceReplacement = () => {
 						]}
 					>
 						<div className="form-group">
-							<Title level={5}>
-								Kondisi <span className="text-danger">*</span>
-							</Title>
+							<Title level={5}>Lokasi Akhir</Title>
 							<div className="controls">
-								<Input
-									type="text"
-									name="condition"
-									className="form-control"
-									placeholder="Kondisi"
-									onChange={formik.handleChange}
-									value={formik.values.condition}
+								<Select
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionFinalLocation}
+									onChange={(v, opt) => {
+										formik.setFieldValue("id_final_location", v);
+										formRef.current?.setFieldsValue({
+											id_final_location: v,
+										});
+									}}
+									value={formik.values.id_final_location}
 								/>
 							</div>
 						</div>

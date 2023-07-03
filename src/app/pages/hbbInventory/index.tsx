@@ -468,6 +468,7 @@ const HbbInventory = () => {
 				id_company: formik.values.id_company,
 				id_bisnis_unit: formik.values.id_bisnis_unit,
 				id_area: formik.values.id_area,
+				id_satker: formik.values.id_satker,
 			});
 			const locationList = response.data.data;
 			const dataTemp = { key: "location", data: locationList };
@@ -837,10 +838,13 @@ const HbbInventory = () => {
 		if (workUnitId) {
 			const isInitialValueUndefined = initialValue?.id_satker === undefined;
 			if (isInitialValueUndefined || workUnitId !== initialValue.id_satker) {
+				formik.setFieldValue("id_location", undefined);
+				formRef.current?.setFieldsValue({ id_location: undefined });
 				formik.setFieldValue("id_division", undefined);
 				formRef.current?.setFieldsValue({ id_division: undefined });
 			}
 			fetchDataDivision();
+			fetchDataLocation();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [formik.values.id_satker]);

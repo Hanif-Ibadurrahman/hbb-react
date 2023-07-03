@@ -19,24 +19,30 @@ export interface IServiceRequest {
 	ekskutor: string | null;
 	nama_peminta: string | null;
 	nama_pemakai: string | null;
-	id_division_head: number | null;
 	upload: string | null;
 	id_area: number | null;
-	id_role: number | null;
+	id_division_head: number | null;
 	created_by: number | null;
 	tipe: string | null;
 	id_company: number | null;
 	id_approval: number | null;
 	inventory_description: string | null;
 	spesification: string | null;
-	created_at: string | null;
-	updated_at: string | null;
-	deleted_at: string | null;
 	attachment_file: string | null;
 	condition: string | null;
 	transaction_uuid: string | null;
+	inventory_code: string | null;
+	id_inventory: number | null;
 	no_urut: number | null;
+	created_at: string | null;
+	updated_at: string | null;
+	deleted_at: string | null;
+	id_final_location: number | null;
 	company_name: string | null;
+	inventory_name: string | null;
+	area_name: string | null;
+	lokasi_name: string | null;
+	total_flow: number | null;
 	pending_status: string | null;
 	current_flow: number | null;
 	current_approver: number | null;
@@ -65,10 +71,10 @@ export interface ICreateServiceRequestRequest {
 	spesification: string;
 	id_company: number;
 	id_workflow: number;
+	id_final_location: number;
 	created_by: number;
 	files: any | null;
 
-	// not yet added
 	area: string;
 	location: string;
 }
@@ -81,11 +87,11 @@ export interface IUpdateServiceRequestRequest {
 	spesification: string;
 	id_company: number;
 	id_workflow: number;
+	id_final_location: number;
 	created_by: number;
 	files: any | null;
 	_method: string;
 
-	// not yet added
 	area: string;
 	location: string;
 }

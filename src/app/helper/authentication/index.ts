@@ -18,14 +18,25 @@ export const CheckResponse = (error: any) => {
 			showConfirmButton: false,
 			timer: 3000,
 		});
-	} else {
+	}
+
+	if (error?.response?.statusText === "Unprocessable Entity") {
 		return Swal.fire({
 			icon: "error",
-			title: error.response?.data?.message,
+			title: Object.values(error.response?.data)
+				.flatMap(value => value)
+				.join(", "),
 			showConfirmButton: false,
 			timer: 3000,
 		});
 	}
+
+	return Swal.fire({
+		icon: "error",
+		title: error.response?.data?.message,
+		showConfirmButton: false,
+		timer: 3000,
+	});
 };
 
 export const TokenDekode = () => {
