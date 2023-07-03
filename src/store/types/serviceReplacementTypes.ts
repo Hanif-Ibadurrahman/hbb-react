@@ -20,6 +20,7 @@ export interface IServiceReplacement {
 	id_inventory_return: number | null;
 	id_inventory_obtained: number | null;
 	inventory_obtained_code: string | null;
+	id_final_location: number | null;
 	company_name: string | null;
 	inventory_name: string | null;
 	total_flow: number | null;
@@ -55,10 +56,10 @@ export interface ICreateServiceReplacementRequest {
 	emp_name: string;
 	id_company: number;
 	id_workflow: number;
+	id_final_location: number;
 	created_by: number;
 	files: any | null;
 
-	// not yet added
 	area: string;
 	location: string;
 }
@@ -71,11 +72,11 @@ export interface IUpdateServiceReplacementRequest {
 	emp_name: string;
 	id_company: number;
 	id_workflow: number;
+	id_final_location: number;
 	created_by: number;
 	files: any | null;
 	_method: string;
 
-	// not yet added
 	area: string;
 	location: string;
 }

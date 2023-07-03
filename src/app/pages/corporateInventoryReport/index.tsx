@@ -21,8 +21,6 @@ const CorporateInventoryReport = () => {
 	>({
 		per_page: 10,
 	});
-	// const [initialValue, setInitialValue] =
-	// 	useState<Partial<ICorporateInventoryReportGetAllParams>>();
 	const [paramsFilter, setParamsFilter] = useState<
 		ICorporateInventoryReportGetAllParams | undefined
 	>();
@@ -43,31 +41,9 @@ const CorporateInventoryReport = () => {
 		DefaultOptionType[] | undefined
 	>();
 
-	// const formik = useFormik({
-	// 	initialValues: { ...initialValue },
-	// 	enableReinitialize: true,
-	// 	onSubmit: values => {},
-	// });
-
 	const fetchDataList = async () => {
 		try {
 			if (params) {
-				// if (params.type_export === "excel") {
-				// 	const filter = omit(params, ["page", "per_page", "type_export"]);
-				// 	const response = await exportCorporateInventoryReportApi(filter);
-				// 	const url = response.data.data.replace(/\\/g, "");
-				// 	window.location.href = url;
-
-				/////////////////////////////
-				// const anchor = document.createElement("a");
-				// anchor.href = url;
-				// anchor.click();
-
-				////////////////////////////
-				// const newTab = window.open(url, "_blank");
-				// newTab?.focus();
-				// }
-
 				const filter = omit(params, [
 					"page",
 					"per_page",

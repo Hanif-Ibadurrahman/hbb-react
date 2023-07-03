@@ -38,6 +38,7 @@ export interface ILocationGetAllParams {
 	id_bisnis_unit?: number;
 	id_area?: number;
 	id_division?: number;
+	id_satker?: number;
 }
 export interface ICreateLocationRequest {
 	id_bisnis_unit: number;
