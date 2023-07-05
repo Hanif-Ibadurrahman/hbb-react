@@ -35,7 +35,7 @@ import {
 import { IServiceReturn } from "store/types/serviceReturnTypes";
 import { CheckResponse, TokenDekode } from "app/helper/authentication";
 import { UploadOutlined } from "@ant-design/icons";
-import { listCheckPermission } from "app/helper/permission";
+import { isAdminArea, listCheckPermission } from "app/helper/permission";
 import { DefaultOptionType } from "antd/es/select";
 import { IWorkflowGetAllParams } from "store/types/workflowTypes";
 import { getAllWorkflowApi, getDetailWorkflowApi } from "api/workflow";
@@ -49,12 +49,14 @@ import {
 } from "app/helper/common";
 import ModalDetail from "../components/modalDetail";
 import { useNavigate } from "react-router-dom";
+import ModalForm from "./components/modalForm";
 
 const ServiceReturn = () => {
 	const tokenDecode = TokenDekode();
 	const navigate = useNavigate();
 	const { Title } = Typography;
 	const [form] = Form.useForm();
+	const [dataForm, setDataForm] = useState();
 	const [fileList, setFileList] = useState<File[] | null>(null);
 	const [files, setFiles] = useState<FileList | null>(null);
 	const inputFile = useRef<HTMLInputElement | null>(null);
@@ -72,6 +74,7 @@ const ServiceReturn = () => {
 	}>({
 		show: false,
 	});
+	const [showModalForm, setShowModalForm] = useState<boolean>(false);
 	const [inventoryParams, setInventoryParams] = useState<
 		IInventoryGetAllParams | undefined
 	>();
@@ -256,53 +259,58 @@ const ServiceReturn = () => {
 	});
 
 	const handleApprove = (id: number, record: any) => {
-		const swalCustom = Swal.mixin({
-			customClass: {
-				confirmButton: "btn btn-success m-1",
-				cancelButton: "btn btn-danger m-1",
-			},
-			buttonsStyling: false,
-		});
-
-		swalCustom
-			.fire({
-				title: "Apakah anda yakin ingin menyetujui permintaan ini?",
-				text: "Ada catatan?",
-				input: "text",
-				icon: "warning",
-				showCancelButton: true,
-				confirmButtonText: "Approve",
-				cancelButtonText: "Cancel",
-				reverseButtons: true,
-			})
-			.then(result => {
-				if (result.isConfirmed) {
-					approveServiceReturnApi(id, { remark: result.value })
-						.then(res => {
-							if (res.data.status === "success") {
-								swalCustom.fire(
-									"Approve",
-									"Data ini telah disetujui.",
-									"success",
-								);
-								const isLastFlow: boolean =
-									record.total_flow - 1 === record.current_flow;
-								if (isLastFlow) {
-									navigate("/riwayat-tiket-layanan", { replace: true });
-								} else {
-									fetchDataList();
-								}
-							} else {
-								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
-							}
-						})
-						.catch((error: any) => {
-							CheckResponse(error);
-						});
-				} else if (result.dismiss === Swal.DismissReason.cancel) {
-					swalCustom.fire("Batal", "Permintaan ini batal disetujui", "error");
-				}
+		if (isAdminArea) {
+			setDataForm(record);
+			setShowModalForm(true);
+		} else {
+			const swalCustom = Swal.mixin({
+				customClass: {
+					confirmButton: "btn btn-success m-1",
+					cancelButton: "btn btn-danger m-1",
+				},
+				buttonsStyling: false,
 			});
+
+			swalCustom
+				.fire({
+					title: "Apakah anda yakin ingin menyetujui permintaan ini?",
+					text: "Ada catatan?",
+					input: "text",
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonText: "Approve",
+					cancelButtonText: "Cancel",
+					reverseButtons: true,
+				})
+				.then(result => {
+					if (result.isConfirmed) {
+						approveServiceReturnApi(id, { remark: result.value })
+							.then(res => {
+								if (res.data.status === "success") {
+									swalCustom.fire(
+										"Approve",
+										"Data ini telah disetujui.",
+										"success",
+									);
+									const isLastFlow: boolean =
+										record.total_flow - 1 === record.current_flow;
+									if (isLastFlow) {
+										navigate("/riwayat-tiket-layanan", { replace: true });
+									} else {
+										fetchDataList();
+									}
+								} else {
+									swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+								}
+							})
+							.catch((error: any) => {
+								CheckResponse(error);
+							});
+					} else if (result.dismiss === Swal.DismissReason.cancel) {
+						swalCustom.fire("Batal", "Permintaan ini batal disetujui", "error");
+					}
+				});
+		}
 	};
 
 	const handleAdd = () => {
@@ -482,6 +490,10 @@ const ServiceReturn = () => {
 
 	const handleCancel = () => {
 		setShowModal({ show: false });
+	};
+
+	const updateDataList = () => {
+		fetchDataList();
 	};
 
 	return (
@@ -722,6 +734,13 @@ const ServiceReturn = () => {
 			<ModalDetail
 				showModal={showModalDetail}
 				setShowModal={setShowModalDetail}
+			/>
+
+			<ModalForm
+				dataForm={dataForm}
+				showModal={showModalForm}
+				setShowModal={setShowModalForm}
+				updateDataList={updateDataList}
 			/>
 
 			<ModalFilter

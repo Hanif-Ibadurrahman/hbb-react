@@ -24,7 +24,7 @@ export const ModalFilter = ({
 		if (isSuperadminGlobal) {
 			return (
 				<Col span={24}>
-					<Form.Item name="id_company" label="Perusahaan">
+					<Form.Item name="company" label="Perusahaan">
 						<SelectWithTag
 							showSearch
 							onSearch={v => setParamsOption.setCompanyParams({ name: v })}
@@ -34,6 +34,7 @@ export const ModalFilter = ({
 									.includes(input.toLowerCase())
 							}
 							dataOption={options.dataOptionCompany}
+							valueOption="label"
 						/>
 					</Form.Item>
 				</Col>

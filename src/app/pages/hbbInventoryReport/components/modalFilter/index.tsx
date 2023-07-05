@@ -248,17 +248,6 @@ export const ModalFilter = ({
 							<RangePicker style={{ width: "100%" }} format={"DD-MM-YYYY"} />
 						</Form.Item>
 					</Col>
-					{/* <Col span={24}>
-						<Form.Item name="type_export" label="Export">
-							<Select
-								options={[
-									{ value: undefined, label: "" },
-									{ value: "excel", label: "Excel" },
-									{ value: "pdf", label: "Pdf" },
-								]}
-							/>
-						</Form.Item>
-					</Col> */}
 				</Row>
 			</Form>
 		</Drawer>

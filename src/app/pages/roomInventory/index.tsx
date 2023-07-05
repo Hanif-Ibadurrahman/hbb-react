@@ -114,6 +114,18 @@ const RoomInventory = () => {
 		}
 	};
 
+	const fetchDataCompany = async () => {
+		try {
+			const response = await getAllCompanyApi(companyParams);
+			const companyList = response.data.data;
+			setDataOptionCompany(
+				companyList.map(v => ({ label: v.name, value: v.id })),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
 	const fetchDataCodeGroup = async () => {
 		try {
 			const response = await getAllCodeGroupApi({
@@ -131,27 +143,13 @@ const RoomInventory = () => {
 
 	const fetchDataSubCodeGroup = async (id: number) => {
 		try {
-			const response = await getAllSubCodeGroupApi(id, subCodeGroupParams);
+			const response = await getAllSubCodeGroupApi(id, {
+				...subCodeGroupParams,
+				id_company: formik.values.id_company,
+			});
 			const areaList = response.data.data;
 			setDataOptionSubCodeGroup(
 				areaList.map(v => ({ label: v.value, value: v.id })),
-			);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataLocation = async () => {
-		try {
-			const response = await getAllLocationApi({
-				...locationParams,
-				id_company: formik.values.id_company,
-				id_bisnis_unit: formik.values.id_bisnis_unit,
-				id_area: formik.values.id_area,
-			});
-			const locationList = response.data.data;
-			setDataOptionLocation(
-				locationList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -206,12 +204,18 @@ const RoomInventory = () => {
 		}
 	};
 
-	const fetchDataCompany = async () => {
+	const fetchDataLocation = async () => {
 		try {
-			const response = await getAllCompanyApi(companyParams);
-			const companyList = response.data.data;
-			setDataOptionCompany(
-				companyList.map(v => ({ label: v.name, value: v.id })),
+			const response = await getAllLocationApi({
+				...locationParams,
+				id_company: formik.values.id_company,
+				id_bisnis_unit: formik.values.id_bisnis_unit,
+				id_area: formik.values.id_area,
+				id_satker: formik.values.id_satker,
+			});
+			const locationList = response.data.data;
+			setDataOptionLocation(
+				locationList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -222,6 +226,11 @@ const RoomInventory = () => {
 		fetchDataList();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [params]);
+
+	useEffect(() => {
+		fetchDataCompany();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [companyParams]);
 
 	useEffect(() => {
 		fetchDataBusinessUnit();
@@ -312,9 +321,16 @@ const RoomInventory = () => {
 	}, [formik.values.id_area]);
 
 	useEffect(() => {
-		fetchDataCompany();
+		const workUnitId = formik.values.id_satker;
+		if (workUnitId) {
+			const isInitialValueUndefined = initialValue?.id_satker === undefined;
+			if (isInitialValueUndefined || workUnitId !== initialValue.id_satker) {
+				formik.setFieldValue("id_location", undefined);
+			}
+			fetchDataLocation();
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [companyParams]);
+	}, [formik.values.id_satker]);
 
 	useEffect(() => {
 		setParams({

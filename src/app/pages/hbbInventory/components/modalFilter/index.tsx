@@ -150,6 +150,7 @@ export const ModalFilter = ({
 				id_company: formik.values.id_company,
 				id_bisnis_unit: formik.values.id_bisnis_unit,
 				id_area: formik.values.id_area,
+				id_satker: formik.values.id_satker,
 			});
 			const locationList = response.data.data;
 			setDataOptionLocation(
@@ -262,6 +263,19 @@ export const ModalFilter = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [formik.values.id_area]);
+
+	useEffect(() => {
+		const workUnitId = formik.values.id_satker;
+		if (workUnitId) {
+			const isInitialValueUndefined = initialValue?.id_satker === undefined;
+			if (isInitialValueUndefined || workUnitId !== initialValue.id_satker) {
+				formik.setFieldValue("id_location", undefined);
+				formik.setFieldValue("id_division", undefined);
+			}
+			fetchDataLocation();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_satker]);
 
 	return (
 		<Drawer

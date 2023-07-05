@@ -39,7 +39,7 @@ import { getAllInventoryApi, getDetailInventoryApi } from "api/inventory";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { ModalFilter } from "./components/modalFilter";
-import { listCheckPermission } from "app/helper/permission";
+import { isAdminArea, listCheckPermission } from "app/helper/permission";
 import {
 	changeValueToRole,
 	checkDefaultOption,
@@ -47,6 +47,7 @@ import {
 } from "app/helper/common";
 import ModalDetail from "../components/modalDetail";
 import { useNavigate } from "react-router-dom";
+import ModalForm from "./components/modalForm";
 
 const ServiceDelete = () => {
 	dayjs.extend(customParseFormat);
@@ -54,6 +55,7 @@ const ServiceDelete = () => {
 	const tokenDecode = TokenDekode();
 	const { Title } = Typography;
 	const [form] = Form.useForm();
+	const [dataForm, setDataForm] = useState();
 	const formRef = useRef<FormInstance>(null);
 	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState<IServiceDeleteGetAllParams | undefined>({
@@ -74,6 +76,7 @@ const ServiceDelete = () => {
 	}>({
 		show: false,
 	});
+	const [showModalForm, setShowModalForm] = useState<boolean>(false);
 	const [selectedPageAndSort, setSelectedPageAndSort] = useState<{
 		page?: number;
 		per_page?: number;
@@ -295,53 +298,58 @@ const ServiceDelete = () => {
 	}, [formik.values.inventory_type]);
 
 	const handleApprove = (id: number, record: any) => {
-		const swalCustom = Swal.mixin({
-			customClass: {
-				confirmButton: "btn btn-success m-1",
-				cancelButton: "btn btn-danger m-1",
-			},
-			buttonsStyling: false,
-		});
-
-		swalCustom
-			.fire({
-				title: "Apakah anda yakin ingin menyetujui permintaan ini?",
-				text: "Ada catatan?",
-				input: "text",
-				icon: "warning",
-				showCancelButton: true,
-				confirmButtonText: "Approve",
-				cancelButtonText: "Cancel",
-				reverseButtons: true,
-			})
-			.then(result => {
-				if (result.isConfirmed) {
-					approveServiceDeleteApi(id, { remark: result.value })
-						.then(res => {
-							if (res.data.status === "success") {
-								swalCustom.fire(
-									"Approve",
-									"Data ini telah disetujui.",
-									"success",
-								);
-								const isLastFlow: boolean =
-									record.total_flow - 1 === record.current_flow;
-								if (isLastFlow) {
-									navigate("/riwayat-tiket-layanan", { replace: true });
-								} else {
-									fetchDataList();
-								}
-							} else {
-								swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
-							}
-						})
-						.catch((error: any) => {
-							CheckResponse(error);
-						});
-				} else if (result.dismiss === Swal.DismissReason.cancel) {
-					swalCustom.fire("Batal", "Permintaan ini batal disetujui", "error");
-				}
+		if (isAdminArea) {
+			setDataForm(record);
+			setShowModalForm(true);
+		} else {
+			const swalCustom = Swal.mixin({
+				customClass: {
+					confirmButton: "btn btn-success m-1",
+					cancelButton: "btn btn-danger m-1",
+				},
+				buttonsStyling: false,
 			});
+
+			swalCustom
+				.fire({
+					title: "Apakah anda yakin ingin menyetujui permintaan ini?",
+					text: "Ada catatan?",
+					input: "text",
+					icon: "warning",
+					showCancelButton: true,
+					confirmButtonText: "Approve",
+					cancelButtonText: "Cancel",
+					reverseButtons: true,
+				})
+				.then(result => {
+					if (result.isConfirmed) {
+						approveServiceDeleteApi(id, { remark: result.value })
+							.then(res => {
+								if (res.data.status === "success") {
+									swalCustom.fire(
+										"Approve",
+										"Data ini telah disetujui.",
+										"success",
+									);
+									const isLastFlow: boolean =
+										record.total_flow - 1 === record.current_flow;
+									if (isLastFlow) {
+										navigate("/riwayat-tiket-layanan", { replace: true });
+									} else {
+										fetchDataList();
+									}
+								} else {
+									swalCustom.fire("Error", "Telah terjadi kesalahan", "error");
+								}
+							})
+							.catch((error: any) => {
+								CheckResponse(error);
+							});
+					} else if (result.dismiss === Swal.DismissReason.cancel) {
+						swalCustom.fire("Batal", "Permintaan ini batal disetujui", "error");
+					}
+				});
+		}
 	};
 
 	const handleAdd = () => {
@@ -492,6 +500,10 @@ const ServiceDelete = () => {
 
 	const handleCancel = () => {
 		setShowModal({ show: false });
+	};
+
+	const updateDataList = () => {
+		fetchDataList();
 	};
 
 	return (
@@ -715,6 +727,13 @@ const ServiceDelete = () => {
 			<ModalDetail
 				showModal={showModalDetail}
 				setShowModal={setShowModalDetail}
+			/>
+
+			<ModalForm
+				dataForm={dataForm}
+				showModal={showModalForm}
+				setShowModal={setShowModalForm}
+				updateDataList={updateDataList}
 			/>
 
 			<ModalFilter

@@ -34,7 +34,6 @@ export const ModalFilter = ({
 	const [formFilter] = Form.useForm();
 	const formFilterRef = useRef<FormInstance>(null);
 	const tokenDecode = TokenDekode();
-	// const { RangePicker } = DatePicker;
 
 	const generateContent = useMemo(() => {
 		const isSuperadmin = Object.values(tokenDecode?.user?.roles ?? {}).includes(
@@ -61,21 +60,11 @@ export const ModalFilter = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [options.dataOptionCompany, tokenDecode?.user?.roles]);
 
-	// const checkRangeValue = value => {
-	// 	return value
-	// 		? {
-	// 				tanggal_awal: value[0].format("YYYY-MM-DD"),
-	// 				tanggal_akhir: value[1].format("YYYY-MM-DD"),
-	// 		  }
-	// 		: undefined;
-	// };
-
 	const handleSubmit = v => {
 		const values = {
 			...v,
 			tanggal_awal: changeDateFormat(v["tanggal_awal"]),
 			tanggal_akhir: changeDateFormat(v["tanggal_akhir"]),
-			// ...checkRangeValue(v["rentang_waktu"]),
 		};
 		const filterParams: any = Object.entries(values).reduce((res, curr) => {
 			if (curr[1]) {
@@ -246,11 +235,6 @@ export const ModalFilter = ({
 							/>
 						</Form.Item>
 					</Col>
-					{/* <Col span={24}>
-						<Form.Item name="rentang_waktu" label="Tanggal">
-							<RangePicker style={{ width: "100%" }} format={"DD-MM-YYYY"} />
-						</Form.Item>
-					</Col> */}
 					<Col span={24}>
 						<Form.Item name="tanggal_awal" label="Tanggal Awal">
 							<DatePicker style={{ width: "100%" }} format={"DD-MM-YYYY"} />
@@ -261,17 +245,6 @@ export const ModalFilter = ({
 							<DatePicker style={{ width: "100%" }} format={"DD-MM-YYYY"} />
 						</Form.Item>
 					</Col>
-					{/* <Col span={24}>
-						<Form.Item name="type_export" label="Export">
-							<Select
-								options={[
-									{ value: undefined, label: "" },
-									{ value: "excel", label: "Excel" },
-									{ value: "pdf", label: "Pdf" },
-								]}
-							/>
-						</Form.Item>
-					</Col> */}
 				</Row>
 			</Form>
 		</Drawer>

@@ -14,14 +14,15 @@ import { NonNullableInterface, removeNullFields } from "app/helper/common";
 import { IServiceReplacement } from "store/types/serviceReplacementTypes";
 import { IInventoryInWarehouseParams } from "store/types/inventoryTypes";
 import { getAllInventoryInWarehouseApi } from "api/inventory";
-import { CheckResponse } from "app/helper/authentication";
+import { CheckResponse, TokenDekode } from "app/helper/authentication";
 import { DefaultOptionType } from "antd/es/select";
 import Swal from "sweetalert2";
 import {
 	approveServiceReplacementApi,
 	getDetailServiceReplacementApi,
 } from "api/serviceReplacement";
-import { uniqBy } from "lodash";
+import { getAllLocationApi } from "api/location";
+import { getAllWorkUnitApi } from "api/workUnit";
 interface IModalForm {
 	dataForm: any;
 	showModal: boolean;
@@ -35,6 +36,7 @@ const ModalForm = ({
 	setShowModal,
 	updateDataList,
 }: IModalForm) => {
+	const tokenDecode = TokenDekode();
 	const { Title } = Typography;
 	const [modalForm] = Form.useForm();
 	const modalFormRef = useRef<FormInstance>(null);
@@ -46,12 +48,15 @@ const ModalForm = ({
 	>();
 	const [dataOptionAvailableInventory, setDataOptionAvailableInventory] =
 		useState<DefaultOptionType[] | undefined>();
+	const [dataOptionFinalWorkUnit, setDataOptionFinalWorkUnit] = useState<
+		DefaultOptionType[] | undefined
+	>();
 	const [dataOptionFinalLocation, setDataOptionFinalLocation] = useState<
 		DefaultOptionType[] | undefined
 	>();
 
 	const formikModalForm = useFormik({
-		initialValues: { ...initialValue, remark: "" },
+		initialValues: { ...initialValue, id_final_satker: undefined, remark: "" },
 		enableReinitialize: true,
 		onSubmit: values => {},
 	});
@@ -98,12 +103,31 @@ const ModalForm = ({
 		}
 	};
 
+	const fetchDataFinalWorkUnit = async () => {
+		try {
+			const response = await getAllWorkUnitApi({
+				id_company: tokenDecode?.user?.id_company || undefined,
+				id_area: tokenDecode?.user?.id_area || undefined,
+			});
+			const workUnitList = response.data.data;
+			setDataOptionFinalWorkUnit(
+				workUnitList.map(v => ({ label: v.name, value: v.id })),
+			);
+		} catch (error: any) {
+			CheckResponse(error);
+		}
+	};
+
 	const fetchDataFinalLocation = async () => {
 		try {
-			const response = await getAllInventoryInWarehouseApi();
-			const locationList: any[] = uniqBy(response.data.data, "lokasi_name");
+			const response = await getAllLocationApi({
+				id_company: tokenDecode?.user?.id_company || undefined,
+				id_area: tokenDecode?.user?.id_area || undefined,
+				id_satker: formikModalForm.values.id_final_satker,
+			});
+			const locationList = response.data.data;
 			setDataOptionFinalLocation(
-				locationList.map(v => ({ label: v.lokasi_name, value: v.lokasi_id })),
+				locationList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -116,9 +140,14 @@ const ModalForm = ({
 	}, [availableInventoryParams]);
 
 	useEffect(() => {
-		fetchDataFinalLocation();
+		fetchDataFinalWorkUnit();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	useEffect(() => {
+		fetchDataFinalLocation();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formikModalForm.values.id_final_satker]);
 
 	useEffect(() => {
 		if (dataForm) {
@@ -135,6 +164,7 @@ const ModalForm = ({
 				values?.id_inventory_obtained === dataForm.id_inventory
 					? null
 					: values?.id_inventory_obtained,
+			id_final_satker: values?.id_final_satker,
 			id_final_location:
 				values?.id_final_location === dataDetail?.id_final_location
 					? null
@@ -276,9 +306,31 @@ const ModalForm = ({
 						</div>
 					</div>
 				</Form.Item>
+				<Form.Item name="id_final_satker">
+					<div className="form-group">
+						<Title level={5}>Satuan Kerja Akhir</Title>
+						<div className="controls">
+							<Select
+								filterOption={(input, option) =>
+									(`${option?.label}` ?? "")
+										.toLowerCase()
+										.includes(input.toLowerCase())
+								}
+								options={dataOptionFinalWorkUnit}
+								onChange={(v, opt) => {
+									formikModalForm.setFieldValue("id_final_satker", v);
+									modalFormRef.current?.setFieldsValue({
+										id_final_satker: v,
+									});
+								}}
+								value={formikModalForm.values.id_final_satker}
+							/>
+						</div>
+					</div>
+				</Form.Item>
 				<Form.Item name="id_final_location">
 					<div className="form-group">
-						<Title level={5}>Lokasi Akhir</Title>
+						<Title level={5}>Lokasi Akhir Inventory yang dikembalikan</Title>
 						<div className="controls">
 							<Select
 								filterOption={(input, option) =>
