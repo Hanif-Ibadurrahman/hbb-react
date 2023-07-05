@@ -249,7 +249,7 @@ const ModalForm = ({
 					<div className="form-group">
 						<Title level={5}>
 							No. HBB/Inventaris{" "}
-							{dataForm.transaction_type === "penggantian"
+							{dataForm?.transaction_type === "penggantian"
 								? "yang diminta"
 								: ""}
 						</Title>
@@ -263,7 +263,7 @@ const ModalForm = ({
 						</div>
 					</div>
 				</Form.Item>
-				{dataForm.transaction_type === "penggantian" && (
+				{dataForm?.transaction_type === "penggantian" && (
 					<Form.Item name="id_inventory_obtained">
 						<div className="form-group">
 							<Title level={5}>HBB/Inventaris yang akan diberikan</Title>
@@ -354,7 +354,7 @@ const ModalForm = ({
 					<div className="form-group">
 						<Title level={5}>
 							Lokasi Akhir{" "}
-							{dataForm.transaction_type === "penggantian"
+							{dataForm?.transaction_type === "penggantian"
 								? "Inventory yang dikembalikan"
 								: ""}
 						</Title>
