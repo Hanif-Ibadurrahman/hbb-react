@@ -39,7 +39,11 @@ export const deleteServiceReturnApi = (id: number) => {
 
 export const approveServiceReturnApi = (
 	id: number,
-	input: { remark: string },
+	input: {
+		id_final_satker?: number;
+		id_final_location?: number;
+		remark: string;
+	},
 ) => {
 	return apiWithToken.post(`/api/approval/pengembalian/approve/${id}`, input);
 };

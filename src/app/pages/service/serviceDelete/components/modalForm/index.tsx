@@ -23,8 +23,6 @@ import {
 } from "api/serviceReplacement";
 import { getAllLocationApi } from "api/location";
 import { getAllWorkUnitApi } from "api/workUnit";
-import { approveServiceDeleteApi } from "api/serviceDelete";
-import { approveServiceReturnApi } from "api/serviceReturn";
 interface IModalForm {
 	dataForm: any;
 	showModal: boolean;
@@ -50,10 +48,10 @@ const ModalForm = ({
 	>();
 	const [dataOptionAvailableInventory, setDataOptionAvailableInventory] =
 		useState<DefaultOptionType[] | undefined>();
-	const [dataOptionFinalLocation, setDataOptionFinalLocation] = useState<
+	const [dataOptionFinalWorkUnit, setDataOptionFinalWorkUnit] = useState<
 		DefaultOptionType[] | undefined
 	>();
-	const [dataOptionFinalWorkUnit, setDataOptionFinalWorkUnit] = useState<
+	const [dataOptionFinalLocation, setDataOptionFinalLocation] = useState<
 		DefaultOptionType[] | undefined
 	>();
 
@@ -69,7 +67,6 @@ const ModalForm = ({
 			const detail = response.data.data;
 
 			setDataDetail(detail);
-
 			setDataOptionAvailableInventory(
 				dataOptionAvailableInventory?.concat({
 					label: `${detail.inventory_name} - ${detail.inventory_code}`,
@@ -155,7 +152,6 @@ const ModalForm = ({
 	useEffect(() => {
 		if (dataForm) {
 			const setData = removeNullFields(dataForm);
-
 			fetchDataDetail(setData.id);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -174,8 +170,7 @@ const ModalForm = ({
 					? null
 					: values?.id_final_location,
 		};
-		const apiFunc = getApproveApiFunction(dataForm.transaction_type);
-		apiFunc(dataForm.id, input)
+		approveServiceReplacementApi(dataForm.id, input)
 			.then(res => {
 				if (res.data.status === "success") {
 					setShowModal(false);
@@ -191,16 +186,6 @@ const ModalForm = ({
 			.catch((error: any) => {
 				CheckResponse(error);
 			});
-	};
-
-	const getApproveApiFunction = transactionType => {
-		const apiFunctions = {
-			penghapusan: approveServiceDeleteApi,
-			penggantian: approveServiceReplacementApi,
-			pengembalian: approveServiceReturnApi,
-		};
-
-		return apiFunctions[transactionType];
 	};
 
 	return (
@@ -247,12 +232,7 @@ const ModalForm = ({
 				</Form.Item>
 				<Form.Item name="inventory_code">
 					<div className="form-group">
-						<Title level={5}>
-							No. HBB/Inventaris{" "}
-							{dataForm.transaction_type === "penggantian"
-								? "yang diminta"
-								: ""}
-						</Title>
+						<Title level={5}>No. HBB/Inventaris</Title>
 						<div className="controls">
 							<Input
 								disabled
@@ -263,32 +243,6 @@ const ModalForm = ({
 						</div>
 					</div>
 				</Form.Item>
-				{dataForm.transaction_type === "penggantian" && (
-					<Form.Item name="id_inventory_obtained">
-						<div className="form-group">
-							<Title level={5}>HBB/Inventaris yang akan diberikan</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setAvailableInventoryParams({ search: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionAvailableInventory}
-									onChange={(v, opt) => {
-										formikModalForm.setFieldValue("id_inventory_obtained", v);
-										modalFormRef.current?.setFieldsValue({
-											id_inventory_obtained: v,
-										});
-									}}
-									value={formikModalForm.values.id_inventory_obtained}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-				)}
 				<Form.Item name="description">
 					<div className="form-group">
 						<Title level={5}>Deskripsi HBB/Inventaris</Title>
@@ -352,12 +306,7 @@ const ModalForm = ({
 				</Form.Item>
 				<Form.Item name="id_final_location">
 					<div className="form-group">
-						<Title level={5}>
-							Lokasi Akhir{" "}
-							{dataForm.transaction_type === "penggantian"
-								? "Inventory yang dikembalikan"
-								: ""}
-						</Title>
+						<Title level={5}>Lokasi Akhir Inventory yang dikembalikan</Title>
 						<div className="controls">
 							<Select
 								filterOption={(input, option) =>

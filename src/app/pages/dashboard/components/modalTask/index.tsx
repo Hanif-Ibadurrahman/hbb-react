@@ -104,7 +104,12 @@ const ModalTask = ({
 	};
 
 	const handleApprove = async record => {
-		if (isAdminArea && record.transaction_type === "penggantian") {
+		if (
+			isAdminArea &&
+			(record.transaction_type === "penggantian" ||
+				record.transaction_type === "penghapusan" ||
+				record.transaction_type === "pengembalian")
+		) {
 			fetchAndSetData(record);
 		} else {
 			const result = await swalCustom.fire({

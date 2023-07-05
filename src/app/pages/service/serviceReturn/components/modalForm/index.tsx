@@ -12,18 +12,12 @@ import {
 import { useFormik } from "formik";
 import { NonNullableInterface, removeNullFields } from "app/helper/common";
 import { IServiceReplacement } from "store/types/serviceReplacementTypes";
-import { IInventoryInWarehouseParams } from "store/types/inventoryTypes";
-import { getAllInventoryInWarehouseApi } from "api/inventory";
 import { CheckResponse, TokenDekode } from "app/helper/authentication";
 import { DefaultOptionType } from "antd/es/select";
 import Swal from "sweetalert2";
-import {
-	approveServiceReplacementApi,
-	getDetailServiceReplacementApi,
-} from "api/serviceReplacement";
+import { getDetailServiceReplacementApi } from "api/serviceReplacement";
 import { getAllLocationApi } from "api/location";
 import { getAllWorkUnitApi } from "api/workUnit";
-import { approveServiceDeleteApi } from "api/serviceDelete";
 import { approveServiceReturnApi } from "api/serviceReturn";
 interface IModalForm {
 	dataForm: any;
@@ -45,15 +39,12 @@ const ModalForm = ({
 	const [dataDetail, setDataDetail] = useState<IServiceReplacement>();
 	const [initialValue, setInitialValue] =
 		useState<NonNullableInterface<IServiceReplacement>>();
-	const [availableInventoryParams, setAvailableInventoryParams] = useState<
-		IInventoryInWarehouseParams | undefined
-	>();
 	const [dataOptionAvailableInventory, setDataOptionAvailableInventory] =
 		useState<DefaultOptionType[] | undefined>();
-	const [dataOptionFinalLocation, setDataOptionFinalLocation] = useState<
+	const [dataOptionFinalWorkUnit, setDataOptionFinalWorkUnit] = useState<
 		DefaultOptionType[] | undefined
 	>();
-	const [dataOptionFinalWorkUnit, setDataOptionFinalWorkUnit] = useState<
+	const [dataOptionFinalLocation, setDataOptionFinalLocation] = useState<
 		DefaultOptionType[] | undefined
 	>();
 
@@ -69,7 +60,6 @@ const ModalForm = ({
 			const detail = response.data.data;
 
 			setDataDetail(detail);
-
 			setDataOptionAvailableInventory(
 				dataOptionAvailableInventory?.concat({
 					label: `${detail.inventory_name} - ${detail.inventory_code}`,
@@ -84,23 +74,6 @@ const ModalForm = ({
 
 			setInitialValue(input);
 			modalFormRef.current?.setFieldsValue(input);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataAvailableInventory = async () => {
-		try {
-			const response = await getAllInventoryInWarehouseApi(
-				availableInventoryParams,
-			);
-			const inventoryList = response.data.data;
-			setDataOptionAvailableInventory(
-				inventoryList.map(v => ({
-					label: `${v.name} - ${v.code}`,
-					value: v.id,
-				})),
-			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -138,11 +111,6 @@ const ModalForm = ({
 	};
 
 	useEffect(() => {
-		fetchDataAvailableInventory();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [availableInventoryParams]);
-
-	useEffect(() => {
 		fetchDataFinalWorkUnit();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -155,7 +123,6 @@ const ModalForm = ({
 	useEffect(() => {
 		if (dataForm) {
 			const setData = removeNullFields(dataForm);
-
 			fetchDataDetail(setData.id);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -164,18 +131,13 @@ const ModalForm = ({
 	const onFinish = (values: any) => {
 		const input = {
 			...values,
-			id_inventory_obtained:
-				values?.id_inventory_obtained === dataForm.id_inventory
-					? null
-					: values?.id_inventory_obtained,
 			id_final_satker: values?.id_final_satker,
 			id_final_location:
 				values?.id_final_location === dataDetail?.id_final_location
 					? null
 					: values?.id_final_location,
 		};
-		const apiFunc = getApproveApiFunction(dataForm.transaction_type);
-		apiFunc(dataForm.id, input)
+		approveServiceReturnApi(dataForm.id, input)
 			.then(res => {
 				if (res.data.status === "success") {
 					setShowModal(false);
@@ -191,16 +153,6 @@ const ModalForm = ({
 			.catch((error: any) => {
 				CheckResponse(error);
 			});
-	};
-
-	const getApproveApiFunction = transactionType => {
-		const apiFunctions = {
-			penghapusan: approveServiceDeleteApi,
-			penggantian: approveServiceReplacementApi,
-			pengembalian: approveServiceReturnApi,
-		};
-
-		return apiFunctions[transactionType];
 	};
 
 	return (
@@ -247,12 +199,7 @@ const ModalForm = ({
 				</Form.Item>
 				<Form.Item name="inventory_code">
 					<div className="form-group">
-						<Title level={5}>
-							No. HBB/Inventaris{" "}
-							{dataForm.transaction_type === "penggantian"
-								? "yang diminta"
-								: ""}
-						</Title>
+						<Title level={5}>No. HBB/Inventaris</Title>
 						<div className="controls">
 							<Input
 								disabled
@@ -263,32 +210,6 @@ const ModalForm = ({
 						</div>
 					</div>
 				</Form.Item>
-				{dataForm.transaction_type === "penggantian" && (
-					<Form.Item name="id_inventory_obtained">
-						<div className="form-group">
-							<Title level={5}>HBB/Inventaris yang akan diberikan</Title>
-							<div className="controls">
-								<Select
-									showSearch
-									onSearch={v => setAvailableInventoryParams({ search: v })}
-									filterOption={(input, option) =>
-										(`${option?.label}` ?? "")
-											.toLowerCase()
-											.includes(input.toLowerCase())
-									}
-									options={dataOptionAvailableInventory}
-									onChange={(v, opt) => {
-										formikModalForm.setFieldValue("id_inventory_obtained", v);
-										modalFormRef.current?.setFieldsValue({
-											id_inventory_obtained: v,
-										});
-									}}
-									value={formikModalForm.values.id_inventory_obtained}
-								/>
-							</div>
-						</div>
-					</Form.Item>
-				)}
 				<Form.Item name="description">
 					<div className="form-group">
 						<Title level={5}>Deskripsi HBB/Inventaris</Title>
@@ -352,12 +273,7 @@ const ModalForm = ({
 				</Form.Item>
 				<Form.Item name="id_final_location">
 					<div className="form-group">
-						<Title level={5}>
-							Lokasi Akhir{" "}
-							{dataForm.transaction_type === "penggantian"
-								? "Inventory yang dikembalikan"
-								: ""}
-						</Title>
+						<Title level={5}>Lokasi Akhir</Title>
 						<div className="controls">
 							<Select
 								filterOption={(input, option) =>

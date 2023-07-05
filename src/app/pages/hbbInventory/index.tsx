@@ -834,22 +834,6 @@ const HbbInventory = () => {
 	}, [formik.values.id_bisnis_unit]);
 
 	useEffect(() => {
-		const workUnitId = formik.values.id_satker;
-		if (workUnitId) {
-			const isInitialValueUndefined = initialValue?.id_satker === undefined;
-			if (isInitialValueUndefined || workUnitId !== initialValue.id_satker) {
-				formik.setFieldValue("id_location", undefined);
-				formRef.current?.setFieldsValue({ id_location: undefined });
-				formik.setFieldValue("id_division", undefined);
-				formRef.current?.setFieldsValue({ id_division: undefined });
-			}
-			fetchDataDivision();
-			fetchDataLocation();
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [formik.values.id_satker]);
-
-	useEffect(() => {
 		const areaId = formik.values.id_area;
 
 		if (areaId) {
@@ -865,6 +849,22 @@ const HbbInventory = () => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [formik.values.id_area]);
+
+	useEffect(() => {
+		const workUnitId = formik.values.id_satker;
+		if (workUnitId) {
+			const isInitialValueUndefined = initialValue?.id_satker === undefined;
+			if (isInitialValueUndefined || workUnitId !== initialValue.id_satker) {
+				formik.setFieldValue("id_location", undefined);
+				formRef.current?.setFieldsValue({ id_location: undefined });
+				formik.setFieldValue("id_division", undefined);
+				formRef.current?.setFieldsValue({ id_division: undefined });
+			}
+			fetchDataDivision();
+			fetchDataLocation();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formik.values.id_satker]);
 
 	useEffect(() => {
 		const locationId = formik.values.id_location;
@@ -2169,10 +2169,6 @@ const HbbInventory = () => {
 				setParamsOption={{
 					setCodeGroupParams,
 					setSubCodeGroupParams,
-					setBusinessUnitParams,
-					setAreaParams,
-					setWorkUnitParams,
-					setLocationParams,
 					setColorParams,
 					setConditionParams,
 					setCompanyParams,
@@ -2180,10 +2176,6 @@ const HbbInventory = () => {
 				options={{
 					dataOptionCodeGroup,
 					dataOptionSubCodeGroup,
-					dataOptionBusinessUnit,
-					dataOptionArea,
-					dataOptionWorkUnit,
-					dataOptionLocation,
 					dataOptionColor,
 					dataOptionCondition,
 					dataOptionCompany,

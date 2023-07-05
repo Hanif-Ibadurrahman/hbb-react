@@ -854,6 +854,7 @@ const MasterLocation = () => {
 							<div className="controls">
 								<Radio.Group
 									options={[
+										{ label: "Lokasi Non Gudang", value: 2 },
 										{ label: "Gudang Stok Barang", value: 1 },
 										{ label: "Gudang Penghapusan", value: 0 },
 									]}

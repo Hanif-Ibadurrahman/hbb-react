@@ -52,6 +52,7 @@ import { getAllInventoryInWarehouseApi } from "api/inventory";
 import { SelectWithTag } from "app/components/selectWithTag";
 import { uniqBy } from "lodash";
 import { useNavigate } from "react-router-dom";
+import { getAllLocationApi } from "api/location";
 
 const ServiceRequest = () => {
 	const tokenDecode = TokenDekode();
@@ -160,10 +161,12 @@ const ServiceRequest = () => {
 
 	const fetchDataFinalLocation = async () => {
 		try {
-			const response = await getAllInventoryInWarehouseApi();
-			const locationList: any[] = uniqBy(response.data.data, "lokasi_id");
+			const response = await getAllLocationApi({
+				id_satker: tokenDecode?.user?.id_satker || undefined,
+			});
+			const locationList = response.data.data;
 			setDataOptionFinalLocation(
-				locationList.map(v => ({ label: v.lokasi_name, value: v.lokasi_id })),
+				locationList.map(v => ({ label: v.name, value: v.id })),
 			);
 		} catch (error: any) {
 			CheckResponse(error);
@@ -648,7 +651,7 @@ const ServiceRequest = () => {
 						<div className="form-group">
 							<Title level={5}>Area</Title>
 							<div className="controls">
-								<SelectWithTag
+								<Select
 									showSearch
 									onSearch={v => setAreaParams({ name: v })}
 									filterOption={(input, option) =>
@@ -656,11 +659,11 @@ const ServiceRequest = () => {
 											.toLowerCase()
 											.includes(input.toLowerCase())
 									}
-									dataOption={dataOptionArea}
+									options={dataOptionArea}
 									onChange={(v, opt) => {
-										formik.setFieldValue("area", v.slice(0, 1));
+										formik.setFieldValue("area", v);
 										formRef.current?.setFieldsValue({
-											area: v.slice(0, 1),
+											area: v,
 										});
 									}}
 									value={formik.values.area}
@@ -672,7 +675,7 @@ const ServiceRequest = () => {
 						<div className="form-group">
 							<Title level={5}>Lokasi</Title>
 							<div className="controls">
-								<SelectWithTag
+								<Select
 									showSearch
 									onSearch={v => setLocationParams({ lokasi: v })}
 									filterOption={(input, option) =>
@@ -680,11 +683,11 @@ const ServiceRequest = () => {
 											.toLowerCase()
 											.includes(input.toLowerCase())
 									}
-									dataOption={dataOptionLocation}
+									options={dataOptionLocation}
 									onChange={(v, opt) => {
-										formik.setFieldValue("location", v.slice(0, 1));
+										formik.setFieldValue("location", v);
 										formRef.current?.setFieldsValue({
-											location: v.slice(0, 1),
+											location: v,
 										});
 									}}
 									value={formik.values.location}
@@ -753,7 +756,7 @@ const ServiceRequest = () => {
 					>
 						<div className="form-group">
 							<Title level={5}>
-								Uraian <span className="text-danger">*</span>
+								Uraian<span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
 								<Input
@@ -778,7 +781,7 @@ const ServiceRequest = () => {
 					>
 						<div className="form-group">
 							<Title level={5}>
-								Kondisi <span className="text-danger">*</span>
+								Kondisi<span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
 								<Input
@@ -803,7 +806,7 @@ const ServiceRequest = () => {
 					>
 						<div className="form-group">
 							<Title level={5}>
-								Nama Pemakai Akhir <span className="text-danger">*</span>
+								Nama Pemakai Akhir<span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
 								<Input
@@ -827,9 +830,13 @@ const ServiceRequest = () => {
 						]}
 					>
 						<div className="form-group">
-							<Title level={5}>Lokasi Akhir</Title>
+							<Title level={5}>
+								Lokasi Akhir No HBB/Inventaris yang diminta
+								<span className="text-danger">*</span>
+							</Title>
 							<div className="controls">
 								<Select
+									showSearch
 									filterOption={(input, option) =>
 										(`${option?.label}` ?? "")
 											.toLowerCase()
@@ -858,7 +865,7 @@ const ServiceRequest = () => {
 					>
 						<div className="form-group">
 							<Title level={5}>
-								Workflow <span className="text-danger">*</span>
+								Workflow<span className="text-danger">*</span>
 							</Title>
 							<div className="controls">
 								<Select
