@@ -10,8 +10,6 @@ import {
 	Typography,
 } from "antd";
 import { useFormik } from "formik";
-import { NonNullableInterface, removeNullFields } from "app/helper/common";
-import { IServiceReplacement } from "store/types/serviceReplacementTypes";
 import { IInventoryInWarehouseParams } from "store/types/inventoryTypes";
 import { getAllInventoryInWarehouseApi } from "api/inventory";
 import { CheckResponse, TokenDekode } from "app/helper/authentication";
@@ -23,8 +21,16 @@ import {
 } from "api/serviceReplacement";
 import { getAllLocationApi } from "api/location";
 import { getAllWorkUnitApi } from "api/workUnit";
-import { approveServiceDeleteApi } from "api/serviceDelete";
-import { approveServiceReturnApi } from "api/serviceReturn";
+import {
+	approveServiceDeleteApi,
+	getDetailServiceDeleteApi,
+} from "api/serviceDelete";
+import {
+	approveServiceReturnApi,
+	getDetailServiceReturnApi,
+} from "api/serviceReturn";
+import { IApproveForm } from "store/types/dashboard";
+import { pick } from "lodash";
 interface IModalForm {
 	dataForm: any;
 	showModal: boolean;
@@ -42,9 +48,7 @@ const ModalForm = ({
 	const { Title } = Typography;
 	const [modalForm] = Form.useForm();
 	const modalFormRef = useRef<FormInstance>(null);
-	const [dataDetail, setDataDetail] = useState<IServiceReplacement>();
-	const [initialValue, setInitialValue] =
-		useState<NonNullableInterface<IServiceReplacement>>();
+	const [initialValue, setInitialValue] = useState<IApproveForm>();
 	const [availableInventoryParams, setAvailableInventoryParams] = useState<
 		IInventoryInWarehouseParams | undefined
 	>();
@@ -63,12 +67,11 @@ const ModalForm = ({
 		onSubmit: values => {},
 	});
 
-	const fetchDataDetail = async (id: number) => {
+	const fetchDataDetail = async (id: number, type: string) => {
 		try {
-			const response = await getDetailServiceReplacementApi(id);
+			const apiFunc = getDetailApiFunction(type);
+			const response = await apiFunc(id);
 			const detail = response.data.data;
-
-			setDataDetail(detail);
 
 			setDataOptionAvailableInventory(
 				dataOptionAvailableInventory?.concat({
@@ -79,7 +82,7 @@ const ModalForm = ({
 
 			const input = {
 				...detail,
-				id_inventory_obtained: detail.id_inventory,
+				id_inventory_obtained: detail?.id_inventory,
 			};
 
 			setInitialValue(input);
@@ -154,9 +157,7 @@ const ModalForm = ({
 
 	useEffect(() => {
 		if (dataForm) {
-			const setData = removeNullFields(dataForm);
-
-			fetchDataDetail(setData.id);
+			fetchDataDetail(dataForm.id, dataForm.transaction_type);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dataForm]);
@@ -168,14 +169,11 @@ const ModalForm = ({
 				values?.id_inventory_obtained === dataForm.id_inventory
 					? null
 					: values?.id_inventory_obtained,
-			id_final_satker: values?.id_final_satker,
-			id_final_location:
-				values?.id_final_location === dataDetail?.id_final_location
-					? null
-					: values?.id_final_location,
 		};
+
+		const filteredInput = filterInput(input, dataForm.transaction_type);
 		const apiFunc = getApproveApiFunction(dataForm.transaction_type);
-		apiFunc(dataForm.id, input)
+		apiFunc(dataForm.id, filteredInput)
 			.then(res => {
 				if (res.data.status === "success") {
 					setShowModal(false);
@@ -193,11 +191,41 @@ const ModalForm = ({
 			});
 	};
 
+	const filterInput = (input, transactionType) => {
+		let selectedPick;
+		switch (transactionType) {
+			case "penghapusan":
+				selectedPick = ["id_final_location", "remark"];
+				break;
+			case "pengembalian":
+				selectedPick = ["id_final_location", "remark"];
+				break;
+			default:
+				selectedPick = [
+					"id_inventory_obtained",
+					"id_final_location_return",
+					"remark",
+				];
+				break;
+		}
+		return pick(input, selectedPick);
+	};
+
 	const getApproveApiFunction = transactionType => {
 		const apiFunctions = {
 			penghapusan: approveServiceDeleteApi,
 			penggantian: approveServiceReplacementApi,
 			pengembalian: approveServiceReturnApi,
+		};
+
+		return apiFunctions[transactionType];
+	};
+
+	const getDetailApiFunction = transactionType => {
+		const apiFunctions = {
+			penghapusan: getDetailServiceDeleteApi,
+			penggantian: getDetailServiceReplacementApi,
+			pengembalian: getDetailServiceReturnApi,
 		};
 
 		return apiFunctions[transactionType];
@@ -315,19 +343,36 @@ const ModalForm = ({
 						</div>
 					</div>
 				</Form.Item>
-				<Form.Item name="emp_name">
-					<div className="form-group">
-						<Title level={5}>Nama Pemakai Akhir</Title>
-						<div className="controls">
-							<Input
-								disabled
-								type="text"
-								className="form-control"
-								value={formikModalForm.values.emp_name}
-							/>
+				{dataForm?.transaction_type === "penghapusan" && (
+					<Form.Item name="reason">
+						<div className="form-group">
+							<Title level={5}>Alasan</Title>
+							<div className="controls">
+								<Input
+									disabled
+									type="text"
+									className="form-control"
+									value={formikModalForm.values.reason}
+								/>
+							</div>
 						</div>
-					</div>
-				</Form.Item>
+					</Form.Item>
+				)}
+				{dataForm?.transaction_type === "penggantian" && (
+					<Form.Item name="emp_name">
+						<div className="form-group">
+							<Title level={5}>Nama Pemakai Akhir</Title>
+							<div className="controls">
+								<Input
+									disabled
+									type="text"
+									className="form-control"
+									value={formikModalForm.values.emp_name}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+				)}
 				<Form.Item name="id_final_satker">
 					<div className="form-group">
 						<Title level={5}>Satuan Kerja Akhir</Title>
@@ -359,24 +404,60 @@ const ModalForm = ({
 								: ""}
 						</Title>
 						<div className="controls">
-							<Select
-								filterOption={(input, option) =>
-									(`${option?.label}` ?? "")
-										.toLowerCase()
-										.includes(input.toLowerCase())
-								}
-								options={dataOptionFinalLocation}
-								onChange={(v, opt) => {
-									formikModalForm.setFieldValue("id_final_location", v);
-									modalFormRef.current?.setFieldsValue({
-										id_final_location: v,
-									});
-								}}
-								value={formikModalForm.values.id_final_location}
-							/>
+							{dataForm?.transaction_type === "penggantian" ? (
+								<Input
+									disabled
+									type="text"
+									className="form-control"
+									value={formikModalForm.values.inventory_return_location}
+								/>
+							) : (
+								<Select
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionFinalLocation}
+									onChange={(v, opt) => {
+										formikModalForm.setFieldValue("id_final_location", v);
+										modalFormRef.current?.setFieldsValue({
+											id_final_location: v,
+										});
+									}}
+									value={formikModalForm.values.id_final_location}
+								/>
+							)}
 						</div>
 					</div>
 				</Form.Item>
+				{dataForm?.transaction_type === "penggantian" && (
+					<Form.Item name="id_final_location_return">
+						<div className="form-group">
+							<Title level={5}>Lokasi Akhir Inventory yang dikembalikan</Title>
+							<div className="controls">
+								<Select
+									filterOption={(input, option) =>
+										(`${option?.label}` ?? "")
+											.toLowerCase()
+											.includes(input.toLowerCase())
+									}
+									options={dataOptionFinalLocation}
+									onChange={(v, opt) => {
+										formikModalForm.setFieldValue(
+											"id_final_location_return",
+											v,
+										);
+										modalFormRef.current?.setFieldsValue({
+											id_final_location_return: v,
+										});
+									}}
+									value={formikModalForm.values.id_final_location_return}
+								/>
+							</div>
+						</div>
+					</Form.Item>
+				)}
 				<Form.Item name="remark">
 					<div className="form-group">
 						<Title level={5}>Catatan</Title>

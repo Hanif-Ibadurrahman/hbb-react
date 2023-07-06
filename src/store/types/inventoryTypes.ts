@@ -30,24 +30,15 @@ export interface IInventory {
 	company_name: string | null;
 }
 
-export interface IInventoryDetail {
-	id: number;
+export interface IInventoryDetail extends IInventory {
 	id_lokasi: number | null;
-	inventory_type: number | null;
-	year: string | null;
-	serial_no: string | null;
-	code: string | null;
-	name: string | null;
 	no_bast: string | null;
 	date_bast: string | null;
 	country: string | null;
 	year_made: string | null;
-	merk: string | null;
 	type: string | null;
 	jenis: string | null;
 	model: string | null;
-	color: string | null;
-	size: string | null;
 	capacity: string | null;
 	serial_number: string | null;
 	no_polisi: string | null;
@@ -58,18 +49,13 @@ export interface IInventoryDetail {
 	contract_date: string | null;
 	price: number | null;
 	condition: number | null;
-	remark: string | null;
 	upload: string | null;
 	location_before: string | null;
-	location: string | null;
-	status: number | null;
 	is_approved: boolean | null;
-	nipg: string | null;
 	id_main_group: number | null;
 	id_sub_group: number | null;
 	approve_by: number | null;
 	jumlah: number | null;
-	no_akuntansi: string | null;
 	id_barang: number | null;
 	id_country: number | null;
 	id_color: number | null;
@@ -77,24 +63,10 @@ export interface IInventoryDetail {
 	id_location: number | null;
 	id_penanggung_jawab: string | null;
 	id_satker: number | null;
-	ever_hapus: number | null;
-	ever_transaksi: number | null;
 	distributor: string | null;
-	ever_pindah: number | null;
-	area: string | null;
-	satker: string | null;
-	penanggung_jawab: string | null;
 	id_bisnis_unit: number | null;
 	id_company: number | null;
 	id_division: number | null;
-	main_group: string | null;
-	sub_group: string | null;
-	tahun_perolehan: string | null;
-	kondisi: string | null;
-	main_group_name: string | null;
-	sub_group_name: string | null;
-	bu_name: string | null;
-	company_name: string | null;
 	division_name: string | null;
 }
 export interface IInventoryPaginateResponse extends PaginationState {

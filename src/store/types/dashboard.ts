@@ -14,4 +14,23 @@ export interface IDashboardInterfaceState {
 	title: string;
 }
 
+export interface IApproveForm {
+	id: number;
+	no_urut: number;
+	inventory_name: string;
+	inventory_code: string;
+	id_inventory_obtained?: number;
+	description?: string;
+	condition: string;
+	reason?: string;
+	emp_name?: string;
+	id_final_location?: number;
+	inventory_return_location?: string;
+	id_final_location_return?: number;
+	remark: string;
+
+	//only for filter location
+	id_final_satker?: number;
+}
+
 export type DashboardContainerState = IDashboardInterfaceState;

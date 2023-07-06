@@ -17,7 +17,6 @@ import {
 } from "api/serviceRepair";
 import {
 	approveServiceReplacementApi,
-	getAllServiceReplacementApi,
 	rejectServiceReplacementApi,
 } from "api/serviceReplacement";
 import {
@@ -54,11 +53,7 @@ const ModalTask = ({
 
 	const fetchAndSetData = async record => {
 		try {
-			const response = await getAllServiceReplacementApi();
-			const transactionList = response.data.data.data;
-
-			const dataForm = transactionList.find(data => data.id === record.id);
-			setDataForm(dataForm);
+			setDataForm(record);
 			setShowModalForm(true);
 		} catch (error: any) {
 			CheckResponse(error);

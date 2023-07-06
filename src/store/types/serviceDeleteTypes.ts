@@ -4,7 +4,6 @@ export interface IServiceDelete {
 	id: number;
 	id_quest: string | null;
 	nipg: string | null;
-	inventory_type: number | null;
 	id_inventory: string | null;
 	date: string | null;
 	reason: string | null;
@@ -22,26 +21,53 @@ export interface IServiceDelete {
 	reject: string | null;
 	description: string | null;
 	approved_date: string | null;
-	from_mobile: boolean | null;
 	entry_stamp: string | null;
 	edit_stamp: string | null;
 	del: boolean | null;
+	from_mobile: boolean | null;
 	id_company: number | null;
 	created_by: number | null;
+	id_approval: number | null;
+	transaction_uuid: string | null;
+	condition: string | null;
+	no_urut: number | null;
 	created_at: string | null;
 	updated_at: string | null;
 	deleted_at: string | null;
-	id_approval: number | null;
-	transaction_uuid: string | null;
-	no_urut: number | null;
-	condition: string | null;
+	id_final_location: number | null;
 	company_name: string | null;
 	inventory_name: string | null;
+	inventory_type: number | null;
+	inventory_code: string | null;
 	pending_status: string | null;
 	current_flow: number | null;
 	current_approver: number | null;
 	reject_status: string | null;
 	is_closed_by: string | null;
+}
+
+export interface IServiceDeleteDetail extends IServiceDelete {
+	id_workflow: number | null;
+	total_flow: number | null;
+}
+
+export interface IServiceDeleteApproveForm {
+	id: number;
+	no_urut: number;
+	inventory_name: string;
+	inventory_code: string;
+	condition: string;
+	reason: string;
+	id_final_location: number;
+	remark: string;
+
+	//only for filter location
+	id_final_satker?: number;
+}
+
+export interface IServiceDeleteApproveRequest {
+	id_final_location?: number;
+	remark: string;
 }
 
 export interface IServiceDeletePaginateResponse extends PaginationState {

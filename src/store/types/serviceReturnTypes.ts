@@ -18,11 +18,37 @@ export interface IServiceReturn {
 	no_urut: number | null;
 	company_name: string | null;
 	inventory_name: string | null;
+	total_flow: number | null;
 	pending_status: string | null;
 	current_flow: number | null;
 	current_approver: number | null;
 	reject_status: string | null;
 	is_closed_by: string | null;
+}
+
+export interface IServiceReturnDetail extends IServiceReturn {
+	id_final_location: number | null;
+	id_workflow: number | null;
+}
+
+export interface IServiceReturnApproveForm {
+	id: number;
+	no_urut: number;
+	inventory_name: string;
+	inventory_code: string;
+	description: string;
+	condition: string;
+	emp_name: string;
+	id_final_location: number;
+	remark: string;
+
+	//only for filter location
+	id_final_satker?: number;
+}
+
+export interface IServiceReturnApproveRequest {
+	id_final_location?: number;
+	remark: string;
 }
 
 export interface IServiceReturnPaginateResponse extends PaginationState {

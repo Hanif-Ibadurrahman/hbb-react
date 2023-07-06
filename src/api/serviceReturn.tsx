@@ -2,6 +2,7 @@ import {
 	IServiceReturnGetAllParams,
 	ICreateServiceReturnRequest,
 	IUpdateServiceReturnRequest,
+	IServiceReturnApproveRequest,
 } from "store/types/serviceReturnTypes";
 import { apiWithToken } from ".";
 
@@ -39,11 +40,7 @@ export const deleteServiceReturnApi = (id: number) => {
 
 export const approveServiceReturnApi = (
 	id: number,
-	input: {
-		id_final_satker?: number;
-		id_final_location?: number;
-		remark: string;
-	},
+	input: IServiceReturnApproveRequest,
 ) => {
 	return apiWithToken.post(`/api/approval/pengembalian/approve/${id}`, input);
 };

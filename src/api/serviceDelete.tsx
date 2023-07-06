@@ -2,6 +2,7 @@ import {
 	IServiceDeleteGetAllParams,
 	ICreateServiceDeleteRequest,
 	IUpdateServiceDeleteRequest,
+	IServiceDeleteApproveRequest,
 } from "store/types/serviceDeleteTypes";
 import { apiWithToken } from ".";
 
@@ -34,11 +35,7 @@ export const deleteServiceDeleteApi = (id: number) => {
 
 export const approveServiceDeleteApi = (
 	id: number,
-	input: {
-		id_final_satker?: number;
-		id_final_location?: number;
-		remark: string;
-	},
+	input: IServiceDeleteApproveRequest,
 ) => {
 	return apiWithToken.post(`/api/approval/penghapusan/approve/${id}`, input);
 };
