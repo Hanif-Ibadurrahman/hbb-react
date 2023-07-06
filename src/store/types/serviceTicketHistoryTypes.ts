@@ -40,6 +40,7 @@ export interface IExportRecapitulationParams {
 	tanggal_awal?: string;
 	tanggal_akhir?: string;
 	requestor?: string;
+	print?: string;
 }
 
 export interface IServiceTicketHistoryGetAllResponse {
