@@ -168,13 +168,25 @@ const ServiceTicketHistory = () => {
 			: undefined;
 	};
 
-	const handleExport = async () => {
+	const handleExport = async (type: string) => {
 		const filter = {
 			...paramsForExport,
 			requestor: paramsForExport?.requester,
 			...checkRangeValue(paramsForExport?.date),
 		};
-		const response = await exportRecapitulationApi(filter);
+
+		let response;
+		if (type === "excel") {
+			response = await exportRecapitulationApi({
+				...filter,
+				print: "excel",
+			});
+		} else {
+			response = await exportRecapitulationApi({
+				...filter,
+				print: "pdf",
+			});
+		}
 		const url = response.data.data.replace(/\\/g, "");
 		window.location.href = url;
 	};
@@ -202,9 +214,15 @@ const ServiceTicketHistory = () => {
 									<Space>
 										<button
 											className="btn btn-secondary"
-											onClick={handleExport}
+											onClick={() => handleExport("pdf")}
 										>
 											Print Pdf Rekapitulasi
+										</button>
+										<button
+											className="btn btn-secondary"
+											onClick={() => handleExport("excel")}
+										>
+											Print Excel Rekapitulasi
 										</button>
 									</Space>
 									<button
