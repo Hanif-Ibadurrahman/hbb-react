@@ -49,7 +49,7 @@ export interface ICreateLocationRequest {
 	id_division: number;
 	name: string;
 	from_opname: boolean | null;
-	is_stock_warehouse: boolean | null;
+	is_stock_warehouse: number | null;
 }
 export interface IUpdateLocationRequest {
 	id_bisnis_unit: number;
@@ -60,7 +60,7 @@ export interface IUpdateLocationRequest {
 	id_division: number;
 	name: string;
 	from_opname: boolean | null;
-	is_stock_warehouse: boolean | null;
+	is_stock_warehouse: number | null;
 }
 export interface ILocationGetAllResponse {
 	status: string;

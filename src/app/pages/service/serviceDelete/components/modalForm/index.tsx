@@ -11,18 +11,20 @@ import {
 } from "antd";
 import { useFormik } from "formik";
 import { NonNullableInterface, removeNullFields } from "app/helper/common";
-import { IServiceReplacement } from "store/types/serviceReplacementTypes";
-import { IInventoryInWarehouseParams } from "store/types/inventoryTypes";
-import { getAllInventoryInWarehouseApi } from "api/inventory";
 import { CheckResponse, TokenDekode } from "app/helper/authentication";
 import { DefaultOptionType } from "antd/es/select";
 import Swal from "sweetalert2";
-import {
-	approveServiceReplacementApi,
-	getDetailServiceReplacementApi,
-} from "api/serviceReplacement";
 import { getAllLocationApi } from "api/location";
 import { getAllWorkUnitApi } from "api/workUnit";
+import {
+	IServiceDeleteApproveForm,
+	IServiceDeleteApproveRequest,
+	IServiceDeleteDetail,
+} from "store/types/serviceDeleteTypes";
+import {
+	approveServiceDeleteApi,
+	getDetailServiceDeleteApi,
+} from "api/serviceDelete";
 interface IModalForm {
 	dataForm: any;
 	showModal: boolean;
@@ -40,12 +42,7 @@ const ModalForm = ({
 	const { Title } = Typography;
 	const [modalForm] = Form.useForm();
 	const modalFormRef = useRef<FormInstance>(null);
-	const [dataDetail, setDataDetail] = useState<IServiceReplacement>();
-	const [initialValue, setInitialValue] =
-		useState<NonNullableInterface<IServiceReplacement>>();
-	const [availableInventoryParams, setAvailableInventoryParams] = useState<
-		IInventoryInWarehouseParams | undefined
-	>();
+	const [initialValue, setInitialValue] = useState<IServiceDeleteApproveForm>();
 	const [dataOptionAvailableInventory, setDataOptionAvailableInventory] =
 		useState<DefaultOptionType[] | undefined>();
 	const [dataOptionFinalWorkUnit, setDataOptionFinalWorkUnit] = useState<
@@ -63,10 +60,10 @@ const ModalForm = ({
 
 	const fetchDataDetail = async (id: number) => {
 		try {
-			const response = await getDetailServiceReplacementApi(id);
-			const detail = response.data.data;
+			const response = await getDetailServiceDeleteApi(id);
+			const detail: NonNullableInterface<IServiceDeleteDetail> =
+				removeNullFields(response.data.data);
 
-			setDataDetail(detail);
 			setDataOptionAvailableInventory(
 				dataOptionAvailableInventory?.concat({
 					label: `${detail.inventory_name} - ${detail.inventory_code}`,
@@ -76,28 +73,12 @@ const ModalForm = ({
 
 			const input = {
 				...detail,
-				id_inventory_obtained: detail.id_inventory,
+				remark: "",
+				id_final_satker: undefined,
 			};
 
 			setInitialValue(input);
 			modalFormRef.current?.setFieldsValue(input);
-		} catch (error: any) {
-			CheckResponse(error);
-		}
-	};
-
-	const fetchDataAvailableInventory = async () => {
-		try {
-			const response = await getAllInventoryInWarehouseApi(
-				availableInventoryParams,
-			);
-			const inventoryList = response.data.data;
-			setDataOptionAvailableInventory(
-				inventoryList.map(v => ({
-					label: `${v.name} - ${v.code}`,
-					value: v.id,
-				})),
-			);
 		} catch (error: any) {
 			CheckResponse(error);
 		}
@@ -135,11 +116,6 @@ const ModalForm = ({
 	};
 
 	useEffect(() => {
-		fetchDataAvailableInventory();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [availableInventoryParams]);
-
-	useEffect(() => {
 		fetchDataFinalWorkUnit();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -151,26 +127,14 @@ const ModalForm = ({
 
 	useEffect(() => {
 		if (dataForm) {
-			const setData = removeNullFields(dataForm);
-			fetchDataDetail(setData.id);
+			fetchDataDetail(dataForm.id);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dataForm]);
 
 	const onFinish = (values: any) => {
-		const input = {
-			...values,
-			id_inventory_obtained:
-				values?.id_inventory_obtained === dataForm.id_inventory
-					? null
-					: values?.id_inventory_obtained,
-			id_final_satker: values?.id_final_satker,
-			id_final_location:
-				values?.id_final_location === dataDetail?.id_final_location
-					? null
-					: values?.id_final_location,
-		};
-		approveServiceReplacementApi(dataForm.id, input)
+		const input: IServiceDeleteApproveRequest = { ...values };
+		approveServiceDeleteApi(dataForm.id, input)
 			.then(res => {
 				if (res.data.status === "success") {
 					setShowModal(false);
@@ -243,19 +207,6 @@ const ModalForm = ({
 						</div>
 					</div>
 				</Form.Item>
-				<Form.Item name="description">
-					<div className="form-group">
-						<Title level={5}>Deskripsi HBB/Inventaris</Title>
-						<div className="controls">
-							<Input
-								disabled
-								type="text"
-								className="form-control"
-								value={formikModalForm.values.description}
-							/>
-						</div>
-					</div>
-				</Form.Item>
 				<Form.Item name="condition">
 					<div className="form-group">
 						<Title level={5}>Kondisi</Title>
@@ -269,15 +220,15 @@ const ModalForm = ({
 						</div>
 					</div>
 				</Form.Item>
-				<Form.Item name="emp_name">
+				<Form.Item name="reason">
 					<div className="form-group">
-						<Title level={5}>Nama Pemakai Akhir</Title>
+						<Title level={5}>Alasan</Title>
 						<div className="controls">
 							<Input
 								disabled
 								type="text"
 								className="form-control"
-								value={formikModalForm.values.emp_name}
+								value={formikModalForm.values.reason}
 							/>
 						</div>
 					</div>
@@ -306,7 +257,7 @@ const ModalForm = ({
 				</Form.Item>
 				<Form.Item name="id_final_location">
 					<div className="form-group">
-						<Title level={5}>Lokasi Akhir Inventory yang dikembalikan</Title>
+						<Title level={5}>Lokasi Akhir</Title>
 						<div className="controls">
 							<Select
 								filterOption={(input, option) =>

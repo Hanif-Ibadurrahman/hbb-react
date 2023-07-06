@@ -11,7 +11,11 @@ import {
 } from "antd";
 import { useFormik } from "formik";
 import { NonNullableInterface, removeNullFields } from "app/helper/common";
-import { IServiceReplacement } from "store/types/serviceReplacementTypes";
+import {
+	IServiceReplacementApproveForm,
+	IServiceReplacementApproveRequest,
+	IServiceReplacementDetail,
+} from "store/types/serviceReplacementTypes";
 import { IInventoryInWarehouseParams } from "store/types/inventoryTypes";
 import { getAllInventoryInWarehouseApi } from "api/inventory";
 import { CheckResponse, TokenDekode } from "app/helper/authentication";
@@ -40,9 +44,8 @@ const ModalForm = ({
 	const { Title } = Typography;
 	const [modalForm] = Form.useForm();
 	const modalFormRef = useRef<FormInstance>(null);
-	const [dataDetail, setDataDetail] = useState<IServiceReplacement>();
 	const [initialValue, setInitialValue] =
-		useState<NonNullableInterface<IServiceReplacement>>();
+		useState<IServiceReplacementApproveForm>();
 	const [availableInventoryParams, setAvailableInventoryParams] = useState<
 		IInventoryInWarehouseParams | undefined
 	>();
@@ -56,7 +59,7 @@ const ModalForm = ({
 	>();
 
 	const formikModalForm = useFormik({
-		initialValues: { ...initialValue, id_final_satker: undefined, remark: "" },
+		initialValues: { ...initialValue },
 		enableReinitialize: true,
 		onSubmit: values => {},
 	});
@@ -64,9 +67,9 @@ const ModalForm = ({
 	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailServiceReplacementApi(id);
-			const detail = response.data.data;
+			const detail: NonNullableInterface<IServiceReplacementDetail> =
+				removeNullFields(response.data.data);
 
-			setDataDetail(detail);
 			setDataOptionAvailableInventory(
 				dataOptionAvailableInventory?.concat({
 					label: `${detail.inventory_name} - ${detail.inventory_code}`,
@@ -76,7 +79,8 @@ const ModalForm = ({
 
 			const input = {
 				...detail,
-				id_inventory_obtained: detail.id_inventory,
+				remark: "",
+				id_final_satker: undefined,
 			};
 
 			setInitialValue(input);
@@ -151,24 +155,18 @@ const ModalForm = ({
 
 	useEffect(() => {
 		if (dataForm) {
-			const setData = removeNullFields(dataForm);
-			fetchDataDetail(setData.id);
+			fetchDataDetail(dataForm.id);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dataForm]);
 
 	const onFinish = (values: any) => {
-		const input = {
+		const input: IServiceReplacementApproveRequest = {
 			...values,
 			id_inventory_obtained:
 				values?.id_inventory_obtained === dataForm.id_inventory
 					? null
 					: values?.id_inventory_obtained,
-			id_final_satker: values?.id_final_satker,
-			id_final_location:
-				values?.id_final_location === dataDetail?.id_final_location
-					? null
-					: values?.id_final_location,
 		};
 		approveServiceReplacementApi(dataForm.id, input)
 			.then(res => {
@@ -311,6 +309,7 @@ const ModalForm = ({
 						<Title level={5}>Satuan Kerja Akhir</Title>
 						<div className="controls">
 							<Select
+								showSearch
 								filterOption={(input, option) =>
 									(`${option?.label}` ?? "")
 										.toLowerCase()
@@ -330,9 +329,34 @@ const ModalForm = ({
 				</Form.Item>
 				<Form.Item name="id_final_location">
 					<div className="form-group">
-						<Title level={5}>Lokasi Akhir Inventory yang dikembalikan</Title>
+						<Title level={5}>Lokasi Akhir Inventory yang diminta</Title>
+						<div className="controls">
+							<Input
+								disabled
+								type="text"
+								className="form-control"
+								value={formikModalForm.values.inventory_return_location}
+							/>
+						</div>
+					</div>
+				</Form.Item>
+				<Form.Item
+					name="id_final_location_return"
+					rules={[
+						{
+							required: true,
+							message: "Harap isi field ini",
+						},
+					]}
+				>
+					<div className="form-group">
+						<Title level={5}>
+							Lokasi Akhir Inventory yang dikembalikan
+							<span className="text-danger">*</span>
+						</Title>
 						<div className="controls">
 							<Select
+								showSearch
 								filterOption={(input, option) =>
 									(`${option?.label}` ?? "")
 										.toLowerCase()
@@ -340,12 +364,12 @@ const ModalForm = ({
 								}
 								options={dataOptionFinalLocation}
 								onChange={(v, opt) => {
-									formikModalForm.setFieldValue("id_final_location", v);
+									formikModalForm.setFieldValue("id_final_location_return", v);
 									modalFormRef.current?.setFieldsValue({
-										id_final_location: v,
+										id_final_location_return: v,
 									});
 								}}
-								value={formikModalForm.values.id_final_location}
+								value={formikModalForm.values.id_final_location_return}
 							/>
 						</div>
 					</div>

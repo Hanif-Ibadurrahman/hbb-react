@@ -11,7 +11,6 @@ import {
 } from "antd";
 import { useFormik } from "formik";
 import { NonNullableInterface, removeNullFields } from "app/helper/common";
-import { IServiceReplacement } from "store/types/serviceReplacementTypes";
 import { CheckResponse, TokenDekode } from "app/helper/authentication";
 import { DefaultOptionType } from "antd/es/select";
 import Swal from "sweetalert2";
@@ -19,6 +18,11 @@ import { getDetailServiceReplacementApi } from "api/serviceReplacement";
 import { getAllLocationApi } from "api/location";
 import { getAllWorkUnitApi } from "api/workUnit";
 import { approveServiceReturnApi } from "api/serviceReturn";
+import {
+	IServiceReturnApproveForm,
+	IServiceReturnApproveRequest,
+	IServiceReturnDetail,
+} from "store/types/serviceReturnTypes";
 interface IModalForm {
 	dataForm: any;
 	showModal: boolean;
@@ -36,9 +40,7 @@ const ModalForm = ({
 	const { Title } = Typography;
 	const [modalForm] = Form.useForm();
 	const modalFormRef = useRef<FormInstance>(null);
-	const [dataDetail, setDataDetail] = useState<IServiceReplacement>();
-	const [initialValue, setInitialValue] =
-		useState<NonNullableInterface<IServiceReplacement>>();
+	const [initialValue, setInitialValue] = useState<IServiceReturnApproveForm>();
 	const [dataOptionAvailableInventory, setDataOptionAvailableInventory] =
 		useState<DefaultOptionType[] | undefined>();
 	const [dataOptionFinalWorkUnit, setDataOptionFinalWorkUnit] = useState<
@@ -49,7 +51,7 @@ const ModalForm = ({
 	>();
 
 	const formikModalForm = useFormik({
-		initialValues: { ...initialValue, id_final_satker: undefined, remark: "" },
+		initialValues: { ...initialValue },
 		enableReinitialize: true,
 		onSubmit: values => {},
 	});
@@ -57,9 +59,9 @@ const ModalForm = ({
 	const fetchDataDetail = async (id: number) => {
 		try {
 			const response = await getDetailServiceReplacementApi(id);
-			const detail = response.data.data;
+			const detail: NonNullableInterface<IServiceReturnDetail> =
+				removeNullFields(response.data.data);
 
-			setDataDetail(detail);
 			setDataOptionAvailableInventory(
 				dataOptionAvailableInventory?.concat({
 					label: `${detail.inventory_name} - ${detail.inventory_code}`,
@@ -69,7 +71,8 @@ const ModalForm = ({
 
 			const input = {
 				...detail,
-				id_inventory_obtained: detail.id_inventory,
+				remark: "",
+				id_final_satker: undefined,
 			};
 
 			setInitialValue(input);
@@ -122,21 +125,13 @@ const ModalForm = ({
 
 	useEffect(() => {
 		if (dataForm) {
-			const setData = removeNullFields(dataForm);
-			fetchDataDetail(setData.id);
+			fetchDataDetail(dataForm.id);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dataForm]);
 
 	const onFinish = (values: any) => {
-		const input = {
-			...values,
-			id_final_satker: values?.id_final_satker,
-			id_final_location:
-				values?.id_final_location === dataDetail?.id_final_location
-					? null
-					: values?.id_final_location,
-		};
+		const input: IServiceReturnApproveRequest = { ...values };
 		approveServiceReturnApi(dataForm.id, input)
 			.then(res => {
 				if (res.data.status === "success") {
@@ -232,19 +227,6 @@ const ModalForm = ({
 								type="text"
 								className="form-control"
 								value={formikModalForm.values.condition}
-							/>
-						</div>
-					</div>
-				</Form.Item>
-				<Form.Item name="emp_name">
-					<div className="form-group">
-						<Title level={5}>Nama Pemakai Akhir</Title>
-						<div className="controls">
-							<Input
-								disabled
-								type="text"
-								className="form-control"
-								value={formikModalForm.values.emp_name}
 							/>
 						</div>
 					</div>

@@ -3,6 +3,7 @@ import {
 	ICreateServiceReplacementRequest,
 	IUpdateServiceReplacementRequest,
 	IUpdateFormApprovalRequest,
+	IServiceReplacementApproveRequest,
 } from "store/types/serviceReplacementTypes";
 import { apiWithToken } from ".";
 
@@ -52,12 +53,7 @@ export const deleteServiceReplacementApi = (id: number) => {
 
 export const approveServiceReplacementApi = (
 	id: number,
-	input: {
-		id_inventory_obtained?: number;
-		id_final_satker?: number;
-		id_final_location?: number;
-		remark: string;
-	},
+	input: IServiceReplacementApproveRequest,
 ) => {
 	return apiWithToken.post(`/api/approval/penggantian/approve/${id}`, input);
 };
